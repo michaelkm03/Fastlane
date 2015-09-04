@@ -494,13 +494,7 @@ static const NSInteger kUserSearchResultLimit = 20;
             {
                 Shelf *shelfInContext = (Shelf *)streamItemInContext;
                 NSUInteger index = [oldStreamItems.array indexOfObjectPassingTest:^BOOL(VStreamItem *oldStreamItem, NSUInteger idx, BOOL *stop) {
-                    BOOL containsOldShelf = [oldStreamItem isKindOfClass:[Shelf class]] && [oldStreamItem.remoteId isEqualToString:shelfInContext.remoteId];
-                    if ( containsOldShelf )
-                    {
-                        *stop = YES;
-                        return YES;
-                    }
-                    return NO;
+                    return [oldStreamItem isKindOfClass:[Shelf class]] && [oldStreamItem.remoteId isEqualToString:shelfInContext.remoteId];
                 }];
                 BOOL streamItemsNeedUpdate = NO;
                 BOOL isMarqueeShelf = [shelfInContext.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
