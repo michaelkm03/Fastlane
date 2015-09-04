@@ -144,4 +144,16 @@ NSString * const VStreamItemSubTypeStream = @"stream";
     return editorializationItem;
 }
 
+- (BOOL)hasEqualTitlesAsStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath inMarquee:(BOOL)inMarquee
+{
+    //Check marquees to see if we do after all
+    VEditorializationItem *oldItem = [self editorializationForStreamWithApiPath:apiPath];
+    NSString *oldHeadline = inMarquee ? oldItem.marqueeHeadline : oldItem.headline;
+    BOOL headlinesAreNil = oldItem.marqueeHeadline == nil && streamItem.headline == nil;
+    BOOL namesAreNil = self.name == nil && streamItem.name == nil;
+    BOOL headlinesAreSame = [oldHeadline isEqualToString:streamItem.headline];
+    BOOL namesAreSame = [self.name isEqualToString:streamItem.name];
+    return (headlinesAreNil || headlinesAreSame) && (namesAreNil || namesAreSame);
+}
+
 @end

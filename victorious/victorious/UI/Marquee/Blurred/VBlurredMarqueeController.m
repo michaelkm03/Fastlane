@@ -115,7 +115,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[marqueeItems indexOfObject:streamItem]];
     }
     
-    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.stream.apiPath];
+    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.currentStream.apiPath];
     self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value

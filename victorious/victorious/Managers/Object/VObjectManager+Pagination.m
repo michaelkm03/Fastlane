@@ -444,8 +444,10 @@ static const NSInteger kUserSearchResultLimit = 20;
     {
         //If this is the first page, break the relationship to all the old objects.
         NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
+        NSMutableOrderedSet *oldStreamItems = nil;
         if ( pageType == VPageTypeFirst )
         {
+            oldStreamItems = [stream.streamItems copy];
             stream.streamItems = [[NSOrderedSet alloc] init];
             marqueeItems = [[NSMutableOrderedSet alloc] init];
         }
@@ -464,10 +466,8 @@ static const NSInteger kUserSearchResultLimit = 20;
             if ( !marqueeNeedsUpdate )
             {
                 //Check marquees to see if we do after all
-                VEditorializationItem *oldItem = [streamItemInContext editorializationForStreamWithApiPath:apiPath];
-                BOOL bothNil = oldItem.marqueeHeadline == nil && marqueeItem.headline == nil;
-                BOOL headlineIsSame = [oldItem.marqueeHeadline isEqualToString:marqueeItem.headline];
-                if ( !( bothNil || headlineIsSame ) )
+                BOOL hasEqualTitles = [streamItemInContext hasEqualTitlesAsStreamItem:marqueeItem inStreamWithApiPath:stream.apiPath inMarquee:YES];
+                if ( !hasEqualTitles )
                 {
                     //The editorialization item has changed or been created anew, we need to update the marquee
                     marqueeNeedsUpdate = YES;
@@ -480,25 +480,71 @@ static const NSInteger kUserSearchResultLimit = 20;
         
         for (VStreamItem *streamItem in fullStream.streamItems)
         {
-            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
-            if ( [streamItemInContext isKindOfClass:[Shelf class]] && [streamItem isKindOfClass:[Shelf class]] )
-            {
-                Shelf *shelfInContext = (Shelf *)streamItemInContext;
-                NSOrderedSet *oldStreamItems = shelfInContext.streamItems;
-                NSOrderedSet *newStreamItems = ((Shelf *)streamItem).streamItems;
-                if ( ![oldStreamItems isEqualToOrderedSet:newStreamItems] )
-                {
-                    shelfInContext.streamItems = newStreamItems;
-                }
-            }
-            [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
-            streamItem.headline = nil;
+            NSString *itemApiPath = apiPath;
             if ( [streamItem isKindOfClass:[Shelf class]] )
             {
                 Shelf *shelf = (Shelf *)streamItem;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
                 shelf.trackingIdentifier = shelf.remoteId;
+                itemApiPath = [(Shelf *)streamItem apiPath];
             }
+            
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            if ( [streamItemInContext isKindOfClass:[Shelf class]] && [streamItem isKindOfClass:[Shelf class]] )
+            {
+                Shelf *shelfInContext = (Shelf *)streamItemInContext;
+                NSUInteger index = [oldStreamItems.array indexOfObjectPassingTest:^BOOL(VStreamItem *oldStreamItem, NSUInteger idx, BOOL *stop) {
+                    BOOL containsOldShelf = [oldStreamItem isKindOfClass:[Shelf class]] && [oldStreamItem.remoteId isEqualToString:shelfInContext.remoteId];
+                    if ( containsOldShelf )
+                    {
+                        *stop = YES;
+                        return YES;
+                    }
+                    return NO;
+                }];
+                BOOL streamItemsNeedUpdate = NO;
+                BOOL isMarqueeShelf = [shelfInContext.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
+                NSOrderedSet *newStreamItems = shelfInContext.streamItems;
+                if ( index != NSNotFound )
+                {
+                    Shelf *oldShelf = (Shelf *)oldStreamItems[index];
+                    if ( [oldShelf.streamItems isEqualToOrderedSet:newStreamItems] )
+                    {
+                        for ( NSUInteger index = 0; index < oldStreamItems.count; index++ )
+                        {
+                            //Compare headlines to see if we need an update
+                            VStreamItem *newStreamItem = newStreamItems[index];
+                            VStreamItem *oldStreamItem = oldShelf.streamItems[index];
+                            BOOL hasEqualTitles = [newStreamItem hasEqualTitlesAsStreamItem:oldStreamItem inStreamWithApiPath:shelfInContext.apiPath inMarquee:isMarqueeShelf];
+                            if ( !hasEqualTitles )
+                            {
+                                streamItemsNeedUpdate = YES;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        streamItemsNeedUpdate = YES;
+                    }
+                }
+                else
+                {
+                    streamItemsNeedUpdate = YES;
+                }
+                shelfInContext.hasNewEditorializations = streamItemsNeedUpdate;
+                
+                for ( VStreamItem *shelfStreamItem in shelfInContext.streamItems )
+                {
+                    [self addEditorializationToStreamItem:shelfStreamItem inStreamWithApiPath:shelfInContext.apiPath usingHeadline:shelfStreamItem.headline inMarquee:isMarqueeShelf];
+                    shelfStreamItem.headline = nil;
+                }
+            }
+            else
+            {
+                [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:itemApiPath usingHeadline:streamItem.headline inMarquee:NO];
+            }
+            streamItem.headline = nil;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
