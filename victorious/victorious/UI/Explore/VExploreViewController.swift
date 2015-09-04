@@ -98,12 +98,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         self.collectionView.dataSource = self.streamDataSource;
         self.collectionView.backgroundColor = UIColor.whiteColor()
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        self.refresh(refreshControl)
-    }
-    
+
     /// Mark: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
@@ -119,7 +114,6 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
         let streamItem = streamItemFor(indexPath)
         if let shelf = streamItem as? Shelf {
             
-            // Trending topic shelf
             if let subType = shelf.itemSubType {
                 switch subType {
                 case VStreamItemSubTypeMarquee:
@@ -161,6 +155,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     }
     
     private func updateSectionRanges() {
+        var tempRanges = [SectionRange]()
         if let streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
@@ -170,13 +165,13 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                         //Create a new section range for the section that just ended
                         let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex))
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
-                        add(sectionRange, atIndex: rangeIndex)
+                        add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                         recentSectionLength = 0
                         rangeIndex++
                     }
                     let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex))
                     let sectionRange = SectionRange(range: NSMakeRange(rangeStart, 1), isShelf: true)
-                    add(sectionRange, atIndex: rangeIndex)
+                    add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                     rangeIndex++
                 }
                 else {
@@ -186,19 +181,20 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                         //Create a new section range for the section that just ended
                         let rangeStart = streamItemIndexFor(NSIndexPath(forRow: recentSectionLength - 1, inSection: rangeIndex))
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
-                        add(sectionRange, atIndex: rangeIndex)
+                        add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                     }
                 }
             }
         }
+        sectionRanges = tempRanges
     }
     
-    private func add(sectionRange: SectionRange, atIndex index:Int) {
-        if index < sectionRanges.count {
-            sectionRanges[index] = sectionRange
+    private func add(sectionRange: SectionRange, inout toRanges ranges: [SectionRange], atIndex index:Int) {
+        if index < ranges.count {
+            ranges[index] = sectionRange
         }
         else {
-            sectionRanges.append(sectionRange)
+            ranges.append(sectionRange)
         }
     }
     
@@ -341,9 +337,14 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     
     private func streamItemIndexFor(indexPath: NSIndexPath) -> Int {
         let section = indexPath.section
-        if section != 0 && section <= sectionRanges.count {
-            let priorSectionRange = sectionRanges[section - 1].range
-            return priorSectionRange.location + priorSectionRange.length + indexPath.row
+        if section <= sectionRanges.count {
+            if section != 0 {
+                let priorSectionRange = sectionRanges[section - 1].range
+                return priorSectionRange.location + priorSectionRange.length + indexPath.row
+            }
+            else {
+                return indexPath.row
+            }
         }
         return 0
     }
