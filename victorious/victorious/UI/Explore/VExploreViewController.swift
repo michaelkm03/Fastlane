@@ -68,10 +68,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.collectionView.reloadData()
-                    self.trackVisibleCells()
-                })
+                self.collectionView.reloadData()
+                self.trackVisibleCells()
             }
             }, failBlock: { (op, err) -> Void in
                 // TODO: Deal with error

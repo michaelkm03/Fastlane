@@ -36,7 +36,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            streamItemVisibilityTrackingHelper.stream = shelf
+            streamItemVisibilityTrackingHelper.shelf = shelf
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
@@ -162,11 +162,7 @@ extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
 
 extension VDependencyManager {
     
-    private struct Constants {
-        static let kStreamATFThresholdKey = "streamAtfViewThreshold"
-    }
-    
     var minTrackingRequiredCellVisibilityRatio: CGFloat {
-        return numberForKey(Constants.kStreamATFThresholdKey) as CGFloat
+        return numberForKey("streamAtfViewThreshold") as CGFloat
     }
 }

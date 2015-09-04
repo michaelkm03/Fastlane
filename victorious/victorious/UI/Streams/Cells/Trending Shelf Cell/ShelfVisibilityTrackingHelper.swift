@@ -1,5 +1,5 @@
 //
-//  StreamVisibilityTrackingHelper.swift
+//  ShelfVisibilityTrackingHelper.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/1/15.
@@ -8,10 +8,9 @@
 
 import Foundation
 
-
 @objc class ShelfVisibilityTrackingHelper {
     
-    var stream: VStream?
+    var shelf: Shelf?
     var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
     private var collectionView: UICollectionView
@@ -30,19 +29,19 @@ import Foundation
                 let visibleHeightRatio = intersection.height / cell.frame.height
                 let roundedRatio = ceil(visibleWidthRatio * 100 + visibleHeightRatio * 100) / 200
                 if roundedRatio >= trackingMinRequiredCellVisibilityRatio {
-                    if let indexPath = collectionView.indexPathForCell(cell), let stream = stream {
+                    if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf {
                         
-                        let streamItem: VStreamItem? = stream.streamItems[indexPath.row] as? VStreamItem
+                        let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem
                         
-                        // If this stream item is a stream, track the first sequence
-                        if let stream = streamItem as? VStream {
-                            if let firstSequence = stream.streamItems.firstObject as? VSequence {
-                                let event = StreamCellContext(streamItem: firstSequence, stream: stream, fromShelf: false)
+                        // If this shelf item is a stream, track the first sequence
+                        if let shelf = streamItem as? VStream {
+                            if let firstSequence = shelf.streamItems.firstObject as? VSequence {
+                                let event = StreamCellContext(streamItem: firstSequence, stream: shelf, fromShelf: false)
                                 streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                             }
                         }
-                        else if let sequence = streamItem {
-                            let event = StreamCellContext(streamItem: sequence, stream: stream, fromShelf: false)
+                        else if let streamItem = streamItem {
+                            let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
                             streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                         }
                     }

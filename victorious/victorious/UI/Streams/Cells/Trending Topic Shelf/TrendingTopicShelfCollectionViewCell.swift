@@ -60,7 +60,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let shelf = shelf {
                 label.text = shelf.title
-                streamItemVisibilityTrackingHelper.stream = shelf
+                streamItemVisibilityTrackingHelper.shelf = shelf
                 collectionView.reloadData()
             }
         }
