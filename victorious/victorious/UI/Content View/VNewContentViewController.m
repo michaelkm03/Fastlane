@@ -157,7 +157,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
-
+@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -338,10 +338,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
      {
          rotationUpdate();
      }
-                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         rotationUpdate();
-     }];
+                                 completion:nil];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -351,9 +348,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         [self.textEntryView stopEditing];
         [self.contentCollectionView resignFirstResponder];
+        self.offsetBeforeLandscape = self.contentCollectionView.contentOffset;
     }
     else
     {
+        self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
         [self.contentCollectionView becomeFirstResponder];
     }
 
@@ -471,8 +470,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
-    self.contentCollectionView.delegate = self;
-    
     [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
 
@@ -564,7 +561,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
     {
-        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
@@ -584,7 +581,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [self.contentCollectionView resignFirstResponder];
-    self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
@@ -795,12 +791,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         if (welf.presentedViewController == weakLightBox)
         {
+            // sometimes the content dissapears withour reloading due to rotation 😱
+            [welf.contentCollectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]]];
+            [welf.contentCollectionView.collectionViewLayout invalidateLayout];
             [welf dismissViewControllerAnimated:YES
                                      completion:^
              {
                  [[welf class] attemptRotationToDeviceOrientation];
-                 
-                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
              }];
         }
     };

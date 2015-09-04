@@ -7,17 +7,13 @@
 //
 
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
+#import "victorious-Swift.h"
 
 @implementation VExploreMarqueeCollectionViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
-{
-    return YES;
-}
-
 - (CGFloat)getPageWidth
 {
-    return CGRectGetWidth(self.collectionView.bounds) / 2;
+    return CGRectGetWidth(self.collectionView.bounds) / [[ExploreMarqueeController class] marqueeShelfAspectRatio];
 }
 
 /*

@@ -386,6 +386,7 @@
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restore Purchases";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
+"Reset Purchases"                       = "Reset Purchases";
 
 "AuthorizationContextDefault"                   = "We are so excited to have you join our community! Create an account and you'll be able to create, post, and share!";
 "AuthorizationContextCreatePost"                = "Yay! We can't wait to see your first post. Just create an account and start sharing your lovely creation with the community!";
@@ -458,8 +459,10 @@
 "LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Likers";
 
-"posts" = "Posts";
-"HashtagPostsCountFormat" = "In %@ Posts";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
+"HashtagPostsCountFormat" = "In %@ Post";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "London";

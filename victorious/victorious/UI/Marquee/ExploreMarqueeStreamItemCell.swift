@@ -12,7 +12,8 @@ import UIKit
 class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        return CGSizeMake( bounds.width / 2, bounds.width / 2 )
+        let side = bounds.width / ExploreMarqueeController.marqueeShelfAspectRatio
+        return CGSizeMake( side, side )
     }
     
     override var shouldSupportAutoplay: Bool {

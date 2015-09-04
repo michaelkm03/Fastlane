@@ -23,7 +23,7 @@ class EmtpyCommentsDataSource : CommentsDataSource {
         return 0
     }
 
-    var delegate: CommentsDataSourceDelegate?
+    weak var delegate: CommentsDataSourceDelegate?
 
     func loadFirstPage() { }
 

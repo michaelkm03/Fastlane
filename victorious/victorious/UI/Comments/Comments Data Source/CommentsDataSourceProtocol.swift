@@ -21,7 +21,7 @@ protocol CommentsDataSource {
     func indexOfComment(comment: VComment) -> Int
  
     /// A delgate to be informed of update events.
-    var delegate: CommentsDataSourceDelegate? { get set }
+    weak var delegate: CommentsDataSourceDelegate? { get set }
     
     /// Attempts to load the first page of comments.
     func loadFirstPage()
@@ -40,7 +40,7 @@ protocol CommentsDataSource {
 
 }
 
-protocol CommentsDataSourceDelegate {
+protocol CommentsDataSourceDelegate: class {
     
     /// Informs the delegate that the data source updated the content of the comments.
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource)
