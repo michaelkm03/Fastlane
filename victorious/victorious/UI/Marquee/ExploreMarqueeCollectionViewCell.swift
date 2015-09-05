@@ -27,7 +27,8 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        return CGSizeMake( bounds.width, bounds.width / ExploreMarqueeController.marqueeShelfAspectRatio )
+        let height = ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(bounds).height
+        return CGSizeMake(bounds.width, height)
     }
 }
 
