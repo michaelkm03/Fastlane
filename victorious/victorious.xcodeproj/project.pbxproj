@@ -367,6 +367,7 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
+		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F421B83A49B00D898DE /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F411B83A49B00D898DE /* Explore.storyboard */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */; };
@@ -914,9 +915,9 @@
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
 		C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864B61B22358D00694AB3 /* VFadeButton.m */; };
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
-		C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
+		C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */; };
 		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
 		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
 		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
@@ -1996,6 +1997,8 @@
 		66AF79501B60A8E4006DDCD8 /* VVideoCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCameraViewController.h; sourceTree = "<group>"; };
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
+		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
+		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Explore.storyboard; path = Explore/Explore.storyboard; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VExploreViewController.swift; path = Explore/VExploreViewController.swift; sourceTree = "<group>"; };
 		672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exploreScreenDevelopment.json; sourceTree = "<group>"; };
@@ -5278,6 +5281,8 @@
 				672E5F411B83A49B00D898DE /* Explore.storyboard */,
 				672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */,
 				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
+				67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */,
+				67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */,
 			);
 			name = Explore;
 			sourceTree = "<group>";
@@ -9406,6 +9411,7 @@
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
+				67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */,
 				A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,

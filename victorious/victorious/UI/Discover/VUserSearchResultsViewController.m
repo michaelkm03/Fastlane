@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
 #import "VUserSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
 #import "VObjectManager+Users.h"
@@ -55,6 +56,7 @@
     [self.view addSubview:self.dismissTapView];
     [self.view bringSubviewToFront:self.dismissTapView];
     [self.dismissTapView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchCompleted:)]];
+    [self.view v_addFitToParentConstraintsToSubview:self.dismissTapView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -173,7 +175,7 @@
     
     cell.profile = profile;
     cell.dependencyManager = self.dependencyManager;
-
+    
     return cell;
 }
 
@@ -186,7 +188,15 @@
 {
     VUser  *user = self.searchResults[indexPath.row];
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    
+    if (self.navigationDelegate != nil)
+    {
+        [self.navigationDelegate navigateToResult:profileViewController animated:YES];
+    }
+    else
+    {
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
 }
 
 #pragma mark - VFollowResponder

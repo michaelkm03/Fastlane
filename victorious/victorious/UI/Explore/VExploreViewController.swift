@@ -10,6 +10,12 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
+
+@objc protocol ExploreSearchResultNavigationDelegate {
+    
+    func navigateToResult(viewController: UIViewController, animated: Bool)
+}
+
 class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
     
     private struct Constants {
@@ -21,7 +27,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     private var marqueeShelfFactory: VMarqueeCellFactory?
-    private var searchBar = UISearchBar()
+    private var searchController: UISearchController?
+    private var searchResultsViewController: VExploreSearchResultsViewController?
     
     // Array of shelves to be displayed before recent content
     var shelves: [Shelf] = []
@@ -53,6 +60,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         collectionView.backgroundColor = UIColor.whiteColor()
         marqueeShelfFactory?.registerCellsWithCollectionView(self.collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
+        
+        definesPresentationContext = true
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -110,33 +119,31 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         return shelves.count + 1
     }
     
-    /// MARK: - UISearchBarDelegate
-    
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
-            if let dependencyManager = self.dependencyManager {
-                
-                let navController = VNavigationController(dependencyManager: dependencyManager)
-                navController.innerNavigationController.setViewControllers([searchVC], animated: false)
-                navController.setNavigationBarHidden(true)
-                
-                navController.modalTransitionStyle = .CrossDissolve
-                self.presentViewController(navController, animated: true, completion: nil)
-            }
-        }
-        return true
-    }
-    
     /// Mark: - Private Helper Methods
     private func configureSearchBar() {
-        navigationItem.titleView = searchBar
-        searchBar.delegate = self
-        searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
-        if let searchTextField = searchBar.v_textField,
-            let dependencyManager = self.dependencyManager {
-            searchTextField.font = dependencyManager.textFont
-            searchTextField.textColor = dependencyManager.textColor
-            searchTextField.backgroundColor = dependencyManager.backgroundColor
+        if let dependencyManager = self.dependencyManager {
+            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(dependencyManager)
+            searchResultsViewController?.navigationDelegate = self
+            searchController = UISearchController(searchResultsController: searchResultsViewController)
+        }
+        
+        if let searchController = searchController {
+            searchController.hidesNavigationBarDuringPresentation = false
+            searchController.dimsBackgroundDuringPresentation = true
+            
+            let searchBar = searchController.searchBar
+            searchBar.delegate = self
+            searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
+            searchBar.sizeToFit()
+            searchBar.delegate = searchResultsViewController
+            navigationItem.titleView = searchBar
+            
+            if let searchTextField = searchBar.v_textField,
+                let dependencyManager = self.dependencyManager {
+                    searchTextField.font = dependencyManager.textFont
+                    searchTextField.textColor = dependencyManager.textColor
+                    searchTextField.backgroundColor = dependencyManager.backgroundColor
+            }
         }
     }
 }
@@ -227,7 +234,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
                 }
             }
         }
-        // Navigating to a single stream
+            // Navigating to a single stream
         else if stream.isSingleStream {
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
         }
@@ -238,7 +245,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             streamViewController.targetStreamItem = streamItem
             navigationController?.pushViewController(streamViewController, animated: true)
         }
-        // else Show the stream of streams
+            // else Show the stream of streams
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType(
                 VDirectoryCollectionViewController.self,
@@ -281,7 +288,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             
             showContentView(forCellEvent: event, trackingInfo: extraTrackingInfo, previewImage: image)
         }
-        // Navigating to a stream
+            // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
@@ -300,5 +307,11 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
                 withPreviewImage: image
             )
         }
+    }
+}
+
+extension VExploreViewController: ExploreSearchResultNavigationDelegate {
+    func navigateToResult(viewController: UIViewController, animated: Bool) {
+        v_navigationController().innerNavigationController.pushViewController(viewController, animated: animated)
     }
 }

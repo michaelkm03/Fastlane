@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class VDependencyManager, VTagsSearchResultsViewController;
+@protocol ExploreSearchResultNavigationDelegate;
 
 /**
  Protocol to report when searching has been completed
@@ -25,6 +26,8 @@
 @end
 
 @interface VTagsSearchResultsViewController : UITableViewController
+
+@property (nonatomic, weak) id<ExploreSearchResultNavigationDelegate> navigationDelegate;
 
 /**
  Factory method to instantiate the View Controller with the dependency manager
