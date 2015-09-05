@@ -15,7 +15,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
         static let marqueeDestinationDirectory = "destionationDirectory"
-        static let trendingTopicShelfKey = "trendingShelf"
+        static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
     }
     
@@ -67,7 +67,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
                         self.shelves.append(newShelf)
                     }
                 }
+                
                 self.collectionView.reloadData()
+                self.trackVisibleCells()
             }
             }, failBlock: { (op, err) -> Void in
                 // TODO: Deal with error
@@ -121,6 +123,20 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController.newWithDependencyManager(dependencyManager) {
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
+        }
+    }
+    
+    /// MARK: Tracking
+    
+    func trackVisibleCells() {
+        // WARNING: needs to be implemented for explore marquee and recent cells
+        
+        dispatch_after(0.1) {
+            for cell in self.collectionView.visibleCells() {
+                if let cell = cell as? TrendingTopicShelfCollectionViewCell {
+                    cell.streamItemVisibilityTrackingHelper.trackVisibleSequences()
+                }
+            }
         }
     }
 }

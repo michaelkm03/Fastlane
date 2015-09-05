@@ -174,7 +174,7 @@
             {
                 if ( child )
                 {
-                    mapping = [self childStreamMapping];
+                    mapping = [self entityMapping];
                 }
                 else
                 {
