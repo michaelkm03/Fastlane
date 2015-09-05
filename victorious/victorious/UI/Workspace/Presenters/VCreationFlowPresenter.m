@@ -26,6 +26,7 @@
 
 // Tracking
 #import "VTrackingManager.h"
+#import "victorious-swift.h"
 
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
@@ -63,34 +64,38 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 - (void)authorizedPresent
 {
+    LevelUpViewController *levelUp = [[UIStoryboard storyboardWithName:@"LevelUpScreen" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    levelUp.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.viewControllerPresentedOn presentViewController:levelUp animated:YES completion:nil];
+    
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
 
-    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
-    
-    if (createSheet != nil)
-    {
-        __weak typeof(self) welf = self;
-        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier)
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [createSheetViewController dismissViewControllerAnimated:YES completion:^
-              {
-                  [strongSelf openWorkspaceWithItemIdentifier:chosenItemIdentifier];
-              }];
-             
-         }];
-        [self.viewControllerPresentedOn presentViewController:createSheet animated:YES completion:nil];
-    }
-    else
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                  style:UIAlertActionStyleCancel
-                                                handler:nil]];
-        [self.viewControllerPresentedOn presentViewController:alert animated:YES completion:nil];
-    }
+//    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
+//    
+//    if (createSheet != nil)
+//    {
+//        __weak typeof(self) welf = self;
+//        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier)
+//         {
+//             __strong typeof(welf) strongSelf = welf;
+//             [createSheetViewController dismissViewControllerAnimated:YES completion:^
+//              {
+//                  [strongSelf openWorkspaceWithItemIdentifier:chosenItemIdentifier];
+//              }];
+//             
+//         }];
+//        [self.viewControllerPresentedOn presentViewController:createSheet animated:YES completion:nil];
+//    }
+//    else
+//    {
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+//                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
+//                                                                preferredStyle:UIAlertControllerStyleAlert];
+//        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+//                                                  style:UIAlertActionStyleCancel
+//                                                handler:nil]];
+//        [self.viewControllerPresentedOn presentViewController:alert animated:YES completion:nil];
+//    }
 }
 
 - (void)openWorkspaceWithItemIdentifier:(VCreationType)identifier

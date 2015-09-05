@@ -891,6 +891,12 @@
 		C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */; };
 		C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
+		C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E581B9A77E0002B121D /* LevelUpViewController.swift */; };
+		C3623E5B1B9A7818002B121D /* LevelUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5A1B9A7818002B121D /* LevelUpModel.swift */; };
+		C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */; };
+		C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */; };
+		C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* LevelBadgeView.swift */; };
+		C3623E631B9A7BDD002B121D /* LevelUpScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
@@ -2911,6 +2917,12 @@
 		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateSheetPresentationController.m; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
+		C3623E581B9A77E0002B121D /* LevelUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpViewController.swift; path = "Fan Club/Level Up Screen/LevelUpViewController.swift"; sourceTree = "<group>"; };
+		C3623E5A1B9A7818002B121D /* LevelUpModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpModel.swift; path = "Fan Club/Level Up Screen/LevelUpModel.swift"; sourceTree = "<group>"; };
+		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpIconCollectionViewCell.swift; path = "Fan Club/Level Up Screen/LevelUpIconCollectionViewCell.swift"; sourceTree = "<group>"; };
+		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelPolygonView.swift; path = "Fan Club/Level Up Screen/LevelPolygonView.swift"; sourceTree = "<group>"; };
+		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelBadgeView.swift; path = "Fan Club/Level Up Screen/LevelBadgeView.swift"; sourceTree = "<group>"; };
+		C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LevelUpScreen.storyboard; path = "Fan Club/Level Up Screen/LevelUpScreen.storyboard"; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
 		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
@@ -3848,6 +3860,7 @@
 				C35265F91B28E349001F093F /* Create Sheet */,
 				A75FAF0019E8AC1E00EB87C1 /* Discover */,
 				A7D707831A7B103C00D9993F /* EndCard */,
+				C3623E561B9A779A002B121D /* Fan Club */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
 				A7A0617B1B4DB36A00E8FFCF /* GIFSearch */,
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
@@ -6903,6 +6916,27 @@
 			path = "Create Sheet";
 			sourceTree = "<group>";
 		};
+		C3623E561B9A779A002B121D /* Fan Club */ = {
+			isa = PBXGroup;
+			children = (
+				C3623E571B9A77B2002B121D /* Level Up Screen */,
+			);
+			name = "Fan Club";
+			sourceTree = "<group>";
+		};
+		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
+			isa = PBXGroup;
+			children = (
+				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
+				C3623E5A1B9A7818002B121D /* LevelUpModel.swift */,
+				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
+				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
+				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
+				C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */,
+			);
+			name = "Level Up Screen";
+			sourceTree = "<group>";
+		};
 		C39864AE1B1E7F7700694AB3 /* Parallax */ = {
 			isa = PBXGroup;
 			children = (
@@ -8301,6 +8335,7 @@
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
+				C3623E631B9A7BDD002B121D /* LevelUpScreen.storyboard in Resources */,
 				D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */,
 				A7D378421AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,
@@ -9038,6 +9073,7 @@
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
+				C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */,
 				F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */,
@@ -9099,6 +9135,7 @@
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */,
+				C3623E5B1B9A7818002B121D /* LevelUpModel.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
@@ -9145,6 +9182,7 @@
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
+				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				D85B707D1B0EAF3F0038CA5B /* VAuthorizationContextHelper.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
@@ -9601,12 +9639,14 @@
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */,
+				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */,
 				A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */,
 				A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */,
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
 				F06B41B21B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m in Sources */,
 				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
+				C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
