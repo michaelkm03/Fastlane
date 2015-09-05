@@ -92,7 +92,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         self.streamDataSource.delegate = self;
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
-        self.collectionView.backgroundColor = UIColor.whiteColor()
+        self.collectionView.backgroundColor = UIColor.clearColor()
     }
 
     /// Mark: - UISearchBarDelegate
@@ -223,6 +223,20 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     
     override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
         return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
+    }
+    
+    /// MARK: Tracking
+    
+    func trackVisibleCells() {
+        // WARNING: needs to be implemented for explore marquee and recent cells
+        
+        dispatch_after(0.1) {
+            for cell in self.collectionView.visibleCells() {
+                if let cell = cell as? TrendingTopicShelfCollectionViewCell {
+                    cell.streamItemVisibilityTrackingHelper.trackVisibleSequences()
+                }
+            }
+        }
     }
 }
 
