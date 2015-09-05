@@ -7775,6 +7775,7 @@
 		F06B41851B7ADA52008709E8 /* Trending Shelf Cell */ = {
 			isa = PBXGroup;
 			children = (
+				C38211411B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift */,
 				F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */,
 				F06B417B1B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.xib */,
 				F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */,
@@ -7782,7 +7783,6 @@
 				F06B41CE1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift */,
 				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
 				F06B417A1B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib */,
-				C38211411B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift */,
 			);
 			path = "Trending Shelf Cell";
 			sourceTree = "<group>";
