@@ -7,11 +7,17 @@
 //
 
 @class VDependencyManager, VUsersAndTagsSearchViewController;
+@class VUserSearchResultsViewController, VTagsSearchResultsViewController;
 
 extern NSString * const kVUserSearchResultsChangedNotification;
 extern NSString * const kVHashtagsSearchResultsChangedNotification;
 
 @interface VUsersAndTagsSearchViewController : UIViewController
+
+@property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
+@property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Factory method to load VUsersAndTagsSearchViewController view controller
@@ -28,6 +34,10 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
  @return Instance of VUsersAndTagsSearchViewController view controller
  */
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (void)userSearch:(NSString *)userName;
+- (void)hashtagSearch:(NSString *)tagName;
+- (BOOL)textFieldShouldClear:(UITextField *)textField;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;

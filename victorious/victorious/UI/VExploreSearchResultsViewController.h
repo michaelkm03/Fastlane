@@ -6,29 +6,13 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "VUsersAndTagsSearchViewController.h"
+
 @class VDependencyManager, VExploreSearchResultsViewController;
 @protocol ExploreSearchResultNavigationDelegate;
 
-@interface VExploreSearchResultsViewController : UIViewController <UISearchBarDelegate>
+@interface VExploreSearchResultsViewController : VUsersAndTagsSearchViewController <UISearchBarDelegate>
 
 @property (nonatomic, weak) id<ExploreSearchResultNavigationDelegate> navigationDelegate;
-
-/**
- Factory method to load VExploreSearchResultsViewController view controller
- 
- @return Instance of VExploreSearchResultsViewController view controller
- */
-+ (instancetype)usersAndTagsSearchViewController;
-
-/**
- Initializer with VDependencyManager
- 
- @param dependencyManager Instance of VDependencyManager
- 
- @return Instance of VExploreSearchResultsViewController view controller
- */
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
-
-@property (nonatomic, weak) IBOutlet UIView *searchResultsContainerView;
 
 @end
