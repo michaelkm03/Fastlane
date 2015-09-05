@@ -20,16 +20,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let failureReusableViewIdentifier = "failureReusableView"
         
         static let interItemSpace: CGFloat = 1
-        static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(6, 0, 6, 0)
-        static let recentSectionEdgeInsets: UIEdgeInsets = {
-            var insets = sectionEdgeInsets
-            insets.left = 11
-            insets.right = 11
-            return insets
-        }()
+        static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
+        static let recentSectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(12, 11, 3, 11)
         static let minimumContentAspectRatio: CGFloat = 0.5
         static let maximumContentAspectRatio: CGFloat = 2
         static let minimizedContentAspectRatio: CGFloat = 9 / 16
+        static let recentSectionLabelAdditionalTopInset: CGFloat = 15
     }
     
     @IBOutlet weak private var searchBar: UISearchBar!
@@ -381,9 +377,24 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let numberOfSections = collectionView.numberOfSections()
+        if section == numberOfSections - 1 {
+            //Dealing with the last, dummy section that will show the activity indicator if there's more pages to load
+            return UIEdgeInsetsZero
+        }
+        
         let insets = super.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: section)
-        let sectionDepedentInsets = isRecentContent(section) ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
-        return insets + sectionDepedentInsets
+        var sectionDependentInsets = isRecentContent(section) ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
+        if isRecentContent(section + 1) {
+            sectionDependentInsets.bottom += Constants.recentSectionLabelAdditionalTopInset
+        }
+        if section == 0 {
+            sectionDependentInsets.top = 0
+        }
+        if numberOfSections > 1 && section == numberOfSections - 2 {
+            sectionDependentInsets.bottom = 0
+        }
+        return insets + sectionDependentInsets
     }
 }
 

@@ -12,7 +12,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private struct Constants {
         static let collectionViewHeight: CGFloat = 90
-        static let overLabelSpace: CGFloat = 18
+        static let overLabelSpace: CGFloat = 12
         static let underLabelSpace: CGFloat = 12
         static let contentInsets = UIEdgeInsets(top: 0, left: 11, bottom: 0, right: 11)
     }
@@ -172,7 +172,7 @@ extension TrendingTopicShelfCollectionViewCell: VBackgroundContainer {
 private extension VDependencyManager {
     
     var titleFont: UIFont {
-        return fontForKey(VDependencyManagerLabel1FontKey)
+        return fontForKey(VDependencyManagerHeading2FontKey)
     }
     
     var titleColor: UIColor {
