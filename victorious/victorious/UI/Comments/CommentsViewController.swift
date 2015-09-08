@@ -124,7 +124,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         dispatch_after(0.1){
             self.updateInsetForKeyboardBarState()
         }
-
     }
     
     override func viewDidDisappear(animated: Bool) {
