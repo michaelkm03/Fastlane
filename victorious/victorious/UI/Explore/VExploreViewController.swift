@@ -14,7 +14,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
-        static let marqueeDestinationDirectory = "destionationDirectory"
+        static let marqueeDestinationDirectory = "destinationDirectory"
         static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
         static let failureReusableViewIdentifier = "failureReusableView"
@@ -24,7 +24,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let recentSectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(12, 11, 3, 11)
         static let minimumContentAspectRatio: CGFloat = 0.5
         static let maximumContentAspectRatio: CGFloat = 2
-        static let minimizedContentAspectRatio: CGFloat = 9 / 16
+        static let minimizedContentAspectRatio: CGFloat = 0.5625 //9 / 16
         static let recentSectionLabelAdditionalTopInset: CGFloat = 15
     }
     
@@ -88,16 +88,16 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
-        self.streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
-        self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
-        self.collectionView.backgroundColor = UIColor.clearColor()
+        streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
+        streamDataSource.delegate = self;
+        streamDataSource.collectionView = self.collectionView;
+        collectionView.dataSource = self.streamDataSource;
+        collectionView.backgroundColor = UIColor.clearColor()
     }
 
     /// Mark: - UISearchBarDelegate
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    private func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
         }
@@ -195,6 +195,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     }
     
     override func hasEnoughItemsToShowLoadingIndicatorFooterInSection(section: Int) -> Bool {
+        // Always return YES for our empty last section containing the footer
         return section == collectionView.numberOfSections() - 1
     }
     
@@ -218,10 +219,13 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                 return header
             }
         }
+        // Return a proper view for unexpected supplementary views to avoid crashes
         return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
     }
     
     override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
+        // Only show activity footer if the superclass's checks, which check for being able to load more items from the stream,
+        // pass and we're trying to display a footer in the last section of the collection view
         return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
     }
     
@@ -281,6 +285,7 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForFooterInSection section: Int) -> CGFloat {
         if section == collectionView.numberOfSections() - 1 {
+            // We're in our dummy last section, return the preffered size for the activity indicator footer
             return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
         }
         return 0
@@ -437,7 +442,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
         }
         else {
-            fatalError("Unable to retrive a collection view cell")
+            assertionFailure("Unable to retrive a collection view cell for the ")
         }
     }
     
