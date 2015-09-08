@@ -35,6 +35,9 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     override func beforeAll() {
+        // Template configuration
+        self.configureTemplateIfNecessary()
+        
         super.beforeAll()
         
         let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
@@ -62,6 +65,10 @@ class VictoriousTestCase: KIFTestCase {
     override func beforeEach() {
         super.beforeEach()
         
+        
+        // Template configuration
+        self.configureTemplateIfNecessary()
+        
         // Reset Session
         if shouldResetSession {
             self.resetSession()
@@ -70,6 +77,37 @@ class VictoriousTestCase: KIFTestCase {
         // After the first test is run, we should reset sesssions
         shouldResetSession = true
     }
+    
+    // MARK: Template Configuration
+    
+    /// Provides VictoriousTextCase subclasses a chance to configure the template as appropriate for the particular test.
+    /// This will be called in `beforeAll()` and `beforeEach()` of VictoriousTextCase. **BEFORE** resetSession is called.
+    /// The default implementation of this method simply returns the passed in `VTemplateDecorator`.
+    ///
+    /// :param: decorator A VTemplateDecorator pre-populated with what is returned from the server or has already been cached.
+    func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) -> (VTemplateDecorator) {
+        return defaultTemplateDecorator
+    }
+    
+    private func configureTemplateIfNecessary() {
+        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
+            let rootViewController = window.rootViewController as? VRootViewController,
+            let loadingViewController = rootViewController.loadingViewController {
+                loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) -> VTemplateDecorator! in
+                    return self.configureTemplate(decorator) //configureTemplateClosure(decorator: decorator)
+                }
+        }
+    }
+    
+    private vund clearTemplateConfigurationClosure() {
+        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
+            let rootViewController = window.rootViewController as? VRootViewController,
+                let loadingViewController = rootViewController.loadingViewController {
+                    loadingViewController.templateConfigurationBlock = nil
+        }
+    }
+    
+    // MARK: - AccessibilityLabel support
     
     /// Checks if the element with the provided label is present on screen
     ///
@@ -82,6 +120,8 @@ class VictoriousTestCase: KIFTestCase {
         self.exceptions = []
         return output
     }
+    
+    // MARK: - FTUE + Login Helpers
     
     /// Dismisses FTUE welcome screen if presented on first install.
     func dismissWelcomeIfPresent() {
@@ -102,6 +142,8 @@ class VictoriousTestCase: KIFTestCase {
             self.tester().waitForTappableViewWithAccessibilityLabel( "Next" ).tap()
         }
     }
+    
+    // MARK: - Report Generation
     
     lazy var dateFormatter: NSDateFormatter = {
         var dateFormatter = NSDateFormatter()
