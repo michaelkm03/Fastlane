@@ -196,7 +196,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)selectNextTab
 {
-    if ( self.marqueeItems.count == 1)
+    if ( self.marqueeItems.count == 1 )
     {
         //We've locked the scrolling, meaning we shouldn't have it animate either
         return;
