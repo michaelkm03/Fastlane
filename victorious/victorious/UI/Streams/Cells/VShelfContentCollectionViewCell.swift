@@ -129,6 +129,17 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
 }
 
+extension VShelfContentCollectionViewCell: VStreamCellTracking {
+    
+    func sequenceToTrack() -> VSequence? {
+        if let sequence = streamItem as? VSequence {
+            return sequence
+        }
+        return nil
+    }
+    
+}
+
 extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
     
     class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {

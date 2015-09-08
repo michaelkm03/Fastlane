@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VSequence.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Stream cells that conform to this protocol need to return
  *  the appropriate info in order to appropriately track
@@ -21,6 +23,8 @@
 /**
  Returns the sequence that should be tracked for this cell
  */
-- (VSequence *)sequenceToTrack;
+- (nullable VSequence *)sequenceToTrack;
 
 @end
+
+NS_ASSUME_NONNULL_END

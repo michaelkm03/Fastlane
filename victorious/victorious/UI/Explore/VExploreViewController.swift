@@ -18,6 +18,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
         static let failureReusableViewIdentifier = "failureReusableView"
+        static let streamATFThresholdKey = "streamAtfViewThreshold"
         
         static let interItemSpace: CGFloat = 1
         static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
@@ -35,7 +36,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     private var marqueeShelfFactory: VMarqueeCellFactory?
     
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager?
+    private(set) var dependencyManager: VDependencyManager? {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
+            }
+        }
+    }
+    private var trackingMinRequiredCellVisibilityRatio: CGFloat = 0
     
     private struct SectionRange {
         let range: NSRange
@@ -148,6 +156,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
             }
         }
         updateSectionRanges()
+        trackVisibleCells()
     }
     
     private func updateSectionRanges() {
@@ -232,13 +241,34 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     /// MARK: Tracking
     
     func trackVisibleCells() {
-        // WARNING: needs to be implemented for explore marquee and recent cells
-        
         dispatch_after(0.1) {
             for cell in self.collectionView.visibleCells() {
                 if let cell = cell as? TrendingTopicShelfCollectionViewCell {
                     cell.streamItemVisibilityTrackingHelper.trackVisibleSequences()
                 }
+                else if let cell = cell as? VShelfContentCollectionViewCell {
+                    self.updateTrackingFor(cell)
+                }
+            }
+            if let marqueeController = self.marqueeShelfFactory?.marqueeController as? VAbstractMarqueeController {
+                marqueeController.updateCellVisibilityTracking()
+            }
+        }
+    }
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        trackVisibleCells()
+    }
+    
+    private func updateTrackingFor(recentPostCell: VShelfContentCollectionViewCell) {
+        if let sequence = recentPostCell.sequenceToTrack() {
+            var intersection = self.collectionView.bounds
+            intersection.intersect(recentPostCell.frame)
+            let visibilityRatio = intersection.height / recentPostCell.frame.height
+            if visibilityRatio > trackingMinRequiredCellVisibilityRatio {
+                let event = StreamCellContext(streamItem: sequence, stream: currentStream, fromShelf: false)
+                streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
             }
         }
     }
