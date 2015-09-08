@@ -188,7 +188,8 @@
      {
          BOOL matchesEventId = [event.eventId isEqual:eventId] || eventId == nil;
          BOOL matchesEventName = event.name == eventName;
-         if ( matchesEventId && matchesEventName )
+         BOOL matchesStream = [parameters[VTrackingKeyStreamId] isEqualToString:event.parameters[VTrackingKeyStreamId]];
+         if ( matchesEventId && matchesEventName && matchesStream )
          {
              
 #if TRACKING_QUEUE_LOGGING_ENABLED
