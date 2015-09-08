@@ -132,7 +132,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
             searchController.dimsBackgroundDuringPresentation = true
             
             let searchBar = searchController.searchBar
-            searchBar.delegate = self
             searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
             searchBar.sizeToFit()
             searchBar.delegate = searchResultsViewController

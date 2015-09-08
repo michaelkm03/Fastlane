@@ -23,7 +23,7 @@
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FS4-ZN-K00" userLabel="OverlayContainer">
                                 <rect key="frame" x="0.0" y="0.0" width="349" height="349"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fg9-gO-RJj" userLabel="GrandientContainer">
                                 <rect key="frame" x="0.0" y="297" width="349" height="52"/>
