@@ -264,31 +264,23 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 
 - (BOOL)shouldAutorotate
 {
-    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
-    BOOL shouldRotate = (hasVideoAsset && self.videoCell.status == AVPlayerStatusReadyToPlay && !self.presentedViewController && !self.videoCell.isPlayingAd);
-    return shouldRotate;
+    return self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
     BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
-    BOOL isVideoAndReadyToPlay = hasVideoAsset &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
-    return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return hasVideoAsset ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     __weak typeof(self) welf = self;
-    void (^rotationUpdate)() = ^
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
-    };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         rotationUpdate();
-     }
-                                 completion:nil];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+     } completion:nil];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -307,24 +299,18 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     }
 
     NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-    
     if ( self.moreButton != nil )
     {
         [affectedViews addObject:self.moreButton];
     }
     
-    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
-                                                                                            dependencyManager:self.dependencyManager];
+    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds dependencyManager:self.dependencyManager];
     const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
-    
     [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
                                           targetContentOffset:fixedLandscapeOffset
                                                collectionView:self.contentCollectionView
                                                 affectedViews:[NSArray arrayWithArray:affectedViews]];
-    if ( self.videoCell != nil )
-    {
-        [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
-    }
+    [self.contentCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (void)updateOrientation
@@ -379,9 +365,9 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
-    // Register nibs
-    [self.contentCollectionView registerNib:[VContentCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
+    // Register cells
+    [self.contentCollectionView registerClass:[VContentCell class]
+                   forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentTextCell nibForCell]
                  forCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
@@ -406,7 +392,9 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     
     self.commentCellReuseIdentifiers = [NSMutableArray new];
     
-    //[self.viewModel reloadData];
+    [self.viewModel reloadData];
+    
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -806,27 +794,23 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     return VContentViewSectionCount;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
         case VContentViewSectionContent:
         {
-            UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
-            cell.hidden = YES;
-            if ( [cell isKindOfClass:[VContentCell class]] )
-            {
-                [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
-            }
-            return cell;
+            self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
+                                                                         forIndexPath:indexPath];
+            self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
+            self.contentCell.endCardDelegate = self;
+            [self configureLikeButtonWithContentCell:self.contentCell forSequence:self.viewModel.sequence];
+            return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
         {
-            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
-                                                                                               forIndexPath:indexPath];
+            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
             questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
                                                                     attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
             return questionCell;
@@ -896,66 +880,9 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
             
             [self updateInitialExperienceEnhancerState];
             
-            __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
-                if (selectedEnhancer.isBallistic)
-                {
-                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height);
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
-                    animationImageView.contentMode = UIViewContentModeScaleAspectFit;
-                    
-                    CGPoint convertedCenterForAnimation = [welf.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:welf.view];
-                    animationImageView.center = convertedCenterForAnimation;
-                    animationImageView.image = selectedEnhancer.flightImage;
-                    [welf.view addSubview:animationImageView];
-                    
-                    [UIView animateWithDuration:selectedEnhancer.flightDuration
-                                          delay:0.0f
-                                        options:UIViewAnimationOptionCurveLinear
-                                     animations:^
-                     {
-                         CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(welf.contentCell.frame));
-                         CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(welf.contentCell.frame));
-                         animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
-                     }
-                                     completion:^(BOOL finished)
-                     {
-                         animationImageView.animationDuration = selectedEnhancer.animationDuration;
-                         animationImageView.animationImages = selectedEnhancer.animationSequence;
-                         animationImageView.animationRepeatCount = 1;
-                         animationImageView.image = nil;
-                         [animationImageView startAnimating];
-                         
-                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                        {
-                                            [animationImageView removeFromSuperview];
-                                        });
-                     }];
-                }
-                else // full overlay
-                {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:welf.contentCell.bounds];
-                    animationImageView.animationDuration = selectedEnhancer.animationDuration;
-                    animationImageView.animationImages = selectedEnhancer.animationSequence;
-                    animationImageView.animationRepeatCount = 1;
-                    animationImageView.contentMode = selectedEnhancer.contentMode;
-                    
-                    [welf.contentCell.contentView addSubview:animationImageView];
-                    [animationImageView startAnimating];
-                    
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [animationImageView removeFromSuperview];
-                                   });
-                }
-                
-                // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                {
-                    __strong typeof(welf) strongSelf = welf;
-                    [strongSelf reloadComments];
-                });
+                [self showExperienceEnhancer:selectedEnhancer atPosition:selectionCenter];
             };
             
             return self.experienceEnhancerCell;
@@ -1017,6 +944,67 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
         case VContentViewSectionCount:
             return nil;
     }
+}
+
+- (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
+{
+    if ( enhancer.isBallistic )
+    {
+        CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
+        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
+        animationImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
+        animationImageView.center = convertedCenterForAnimation;
+        animationImageView.image = enhancer.flightImage;
+        [self.view addSubview:animationImageView];
+        
+        [UIView animateWithDuration:enhancer.flightDuration
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^
+         {
+             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
+             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
+             animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
+         }
+                         completion:^(BOOL finished)
+         {
+             animationImageView.animationDuration = enhancer.animationDuration;
+             animationImageView.animationImages = enhancer.animationSequence;
+             animationImageView.animationRepeatCount = 1;
+             animationImageView.image = nil;
+             [animationImageView startAnimating];
+             
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                            {
+                                [animationImageView removeFromSuperview];
+                            });
+         }];
+    }
+    else // full overlay
+    {
+        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+        animationImageView.animationDuration = enhancer.animationDuration;
+        animationImageView.animationImages = enhancer.animationSequence;
+        animationImageView.animationRepeatCount = 1;
+        animationImageView.contentMode = enhancer.contentMode;
+        
+        [self.contentCell.contentView addSubview:animationImageView];
+        [animationImageView startAnimating];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [animationImageView removeFromSuperview];
+                       });
+    }
+    
+    // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
+    __weak typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [welf reloadComments];
+                   });
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -1116,16 +1104,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
+#warning Remove this?
 - (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
-    VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                             forIndexPath:indexPath];
-    [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
-                                  placeholderImage:self.placeholderImage?:nil];
-    self.contentCell = imageCell;
-    self.contentCell.endCardDelegate = self;
-    return imageCell;
-    
     switch (self.viewModel.type)
     {
         case VContentViewTypeInvalid:

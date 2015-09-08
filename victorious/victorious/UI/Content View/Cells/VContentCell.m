@@ -67,6 +67,9 @@
     self.repeatCount = 1;
     
     [self setupLikeButton];
+    
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setupLikeButton

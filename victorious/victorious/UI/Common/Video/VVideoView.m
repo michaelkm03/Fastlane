@@ -53,7 +53,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)setup
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor blackColor];
 }
 
 - (void)dealloc

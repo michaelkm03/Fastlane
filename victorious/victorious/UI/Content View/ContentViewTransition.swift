@@ -24,17 +24,14 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 let originFrame = contentView.viewModel.context.previewOriginFrame
                 self.handoffController.addPreviewView(view,
                     snapshotView: snapshotView,
-                    toParentView: contentView.view,
+                    toParentView: contentView.contentCell.contentView,
                     originFrame: originFrame)
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
     }
     
-    func prepareForTransitionOut(model: VTransitionModel!) {
-        self.handoffController.previewLayout?.parent.layoutIfNeeded()
-        self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
-    }
+    func prepareForTransitionOut(model: VTransitionModel!) {}
     
     func performTransitionIn(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
         UIView.animateWithDuration( model.animationDuration,
@@ -46,7 +43,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 if let previewLayout = self.handoffController.previewLayout {
                     previewLayout.top.constraint.constant = 0.0
                     previewLayout.width.constraint.constant = 0.0
-                    //layout.height.constraint.constant = 0.0
+                    previewLayout.height.constraint.constant = 0.0
                     previewLayout.center.constraint.constant = 0.0
                     previewLayout.parent.layoutIfNeeded()
                 }
@@ -60,6 +57,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     func performTransitionOut(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
+        
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
             usingSpringWithDamping: 1.0,
@@ -69,7 +67,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 if let layout = self.handoffController.previewLayout {
                     layout.top.restore()
                     layout.width.restore()
-                    //layout.height.restore()
+                    layout.height.restore()
                     layout.center.restore()
                     layout.parent.layoutIfNeeded()
                 }
@@ -100,10 +98,10 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     var transitionInDuration: NSTimeInterval {
-        return 0.5
+        return 0.1
     }
     
     var transitionOutDuration: NSTimeInterval {
-        return 0.5
+        return 0.1
     }
 }

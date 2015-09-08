@@ -388,6 +388,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     {
         [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
+    self.previewView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed
     [self.previewView setSequence:sequence];
 }
 

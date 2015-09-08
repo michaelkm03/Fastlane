@@ -42,8 +42,8 @@
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
-
 @property (nonatomic, weak, readonly) VContentCell *contentCell;
+
 @property (nonatomic, weak, readonly) VExperienceEnhancerBarCell *experienceEnhancerCell;
 
 @end

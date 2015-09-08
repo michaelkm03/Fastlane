@@ -453,6 +453,7 @@
 		A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC10F1A2D619300F5BBDE /* VProduct.m */; };
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
+		A7105B231B99056E003DADA8 /* ContentViewPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7105B221B99056E003DADA8 /* ContentViewPresentationController.swift */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
@@ -2141,6 +2142,7 @@
 		A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProductsRequest.m; sourceTree = "<group>"; };
 		A70FC1231A31207400F5BBDE /* VVoteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteSettings.h; sourceTree = "<group>"; };
 		A70FC1241A31207400F5BBDE /* VVoteSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettings.m; sourceTree = "<group>"; };
+		A7105B221B99056E003DADA8 /* ContentViewPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresentationController.swift; sourceTree = "<group>"; };
 		A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
@@ -5234,6 +5236,7 @@
 				A7D047971B98BFA60091F366 /* ContentDetailHandoffController.swift */,
 				A7D047931B97AE140091F366 /* ContentViewPresenter.swift */,
 				A7D047951B97C5760091F366 /* ContentViewTransition.swift */,
+				A7105B221B99056E003DADA8 /* ContentViewPresentationController.swift */,
 			);
 			name = Presenters;
 			sourceTree = "<group>";
@@ -7143,6 +7146,13 @@
 		D85E427B1AFA982000A13BD3 /* SequencePreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */,
+				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
+				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
+				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
+				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
+				C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */,
+				C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
 				D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */,
 				D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */,
@@ -7151,17 +7161,10 @@
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
-				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
-				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
 				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
-				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
-				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
-				C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */,
-				C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */,
 				C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */,
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
-				C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";
@@ -8942,6 +8945,7 @@
 				A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */,
 				A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
+				A7105B231B99056E003DADA8 /* ContentViewPresentationController.swift in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
