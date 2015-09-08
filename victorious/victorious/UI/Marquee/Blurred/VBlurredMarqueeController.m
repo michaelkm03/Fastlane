@@ -59,7 +59,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (void)selectNextTab
 {
-    if ( !self.collectionView.isScrollEnabled && CGPointEqualToPoint(CGPointZero, self.collectionView.contentOffset) )
+    if ( self.marqueeItems.count == 1 && CGPointEqualToPoint(CGPointZero, self.collectionView.contentOffset) )
     {
         //We've locked the scrolling and are already scrolled to
         //an appropriate spot, don't animate more.
@@ -253,6 +253,12 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     return cell;
+}
+
+- (void)setCollectionView:(UICollectionView *)collectionView
+{
+    [super setCollectionView:collectionView];
+    collectionView.alwaysBounceHorizontal = YES;
 }
 
 - (void)setCrossfadingLabel:(VCrossFadingMarqueeLabel *)crossfadingLabel

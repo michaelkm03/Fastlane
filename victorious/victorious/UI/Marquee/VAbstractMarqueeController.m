@@ -134,8 +134,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.dataDelegate marquee:self reloadedStreamWithItems:marqueeItems];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:marqueeItems];
     [self.collectionView reloadData];
-    NSUInteger marqueeItemsCount = marqueeItems.count;
-    self.collectionView.scrollEnabled = marqueeItemsCount != 1;
     [self enableTimer];
     [self updateFocus];
 }
@@ -198,7 +196,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)selectNextTab
 {
-    if ( !self.collectionView.isScrollEnabled )
+    if ( self.marqueeItems.count == 1)
     {
         //We've locked the scrolling, meaning we shouldn't have it animate either
         return;
@@ -340,7 +338,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:marqueeItems];
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    _collectionView.scrollEnabled = marqueeItems.count != 1;
     ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
     [self reset];
 }
