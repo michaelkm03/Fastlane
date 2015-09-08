@@ -8,6 +8,9 @@
 
 @import CHTCollectionViewWaterfallLayout;
 
+/**
+ *  A hacky little extension of CHTCollectionViewWaterfallLayout for accessing the heights of columns.
+ */
 @interface CHTCollectionViewWaterfallLayout (ColumnAccessor)
 
 /**

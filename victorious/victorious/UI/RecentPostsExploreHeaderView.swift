@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A header view that displays a stylized title based on the provided dependency manager
 class RecentPostsExploreHeaderView: UICollectionReusableView {
     
     static let kTitleKey = "stream.title"
