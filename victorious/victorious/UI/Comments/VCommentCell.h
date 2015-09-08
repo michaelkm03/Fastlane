@@ -8,13 +8,13 @@
 
 #import "VSwipeTableViewCell.h"
 
-#import "VCellFocus.h"
+#import "VFocusable.h"
 
 @class VCommentTextAndMediaView, VDefaultProfileImageView;
 
 extern NSString * const kVCommentCellNibName;
 
-@interface VCommentCell : VSwipeTableViewCell <VCellFocus>
+@interface VCommentCell : VSwipeTableViewCell <VFocusable>
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                   *usernameLabel;
 @property (nonatomic, weak, readonly)  IBOutlet VCommentTextAndMediaView  *textAndMediaView;

@@ -145,7 +145,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         case VVideoPreviewViewStatePlaying:
             [self makeBackgroundContainerViewVisible:YES];
             [self.activityIndicator stopAnimating];
-            self.soundIndicator.hidden = NO;
+            self.soundIndicator.hidden = self.focusType != VFocusTypeStream;
             [self.soundIndicator startAnimating];
             self.videoView.hidden = NO;
             self.playIconContainerView.hidden = YES;
@@ -168,9 +168,9 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
 }
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    [super setHasFocus:hasFocus];
+    [super setFocusType:focusType];
     
     // If we're not autoplaying, return right away
     if (self.assetURL == nil)
@@ -179,15 +179,17 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
     
     // Play or pause video depending on focus
-    if (self.inFocus)
+    if ( self.focusType == VFocusTypeNone )
+    {
+        [self pauseVideo];
+    }
+    else
     {
         [self playVideo];
         [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
-    else
-    {
-        [self pauseVideo];
-    }
+    
+    self.state = self.state;
 }
 
 - (void)playVideo
@@ -224,7 +226,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
 {
     [super videoViewPlayerDidBecomeReady:videoView];
-    if (self.inFocus)
+    if ( self.focusType != VFocusTypeNone )
     {
         [self playVideo];
     }
@@ -249,7 +251,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && !self.noReplay)
+    if ( self.focusType != VFocusTypeNone && !self.noReplay )
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -257,7 +259,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && !self.noReplay)
+    if ( self.focusType != VFocusTypeNone && !self.noReplay )
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }

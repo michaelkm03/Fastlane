@@ -19,7 +19,7 @@
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 #import "VStreamItemPreviewView.h"
 #import "victorious-Swift.h"
 
@@ -160,7 +160,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateFocus
 {
-    //Update the focus of preview views that conform to VCellFocus
+    //Update the focus of preview views that conform to VFocusable
     CGFloat pageWidth = self.collectionView.frame.size.width;
     NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
     currentFocusPage = MIN( currentFocusPage, (NSInteger)self.marqueeItems.count - 1 );
@@ -172,10 +172,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         VStreamItem *focusedStreamItem = self.marqueeItems[currentFocusPage];
         for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
-            if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
+            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
             {
                 BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
-                [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:hasFocus];
+                VFocusType focusType = hasFocus ? VFocusTypeStream : VFocusTypeNone;
+                [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:focusType];
             }
         }
     }
@@ -187,9 +188,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
     {
-        if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
+        if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
         {
-            [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:NO];
+            [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:VFocusTypeNone];
         }
     }
 }

@@ -10,7 +10,7 @@
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VMarqueeDataDelegate.h"
 #import "VParallaxScrolling.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 
 @class VDependencyManager, VStreamItem, VAbstractMarqueeController;
 
@@ -18,7 +18,7 @@
     A collection view cell that contains the collectionView that displays marquee content and any views
         that are displayed across all marquee stream item cells
  */
-@interface VAbstractMarqueeCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods, VParallaxScrolling, VCellFocus>
+@interface VAbstractMarqueeCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods, VParallaxScrolling, VFocusable>
 
 /**
  The dependency manager used to style this cell, the marquee controller associated with this cell and

@@ -31,6 +31,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 @implementation VVideoView
 
+@dynamic muted;
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -173,6 +175,16 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                              selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+}
+
+- (void)setMuted:(BOOL)muted
+{
+    self.player.muted = muted;
+}
+
+- (BOOL)muted
+{
+    return self.player.muted;
 }
 
 - (void)setBounds:(CGRect)bounds

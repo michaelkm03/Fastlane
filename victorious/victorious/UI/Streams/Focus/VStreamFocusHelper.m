@@ -7,7 +7,7 @@
 //
 
 #import "VStreamFocusHelper.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 
 static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 
@@ -28,15 +28,15 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 {
     [[self visibleCells] enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL *stop)
      {
-         if ( ![cell conformsToProtocol:@protocol(VCellFocus)] )
+         if ( ![cell conformsToProtocol:@protocol(VFocusable)] )
          {
              return;
          }
          
-         id <VCellFocus>focusCell;
-         if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
+         id <VFocusable>focusCell;
+         if ( [cell conformsToProtocol:@protocol(VFocusable)] )
          {
-             focusCell = (id <VCellFocus>)cell;
+             focusCell = (id <VFocusable>)cell;
          }
          
          // Calculate visible ratio for just the media content of the cell
@@ -56,18 +56,19 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
              // Determine if we see enough of the content to put it in focus
              const float mediaContentVisibleRatio = CGRectGetHeight(intersectWithScrollview) / CGRectGetHeight([focusCell contentArea]);
              
-             [focusCell setHasFocus:mediaContentVisibleRatio >= self.visibilityRatio];
+             VFocusType focusType = mediaContentVisibleRatio >= self.visibilityRatio ? VFocusTypeStream : VFocusTypeNone;
+             [focusCell setFocusType:focusType];
          }
      }];
 }
 
 - (void)endFocusOnCell:(UIView *)cell
 {
-    if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
+    if ( [cell conformsToProtocol:@protocol(VFocusable)] )
     {
         if ( self.selectedCell == nil || cell != self.selectedCell )
         {
-            [(id <VCellFocus>)cell setHasFocus:NO];
+            [(id <VFocusable>)cell setFocusType:VFocusTypeNone];
         }
     }
 }

@@ -3153,7 +3153,7 @@
 		D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationDestinationContainerViewController.m; sourceTree = "<group>"; };
 		D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractActionView.h; sourceTree = "<group>"; };
 		D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractActionView.m; sourceTree = "<group>"; };
-		D888B43E1B01A32A00EA470D /* VCellFocus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCellFocus.h; sourceTree = "<group>"; };
+		D888B43E1B01A32A00EA470D /* VFocusable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFocusable.h; sourceTree = "<group>"; };
 		D888B5261A86FC7800B34149 /* VRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientLayer.h; sourceTree = "<group>"; };
 		D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRadialGradientLayer.m; sourceTree = "<group>"; };
 		D888B5281A86FC7800B34149 /* VRadialGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientView.h; sourceTree = "<group>"; };
@@ -6170,7 +6170,7 @@
 				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
 				D893674E1ADDE1B9001D2426 /* VActionButtonAnimationController.h */,
 				D893674F1ADDE1B9001D2426 /* VActionButtonAnimationController.m */,
-				D888B43E1B01A32A00EA470D /* VCellFocus.h */,
+				D888B43E1B01A32A00EA470D /* VFocusable.h */,
 				A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */,
 				F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,

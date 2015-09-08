@@ -7,18 +7,19 @@
 //
 
 #import "VSequencePreviewView.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 #import "VPreviewViewBackgroundHost.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 #import "VVideoView.h"
+#import "VFocusable.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost, VVideoViewDelegate>
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VPreviewViewBackgroundHost, VVideoViewDelegate>
 
 /**
  * Responsible for the play icon that appears on the preview view.
@@ -41,7 +42,7 @@
 /**
  * Indicated whether or not this preview view is currently in focus.
  */
-@property (nonatomic, assign) BOOL inFocus;
+@property (nonatomic, assign) VFocusType focusType;
 
 /**
  *  If YES, this preview view will only display the preview image for this content.

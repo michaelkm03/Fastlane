@@ -450,13 +450,13 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
                               fromView:self];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 

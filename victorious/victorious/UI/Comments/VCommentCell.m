@@ -65,9 +65,9 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 #pragma mark - Focus
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.textAndMediaView.inFocus = hasFocus;
+    self.textAndMediaView.focusType = focusType;
 }
 
 - (CGRect)contentArea

@@ -117,18 +117,18 @@
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
-    if (self.inFocus)
+    if (self.focusType)
     {
         [self makeBackgroundContainerViewVisible:YES];
     }
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.inFocus = hasFocus;
-    if (hasFocus)
+    _focusType = focusType;
+    if ( focusType != VFocusTypeNone )
     {
         [self makeBackgroundContainerViewVisible:YES];
     }

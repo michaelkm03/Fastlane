@@ -73,9 +73,9 @@
 
 #pragma mark - VisibilitySensitiveCell
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ( hasFocus )
+    if ( focusType != VFocusTypeNone )
     {
         [self.marquee enableTimer];
         [self.marquee updateFocus];

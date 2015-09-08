@@ -17,7 +17,7 @@
 #import "VAbstractMarqueeController.h"
 #import "VAlertController.h"
 #import "VAuthorizedAction.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"

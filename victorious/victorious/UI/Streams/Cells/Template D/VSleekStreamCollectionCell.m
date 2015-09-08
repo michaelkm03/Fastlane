@@ -492,13 +492,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id<VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 

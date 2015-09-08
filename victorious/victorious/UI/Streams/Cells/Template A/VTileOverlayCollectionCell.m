@@ -513,13 +513,13 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 

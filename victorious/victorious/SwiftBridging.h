@@ -31,7 +31,7 @@
 #import "VBaseVideoSequencePreviewView.h"
 #import "VButton.h"
 #import "VCaptureContainerViewController.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 #import "VCollectionViewCommentHighlighter.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VComment+Fetcher.h"

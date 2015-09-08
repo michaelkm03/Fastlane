@@ -11,7 +11,7 @@
 /**
  A helper class that handles setting focus on cells when
  a tableView or a collectionView is scrolled. Cells must
- conform to VCellFocus protocol in order to focus
+ conform to VFocusable protocol in order to focus
  properly.
  */
 @interface VStreamFocusHelper : NSObject

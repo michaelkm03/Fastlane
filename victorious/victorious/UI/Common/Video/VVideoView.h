@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<VVideoViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL useAspectFit;
-
+@property (nonatomic, assign) BOOL muted;
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
 
