@@ -8,9 +8,6 @@
 
 #import "VAbstractActionView.h"
 
-// Libraries
-#import <FBKVOController.h>
-
 // Action Bar
 #import "VFlexBar.h"
 
@@ -19,6 +16,9 @@
 
 // Models
 #import "VSequence+Fetcher.h"
+
+// Frameworks
+@import KVOController;
 
 @interface VAbstractActionView ()
 

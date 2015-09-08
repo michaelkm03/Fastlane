@@ -8,18 +8,14 @@
 
 #import "VMessageTableDataSource.h"
 
-#import "VConstants.h"
 #import "VMessageCell.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
-#import "VPaginationManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUser.h"
-#import "VUser+RestKit.h"
 #import "VConversation.h"
 #import "VConversation+UnreadMessageCount.h"
-#import "VMessage.h"
 
 static NSString * const kGenericErrorDomain = @"VMessageTableDataSourceError";
 

@@ -11,6 +11,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCellTracking.h"
+#import "VStreamContentCellFactoryDelegate.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VStreamCollectionViewParallaxFlowLayout.h"
 
@@ -64,9 +65,6 @@
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
 
-#import <SDWebImage/SDWebImagePrefetcher.h>
-#import <FBKVOController.h>
-
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VHashtagSelectionResponder.h"
@@ -82,6 +80,9 @@
 
 #import "VCollectionViewStreamFocusHelper.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
+@import SDWebImage;
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -377,8 +378,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)setCurrentStream:(VStream *)currentStream
 {
     NSString *streamName = currentStream.name;
-    self.title = NSLocalizedString(streamName, @"");
-    self.navigationItem.title = NSLocalizedString(streamName, @"");
+    self.navigationItem.title = streamName;
     if ( self.streamDataSource == nil )
     {
         self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
@@ -1148,7 +1148,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                      forKey:kMemeStreamKey
                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    memeStream.navigationItem.title = NSLocalizedString(memeStream.currentStream.name, nil);
+    memeStream.navigationItem.title = memeStream.currentStream.name;
     
     VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
     if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
@@ -1170,7 +1170,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                     forKey:kGifStreamKey
                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    gifStream.navigationItem.title = NSLocalizedString(gifStream.currentStream.name, nil);
+    gifStream.navigationItem.title = gifStream.currentStream.name;
     
     VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
     if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )

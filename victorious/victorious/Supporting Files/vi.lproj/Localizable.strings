@@ -6,80 +6,29 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
-
-
-"Home"                  =   "Trang chủ";
-"Create"                =   "Tạo";
-"Channel"               =   "Kênh";
-"Channels"              =   "Các Kênh";
-"Community"             =   "Cộng đồng";
-"Owner"                 =   "Chủ nhân";
-"Inbox"                 =   "Hòm thư đến";
-"Store"                 =   "Cửa hàng";
-"Messages"              =   "Tin nhắn";
-"Notifications"         =   "Thông báo";
-"Comments"              =   "Bình luận";
-"Remixes"               =   "Trộn lẫn";
-"GIFs"                  =   "Ảnh động GIF";
-"Memes"                 =   "Memes";
 "OK"                    =   "OK";
 "CancelButton"          =   "Hủy";
 "DeleteButton"          =   "Xóa";
-"ConfirmButton"         =   "Xác nhận";
-"Reply"                 =   "Phúc đáp";
 "ResetButton"           =   "Đặt lại";
-"YesButton"             =   "Có";
-"NoButton"              =   "Không";
-"BackButton"            =   "Trở lại";
-"Exit"                  =   "Thoát";
 "Publish"               =   "Công bố";
-"Publishing..." = "Đang công bố ...";
-"Rendering..." = "Đang hoàn lại...";
 "Next"                  =   "Tiếp";
 "Done"                  =   "Xong";
 "More"                  =   "Thêm";
-"Quote" = "Trích dẫn";
 "Meme"                  =   "Meme";
 "Share"                 =   "Chia sẻ";
-"Discover"              =   "Khám phá";
-"Profile"               =   "Hồ sơ";
-"Settings"              =   "Thiết lập";
-"Save"                  =   "Lưu";
 "Continue"              =   "Tiếp tục";
 "Loading..."            =   "Đang tải...";
 "Finding fans to connect with..." = "Đang tìm fan để kết nối với...";
 
-"Featured"              =   "Được giới thiệu";
-"Recent"                =   "Gần đây";
 "Following"             =   "Theo dõi";
 "FOLLOWERS"             =   "NGƯỜI THEO DÕI";
 "FOLLOWING"             =   "ĐANG THEO DÕI";
 "NumStreams"            =   "%@ LUỒNG";
 "NumItems"              =   "%@ MỤC";
 
-"Keep up to date with users and hashtags you're following here" = "Cập nhật với người dùng và tag # mà bạn đang theo dõi tại đây";
-"View content from users and hashtags you're following here" = "Xem nội dung từ người dùng và tag # bạn đang theo dõi tại đây";
-"Tap here to view posts from the entire community" = "Chạm vào đây để xem các bài đăng từ toàn bộ cộng đồng";
-"Tap here to view posts from other fans" = "Chạm vào đây để xem các bài đăng từ các fan khác";
-"View posts from the entire community here" = "Xem các bài đăng từ toàn bộ cộng đồng tại đây";
-"View posts from other fans here" = "Xem các bài đăng từ các fan khác tại đây";
-"Tap here to watch my exclusive videos" = "Chạm vào đây để xem các video dành riêng của tôi";
-"Tap here to watch exclusive videos" = "Chạm vào đây để xem các video dành riêng";
-"Tap here to watch my videos" = "Chạm vào đây để xem các video của tôi";
-"Tap here to watch videos" = "Chạm vào đây để xem các video";
-"Watch my exclusive videos here" = "Xem các video dành riêng của tôi tại đây";
-"Watch exclusive videos here" = "Xem các video dành riêng tại đây";
-"Watch my videos here" = "Xem các video của tôi tại đây";
-"Watch videos here" = "Xem các video tại đây";
-"Tap here to create your first post" = "Chạm vào đây để tạo bài đăng đầu tiên của tôi";
-"Tap here to create a post" = "Chạm vào đây để tạo một bài đăng";
-"Tap here and create a post now!" = "Chạm vào đây và tạo một bài đăng ngay!";
-
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
-
-"Login"                 =   "Đăng nhập";
 
 "Log in here"           =   "Đăng nhập tại đây";
 "Already Registered?"   =   "Đã đăng ký?";
@@ -90,17 +39,11 @@
 "EmailValidation"       =   "Địa chỉ Email Không Hợp lệ";
 "Minimum 8 characters"  =   "Tối thiểu 8 kí tự";
 "PasswordValidation"    =   "Mật khẩu ít hơn 8 kí tự";
-"UsernameValidation"    =   "Tên người dùng ít hơn 8 kí tự";
-"AgreeTOS"              =   "Bạn phải nhấp chọn rằng mình trong độ tuổi từ 13 tuổi trở lên và đồng ý các Điều khoản Dịch vụ";
-"InvalidCredentials"    =   "Giấy uỷ nhiệm Không hợp lệ";
 "PasswordNotMatching"   =   "Mật khẩu không khớp";
-"PollAlreadyAnswered"   =   "Kết quả bình chọn đã được trả lời";
 "LoginFail"             =   "Đăng nhập Không thành công";
 "GenericFailMessage"    =   "Tiếc quá! Có điều gì đó sai.";
 "FacebookLoginFailed"   =   "Tiếc quá! Đăng nhập Facebook không thành công. Vui lòng thử lại.";
-"NotLoggedInMessage"    =   "Tiếc quá! Có vẻ như bạn chưa đăng nhập.";
 "SignupFail"            =   "Tạo Tài khoản Không thành công";
-"AccountUpdateFail"     =   "Cập nhật Tài khoản Không thành công";
 "You're not logged in!" =   "Bạn chưa đăng nhập!";
 "ProfileNotLoggedInMessage" = "Chưa có gì để xem ở đây cả! Chúng tôi rất háo hức khi có bạn tham gia cộng đồng của chúng tôi. Hãy tạo một tài khoản để thể hiện cho mọi người xem bạn độc đáo cỡ nào.";
 "ProfileSaveFail"       =   "Thông tin hồ sơ của bạn chưa được lưu lại do lỗi máy chủ";
@@ -112,8 +55,6 @@
 "ProfileNameSpaces"     =   "Tên hồ sơ của bạn không thể chỉ bao gồm khoảng trống.";
 "ProfileRequiredName"   =   "Tên";
 "ProfileRequiredToS"    =   "Đồng ý các điều khoản của chúng tôi";
-"ProfileRequiredTagLine"=   "Dòng tag của bạn";
-"ProfileUpdateFailed"   =   "Cập nhật Hồ sơ Không thành công";
 "Profile load failed!"  =   "Tải Hồ sơ Không thành công!";
 
 "User already exists"   =   "Người dùng đã tồn tại";
@@ -127,8 +68,6 @@
 "NoEmail"               =   "Không có Tài khoản Email";
 "NoEmailDetail"         =   "Không có tài khoản email nào, bạn có muốn cài đặt một tài khoản ngay không?";
 "EmailFail"             =   "Gửi emai không thành công";
-"SMSFail"               =   "Gửi SMS không thành công";
-"CouldNotSend"          =   "Tin nhắn chưa được gửi đi";
 
 "Missing Content"           =   "Ồ!";
 "Missing Content Message"   =   "Chúng tôi không thể tìm thấy những gì bạn đang tìm kiếm!";
@@ -186,7 +125,6 @@
 "EmailShareSubjectFormat"   =   "Hãy xem bài đăng này từ ứng dụng %@!"; // Check out this post from the <creator name> app!
 
 "Facebook"              =   "Facebook";
-"FacebookFailed"        =   "Không thể kết nối đến Facebook.";
 
 "Search people and hashtags"  =  "Tìm kiếm người hoặc tag #";
 "No People Found In Search Title" = "KHÔNG TÌM ĐƯỢC NGƯỜI NÀO";
@@ -194,21 +132,17 @@
 "No Hashtags Found In Search Title" = "KHÔNG TÌM THẤY TAG NÀO!";
 "No hashtags found in search" = "Chỉnh lại tìm kiếm của bạn và thử lại.";
 
-"SearchFailed"          =   "Tìm kiếm không thành công.";
 "ImageDownloadFailed"   =   "Tải hình ảnh về thất bại.";
 
 "TwitterDeniedTitle"    =   "Không thể truy cập vào tài khoản Twitter của bạn";
 "TwitterDenied"         =   "Vui lòng cấp quyền truy cập tài khoản Twitter của bạn trong phần Thiết lập -> Bảo mật -> Twitter";
 "TwitterTroubleshooting" =  "Vui lòng thử gỡ bỏ và thêm lại tài khoản twitter của bạn trong phần thiết lập";
 
-"CameraRollDeniedTitle" =   "Không thể Truy cập Ảnh của Bạn";
 "CameraRollDenied"      =   "Vui lòng cấp quyền truy cập vào ảnh của bạn trong phần Thiết lập -> Bảo mật.";
 "CameraFailed"          =   "Không thể khởi động máy ảnh";
-"CameraSwitchFailed"    =   "Không thể chuyển đổi chế độ máy ảnh";
 "Camera"                =   "Máy ảnh";   // Button that opens the camera
 "Search"                =   "Tìm kiếm";   // Button that opens web search for images
 "Gallery"               =   "Thư viện ảnh";  // Button that opens gallery to photo library for images and videos
-"StillCaptureFailed"    =   "Không thể chụp ảnh";
 "VideoCaptureFailed"    =   "Không thể quay video";
 "VideoSaveFailed"       =   "Không thể lưu video";
 "VideoCoachMessage"     =   "Ấn và giữ để ghi";
@@ -219,8 +153,6 @@
 
 "SelectTwitter"         =   "Lựa chọn một tài khoản twitter";
 
-"HelpNeeded"            =   "Tôi cần hỗ trợ với...";
-
 "ReportInappropriate"   =   "Báo cáo Không phù hợp";
 "ReportedTitle"         =   "Đã Hiểu!";
 "ReportContentMessage"  =   "Chúng tôi sẽ xem xét lại nội dung này trong vòng 24 giờ.";
@@ -228,43 +160,20 @@
 "ReportUserMessage"     =   "Người dùng này sẽ được xem xét trong vòng 24 giờ";
 "CommentAlreadyReported" =  "Bình luận Đã được Cảnh báo";
 
-"BlockUser"             =   "Chặn Người dùng";
-"CopyProfileURL"        =   "Sao chép URL Hồ sơ";
-
-"Create a Video Post"   =   "Tạo một Bài đăng Video";
-"Create an Image Post"  =   "Tạo một Bài đăng Hình ảnh";
-"Create a Poll"         =   "Tạo một Bình chọn";
-"Create a Text Post"    =   "Tạo một Bài đăng Văn bản";
-
-"NEW POLL"              =   "Bình chọn Mới";
 "Ask a question..."     =   "Hỏi một câu hỏi...";
 "Vote this"             =   "Bầu cho cái này";
 "Vote that"             =   "Bầu cho cái kia";
-"Create Poll"           =   "Tạo Bình chọn";
-
-"TranscodingMediaTitle" =   "Tải lên phần Chuyển mã";
-"TranscodingMediaBody"  =   "Tải lên của bạn chuyển mã mất nhiều thời gian hơn. Nó sẽ xuất hiện sau khi bạn đã hoàn thành.";
-"PollUploadTitle"       =   "Tải lên Bình chọn Không thành công";
-"PollUploadBody"        =   "Không thể tải Bình chọn lên máy chủ";
-
-"UploadFailedTitle"     =   "Tải lên Đa phương tiện Không thành công";
-"DuplicateVideoTitle"   =   "Video Trùng";
-"DuplicateVideoBody"    =   "Có vẻ như bạn đang cố gắng tải lên một video đã được tải lên từ trước.";
 
 "Uploading"             =   "Nội dung của bạn đang được tải lên...";
 "UploadFinalizing"      =   "Chúng tôi đang hoàn tất bài đăng của bạn, nó sẽ sẵn sàng sớm.";
 "UploadFailed"          =   "Rất tiếc, tải lên của bạn không thành công. Vui lòng kiểm tra kết nối của bạn và thử lại.";
 "UploadSuccess"         =   "Thành công! Bài đăng của bạn đã được tải lên.";
-"UploadError"           =   "Lỗi Tải lên";
-"UploadErrorBody"       =   "Có thứ gì đó bị sai, và chúng tôi không thể hoàn tất tải lên lúc này.";
 "UploadCancelAreYouSure" = "Bạn có chắc mình muốn hủy tải lên này?";
 "YesCancelUpload"       =   "Có, hãy hủy tải lên này";
 "NoKeepUploading"       =   "Không, tiếp tục tải lên";
 "Cancelling..."         =   "Đang hủy...";
 
 "RefreshError"          =   "Không thể làm mới.";
-
-"MediaAlreadyCreated"   =   "Đa phương tiện đã được tạo xong.";
 
 "FollowError"           =   "Đã có một lỗi khi theo dõi người dùng này.";
 "UnfollowError"         =   "Đã có một lỗi khi bỏ theo dõi người dùng này.";
@@ -278,39 +187,13 @@
 "ConversationDelError"  =   "Không thể xóa hội thoại";
 "ConversationSendError" =   "Tin nhắn không thể gửi được";
 
-"Normal"                =   "Bình thường";
-
-"ClosePreviewConfirm"   =   "Bạn có chắc mình muốn đóng cửa sổ lại? Những nội dung bạn tạo sẽ bị mất.";
-"Stay"                  =   "Ở lại";
-"Close"                 =   "Đóng";
-
-"PublishUpload"         =   "Nội dung của bạn đang được tải lên.";
-
-"PublishSucceeded"      =   "Công bố Thành công";
-"PublishSucceededDetail"=   "Đa phương tiện của bạn đã được nộp lên máy chủ. Có thể sẽ mất vài phút để nội dung của bạn xuất hiện.";
-
-"PublishDescriptionRequired" = "Cần văn bản";
-"PublishDescription"    =   "Vui lòng nhập tiêu đề cho nội dung của bạn.";
-
-"PublishDescriptionMinCharacters" = "Vui lòng nhập một mô tả dài hơn.";
-
 "Sorry, we were having some trouble on our end. Please retry." = "Rất tiếc, chúng tôi gặp một vài vấn đề ở phía chúng tôi. Vui lòng thử lại.";
 "We failed to retrieve publish permissions." = "Chúng tôi không nhận được quyền công bố.";
 "Retry"                 =   "Thử lại";
 
-"ReplaceVideo"          =   "Thay thế Video";
-
 "VideoPlayFailed"       =   "Tải video lên không thành công.";
-"See More"              =   "Xem Thêm";
-"See all"               =   "Xem tất cả";
-"..."                   =   "...";
-
-"PostWillExpire"        =   "Bài Đăng sẽ Hết hạn";
-"CancelExpiration"      =   "Hủy Hết hạn?";
-"CancelExirationConfirm" = "Bạn có chắc mình muốn hủy thiết lập ngày hết hạn?";
 
 "Now"                   =   "Ngay";
-"SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
@@ -324,30 +207,9 @@
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
 
-"Minute"                =   "Phút";
-"Hour"                  =   "Giờ";
-"Day"                   =   "Ngày";
-"Week"                  =   "Tuần";
-"Month"                 =   "Tháng";
-
-"Minutes"               =   "Phút";
-"Hours"                 =   "Giờ";
-"Days"                  =   "Ngày";
-"Weeks"                 =   "Tuần";
-"Months"                =   "Tháng";
-
 "JustAMoment"           =   "Đợi một chút";
-"LocatingVideo"         =   "Đang định vị Video...";
-"DownloadingVideo"      =   "Đang tải Video...";
-"Stitching"             =   "Đang ghép...";
-
-"SegmentDownloadFail"   =   "Không thể lấy Video";
 
 "TryAgain"              =   "Vui lòng thử lại sau.";
-
-"ExpiresOn"             =   "Hết hạn vào %@";
-
-"Me"                    =   "Tôi";
 
 "Edit"                  =   "Chỉnh sửa";
 "editProfileButton"     =   "Chỉnh sửa Hồ sơ";
@@ -360,8 +222,6 @@
 "ResetPasswordPlaceholder" = "Địa chỉ Email";
 
 "PasswordError"         =   "Lỗi Mật khẩu";
-"ResetPasswordErrorExpiredTitle" = "Mã đặt lại hết hạn";
-"ResetPasswordErrorExpiredMessage" = "Vui lòng yêu cầu lại một mã đặt lại mới và thử lại.";
 
 "ResetPasswordErrorInvalidTitle" = "Mật khẩu Hiện tại Không hợp lệ";
 "ResetPasswordErrorIncorrectTitle" = "Mật khẩu Không đúng";
@@ -382,7 +242,6 @@
 "Please check your network connection or try again later." = "Vui lòng kiểm tra kết nối mạng của bạn hoặc thử lại sau.";
 
 "EnterResetCodeMessage" =   "Một email đã được gửi tới địa chỉ này có chứa các hướng dẫn đặt lại mật khẩu.";
-"An email was sent to this address containing reset password instructions." = "Một email đã được gửi tới địa chỉ này có chứa các hướng dẫn đặt lại mật khẩu.";
 "EnterCodeTitle"        =   "NHẬP MÃ";
 "Resend Email"           =   "Gửi lại Email";
 
@@ -399,7 +258,6 @@
 "no results"            =   "không có kết quả";
 "No results"            =   "Không có kết quả";
 
-"Invite"                =   "Mời";
 "InviteYourFriends"     =   "Mời Bạn bè của bạn!";
 "InviteUsingEmail"      =   "Mời bằng cách sử dụng Email";
 "InviteUsingSMS"        =   "Mời bằng cách sử dụng SMS";
@@ -410,12 +268,8 @@
 "Access Your Contacts"  =   "Truy cập vào Danh bạ của bạn";
 "ContactsSafety"        =   "Danh bạ của bạn an toàn ở chỗ chúng tôi! Để có thể tìm thấy bạn bè của mình, chúng tôi cần gửi thông tin liên lạc của bạn đến các máy chủ sử dụng một kết nối an toàn.";
 
-"AccessMicrophoneDenied" =  "Để quay video từ thiết bị của bạn, vui lòng cấp quyền truy cập bằng cách đến phần Thiết lập -> Bảo mật -> Micrô";
-"AccessMicrophoneRestricted" = "Không thể truy cập micrô của bạn do hạn chế về thiết bị của bạn.";
-"AccessLibraryRestricted" = "Để truy cập đa phương tiện từ thư viện ảnh của bạn, vui lòng cấp quyền bằng cách đến phần Thiết lập -> Quyền riêng tư -> Ảnh";
 "AccessCameraDenied"    =   "Để dùng camera, vui lòng cấp quyền bằng cách đến phần Thiết lập -> Quyền riêng tư";
 "AccessCameraRestricted" =  "Không thể truy cập vào camera của bạn do hạn chế trên thiết bị của bạn.";
-"UnableSelectVideo"     = "Không thể lựa chọn video.";
 
 "AccessContactsDenied"  =   "Để tìm kiếm bạn bè sử dụng sổ danh bạ của bạn, vui lòng cấp quyền bằng cách đến phần Thiết lập -> Quyền riêng tư -> Danh bạ";
 "AccessContactsRestricted" =  "Không thể truy cập vào danh bạ do hạn chế trên thết bị của bạn.";
@@ -432,15 +286,10 @@
 "Connect to Instagram"  =   "Kết nối đến Instagram";
 
 "Logout"                =   "Đăng xuất";
+"Login"                 =   "Đăng nhập";
+
 "UserBannedTitle"       =   "Ồ!";
 "UserBannedMessage"     =   "Rất riếc, tài khoản của bạn đã bị vô hiệu. Bạn sẽ vẫn có thể xem nội dung, nhưng sẽ không thể đăng hoặc tương tác với những người khác.";
-
-"AddDescription"        =   "Thêm mô tả... và không quên tag #";
-"AddDescriptionAnchor"  =   "tag #";
-"InsertTextHere"        =   "Chèn Văn bản vào Đây";
-
-"NotConnected"          =   "Không kết nối";
-"ConnectedTo"           =   "Kết nối đến %@";
 
 "Version"               =   "Phiên bản %@";
 
@@ -455,36 +304,15 @@
 "RTCUserPostedAtSyntax" =   "%@ tại %@";// e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Báo cáo/Cảnh báo";
-"CreatedBy"             =   "ĐƯỢC TẠO BỞI";
-"remixes"               =   "kết hợp lại";
-"Remix"                 =   "Kết hợp lại";
-"RemixVerb"             =   "Kết hợp lại";
-"reposts"               =   "đăng lại";
 "REPOSTS"               =   "Đăng lại";
-"REMIXES"               =   "Kết hợp lại";
 "Repost"                =   "Đăng lại";
 "Reposted"              =   "Đã đăng lại";
-"RepostContentView"     =   "ĐĂNG LẠI";
-"RepostedContentView"   =   "ĐĂNG LẠI";
-"Comment"               =   "Bình luận";
 
 "repostedByFormat"      =   "Đăng lại bởi %@";
 "doubleRepostedByFormat" = "Đăng lại bởi %@ + 1 người khác";
-"multipleRepostedByFormat" = "Đăng lại bởi %@ + %lu khác";
 "+ %lu others"          = "+ %lu khác";
 "remixedFromFormat"     =   "Kết hợp lại từ %@";
 "giffedFromFormat"      =   "GIF từ %@";
-
-"leaveACommentFormat"   =   "Để lại bình luận tại %@";
-
-"facebook"              =   "facebook";
-"twitter"               =   "twitter";
-"tumblr"                =   "tumblr";
-"saveToLibrary"         =   "lưu vào thư viện";
-
-"areYouSure"            =   "Bạn có Chắc?";
-"contentIsntPublished"  =   "Nội dung của bạn chưa được công bố! Nếu bạn thoát bây giờ, tất cả các thay đổi sẽ bị mất.";
-"captionIsntPublished"  =   "Nội dung của bạn chưa được công bố! Nếu bạn quay lại, tiêu đề của bạn sẽ mất.";
 
 "SupportEmailSubject"   =   "Phản hồi";
 "SupportEmailSubjectWithName" = "Phản hồi trên %@";
@@ -528,9 +356,6 @@
 "NewFollower"           = "Ai đó theo dõi tôi";
 "TagInComment"          = "Ai đó nhắc đến tôi";
 
-"Always" = "Luôn luôn";
-"Never"  = "Không bao giờ";
-"Only on Wifi" = "Chỉ trên Wifi";
 "NotificationSettingSectionFeeds" = "Dòng tin";
 "NotificationSettingSectionPeople" = "Người";
 "Open Settings" = "Mở Thiết lập";
@@ -579,23 +404,11 @@
 
 "No Color"  = "Không có Màu sắc";    // No color selected
 "Standard"  = "Tiêu chuẩn";   // The default color before a selection is made
-"Red"       = "Đỏ";        // The color red
-"Magenta"   = "Magenta";    // red
-"Orange"    = "Cam";     // The color orange
-"Peach"     = "Đào";      // orange
-"Yellow"    = "Vàng";     // The color yellow
-"Green"     = "Xanh lục";      // The color green
-"Teal"      = "Xanh mòng két";       // green
-"Blue"      = "Xanh lam";       // The color blue
-"Purple"    = "Tím";     // The color purp[le
-"Black"     = "Đen";      // The color black
 
-"Video loading failed." = "Tải video không thành công.";
 "Error Loading Next Video" = "Lỗi khi đang Tải Video Tiếp theo";
 "Failed to fetch products" = "Lấy sản phẩm không thành công.";
 
 "This will discard any content from the camera" = "Điều này sẽ huỷ bỏ bất kỳ nội dung nào từ máy ảnh";
-"Discard" = "Loại bỏ";
 "Video failed to load" = "Tải video không thành công";
 "We encountered an error trying to edit this video." = "Chúng tôi đã gặp một lỗi khi đang cố chỉnh sửa video này.";
 
@@ -604,41 +417,24 @@
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Tạo ra một meme";
-"Create a quote" = "Tạo ra một trích dẫn";
 "Create a GIF" = "Tạo ra một ảnh động GIF";
 "Pick an attachment style" = "Lấy một loại đính kèm";
 "Image" = "Hình ảnh";
 "Video" = "Video";
-"Type your text here!" = "Nhập văn bản của bạn tại đây!";
 "GIF" = "Ảnh động GIF";
 "GIF Search" = "Tìm kiếm GIF";
-"GIF MODE" = "CHẾ ĐỘ ẢNH ĐỘNG GIF";
-"VIDEO MODE" = "CHẾ ĐỘ VIDEO";
-"Write a caption (optional)" = "Viết một đầu đề (tuỳ chọn)";
+"Rendering..." = "Đang hoàn lại...";
 "Downloading..." = "Đang tải về...";
 "Exporting..." = "Đang xuất...";
 "Render failure" = "Hoàn lại không thành công";
+"Publishing..." = "Đang công bố ...";
 "Upload failure" = "Tải lên không thành công";
 "Error loading results" = "Lỗi khi đang tải kết quả";
 "Error rendering GIF" = "Tôi khi đang hoàn lại ảnh động GIF. Xin hãy thử lại.";
 
-"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Trước khi bạn có thể chụp và chia sẻ ảnh với cộng đồng, chúng tôi cần phải truy cập vào máy ảnh của bạn. Cấp quyền truy cập máy ảnh ngay.";
-"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Cám ơn vì bạn đã gia nhập cộng đồng! Để thêm một ảnh vào hồ sơ, chúng tôi cần truy cập vào máy ảnh của bạn. Cấp quyền truy cập máy ảnh ngay?";
-"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Trước khi bạn có thể ghi hình và chia sẻ video, chúng tôi cần phải truy cập đến micro của bạn. Cấp quyền truy cập đến micro ngay?";
-
-"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "Chúng tôi tất hào hứng khi có bạn tham gia vào cộng đồng của mình! Hãy tạo ra một tài khoản và bạn sẽ có thể tạo lập, đăng bài và chia sẻ!";
-"Follow content from other fans." = "Theo dõi nội dung từ các người hâm mộ khác.";
-"Share creations with the community." = "Chia sẻ những sáng tạo với cộng đồng.";
-"Join in on the conversation." = "Tham gia vào hội thoại";
 "By signing up you are agreeing to our" = "Qua việc đăng ký, bạn đã đồng ý với";
 "terms of service"      =   "các điều khoản dịch vụ của chúng tôi";
 "privacy policy"        =   "chính sách quyền riêng tư";
-"Sign up with Email" = "Đăng ký bằng Email";
-"Sign up with Facebook" = "Đăng ký bằng Facebook";
-"Create an account and join the community." = "Tạo ra một tài khoản và tham gia vào cộng đồng.";
-"Create a username and introduce yourself to the community." = "Tạo ra một tên người dùng và giới thiệu bản thân bạn với cộng đồng.";
-"Add photo" = "Thêm ảnh";
-"Add your profile picture." = "Thêm ảnh hồ sơ của bạn.";
 "Enter Email" = "Nhập Email";
 "Enter name" = "Nhập tên";
 "You must enter a name." = "Bạn phải nhập một tên.";
@@ -647,33 +443,20 @@
 "Forgot your password?" = "Quên mật khẩu của bạn?";
 "Enter Code" = "Nhập Mã";
 "Code" = "Mã"; // A code the user can use to verify their identitiy when resetting their password via email
-"Create a new password" = "Tạo một mật khẩu mới";
 "Enter a new Password" = "Nhập một Mật khẩu mới";
 "Confirm your new password" = "Xác nhận mật khẩu mới của bạn";
-"Welcome Back!" = "Chào mừng bạn đã trở lại!";
-
-"Nice!" = "Tuyệt!";
-"Edit photo" = "Chỉnh sửa ảnh";
 
 "Open Image" = "Mở Hình ảnh";
 "Watch Video" = "Xem Video";
 "Watch GIF" = "Xem ảnh động GIF";
 
+"See all" = "Xem tất cả";
 "Show Previous Comments" = "Hiện thị bình luận trước";
 "CommentsSingularFormat" = "%@ Bình luận";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Bình luận";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Thích";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ Thích";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Người thích";
-
-"TEXT" = "VĂN BẢN";
-"POLL" = "BÌNH CHỌN";
-"VIDEO" = "VIDEO";
-"IMAGE" = "HÌNH ẢNH";
-"Nevermind" = "Không có gì";
-
-"NOTHING LIKED YET" = "CHƯA CÓ GÌ ĐƯỢC THÍCH"; // Liked content no content view
-"Posts you like will appear here." = "Các bài đăng mà bạn thích sẽ xuất hiện ở đây."; // Liked content no content view
 
 "posts" = "Bài đăng";
 "HashtagPostsCountFormat" = "Trong %@ Bài đăng";

@@ -16,6 +16,8 @@
 #import "VObjectManager+Login.h"
 #import "VSequence.h"
 #import "VUser.h"
+#import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 
 #import "VFollowResponder.h"
 
@@ -92,16 +94,14 @@
     return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-    return nil;
-}
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    return nil;
+    
+    VUser *selectedUser = self.reposters[ indexPath.row ];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:selectedUser];
+    NSAssert( self.navigationController != nil, @"View controller must be in a navigation controller." );
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -7,15 +7,9 @@
 //
 
 #import "VInlineValidationTextField.h"
-
-// Theme
 #import "VThemeManager.h"
-
-// Validators
-#import "VPasswordValidator.h"
-
-// Subviews
 #import "VInlineValidationView.h"
+#import "VPasswordValidator.h"
 
 static const CGFloat kInlineValidationHeight = 20.0f;
 static const CGFloat kSideInset = 10.0f;
@@ -25,7 +19,7 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 @interface VInlineValidationTextField ()
 
-@property (nonatomic, strong) VInlineValidationView *inlineValidationView;
+@property (nonatomic, readwrite) VInlineValidationView *inlineValidationView;
 
 @property (nonatomic, strong) NSAttributedString *oldPlaceholder;
 

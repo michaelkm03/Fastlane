@@ -7,7 +7,7 @@
 SCHEME=$1
 CONFIGURATION=$2
 DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/victorious.mobileprovision"
-DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
+CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 BUILDINFO_PLIST="buildinfo.plist"
 MD5=$(git rev-parse HEAD 2> /dev/null)
 
@@ -77,12 +77,10 @@ build(){
     # Build
     if [ "$MACROS_COMMAND" == "" ]; then
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND archive
     else
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
     fi
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then
@@ -143,33 +141,16 @@ applyConfiguration(){
         return 1
     fi
 
+    # Create URL schemes
+    ./build-scripts/create-url-schemes.sh victorious.xcarchive/Products/Applications/victorious.app
+
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
 
-    CODESIGN_ID=$DEFAULT_CODESIGN_ID
-    DEV_ACCOUNT=$DEFAULT_DEV_ACCOUNT
-    CODESIGNING_PLIST_FILE="configurations/$1/codesigning.plist"
-
     # Check for special provisioning profile
-    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-        CUSTOM_PROVISIONING_PROFILE_PATH=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
-        if [ $? == 0 ]; then
-            CUSTOM_PROVISIONING_PROFILE_PATH="configurations/$1/$CUSTOM_PROVISIONING_PROFILE_PATH"
-            CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CUSTOM_PROVISIONING_PROFILE_PATH")`
-            cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
-            if [ $? != 0 ]; then
-                >&2 echo "Error: \"$CODESIGNING_PLIST_FILE\" specifies a provisioning profile that could not be found."
-                return 1
-            fi
-        fi
-    fi
-
-    # Check for special signing identity
-    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-        CUSTOM_CODESIGN_ID=$(/usr/libexec/PlistBuddy -c "Print SigningIdentities:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
-        if [ $? == 0 ]; then
-            CODESIGN_ID=$CUSTOM_CODESIGN_ID
-        fi
+    CUSTOM_PROVISIONING_PROFILE_PATH="./custom.mobileprovision"
+    if [ -e "$CUSTOM_PROVISIONING_PROFILE_PATH" ]; then
+        cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
     fi
 
     rm victorious.xcarchive/Products/Applications/victorious.app/*.xcent # remove old entitlements

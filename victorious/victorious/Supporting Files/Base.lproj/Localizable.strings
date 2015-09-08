@@ -6,80 +6,30 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
-
-
-"Home"                  =   "Home";
-"Create"                =   "Create";
-"Channel"               =   "Channel";
-"Channels"              =   "Channels";
-"Community"             =   "Community";
-"Owner"                 =   "Owner";
-"Inbox"                 =   "Inbox";
-"Store"                 =   "Store";
-"Messages"              =   "Messages";
-"Notifications"         =   "Notifications";
-"Comments"              =   "Comments";
-"Remixes"               =   "Remixes";
-"GIFs"                  =   "GIFs";
-"Memes"                 =   "Memes";
 "OK"                    =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
-"ConfirmButton"         =   "Confirm";
-"Reply"                 =   "Reply";
 "ResetButton"           =   "Reset";
-"YesButton"             =   "Yes";
-"NoButton"              =   "No";
-"BackButton"            =   "Back";
-"Exit"                  =   "Exit";
 "Publish"               =   "Publish";
-"Publishing..."         =   "Publishing...";
-"Rendering..."          =   "Rendering...";
 "Next"                  =   "Next";
 "Done"                  =   "Done";
 "More"                  =   "More";
-"Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
-"Discover"              =   "Discover";
-"Profile"               =   "Profile";
-"Settings"              =   "Settings";
-"Save"                  =   "Save";
 "Continue"              =   "Continue";
 "Loading..."            =   "Loading...";
 "Finding fans to connect with..." = "Finding fans to connect with...";
 
-"Featured"              =   "Featured";
-"Recent"                =   "Recent";
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
 "NumStreams"            =   "%@ STREAMS";
 "NumItems"              =   "%@ ITEMS";
 
-"Keep up to date with users and hashtags you're following here" = "Keep up to date with users and hashtags you're following here";
-"View content from users and hashtags you're following here" = "View content from users and hashtags you're following here";
-"Tap here to view posts from the entire community" = "Tap here to view posts from the entire community";
-"Tap here to view posts from other fans" = "Tap here to view posts from other fans";
-"View posts from the entire community here" = "View posts from the entire community here";
-"View posts from other fans here" = "View posts from other fans here";
-"Tap here to watch my exclusive videos" = "Tap here to watch my exclusive videos";
-"Tap here to watch exclusive videos" = "Tap here to watch exclusive videos";
-"Tap here to watch my videos" = "Tap here to watch my videos";
-"Tap here to watch videos" = "Tap here to watch videos";
-"Watch my exclusive videos here" = "Watch my exclusive videos here";
-"Watch exclusive videos here" = "Watch exclusive videos here";
-"Watch my videos here" = "Watch my videos here";
-"Watch videos here" = "Watch videos here";
-"Tap here to create your first post" = "Tap here to create your first post";
-"Tap here to create a post" = "Tap here to create a post";
-"Tap here and create a post now!" = "Tap here and create a post now!";
-
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Login"                 =   "Login";
 "Log in here"           =   "Log in here";
 "Already Registered?"   =   "Already Registered?";
 "Get Started"           =   "Get Started!";
@@ -89,17 +39,11 @@
 "EmailValidation"       =   "Invalid Email Address";
 "Minimum 8 characters"  =   "Minimum 8 characters";
 "PasswordValidation"    =   "Password is less than 8 characters";
-"UsernameValidation"    =   "User name is less than 8 characters";
-"AgreeTOS"              =   "You must click that you are at least 13 years of age and agree to the Terms of Service";
-"InvalidCredentials"    =   "Invalid Credentials";
 "PasswordNotMatching"   =   "Passwords do not match";
-"PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "GenericFailMessage"    =   "Oops! Something has gone wrong.";
 "FacebookLoginFailed"   =   "Oops! Facebook login failed. Please try again.";
-"NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
-"AccountUpdateFail"     =   "Account Update Failed";
 "You're not logged in!" =   "You're not logged in!";
 "ProfileNotLoggedInMessage" = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
@@ -111,8 +55,6 @@
 "ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 "ProfileRequiredName"   =   "Name";
 "ProfileRequiredToS"    =   "Agree to our terms";
-"ProfileRequiredTagLine"=   "Your tagline";
-"ProfileUpdateFailed"   =   "Profile Update Failed";
 "Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
@@ -126,8 +68,6 @@
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";
-"SMSFail"               =   "SMS failed to send";
-"CouldNotSend"          =   "Message was not sent";
 
 "Missing Content"           =   "Uh Oh!";
 "Missing Content Message"   =   "We can't find what you're looking for!";
@@ -185,7 +125,6 @@
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
 "Facebook"              =   "Facebook";
-"FacebookFailed"        =   "Could not connect to Facebook.";
 
 "Search people and hashtags"  =  "Search people or hashtags";
 "No People Found In Search Title" = "NO PEOPLE WERE FOUND";
@@ -193,21 +132,17 @@
 "No Hashtags Found In Search Title" = "NO TAGS WERE FOUND!";
 "No hashtags found in search" = "Refine your search and try again.";
 
-"SearchFailed"          =   "Search failed.";
 "ImageDownloadFailed"   =   "Image download failed.";
 
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
 "TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
 
-"CameraRollDeniedTitle" =   "Could Not Access Your Photos";
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
-"CameraSwitchFailed"    =   "Unable to switch camera mode";
 "Camera"                =   "Camera";   // Button that opens the camera
 "Search"                =   "Search";   // Button that opens web search for images
 "Gallery"               =   "Gallery";  // Button that opens gallery to photo library for images and videos
-"StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
 "VideoCoachMessage"     =   "Press and hold to record";
@@ -218,8 +153,6 @@
 
 "SelectTwitter"         =   "Select a twitter account";
 
-"HelpNeeded"            =   "I need help with...";
-
 "ReportInappropriate"   =   "Report Inappropriate";
 "ReportedTitle"         =   "Got It!";
 "ReportContentMessage"  =   "We will review this content within 24 hours.";
@@ -227,43 +160,20 @@
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
 "CommentAlreadyReported" =  "Comment Already Flagged";
 
-"BlockUser"             =   "Block User";
-"CopyProfileURL"        =   "Copy Profile URL";
-
-"Create a Video Post"   =   "Create a Video Post";
-"Create an Image Post"  =   "Create an Image Post";
-"Create a Poll"         =   "Create a Poll";
-"Create a Text Post"    =   "Create a Text Post";
-
-"NEW POLL"              =   "New Poll";
 "Ask a question..."     =   "Ask a question...";
 "Vote this"             =   "Vote this";
 "Vote that"             =   "Vote that";
-"Create Poll"           =   "Create Poll";
-
-"TranscodingMediaTitle" =   "Transcoding Upload";
-"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode. It will appear once we've finished.";
-"PollUploadTitle"       =   "Poll Upload Failed";
-"PollUploadBody"        =   "Unable to upload Poll to server";
-
-"UploadFailedTitle"     =   "Media Upload Failed";
-"DuplicateVideoTitle"   =   "Duplicate Video";
-"DuplicateVideoBody"    =   "It looks like you're trying to upload a video that has already been uploaded.";
 
 "Uploading"             =   "Your content is uploading...";
 "UploadFinalizing"      =   "We are finalizing your post, it will be available soon.";
 "UploadFailed"          =   "Sorry, your upload failed. Please check your connection and try again.";
 "UploadSuccess"         =   "Success! Your post has been uploaded.";
-"UploadError"           =   "Upload Error";
-"UploadErrorBody"       =   "Something went wrong, and we are unable to complete the upload at this time.";
 "UploadCancelAreYouSure" = "Are you sure you want to cancel this upload?";
 "YesCancelUpload"       =   "Yes, cancel this upload";
 "NoKeepUploading"       =   "No, keep uploading";
 "Cancelling..."         =   "Cancelling...";
 
 "RefreshError"          =   "Unable to refresh.";
-
-"MediaAlreadyCreated"   =   "Media was already created.";
 
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
@@ -277,39 +187,13 @@
 "ConversationDelError"  =   "Unable to delete conversation";
 "ConversationSendError" =   "Your message could not be sent";
 
-"Normal"                =   "Normal";
-
-"ClosePreviewConfirm"   =   "Are you sure you want to close the window? Your creation will be lost.";
-"Stay"                  =   "Stay";
-"Close"                 =   "Close";
-
-"PublishUpload"         =   "Your content is being uploaded.";
-
-"PublishSucceeded"      =   "Publish Succeeded";
-"PublishSucceededDetail"=   "Your media has been submitted to the server. It may take a few minutes for your content to appear.";
-
-"PublishDescriptionRequired" = "Text Needed";
-"PublishDescription"    =   "Please enter the caption for your content.";
-
-"PublishDescriptionMinCharacters" = "Please enter a longer description.";
-
 "Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
 "We failed to retrieve publish permissions." = "We failed to retrieve publish permissions.";
 "Retry"                 =   "Retry";
 
-"ReplaceVideo"          =   "Replace Video";
-
 "VideoPlayFailed"       =   "Video loading failed.";
-"See More"              =   "See More";
-"See all"               =   "See all";
-"..."                   =   "...";
-
-"PostWillExpire"        =   "Post Will Expire";
-"CancelExpiration"      =   "Cancel Expiration?";
-"CancelExirationConfirm" = "Are you sure you want to cancel out of setting an expiration date?";
 
 "Now"                   =   "Now";
-"SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
@@ -323,30 +207,9 @@
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
 
-"Minute"                =   "Minute";
-"Hour"                  =   "Hour";
-"Day"                   =   "Day";
-"Week"                  =   "Week";
-"Month"                 =   "Month";
-
-"Minutes"               =   "Minutes";
-"Hours"                 =   "Hours";
-"Days"                  =   "Days";
-"Weeks"                 =   "Weeks";
-"Months"                =   "Months";
-
 "JustAMoment"           =   "Just a moment";
-"LocatingVideo"         =   "Locating Video...";
-"DownloadingVideo"      =   "Downloading Video...";
-"Stitching"             =   "Stitching...";
-
-"SegmentDownloadFail"   =   "Unable to get Video";
 
 "TryAgain"              =   "Please try again later.";
-
-"ExpiresOn"             =   "Expires on %@";
-
-"Me"                    =   "Me";
 
 "Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
@@ -359,8 +222,6 @@
 "ResetPasswordPlaceholder" = "E-mail Address";
 
 "PasswordError"         =   "Password Error";
-"ResetPasswordErrorExpiredTitle" = "Reset code expired";
-"ResetPasswordErrorExpiredMessage" = "Please request another reset code and try again.";
 
 "ResetPasswordErrorInvalidTitle" = "Current Password Invalid";
 "ResetPasswordErrorIncorrectTitle" = "Incorrect Password";
@@ -381,7 +242,6 @@
 "Please check your network connection or try again later." = "Please check your network connection or try again later.";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
-"An email was sent to this address containing reset password instructions." = "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "Resend Email"           =   "Resend Email";
 
@@ -398,7 +258,6 @@
 "no results"            =   "no results";
 "No results"            =   "No results";
 
-"Invite"                =   "Invite";
 "InviteYourFriends"     =   "Invite your Friends!";
 "InviteUsingEmail"      =   "Invite using Email";
 "InviteUsingSMS"        =   "Invite using SMS";
@@ -409,12 +268,8 @@
 "Access Your Contacts"  =   "Access your Contacts";
 "ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contact information to our servers using a secure connection.";
 
-"AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
-"AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
-"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
 "AccessCameraDenied"    =   "In order to use the camera, please grant access by going to Settings -> Privacy";
 "AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
-"UnableSelectVideo"     = "Unable to select video.";
 
 "AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
 "AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
@@ -436,13 +291,6 @@
 "UserBannedTitle"       =   "Ruh Roh!";
 "UserBannedMessage"     =   "Unfortunately, your account has been deactivated. You'll still be able to view content, but will not be able to post or interact with others.";
 
-"AddDescription"        =   "Add a description... and don't forget #hashtags";
-"AddDescriptionAnchor"  =   "#hashtags";
-"InsertTextHere"        =   "Insert Text Here";
-
-"NotConnected"          =   "Not Connected";
-"ConnectedTo"           =   "Connected to %@";
-
 "Version"               =   "Version %@";
 
 "ToSText"               =   "Terms of Service";
@@ -456,36 +304,15 @@
 "RTCUserPostedAtSyntax" =   "%@ at %@";//e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Report/Flag";
-"CreatedBy"             =   "CREATED BY";
-"remixes"               =   "remixes";
-"Remix"                 =   "Remix";
-"RemixVerb"             =   "Remix";
-"reposts"               =   "reposts";
 "REPOSTS"               =   "Reposts";
-"REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
 "Reposted"              =   "Reposted";
-"RepostContentView"     =   " REPOST";
-"RepostedContentView"   =   " REPOSTED";
-"Comment"               =   "Comment";
 
 "repostedByFormat"      =   "Reposted by %@";
 "doubleRepostedByFormat" = "Reposted by %@ + 1 other";
-"multipleRepostedByFormat" = "Reposted by %@ + %lu others";
 "+ %lu others"          = "+ %lu others";
 "remixedFromFormat"     =   "Remix from %@";
 "giffedFromFormat"      =   "GIF from %@";
-
-"leaveACommentFormat"   =   "Leave a comment at %@";
-
-"facebook"              =   "facebook";
-"twitter"               =   "twitter";
-"tumblr"                =   "tumblr";
-"saveToLibrary"         =   "save to library";
-
-"areYouSure"            =   "Are You Sure?";
-"contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
-"captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
 "SupportEmailSubject"   =   "Feedback";
 "SupportEmailSubjectWithName" = "Feedback on %@";
@@ -529,9 +356,6 @@
 "NewFollower"           = "Someone follows me";
 "TagInComment"          = "Someone mentions me";
 
-"Always" = "Always";
-"Never"  = "Never";
-"Only on Wifi" = "Only on Wifi";
 "NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "People";
 "Open Settings" = "Open Settings";
@@ -562,6 +386,7 @@
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restore Purchases";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
+"Reset Purchases"                       = "Reset Purchases";
 
 "AuthorizationContextDefault"                   = "We are so excited to have you join our community! Create an account and you'll be able to create, post, and share!";
 "AuthorizationContextCreatePost"                = "Yay! We can't wait to see your first post. Just create an account and start sharing your lovely creation with the community!";
@@ -580,23 +405,11 @@
 
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
-"Red"       = "Red";        // The color red
-"Magenta"   = "Magenta";    // The color, a pink/red
-"Orange"    = "Orange";     // The color orange
-"Peach"     = "Peach";      // The color, a light yellow/orange
-"Yellow"    = "Yellow";     // The color yellow
-"Green"     = "Green";      // The color green
-"Teal"      = "Teal";       // The color, a blue/green
-"Blue"      = "Blue";       // The color blue
-"Purple"    = "Purple";     // The color purp[le
-"Black"     = "Black";      // The color black
 
-"Video loading failed." = "Video loading failed.";
 "Error Loading Next Video" = "Error Loading Next Video";
 "Failed to fetch products" = "Failed to fetch products";
 
 "This will discard any content from the camera" = "This will discard any content from the camera";
-"Discard" = "Discard";
 "Video failed to load" = "Video failed to load";
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
@@ -605,18 +418,12 @@
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Create a meme";
-"Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
 "Pick an attachment style" = "Pick an attachment style";
 "Image" = "Image";
 "Video" = "Video";
-"Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
 "GIF Search" = "GIF Search";
-"Quote" = "Quote";
-"GIF MODE" = "GIF MODE";
-"VIDEO MODE" = "VIDEO MODE";
-"Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
 "Downloading..." = "Downloading...";
 "Exporting..." = "Exporting...";
@@ -626,23 +433,9 @@
 "Error loading results" = "Error loading results";
 "Error rendering GIF" = "Error rendering GIF.  Please try again.";
 
-"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
-"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";
-"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
-
-"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
-"Follow content from other fans." = "Follow content from other fans.";
-"Share creations with the community." = "Share creations with the community.";
-"Join in on the conversation." = "Join in on the conversation.";
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "terms of service"      =   "terms of service";
 "privacy policy"        =   "privacy policy";
-"Sign up with Email" = "Sign up with Email";
-"Sign up with Facebook" = "Sign up with Facebook";
-"Create an account and join the community." = "Create an account and join the community.";
-"Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
-"Add photo" = "Add photo";
-"Add your profile picture." = "Add your profile picture.";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
 "You must enter a name." = "You must enter a name.";
@@ -651,18 +444,14 @@
 "Forgot your password?" = "Forgot your password?";
 "Enter Code" = "Enter Code";
 "Code" = "Code"; // A code the user can use to verify their identitiy when resetting their password via email
-"Create a new password" = "Create a new password";
 "Enter a new Password" = "Enter a new Password";
 "Confirm your new password" = "Confirm your new password";
-"Welcome Back!" = "Welcome Back!";
-
-"Nice!" = "Nice!";
-"Edit photo" = "Edit photo";
 
 "Open Image" = "Open Image";
 "Watch Video" = "Watch Video";
 "Watch GIF" = "Watch GIF";
 
+"See all" = "See all";
 "Show Previous Comments" = "Show Previous Comments";
 "CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
@@ -670,17 +459,10 @@
 "LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Likers";
 
-"TEXT" = "TEXT";
-"POLL" = "POLL";
-"VIDEO" = "VIDEO";
-"IMAGE" = "IMAGE";
-"Nevermind" = "Nevermind";
-
-"NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
-"Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
-
-"posts" = "Posts";
-"HashtagPostsCountFormat" = "In %@ Posts";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
+"HashtagPostsCountFormat" = "In %@ Post";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "London";

@@ -10,9 +10,6 @@
 #import <XCTest/XCTest.h>
 #import "VFlurryTracking.h"
 
-// Set in AppSpecific/Info.plist
-static NSString * const kDevDefaultAPIKey = @"XXXXXXXXXX";
-
 @interface VFlurryTracking(UnitTests)
 
 @property (nonatomic, readonly) NSString *appVersionString;
@@ -49,11 +46,6 @@ static NSString * const kDevDefaultAPIKey = @"XXXXXXXXXX";
 
 - (void)testInfoPlistData
 {
-    NSString *apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FlurryAPIKey"];
-    XCTAssertNotNil( self.flurryTracking.apiKey );
-    XCTAssertEqualObjects( self.flurryTracking.apiKey, apiKey );
-    XCTAssertEqualObjects( self.flurryTracking.apiKey, kDevDefaultAPIKey );
-    
     NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString *build = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSString *versionString = [NSString stringWithFormat:@"%@ (%@)", version, build];

@@ -103,7 +103,8 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 
                 CGFloat sizeDelta = self.mediaContentSize.height - VShrinkingContentLayoutMinimumContentHeight;
                 CGFloat transformScaleCoefficient = 1.0f;
-                if (self.mediaContentSize.height != 0.0f)
+                // We only do the shinking of content in portrait, landscape shoudl be full-screen
+                if (self.mediaContentSize.height != 0.0f && UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
                 {
                     transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
                 }

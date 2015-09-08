@@ -4,3 +4,5 @@
 
 #import <KIF/KIF.h>
 #import "VAutomation.h"
+#import "VSessionTimer.h"
+#import "VRootViewController.h"

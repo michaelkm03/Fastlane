@@ -7,14 +7,10 @@
 //
 
 #import "VModernRegisterViewController.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-
-// Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
@@ -22,6 +18,7 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 #import "VDependencyManager+VTracking.h"
+#import "VInlineValidationView.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
@@ -84,7 +81,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                object:self.passwordField];
     
     NSString *prompt = [self.dependencyManager stringForKey:kPromptKey];
-    self.promptTextView.text = NSLocalizedString(prompt, nil);
+    self.promptTextView.text = prompt;
     self.promptTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.promptTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.promptTextView.textAlignment = NSTextAlignmentCenter;
@@ -111,9 +108,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     self.emailField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder
                                                                         attributes:activePlaceholderAttributes];
+    self.emailField.accessibilityIdentifier = VAutomationIdentifierSignupEmailField;
+    self.emailField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupEmailFieldValidation;
 
     self.passwordField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
-                                                                               attributes:placeholderTextFieldAttributes];
+                                                                             attributes:placeholderTextFieldAttributes];
+    self.passwordField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
+    self.passwordField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupPasswordFieldValidation;
+    
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];

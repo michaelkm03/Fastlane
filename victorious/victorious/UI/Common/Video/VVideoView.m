@@ -31,6 +31,31 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 @implementation VVideoView
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if ( self != nil )
+    {
+        [self setup];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if ( self != nil )
+    {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup
+{
+    self.backgroundColor = [UIColor clearColor];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -124,8 +149,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                  }
              }
          }];
-        
-        self.backgroundColor = [UIColor clearColor];
         
         self.videoUtils = [[VVideoUtils alloc] init];
     }

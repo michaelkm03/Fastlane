@@ -37,14 +37,22 @@
 - (NSArray *)dateSortedComments;
 
 /**
- Retrieves the aspect ratio of the highest resolution
- preview asset for this sequence as a width/height float value. 
- 1.0f is returned if no preview asset is found, or if the aspect 
- ratio is not within range (0.5-2.0).
- 
+ Provides the aspect ratio of the highest resolution preview asset.
+ If the sequence is a video type, the aspect ratio will be clamped within
+ to fit inside main screen size with a default margin.  Otherwise the aspect
+ ratio value will not be modified from that of the original preview asset.
  @note Will never be 0.
  */
 - (CGFloat)previewAssetAspectRatio;
+
+/**
+ Provides the aspect ratio of the highest resolution preview asset.
+ If the sequence is a video type, the aspect ratio will be clamped within
+ to fit within the CGRect value provided.  Otherwise the aspect
+ ratio value will not be modified from that of the original preview asset.
+ @note Will never be 0.
+ */
+- (CGFloat)previewAssetAspectRatioWithinRect:(CGRect)rect;
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
