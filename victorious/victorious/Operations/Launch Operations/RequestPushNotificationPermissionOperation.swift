@@ -41,6 +41,11 @@ class RequestPushNotificationPermissionOperation : Operation {
     
     // MARK: - Internal
     
+    deinit
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     private func onPermissionGranted() {
         finishedExecuting()
     }
