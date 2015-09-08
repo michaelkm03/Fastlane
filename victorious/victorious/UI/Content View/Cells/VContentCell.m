@@ -76,7 +76,7 @@
 {
     VContentLikeButton *likeButton = [[VContentLikeButton alloc] init];
     [self.contentView addSubview:likeButton];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
     
     [self layoutIfNeeded];

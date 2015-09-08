@@ -60,21 +60,15 @@ fi
 
 ### Modify Info.plist
 
-APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "$CONFIGURATION" 2> /dev/null )
-if [ $? != 0 ]; then
-    echo "Could not read app ID from Info.plist"
-    exit 1
-fi
-
 if [ "$A_FLAG" == "-a" ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
     if [ $? != 0 ]; then
         echo "ProductPrefix key not found in info.plist."
         exit 1
     fi
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID -p "$PRODUCT_PREFIX"
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" -p "$PRODUCT_PREFIX"
 else
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist"
 fi
 
 
@@ -144,7 +138,19 @@ copyFile "Icon-60@2x.png"
 copyFile "homeHeaderImage.png"
 copyFile "homeHeaderImage@2x.png"
 
+PROVISIONING_PROFILE_DESTINATION_PATH="./custom.mobileprovision"
+if [ -e "$PROVISIONING_PROFILE_DESTINATION_PATH" ]; then
+    rm "$PROVISIONING_PROFILE_DESTINATION_PATH"
+fi
+
+if [ "$CONFIGURATION" != "" ]; then
+    CONFIGURATION_LOWERCASE=$(echo $CONFIGURATION | tr '[:upper:]' '[:lower:]')
+    PROVISIONING_PROFILE_PATH="$FOLDER/${CONFIGURATION_LOWERCASE}.mobileprovision"
+    if [ -e "$PROVISIONING_PROFILE_PATH" ]; then
+        cp "$PROVISIONING_PROFILE_PATH" "$PROVISIONING_PROFILE_DESTINATION_PATH"
+    fi
+fi
 
 ### Remove Temp Directory
 
-rm -rf $TMP_FOLDER
+rm -rf $FOLDER
