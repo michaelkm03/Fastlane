@@ -14,7 +14,7 @@ MD5=$(git rev-parse HEAD 2> /dev/null)
 shift 2
 
 usage(){
-    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [--macros <macros>] <app name(s)>"
+    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] <app name(s)>"
     exit 1
 }
 
