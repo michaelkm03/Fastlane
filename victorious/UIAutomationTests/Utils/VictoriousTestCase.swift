@@ -11,6 +11,37 @@ import KIF
 
 var shouldResetSession = false
 
+// MARK: - Logged in state subclasses
+
+class LoggedOutVictoriousTestCase: VictoriousTestCase {
+    
+    override func beforeAll() {
+        super.beforeAll()
+        
+        let login = VStoredLogin()
+        login.clearLoggedInUserFromDisk()
+        self.addStep("logout")
+        
+        self.resetSession()
+        self.tester().acknowledgeSystemAlert()
+    }
+}
+
+class LoggedInVictoriousTestCase: VictoriousTestCase {
+    
+    override func beforeAll() {
+        super.beforeAll()
+        
+        // Login if forced login is presented
+        self.loginIfRequired()
+        self.addStep( "Logs in using email if test is run while no user is logged in." )
+        
+        self.dismissWelcomeIfPresent()
+        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
+    }
+    
+}
+
 class VictoriousTestCase: KIFTestCase {
     
     private static var shouldAppend = false
@@ -35,20 +66,10 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     override func beforeAll() {
-        // Template configuration
-        self.configureTemplateIfNecessary()
-        
         super.beforeAll()
         
         let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
         self.addTextToReport( "\n\n# \(title)\n\(self.testDescription)\n" )
-        
-        // Login if forced login is presented
-        self.loginIfRequired()
-        self.addStep( "Logs in using email if test is run while no user is logged in." )
-        
-        self.dismissWelcomeIfPresent()
-        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
     }
     
     /// Resets the session, returning the app to a state as if it has just been launched.
@@ -58,16 +79,13 @@ class VictoriousTestCase: KIFTestCase {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController {
                 rootViewController.startNewSession()
-                self.tester().waitForTimeInterval( 10.0 )
+                self.configureTemplateIfNecessary()
+                self.tester().waitWithCountdownForInterval( 10.0 )
         }
     }
     
     override func beforeEach() {
         super.beforeEach()
-        
-        
-        // Template configuration
-        self.configureTemplateIfNecessary()
         
         // Reset Session
         if shouldResetSession {
@@ -89,17 +107,17 @@ class VictoriousTestCase: KIFTestCase {
         return defaultTemplateDecorator
     }
     
-    private func configureTemplateIfNecessary() {
+    func configureTemplateIfNecessary() {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
                 loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) -> VTemplateDecorator! in
-                    return self.configureTemplate(decorator) //configureTemplateClosure(decorator: decorator)
+                    return self.configureTemplate(decorator)
                 }
         }
     }
     
-    private vund clearTemplateConfigurationClosure() {
+    private func clearTemplateConfigurationClosure() {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController,
                 let loadingViewController = rootViewController.loadingViewController {

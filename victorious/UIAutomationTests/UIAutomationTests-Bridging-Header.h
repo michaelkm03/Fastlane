@@ -10,3 +10,4 @@
 #import "VLoadingViewController.h"
 #import "VRootViewController+UIAutomation.h"
 #import "VTabScaffoldViewController.h"
+#import "VStoredLogin.h"

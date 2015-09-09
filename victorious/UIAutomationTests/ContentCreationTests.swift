@@ -9,7 +9,7 @@
 import KIF
 import UIKit
 
-class ContentCreationTests: VictoriousTestCase {
+class ContentCreationTests: LoggedInVictoriousTestCase {
     
     override var testDescription: String {
         return "Tests the various types of content creation available to users."
