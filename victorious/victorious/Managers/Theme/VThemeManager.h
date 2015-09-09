@@ -15,7 +15,6 @@
 // Images
 
 extern NSString * const kVMenuBackgroundImage;
-extern NSString * const VThemeManagerHomeHeaderImageKey;
 
 //Fonts
 extern NSString * const kVHeaderFont;
