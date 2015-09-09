@@ -198,7 +198,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         
-        if (self.templateConfigurationBlock != NULL)
+        if (self.templateConfigurationBlock != nil)
         {
             self.templateConfigurationBlock(templateDecorator);
         }

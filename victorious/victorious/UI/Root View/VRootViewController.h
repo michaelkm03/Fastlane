@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+@import UIKit;
 #import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
