@@ -12,7 +12,6 @@ import UIKit
 /// View Controllers conform to this protocol to handle
 /// search result navigation(e.g. tap on a user result, or hashtag result)
 @objc protocol ExploreSearchResultNavigationDelegate {
-    
     func navigateToResult(viewController: UIViewController, animated: Bool)
 }
 
