@@ -18,19 +18,10 @@ class ContentCreationTests: LoggedInVictoriousTestCase {
     func testCreateImage() {
         
         self.addStep( "Select *IMAGE* from the creation menu." )
-        
-        // Log in if presented after pressing "Create"
-        self.loginIfRequired()
-        
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
-        
-        // Log in if presented after pressing "Create"
-        self.loginIfRequired()
-        
         self.tester().tapViewWithAccessibilityLabel( "Create Image" )
         
         self.addStep( "Select the first image in the device's library." )
-        
         // Select image from gallery
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tester().tapItemAtIndexPath( indexPath, inCollectionViewWithAccessibilityIdentifier: VAutomationIdentifierMediaGalleryCollection )
