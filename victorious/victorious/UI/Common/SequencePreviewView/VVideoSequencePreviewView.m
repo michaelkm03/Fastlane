@@ -11,6 +11,7 @@
 #import "VVideoSettings.h"
 #import "VTrackingManager.h"
 #import "UIResponder+VResponderChain.h"
+#import "VVideoPlayerToolbarView.h"
 
 /**
  Describes the state of the video preview view
@@ -27,6 +28,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 @interface VVideoSequencePreviewView ()
 
+@property (nonatomic, strong) VideoToolbarView *toolbar;
 @property (nonatomic, assign) VVideoPreviewViewState state;
 @property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) VVideoSettings *videoSettings;
@@ -42,6 +44,9 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, assign) BOOL didPlay50;
 @property (nonatomic, assign) BOOL didPlay75;
 @property (nonatomic, assign) BOOL didPlay100;
+
+@property (nonatomic, strong) UITapGestureRecognizer *toolbarToggleTapGesture;
+@property (nonatomic, strong) UITapGestureRecognizer *videoAspectToggleTapGesture;
 
 @end
 
@@ -75,6 +80,56 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
+}
+
+- (void)setVideoPlayerGesturesEnabled:(BOOL)enabled
+{
+    return;
+    
+    if ( enabled )
+    {
+        self.videoAspectToggleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+        self.videoAspectToggleTapGesture.numberOfTapsRequired = 1;
+        [self addGestureRecognizer:self.videoAspectToggleTapGesture];
+        
+        self.toolbarToggleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTap)];
+        self.toolbarToggleTapGesture.numberOfTapsRequired = 2;
+        [self addGestureRecognizer:self.toolbarToggleTapGesture];
+    }
+    else
+    {
+        [self removeGestureRecognizer:self.videoAspectToggleTapGesture];
+        [self removeGestureRecognizer:self.toolbarToggleTapGesture];
+    }
+}
+
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    if ( !hidden )
+    {
+        if ( self.toolbar == nil )
+        {
+            self.toolbar = [VideoToolbarView viewFromNib];
+            self.toolbar.userInteractionEnabled = YES;
+            [self addSubview:self.toolbar];
+            [self.toolbar v_addHeightConstraint:41.0f];
+            [self v_addPinToLeadingTrailingToSubview:self.toolbar];
+            [self v_addPinToBottomToSubview:self.toolbar];
+        }
+        [self.toolbar showWithAnimated:animated];
+    }
+    else if ( _toolbar != nil )
+    {
+        [self.toolbar hideWithAnimated:animated];
+    }
+}
+
+- (void)hideToolbar
+{
+    if ( _toolbar != nil )
+    {
+        self.toolbar.hidden = YES;
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -115,7 +170,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
                     audioMuted:YES
             alongsideAnimation:^
      {
-         [weakSelf makeBackgroundContainerViewVisible:YES];
+         [weakSelf setBackgroundContainerViewVisible:YES];
      }];
 }
 
@@ -143,7 +198,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
             self.playIconContainerView.hidden = YES;
             break;
         case VVideoPreviewViewStatePlaying:
-            [self makeBackgroundContainerViewVisible:YES];
+            [self setBackgroundContainerViewVisible:YES];
             [self.activityIndicator stopAnimating];
             self.soundIndicator.hidden = self.focusType != VFocusTypeStream;
             [self.soundIndicator startAnimating];
@@ -151,7 +206,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
             self.playIconContainerView.hidden = YES;
             break;
         case VVideoPreviewViewStatePaused:
-            [self makeBackgroundContainerViewVisible:YES];
+            [self setBackgroundContainerViewVisible:YES];
             [self.activityIndicator stopAnimating];
             self.soundIndicator.hidden = YES;
             [self.soundIndicator stopAnimating];
@@ -178,15 +233,25 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         return;
     }
     
-    // Play or pause video depending on focus
-    if ( self.focusType == VFocusTypeNone )
+    switch (focusType)
     {
-        [self pauseVideo];
-    }
-    else
-    {
-        [self playVideo];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
+        case VFocusTypeNone:
+            [self pauseVideo];
+            break;
+            
+        case VFocusTypeStream:
+            [self playVideo];
+            [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
+            [self setVideoPlayerGesturesEnabled:NO];
+            [self setToolbarHidden:YES animated:YES];
+            break;
+            
+        case VFocusTypeDetail:
+            [self playVideo];
+            [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
+            [self setVideoPlayerGesturesEnabled:YES];
+            [self setToolbarHidden:NO animated:YES];
+            break;
     }
     
     self.state = self.state;
@@ -265,8 +330,15 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
 }
 
-- (void)videoView:(VVideoView *__nonnull)videoView didProgressWithPercentComplete:(float)percent
+- (void)videoView:(VVideoView *__nonnull)videoView didPlayToTime:(Float64)time
 {
+    if ( self.toolbar != nil )
+    {
+        self.toolbar.elapsedTime = time;
+        self.toolbar.remainingTime = videoView.durationSeconds - time;
+    }
+    
+    const float percent = (videoView.currentTimeSeconds / videoView.durationSeconds) * 100.0f;
     if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
     {
         self.didPlay25 = YES;

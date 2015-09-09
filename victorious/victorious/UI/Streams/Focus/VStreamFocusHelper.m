@@ -26,40 +26,34 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 
 - (void)updateFocus
 {
-    [[self visibleCells] enumerateObjectsUsingBlock:^(UIView *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( ![cell conformsToProtocol:@protocol(VFocusable)] )
-         {
-             return;
-         }
-         
-         id <VFocusable>focusCell;
-         if ( [cell conformsToProtocol:@protocol(VFocusable)] )
-         {
-             focusCell = (id <VFocusable>)cell;
-         }
-         
-         // Calculate visible ratio for just the media content of the cell
-         const CGRect contentFrameInCell = [focusCell contentArea];
-         
-         if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
-         {
-             // Convert media view's frame to parent view of scroll view
-             CGRect mediaVisibility = [(UIView *)focusCell convertRect:[focusCell contentArea] toView:self.scrollView.superview];
-             
-             // Inset the focus area
-             CGRect focusFrame = UIEdgeInsetsInsetRect(self.scrollView.frame, self.focusAreaInsets);
-             
-             // Determine intersect with the scroll view's frame
-             CGRect intersectWithScrollview = CGRectIntersection(focusFrame, mediaVisibility);
-             
-             // Determine if we see enough of the content to put it in focus
-             const float mediaContentVisibleRatio = CGRectGetHeight(intersectWithScrollview) / CGRectGetHeight([focusCell contentArea]);
-             
-             VFocusType focusType = mediaContentVisibleRatio >= self.visibilityRatio ? VFocusTypeStream : VFocusTypeNone;
-             [focusCell setFocusType:focusType];
-         }
-     }];
+    for ( id<VFocusable> focusCell in [self visibleCells] )
+    {
+        if ( ![focusCell conformsToProtocol:@protocol(VFocusable)] || [focusCell isEqual:self.selectedCell] )
+        {
+            continue;
+        }
+        
+        // Calculate visible ratio for just the media content of the cell
+        const CGRect contentFrameInCell = [focusCell contentArea];
+        
+        if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
+        {
+            // Convert media view's frame to parent view of scroll view
+            CGRect mediaVisibility = [(UIView *)focusCell convertRect:[focusCell contentArea] toView:self.scrollView.superview];
+            
+            // Inset the focus area
+            CGRect focusFrame = UIEdgeInsetsInsetRect(self.scrollView.frame, self.focusAreaInsets);
+            
+            // Determine intersect with the scroll view's frame
+            CGRect intersectWithScrollview = CGRectIntersection(focusFrame, mediaVisibility);
+            
+            // Determine if we see enough of the content to put it in focus
+            const float mediaContentVisibleRatio = CGRectGetHeight(intersectWithScrollview) / CGRectGetHeight([focusCell contentArea]);
+            
+            VFocusType focusType = mediaContentVisibleRatio >= self.visibilityRatio ? VFocusTypeStream : VFocusTypeNone;
+            [focusCell setFocusType:focusType];
+        }
+    }
 }
 
 - (void)endFocusOnCell:(UIView *)cell

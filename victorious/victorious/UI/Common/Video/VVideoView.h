@@ -8,42 +8,12 @@
 
 @import UIKit;
 
-@class VVideoView;
-@class AVPlayer;
+#import "VVideoViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol VVideoViewDelegate <NSObject>
-
-/**
- All pre-processing of video is complete and it can now be played
- by calling the `play` method of `VVideoView`.
- */
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView;
-
-@optional
-
-/**
- This video view's video reached the end
- */
-- (void)videoDidReachEnd:(VVideoView *)videoView;
-
-/**
- Called when the video's buffer is empty
- */
-- (void)videoViewDidStartBuffering:(VVideoView *)videoView;
-
-/**
- Called when the video's buffer is likely to keep up
- */
-- (void)videoViewDidStopBuffering:(VVideoView *)videoView;
-
-/**
- Called as the video view is playing with the amount of the video watched as a percentage
- */
-- (void)videoView:(VVideoView *)videoView didProgressWithPercentComplete:(float)percent;
-
-@end
+@class VVideoView;
+@class AVPlayer;
 
 /**
  A simple video player without any play back controls.
@@ -103,10 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)reset;
 
-/**
- Returns the current time of video playback;
- */
-- (NSUInteger)currentTimeMilliseconds;
+@property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
+
+@property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
+
+@property (nonatomic, readonly, assign) Float64 durationSeconds;
 
 NS_ASSUME_NONNULL_END
 

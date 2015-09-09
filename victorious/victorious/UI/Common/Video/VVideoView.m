@@ -342,19 +342,25 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)didPlayToTime:(CMTime)time
 {
-    Float64 durationInSeconds = CMTimeGetSeconds( self.player.currentItem.duration );
-    Float64 timeInSeconds     = CMTimeGetSeconds(time);
-    float percentElapsed      = timeInSeconds / durationInSeconds * 100.0f;
-    
-    if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
+    if ([self.delegate respondsToSelector:@selector(videoView:didPlayToTime:)])
     {
-        [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
+        [self.delegate videoView:self didPlayToTime:self.currentTimeSeconds];
     }
+}
+
+- (Float64)durationSeconds
+{
+    return CMTimeGetSeconds( self.player.currentItem.duration );
+}
+
+- (Float64)currentTimeSeconds
+{
+    return CMTimeGetSeconds( self.player.currentItem.currentTime );
 }
 
 - (NSUInteger)currentTimeMilliseconds
 {
-    return (NSUInteger)(CMTimeGetSeconds( self.player.currentTime ) * 1000.0);
+    return (NSUInteger)(self.currentTimeSeconds * 1000.0);
 }
 
 NS_ASSUME_NONNULL_END

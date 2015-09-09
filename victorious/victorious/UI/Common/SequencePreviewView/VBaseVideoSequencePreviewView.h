@@ -54,6 +54,6 @@
  *
  *  @parameter visible If YES, the background container is made visible without animation.
  */
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible;
+- (void)setBackgroundContainerViewVisible:(BOOL)visible;
 
 @end

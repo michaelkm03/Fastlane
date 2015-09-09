@@ -32,7 +32,7 @@
                     audioMuted:asset.audioMuted.boolValue
             alongsideAnimation:^
      {
-         [weakSelf makeBackgroundContainerViewVisible:YES];
+         [weakSelf setBackgroundContainerViewVisible:YES];
      }];
 }
 

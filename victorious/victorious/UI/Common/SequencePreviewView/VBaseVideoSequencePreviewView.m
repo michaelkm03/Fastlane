@@ -22,6 +22,7 @@
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
 
+
 @interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) UIView *backgroundContainerView;
@@ -69,7 +70,7 @@
 {
     [super setSequence:sequence];
     
-    [self makeBackgroundContainerViewVisible:NO];
+    [self setBackgroundContainerViewVisible:NO];
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
@@ -91,7 +92,7 @@
                         alongsideAnimations:^
      {
          __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         [strongSelf makeBackgroundContainerViewVisible:YES];
+         [strongSelf setBackgroundContainerViewVisible:YES];
      }
                                  completion:^(UIImage *image)
      {
@@ -119,7 +120,7 @@
 {
     if (self.focusType)
     {
-        [self makeBackgroundContainerViewVisible:YES];
+        [self setBackgroundContainerViewVisible:YES];
     }
 }
 
@@ -130,7 +131,7 @@
     _focusType = focusType;
     if ( focusType != VFocusTypeNone )
     {
-        [self makeBackgroundContainerViewVisible:YES];
+        [self setBackgroundContainerViewVisible:YES];
     }
 }
 
@@ -156,7 +157,6 @@
     }
     
     _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor redColor];
     _backgroundContainerView.alpha = 0.0f;
     [self addSubview:_backgroundContainerView];
     [self sendSubviewToBack:_backgroundContainerView];
@@ -164,7 +164,7 @@
     return _backgroundContainerView;
 }
 
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+- (void)setBackgroundContainerViewVisible:(BOOL)visible
 {
     self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
