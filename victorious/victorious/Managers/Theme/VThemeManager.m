@@ -12,7 +12,6 @@
 #pragma mark - new theme constants
 
 NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
-NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts
 
@@ -82,30 +81,9 @@ NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
     return [self themedColorForKey:kVBackgroundColor];
 }
 
-- (UIImage *)themedBackgroundImageForDevice
-{
-    return [self themedImageForKey:kVMenuBackgroundImage];
-}
-
 - (UIColor *)themedColorForKey:(NSString *)key
 {
     return [self.dependencyManager colorForKey:key];
-}
-
-- (UIImage *)themedImageForKey:(NSString *)key
-{
-    // This is a terrible hack. By default the header image is a 1x1 pt image. If this is what we get back in themedImageForKey return nil.
-    if ([key isEqualToString:VThemeManagerHomeHeaderImageKey])
-    {
-        UIImage *headerImage = [UIImage imageNamed:VThemeManagerHomeHeaderImageKey];
-        if ((headerImage.size.width == 1) && (headerImage.size.height == 1))
-        {
-            return nil;
-        }
-        return headerImage;
-    }
-    
-    return [UIImage imageNamed:key];
 }
 
 - (UIFont *)themedFontForKey:(NSString *)key
