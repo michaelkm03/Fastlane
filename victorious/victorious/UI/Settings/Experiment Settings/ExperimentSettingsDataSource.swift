@@ -12,14 +12,14 @@ import VictoriousCommon
 /// Designed to provided an `ExperimentSettingsDataSource` instance with a reference to
 /// the table view it's feeding so that it can reload it or get access to individual cells
 /// that need updating based on changes in the data model
-protocol ExperimentSettingsDataSourceDelegate {
+protocol ExperimentSettingsDataSourceDelegate: class {
     var tableView: UITableView! { get }
     var dependencyManager: VDependencyManager? { get }
 }
 
 class ExperimentSettingsDataSource: NSObject {
     
-    var delegate:ExperimentSettingsDataSourceDelegate?
+    weak var delegate:ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
         static let unmodified = UIColor.grayColor()

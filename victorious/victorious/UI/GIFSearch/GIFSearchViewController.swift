@@ -41,7 +41,7 @@ class GIFSearchViewController: UIViewController {
     let searchDataSource = GIFSearchDataSource()
     private lazy var mediaExporter = GIFSearchMediaExporter()
     
-    var delegate: GIFSearchViewControllerDelegate?
+    weak var delegate: GIFSearchViewControllerDelegate?
     
     static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)

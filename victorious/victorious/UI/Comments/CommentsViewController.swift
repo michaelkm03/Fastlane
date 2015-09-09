@@ -126,15 +126,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
-    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-        self.resignFirstResponder()
+        collectionView.resignFirstResponder()
         collectionView.flashScrollIndicators()
         focusHelper?.endFocusOnAllCells()
     }
@@ -500,5 +495,4 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
     }
-    
 }
