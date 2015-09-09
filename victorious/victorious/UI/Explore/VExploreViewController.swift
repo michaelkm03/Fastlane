@@ -8,14 +8,16 @@
 
 import UIKit
 
-/// Base view controller for the explore screen that gets
-/// presented when "explore" button on the tab bar is tapped
 
+/// View Controllers conform to this protocol to handle
+/// search result navigation(e.g. tap on a user result, or hashtag result)
 @objc protocol ExploreSearchResultNavigationDelegate {
     
     func navigateToResult(viewController: UIViewController, animated: Bool)
 }
 
+/// Base view controller for the explore screen that gets
+/// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
     
     private struct Constants {
@@ -153,6 +155,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     }
 }
 
+//WARNING: The keys used here will be changed after we receive the template update from CMS
 private extension VDependencyManager {
     var textFont: UIFont {
         return fontForKey(VDependencyManagerLabel2FontKey)
@@ -239,7 +242,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
                 }
             }
         }
-            // Navigating to a single stream
+        // Navigating to a single stream
         else if stream.isSingleStream {
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
         }
@@ -250,7 +253,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             streamViewController.targetStreamItem = streamItem
             navigationController?.pushViewController(streamViewController, animated: true)
         }
-            // else Show the stream of streams
+        // else Show the stream of streams
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType(
                 VDirectoryCollectionViewController.self,

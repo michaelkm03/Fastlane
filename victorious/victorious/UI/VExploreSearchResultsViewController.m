@@ -2,7 +2,7 @@
 //  VExploreSearchResultsViewController.m
 //  victorious
 //
-//  Created by Lawrence Leach on 1/27/15.
+//  Created by Tian Lan on 9/4/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 #import "VExploreSearchResultsViewController.h"

@@ -294,6 +294,4 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     }
 }
 
-#pragma mark - ExploreSearchResultNavigationDelegate
-
 @end
