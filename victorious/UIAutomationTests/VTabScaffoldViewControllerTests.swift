@@ -10,16 +10,21 @@ import Foundation
 
 /// These tests are broken up due to not having a hook before a test method is run and not wanting to wait any longer than necessary
 
-class VTabScaffoldViewControllerAutoShowsLoginTests: LoggedOutVictoriousTestCase {
+class VTabScaffoldViewControllerAutoShowsLoginTests: VictoriousTestCase {
     
     override var testDescription: String {
         return "Tests some configurations of the scaffold."
     }
     
-    override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) -> (VTemplateDecorator) {
+    override func beforeAll() {
+        super.beforeAll()
+    
+        self.logOutAndResetSession()
+    }
+    
+    override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) {
         defaultTemplateDecorator.setTemplateValue(NSNumber(bool: true), forKeyPath: "scaffold/showLoginOnStartup")
         self.addStep("set scaffold/showLoginOnStartup in template to true")
-        return defaultTemplateDecorator
     }
     
     func testAutoShowLogin() {
@@ -29,17 +34,22 @@ class VTabScaffoldViewControllerAutoShowsLoginTests: LoggedOutVictoriousTestCase
     
 }
 
-class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: LoggedOutVictoriousTestCase {
+class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
     
     override var testDescription: String {
         return "Tests some configurations of the scaffold."
     }
     
-    override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) -> (VTemplateDecorator) {
+    override func beforeAll() {
+        super.beforeAll()
+        
+        self.logOutAndResetSession()
+    }
+    
+    override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) {
         println("configuring scaffold tests!")
         defaultTemplateDecorator.setTemplateValue(NSNumber(bool: false), forKeyPath: "scaffold/showLoginOnStartup")
         self.addStep("set scaffold/showLoginOnStartup in template to false")
-        return defaultTemplateDecorator
     }
     
     func testDoesNotAutoShow() {

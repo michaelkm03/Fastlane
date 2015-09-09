@@ -9,10 +9,16 @@
 import KIF
 import UIKit
 
-class ContentCreationTests: LoggedInVictoriousTestCase {
+class ContentCreationTests: VictoriousTestCase {
     
     override var testDescription: String {
         return "Tests the various types of content creation available to users."
+    }
+    
+    override func beforeAll() {
+        super.beforeAll()
+        
+        self.loginAndDismissWelcomeIfPresent()
     }
     
     func testCreateImage() {

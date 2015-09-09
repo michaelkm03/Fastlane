@@ -11,36 +11,6 @@ import KIF
 
 var shouldResetSession = false
 
-// MARK: - Logged in state subclasses
-
-class LoggedOutVictoriousTestCase: VictoriousTestCase {
-    
-    override func beforeAll() {
-        super.beforeAll()
-        
-        let login = VStoredLogin()
-        login.clearLoggedInUserFromDisk()
-        self.addStep("logout")
-        
-        self.resetSession()
-    }
-}
-
-class LoggedInVictoriousTestCase: VictoriousTestCase {
-    
-    override func beforeAll() {
-        super.beforeAll()
-        
-        // Login if forced login is presented
-        self.loginIfRequired()
-        self.addStep( "Logs in using email if test is run while no user is logged in." )
-        
-        self.dismissWelcomeIfPresent()
-        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
-    }
-    
-}
-
 class VictoriousTestCase: KIFTestCase {
     
     private static var shouldAppend = false
@@ -98,20 +68,19 @@ class VictoriousTestCase: KIFTestCase {
     // MARK: Template Configuration
     
     /// Provides VictoriousTextCase subclasses a chance to configure the template as appropriate for the particular test.
-    /// This will be called in `beforeAll()` and `beforeEach()` of VictoriousTextCase. **BEFORE** resetSession is called.
-    /// The default implementation of this method simply returns the passed in `VTemplateDecorator`.
+    /// This will be called in `resetSession()` of VictoriousTextCase.
+    /// The default implementation of this method simply does nothing.
     ///
     /// :param: decorator A VTemplateDecorator pre-populated with what is returned from the server or has already been cached.
-    func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) -> (VTemplateDecorator) {
-        return defaultTemplateDecorator
+    func configureTemplate(defaultTemplateDecorator: VTemplateDecorator){
     }
     
     private func configureTemplateIfNecessary() {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
-                loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) -> VTemplateDecorator! in
-                    return self.configureTemplate(decorator)
+                loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
+                    self.configureTemplate(decorator)
                 }
         }
     }
@@ -216,6 +185,28 @@ class VictoriousTestCase: KIFTestCase {
             self.tester().waitForTimeInterval( 3.0 )
         }
     }
+    
+    // MARK: - Login/Logout Helpers
+    
+    func logOutAndResetSession() {
+        
+        let login = VStoredLogin()
+        login.clearLoggedInUserFromDisk()
+        self.addStep("logout")
+        
+        self.resetSession()
+    }
+    
+    func loginAndDismissWelcomeIfPresent() {
+        
+        // Login if forced login is presented
+        self.loginIfRequired()
+        self.addStep( "Logs in using email if test is run while no user is logged in." )
+        
+        self.dismissWelcomeIfPresent()
+        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
+    }
+    
 }
 
 private extension String {
