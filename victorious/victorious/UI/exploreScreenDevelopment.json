@@ -4442,9 +4442,9 @@
             "destination":
             {
                 "name":"explore.screen",
-                "font.label2":
+                "font.label3":
                 {
-                    "fontName":"Oswald-Regular",
+                    "fontName":"MavenPro-Regular",
                     "fontSize":12
                 },
                 "color.text.secondary":
@@ -4454,7 +4454,7 @@
                     "blue":0,
                     "alpha":1
                 },
-                "color.accent":
+                "color.background":
                 {
                     "red":255,
                     "green":255,
@@ -4472,6 +4472,43 @@
                         "alpha":255
                     }
                 },
+                "color.text.content": {
+                    "red": 38,
+                    "green": 39,
+                    "blue": 38,
+                    "alpha": 255
+                  },
+                  "color.accent": {
+                    "red": 230,
+                    "green": 233,
+                    "blue": 237,
+                    "alpha": 255
+                  },
+                  "color.link": {
+                    "red": 184,
+                    "green": 54,
+                    "blue": 191,
+                    "alpha": 1
+                  },
+                  "followed_user_background_icon": {
+                    "imageURL": "followed_user_background_icon"
+                  },
+                  "followed_user_icon": {
+                    "imageURL": "followed_user_icon"
+                  },
+                  "follow_user_icon": {
+                    "imageURL": "follow_user_icon"
+                  },
+                  "font.heading2": {
+                    "fontName": "OpenSans-SemiBold",
+                    "fontSize": 20
+                  },
+                  "color.text": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 255
+                  },
                 "destinationStream": {
                   "name": "stream.screen",
                   "title": null,

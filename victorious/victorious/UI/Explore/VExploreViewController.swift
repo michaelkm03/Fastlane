@@ -155,10 +155,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     }
 }
 
-//WARNING: The keys used here will be changed after we receive the template update from CMS
 private extension VDependencyManager {
     var textFont: UIFont {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return fontForKey(VDependencyManagerLabel3FontKey)
     }
     
     var textColor: UIColor {
@@ -166,7 +165,7 @@ private extension VDependencyManager {
     }
     
     var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return colorForKey(VDependencyManagerBackgroundColorKey)
     }
 }
 
