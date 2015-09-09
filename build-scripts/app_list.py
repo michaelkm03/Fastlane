@@ -25,7 +25,7 @@ sys.dont_write_bytecode = True
 _APPLIST_ENDPOINT = '/api/app/apps'
 
 
-def fetchAppList():
+def fetchAppList(server):
     """
     Retrieves the list of ACTIVE (Locked or Unlocked) apps from VAMS
 
@@ -65,7 +65,7 @@ def fetchAppList():
                                                              ccodes.color_codes.ENDC, build_name, state)
             app_count = app_count + 1
 
-        print '----------------\nTotal of %s Apps\n' % app_count
+        print '----------------\nTotal of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
 
     else:
         print 'No app data found. Uhh... obviously, something went wrong.'
@@ -81,7 +81,10 @@ def main(argv):
 
     vams.init()
 
-    server = argv[1]
+    if len(argv) == 1:
+        server = 'production'
+    else:
+        server = argv[1]
 
     global _DEFAULT_HOST
     if server.lower() == 'dev':
@@ -100,7 +103,7 @@ def main(argv):
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 
     if vams.authenticateUser(_DEFAULT_HOST):
-        fetchAppList()
+        fetchAppList(server)
     else:
         print 'There was a problem authenticating with the Victorious backend. Exiting now...'
         sys.exit(1)
