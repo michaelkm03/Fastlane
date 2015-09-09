@@ -39,6 +39,9 @@ def init():
     global _AUTH_TOKEN
     global _PLATFORM_ANDROID
     global _PLATFORM_IOS
+    global _STATE_ARCHIVED
+    global _STATE_LOCKED
+    global _STATE_UNLOCKED
     global _QA_PROVISIONING_PROFILE
     global _STAGING_PROVISIONING_PROFILE
 
@@ -62,6 +65,10 @@ def init():
 
     _PLATFORM_ANDROID = 'android'
     _PLATFORM_IOS = 'ios'
+
+    _STATE_ARCHIVED = 'archived'
+    _STATE_LOCKED = 'locked'
+    _STATE_UNLOCKED = 'unlocked'
 
     _DEFAULT_PLATFORM = _PLATFORM_ANDROID
     _PRODUCTION_HOST = 'https://api.getvictorious.com'
@@ -173,4 +180,20 @@ def calcAuthHash(endpoint, reqMethod):
     """
     return hashlib.sha1(_DEFAULT_HEADER_DATE + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
                         reqMethod).hexdigest()
+
+
+def assetFetcher(url, filename):
+    """
+    Requests an asset using a provided url and writes it to a folder
+    :param url:
+        The url of the asset to download
+
+    :param filename:
+        The filename / location to write the downloaded asset to
+    """
+
+    response = requests.get(url)
+    if len(response.content) > 0:
+        with open(filename, 'wb') as outfile:
+            outfile.write(response.content)
 
