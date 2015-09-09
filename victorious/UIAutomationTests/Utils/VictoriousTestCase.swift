@@ -23,7 +23,7 @@ class LoggedOutVictoriousTestCase: VictoriousTestCase {
         self.addStep("logout")
         
         self.resetSession()
-        self.tester().acknowledgeSystemAlert()
+        UIAutomationHelper.self.acknowledgeSystemAlert()
     }
 }
 
@@ -107,7 +107,7 @@ class VictoriousTestCase: KIFTestCase {
         return defaultTemplateDecorator
     }
     
-    func configureTemplateIfNecessary() {
+    private func configureTemplateIfNecessary() {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
