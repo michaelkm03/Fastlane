@@ -20,9 +20,9 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     var dependencyManager: VDependencyManager? {
         didSet {
             if let dependencyManager = dependencyManager {
-                titleLabel.font = dependencyManager.labelTextFont()
-                titleLabel.textColor = dependencyManager.labelTextColor()
-                if let text = dependencyManager.labelText() {
+                titleLabel.font = dependencyManager.labelTextFont
+                titleLabel.textColor = dependencyManager.labelTextColor
+                if let text = dependencyManager.labelText {
                     titleLabel.text = String(text)
                 }
             }
@@ -33,7 +33,7 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        v_addFitToParentConstraintsToSubview(titleLabel, leading: 11, trailing: 0, top: 0, bottom: 0)
+        v_addFitToParentConstraintsToSubview(titleLabel, leading: 11, trailing: 11, top: 0, bottom: 0)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -46,7 +46,7 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     
     class func desiredHeight(dependencyManager: VDependencyManager) -> CGFloat {
         var height = Constants.baseHeight
-        if let font = dependencyManager.labelTextFont(), text = dependencyManager.labelText() {
+        if let font = dependencyManager.labelTextFont, text = dependencyManager.labelText {
             return text.frameSizeForWidth(CGFloat.max, andAttributes: [ NSFontAttributeName : font ]).height
         }
         return height
@@ -55,15 +55,15 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
 
 private extension VDependencyManager {
     
-    func labelTextFont() -> UIFont? {
+    var labelTextFont: UIFont? {
         return fontForKey(VDependencyManagerHeading3FontKey)
     }
     
-    func labelTextColor() -> UIColor? {
+    var labelTextColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
     
-    func labelText() -> NSString? {
+    var labelText: NSString? {
         return stringForKey(RecentPostsExploreHeaderView.kTitleKey)
     }
 }

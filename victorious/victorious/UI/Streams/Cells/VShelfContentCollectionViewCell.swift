@@ -33,50 +33,24 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            if streamItem?.itemSubType == VStreamItemSubTypeText && !supportsTextPosts {
-                //Dealing with a text post
-                if previewView.conformsToProtocol(VImagePreviewView.self) {
-                    updatePreviewView(streamItem)
-                    return
-                }
-                previewView.removeFromSuperview()
-                
-                previewView = VImageSequencePreviewView(frame: CGRect.zeroRect)
-                previewView.dependencyManager = dependencyManager
-                updatePreviewView(streamItem)
-            }
-            else {
-                previewView.removeFromSuperview()
-                
-                previewView = VStreamItemPreviewView(streamItem: streamItem)
-                previewView.dependencyManager = dependencyManager
-                updatePreviewView(streamItem)
-            }
+            previewView.removeFromSuperview()
+            
+            previewView = VStreamItemPreviewView(streamItem: streamItem)
+            previewView.dependencyManager = dependencyManager
+            updatePreviewView(streamItem)
         }
     }
     
     private func updatePreviewView(streamItem: VStreamItem?) {
         if let streamItem = streamItem {
-            if let videoPreviewView = previewView as? VBaseVideoSequencePreviewView {
-                videoPreviewView.onlyShowPreview = true
+            
+            if ( !previewView.onlyShowPreview )
+            {
+                previewView.onlyShowPreview = true
             }
             
-            if let dependencyManager = previewView.dependencyManager {
-                if streamItem.itemSubType != VStreamItemSubTypeText || supportsTextPosts {
-                    if let imagePreviewView = previewView as? VImagePreviewView {
-                        previewView.backgroundColor = UIColor.clearColor()
-                        imagePreviewView.previewImageView().contentMode = UIViewContentMode.ScaleAspectFill
-                    }
-                    previewView.streamItem = streamItem
-                }
-                else if let imagePreviewView = previewView as? VImagePreviewView {
-                    imagePreviewView.previewImageView().image = UIImage(named: "textPostThumbnail")
-                    imagePreviewView.previewImageView().contentMode = UIViewContentMode.Center
-                    imagePreviewView.setBackgroundContainerViewVisible(true)
-                    previewView.backgroundColor = dependencyManager.textPostBackgroundColor
-                }
-            }
-            else {
+            if ( previewView.streamItem != streamItem )
+            {
                 previewView.streamItem = streamItem
             }
             
@@ -166,14 +140,6 @@ extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
     func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
-    }
-    
-}
-
-private extension VDependencyManager {
-    
-    var textPostBackgroundColor: UIColor {
-        return colorForKey("color.standard.textPost")
     }
     
 }
