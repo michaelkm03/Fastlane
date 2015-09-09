@@ -191,7 +191,7 @@
     
     if (self.navigationDelegate != nil)
     {
-        [self.navigationDelegate navigateToResult:profileViewController animated:YES];
+        [self.navigationDelegate selectedUserResult:user];
     }
     else
     {

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class VDependencyManager, VUserSearchResultsViewController;
+
 @protocol ExploreSearchResultNavigationDelegate;
 
 /**

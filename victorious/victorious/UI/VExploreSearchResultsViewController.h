@@ -9,6 +9,7 @@
 #import "VUsersAndTagsSearchViewController.h"
 
 @class VDependencyManager, VExploreSearchResultsViewController;
+
 @protocol ExploreSearchResultNavigationDelegate;
 
 /// The view controller to manage the presentation of explore search results

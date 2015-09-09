@@ -12,12 +12,13 @@ import UIKit
 /// View Controllers conform to this protocol to handle
 /// search result navigation(e.g. tap on a user result, or hashtag result)
 @objc protocol ExploreSearchResultNavigationDelegate {
-    func navigateToResult(viewController: UIViewController, animated: Bool)
+    func selectedUserResult(user: VUser)
+    func selectedHashtagResult(hashtag: VHashtag)
 }
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
@@ -164,7 +165,7 @@ private extension VDependencyManager {
     }
     
     var backgroundColor: UIColor {
-        return colorForKey(VDependencyManagerBackgroundColorKey)
+        return colorForKey(VDependencyManagerSecondaryAccentColorKey)
     }
 }
 
@@ -317,8 +318,18 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
 }
 
 extension VExploreViewController: ExploreSearchResultNavigationDelegate {
-    func navigateToResult(viewController: UIViewController, animated: Bool) {
-        v_navigationController().innerNavigationController.pushViewController(viewController, animated: animated)
+    func selectedUserResult(user: VUser) {
+        if let dependencyManager = self.dependencyManager {
+            let viewController = dependencyManager.userProfileViewControllerWithUser(user)
+            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    func selectedHashtagResult(hashtag: VHashtag) {
+        if let dependencyManager = self.dependencyManager {
+            let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
+            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
+        }
     }
 }
 

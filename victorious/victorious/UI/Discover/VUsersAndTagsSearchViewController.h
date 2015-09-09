@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-@class VDependencyManager, VUsersAndTagsSearchViewController;
-@class VUserSearchResultsViewController, VTagsSearchResultsViewController;
+@class VDependencyManager, VUsersAndTagsSearchViewController,
+VUserSearchResultsViewController, VTagsSearchResultsViewController;
 
 extern NSString * const kVUserSearchResultsChangedNotification;
 extern NSString * const kVHashtagsSearchResultsChangedNotification;
