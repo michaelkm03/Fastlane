@@ -50,6 +50,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _locationManager.delegate = nil;
+}
+
 + (BOOL)haveLocationServicesPermission
 {
     if ( [CLLocationManager locationServicesEnabled] && ( [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse ) )

@@ -44,6 +44,12 @@ static const NSUInteger kCharacterLimit = 60;
     return textToolViewController;
 }
 
+- (void)dealloc
+{
+    _textStorage.delegate = nil;
+    _textView.delegate = nil;
+}
+
 #pragma mark - UIViewController
 #pragma mark Lifecycle Methods
 

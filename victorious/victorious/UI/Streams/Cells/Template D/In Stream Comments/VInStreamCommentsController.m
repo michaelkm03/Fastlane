@@ -48,6 +48,12 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 0.0f, 0.0f, 2.0f };
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 - (void)setLeftInset:(CGFloat)leftInset
 {
     BOOL needsUpdate = _leftInset != leftInset;

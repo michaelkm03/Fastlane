@@ -61,7 +61,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 @implementation VDirectoryCollectionViewController
 
-@synthesize collectionView;
+@synthesize collectionView = _collectionView;
 
 #pragma mark - Initializers
 
@@ -127,6 +127,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSObject <VDirectoryCellFactory> *cellFactory = [[VDirectoryContentCellFactory alloc] initWithDependencyManager:dependencyManager];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
+}
+
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
 }
 
 #pragma mark - Shared setup

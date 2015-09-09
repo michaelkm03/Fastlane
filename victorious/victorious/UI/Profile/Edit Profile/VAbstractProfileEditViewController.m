@@ -43,6 +43,13 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 @implementation VAbstractProfileEditViewController
 
+- (void)dealloc
+{
+    _usernameTextField.delegate = nil;
+    _locationTextField.delegate = nil;
+    _taglineTextView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
