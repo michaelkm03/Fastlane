@@ -36,13 +36,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     private var marqueeShelfFactory: VMarqueeCellFactory?
     
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager? {
-        didSet {
-            if let dependencyManager = dependencyManager {
-                trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
-            }
-        }
-    }
+    private(set) var dependencyManager: VDependencyManager?
     private var trackingMinRequiredCellVisibilityRatio: CGFloat = 0
     
     private struct SectionRange {
@@ -71,6 +65,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             // Factory for trending topic shelf
             exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
             exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
+            exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
             return exploreVC
         }
         fatalError("Failed to instantiate an explore view controller!")
@@ -240,7 +235,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     
     /// MARK: Tracking
     
-    func trackVisibleCells() {
+    private func trackVisibleCells() {
         dispatch_after(0.1) {
             for cell in self.collectionView.visibleCells() {
                 if let cell = cell as? TrendingTopicShelfCollectionViewCell {

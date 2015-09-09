@@ -186,7 +186,7 @@
     __block BOOL doesEventExistForKey = NO;
     [self.queuedEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
      {
-         BOOL matchesEventId = [event.eventId isEqual:eventId] || eventId == nil;
+         BOOL matchesEventId = [event.eventId isEqualToString:eventId] || eventId == nil;
          BOOL matchesEventName = event.name == eventName;
          BOOL matchesStream = [parameters[VTrackingKeyStreamId] isEqualToString:event.parameters[VTrackingKeyStreamId]];
          if ( matchesEventId && matchesEventName && matchesStream )
@@ -215,12 +215,6 @@
         NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
     }
-}
-
-- (void)dequeuedAllEvents
-{
-    [self trackEvents:self.queuedEvents];
-    self.queuedEvents = [[NSMutableArray alloc] init];
 }
 
 - (void)clearQueuedEventsWithName:(NSString *)eventName
