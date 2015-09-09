@@ -78,6 +78,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         })
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        v_navigationController().view.setNeedsLayout()
+    }
+    
     /// MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -298,8 +304,8 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         if let streamItem = event.streamItem as? VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
-            VContentViewPresenter.presentContentViewFromViewController(
-                self, withDependencyManager: dependencyManager,
+            VContentViewPresenter.presentContentViewFromViewController(self,
+                withDependencyManager: dependencyManager,
                 forSequence: event.streamItem as? VSequence,
                 inStreamWithID: streamID,
                 commentID: nil,
@@ -312,5 +318,12 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
 extension VExploreViewController: ExploreSearchResultNavigationDelegate {
     func navigateToResult(viewController: UIViewController, animated: Bool) {
         v_navigationController().innerNavigationController.pushViewController(viewController, animated: animated)
+    }
+}
+
+extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
+    func reselected() {
+        v_navigationController().setNavigationBarHidden(false)
+        collectionView.setContentOffset(CGPointZero, animated: true)
     }
 }
