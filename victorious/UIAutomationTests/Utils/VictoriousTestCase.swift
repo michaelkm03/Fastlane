@@ -23,7 +23,6 @@ class LoggedOutVictoriousTestCase: VictoriousTestCase {
         self.addStep("logout")
         
         self.resetSession()
-        UIAutomationHelper.self.acknowledgeSystemAlert()
     }
 }
 
