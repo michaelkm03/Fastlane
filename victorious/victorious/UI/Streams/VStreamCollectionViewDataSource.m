@@ -96,9 +96,10 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (NSArray *)streamItemsWithoutShelves
 {
-    return [self.stream.streamItems.array filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings) {
+    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings) {
         return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
-    }]];
+    }];
+    return [self.stream.streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate];
 }
 
 - (void)removeKVOObservers

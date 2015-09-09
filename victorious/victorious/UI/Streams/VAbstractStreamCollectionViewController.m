@@ -356,7 +356,6 @@
 - (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
 {
     return [self.collectionView numberOfItemsInSection:section] > 1;
-
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
