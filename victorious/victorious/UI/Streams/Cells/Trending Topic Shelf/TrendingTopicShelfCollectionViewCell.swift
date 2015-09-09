@@ -184,7 +184,7 @@ extension TrendingTopicShelfCollectionViewCell: VBackgroundContainer {
 private extension VDependencyManager {
     
     var titleFont: UIFont {
-        return fontForKey(VDependencyManagerHeading2FontKey)
+        return fontForKey(VDependencyManagerHeading3FontKey)
     }
     
     var titleColor: UIColor {

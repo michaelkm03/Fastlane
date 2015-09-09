@@ -442,7 +442,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
         }
         else {
-            assertionFailure("Unable to retrive a collection view cell for the ")
+            assertionFailure("Explore View controller was unable to retrive a marquee cell at the provided index path")
         }
     }
     

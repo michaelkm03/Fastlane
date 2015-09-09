@@ -11,7 +11,7 @@ import UIKit
 /// A header view that displays a stylized title based on the provided dependency manager
 class RecentPostsExploreHeaderView: UICollectionReusableView {
     
-    static let kTitleKey = "stream.title"
+    private static let kTitleKey = "stream.title"
     
     private struct Constants {
         static let baseHeight: CGFloat = 24
@@ -28,7 +28,7 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
             }
         }
     }
-    let titleLabel = UILabel()
+    private let titleLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,10 +53,10 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     }
 }
 
-extension VDependencyManager {
+private extension VDependencyManager {
     
     func labelTextFont() -> UIFont? {
-        return fontForKey(VDependencyManagerHeading2FontKey)
+        return fontForKey(VDependencyManagerHeading3FontKey)
     }
     
     func labelTextColor() -> UIColor? {
