@@ -31,8 +31,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     @IBOutlet weak private var searchBar: UISearchBar!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     private var streamShelfFactory: VStreamContentCellFactory?
-    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     private var marqueeShelfFactory: VMarqueeCellFactory?
+    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
@@ -74,8 +74,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewDidLoad()
         navigationItem.v_supplementaryHeaderView = searchBar
         
-        automaticallyAdjustsScrollViewInsets = false;
-        extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false
+        extendedLayoutIncludesOpaqueBars = true
         
         marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
@@ -90,8 +90,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         
         streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         streamDataSource.delegate = self;
-        streamDataSource.collectionView = self.collectionView;
-        collectionView.dataSource = self.streamDataSource;
+        streamDataSource.collectionView = collectionView;
+        collectionView.dataSource = streamDataSource;
         collectionView.backgroundColor = UIColor.clearColor()
     }
 
@@ -127,12 +127,12 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                 }
             }
         }
-        else if let streamItem = streamItem {
+        else if let sequence = streamItem as? VSequence {
             //Try to create a "recent content" cell
-            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(sequence, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath:indexPath) as? VShelfContentCollectionViewCell {
                 cell.dependencyManager = dependencyManager
-                cell.streamItem = streamItem
+                cell.streamItem = sequence
                 return cell
             }
         }
