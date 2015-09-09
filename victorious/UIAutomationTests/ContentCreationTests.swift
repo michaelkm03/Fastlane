@@ -19,6 +19,9 @@ class ContentCreationTests: LoggedInVictoriousTestCase {
         
         self.addStep( "Select *IMAGE* from the creation menu." )
         
+        // Log in if presented after pressing "Create"
+        self.loginIfRequired()
+        
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         
         // Log in if presented after pressing "Create"
