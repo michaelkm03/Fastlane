@@ -28,6 +28,8 @@
 #import "VTrackingManager.h"
 #import "victorious-swift.h"
 
+#import "VObjectManager+AlertTesting.h"
+
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
 static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
@@ -67,6 +69,14 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     LevelUpViewController *levelUp = [[UIStoryboard storyboardWithName:@"LevelUpScreen" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
     levelUp.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.viewControllerPresentedOn presentViewController:levelUp animated:YES completion:nil];
+    
+    [[VObjectManager sharedManager] registerTestAlert:^(NSOperation * __nullable operation, id  __nullable result, NSArray * __nonnull resultObjects)
+    {
+        NSLog(@"Alert posted");
+    } failBlock:^(NSOperation * __nullable operation, NSError * __nullable error)
+    {
+        NSLog(@"Error posting alert");
+    }];
     
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
 

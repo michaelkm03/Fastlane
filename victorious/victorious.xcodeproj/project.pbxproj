@@ -897,6 +897,10 @@
 		C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */; };
 		C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* LevelBadgeView.swift */; };
 		C3623E631B9A7BDD002B121D /* LevelUpScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */; };
+		C3623E651B9F63BD002B121D /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E641B9F63BD002B121D /* JSONSerializer.swift */; };
+		C3623E671B9F783F002B121D /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E661B9F783F002B121D /* AlertManager.swift */; };
+		C3623E6D1B9F80FA002B121D /* VObjectManager+AlertTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */; };
+		C3623E6F1B9F8986002B121D /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E6E1B9F8986002B121D /* Alert.swift */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
@@ -2923,6 +2927,11 @@
 		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelPolygonView.swift; path = "Fan Club/Level Up Screen/LevelPolygonView.swift"; sourceTree = "<group>"; };
 		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelBadgeView.swift; path = "Fan Club/Level Up Screen/LevelBadgeView.swift"; sourceTree = "<group>"; };
 		C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LevelUpScreen.storyboard; path = "Fan Club/Level Up Screen/LevelUpScreen.storyboard"; sourceTree = "<group>"; };
+		C3623E641B9F63BD002B121D /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
+		C3623E661B9F783F002B121D /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+AlertTesting.h"; sourceTree = "<group>"; };
+		C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+AlertTesting.m"; sourceTree = "<group>"; };
+		C3623E6E1B9F8986002B121D /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
 		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
@@ -3780,6 +3789,11 @@
 		0314D09119B4698800FA363C /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				C3623E6E1B9F8986002B121D /* Alert.swift */,
+				C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */,
+				C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */,
+				C3623E661B9F783F002B121D /* AlertManager.swift */,
+				C3623E641B9F63BD002B121D /* JSONSerializer.swift */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				0314D09219B4698800FA363C /* VObjectManager+Analytics.h */,
@@ -8922,6 +8936,7 @@
 				C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
+				C3623E651B9F63BD002B121D /* JSONSerializer.swift in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
@@ -9013,6 +9028,7 @@
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */,
+				C3623E6D1B9F80FA002B121D /* VObjectManager+AlertTesting.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
@@ -9398,6 +9414,7 @@
 				F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
+				C3623E671B9F783F002B121D /* AlertManager.swift in Sources */,
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
@@ -9529,6 +9546,7 @@
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
+				C3623E6F1B9F8986002B121D /* Alert.swift in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
