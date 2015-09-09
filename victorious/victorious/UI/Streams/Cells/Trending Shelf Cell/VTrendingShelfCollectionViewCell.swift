@@ -104,7 +104,7 @@ extension VTrendingShelfCollectionViewCell: TrackableShelf {
                 let intersection = streamVisibleRect.rectByIntersecting(cell.frame)
                 let visibleWidthRatio = intersection.width / cell.frame.width
                 let visibleHeightRatio = intersection.height / cell.frame.height
-                let roundedRatio = ceil(visibleWidthRatio * visibleHeightRatio * 100) / 100
+                let roundedRatio = ceil(visibleWidthRatio * visibleHeightRatio)
                 if roundedRatio >= trackingMinRequiredCellVisibilityRatio {
                     if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
                         let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
