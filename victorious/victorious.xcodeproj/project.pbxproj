@@ -1213,6 +1213,7 @@
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
+		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
@@ -3514,6 +3515,7 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
+		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
@@ -6177,6 +6179,7 @@
 				C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */,
 				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
 				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
+				F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -9130,6 +9133,7 @@
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
+				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
