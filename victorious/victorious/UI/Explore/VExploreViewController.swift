@@ -163,13 +163,13 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                 if streamItem.itemType == VStreamItemTypeShelf {
                     if recentSectionLength != 0 {
                         //Create a new section range for the section that just ended
-                        let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex))
+                        let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
                         add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                         recentSectionLength = 0
                         rangeIndex++
                     }
-                    let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex))
+                    let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                     let sectionRange = SectionRange(range: NSMakeRange(rangeStart, 1), isShelf: true)
                     add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                     rangeIndex++
@@ -179,7 +179,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                     recentSectionLength += 1
                     if streamItem == streamItems.last {
                         //Create a new section range for the section that just ended
-                        let rangeStart = streamItemIndexFor(NSIndexPath(forRow: recentSectionLength - 1, inSection: rangeIndex))
+                        let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex), inRanges:tempRanges)
                         let sectionRange = SectionRange(range: NSMakeRange(rangeStart, recentSectionLength), isShelf: false)
                         add(sectionRange, toRanges:&tempRanges, atIndex: rangeIndex)
                     }
@@ -375,11 +375,15 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
         }
     }
     
-    private func streamItemIndexFor(indexPath: NSIndexPath) -> Int {
+    private func streamItemIndexFor(indexPath: NSIndexPath, inRanges ranges: [SectionRange]? = nil) -> Int {
         let section = indexPath.section
-        if section <= sectionRanges.count {
+        var rangesToSearch = sectionRanges
+        if let ranges = ranges {
+            rangesToSearch = ranges
+        }
+        if section <= rangesToSearch.count {
             if section != 0 {
-                let priorSectionRange = sectionRanges[section - 1].range
+                let priorSectionRange = rangesToSearch[section - 1].range
                 return priorSectionRange.location + priorSectionRange.length + indexPath.row
             }
             else {
