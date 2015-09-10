@@ -15,12 +15,13 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController {
+class LevelUpViewController: UIViewController, InterstitialViewController {
     
     let model = LevelUpModel()
     
     @IBOutlet weak var dismissButton: UIButton!
     
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
     private let badgeView = LevelBadgeView()
     private let titleLabel = UILabel()
@@ -40,8 +41,13 @@ class LevelUpViewController: UIViewController {
         return collectionView
         }()
     
+    weak var interstitialDelegate: InterstitialViewControllerControl?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(blurEffectView)
+        view.sendSubviewToBack(blurEffectView)
         
         displayLink = CADisplayLink(target: self, selector: "update:")
         displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
@@ -67,7 +73,6 @@ class LevelUpViewController: UIViewController {
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
         descriptionLabel.textColor = UIColor.whiteColor()
-        
     }
     
     func update(displayLink: CADisplayLink) {
@@ -91,7 +96,7 @@ class LevelUpViewController: UIViewController {
     /// MARK: Actions
     
     @IBAction func pressedDismiss(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.interstitialDelegate?.dismissInterstitial()
     }
     
     /// MARK: Helpers
@@ -152,6 +157,8 @@ extension LevelUpViewController: UICollectionViewDataSource {
 extension LevelUpViewController {
     
     private func layoutContent() {
+        
+        view.v_addFitToParentConstraintsToSubview(blurEffectView)
         
         badgeView.setTranslatesAutoresizingMaskIntoConstraints(false)
         contentContainer.addSubview(badgeView)

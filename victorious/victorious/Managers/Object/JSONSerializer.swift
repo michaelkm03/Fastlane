@@ -8,18 +8,22 @@
 
 import Foundation
 
+/// A RKSerialization subclass that handles registering
+/// any interstitials that it finds in the response
 class JSONSerializer: NSObject, RKSerialization {
     
     static func objectFromData(data: NSData!, error: NSErrorPointer) -> AnyObject! {
         
         let responseObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: error)
         
-        // Check if we have any alerts to register
+        // Check if we have any interstitials to register
         if let responseObject = responseObject as? [String : AnyObject],
-            alerts = responseObject["alerts"] as? [[String : AnyObject]] {
-                let parsedAlerts = JSONSerializer.parseAlerts(alerts)
-                if parsedAlerts.count > 0 {
-                    AlertManager.sharedInstance.registerAlerts(parsedAlerts)
+            interstitials = responseObject["alerts"] as? [[String : AnyObject]] {
+                let parsedInterstitials = JSONSerializer.parseInterstitials(interstitials)
+                if parsedInterstitials.count > 0 {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        InterstitialManager.sharedInstance.registerInterstitials(parsedInterstitials)
+                    })
                 }
         }
         
@@ -30,15 +34,16 @@ class JSONSerializer: NSObject, RKSerialization {
         return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: error)
     }
     
-    // Class function for parsing alerts
-    private class func parseAlerts(alerts: [[String : AnyObject]]) -> [Alert] {
-        var parsedAlerts: [Alert] = []
-        for alert in alerts {
-            if let configuredAlert = Alert.configuredAlert(alert) {
-                parsedAlerts.append(configuredAlert)
+    // Class function for parsing interstitials
+    private class func parseInterstitials(interstitials: [[String : AnyObject]]) -> [Interstitial] {
+        var parsedInterstitials: [Interstitial] = []
+        for interstitial in interstitials {
+            // Instantiate and configure the correct interstitial sublass based on this payload
+            if let configuredInterstitial = Interstitial.configuredInterstitial(interstitial) {
+                parsedInterstitials.append(configuredInterstitial)
             }
         }
         
-        return parsedAlerts
+        return parsedInterstitials
     }
 }

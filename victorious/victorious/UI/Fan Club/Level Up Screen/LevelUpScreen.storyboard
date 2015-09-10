@@ -16,9 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg" translatesAutoresizingMaskIntoConstraints="NO" id="YWb-fG-x3k">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
                             <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFE-JS-uKA">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -36,19 +33,15 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="s9L-1p-Rsf" firstAttribute="trailing" secondItem="iTk-eB-hlE" secondAttribute="trailing" constant="-30" id="AUl-Zi-eoP"/>
                             <constraint firstItem="WFE-JS-uKA" firstAttribute="height" secondItem="iTk-eB-hlE" secondAttribute="height" id="PQg-08-C9M"/>
                             <constraint firstItem="WFE-JS-uKA" firstAttribute="width" secondItem="iTk-eB-hlE" secondAttribute="width" id="R2z-pl-gOF"/>
                             <constraint firstItem="dWv-QT-3WT" firstAttribute="top" secondItem="s9L-1p-Rsf" secondAttribute="bottom" constant="25" id="VqN-c2-ut7"/>
-                            <constraint firstAttribute="height" secondItem="YWb-fG-x3k" secondAttribute="height" id="W3p-Ku-AQo"/>
                             <constraint firstAttribute="centerY" secondItem="WFE-JS-uKA" secondAttribute="centerY" id="ZBo-K7-C5V"/>
                             <constraint firstItem="s9L-1p-Rsf" firstAttribute="leading" secondItem="iTk-eB-hlE" secondAttribute="leading" constant="30" id="dzQ-sg-spf"/>
-                            <constraint firstAttribute="centerY" secondItem="YWb-fG-x3k" secondAttribute="centerY" id="kri-tM-6Yi"/>
-                            <constraint firstAttribute="centerX" secondItem="YWb-fG-x3k" secondAttribute="centerX" id="suY-C3-X0m"/>
                             <constraint firstAttribute="centerX" secondItem="WFE-JS-uKA" secondAttribute="centerX" id="x5q-QB-BTr"/>
-                            <constraint firstAttribute="width" secondItem="YWb-fG-x3k" secondAttribute="width" id="xyr-qe-kD5"/>
                         </constraints>
                     </view>
                     <connections>
@@ -59,7 +52,4 @@
             </objects>
         </scene>
     </scenes>
-    <resources>
-        <image name="bg" width="800" height="600"/>
-    </resources>
 </document>
