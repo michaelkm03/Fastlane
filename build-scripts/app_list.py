@@ -77,6 +77,28 @@ def cleanUp():
     subprocess.call('find . -name \'*.pyc\' -delete', shell=True)
 
 
+def showProperUsage():
+        print ''
+        print 'Displays a list of currently active apps in VAMS'
+        print 'Usage: ./app_list.py <environment>'
+        print ''
+        print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
+        print ''
+        print 'NOTE: '
+        print 'If no <environment> parameter is provided, the script will use PRODUCTION.'
+        print ''
+        print 'examples:'
+        print './app_list.py         <-- will use PRODUCTION'
+        print './app_list.py qa      <-- will use QA'
+        print './app_list.py -h      <-- Displays this help screen'
+        print './app_list.py -help   <-- Displays this help screen'
+        print './app_list.py --help  <-- Displays this help screen'
+        print ''
+        print 'search:'
+        print './app_list.py dev | grep \'Ryan\'    <-- Simple case-sensitive search'
+        sys.exit(1)
+
+
 def main(argv):
 
     vams.init()
@@ -84,7 +106,10 @@ def main(argv):
     if len(argv) == 1:
         server = 'production'
     else:
-        server = argv[1]
+        if argv[1] == '-h' or argv[1] == '--help' or argv[1] == '-help':
+            showProperUsage()
+        else:
+            server = argv[1]
 
     global _DEFAULT_HOST
     if server.lower() == 'dev':
