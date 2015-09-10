@@ -38,6 +38,7 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
 - (void)userSearch:(NSString *)userName;
 - (void)hashtagSearch:(NSString *)tagName;
 - (BOOL)textFieldShouldClear:(UITextField *)textField;
+- (void)updateTableView;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;

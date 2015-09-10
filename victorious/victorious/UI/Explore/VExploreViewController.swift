@@ -87,6 +87,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         v_navigationController().view.setNeedsLayout()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        searchResultsViewController?.updateTableView()
+    }
+    
     /// MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

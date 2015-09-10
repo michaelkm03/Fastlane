@@ -127,7 +127,8 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
+    [self updateTableView];
     [self.searchField becomeFirstResponder];
     
     [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
@@ -156,6 +157,18 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+- (void)updateTableView
+{
+    if (self.segmentControl.selectedSegmentIndex == 0)
+    {
+        [self.userSearchResultsVC.tableView reloadData];
+    }
+    else if (self.segmentControl.selectedSegmentIndex == 1)
+    {
+        [self.tagsSearchResultsVC.tableView reloadData];
+    }
 }
 
 #pragma mark - Button Actions
