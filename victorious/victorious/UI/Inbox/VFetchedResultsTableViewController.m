@@ -29,6 +29,11 @@
                                                      yCenter);
 }
 
+- (void)dealloc
+{
+    _fetchedResultsController.delegate = nil;
+}
+
 #pragma mark - Accessors
 
 - (NSFetchedResultsController *)fetchedResultsController

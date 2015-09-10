@@ -94,6 +94,17 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     return publishViewController;
 }
 
+#pragma mark - dealloc
+
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
+    _panGestureRecognizer.delegate = nil;
+    _tapGestureRecognizer.delegate = nil;
+    _captionTextView.delegate = nil;
+}
+
 #pragma mark - UIViewController
 
 - (BOOL)shouldAutorotate
