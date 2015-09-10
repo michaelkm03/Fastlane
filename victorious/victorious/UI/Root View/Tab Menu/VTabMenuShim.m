@@ -117,7 +117,7 @@
 {
     // Track selection of main menu item
     VNavigationMenuItem *menuItem = self.menuItems[index];
-    NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title };
+    NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
     // Track any additional events unique to this menu item
