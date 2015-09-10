@@ -67,7 +67,7 @@ class VictoriousTestCase: KIFTestCase {
     
     // MARK: Template Configuration
     
-    /// Provides VictoriousTextCase subclasses a chance to configure the template as appropriate for the particular test.
+    /// Provides VictoriousTestCase subclasses a chance to configure the template as appropriate for the particular test.
     /// This will be called in `resetSession()` of VictoriousTextCase.
     /// The default implementation of this method simply does nothing.
     ///
@@ -82,14 +82,6 @@ class VictoriousTestCase: KIFTestCase {
                 loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
                     self.configureTemplate(decorator)
                 }
-        }
-    }
-    
-    private func clearTemplateConfigurationClosure() {
-        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
-            let rootViewController = window.rootViewController as? VRootViewController,
-                let loadingViewController = rootViewController.loadingViewController {
-                    loadingViewController.templateConfigurationBlock = nil
         }
     }
     

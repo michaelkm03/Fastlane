@@ -367,6 +367,7 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
+		793301611BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
 		7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */; };
@@ -1981,6 +1982,7 @@
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
+		793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift; sourceTree = "<group>"; };
 		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
 		794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
@@ -6342,6 +6344,7 @@
 				A76A069B1B87B13600D91214 /* ContentCreationTests.swift */,
 				A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */,
 				79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */,
+				793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */,
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
 				A76A069E1B87B13600D91214 /* Utils */,
 			);
@@ -8882,6 +8885,7 @@
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
 				A7607DB21B8FEBAF0048B899 /* ContentCreationTests.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
+				793301611BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift in Sources */,
 				79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,

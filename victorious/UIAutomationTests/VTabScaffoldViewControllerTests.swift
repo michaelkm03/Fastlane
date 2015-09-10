@@ -8,8 +8,6 @@
 
 import Foundation
 
-/// These tests are broken up due to not having a hook before a test method is run and not wanting to wait any longer than necessary
-
 class VTabScaffoldViewControllerAutoShowsLoginTests: VictoriousTestCase {
     
     override var testDescription: String {
@@ -33,30 +31,3 @@ class VTabScaffoldViewControllerAutoShowsLoginTests: VictoriousTestCase {
     }
     
 }
-
-class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
-    
-    override var testDescription: String {
-        return "Tests some configurations of the scaffold."
-    }
-    
-    override func beforeAll() {
-        super.beforeAll()
-        
-        self.logOutAndResetSession()
-    }
-    
-    override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) {
-        println("configuring scaffold tests!")
-        defaultTemplateDecorator.setTemplateValue(NSNumber(bool: false), forKeyPath: "scaffold/showLoginOnStartup")
-        self.addStep("set scaffold/showLoginOnStartup in template to false")
-    }
-    
-    func testDoesNotAutoShow() {
-        self.addStep("look for a regsiter button")
-        let registerButtonExists = self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail, error: nil)
-        XCTAssertFalse(registerButtonExists, "We should not find a register button!")
-    }
-    
-}
-
