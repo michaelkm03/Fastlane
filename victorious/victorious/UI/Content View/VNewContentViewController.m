@@ -360,7 +360,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
-        [self.contentCollectionView becomeFirstResponder];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
