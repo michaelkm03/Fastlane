@@ -19,10 +19,10 @@ protocol InterstitialViewControllerControl: class {
 class InterstitialManager: NSObject, InterstitialViewControllerControl {
     
     static let sharedInstance = InterstitialManager()
-    var shouldRegisterAlerts = true
+    var isShowingInterstital = false
+    var shouldRegisterInterstitials = true
     
     private let interstitialWindow: UIWindow
-    private var currentlyShowingInterstitial: Interstitial?
     
     override init() {
         interstitialWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -30,39 +30,48 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
         interstitialWindow.hidden = true
         interstitialWindow.backgroundColor = UIColor.clearColor()
         interstitialWindow.windowLevel = UIWindowLevelStatusBar
-        
-        
     }
     
     private var registeredInterstitials = Set<Interstitial>()
     
     func registerInterstitials(interstitials: [Interstitial]) {
         
-        if !shouldRegisterAlerts {
+        if !shouldRegisterInterstitials {
             return
         }
         
         for interstitial in interstitials {
             if !registeredInterstitials.contains(interstitial) {
                 registeredInterstitials.insert(interstitial)
-                show(interstitial)
             }
         }
+        
+        // Show most recent interstitial
+        show(Array(registeredInterstitials).last)
     }
     
-    private func show(interstitial: Interstitial) {
+    private func show(interstitial: Interstitial?) {
         
-        if currentlyShowingInterstitial != nil {
+        if isShowingInterstital {
             return
         }
         
-        if let viewController = interstitial.viewControllerToPresent() as? UIViewController,
+        if let interstitial = interstitial,
+            viewController = interstitial.viewControllerToPresent() as? UIViewController,
             conformingViewController =  viewController as? InterstitialViewController {
+                
                 conformingViewController.interstitialDelegate = self
                 interstitialWindow.rootViewController = viewController
-                currentlyShowingInterstitial = interstitial
+                isShowingInterstital = true
                 animateWindowIn()
-                VObjectManager.sharedManager().markInterstitialAsSeen(interstitial.remoteID, success: nil, failure: nil)
+                
+                // Mark the rest of interstitials as seen
+                for interstitial in registeredInterstitials {
+                    VObjectManager.sharedManager().markInterstitialAsSeen(interstitial.remoteID, success: nil, failure: nil)
+                }
+                
+                // Remove all interstitials
+                registeredInterstitials.removeAll(keepCapacity: false)
         }
     }
     
@@ -89,11 +98,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
                 self.interstitialWindow.rootViewController = nil
                 self.interstitialWindow.hidden = true
                 self.interstitialWindow.resignKeyWindow()
-                
-                if let showingInterstitial = self.currentlyShowingInterstitial {
-                    self.registeredInterstitials.remove(showingInterstitial)
-                    self.currentlyShowingInterstitial = nil
-                }
+                self.isShowingInterstital = false
         }
     }
 }
