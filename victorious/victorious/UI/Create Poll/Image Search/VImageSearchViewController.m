@@ -51,6 +51,12 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     return imageSearchViewController;
 }
 
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

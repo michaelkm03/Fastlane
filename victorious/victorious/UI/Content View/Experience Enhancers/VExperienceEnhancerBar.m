@@ -77,6 +77,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [self reloadData];
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setDataSource:(id<VExperienceEnhancerBarDataSource>)dataSource

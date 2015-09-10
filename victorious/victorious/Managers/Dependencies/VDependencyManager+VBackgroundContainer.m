@@ -27,9 +27,14 @@ static const char kAssociatedBackgroundKey;
     {
         return;
     }
+    UIView *containerView = [backgroundHost backgroundContainerView];
+    if (![self canAddBackgroundToBackgroundHost:containerView])
+    {
+        return;
+    }
     
     VBackground *background = key == nil ? [self background] : [self backgroundForKey:key];
-    [self addBackground:background asSubviewOfView:[backgroundHost backgroundContainerView]];
+    [self addBackground:background asSubviewOfView:containerView];
 }
 
 - (void)addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer
@@ -38,9 +43,19 @@ static const char kAssociatedBackgroundKey;
     {
         return;
     }
+    UIView *containerView = [backgroundContainer loadingBackgroundContainerView];
+    if (![self canAddBackgroundToBackgroundHost:containerView])
+    {
+        return;
+    }
     
     [self addBackground:[self loadingBackground]
-        asSubviewOfView:[backgroundContainer loadingBackgroundContainerView]];
+        asSubviewOfView:containerView];
+}
+
+- (BOOL)canAddBackgroundToBackgroundHost:(UIView *)backgroundContainer
+{
+    return objc_getAssociatedObject(backgroundContainer, &kAssociatedBackgroundKey) == nil;
 }
 
 - (void)addBackground:(VBackground *)background
@@ -55,18 +70,13 @@ static const char kAssociatedBackgroundKey;
         return;
     }
     
-    UIView *existingBackground = objc_getAssociatedObject(containerView, &kAssociatedBackgroundKey);
+    UIView *backgroundView = [background viewForBackground];
     
-    if (existingBackground == nil)
-    {
-        UIView *backgroundView = [background viewForBackground];
-        
-        backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-        [containerView addSubview:backgroundView];
-        [containerView sendSubviewToBack:backgroundView];
-        [containerView v_addFitToParentConstraintsToSubview:backgroundView];
-        objc_setAssociatedObject(containerView, &kAssociatedBackgroundKey, background, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:backgroundView];
+    [containerView sendSubviewToBack:backgroundView];
+    [containerView v_addFitToParentConstraintsToSubview:backgroundView];
+    objc_setAssociatedObject(containerView, &kAssociatedBackgroundKey, background, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

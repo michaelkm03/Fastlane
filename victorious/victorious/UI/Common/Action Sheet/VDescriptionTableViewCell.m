@@ -49,6 +49,11 @@ static const UIEdgeInsets kTextInsets        = { 12.0f, 30.0f, 13.0f, 30.0f};
     self.descriptionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
+- (void)dealloc
+{
+    _descriptionTextView.delegate = nil;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setDescriptionText:(NSString *)descriptionText

@@ -88,11 +88,19 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        streamItemVisibilityTrackingHelper.trackVisibleSequences()
+        trackVisibleSequences()
     }
     
     override func prepareForReuse() {
         collectionView.contentOffset = CGPoint.zeroPoint
+    }
+    
+}
+
+extension VTrendingShelfCollectionViewCell: TrackableShelf {
+
+    func trackVisibleSequences() {
+        streamItemVisibilityTrackingHelper.trackVisibleSequences()
     }
 }
 
