@@ -266,40 +266,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     return nil;
 }
 
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
-{
-    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
-    VBarButton *barButton = (VBarButton *)barButtonItem.customView;
-    if ( barButton != nil && [barButton isKindOfClass:[VBarButton class]] )
-    {
-        return barButton;
-    }
-    return nil;
-}
-
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
-{
-    VBarButtonItem *foundItem = nil;
-    NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
-                                    {
-                                        return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
-                                    }];
-    
-    foundItem = (VBarButtonItem *)[navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
-    if ( foundItem != nil )
-    {
-        return foundItem;
-    }
-    
-    foundItem = (VBarButtonItem *)[navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
-    if ( foundItem != nil )
-    {
-        return foundItem;
-    }
-    
-    return nil;
-}
-
 - (VNavigationMenuItem *)menuItemWithIdentifier:(NSString *)identifier
 {
     UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
