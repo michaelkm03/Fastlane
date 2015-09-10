@@ -12,8 +12,8 @@ import UIKit
 /// View Controllers conform to this protocol to handle
 /// search result navigation(e.g. tap on a user result, or hashtag result)
 @objc protocol ExploreSearchResultNavigationDelegate {
-    func selectedUserResult(user: VUser)
-    func selectedHashtagResult(hashtag: VHashtag)
+    func selectedUser(user: VUser)
+    func selectedHashtag(hashtag: VHashtag)
 }
 
 /// Base view controller for the explore screen that gets
@@ -332,14 +332,14 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
 }
 
 extension VExploreViewController: ExploreSearchResultNavigationDelegate {
-    func selectedUserResult(user: VUser) {
+    func selectedUser(user: VUser) {
         if let dependencyManager = self.dependencyManager {
             let viewController = dependencyManager.userProfileViewControllerWithUser(user)
             v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
         }
     }
     
-    func selectedHashtagResult(hashtag: VHashtag) {
+    func selectedHashtag(hashtag: VHashtag) {
         if let dependencyManager = self.dependencyManager {
             let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
             v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)

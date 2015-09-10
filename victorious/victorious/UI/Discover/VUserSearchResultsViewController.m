@@ -191,7 +191,7 @@
     
     if (self.navigationDelegate != nil)
     {
-        [self.navigationDelegate selectedUserResult:user];
+        [self.navigationDelegate selectedUser:user];
     }
     else
     {
