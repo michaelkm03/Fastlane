@@ -584,7 +584,7 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 - (IBAction)pressedClose:(id)sender
 {
     [self removeCollectionViewFromContainer];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)selectedLikeButton:(UIButton *)likeButton

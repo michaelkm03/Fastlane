@@ -292,9 +292,15 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             [self playVideo];
             [self hidePreview];
             [self setVideoPlayerGesturesEnabled:YES];
-            [self setToolbarHidden:NO animated:YES];
             self.userInteractionEnabled = YES;
             self.toolbar.autoVisbilityTimerEnabled = YES;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                if ( self.focusType == VFocusTypeDetail )
+                {
+                    [self setToolbarHidden:NO animated:YES];
+                }
+            });
             break;
     }
 }

@@ -31,7 +31,10 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
     }
     
-    func prepareForTransitionOut(model: VTransitionModel!) {}
+    func prepareForTransitionOut(model: VTransitionModel!) {
+        self.handoffController.previewLayout?.parent.layoutIfNeeded()
+        self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
+    }
     
     func performTransitionIn(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
         UIView.animateWithDuration( model.animationDuration,
@@ -41,18 +44,20 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
             options: nil,
             animations: {
                 if let previewLayout = self.handoffController.previewLayout {
-                    previewLayout.top.constraint.constant = 0.0
-                    previewLayout.width.constraint.constant = 0.0
-                    previewLayout.height.constraint.constant = 0.0
-                    previewLayout.center.constraint.constant = 0.0
+                    previewLayout.top.apply()
+                    previewLayout.width.apply()
+                    previewLayout.height.apply()
+                    previewLayout.center.apply()
                     previewLayout.parent.layoutIfNeeded()
                 }
                 if let bottomSliceLayout = self.handoffController.bottomSliceLayout {
-                    bottomSliceLayout.bottom.constraint.constant = 0.0
+                    bottomSliceLayout.bottom.apply()
                     bottomSliceLayout.parent.layoutIfNeeded()
                 }
             },
-            completion: completion
+            completion: { finished in
+                completion(finished)
+            }
         )
     }
     
@@ -98,10 +103,10 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     var transitionInDuration: NSTimeInterval {
-        return 0.1
+        return 1.1
     }
     
     var transitionOutDuration: NSTimeInterval {
-        return 0.1
+        return 1.1
     }
 }
