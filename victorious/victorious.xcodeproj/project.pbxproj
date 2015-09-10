@@ -1985,8 +1985,8 @@
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
-		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Explore.storyboard; path = Explore/Explore.storyboard; sourceTree = "<group>"; };
-		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VExploreViewController.swift; path = Explore/VExploreViewController.swift; sourceTree = "<group>"; };
+		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
+		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exploreScreenDevelopment.json; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
 		676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
@@ -5270,21 +5270,21 @@
 				67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */,
 				67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */,
 			);
-			name = Explore;
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		676372DF1B8CD83000A59705 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */,
-				676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */,
-				676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */,
-				676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */,
 				676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */,
+				676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */,
+				676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */,
+				676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */,
+				676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */,
 				678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */,
 				678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */,
 			);
-			name = Explore;
+			path = Explore;
 			sourceTree = "<group>";
 		};
 		67C69F561B67EC4F00C59230 /* Presenters */ = {
@@ -6221,6 +6221,7 @@
 				D8DF71E11AFC3476002EA7A5 /* Template A */,
 				0308B1161AB2AE9700144E53 /* Template C */,
 				D8B44CC51ADCB3A3006340E8 /* Template D */,
+				F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */,
 				F06B41851B7ADA52008709E8 /* Trending Shelf Cell */,
 				C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */,
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
@@ -6241,7 +6242,6 @@
 				C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */,
 				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
 				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
-				F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
