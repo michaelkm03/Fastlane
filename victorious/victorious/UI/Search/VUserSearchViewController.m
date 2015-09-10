@@ -112,6 +112,13 @@ static const NSInteger kSearchResultLimit = 100;
     _searchContext = VObjectManagerSearchContextDiscover;
 }
 
+- (void)dealloc
+{
+    _searchField.delegate = nil;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad

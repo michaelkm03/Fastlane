@@ -59,6 +59,8 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _usernameTextField.delegate = nil;
+    _locationTextField.delegate = nil;
 }
 
 + (VProfileCreateViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager

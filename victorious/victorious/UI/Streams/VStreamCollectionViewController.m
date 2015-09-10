@@ -1041,17 +1041,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            
             StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
                                                                               stream:self.currentStream
                                                                            fromShelf:NO];
-            
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }
-        else if ( [cell isKindOfClass:[VTrendingShelfCollectionViewCell class]] )
+        else if ( [cell conformsToProtocol:@protocol(TrackableShelf)] )
         {
-            VTrendingShelfCollectionViewCell *trendingShelf = (VTrendingShelfCollectionViewCell *)cell;
-            [trendingShelf trackVisibleSequences];
+            [(id <TrackableShelf>)cell trackVisibleSequences];
         }
     }
 }

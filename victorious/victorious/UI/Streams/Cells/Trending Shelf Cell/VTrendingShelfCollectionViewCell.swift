@@ -89,27 +89,30 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         trackVisibleSequences()
     }
     
+    override func prepareForReuse() {
+        collectionView.contentOffset = CGPoint.zero
+    }
+    
+}
+
+extension VTrendingShelfCollectionViewCell: TrackableShelf {
+
     func trackVisibleSequences() {
         let streamVisibleRect = collectionView.bounds;
         for cell in collectionView.visibleCells() {
             let intersection = streamVisibleRect.intersect(cell.frame)
             let visibleWidthRatio = intersection.width / cell.frame.width
             let visibleHeightRatio = intersection.height / cell.frame.height
-            let roundedRatio = ceil(visibleWidthRatio * 100 + visibleHeightRatio * 100) / 200
-            if roundedRatio >= trackingMinRequiredCellVisibilityRatio {
+            let visibleContentRatio = visibleWidthRatio * visibleHeightRatio
+            if visibleContentRatio >= trackingMinRequiredCellVisibilityRatio {
                 if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
                     let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                    let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                    streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
+                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                 }
             }
         }
     }
-    
-    override func prepareForReuse() {
-        collectionView.contentOffset = CGPoint.zero
-    }
-    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {

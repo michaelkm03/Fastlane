@@ -39,6 +39,12 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 #pragma mark - View contorller lifecycle
 
 - (void)viewWillAppear:(BOOL)animated

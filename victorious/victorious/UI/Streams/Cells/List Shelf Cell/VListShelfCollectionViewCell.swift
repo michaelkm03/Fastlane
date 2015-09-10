@@ -25,6 +25,8 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace
         
         static let maxItemsCount = 7
+        
+        static let StreamATFThresholdKey = "streamAtfViewThreshold"
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -44,6 +46,8 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     private var expandedCellSideLength: CGFloat {
         return cellSideLength * 2 + Constants.interCellSpace
     }
+    
+    var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
     let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
@@ -83,9 +87,12 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
                 
                 titleLabel.textColor = dependencyManager.textColor
                 detailLabel.textColor = dependencyManager.textColor
+                
+                trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.StreamATFThresholdKey).floatValue)
             }
         }
     }
+    private let streamTrackingHelper = VStreamTrackingHelper()
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -146,7 +153,20 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     }
 }
 
-extension VListShelfCollectionViewCell : UICollectionViewDataSource {
+extension VListShelfCollectionViewCell: TrackableShelf {
+    
+    func trackVisibleSequences() {
+        for cell in collectionView.visibleCells() {
+            if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
+                let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+                    let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                    streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
+            }
+        }
+    }
+}
+
+extension VListShelfCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         fatalError("Subclasses of VListShelfCollectionViewCell must override collectionView:cellForItemAtIndexPath:")

@@ -135,6 +135,7 @@
 
 - (void)dealloc
 {
+    _searchField.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
