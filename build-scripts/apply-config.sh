@@ -134,8 +134,6 @@ copyFile "LaunchImage@2x.png"
 copyFile "Icon-29@2x.png"
 copyFile "Icon-40@2x.png"
 copyFile "Icon-60@2x.png"
-copyFile "homeHeaderImage.png"
-copyFile "homeHeaderImage@2x.png"
 
 PROVISIONING_PROFILE_DESTINATION_PATH="./custom.mobileprovision"
 if [ -e "$PROVISIONING_PROFILE_DESTINATION_PATH" ]; then
