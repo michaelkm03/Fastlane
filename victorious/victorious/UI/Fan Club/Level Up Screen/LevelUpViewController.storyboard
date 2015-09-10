@@ -46,6 +46,7 @@
                     </view>
                     <connections>
                         <outlet property="dismissButton" destination="s9L-1p-Rsf" id="sAs-SP-UsX"/>
+                        <outlet property="semiTransparentOverlay" destination="WFE-JS-uKA" id="5LO-1N-rwu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VPV-KF-A4E" sceneMemberID="firstResponder"/>

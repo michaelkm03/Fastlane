@@ -15,7 +15,7 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController, InterstitialViewController {
+class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
     
     @IBOutlet weak var dismissButton: UIButton! {
         didSet {
@@ -27,27 +27,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
         }
     }
     
+    @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
     private let badgeView = LevelBadgeView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
+    private let videoBackground = VVideoView()
+    
     private var displayLink: CADisplayLink!
     private var firstTimeStamp: NSTimeInterval?
     private var hasAppeared = false
     private var icons: [String] = []
     private var videoURL: String?
-    
-    var levelUpInterstitial: LevelUpInterstitial! {
-        didSet {
-            if let levelUpInterstitial = levelUpInterstitial {
-                badgeView.levelNumber = levelUpInterstitial.level
-                badgeView.title = NSLocalizedString("LEVEL", comment: "")
-                titleLabel.text = levelUpInterstitial.title
-                descriptionLabel.text = levelUpInterstitial.description
-            }
-        }
-    }
     
     private lazy var iconCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -63,6 +55,20 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
     weak var interstitialDelegate: InterstitialViewControllerControl?
 
     // MARK: - Public Properties
+    
+    var levelUpInterstitial: LevelUpInterstitial! {
+        didSet {
+            if let levelUpInterstitial = levelUpInterstitial {
+                badgeView.levelNumber = levelUpInterstitial.level
+                badgeView.title = NSLocalizedString("LEVEL", comment: "")
+                titleLabel.text = levelUpInterstitial.title
+                descriptionLabel.text = levelUpInterstitial.description
+                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
+                    videoBackground.setItemURL(url, loop: true, audioMuted: true)
+                }
+            }
+        }
+    }
     
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -86,6 +92,9 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        videoBackground.delegate = self
+        view.insertSubview(videoBackground, aboveSubview: semiTransparentOverlay)
         
         view.addSubview(blurEffectView)
         view.sendSubviewToBack(blurEffectView)
@@ -158,6 +167,12 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
         iconCollectionView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - titleLabel.bounds.origin.y)
         dismissButton.alpha = 0
     }
+    
+    /// MARK: Video View Delegate
+    
+    func videoViewPlayerDidBecomeReady(videoView: VVideoView) {
+        videoBackground.play()
+    }
 }
 
 extension LevelUpViewController: UICollectionViewDelegateFlowLayout {
@@ -188,6 +203,7 @@ extension LevelUpViewController {
     
     private func layoutContent() {
         
+        view.v_addFitToParentConstraintsToSubview(videoBackground)
         view.v_addFitToParentConstraintsToSubview(blurEffectView)
         
         badgeView.setTranslatesAutoresizingMaskIntoConstraints(false)
