@@ -82,6 +82,13 @@ static NSInteger const kVMaxSearchResults = 1000;
     return usersAndTagsVC;
 }
 
+#pragma mark - dealloc
+
+- (void)dealloc
+{
+    _searchField.delegate = nil;
+}
+
 #pragma mark - View Lifecycle Methods
 
 - (void)viewDidLoad

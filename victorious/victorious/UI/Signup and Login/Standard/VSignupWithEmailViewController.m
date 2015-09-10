@@ -48,11 +48,12 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.emailTextField];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:_emailTextField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:_passwordTextField];
     
-    self.emailTextField.delegate = nil;
-    self.passwordTextField.delegate = nil;
+    _emailTextField.delegate = nil;
+    _passwordTextField.delegate = nil;
+    _agreementText.delegate = nil;
 }
 
 - (void)viewDidLoad

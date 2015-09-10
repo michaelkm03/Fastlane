@@ -54,6 +54,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _scrollView.delegate = nil;
+}
+
 - (void)loadView
 {
     self.view = [[VSwipeView alloc] initWithFrame:self.startingFrame];

@@ -70,6 +70,12 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     return nil;
 }
 
+- (void)dealloc
+{
+    _thumbnailCollectionView.dataSource = nil;
+    _thumbnailCollectionView.delegate = nil;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad

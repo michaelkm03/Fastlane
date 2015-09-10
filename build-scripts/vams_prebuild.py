@@ -15,7 +15,7 @@ This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousAndroid
 https://github.com/TouchFrame/VictoriousiOS
 
-NOTE: iOS receives a folder string and so CONSOLE_OUTPUT is isolated to Android only.
+NOTE: Because this script returns a folder string for iOS, CONSOLE_OUTPUT for this script is isolated to Android only.
 """
 import requests
 import sys
@@ -35,7 +35,24 @@ _WORKING_DIRECTORY = ''
 
 _CONSOLE_OUTPUT = False
 
-def proccessAppAssets(json):
+
+def assetFetcher(url, filename):
+    """
+    Requests an asset using a provided url and writes it to a folder
+    :param url:
+        The url of the asset to download
+
+    :param filename:
+        The filename / location to write the downloaded asset to
+    """
+
+    response = requests.get(url)
+    if len(response.content) > 0:
+        with open(filename, 'wb') as outfile:
+            outfile.write(response.content)
+
+
+def proccessAppAssets(app_name, json):
     """
     Processes the app design assets for a given platform.
 
@@ -46,7 +63,6 @@ def proccessAppAssets(json):
 
     payload = json['payload']
     app_title = payload['app_title']
-    app_title = app_title.replace(' ','')
 
     assets = payload['assets']
     platform_assets = assets[vams._DEFAULT_PLATFORM]
@@ -56,7 +72,7 @@ def proccessAppAssets(json):
     global _WORKING_DIRECTORY
 
     if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        _WORKING_DIRECTORY = '%s/%s' % (vams._DEFAULT_CONFIG_DIRECTORY, app_title)
+        _WORKING_DIRECTORY = '%s/%s' % (vams._DEFAULT_CONFIG_DIRECTORY, app_name)
 
     if not os.path.exists(_WORKING_DIRECTORY):
         os.makedirs(_WORKING_DIRECTORY)
@@ -76,10 +92,7 @@ def proccessAppAssets(json):
             if _CONSOLE_OUTPUT:
                 print '%s (%s)' % (asset_name, platform_assets[asset])
 
-            response = requests.get(img_url)
-            if len(response.content) > 0:
-                with open(new_file, 'wb') as outfile:
-                    outfile.write(response.content)
+            assetFetcher(img_url, new_file)
 
             current_cnt = current_cnt+1
 
@@ -88,7 +101,7 @@ def proccessAppAssets(json):
         print ''
 
     # Now set the app config data
-    setAppConfig(json)
+    setAppConfig(app_name, json)
 
 
 def retrieveAppDetails(app_name):
@@ -119,7 +132,7 @@ def retrieveAppDetails(app_name):
     error_code = json['error']
 
     if error_code == 0:
-        proccessAppAssets(json)
+        proccessAppAssets(app_name, json)
 
     else:
         response_message = 'No updated data for "%s" found in the Victorious backend' % app_name
@@ -135,16 +148,22 @@ def retrieveAppDetails(app_name):
         sys.exit(1)
 
 
-def setAppConfig(json_obj):
+def setAppConfig(app_name, json_obj):
     """
     Parses a JSON object for app configuration data and writes it out to
     an app configuration file
+
+    :param app_name:
+        The app to generate config data for
 
     :param json_obj:
         The JSON object to parse that contains the app configuration data
     """
     payload = json_obj['payload']
     app_config = payload['configuration'][vams._DEFAULT_PLATFORM]
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
+        app_config = payload['configuration'][vams._DEFAULT_PLATFORM]['config']
+
     app_title = payload['app_title']
     app_title = app_title.replace(' ','')
 
@@ -157,19 +176,74 @@ def setAppConfig(json_obj):
         print 'Applying Most Recent App Configuration Data to %s' % app_title
         print ''
         # Uncomment out the following line to display the retrieved config data
-        print app_config
+        print app_config.encode('utf-8')
 
     # Write config file to disk
     f = open(config_file, 'w')
     f.write(app_config)
     f.close()
 
-    # Clean-up compiled python files
+    # Download any additional platform-specific app data
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
+        downloadKeystoreFile(app_name, payload['configuration'][vams._PLATFORM_ANDROID])
+
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
+        downloadProvisioningProfiles(payload['provisioning_profiles'])
+
+    # Clean-up compiled python files off the disk
     cleanUp()
 
     if _CONSOLE_OUTPUT:
-        print 'Configuration and assets applied successfully!'
+        print 'Configuration and assets downloaded successfully!'
         print ''
+
+
+
+def downloadProvisioningProfiles(json):
+    """
+    Downloads the QA and Staging Provisioning Profiles from VAMS and writes them to a local location.
+
+    :param json:
+        The json object containing the provisioning profile assets
+    """
+
+    qa_profile_url = json['qa']
+    staging_proifle_url = json['staging']
+
+    if qa_profile_url:
+        if _CONSOLE_OUTPUT:
+            print 'Downloading QA Provisioning Profile...'
+        qa_profile = '%s/%s' % (_WORKING_DIRECTORY, vams._QA_PROVISIONING_PROFILE)
+        assetFetcher(qa_profile_url, qa_profile)
+
+    if staging_proifle_url:
+        if _CONSOLE_OUTPUT:
+            print 'Downloading Staging Provisioning Profile...'
+        staging_profile = '%s/%s' % (_WORKING_DIRECTORY, vams._STAGING_PROVISIONING_PROFILE)
+        assetFetcher(staging_proifle_url, staging_profile)
+
+
+def downloadKeystoreFile(app_name, json):
+    """
+    Downloads the Android keystore file for a given app and writes it to local location
+    :param app_name:
+        The name of the app to download the keystore file for.
+
+    :param json:
+        The json object containing the keystore file asset
+    :return:
+    """
+
+    keystore_url = json['keystore']
+    if keystore_url:
+        new_file = '%s.keystore' % app_name
+
+        if _CONSOLE_OUTPUT:
+            print 'Downloading %s keystore file' % new_file
+            print ''
+
+        keystore_file = '%s/%s' % (_WORKING_DIRECTORY, new_file)
+        assetFetcher(keystore_url, keystore_file)
 
 
 def cleanUp():
@@ -262,7 +336,7 @@ def main(argv):
         response_message = '0|%s' % _WORKING_DIRECTORY
         sys.exit(response_message)
     elif vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        sys.exit(response_message)
+        return 0
 
 
 if __name__ == '__main__':

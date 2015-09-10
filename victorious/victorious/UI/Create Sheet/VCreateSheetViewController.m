@@ -56,6 +56,12 @@ static const CGFloat kLineSpacing = 40.0f;
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
