@@ -104,7 +104,7 @@ def main(argv):
     vams.init()
 
     if len(argv) == 1:
-        showProperUsage()
+        server = 'production'
     else:
         if argv[1] == '-h' or argv[1] == '--help' or argv[1] == '-help':
             showProperUsage()
