@@ -19,7 +19,15 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
     
     let model = LevelUpModel()
     
-    @IBOutlet weak var dismissButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton! {
+        didSet {
+            if let dismissButton = dismissButton {
+                dismissButton.backgroundColor = dependencyManager.dismissButtonColor
+                dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor, forState: .Normal)
+                dismissButton.titleLabel?.font = dependencyManager.dismissButtonTitleFont
+            }
+        }
+    }
     
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
@@ -48,7 +56,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                
+                badgeView.dependencyManager = dependencyManager
+                titleLabel.font = dependencyManager.titleFont
+                titleLabel.textColor = dependencyManager.textColor
+                descriptionLabel.font = dependencyManager.descriptionFont
+                descriptionLabel.textColor = dependencyManager.textColor
             }
         }
     }
@@ -71,26 +83,20 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
         displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
         
         titleLabel.text = model.title
-        titleLabel.font = UIFont.boldSystemFontOfSize(30)
         descriptionLabel.text = model.prizeDescription
         badgeView.levelNumber = model.level
-        badgeView.color = model.badgeColor
         badgeView.title = "LEVEL"
         
         layoutContent()
         
-        dismissButton.backgroundColor = UIColor(red: 80/255, green: 0, blue: 103/255, alpha: 1)
         dismissButton.layer.cornerRadius = 4
         dismissButton.layer.masksToBounds = true
-        dismissButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.textColor = UIColor.whiteColor()
         
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
-        descriptionLabel.textColor = UIColor.whiteColor()
     }
     
     func update(displayLink: CADisplayLink) {
@@ -202,5 +208,31 @@ extension LevelUpViewController {
         self.view.addSubview(contentContainer)
         self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .CenterY, relatedBy: .Equal, toItem: contentContainer, attribute: .CenterY, multiplier: 1, constant: 0))
         self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-distance-[contentContainer]-distance-|", options: nil, metrics: ["distance" : Constants.distanceToContainerFromSide], views: ["contentContainer" : contentContainer]))
+    }
+}
+
+private extension VDependencyManager {
+    var dismissButtonColor: UIColor {
+        return self.colorForKey(VDependencyManagerLinkColorKey)
+    }
+    
+    var dismissButtonTitleFont: UIFont {
+        return self.fontForKey(VDependencyManagerHeading3FontKey)
+    }
+    
+    var dismissButtonTitleColor: UIColor {
+        return self.colorForKey(VDependencyManagerContentTextColorKey)
+    }
+    
+    var titleFont: UIFont {
+        return self.fontForKey(VDependencyManagerLabel1FontKey)
+    }
+    
+    var descriptionFont: UIFont {
+        return self.fontForKey(VDependencyManagerLabel2FontKey)
+    }
+    
+    var textColor: UIColor {
+        return self.colorForKey(VDependencyManagerMainTextColorKey)
     }
 }

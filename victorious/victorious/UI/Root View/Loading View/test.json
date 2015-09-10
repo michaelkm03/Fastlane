@@ -19,7 +19,35 @@
 		}],
 		"appName": "Braindex",
 		"levelUpScreen": {
-			"name": "levelUp.screen"
+			"name": "levelUp.screen",
+            "color.text.content": {
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 1
+            },
+            "color.text.secondary": {
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 1
+            },
+            "font.label1": {
+                "fontName": "OpenSans-Bold",
+                "fontSize": 20
+            },
+            "font.label2": {
+                "fontName": "OpenSans",
+                "fontSize": 17
+            },
+            "font.heading1": {
+                "fontName": "OpenSans-Bold",
+                "fontSize": 50
+            },
+            "font.heading2": {
+                "fontName": "OpenSans-Bold",
+                "fontSize": 15
+            }
 		},
 		"permissionsAlert": {
 			"background": {
