@@ -85,11 +85,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
         searchResultsViewController?.updateTableView()
     }
     
