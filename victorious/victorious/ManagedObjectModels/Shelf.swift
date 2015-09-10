@@ -13,5 +13,6 @@ class Shelf: VStream {
 
     @NSManaged var title: String
     @NSManaged var streamUrl: String
-
+    @NSManaged var hasNewEditorializations: Bool
+    
 }

@@ -99,6 +99,12 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     self.collectionView.contentInset = UIEdgeInsetsZero;
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 - (void)setDirectoryCellFactory:(NSObject<VDirectoryCellFactory> *)directoryCellFactory
 {
     _directoryCellFactory = directoryCellFactory;
