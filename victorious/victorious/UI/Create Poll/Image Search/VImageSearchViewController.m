@@ -54,6 +54,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 - (void)dealloc
 {
     _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
 }
 
 #pragma mark - View lifecycle
