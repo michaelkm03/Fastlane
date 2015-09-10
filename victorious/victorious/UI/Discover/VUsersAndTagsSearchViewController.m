@@ -45,12 +45,8 @@ static NSInteger const kVMaxSearchResults = 1000;
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIView *searchBarView;
 @property (nonatomic, weak) IBOutlet UIView *headerView;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-
-@property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
-@property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
 
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, assign) BOOL isKeyboardShowing;
@@ -58,7 +54,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *userSearchRequest;
 @property (nonatomic, strong) RKManagedObjectRequestOperation *tagSearchRequest;
@@ -127,14 +122,15 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self updateTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [self.searchField becomeFirstResponder];
     
+    [self.searchField becomeFirstResponder];
     [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
 }
 
@@ -161,6 +157,12 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+- (void)updateTableView
+{
+    [self.userSearchResultsVC.tableView reloadData];
+    [self.tagsSearchResultsVC.tableView reloadData];
 }
 
 #pragma mark - Button Actions
@@ -218,7 +220,7 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 #pragma mark - Search Actions
 
-- (void)hashtagSearch:(id)sender
+- (void)hashtagSearch:(NSString *)tagName
 {
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -257,7 +259,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         });
     };
 
-    NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *searchTerm = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
         [self cancelUserSearch:NO andHashtagSearch:YES];
@@ -279,7 +281,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 }
 
-- (void)userSearch:(id)sender
+- (void)userSearch:(NSString *)userName
 {
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -310,7 +312,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         });
     };
     
-    if ( [self.searchField.text length] > 0 )
+    if ( [userName length] > 0 )
     {
         [self cancelUserSearch:YES andHashtagSearch:NO];
 
@@ -318,7 +320,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         hud.userInteractionEnabled = NO;
         dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
-            self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+            self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:userName
                                                                                   sequenceID:nil
                                                                                        limit:kVMaxSearchResults
                                                                                      context:VObjectManagerSearchContextDiscover
@@ -391,11 +393,11 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         if ( self.segmentControl.selectedSegmentIndex == 0 )
         {
-            [self userSearch:nil];
+            [self userSearch:self.searchField.text];
         }
         else if (self.segmentControl.selectedSegmentIndex == 1)
         {
-            [self hashtagSearch:nil];
+            [self hashtagSearch:self.searchField.text];
         }
     }
     

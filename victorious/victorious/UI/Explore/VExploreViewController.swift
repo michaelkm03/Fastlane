@@ -8,21 +8,30 @@
 
 import UIKit
 
+
+/// View Controllers conform to this protocol to handle
+/// search result navigation(e.g. tap on a user result, or hashtag result)
+@objc protocol ExploreSearchResultNavigationDelegate {
+    func selectedUser(user: VUser)
+    func selectedHashtag(hashtag: VHashtag)
+}
+
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
         static let marqueeDestinationDirectory = "destionationDirectory"
         static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
+        static let searchIconImageName = "D_search_small_icon"
     }
     
-    @IBOutlet weak private var searchBar: UISearchBar!
-    @IBOutlet weak private var collectionView: UICollectionView!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     private var marqueeShelfFactory: VMarqueeCellFactory?
+    private var searchController: UISearchController?
+    private var searchResultsViewController: VExploreSearchResultsViewController?
     
     // Array of shelves to be displayed before recent content
     var shelves: [Shelf] = []
@@ -49,15 +58,13 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.v_supplementaryHeaderView = searchBar
         
-        automaticallyAdjustsScrollViewInsets = false
-        extendedLayoutIncludesOpaqueBars = true
-        
+        configureSearchBar()
+        collectionView.backgroundColor = UIColor.whiteColor()
         marqueeShelfFactory?.registerCellsWithCollectionView(self.collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
         
-        self.collectionView.backgroundColor = UIColor.whiteColor()
+        definesPresentationContext = true
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -74,6 +81,13 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             }, failBlock: { (op, err) -> Void in
                 // TODO: Deal with error
         })
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        v_navigationController().view.setNeedsLayout()
+        searchResultsViewController?.updateTableView()
     }
     
     /// MARK: - UICollectionViewDataSource
@@ -108,7 +122,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         if section < shelves.count {
             return 1
         }
-        
         // WARNING: Placeholder for recent content
         return 69
     }
@@ -118,11 +131,39 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         return shelves.count + 1
     }
     
-    /// MARK: - UISearchBarDelegate
-    
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        if let searchVC = VUsersAndTagsSearchViewController.newWithDependencyManager(dependencyManager) {
-            v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
+    /// Mark: - Private Helper Methods
+    private func configureSearchBar() {
+        if let dependencyManager = self.dependencyManager {
+            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(dependencyManager)
+            searchResultsViewController?.navigationDelegate = self
+            searchController = UISearchController(searchResultsController: searchResultsViewController)
+        }
+        
+        if let searchController = searchController {
+            searchController.hidesNavigationBarDuringPresentation = false
+            searchController.dimsBackgroundDuringPresentation = true
+            
+            let searchBar = searchController.searchBar
+            searchBar.sizeToFit()
+            searchBar.delegate = searchResultsViewController
+            navigationItem.titleView = searchBar
+            
+            if let searchTextField = searchBar.v_textField,
+                let dependencyManager = self.dependencyManager {
+                    searchTextField.font = dependencyManager.textFont
+                    searchTextField.textColor = dependencyManager.textColor
+                    searchTextField.backgroundColor = dependencyManager.backgroundColor
+                    searchTextField.attributedPlaceholder = NSAttributedString(
+                        string: NSLocalizedString("Search people and hashtags", comment: ""),
+                        attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
+                    )
+                    
+                    searchBar.tintColor = dependencyManager.textColor
+                    if var image = UIImage(named: Constants.searchIconImageName) {
+                        image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+                        searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
+                    }
+            }
         }
     }
     
@@ -141,9 +182,27 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 }
 
+private extension VDependencyManager {
+    var textFont: UIFont {
+        return fontForKey(VDependencyManagerLabel3FontKey)
+    }
+    
+    var textColor: UIColor {
+        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var backgroundColor: UIColor {
+        return colorForKey(VDependencyManagerSecondaryAccentColorKey)
+    }
+    
+    var placeHolderColor: UIColor {
+        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
+    }
+}
+
 extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if indexPath.section < shelves.count {
             let shelf = shelves[indexPath.section]
             
@@ -168,7 +227,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension VExploreViewController : VHashtagSelectionResponder {
+extension VExploreViewController: VHashtagSelectionResponder {
     
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
@@ -267,7 +326,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             
             showContentView(forCellEvent: event, trackingInfo: extraTrackingInfo, previewImage: image)
         }
-        // Navigating to a stream
+            // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
         }
@@ -278,13 +337,36 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         if let streamItem = event.streamItem as? VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
-            VContentViewPresenter.presentContentViewFromViewController(
-                self, withDependencyManager: dependencyManager,
+            VContentViewPresenter.presentContentViewFromViewController(self,
+                withDependencyManager: dependencyManager,
                 forSequence: event.streamItem as? VSequence,
                 inStreamWithID: streamID,
                 commentID: nil,
                 withPreviewImage: image
             )
         }
+    }
+}
+
+extension VExploreViewController: ExploreSearchResultNavigationDelegate {
+    func selectedUser(user: VUser) {
+        if let dependencyManager = self.dependencyManager {
+            let viewController = dependencyManager.userProfileViewControllerWithUser(user)
+            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    func selectedHashtag(hashtag: VHashtag) {
+        if let dependencyManager = self.dependencyManager {
+            let viewController = dependencyManager.hashtagStreamWithHashtag(hashtag.tag)
+            v_navigationController().innerNavigationController.pushViewController(viewController, animated: true)
+        }
+    }
+}
+
+extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
+    func reselected() {
+        v_navigationController().setNavigationBarHidden(false)
+        collectionView.setContentOffset(CGPointZero, animated: true)
     }
 }

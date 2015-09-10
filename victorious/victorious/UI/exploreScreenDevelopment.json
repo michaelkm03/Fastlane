@@ -4442,23 +4442,30 @@
             "destination":
             {
                 "name":"explore.screen",
-                "font.label2":
+                "font.label3":
                 {
-                    "fontName":"Oswald-Regular",
+                    "fontName":"MavenPro-Regular",
                     "fontSize":12
                 },
                 "color.text.secondary":
                 {
+                    "red":75,
+                    "green":75,
+                    "blue":75,
+                    "alpha":1
+                },
+                "color.accent.secondary":
+                {
                     "red":255,
                     "green":255,
                     "blue":255,
-                    "alpha":255
+                    "alpha":1
                 },
-                "color.accent":
+                "color.text.placeholder":
                 {
-                    "red":128,
-                    "green":166,
-                    "blue":116,
+                    "red":100,
+                    "green":100,
+                    "blue":100,
                     "alpha":1
                 },
                 "background":
@@ -4472,6 +4479,43 @@
                         "alpha":255
                     }
                 },
+                "color.text.content": {
+                    "red": 38,
+                    "green": 39,
+                    "blue": 38,
+                    "alpha": 255
+                  },
+                  "color.accent": {
+                    "red": 230,
+                    "green": 233,
+                    "blue": 237,
+                    "alpha": 255
+                  },
+                  "color.link": {
+                    "red": 184,
+                    "green": 54,
+                    "blue": 191,
+                    "alpha": 1
+                  },
+                  "followed_user_background_icon": {
+                    "imageURL": "followed_user_background_icon"
+                  },
+                  "followed_user_icon": {
+                    "imageURL": "followed_user_icon"
+                  },
+                  "follow_user_icon": {
+                    "imageURL": "follow_user_icon"
+                  },
+                  "font.heading2": {
+                    "fontName": "OpenSans-SemiBold",
+                    "fontSize": 20
+                  },
+                  "color.text": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 255
+                  },
                 "destinationStream": {
                   "name": "stream.screen",
                   "title": null,
@@ -5011,18 +5055,16 @@
                     ]
                 }
             },
-            "color.link":
-            {
+            "color.link.secondary": {
+              "red": 156,
+              "green": 46,
+              "blue": 162,
+              "alpha": 1
+            },
+            "color.link": {
                 "red":49,
                 "green":198,
                 "blue":133,
-                "alpha":1
-            },
-            "color.link.secondary":
-            {
-                "red":42,
-                "green":168,
-                "blue":113,
                 "alpha":1
             }
           },
