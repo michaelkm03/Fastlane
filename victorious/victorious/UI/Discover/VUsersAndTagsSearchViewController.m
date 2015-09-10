@@ -161,14 +161,8 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (void)updateTableView
 {
-    if (self.segmentControl.selectedSegmentIndex == 0)
-    {
-        [self.userSearchResultsVC.tableView reloadData];
-    }
-    else if (self.segmentControl.selectedSegmentIndex == 1)
-    {
-        [self.tagsSearchResultsVC.tableView reloadData];
-    }
+    [self.userSearchResultsVC.tableView reloadData];
+    [self.tagsSearchResultsVC.tableView reloadData];
 }
 
 #pragma mark - Button Actions
