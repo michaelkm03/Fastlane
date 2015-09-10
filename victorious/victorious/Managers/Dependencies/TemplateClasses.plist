@@ -170,7 +170,7 @@
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
 	<string>VUsersAndTagsSearchViewController</string>
-	<key>levelUp.screen</key>
+	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
 </dict>
 </plist>

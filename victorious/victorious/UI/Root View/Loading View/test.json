@@ -19,7 +19,7 @@
 		}],
 		"appName": "Braindex",
 		"levelUpScreen": {
-			"name": "levelUp.screen",
+			"name": "levelUp.interstitial",
             "color.text.content": {
                 "red": 255,
                 "green": 255,
