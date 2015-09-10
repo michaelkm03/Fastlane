@@ -17,8 +17,6 @@ private struct Constants {
 
 class LevelUpViewController: UIViewController, InterstitialViewController {
     
-    let model = LevelUpModel()
-    
     @IBOutlet weak var dismissButton: UIButton! {
         didSet {
             if let dismissButton = dismissButton {
@@ -37,6 +35,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
     private var displayLink: CADisplayLink!
     private var firstTimeStamp: NSTimeInterval?
     private var hasAppeared = false
+    private var icons: [String] = []
+    private var videoURL: String?
+    
+    var levelUpInterstitial: LevelUpInterstitial! {
+        didSet {
+            if let levelUpInterstitial = levelUpInterstitial {
+                badgeView.levelNumber = levelUpInterstitial.level
+                badgeView.title = NSLocalizedString("LEVEL", comment: "")
+                titleLabel.text = levelUpInterstitial.title
+                descriptionLabel.text = levelUpInterstitial.description
+            }
+        }
+    }
     
     private lazy var iconCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -81,11 +92,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
         
         displayLink = CADisplayLink(target: self, selector: "update:")
         displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
-        
-        titleLabel.text = model.title
-        descriptionLabel.text = model.prizeDescription
-        badgeView.levelNumber = model.level
-        badgeView.title = "LEVEL"
         
         layoutContent()
         

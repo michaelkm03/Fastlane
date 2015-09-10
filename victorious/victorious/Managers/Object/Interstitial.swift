@@ -16,6 +16,7 @@ protocol InterstitialConfiguration {
 }
 
 enum InterstitialType : String {
+    /// WARNING: change this to "levelUp" when backend implements level up interstitial
     case LevelUp = ""
 }
 

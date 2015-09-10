@@ -892,7 +892,6 @@
 		C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E581B9A77E0002B121D /* LevelUpViewController.swift */; };
-		C3623E5B1B9A7818002B121D /* LevelUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5A1B9A7818002B121D /* LevelUpModel.swift */; };
 		C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */; };
 		C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */; };
 		C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* LevelBadgeView.swift */; };
@@ -2926,7 +2925,6 @@
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		C3623E581B9A77E0002B121D /* LevelUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpViewController.swift; path = "Fan Club/Level Up Screen/LevelUpViewController.swift"; sourceTree = "<group>"; };
-		C3623E5A1B9A7818002B121D /* LevelUpModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpModel.swift; path = "Fan Club/Level Up Screen/LevelUpModel.swift"; sourceTree = "<group>"; };
 		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpIconCollectionViewCell.swift; path = "Fan Club/Level Up Screen/LevelUpIconCollectionViewCell.swift"; sourceTree = "<group>"; };
 		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelPolygonView.swift; path = "Fan Club/Level Up Screen/LevelPolygonView.swift"; sourceTree = "<group>"; };
 		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelBadgeView.swift; path = "Fan Club/Level Up Screen/LevelBadgeView.swift"; sourceTree = "<group>"; };
@@ -6952,7 +6950,6 @@
 			isa = PBXGroup;
 			children = (
 				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
-				C3623E5A1B9A7818002B121D /* LevelUpModel.swift */,
 				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
 				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
 				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
@@ -9174,7 +9171,6 @@
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */,
-				C3623E5B1B9A7818002B121D /* LevelUpModel.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
