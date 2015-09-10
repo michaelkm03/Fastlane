@@ -23,6 +23,8 @@ class Interstitial: InterstitialConfiguration, Hashable {
     
     let remoteID: String
     
+    var dependencyManager: VDependencyManager?
+        
     init(id: String) {
         remoteID = id
     }

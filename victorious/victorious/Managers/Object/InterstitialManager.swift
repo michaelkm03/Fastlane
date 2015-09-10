@@ -18,7 +18,13 @@ protocol InterstitialViewControllerControl: class {
 
 class InterstitialManager: NSObject, InterstitialViewControllerControl {
     
+    /// Returns the interstitial manager singelton
     static let sharedInstance = InterstitialManager()
+    
+    /// The interstitial manager's dependency manager which it feeds to
+    /// the interstitials in order to build their view controllers
+    var dependencyManager: VDependencyManager?
+    
     var isShowingInterstital = false
     var shouldRegisterInterstitials = true
     
@@ -41,8 +47,13 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
         }
         
         for interstitial in interstitials {
+            // If we haven't already seen this interstitial
             if !registeredInterstitials.contains(interstitial) {
-                registeredInterstitials.insert(interstitial)
+                // Set the dependency manager
+                if let dependencyManager = dependencyManager {
+                    interstitial.dependencyManager = dependencyManager
+                    registeredInterstitials.insert(interstitial)
+                }
             }
         }
         

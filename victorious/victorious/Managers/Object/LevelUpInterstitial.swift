@@ -23,6 +23,21 @@ class LevelUpInterstitial: Interstitial {
     }
     
     override func viewControllerToPresent() -> InterstitialViewController? {
-        return UIStoryboard.storyboardFromMainBundle("LevelUpScreen").instantiateInitialViewController() as? LevelUpViewController
+        if let dependencyManager = dependencyManager, levelUpVC = dependencyManager.levelUpViewController() as? InterstitialViewController {
+            return levelUpVC
+        }
+        
+        return nil
+    }
+}
+
+extension VDependencyManager {
+    
+    func levelUpViewController() -> LevelUpViewController? {
+        if let levelUpVC = self.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen") as? LevelUpViewController {
+            return levelUpVC
+        }
+        
+        return nil
     }
 }

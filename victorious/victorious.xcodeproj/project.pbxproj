@@ -896,7 +896,7 @@
 		C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */; };
 		C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */; };
 		C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* LevelBadgeView.swift */; };
-		C3623E631B9A7BDD002B121D /* LevelUpScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */; };
+		C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */; };
 		C3623E651B9F63BD002B121D /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E641B9F63BD002B121D /* JSONSerializer.swift */; };
 		C3623E671B9F783F002B121D /* InterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E661B9F783F002B121D /* InterstitialManager.swift */; };
 		C3623E6D1B9F80FA002B121D /* VObjectManager+AlertTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */; };
@@ -2929,7 +2929,7 @@
 		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpIconCollectionViewCell.swift; path = "Fan Club/Level Up Screen/LevelUpIconCollectionViewCell.swift"; sourceTree = "<group>"; };
 		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelPolygonView.swift; path = "Fan Club/Level Up Screen/LevelPolygonView.swift"; sourceTree = "<group>"; };
 		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelBadgeView.swift; path = "Fan Club/Level Up Screen/LevelBadgeView.swift"; sourceTree = "<group>"; };
-		C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LevelUpScreen.storyboard; path = "Fan Club/Level Up Screen/LevelUpScreen.storyboard"; sourceTree = "<group>"; };
+		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LevelUpViewController.storyboard; path = "Fan Club/Level Up Screen/LevelUpViewController.storyboard"; sourceTree = "<group>"; };
 		C3623E641B9F63BD002B121D /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		C3623E661B9F783F002B121D /* InterstitialManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialManager.swift; path = Object/InterstitialManager.swift; sourceTree = "<group>"; };
 		C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+AlertTesting.h"; sourceTree = "<group>"; };
@@ -6953,7 +6953,7 @@
 				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
 				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
 				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
-				C3623E621B9A7BDD002B121D /* LevelUpScreen.storyboard */,
+				C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */,
 			);
 			name = "Level Up Screen";
 			sourceTree = "<group>";
@@ -8366,7 +8366,7 @@
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
-				C3623E631B9A7BDD002B121D /* LevelUpScreen.storyboard in Resources */,
+				C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */,
 				D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */,
 				A7D378421AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,

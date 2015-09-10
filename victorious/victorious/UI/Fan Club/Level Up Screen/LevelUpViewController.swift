@@ -42,6 +42,24 @@ class LevelUpViewController: UIViewController, InterstitialViewController {
         }()
     
     weak var interstitialDelegate: InterstitialViewControllerControl?
+
+    // MARK: - Public Properties
+    
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                
+            }
+        }
+    }
+    
+    /// MARK: Factory method
+    
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> LevelUpViewController {
+        let levelUpViewController: LevelUpViewController = self.v_fromStoryboardInitialViewController()
+        levelUpViewController.dependencyManager = dependencyManager
+        return levelUpViewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
