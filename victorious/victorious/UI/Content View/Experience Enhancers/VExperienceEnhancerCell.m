@@ -50,6 +50,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
         self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
     }
     self.requiresPurchase = NO;
+    self.requiresHigherLevel = NO;
     self.enabled = YES;
 }
 
@@ -119,6 +120,12 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     [self updateOverlayImageView];
 }
 
+- (void)setRequiresHigherLevel:(BOOL)requiresHigherLevel
+{
+    _requiresHigherLevel = requiresHigherLevel;
+    [self updateOverlayImageView];
+}
+
 #pragma mark - Appearance styling
 
 - (void)startCooldown
@@ -140,13 +147,13 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)updateOverlayImageView
 {
-    UIImage *image = self.requiresPurchase ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
+    UIImage *image = ( self.requiresPurchase || self.requiresHigherLevel ) ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
         self.ballisticIconView.overlayImage = image;
     }
     
-    self.padlockImageView.hidden = !self.requiresPurchase;
+    self.padlockImageView.hidden = !( self.requiresPurchase || self.requiresHigherLevel );
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

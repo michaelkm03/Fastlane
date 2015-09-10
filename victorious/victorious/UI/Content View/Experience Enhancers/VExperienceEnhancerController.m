@@ -218,6 +218,12 @@
     return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
+- (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:(NSArray *)experienceEnhancers
+{
+#warning TODO: Filter the experienceEnhancers by level locks
+    return nil;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setEnhancerBar:(VExperienceEnhancerBar *)enhancerBar
