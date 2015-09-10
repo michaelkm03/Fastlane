@@ -41,16 +41,25 @@
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
     [super videoViewPlayerDidBecomeReady:videoView];
-    if ( self.focusType )
-    {
-        [videoView play];
-    }
+    
+    [self updateFocus];
 }
 
 - (void)setFocusType:(VFocusType)focusType
 {
+    if ( self.focusType == focusType )
+    {
+        return;
+    }
+    
     [super setFocusType:focusType];
-    if ( self.focusType )
+    
+    [self updateFocus];
+}
+
+- (void)updateFocus
+{
+    if ( self.focusType != VFocusTypeNone )
     {
         [self.videoView play];
     }

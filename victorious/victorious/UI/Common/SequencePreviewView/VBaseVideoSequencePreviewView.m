@@ -128,10 +128,31 @@
 
 - (void)setFocusType:(VFocusType)focusType
 {
-    _focusType = focusType;
-    if ( focusType != VFocusTypeNone )
+    if ( focusType == _focusType )
     {
-        [self setBackgroundContainerViewVisible:YES];
+        return;
+    }
+    
+    _focusType = focusType;
+    
+    switch (self.focusType)
+    {
+        case VFocusTypeNone:
+            self.videoView.backgroundColor = [UIColor clearColor];
+            self.videoView.useAspectFit = YES;
+            break;
+            
+        case VFocusTypeStream:
+            [self setBackgroundContainerViewVisible:YES];
+            self.videoView.backgroundColor = [UIColor clearColor];
+            self.videoView.useAspectFit = YES;
+            break;
+            
+        case VFocusTypeDetail:
+            [self setBackgroundContainerViewVisible:YES];
+            self.videoView.backgroundColor = [UIColor blackColor];
+            self.videoView.useAspectFit = YES;
+            break;
     }
 }
 

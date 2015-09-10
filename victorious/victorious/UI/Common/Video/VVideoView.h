@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL muted;
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
+@property (nonatomic, assign, readonly) BOOL isPlaying;
+@property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
+@property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
+@property (nonatomic, readonly, assign) Float64 durationSeconds;
 
 /**
  Set the URL of the asset to play.
@@ -49,35 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations;
 
-/**
- Start playing.  If already playing, this is a no-op.
- */
-- (void)play;
-
-/**
- Starts playing at current location.  If already playing, this is a no-op.
- */
-- (void)playWithoutSeekingToBeginning;
-
-/**
- Pause playback.  If already paused, this is a no-op.
- */
 - (void)pause;
-
-/**
- Pause playback at current location without restarting.  If already paused, this is a no-op.
- */
-- (void)pauseWithoutSeekingToBeginning;
-
+- (void)pauseFromStart;
+- (void)play;
 - (void)playFromStart;
-
 - (void)reset;
-
-@property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
-
-@property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
-
-@property (nonatomic, readonly, assign) Float64 durationSeconds;
+- (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds;
 
 NS_ASSUME_NONNULL_END
 

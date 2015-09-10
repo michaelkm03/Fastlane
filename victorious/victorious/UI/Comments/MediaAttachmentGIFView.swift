@@ -16,7 +16,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
     
     override func setFocusType(focusType: VFocusType) {
         super.setFocusType(focusType)
-        focusType == .None ? self.videoView.pause() : self.videoView.play()
+        focusType == .None ? self.videoView.pauseFromStart() : self.videoView.playFromStart()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -43,7 +43,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
                 self.videoView.setItemURL(autoplayURL, loop: true, audioMuted: true)
                 self.videoView.hidden = false
                 if ( focusType != .None ) {
-                    self.videoView.play()
+                    self.videoView.playFromStart()
                 }
             }
         }

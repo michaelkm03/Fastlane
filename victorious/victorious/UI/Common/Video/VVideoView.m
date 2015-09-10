@@ -22,9 +22,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayer *player;
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
-@property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
-@property (nonatomic, assign) BOOL wasPlayingVideo;
 @property (nonatomic, strong, nullable) id timeObserver;
 
 @end
@@ -32,31 +30,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @implementation VVideoView
 
 @dynamic muted;
-
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (void)setup
-{
-    self.backgroundColor = [UIColor blackColor];
-}
 
 - (void)dealloc
 {
@@ -273,71 +246,48 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     }
 }
 
-- (BOOL)isPlayingVideo
+- (BOOL)isPlaying
 {
     return self.player.rate > 0;
 }
 
 - (void)returnFromBackground
 {
-    if ( self.wasPlayingVideo )
+#warning FIX THIS
+    NSAssert( false, @"FIX ME" );
+}
+
+- (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
+{
+    [self.player.currentItem seekToTime:CMTimeMakeWithSeconds( timeSeconds, 1)];
+}
+
+- (void)pause
+{
+    if ( self.isPlaying )
     {
-        [self play];
+        [self.player pause];
     }
 }
 
 - (void)play
 {
-    [self playAndSeekToBeginning:YES];
-}
-
-- (void)playWithoutSeekingToBeginning
-{
-    [self playAndSeekToBeginning:NO];
-}
-
-- (void)playAndSeekToBeginning:(BOOL)shouldSeek
-{
-    if ( !self.isPlayingVideo )
+    if ( !self.isPlaying )
     {
-        if (shouldSeek)
-        {
-            [self.player.currentItem seekToTime:kCMTimeZero];
-        }
-        
         [self.player play];
     }
-    self.wasPlayingVideo = YES;
 }
 
-- (void)pause
+- (void)pauseFromStart
 {
-    [self pauseAndSeekToBeginning:YES];
-}
-
-- (void)pauseWithoutSeekingToBeginning
-{
-    [self pauseAndSeekToBeginning:NO];
-}
-
-- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
-{
-    if ( self.isPlayingVideo )
-    {
-        if (shouldSeek)
-        {
-            [self.player.currentItem seekToTime:kCMTimeZero];
-        }
-        [self.player pause];
-    }
-    self.wasPlayingVideo = NO;
+    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self pause];
 }
 
 - (void)playFromStart
 {
-    [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
-    [self.player play];
+    [self play];
 }
 
 - (void)didPlayToTime:(CMTime)time

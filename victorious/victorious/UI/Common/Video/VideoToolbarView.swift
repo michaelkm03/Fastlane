@@ -10,6 +10,8 @@ import UIKit
 
 @objc protocol VideoToolbarDelegate {
     func videoToolbar( videoToolbar: VideoToolbarView, didScrubToLocation location: Float )
+    func videoToolbar( videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float )
+    func videoToolbar( videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float )
     func videoToolbarDidPause( videoToolbar: VideoToolbarView )
     func videoToolbarDidPlay( videoToolbar: VideoToolbarView )
 }
@@ -42,38 +44,46 @@ class VideoToolbarView: UIView {
     
     var elapsedTime: Float64 = 0.0 {
         didSet {
-            let text = self.timeFormatter.stringForSeconds(self.elapsedTime)
-            self.elapsedTimeLabel.text = text
+            let text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
+            elapsedTimeLabel.text = text
         }
     }
     
     var remainingTime: Float64 = 0.0 {
         didSet {
-            let text = self.timeFormatter.stringForSeconds(self.remainingTime)
-            self.remainingTimeLabel.text = text
+            let text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
+            remainingTimeLabel.text = text
         }
     }
     
     var paused: Bool = true {
         didSet {
-            let imageName = self.paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
+            let imageName = paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
             let image = UIImage(named: imageName)!
-            self.playButton.setImage( image, forState: .Normal )
+            playButton.setImage( image, forState: .Normal )
+        }
+    }
+    
+    var videoProgressRatio: Float = 0.0 {
+        didSet {
+            if !isSliderDown {
+                slider.value = clampRatio( videoProgressRatio )
+            }
         }
     }
     
     private var visible: Bool = true
     var isVisible: Bool {
-        return self.visible
+        return visible
     }
     
     var autoVisbilityTimerEnabled: Bool = true {
         didSet {
             if self.autoVisbilityTimerEnabled {
-                self.resetTimer()
+                resetTimer()
             }
             else {
-                self.autoVisbilityTimer.invalidate()
+                autoVisbilityTimer.invalidate()
             }
         }
     }
@@ -100,53 +110,31 @@ class VideoToolbarView: UIView {
     
     // MARK: - Visibility
     
-    private func resetTimer() {
-        if !self.autoVisbilityTimerEnabled {
-            return
-        }
-        self.autoVisbilityTimer.invalidate()
-        self.refreshVisibilityDate()
-        self.autoVisbilityTimer = NSTimer.scheduledTimerWithTimeInterval( 0.5,
-            target: self,
-            selector: "onTimer",
-            userInfo: nil,
-            repeats: true )
-    }
-
-    func onTimer() {
-        let duration = -self.lastInteractionDate.timeIntervalSinceNow
-        println( "duration = \(duration)" )
-        if duration >= kMaxVisibilityTimerDuration {
-            self.autoVisbilityTimer.invalidate()
-            self.hide(animated: true)
-        }
-    }
-    
-    private func refreshVisibilityDate() {
-        self.lastInteractionDate = NSDate()
-    }
-    
     func hide( animated:Bool = true ) {
         if !self.visible {
             return
         }
-        self.visible = false
-        self.layoutIfNeeded()
-        let change: ()->() = {
+        visible = false
+        layoutIfNeeded()
+        let animations: ()->() = {
             self.containerTopConstraint.constant = self.frame.height
             self.containerBottomConstraint.constant = -self.frame.height
             self.layoutIfNeeded()
+        }
+        let comletion: Bool->() = { finished in
+            self.autoVisbilityTimer.invalidate()
         }
         if animated {
             UIView.animateWithDuration( kVisibilityAnimationDuration,
                 delay: 0.0,
                 options: .CurveEaseOut,
-                animations: change,
-                completion: nil
+                animations: animations,
+                completion: comletion
             )
         }
         else {
-            change()
+            animations()
+            comletion(true)
         }
     }
     
@@ -154,56 +142,96 @@ class VideoToolbarView: UIView {
         if self.visible {
             return
         }
-        if self.autoVisbilityTimerEnabled {
-            self.resetTimer()
-        }
-        self.visible = true
-        self.layoutIfNeeded()
-        let change: ()->() = {
+        visible = true
+        layoutIfNeeded()
+        let animations: ()->() = {
             self.containerTopConstraint.constant = 0.0
             self.containerBottomConstraint.constant = 0.0
             self.layoutIfNeeded()
+        }
+        let comletion: Bool->() = { finished in
+            if self.autoVisbilityTimerEnabled {
+                self.resetTimer()
+            }
         }
         if animated {
             UIView.animateWithDuration( kVisibilityAnimationDuration,
                 delay: 0.0,
                 options: .CurveEaseOut,
-                animations: change,
-                completion: nil
+                animations: animations,
+                completion: comletion
             )
         }
         else {
-            change()
+            animations()
+            comletion(true)
         }
     }
     
     // MARK: - IBActions
     
-    @IBAction func onSliderDown( slider: UISlider ) {
-        self.refreshVisibilityDate()
-        self.isSliderDown = true
+    @IBAction private func onSliderDown( slider: UISlider ) {
+        isSliderDown = true
+        refreshVisibilityDate()
+        delegate?.videoToolbar( self, didStartScrubbingToLocation: slider.value)
     }
     
-    @IBAction func onSliderUp( slider: UISlider ) {
-        self.refreshVisibilityDate()
-        self.isSliderDown = false
+    @IBAction private func onSliderUp( slider: UISlider ) {
+        isSliderDown = false
+        refreshVisibilityDate()
+        delegate?.videoToolbar( self, didEndScrubbingToLocation: slider.value)
     }
     
-    @IBAction func onSliderValueChanged( slider: UISlider ) {
-        if self.isSliderDown {
-            self.refreshVisibilityDate()
-            self.delegate?.videoToolbar(self, didScrubToLocation: slider.value)
+    @IBAction private func onSliderValueChanged( slider: UISlider ) {
+        if isSliderDown {
+            refreshVisibilityDate()
+            delegate?.videoToolbar(self, didScrubToLocation: slider.value)
         }
     }
     
-    @IBAction func onPlayButtonPressed( slider: UISlider ) {
-        self.paused = !self.paused
-        if self.paused {
-            self.delegate?.videoToolbarDidPause( self )
+    @IBAction private func onPlayButtonPressed( slider: UISlider ) {
+        paused = !paused
+        if paused {
+            delegate?.videoToolbarDidPause( self )
         }
         else {
-            self.delegate?.videoToolbarDidPlay( self )
+            delegate?.videoToolbarDidPlay( self )
         }
-        self.refreshVisibilityDate()
+        refreshVisibilityDate()
+    }
+    
+    // MARK: - Helpers
+    
+    private func clampTime( time: Float64 ) -> Float64 {
+        return time < 0.0 ? 0.0 : time
+    }
+    
+    private func clampRatio( time: Float ) -> Float {
+        return time < 0.0 ? 0.0 : time > 1.0 ? 1.0 : time
+    }
+    
+    func onTimer() {
+        let duration = -self.lastInteractionDate.timeIntervalSinceNow
+        if duration >= kMaxVisibilityTimerDuration {
+            autoVisbilityTimer.invalidate()
+            hide(animated: true)
+        }
+    }
+    
+    private func refreshVisibilityDate() {
+        self.lastInteractionDate = NSDate()
+    }
+    
+    private func resetTimer() {
+        if !self.autoVisbilityTimerEnabled {
+            return
+        }
+        autoVisbilityTimer.invalidate()
+        refreshVisibilityDate()
+        autoVisbilityTimer = NSTimer.scheduledTimerWithTimeInterval( 0.5,
+            target: self,
+            selector: "onTimer",
+            userInfo: nil,
+            repeats: true )
     }
 }

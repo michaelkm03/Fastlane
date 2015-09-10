@@ -60,16 +60,11 @@
                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-qi-f64" customClass="VCVideoPlayerToolbarSlider">
                                     <rect key="frame" x="-2" y="6" width="157" height="31"/>
                                     <connections>
-                                        <action selector="onSliderDown:" destination="JX7-kd-Uhj" eventType="touchDown" id="MY3-yF-J4q"/>
-                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchCancel" id="wQf-U4-qRb"/>
-                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchUpInside" id="ymX-CS-Jao"/>
-                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchDragExit" id="zck-fa-vZO"/>
-                                        <action selector="onSliderValueChanged:" destination="JX7-kd-Uhj" eventType="valueChanged" id="oyb-kX-9fO"/>
-                                        <action selector="sliderTouchCancelled:" destination="-1" eventType="touchCancel" id="XWN-Ti-4vK"/>
-                                        <action selector="sliderTouchDown:" destination="-1" eventType="touchDown" id="Abr-K0-nHK"/>
-                                        <action selector="sliderTouchUp:" destination="-1" eventType="touchUpInside" id="3xH-no-b37"/>
-                                        <action selector="sliderTouchUp:" destination="-1" eventType="touchUpOutside" id="9cX-ca-Q4s"/>
-                                        <action selector="sliderValueChanged:" destination="-1" eventType="valueChanged" id="Ddb-rt-Mfp"/>
+                                        <action selector="onSliderDown:" destination="JX7-kd-Uhj" eventType="touchDown" id="VIG-pc-wlA"/>
+                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchUpInside" id="PNd-8D-0mm"/>
+                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchDragOutside" id="ROu-za-LLN"/>
+                                        <action selector="onSliderUp:" destination="JX7-kd-Uhj" eventType="touchCancel" id="qYO-EA-Vj8"/>
+                                        <action selector="onSliderValueChanged:" destination="JX7-kd-Uhj" eventType="valueChanged" id="EXu-ZA-RA7"/>
                                     </connections>
                                 </slider>
                             </subviews>
@@ -127,7 +122,7 @@
                 <outlet property="elapsedTimeLabel" destination="R8v-Gi-bbt" id="YsV-c8-hSu"/>
                 <outlet property="playButton" destination="clK-TQ-Owi" id="SFq-7u-nHt"/>
                 <outlet property="remainingTimeLabel" destination="cXz-gZ-ta2" id="QE7-dh-tad"/>
-                <outlet property="slider" destination="Drc-qi-f64" id="2SH-4j-UUf"/>
+                <outlet property="slider" destination="Drc-qi-f64" id="uf1-y0-eOK"/>
             </connections>
             <point key="canvasLocation" x="-32" y="162.5"/>
         </view>

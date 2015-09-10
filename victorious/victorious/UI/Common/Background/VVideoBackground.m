@@ -69,7 +69,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
-    [self.videoView play];
+    [self.videoView playFromStart];
 }
 
 @end
