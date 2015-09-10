@@ -137,7 +137,6 @@ extension VShelfContentCollectionViewCell: VStreamCellTracking {
         }
         return nil
     }
-    
 }
 
 extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
