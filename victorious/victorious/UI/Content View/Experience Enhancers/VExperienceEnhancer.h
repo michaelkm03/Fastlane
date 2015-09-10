@@ -34,7 +34,7 @@
 
 @property (nonatomic, strong, readonly) NSArray *trackingUrls;
 
-@property (nonatomic, assign) BOOL isLocked;
+@property (nonatomic, assign) BOOL requiresPurchase;
 
 @property (nonatomic, assign) NSInteger voteCount;
 

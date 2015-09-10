@@ -49,7 +49,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     {
         self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
     }
-    self.isLocked = NO;
+    self.requiresPurchase = NO;
     self.enabled = YES;
 }
 
@@ -113,9 +113,9 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.contentView.alpha = _enabled ? 1.0f : 0.5f;
 }
 
-- (void)setIsLocked:(BOOL)isLocked
+- (void)setRequirespurchase:(BOOL)requiresPurchase
 {
-    _isLocked = isLocked;
+    _requiresPurchase = requiresPurchase;
     [self updateOverlayImageView];
 }
 
@@ -140,13 +140,13 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)updateOverlayImageView
 {
-    UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
+    UIImage *image = self.requiresPurchase ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
         self.ballisticIconView.overlayImage = image;
     }
     
-    self.padlockImageView.hidden = !self.isLocked;
+    self.padlockImageView.hidden = !self.requiresPurchase;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
