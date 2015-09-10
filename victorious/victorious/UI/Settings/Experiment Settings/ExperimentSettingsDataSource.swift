@@ -110,7 +110,8 @@ class ExperimentSettingsDataSource: NSObject {
                     switchCell.switchColor = self.tintColor.current
                     if let indexPath = tableView.indexPathForCell( switchCell ) {
                         let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                        switchCell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                        let nameWithID = "\(experiment.name) (\(experiment.id))"
+                        switchCell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                     }
                 }
             }
@@ -182,7 +183,8 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         if self.state == .Content,
             let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
                 let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                cell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                let nameWithID = "\(experiment.name) (\(experiment.id))"
+                cell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                 cell.delegate = self
                 cell.switchColor = self.tintColor.current
                 return cell
