@@ -392,12 +392,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self.previewView setSequence:sequence];
 }
 
-- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
-{
-    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-}
-
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
     NSAttributedString *captionAttributedString = nil;
@@ -599,6 +593,19 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
     }
     return _inStreamCommentsController;
+}
+
+#pragma mark - VSequencePreviewProvider
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
+{
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

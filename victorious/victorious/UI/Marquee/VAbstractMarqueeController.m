@@ -131,7 +131,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)marqueeItemsUpdated
 {
     NSArray *marqueeItems = self.marqueeItems;
-    [self.dataDelegate marquee:self reloadedStreamWithItems:marqueeItems];
+    [self.dataDelegate marqueeController:self reloadedStreamWithItems:marqueeItems];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:marqueeItems];
     [self.collectionView reloadData];
     [self enableTimer];
@@ -297,25 +297,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = self.marqueeItems[indexPath.row];
-    
-    
-#warning Use this or delete it:
-    /*
-    VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];*
-     
-     ContentDetailViewController *contentDetail = [ContentDetailViewController newWithDependencyManager:self.dependencyManager];
-    contentDetail.options = [[ContentDetailOptions alloc] init];
-    contentDetail.options.assetPreviewView = cell.previewView;
-    contentDetail.options.dismissalCallback = ^
-    {
-        [cell restorePreviewView:cell.previewView];
-    };
-                                              
-    UIViewController *viewController = (UIViewController *)self.selectionDelegate;
-    [viewController presentViewController:contentDetail animated:NO completion:nil];*/
-    
-    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:nil];
+    [self.selectionDelegate marqueeController:self
+                                didSelectItem:self.marqueeItems[indexPath.row]
+                             withPreviewImage:nil
+                           fromCollectionView:collectionView
+                                  atIndexPath:indexPath];
     
     [self.autoScrollTimerManager invalidate];
 }

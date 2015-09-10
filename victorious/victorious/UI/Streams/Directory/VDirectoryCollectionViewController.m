@@ -207,14 +207,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 #pragma mark - VMarqueeControllerDataDelegate
 
-- (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
+- (void)marqueeController:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
     [self updateHeaderCellVisibility];
 }
 
 #pragma mark - VMarqueeControllerSelectionDelegate
 
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
+- (void)marqueeController:(VAbstractMarqueeController *)marquee didSelectItem:(VStreamItem *)streamItem withPreviewImage:(UIImage *)image fromCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)path
 {
     NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
@@ -227,7 +227,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self navigateToDisplayStreamItemWithEvent:event];
 }
 
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+- (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];

@@ -92,12 +92,6 @@
     [self.previewView setStreamItem:streamItem];
 }
 
-- (void)restorePreviewView:(UIView *)previewView
-{
-    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-}
-
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
@@ -153,6 +147,19 @@
 - (NSDictionary *__nonnull)additionalInfo
 {
     return [self.previewView trackingInfo] ?: @{};
+}
+
+#pragma mark - VSequencePreviewProvider
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (void)restorePreviewView:(UIView *)previewView
+{
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

@@ -8,7 +8,8 @@
 
 import UIKit
 
-@objc protocol ContentPreviewProvider {
+@objc protocol VSequencePreviewProvider {
+    func getPreviewView() -> UIView
     func restorePreviewView( previewView: UIView )
 }
 
@@ -24,12 +25,11 @@ class ContentViewContext: NSObject {
     var commentId: NSNumber!
     var streamId: NSString!
     var placeholderImage: UIImage!
-    var assetPreviewView: UIView?
-    var contentPreviewProvider: ContentPreviewProvider?
+    var contentPreviewProvider: VSequencePreviewProvider?
     
     var previewOriginFrame: CGRect {
         // FIXME: Don't use window
-        if let view = self.assetPreviewView {
+        if let view = self.contentPreviewProvider?.getPreviewView() {
             let window = UIApplication.sharedApplication().delegate!.window!!
             return window.convertRect( view.frame, fromView: view )
         }
@@ -70,6 +70,7 @@ class ContentViewPresenter: NSObject {
                     }
                     
                     contentView.transitioningDelegate = self.transitionDelegate
+                    contentView.modalPresentationStyle = .Custom
                     viewController.presentViewController(contentView, animated: true, completion: nil)
                 }
         }

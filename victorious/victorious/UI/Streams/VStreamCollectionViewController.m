@@ -382,7 +382,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super setCurrentStream:currentStream];
 }
 
-- (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
+- (void)marqueeController:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
     if ( self.canShowMarquee )
     {
@@ -484,10 +484,35 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VMarqueeDataDelegate
 
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
+- (void)marqueeController:(VAbstractMarqueeController *)marquee didSelectItem:(VStreamItem *)streamItem withPreviewImage:(UIImage *)image fromCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)path
 {
     UICollectionViewCell *cell = [marquee.collectionView cellForItemAtIndexPath:path];
-    [self navigateToStreamItem:streamItem fromStream:marquee.stream previewImage:image cell:cell];
+    
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:marquee.stream
+                                                                       fromShelf:YES];
+        event.indexPath = path;
+        event.collectionView = collectionView;
+        
+        NSDictionary *extraTrackingInfo;
+        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+        {
+            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+        }
+        
+        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
+    }
+    else if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        VStream *stream = (VStream *)streamItem;
+        [self navigateToStream:stream atStreamItem:nil];
+    }
 }
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
@@ -549,34 +574,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
-- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image cell:(UICollectionViewCell *)cell
-{
-    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
-                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
-    
-    if ( [streamItem isKindOfClass:[VSequence class]] )
-    {
-        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:stream
-                                                                       fromShelf:YES];
-
-        NSDictionary *extraTrackingInfo;
-        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
-        {
-            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
-        }
-        
-        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
-    }
-    else if ( [streamItem isKindOfClass:[VStream class]] )
-    {
-        VStream *stream = (VStream *)streamItem;
-        [self navigateToStream:stream atStreamItem:nil];
-    }
-}
-
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+- (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
@@ -838,9 +836,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         NSIndexPath *indexPath = event.indexPath;
         if ( collectionView != nil && indexPath != nil )
         {
-            VSleekStreamCollectionCell *cell = (VSleekStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-            context.assetPreviewView = cell.previewView;
-            context.contentPreviewProvider = cell;
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            if ( [cell conformsToProtocol:@protocol(VSequencePreviewProvider)] )
+            {
+                context.contentPreviewProvider = (id<VSequencePreviewProvider>)cell;
+            }
         }
         
         context.sequence = (VSequence *)event.streamItem;

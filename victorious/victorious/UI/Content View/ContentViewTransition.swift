@@ -17,15 +17,19 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     func prepareForTransitionIn(model: VTransitionModel!) {
+        model.fromViewController.view.transform = CGAffineTransformMakeScale(0.8, 0.8)
+        
         if let navController = model.toViewController as? VNavigationController,
             let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
-            let view = contentView.viewModel.context.assetPreviewView,
+            let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView(),
             let snapshotView = model.snapshotOfOriginView {
                 let originFrame = contentView.viewModel.context.previewOriginFrame
                 self.handoffController.addPreviewView(view,
                     snapshotView: snapshotView,
                     toParentView: contentView.contentCell.contentView,
                     originFrame: originFrame)
+                
+                (view as? VFocusable)?.setFocusType( .Detail )
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
@@ -50,9 +54,11 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     previewLayout.center.apply()
                     previewLayout.parent.layoutIfNeeded()
                 }
-                if let bottomSliceLayout = self.handoffController.bottomSliceLayout {
-                    bottomSliceLayout.bottom.apply()
-                    bottomSliceLayout.parent.layoutIfNeeded()
+                
+                if let view = self.handoffController.topImageView {
+                    var frame = view.frame
+                    frame.origin.y = -frame.height
+                    view.frame = frame
                 }
             },
             completion: { finished in
@@ -62,6 +68,8 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     func performTransitionOut(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
+        
+        model.fromViewController.view.transform = CGAffineTransformMakeScale(0.8, 0.8)
         
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
@@ -77,16 +85,17 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     layout.parent.layoutIfNeeded()
                 }
                 
-                if let bottomSliceLayout = self.handoffController.bottomSliceLayout {
-                    bottomSliceLayout.bottom.restore()
-                    bottomSliceLayout.parent.layoutIfNeeded()
+                if let view = self.handoffController.topImageView {
+                    var frame = view.frame
+                    frame.origin.y = 0
+                    view.frame = frame
                 }
             },
             completion: { finished in
                 if let navController = model.fromViewController as? VNavigationController,
                     let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
                     let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider,
-                    let view = contentView.viewModel.context.assetPreviewView {
+                    let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
                         contentPreviewProvider.restorePreviewView( view )
                 }
                 completion(finished)

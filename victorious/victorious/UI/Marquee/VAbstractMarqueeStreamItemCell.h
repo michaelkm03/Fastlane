@@ -18,7 +18,7 @@
 /**
     A collection view cell that displays stream item content in a marquee
  */
-@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting, VStreamCellTracking, ContentPreviewProvider>
+@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting, VStreamCellTracking, VSequencePreviewProvider>
 
 /**
     Internally just sets the streamItem to the provided object. Subclasses can
