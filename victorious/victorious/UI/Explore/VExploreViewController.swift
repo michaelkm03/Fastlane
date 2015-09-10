@@ -25,6 +25,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         static let marqueeDestinationDirectory = "destionationDirectory"
         static let trendingTopicShelfKey = "trendingShelf"
         static let destinationStreamKey = "destinationStream"
+        static let searchIconImageName = "D_search_small_icon"
     }
     
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
@@ -140,7 +141,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
             searchController.dimsBackgroundDuringPresentation = true
             
             let searchBar = searchController.searchBar
-            searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
             searchBar.sizeToFit()
             searchBar.delegate = searchResultsViewController
             navigationItem.titleView = searchBar
@@ -150,6 +150,16 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
                     searchTextField.font = dependencyManager.textFont
                     searchTextField.textColor = dependencyManager.textColor
                     searchTextField.backgroundColor = dependencyManager.backgroundColor
+                    searchTextField.attributedPlaceholder = NSAttributedString(
+                        string: NSLocalizedString("Search people and hashtags", comment: ""),
+                        attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
+                    )
+                    
+                    searchBar.tintColor = dependencyManager.textColor
+                    if var image = UIImage(named: Constants.searchIconImageName) {
+                        image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+                        searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
+                    }
             }
         }
     }
@@ -166,6 +176,10 @@ private extension VDependencyManager {
     
     var backgroundColor: UIColor {
         return colorForKey(VDependencyManagerSecondaryAccentColorKey)
+    }
+    
+    var placeHolderColor: UIColor {
+        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
 }
 

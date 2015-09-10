@@ -4450,15 +4450,22 @@
                 "color.text.secondary":
                 {
                     "red":0,
-                    "green":0,
+                    "green":255,
                     "blue":0,
                     "alpha":1
                 },
                 "color.accent.secondary":
                 {
+                    "red":200,
+                    "green":200,
+                    "blue":200,
+                    "alpha":1
+                },
+                "color.text.placeholder":
+                {
                     "red":255,
-                    "green":255,
-                    "blue":255,
+                    "green":0,
+                    "blue":0,
                     "alpha":1
                 },
                 "background":
