@@ -193,6 +193,7 @@
     NSArray *newValue = validExperienceEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
     newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithPurchase:newValue];
+    newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
 }
@@ -221,7 +222,15 @@
 - (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:(NSArray *)experienceEnhancers
 {
 #warning TODO: Filter the experienceEnhancers by level locks
-    return nil;
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings) {
+        NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
+        NSInteger lockLevel = enhancer.voteType.unlockLevel.integerValue;
+        
+        enhancer.requiresHigherLevel = lockLevel > userLevel;
+        return YES;
+    }];
+    
+    return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
 #pragma mark - Property Accessors
