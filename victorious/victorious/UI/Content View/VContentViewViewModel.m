@@ -505,10 +505,9 @@
 
 - (void)addCommentWithText:(NSString *)text
          publishParameters:(VPublishParameters *)publishParameters
-                  realTime:(CMTime)realTime
+               currentTime:(Float64)currentTime
                 completion:(void (^)(BOOL succeeded))completion
 {
-    Float64 currentTime = CMTimeGetSeconds(self.realTimeCommentsViewModel.currentTime);
     if (isnan(currentTime))
     {
         [[VObjectManager sharedManager] addCommentWithText:text
@@ -535,7 +534,7 @@
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
                                                  publishParameters:publishParameters
                                                            toAsset:self.currentAsset
-                                                            atTime:@(CMTimeGetSeconds(realTime))
+                                                            atTime:@(currentTime)
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              if (completion)

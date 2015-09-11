@@ -12,6 +12,7 @@
 #import "UIView+AutoLayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 
+#warning DELETE THIS CLASS
 @interface VPollView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;

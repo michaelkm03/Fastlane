@@ -8,7 +8,17 @@
 
 #import "VStreamItemPreviewView.h"
 
-@class VSequence;
+@class VSequence, VSequencePreviewView;
+
+@protocol VSequencePreviewViewDetailDelegate <NSObject>
+
+- (void)previewView:(VSequencePreviewView *)previewView
+  didSelectMediaURL:(NSURL *)mediaURL
+       previewImage:(UIImage *)previewImage
+            isVideo:(BOOL)isVideo
+         sourceView:(UIView *)sourceView;
+
+@end
 
 /**
  *  VSequencePreviewView is a class cluster for previewing a sequence. A concrete subclass is provided
@@ -43,5 +53,7 @@
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */
 - (BOOL)canHandleSequence:(VSequence *)sequence;
+
+@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
 
 @end

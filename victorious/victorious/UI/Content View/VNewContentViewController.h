@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "VContentViewViewModel.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VVideoPlayerDelegate.h"
 
 @class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
@@ -45,5 +45,7 @@
 @property (nonatomic, weak, readonly) VContentCell *contentCell;
 
 @property (nonatomic, weak, readonly) VExperienceEnhancerBarCell *experienceEnhancerCell;
+
+@property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
 
 @end

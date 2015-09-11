@@ -391,11 +391,11 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-#pragma mark - VVideoViewDelegate
+#pragma mark - VVideoPlayerDelegate
 
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
+- (void)videoPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
 {
-    [super videoViewPlayerDidBecomeReady:videoView];
+    [super videoPlayerDidBecomeReady:videoView];
     if ( self.focusType != VFocusTypeNone )
     {
         [self playVideo];
@@ -419,7 +419,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-- (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
+- (void)videoPlayerDidStartBuffering:(VVideoView *__nonnull)videoView
 {
     if ( self.focusType != VFocusTypeNone && !self.noReplay )
     {
@@ -427,7 +427,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-- (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
+- (void)videoPlayerDidStopBuffering:(VVideoView *__nonnull)videoView
 {
     if ( self.focusType != VFocusTypeNone && !self.noReplay )
     {
@@ -435,7 +435,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-- (void)videoView:(VVideoView *__nonnull)videoView didPlayToTime:(Float64)time
+- (void)videoPlayer:(VVideoView *__nonnull)videoView didPlayToTime:(Float64)time
 {
     if ( self.toolbar != nil )
     {

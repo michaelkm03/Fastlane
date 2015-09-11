@@ -8,33 +8,35 @@
 
 import UIKit
 
-@objc protocol VideoPlayerDelegate {
-    func videoPlayer( videoPlayer: VideoPlayer, didPlayToQuartile quartile: UInt )
-    func videoPlayerDidBecomeReadyForPlayback( videoPlayer: VideoPlayer )
-    func videoPlayerDidEndPlayback( videoPlayer: VideoPlayer )
-    func videoPlayerDidStartPlayback( videoPlayer: VideoPlayer )
+/*protocol VideoPlayerDelegate: NSObject {
+    optional func videoPlayer( videoPlayer: VideoPlayer, didPlayToTime time: NSTimeInterval )
+    optional func videoPlayerDidBecomeReadyForPlayback( videoPlayer: VideoPlayer )
+    optional func videoPlayerDidEndPlayback( videoPlayer: VideoPlayer )
+    optional func videoPlayerDidStartPlayback( videoPlayer: VideoPlayer )
+    optional func videoPlayerDidStartBuffering( videoPlayer: VideoPlayer )
+    optional func videoPlayerDidStopBuffering( videoPlayer: VideoPlayer )
 }
 
-@objc enum VideoPlayerAspect: Int {
-    case Fit, Fill
-}
-
-@objc protocol VideoPlayer {
+protocol VideoPlayer: NSObject {
+    func setItemURL( url: NSURL, loop: Bool, audioMuted: Bool, alongsideAnimation: (()->())? )
+    
     func play()
     func playFromStart()
     func pause()
-    func seek( time: NSTimeInterval )
+    func pauseFromStart()
+    func seekToTimeSeconds( time: NSTimeInterval )
     
-    var videoURL: NSURL? { set get }
-    var delegate: VideoPlayerDelegate? { set get }
+    weak var delegate:VideoPlayerDelegate?
     
-    var mute: Bool { set get }
-    var loop: Bool { set get }
-    var showControls: Bool { set get }
+    var muted: Bool { set get }
+    var useAspectFit: Bool { set get }
     
-    var currentTime: NSTimeInterval { get }
-    var duration: NSTimeInterval { get }
-    var aspect: VideoPlayerAspect { set get }
+    var isPlaying: Bool { get }
+    var playbackBufferEmpty: Bool { get }
+    var playbackLikelyToKeepUp: Bool { get }
+    var currentTimeMilliseconds: UInt { get }
+    var currentTimeSeconds: NSTimeInterval { get }
+    var durationSeconds: NSTimeInterval { get }
 }
 
 class VideoPlayerViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -42,7 +44,7 @@ class VideoPlayerViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet private weak var videoViewContainer: UIView!
     @IBOutlet private weak var toolbarContainer: UIView!
     
-    private var videoView: UIView?
+    private var videoPlayer: UIView?
     private var videoPlayer: VideoPlayer?
     
     var showToolbar: Bool = false {
@@ -51,7 +53,7 @@ class VideoPlayerViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func setVideoPlayer( videoPlayer: VideoPlayer, withVideoView videoView: UIView, withToolbar: Bool = false ) {
+    func setVideoPlayer( videoPlayer: VideoPlayer, withVideoView videoPlayer: UIView, withToolbar: Bool = false ) {
         self.videoView = videoView
         self.videoPlayer = videoPlayer
         self.showToolbar = withToolbar
@@ -89,4 +91,4 @@ class VideoPlayerViewController: UIViewController, UIGestureRecognizerDelegate {
             videoPlayer.aspect = videoPlayer.aspect == .Fit ? .Fill : .Fit
         }
     }
-}
+}*/

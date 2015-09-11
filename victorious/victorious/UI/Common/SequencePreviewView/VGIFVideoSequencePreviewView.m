@@ -36,14 +36,16 @@
      }];
 }
 
-#pragma mark - VVideoViewDelegate
+#pragma mark - VVideoPlayerDelegate
 
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+- (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    [super videoViewPlayerDidBecomeReady:videoView];
+    [super videoPlayerDidBecomeReady:videoPlayer];
     
     [self updateFocus];
 }
+
+#pragma mark - VFocusable
 
 - (void)setFocusType:(VFocusType)focusType
 {

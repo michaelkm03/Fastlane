@@ -15,11 +15,12 @@
 #import "VAsset.h"
 #import "VVideoView.h"
 #import "VFocusable.h"
+#import "VVideoPreviewView.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VPreviewViewBackgroundHost, VVideoViewDelegate>
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VPreviewViewBackgroundHost, VVideoPlayerDelegate, VVideoPreviewView>
 
 /**
  * Responsible for the play icon that appears on the preview view.
@@ -38,6 +39,8 @@
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
+
+@property (nonatomic, weak) id<VVideoPlayerDelegate> videoPlayerDelegate;
 
 /**
  * Indicated whether or not this preview view is currently in focus.

@@ -114,14 +114,36 @@
      }];
 }
 
-#pragma mark - VVideoViewDelegate
+#pragma mark - VVideoPlayerDelegate
 
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+- (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
     if (self.focusType)
     {
         [self setBackgroundContainerViewVisible:YES];
     }
+    
+    [self.videoPlayerDelegate videoPlayerDidBecomeReady:videoPlayer];
+}
+
+- (void)videoDidReachEnd:(id<VVideoPlayer>)videoPlayer
+{
+    [self.videoPlayerDelegate videoDidReachEnd:videoPlayer];
+}
+
+- (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
+{
+    [self.videoPlayerDelegate videoPlayerDidStartBuffering:videoPlayer];
+}
+
+- (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
+{
+    [self.videoPlayerDelegate videoPlayerDidStopBuffering:videoPlayer];
+}
+
+- (void)videoPlayer:(id<VVideoPlayer>)videoPlayer didPlayToTime:(Float64)time
+{
+    [self.videoPlayerDelegate videoPlayer:videoPlayer didPlayToTime:time];
 }
 
 #pragma mark - VFocusable
@@ -188,6 +210,11 @@
 - (void)setBackgroundContainerViewVisible:(BOOL)visible
 {
     self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
+}
+
+- (id<VVideoPlayer>)videoPlayer
+{
+    return self.videoView;
 }
 
 @end

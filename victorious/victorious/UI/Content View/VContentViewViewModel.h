@@ -106,7 +106,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)addCommentWithText:(NSString *)text
          publishParameters:(VPublishParameters *)publishParameters
-                  realTime:(CMTime)realTime
+               currentTime:(Float64)currentTime
                 completion:(void (^)(BOOL succeeded))completion;
 
 @property (nonatomic, readonly) ContentViewContext *context;

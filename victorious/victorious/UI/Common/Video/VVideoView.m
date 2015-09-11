@@ -24,6 +24,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
+@property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
+@property (nonatomic, strong) NSMutableSet *delegates;
 
 @end
 
@@ -148,6 +150,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                              selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enterBackground)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
 }
 
 - (void)setMuted:(BOOL)muted
@@ -183,9 +190,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
          __strong VVideoView *strongSelf = weakSelf;
          if (strongSelf.player.currentItem.isPlaybackLikelyToKeepUp)
          {
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerDidStopBuffering:)])
              {
-                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+                 [strongSelf.delegate videoPlayerDidStopBuffering:strongSelf];
              }
          }
      }];
@@ -198,9 +205,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
          __strong VVideoView *strongSelf = weakSelf;
          if (strongSelf.player.currentItem.isPlaybackBufferEmpty)
          {
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerDidStartBuffering:)])
              {
-                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
+                 [strongSelf.delegate videoPlayerDidStartBuffering:strongSelf];
              }
          }
      }];
@@ -232,7 +239,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     
     if ( self.delegate != nil )
     {
-        [self.delegate videoViewPlayerDidBecomeReady:self];
+        [self.delegate videoPlayerDidBecomeReady:self];
     }
 }
 
@@ -253,8 +260,15 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)returnFromBackground
 {
-#warning FIX THIS
-    NSAssert( false, @"FIX ME" );
+    if ( self.wasPlayingBeforeEnteringBackground )
+    {
+        [self play];
+    }
+}
+
+- (void)enterBackground
+{
+    self.wasPlayingBeforeEnteringBackground = self.isPlaying;
 }
 
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
@@ -292,9 +306,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)didPlayToTime:(CMTime)time
 {
-    if ([self.delegate respondsToSelector:@selector(videoView:didPlayToTime:)])
+    if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
-        [self.delegate videoView:self didPlayToTime:self.currentTimeSeconds];
+        [self.delegate videoPlayer:self didPlayToTime:self.currentTimeSeconds];
     }
 }
 

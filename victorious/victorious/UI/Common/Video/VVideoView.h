@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-#import "VVideoViewDelegate.h"
+#import "VVideoPlayerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,16 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A simple video player without any play back controls.
  */
-@interface VVideoView : UIView
+@interface VVideoView : UIView <VVideoPlayer>
 
-/**
- URL of the asset to play.  This is a convenience setter for the longer
- and complete method `setItemURL:loop:audioMuted` that will use default values
- for `loop:` and `audioMuted:` parameters (both NO).
- */
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
-@property (nonatomic, weak) id<VVideoViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<VVideoPlayerDelegate> delegate;
 
 @property (nonatomic, assign) BOOL useAspectFit;
 @property (nonatomic, assign) BOOL muted;
@@ -38,19 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
 @property (nonatomic, readonly, assign) Float64 durationSeconds;
 
-/**
- Set the URL of the asset to play.
- @param loop If YES, build a clean-looping asset from the URL provided and play on a loop.
- @param audioMuted If YES, player audio will be disabled.
- */
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted;
 
-/**
- Set the URL of the asset to play.
- @param loop If YES, build a clean-looping asset from the URL provided and play on a loop.
- @param audioMuted If YES, player audio will be disabled.
- @param animations The animations that should be run alongside the video player animations.
- */
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations;
 
 - (void)pause;

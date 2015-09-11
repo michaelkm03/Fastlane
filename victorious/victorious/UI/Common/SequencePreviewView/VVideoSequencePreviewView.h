@@ -8,6 +8,10 @@
 
 #import "VBaseVideoSequencePreviewView.h"
 
+@protocol VVideoSequenceDelegate
+
+@end
+
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
 
 @end

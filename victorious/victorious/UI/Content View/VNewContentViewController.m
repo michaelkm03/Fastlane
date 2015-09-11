@@ -25,13 +25,10 @@
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
 #import "VContentCommentsCell.h"
-#import "VContentImageCell.h"
 #import "VContentPollBallotCell.h"
 #import "VContentPollCell.h"
 #import "VContentPollQuestionCell.h"
 #import "VContentRepopulateTransition.h"
-#import "VContentTextCell.h"
-#import "VContentVideoCell.h"
 #import "VContentViewFactory.h"
 #import "VContentViewRotationHelper.h"
 #import "VDependencyManager+VCoachmarkManager.h"
@@ -85,15 +82,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
-UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
+UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
+@property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
-@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
+@property (nonatomic, assign) Float64 realtimeCommentBeganTime;
 @property (nonatomic, strong) NSDate *videoLoadedDate;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
@@ -122,8 +120,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
-@property (nonatomic, weak) VContentTextCell *textCell;
-@property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -240,7 +236,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 - (void)didUpdateContent
 {
     self.videoLoadedDate = [NSDate date];
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
 - (void)didUpdatePollsData
@@ -367,12 +362,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     // Register cells
     [self.contentCollectionView registerClass:[VContentCell class]
                    forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentTextCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
@@ -408,12 +397,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
                                              animated:YES];
     
     [self.contentCollectionView becomeFirstResponder];
-    self.videoCell.delegate = self;
-
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    // We could probably move this here anyway, but not going to for now to avoid bugs.
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-#endif
     
     if (self.viewModel.sequence.isImage)
     {
@@ -445,6 +428,10 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
         }
     }
     
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    
+    [self trackVideoViewStart];
+    
     [self updateOrientation];
 }
 
@@ -471,15 +458,10 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     }
 #endif
     
-    if ( !self.hasBeenPresented && self.videoCell == nil )
+    if ( !self.hasBeenPresented && self.isVideoContent )
     {
         self.hasBeenPresented = YES;
-        
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+        [self trackNonVideoViewStart];
     }
     
     [self.contentCollectionView flashScrollIndicators];
@@ -496,11 +478,13 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
+    if ( self.isVideoContent )
     {
+        NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
+        
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
+                                  VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
 
@@ -518,7 +502,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [self.contentCollectionView resignFirstResponder];
-    self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
 }
@@ -543,12 +526,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     }
     @catch (NSException *exception) {
         NSLog( @"%@", exception.description );
-    }
-    
-    // Pause playback on presentation
-    if ( ![self.videoCell playerControlsDisabled] )
-    {
-        [self.videoCell pause];
     }
 }
 
@@ -577,6 +554,32 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
         default:
             return nil;
     }
+}
+
+#pragma mark - Tracking
+
+- (void)trackNonVideoViewStart
+{
+    NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyStreamId : self.viewModel.streamId,
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyLoadTime : @(videoLoadTime),
+                              VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+}
+
+- (void)trackVideoViewStart
+{
+    NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyStreamId : self.viewModel.streamId,
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyLoadTime : @(videoLoadTime),
+                              VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 #pragma mark - IBActions
@@ -610,13 +613,8 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 
 - (void)updateInitialExperienceEnhancerState
 {
-   /**
-    When the enhancer bar is initialized and if a video cell is initialized (meaning the asset is a video),
-    set the initial enhancer bar state as disabled.  It will become enabled when the video asset starts playing.
-    This may happen right away if there is no ad, or after any ad is finished playing.
-    */
     VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
-    if ( enhancerBar != nil && self.videoCell != nil )
+    if ( enhancerBar != nil )
     {
         self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
     }
@@ -983,17 +981,16 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
         {
             switch (self.viewModel.type)
             {
-                case VContentViewTypeInvalid:
-                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
-                case VContentViewTypeImage:
-                    return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                case VContentViewTypeVideo:
-                case VContentViewTypeGIFVideo:
-                    return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypePoll:
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                case VContentViewTypeText:
-                    return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                default:
+                {
+                    CGFloat aspectRatio = CLAMP( 1.0, 16.0f/9.0f, self.viewModel.sequence.previewAssetAspectRatio );
+                    CGFloat height = CGRectGetWidth(self.view.bounds) / aspectRatio;
+                    return CGSizeMake( CGRectGetWidth(self.view.bounds), height );
+                }
+                case VContentViewTypeInvalid:
+                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
             }
         }
         case VContentViewSectionPollQuestion:
@@ -1072,62 +1069,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     switch (self.viewModel.type)
     {
-        case VContentViewTypeInvalid:
-            return nil;
-        case VContentViewTypeImage:
-        {
-            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
-                                          placeholderImage:self.placeholderImage?:nil];
-            self.contentCell = imageCell;
-            self.contentCell.endCardDelegate = self;
-            return imageCell;
-        }
-        case VContentViewTypeGIFVideo:
-        case VContentViewTypeVideo:
-        {
-            if (self.videoCell)
-            {
-                return self.videoCell;
-            }
-            
-            VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            videoCell.tracking = self.viewModel.sequence.tracking;
-            videoCell.delegate = self;
-            videoCell.speed = self.viewModel.speed;
-            videoCell.loop = self.viewModel.loop;
-            videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
-            videoCell.audioMuted = self.viewModel.audioMuted;
-            self.videoCell = videoCell;
-            self.contentCell = videoCell;
-            __weak typeof(self) welf = self;
-            if ( !videoCell.playerControlsDisabled  )
-            {
-                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-                 {
-                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                     welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
-                 }];
-            }
-            videoCell.endCardDelegate = self;
-            videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-            return videoCell;
-        }
-        case VContentViewTypeText:
-        {
-            VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
-                                                                                   forIndexPath:indexPath];
-            textCell.dependencyManager = self.dependencyManager;
-            [textCell setTextContent:self.viewModel.textContent
-                     backgroundColor:self.viewModel.textBackgroundColor
-                  backgroundImageURL:self.viewModel.textBackgroundImageURL];
-            self.contentCell = textCell;
-            return textCell;
-        }
         case VContentViewTypePoll:
         {
             VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
@@ -1146,7 +1087,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
             __weak typeof(self) welf = self;
             pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
             {
-                NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                NSDictionary *params = @{ VTrackingKeyIndex : @0,
+                                          VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
                 
                 [welf showLightBoxWithMediaURL:mediaURL
@@ -1169,6 +1111,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return pollCell;
         }
     }
+    return nil;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1200,59 +1143,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.focusHelper updateFocus];
 }
 
-#pragma mark - VContentVideoCellDelegate
-
-- (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
-{
-    self.viewModel.realTimeCommentsViewModel.currentTime = time;
-}
-
-- (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
-{
-    [UIViewController attemptRotationToDeviceOrientation];
-    if (!self.hasAutoPlayed)
-    {
-        [self.videoCell play];
-        self.hasAutoPlayed = YES;
-        
-        // The enhacer bar starts out disabled by default when a video asset is displayed.
-        // If the video asset is playing, any ad (if there was one) is now over, and the
-        // bar should be enabled.
-        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-        
-        NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime),
-                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }
-    [UIView animateWithDuration:0.5f
-                     animations:^
-     {
-         self.likeButton.alpha = 1.0f;
-     }];
-}
-
-- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
-{
-    if (self.viewModel.videoViewModel.endCardViewModel != nil)
-    {
-        [UIView animateWithDuration:0.5f
-                         animations:^
-         {
-             self.likeButton.alpha = 0.0f;
-         }];
-    }
-}
-
-- (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
-{
-    [self.videoCell play];
-}
-
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
@@ -1271,14 +1161,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
          [inputAccessoryView clearTextAndResign];
          strongSelf.publishParameters.mediaToUploadURL = nil;
          
-         NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+#warning What to do about auto play in content view?
+         /*NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
          if (experimentValue != nil)
          {
              if ([experimentValue boolValue])
              {
                  [strongSelf.videoCell play];
              }
-         }
+         }*/
      }];
 }
 
@@ -1344,24 +1235,29 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     
-    NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
-    if (experimentValue != nil)
+    if ( self.isVideoContent )
     {
-        if ([experimentValue boolValue])
+        NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
+        
+        NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+        if (experimentValue != nil)
         {
-            [self.videoCell pause];
+            if ([experimentValue boolValue])
+            {
+                [self.videoPlayer pause];
+            }
         }
-    }
-    __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
-     {
-         if (!authorized)
+        __weak typeof(self) welf = self;
+        [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
          {
-             return;
-         }
-         welf.enteringRealTimeComment = YES;
-         welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
-     }];
+             if (!authorized)
+             {
+                 return;
+             }
+             welf.enteringRealTimeComment = YES;
+             welf.realtimeCommentBeganTime = welf.videoPlayer.currentTimeSeconds;
+         }];
+    }
 }
 
 #pragma mark - VUserTaggingTextStorageDelegate
@@ -1393,15 +1289,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)clearEditingRealTimeComment
 {
     self.enteringRealTimeComment = NO;
-    self.realtimeCommentBeganTime = kCMTimeZero;
+    self.realtimeCommentBeganTime = 0.0f;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
 {
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:commentText
-                              publishParameters:welf.publishParameters
-                              realTime:welf.realtimeCommentBeganTime
+                     publishParameters:welf.publishParameters
+                           currentTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
          __strong typeof(welf) strongSelf = welf;
@@ -1499,20 +1395,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (BOOL)isVideoContent
 {
-    return self.videoCell != nil;
+    return self.viewModel.type == VContentViewTypeGIFVideo || self.viewModel.type == VContentViewTypeVideo;
 }
 
 - (Float64)currentVideoTime
 {
-    if ( self.videoCell != nil )
-    {
-        Float64 seconds = CMTimeGetSeconds( self.videoCell.currentTime );
-        if ( !isnan( seconds ) )
-        {
-            return CMTimeGetSeconds( self.videoCell.currentTime );
-        }
-    }
-    return 0.0f;
+    return self.videoPlayer == nil ? 0.0 : self.videoPlayer.currentTimeSeconds;
 }
 
 #pragma mark - VSwipeViewControllerDelegate
@@ -1629,12 +1517,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
+#warning FIX, perhaps also search for `videoCell` to make sure you've got them all
     self.likeButton.alpha = 1.0f;
-    [self.videoCell seekToStart];
+    //[self.videoCell seekToStart];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {
-         [self.videoCell hideEndCard];
-         [self.videoCell replay];
+         [self.contentCell hideEndCard];
+         //[self.videoCell replay];
     }];
 }
 
@@ -1649,7 +1538,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }
                                     failure:^(NSError *error)
      {
-         [self.videoCell hideEndCard];
+         [self.contentCell hideEndCard];
          
          [self presentViewController:[VCommentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
@@ -1761,7 +1650,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)userActivityWasContinued:(NSUserActivity *)userActivity
 {
-    [self.videoCell pause];
+    if ( self.isVideoContent )
+    {
+        [self.videoPlayer pause];
+    }
 }
 
 #pragma mark - VHashtagSelectionResponder
@@ -1815,6 +1707,22 @@ referenceSizeForHeaderInSection:(NSInteger)section
              completion( authorized );
          }
      }];
+}
+
+- (void)showLikeButtonAnimated
+{
+    [UIView animateWithDuration:0.5f
+                     animations:^
+     {
+         self.likeButton.alpha = 1.0f;
+     }];
+}
+
+#pragma mark - VSequencePreviewViewDetailDelegate
+
+- (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView
+{
+    [self showLightBoxWithMediaURL:mediaURL previewImage:previewImage isVideo:isVideo sourceView:sourceView];
 }
 
 @end

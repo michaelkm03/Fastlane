@@ -7,16 +7,11 @@
 //
 
 #import "VPollSequencePreviewView.h"
-
-// Dependencies
 #import "VDependencyManager.h"
-
-// Models + Helpers
 #import "VSequence+Fetcher.h"
 #import "VAnswer+Fetcher.h"
 #import "VNode+Fetcher.h"
-
-// Views + Helpers
+#import "VImageAssetFinder+PollAssets.h"
 #import "VPollView.h"
 #import "UIView+AutoLayout.h"
 #import "VImageAssetFinder.h"
@@ -26,9 +21,7 @@ static NSString *kOrIconKey = @"orIcon";
 @interface VPollSequencePreviewView ()
 
 @property (nonatomic, strong) VPollView *pollView;
-
 @property (nonatomic, assign) BOOL loadedBothPollImages;
-
 @property (nonatomic, assign) BOOL cancelingImageLoads;
 
 @end
@@ -111,6 +104,66 @@ static NSString *kOrIconKey = @"orIcon";
     [self.pollView setImageURL:answerB.previewMediaURL
                  forPollAnswer:VPollAnswerB
                     completion:pollImageCompletionBlock];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)pressedAnswerAButton:(id)sender
+{
+#warning Define media url
+    NSURL *mediaURL;
+    
+    NSDictionary *params = @{ VTrackingKeyIndex : @0,
+                              VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+    
+    /*[self.detailDelegate previewView:self
+                   didSelectMediaURL:mediaURL
+                      previewImage:weakPollCell.answerAPreviewImage
+                           isVideo:isVideo
+                        sourceView:weakPollCell.answerAContainer];*/
+}
+
+- (IBAction)pressedAnswerBButton:(id)sender
+{
+#warning Define media url
+    NSURL *mediaURL;
+    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+    
+   /* [self.detailDelegate previewView:self
+                   didSelectMediaURL:mediaURL
+                      previewImage:weakPollCell.answerBPreviewImage
+                           isVideo:isVideo
+                        sourceView:weakPollCell.answerBContainer];*/
+}
+
+- (void)shareAnimationCurveWithAnimations:(void (^)(void))animations
+                           withCompletion:(void (^)(void))completion
+{
+//    [self bringSubviewToFront:self.answerAResultView];
+//    [self bringSubviewToFront:self.answerBResultView];
+//    [self bringSubviewToFront:self.pollCountContainer];
+    [self layoutIfNeeded];
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+     {
+         if (animations)
+         {
+             animations();
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion && finished)
+         {
+             completion();
+         }
+     }];
 }
 
 @end

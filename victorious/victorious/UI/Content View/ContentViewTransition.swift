@@ -22,9 +22,14 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
             let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
             let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
+                
                 self.handoffController.addPreviewView(view,
                     snapshotImage: snapshotImage,
                     toParentView: contentView.contentCell.contentView)
+                
+                if let videoPreviewView = view as? VVideoPreviewView {
+                    contentView.videoPlayer = videoPreviewView.videoPlayer
+                }
                 
                 if let focusableView = view as? VFocusable {
                     focusTypeBeforeTransition = focusableView.focusType

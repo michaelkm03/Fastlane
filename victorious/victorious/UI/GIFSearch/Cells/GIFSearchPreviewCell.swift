@@ -52,9 +52,9 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     }
 }
 
-extension GIFSearchPreviewCell : VVideoViewDelegate {
+extension GIFSearchPreviewCell : VVideoPlayerDelegate {
     
-    func videoViewPlayerDidBecomeReady(videoView: VVideoView) {
+    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         self.transitionIn()
     }
 }
