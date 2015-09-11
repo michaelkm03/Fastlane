@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VLoadingViewController;
+@class VDependencyManager, VLoadingViewController, VTemplateDecorator;
 
 @protocol VLoadingViewControllerDelegate <NSObject>
 
@@ -25,6 +25,8 @@
 
 @property (nonatomic, weak) id<VLoadingViewControllerDelegate> delegate;
 @property (nonatomic, strong) VDependencyManager *parentDependencyManager; ///< This VDependencyManager instance will be the parent of the one returned from the server
+
+@property (nonatomic, copy) void (^templateConfigurationBlock)(VTemplateDecorator *decoratorToConfigureOrReplace); ///< Provide a block to the loadingViewController to configure the template befor loading completes
 
 + (VLoadingViewController *)loadingViewController; ///< Instantiates VLoadingViewController from the storyboard
 
