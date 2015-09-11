@@ -62,6 +62,12 @@
         "blue": 0,
         "alpha": 255
     },
+    "color.text.placeholder": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
     "font.header": {
         "fontName": "HelveticaNeue",
         "fontSize": 18
