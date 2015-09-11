@@ -99,7 +99,7 @@ static NSString * const kImageURLKey = @"imageURL";
 
 - (NSNumber *)unlockLevel
 {
-    return [self.dependencyManager numberForKey:@"unlock_level"];
+    return [self.dependencyManager numberForKey:@"fanloyalty_level"];
 }
 
 + (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes

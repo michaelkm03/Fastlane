@@ -237,11 +237,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
         [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
-    else if ( enhancerForIndexPath.requiresHigherLevel ) // Check if the user must reach a higher level to unlock this experience enhancer first
-    {
-        // Nothing happens because the experience enhancer appears to be "faded out"
-        return;
-    }
     else
     {
         // Increment the vote count
@@ -276,7 +271,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         return;
     }
     
-    if ( enhancerForIndexPath.requiresPurchase || enhancerForIndexPath.requiresHigherLevel || [enhancerForIndexPath isCoolingDown] )
+    if ( enhancerForIndexPath.requiresPurchase || [enhancerForIndexPath isCoolingDown] )
     {
         return;
     }
@@ -300,7 +295,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.requiresPurchase || enhancerForIndexPath.requiresHigherLevel )
+    if ( enhancerForIndexPath.requiresPurchase )
     {
         return;
     }
