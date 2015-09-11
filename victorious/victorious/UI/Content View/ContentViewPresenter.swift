@@ -26,15 +26,6 @@ class ContentViewContext: NSObject {
     var streamId: NSString!
     var placeholderImage: UIImage!
     var contentPreviewProvider: VSequencePreviewProvider?
-    
-    var previewOriginFrame: CGRect {
-        // FIXME: Don't use window
-        if let view = self.contentPreviewProvider?.getPreviewView() {
-            let window = UIApplication.sharedApplication().delegate!.window!!
-            return window.convertRect( view.frame, fromView: view )
-        }
-        return CGRect.zeroRect
-    }
 }
 
 /// A helper presenter class that helps VStreamCollectionViewController
@@ -42,6 +33,7 @@ class ContentViewContext: NSObject {
 class ContentViewPresenter: NSObject {
     
     let transitionDelegate = VTransitionDelegate(transition: ContentViewTransition() )
+    let detailTransitioningDelegate = ContentViewTransitioningDelegate()
     
     /// Presents a content view for the specified VSequence object.
     ///
@@ -51,6 +43,12 @@ class ContentViewPresenter: NSObject {
     /// :param: comment A comment ID to scroll to and highlight, typically used when content view
     /// is being presented when the app is launched with a deep link URL.
     func presentContentView( #context: ContentViewContext ) {
+        
+        var detailViewController = UIViewController()
+        detailViewController.view.backgroundColor = UIColor.redColor()
+        dispatch_after( 4.0 ) {
+            detailViewController.dismissViewControllerAnimated( true, completion: nil )
+        }
         
         if let dependencyManager = context.dependencyManager,
             let viewController = context.viewController,
@@ -64,14 +62,13 @@ class ContentViewPresenter: NSObject {
                     alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: "" ), style:.Default, handler: nil) )
                     viewController.presentViewController(alertController, animated:true, completion:nil)
                 }
-                else if let contentView = contentViewFactory.contentViewForContext( context ) {
+                else if let contentViewController = contentViewFactory.contentViewForContext( context ) {
                     if viewController.presentedViewController != nil {
                         viewController.dismissViewControllerAnimated( false, completion: nil )
                     }
                     
-                    contentView.transitioningDelegate = self.transitionDelegate
-                    contentView.modalPresentationStyle = .Custom
-                    viewController.presentViewController(contentView, animated: true, completion: nil)
+                    contentViewController.transitioningDelegate = transitionDelegate
+                    viewController.presentViewController( contentViewController, animated: true, completion: nil )
                 }
         }
     }

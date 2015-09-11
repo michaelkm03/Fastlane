@@ -71,7 +71,7 @@
     [self.marquee enableTimer];
 }
 
-#pragma mark - VisibilitySensitiveCell
+#pragma mark - VFocusable
 
 - (void)setFocusType:(VFocusType)focusType
 {

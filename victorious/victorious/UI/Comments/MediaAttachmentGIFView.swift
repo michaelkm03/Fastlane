@@ -13,10 +13,15 @@ class MediaAttachmentGIFView : MediaAttachmentView {
     
     let videoView = VVideoView()
     
-    
-    override func setFocusType(focusType: VFocusType) {
-        super.setFocusType(focusType)
-        focusType == .None ? self.videoView.pauseFromStart() : self.videoView.playFromStart()
+    override var focusType: VFocusType {
+        didSet {
+            switch focusType {
+            case .None:
+                self.videoView.pauseFromStart()
+            default:
+                self.videoView.playFromStart()
+            }
+        }
     }
     
     required init(coder aDecoder: NSCoder) {

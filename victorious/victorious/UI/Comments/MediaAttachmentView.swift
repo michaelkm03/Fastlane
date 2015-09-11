@@ -18,11 +18,6 @@ protocol Reuse {
 // attached to a comment or a message
 class MediaAttachmentView : UIView, VFocusable, Reuse {
     
-    private var _focusType = VFocusType.None
-    var focusType: VFocusType {
-        return _focusType
-    }
-    
     var comment: VComment?
     var message: VMessage?
     var dependencyManager: VDependencyManager?
@@ -86,9 +81,7 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     // MARK: - VFocusable
     
-    func setFocusType(focusType: VFocusType) {
-        _focusType = focusType
-    }
+    var focusType: VFocusType = .None
     
     func contentArea() -> CGRect {
         return CGRect.zeroRect

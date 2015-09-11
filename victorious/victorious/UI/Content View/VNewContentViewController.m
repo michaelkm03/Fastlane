@@ -583,8 +583,7 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self removeCollectionViewFromContainer];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)selectedLikeButton:(UIButton *)likeButton
@@ -607,41 +606,6 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
-}
-
-- (void)removeCollectionViewFromContainer
-{
-    self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
-    [self.view addSubview:self.snapshotView];
-    self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
-    self.contentCollectionView.delegate = nil;
-    self.contentCollectionView.dataSource = nil;
-    [self.contentCollectionView resignFirstResponder];
-    [self.textEntryView stopEditing];
-    [self.videoCell prepareForRemoval];
-
-    [self.contentCollectionView removeFromSuperview];
-}
-
-- (void)restoreCollectionView
-{
-    [self.snapshotView removeFromSuperview];
-    self.contentCollectionView.delegate = self;
-    self.contentCollectionView.dataSource = self;
-    self.videoCell.delegate = self;
-    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentCollectionView.contentOffset = self.offsetBeforeRemoval;
-    [self.view addSubview:self.contentCollectionView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"collectionView":self.contentCollectionView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"collectionView":self.contentCollectionView}]];
-    [self.view bringSubviewToFront:self.closeButton];
-    [self.view bringSubviewToFront:self.moreButton];
 }
 
 - (void)updateInitialExperienceEnhancerState

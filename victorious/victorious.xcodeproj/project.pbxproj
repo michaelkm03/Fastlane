@@ -764,6 +764,10 @@
 		A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */; };
 		A7CFC1CB19FEE24300726772 /* front_portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */; };
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
+		A7D0431D1BA2219F00FDBBCC /* ContentDetailPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D043191BA2219F00FDBBCC /* ContentDetailPresentationController.swift */; };
+		A7D0431E1BA2219F00FDBBCC /* ContentViewTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0431A1BA2219F00FDBBCC /* ContentViewTransitioningDelegate.swift */; };
+		A7D0431F1BA221A000FDBBCC /* ContentViewTransitionDismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0431B1BA2219F00FDBBCC /* ContentViewTransitionDismissAnimator.swift */; };
+		A7D043201BA221A000FDBBCC /* ContentViewTransitionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0431C1BA2219F00FDBBCC /* ContentViewTransitionPresentationAnimator.swift */; };
 		A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047931B97AE140091F366 /* ContentViewPresenter.swift */; };
 		A7D047961B97C5760091F366 /* ContentViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047951B97C5760091F366 /* ContentViewTransition.swift */; };
 		A7D047981B98BFA60091F366 /* ContentDetailHandoffController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047971B98BFA60091F366 /* ContentDetailHandoffController.swift */; };
@@ -2660,6 +2664,10 @@
 		A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait_upsidedown.m4v; sourceTree = "<group>"; };
 		A7CFC1C819FEE17B00726772 /* front_portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait.m4v; sourceTree = "<group>"; };
+		A7D043191BA2219F00FDBBCC /* ContentDetailPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDetailPresentationController.swift; sourceTree = "<group>"; };
+		A7D0431A1BA2219F00FDBBCC /* ContentViewTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewTransitioningDelegate.swift; sourceTree = "<group>"; };
+		A7D0431B1BA2219F00FDBBCC /* ContentViewTransitionDismissAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewTransitionDismissAnimator.swift; sourceTree = "<group>"; };
+		A7D0431C1BA2219F00FDBBCC /* ContentViewTransitionPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewTransitionPresentationAnimator.swift; sourceTree = "<group>"; };
 		A7D047931B97AE140091F366 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
 		A7D047951B97C5760091F366 /* ContentViewTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewTransition.swift; sourceTree = "<group>"; };
 		A7D047971B98BFA60091F366 /* ContentDetailHandoffController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentDetailHandoffController.swift; path = ../../../../../../.Trash/ContentDetailHandoffController.swift; sourceTree = "<group>"; };
@@ -5225,6 +5233,10 @@
 				A7D047931B97AE140091F366 /* ContentViewPresenter.swift */,
 				A7D047951B97C5760091F366 /* ContentViewTransition.swift */,
 				A7105B221B99056E003DADA8 /* ContentViewPresentationController.swift */,
+				A7D043191BA2219F00FDBBCC /* ContentDetailPresentationController.swift */,
+				A7D0431A1BA2219F00FDBBCC /* ContentViewTransitioningDelegate.swift */,
+				A7D0431B1BA2219F00FDBBCC /* ContentViewTransitionDismissAnimator.swift */,
+				A7D0431C1BA2219F00FDBBCC /* ContentViewTransitionPresentationAnimator.swift */,
 			);
 			name = Presenters;
 			sourceTree = "<group>";
@@ -8940,6 +8952,7 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
+				A7D043201BA221A000FDBBCC /* ContentViewTransitionPresentationAnimator.swift in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
 				A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
@@ -8961,6 +8974,7 @@
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
 				A721E96B1B57617B000B7901 /* VEditorializationItem+RestKit.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
+				A7D0431E1BA2219F00FDBBCC /* ContentViewTransitioningDelegate.swift in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
 				D85E42841AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
@@ -9130,6 +9144,7 @@
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
+				A7D0431F1BA221A000FDBBCC /* ContentViewTransitionDismissAnimator.swift in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
@@ -9379,6 +9394,7 @@
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
+				A7D0431D1BA2219F00FDBBCC /* ContentDetailPresentationController.swift in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,

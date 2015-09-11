@@ -18,13 +18,13 @@ typedef NS_ENUM(NSInteger, VFocusType)
 @protocol VFocusable <NSObject>
 
 /**
- *  Informs the reciever of a change in focus type so that the receiver may update
- *  its UI and functionality accordingly.
+ Informs the reciever of a change in focus type so that the receiver may update
+ its UI and functionality accordingly.
  */
-- (void)setFocusType:(VFocusType)focusType;
+@property (nonatomic, assign) VFocusType focusType;
 
 /**
- *  Returns the bounding rect for the content relative to the receiving container.
+ Returns the bounding rect for the content relative to the receiving container.
  */
 - (CGRect)contentArea;
 
