@@ -51,7 +51,12 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             
             if ( previewView.streamItem != streamItem )
             {
-                previewView.streamItem = streamItem
+                if let previewView = previewView as? VSequencePreviewView, sequence = streamItem as? VSequence {
+                    previewView.setSequence(sequence)
+                }
+                else {
+                    previewView.streamItem = streamItem
+                }
             }
             
             if previewView.superview == nil {
