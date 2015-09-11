@@ -10,6 +10,8 @@ import Foundation
 
 protocol InterstitialViewController: class {
     weak var interstitialDelegate: InterstitialViewControllerControl? { get set }
+    
+    func presentationDuration() -> Double
 }
 
 protocol InterstitialViewControllerControl: class {
@@ -97,9 +99,11 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
     func animateWindowIn() {
         interstitialWindow.hidden = false
         interstitialWindow.makeKeyAndVisible()
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.interstitialWindow.alpha = 1
-        })
+        if let interstitialViewController = interstitialWindow.rootViewController as? InterstitialViewController {
+            UIView.animateWithDuration(interstitialViewController.presentationDuration(), animations: { () -> Void in
+                self.interstitialWindow.alpha = 1
+            })
+        }
     }
     
     func animateWindowOut() {

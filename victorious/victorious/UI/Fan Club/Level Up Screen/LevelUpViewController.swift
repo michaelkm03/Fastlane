@@ -13,6 +13,7 @@ private struct Constants {
     static let collectionViewHeight = 80
     static let badgeHeight = 150
     static let badgeWidth = 135
+    static let presentationDuration = 0.5
 }
 
 class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
@@ -52,8 +53,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         return collectionView
         }()
     
+    // MARK: Interstitial View Controller
+    
     weak var interstitialDelegate: InterstitialViewControllerControl?
-
+    
+    func presentationDuration() -> Double {
+        return Constants.presentationDuration
+    }
+    
     // MARK: - Public Properties
     
     var levelUpInterstitial: LevelUpInterstitial! {
@@ -63,9 +70,16 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 badgeView.title = NSLocalizedString("LEVEL", comment: "")
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
-                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
-                    videoBackground.setItemURL(url, loop: true, audioMuted: true)
-                }
+                
+                dispatch_after(Constants.presentationDuration, { () -> () in
+                    if let path = NSBundle.mainBundle().pathForResource("confetti", ofType: "m4v"), url = NSURL.fileURLWithPath(path) {
+                        self.videoBackground.setItemURL(url, loop: true, audioMuted: true)
+                    }
+                })
+                
+//                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
+//                    videoBackground.setItemURL(url, loop: true, audioMuted: true)
+//                }
             }
         }
     }
@@ -93,14 +107,13 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor.blackColor()
+        
         videoBackground.delegate = self
-        view.insertSubview(videoBackground, aboveSubview: semiTransparentOverlay)
+        view.insertSubview(videoBackground, belowSubview: semiTransparentOverlay)
         
-        view.addSubview(blurEffectView)
-        view.sendSubviewToBack(blurEffectView)
-        
-        displayLink = CADisplayLink(target: self, selector: "update:")
-        displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+//        view.addSubview(blurEffectView)
+//        view.sendSubviewToBack(blurEffectView)
         
         layoutContent()
         
@@ -112,10 +125,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
-    }
-    
-    func update(displayLink: CADisplayLink) {
-        // Potential animation
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -143,19 +152,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn() {
         
         // Title animation
-        UIView.animateWithDuration(1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(1, delay: Constants.presentationDuration, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.titleLabel.transform = CGAffineTransformIdentity
             self.descriptionLabel.transform = CGAffineTransformIdentity
             self.iconCollectionView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: 0.6, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: Constants.presentationDuration, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.badgeView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: 1.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: Constants.presentationDuration, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.dismissButton.alpha = 1
             }, completion: nil)
     }
@@ -204,7 +213,7 @@ extension LevelUpViewController {
     private func layoutContent() {
         
         view.v_addFitToParentConstraintsToSubview(videoBackground)
-        view.v_addFitToParentConstraintsToSubview(blurEffectView)
+//        view.v_addFitToParentConstraintsToSubview(blurEffectView)
         
         badgeView.setTranslatesAutoresizingMaskIntoConstraints(false)
         contentContainer.addSubview(badgeView)
