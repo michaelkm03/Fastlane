@@ -165,7 +165,10 @@ static BOOL shouldCompleteLaunch(void)
     NSString *injectBundle = environment[@"XCInjectBundle"];
     if ( [[injectBundle pathExtension] isEqualToString:@"xctest"] )
     {
-        NSBundle *testBundle = [NSBundle bundleWithPath:injectBundle];
+        NSString *bundleName = [injectBundle lastPathComponent];
+        NSString *bundlePath = [NSTemporaryDirectory() stringByAppendingPathComponent:bundleName];
+        
+        NSBundle *testBundle = [NSBundle bundleWithPath:bundlePath];
         NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
         return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
     }
