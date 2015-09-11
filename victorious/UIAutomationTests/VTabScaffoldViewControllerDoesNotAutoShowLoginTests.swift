@@ -22,7 +22,7 @@ class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
     }
     
     override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) {
-        println("configuring scaffold tests!")
+        print("configuring scaffold tests!")
         defaultTemplateDecorator.setTemplateValue(NSNumber(bool: false), forKeyPath: "scaffold/showLoginOnStartup")
         self.addStep("set scaffold/showLoginOnStartup in template to false")
     }

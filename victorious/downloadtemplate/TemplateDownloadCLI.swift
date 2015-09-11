@@ -24,7 +24,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
     
     /// Downloads templates for one or more environments
     ///
-    /// :param: environmentName The name of the environment for which to download a template, or `nil` to download templates for all environments specified in the application bundle
+    /// - parameter environmentName: The name of the environment for which to download a template, or `nil` to download templates for all environments specified in the application bundle
     func downloadTemplate(environmentName: String? = nil) {
         
         let environmentsFileURL = bundleURL.URLByAppendingPathComponent(environmentsFilename)
