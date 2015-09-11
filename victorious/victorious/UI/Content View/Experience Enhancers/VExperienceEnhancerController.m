@@ -223,9 +223,9 @@
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings) {
         NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
-        NSInteger lockLevel = enhancer.voteType.unlockLevel.integerValue;
+        NSInteger unLockLevel = enhancer.voteType.unlockLevel.integerValue;
+        enhancer.requiresHigherLevel = unLockLevel > userLevel;
         
-        enhancer.requiresHigherLevel = lockLevel > userLevel;
         return YES;
     }];
     

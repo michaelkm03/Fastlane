@@ -24,6 +24,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 @property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *padlockImageView;
+@property (weak, nonatomic) IBOutlet UILabel *unlockLevelLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
 @property (nonatomic, strong) UIImage *unlockedBallisticBackground;
@@ -52,6 +53,8 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.requiresPurchase = NO;
     self.requiresHigherLevel = NO;
     self.enabled = YES;
+    [self.unlockLevelLabel sizeToFit];
+    [self.contentView bringSubviewToFront:self.unlockLevelLabel];
 }
 
 - (void)prepareForReuse
@@ -67,7 +70,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     [super setHighlighted:highlighted];
     
     // Return if we're cooling down
-    if (highlighted && [self.ballisticIconView isAnimating])
+    if ( highlighted && [self.ballisticIconView isAnimating] )
     {
         return;
     }
@@ -158,7 +161,21 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)updateUnlockLevelLabel
 {
-    self.alpha = ( self.requiresHigherLevel ) ? 0.5 : 1.0;
+    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.5f : 1.0f;
+    if (self.requiresHigherLevel)
+    {
+        self.userInteractionEnabled = NO;
+        self.unlockLevelLabel.hidden = NO;
+        
+        NSString *unlockLevelText = [NSString stringWithFormat:@"Level %ld", self.unlockLevel.integerValue];
+        [self.unlockLevelLabel setText:NSLocalizedString(unlockLevelText, "")];
+
+    }
+    else
+    {
+        self.unlockLevelLabel.hidden = YES;
+        self.userInteractionEnabled = YES;
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -167,6 +184,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     if ( dependencyManager != nil )
     {
         self.experienceEnhancerLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.unlockLevelLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
         self.lockedBallisticBackground = [dependencyManager imageForKey:kLockedBallisticBackgroundIconKey];
         self.unlockedBallisticBackground = [dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
         [self updateOverlayImageView];

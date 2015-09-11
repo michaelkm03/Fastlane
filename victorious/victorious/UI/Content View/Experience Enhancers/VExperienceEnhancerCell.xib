@@ -21,7 +21,7 @@
                             <constraint firstAttribute="width" constant="10" id="iPN-e9-dli"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="12" width="50" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -37,6 +37,12 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8X-hG-9KF">
+                        <rect key="frame" x="4" y="26" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -44,7 +50,10 @@
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="12" id="6pM-0u-uIB"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="OTw-YD-uun" secondAttribute="top" constant="-62" id="FLl-Rh-2Hh"/>
                 <constraint firstItem="OTw-YD-uun" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="IGV-3s-8bw"/>
+                <constraint firstItem="S8X-hG-9KF" firstAttribute="centerY" secondItem="1Fd-IN-3ez" secondAttribute="centerY" constant="-0.5" id="P2q-Ps-sa2"/>
                 <constraint firstItem="Uc4-eq-Iwb" firstAttribute="top" secondItem="OTw-YD-uun" secondAttribute="top" constant="-69" id="QXE-PN-10Q"/>
+                <constraint firstItem="S8X-hG-9KF" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" constant="4" id="g4b-qX-5xy"/>
+                <constraint firstAttribute="trailing" secondItem="S8X-hG-9KF" secondAttribute="trailing" constant="4" id="hE1-25-eTp"/>
                 <constraint firstAttribute="trailing" secondItem="OTw-YD-uun" secondAttribute="trailing" id="hqX-k1-lqK"/>
                 <constraint firstAttribute="trailing" secondItem="1Fd-IN-3ez" secondAttribute="trailing" id="nKM-NP-fxl"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="centerX" secondItem="Uc4-eq-Iwb" secondAttribute="centerX" id="qUh-bq-8tF"/>
@@ -54,6 +63,7 @@
                 <outlet property="ballisticIconView" destination="1Fd-IN-3ez" id="e0f-uj-TGj"/>
                 <outlet property="experienceEnhancerLabel" destination="OTw-YD-uun" id="dBC-ow-2b9"/>
                 <outlet property="padlockImageView" destination="Uc4-eq-Iwb" id="9dw-iA-5KX"/>
+                <outlet property="unlockLevelLabel" destination="S8X-hG-9KF" id="hdf-Tq-olM"/>
             </connections>
         </collectionViewCell>
     </objects>

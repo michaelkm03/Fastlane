@@ -144,6 +144,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.voteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
+    experienceEnhancerCell.unlockLevel = enhancerForIndexPath.voteType.unlockLevel;
     experienceEnhancerCell.requiresHigherLevel = enhancerForIndexPath.requiresHigherLevel;
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
