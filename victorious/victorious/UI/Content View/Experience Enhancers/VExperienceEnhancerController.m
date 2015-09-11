@@ -221,7 +221,6 @@
 
 - (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:(NSArray *)experienceEnhancers
 {
-#warning TODO: Filter the experienceEnhancers by level locks
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings) {
         NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
         NSInteger lockLevel = enhancer.voteType.unlockLevel.integerValue;

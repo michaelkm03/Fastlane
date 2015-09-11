@@ -123,7 +123,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 - (void)setRequiresHigherLevel:(BOOL)requiresHigherLevel
 {
     _requiresHigherLevel = requiresHigherLevel;
-    [self updateOverlayImageView];
+    [self updateUnlockLevelLabel];
 }
 
 #pragma mark - Appearance styling
@@ -147,13 +147,18 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)updateOverlayImageView
 {
-    UIImage *image = ( self.requiresPurchase || self.requiresHigherLevel ) ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
+    UIImage *image = ( self.requiresPurchase ) ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
         self.ballisticIconView.overlayImage = image;
     }
     
-    self.padlockImageView.hidden = !( self.requiresPurchase || self.requiresHigherLevel );
+    self.padlockImageView.hidden = !( self.requiresPurchase );
+}
+
+- (void)updateUnlockLevelLabel
+{
+    self.alpha = ( self.requiresHigherLevel ) ? 0.5 : 1.0;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

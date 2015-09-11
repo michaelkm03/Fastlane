@@ -234,7 +234,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else if ( enhancerForIndexPath.requiresHigherLevel ) // Check if the user must reach a higher level to unlock this experience enhancer first
     {
-#warning TODO: show a "level up to unlock this EB" screen
+        // Nothing happens because the experience enhancer appears to be "faded out"
+        return;
     }
     else
     {
