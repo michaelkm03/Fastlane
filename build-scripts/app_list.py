@@ -83,6 +83,7 @@ def showProperUsage():
         print 'Usage: ./app_list.py <environment>'
         print ''
         print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
+        print '<environment> choices are: dev, qa, staging, production or localhost'
         print ''
         print 'NOTE: '
         print 'If no <environment> parameter is provided, the script will use PRODUCTION.'
