@@ -11,7 +11,7 @@ https://svn.blender.org/svnroot/bf-blender/trunk/blender/build_files/scons/tools
 """
 
 
-class color_codes:
+class ColorCodes:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'

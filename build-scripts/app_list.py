@@ -17,7 +17,7 @@ import requests
 import sys
 import subprocess
 import vams_common as vams
-import color_codes as ccodes
+import colorcodes as ccodes
 
 # Supress compiled files
 sys.dont_write_bytecode = True
@@ -56,13 +56,13 @@ def fetchAppList(server):
             build_name = app['build_name']
 
             if app_state == vams._STATE_LOCKED:
-                state = ccodes.color_codes.FAIL + app_state.upper() + ccodes.color_codes.ENDC
+                state = ccodes.ColorCodes.FAIL + app_state.upper() + ccodes.ColorCodes.ENDC
             elif app_state == vams._STATE_UNLOCKED:
-                state = ccodes.color_codes.OKGREEN + app_state.upper() + ccodes.color_codes.ENDC
+                state = ccodes.ColorCodes.OKGREEN + app_state.upper() + ccodes.ColorCodes.ENDC
             else:
-                state = ccodes.color_codes.OKBLUE + app_state.upper() + ccodes.color_codes.ENDC
-            print 'Name: %s (%s)\nBuild Name: %s\nStatus: %s\n' % (app_name, ccodes.color_codes.HEADER + str(app_id) +
-                                                             ccodes.color_codes.ENDC, build_name, state)
+                state = ccodes.ColorCodes.OKBLUE + app_state.upper() + ccodes.ColorCodes.ENDC
+            print 'Name: %s (%s)\nBuild Name: %s\nStatus: %s\n' % (app_name, ccodes.ColorCodes.HEADER + str(app_id) +
+                                                             ccodes.ColorCodes.ENDC, build_name, state)
             app_count = app_count + 1
 
         print '----------------\nTotal of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
@@ -112,20 +112,7 @@ def main(argv):
             server = argv[1]
 
     global _DEFAULT_HOST
-    if server.lower() == 'dev':
-        _DEFAULT_HOST = vams._DEV_HOST
-    elif server.lower() == 'qa':
-        _DEFAULT_HOST = vams._QA_HOST
-    elif server.lower() == 'staging':
-        _DEFAULT_HOST = vams._STAGING_HOST
-    elif server.lower() == 'production':
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
-    elif server.lower() == 'localhost':
-        _DEFAULT_HOST = "%s:%s" % (vams._LOCAL_HOST, vams._DEFAULT_LOCAL_PORT)
-    elif server.lower() == 'local':
-        _DEFAULT_HOST = "%s:%s" % (vams._LOCAL_HOST, vams._DEFAULT_LOCAL_PORT)
-    else:
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
+    _DEFAULT_HOST = vams.GetVictoriousHost(server)
 
     if vams.authenticateUser(_DEFAULT_HOST):
         fetchAppList(server)

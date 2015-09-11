@@ -6,6 +6,8 @@
 """
 A set of global variables to be shared and set between the vams_prebuild and vams_postbuild programs.
 
+The Hash calculating code was "borrowed" from Frank Zhao (frank@getvictorious.com).
+https://github.com/TouchFrame/TestAutomation/blob/master/backEndApiDriver.py
 """
 import requests
 import subprocess
@@ -97,6 +99,34 @@ def createDateString():
 
     return ' '.join(date_list)
 
+
+def GetVictoriousHost(host):
+    """
+    Retrieves a Victorious host url
+
+    :param host:
+        The environment to retrieve the Victorious host url for
+
+    :return:
+        A string of a Victorious host url
+    """
+
+    if host.lower() == 'dev':
+        hostURL = _DEV_HOST
+    elif host.lower() == 'qa':
+        hostURL = _QA_HOST
+    elif host.lower() == 'staging':
+        hostURL = _STAGING_HOST
+    elif host.lower() == 'production':
+        hostURL = _PRODUCTION_HOST
+    elif host.lower() == 'localhost':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    elif host.lower() == 'local':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    else:
+        hostURL = _PRODUCTION_HOST
+
+    return hostURL
 
 def authenticateUser(host):
     """
