@@ -15,19 +15,19 @@ class ContentCreationTests: VictoriousTestCase {
         return "Tests the various types of content creation available to users."
     }
     
+    override func beforeAll() {
+        super.beforeAll()
+        
+        self.loginAndDismissWelcomeIfPresent()
+    }
+    
     func testCreateImage() {
         
         self.addStep( "Select *IMAGE* from the creation menu." )
-        
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
-        
-        // Log in if presented after pressing "Create"
-        self.loginIfRequired()
-        
         self.tester().tapViewWithAccessibilityLabel( "Create Image" )
         
         self.addStep( "Select the first image in the device's library." )
-        
         // Select image from gallery
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tester().tapItemAtIndexPath( indexPath, inCollectionViewWithAccessibilityIdentifier: VAutomationIdentifierMediaGalleryCollection )
