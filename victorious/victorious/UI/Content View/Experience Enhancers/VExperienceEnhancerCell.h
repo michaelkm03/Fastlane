@@ -20,8 +20,6 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;
 @property (nonatomic, strong) UIImage *experienceEnhancerIcon;
 @property (nonatomic, assign) BOOL requiresPurchase;
-@property (nonatomic, assign) BOOL requiresHigherLevel;
-@property (nonatomic, assign) NSNumber *unlockLevel;
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -30,5 +28,6 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 @property (nonatomic, assign) NSTimeInterval cooldownDuration;
 
 - (void)startCooldown;
+- (void)configureUnlockLevelLabelWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel;
 
 @end

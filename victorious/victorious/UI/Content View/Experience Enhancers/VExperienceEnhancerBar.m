@@ -15,6 +15,7 @@
 #import "VVoteType.h"
 #import "VExperienceEnhancerResponder.h"
 #import "UIResponder+VResponderChain.h"
+#import "VUser.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -144,8 +145,11 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.voteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
-    experienceEnhancerCell.unlockLevel = enhancerForIndexPath.voteType.unlockLevel;
-    experienceEnhancerCell.requiresHigherLevel = enhancerForIndexPath.requiresHigherLevel;
+    
+    NSInteger unlockLevel = enhancerForIndexPath.voteType.unlockLevel.integerValue;
+    NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
+    [experienceEnhancerCell configureUnlockLevelLabelWithUnlockLevel:unlockLevel andUserLevel:userLevel];
+
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
     

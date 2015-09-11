@@ -193,7 +193,6 @@
     NSArray *newValue = validExperienceEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
     newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithPurchase:newValue];
-    newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
 }
@@ -216,19 +215,6 @@
         }
         return YES;
     }];
-    return [experienceEnhancers filteredArrayUsingPredicate:predicate];
-}
-
-- (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithHigherLevel:(NSArray *)experienceEnhancers
-{
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings) {
-        NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
-        NSInteger unLockLevel = enhancer.voteType.unlockLevel.integerValue;
-        enhancer.requiresHigherLevel = unLockLevel > userLevel;
-        
-        return YES;
-    }];
-    
     return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 

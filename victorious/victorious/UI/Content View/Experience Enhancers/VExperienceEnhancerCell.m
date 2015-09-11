@@ -29,6 +29,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 @property (nonatomic, assign) BOOL isUnhighlighting;
 @property (nonatomic, strong) UIImage *unlockedBallisticBackground;
 @property (nonatomic, strong) UIImage *lockedBallisticBackground;
+@property (nonatomic, assign) BOOL requiresHigherLevel;
 
 @end
 
@@ -123,12 +124,6 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     [self updateOverlayImageView];
 }
 
-- (void)setRequiresHigherLevel:(BOOL)requiresHigherLevel
-{
-    _requiresHigherLevel = requiresHigherLevel;
-    [self updateUnlockLevelLabel];
-}
-
 #pragma mark - Appearance styling
 
 - (void)startCooldown
@@ -159,23 +154,18 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.padlockImageView.hidden = !( self.requiresPurchase );
 }
 
-- (void)updateUnlockLevelLabel
+- (void)configureUnlockLevelLabelWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel
 {
-    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.5f : 1.0f;
+    self.requiresHigherLevel = unlockLevel > userLevel;
     if (self.requiresHigherLevel)
     {
-        self.userInteractionEnabled = NO;
-        self.unlockLevelLabel.hidden = NO;
-        
-        NSString *unlockLevelText = [NSString stringWithFormat:@"Level %ld", self.unlockLevel.integerValue];
+        NSString *unlockLevelText = [NSString stringWithFormat:@"Level %ld", unlockLevel];
         [self.unlockLevelLabel setText:NSLocalizedString(unlockLevelText, "")];
-
     }
-    else
-    {
-        self.unlockLevelLabel.hidden = YES;
-        self.userInteractionEnabled = YES;
-    }
+    
+    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.5f : 1.0f;
+    self.userInteractionEnabled = !self.requiresHigherLevel;
+    self.unlockLevelLabel.hidden = !self.requiresHigherLevel;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
