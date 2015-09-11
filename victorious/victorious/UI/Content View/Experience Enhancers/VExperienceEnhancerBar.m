@@ -146,10 +146,13 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
     
-    NSInteger unlockLevel = enhancerForIndexPath.voteType.unlockLevel.integerValue;
-    NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
-    [experienceEnhancerCell configureUnlockLevelLabelWithUnlockLevel:unlockLevel andUserLevel:userLevel];
-
+    if (enhancerForIndexPath.voteType.unlockLevel != nil)
+    {
+        NSInteger unlockLevel = enhancerForIndexPath.voteType.unlockLevel.integerValue;
+        NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
+        [experienceEnhancerCell configureUnlockLevelLabelWithUnlockLevel:unlockLevel andUserLevel:userLevel];
+    }
+    
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
     

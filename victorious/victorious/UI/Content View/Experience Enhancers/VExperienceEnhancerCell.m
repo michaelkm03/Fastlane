@@ -54,6 +54,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.requiresPurchase = NO;
     self.requiresHigherLevel = NO;
     self.enabled = YES;
+    self.unlockLevelLabel.hidden = YES;
     [self.unlockLevelLabel sizeToFit];
     [self.contentView bringSubviewToFront:self.unlockLevelLabel];
 }
