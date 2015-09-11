@@ -6,6 +6,8 @@
 """
 A set of global variables to be shared and set between the vams_prebuild and vams_postbuild programs.
 
+The Hash calculating code was "borrowed" from Frank Zhao (frank@getvictorious.com).
+https://github.com/TouchFrame/TestAutomation/blob/master/backEndApiDriver.py
 """
 import requests
 import subprocess
@@ -39,6 +41,9 @@ def init():
     global _AUTH_TOKEN
     global _PLATFORM_ANDROID
     global _PLATFORM_IOS
+    global _STATE_ARCHIVED
+    global _STATE_LOCKED
+    global _STATE_UNLOCKED
     global _QA_PROVISIONING_PROFILE
     global _STAGING_PROVISIONING_PROFILE
 
@@ -62,6 +67,10 @@ def init():
 
     _PLATFORM_ANDROID = 'android'
     _PLATFORM_IOS = 'ios'
+
+    _STATE_ARCHIVED = 'archived'
+    _STATE_LOCKED = 'locked'
+    _STATE_UNLOCKED = 'unlocked'
 
     _DEFAULT_PLATFORM = _PLATFORM_ANDROID
     _PRODUCTION_HOST = 'https://api.getvictorious.com'
@@ -90,6 +99,34 @@ def createDateString():
 
     return ' '.join(date_list)
 
+
+def GetVictoriousHost(host):
+    """
+    Retrieves a Victorious host url
+
+    :param host:
+        The environment to retrieve the Victorious host url for
+
+    :return:
+        A string of a Victorious host url
+    """
+
+    if host.lower() == 'dev':
+        hostURL = _DEV_HOST
+    elif host.lower() == 'qa':
+        hostURL = _QA_HOST
+    elif host.lower() == 'staging':
+        hostURL = _STAGING_HOST
+    elif host.lower() == 'production':
+        hostURL = _PRODUCTION_HOST
+    elif host.lower() == 'localhost':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    elif host.lower() == 'local':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    else:
+        hostURL = _PRODUCTION_HOST
+
+    return hostURL
 
 def authenticateUser(host):
     """
@@ -173,4 +210,20 @@ def calcAuthHash(endpoint, reqMethod):
     """
     return hashlib.sha1(_DEFAULT_HEADER_DATE + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
                         reqMethod).hexdigest()
+
+
+def assetFetcher(url, filename):
+    """
+    Requests an asset using a provided url and writes it to a folder
+    :param url:
+        The url of the asset to download
+
+    :param filename:
+        The filename / location to write the downloaded asset to
+    """
+
+    response = requests.get(url)
+    if len(response.content) > 0:
+        with open(filename, 'wb') as outfile:
+            outfile.write(response.content)
 
