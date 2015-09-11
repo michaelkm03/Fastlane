@@ -90,9 +90,8 @@ def showProperUsage():
         print 'examples:'
         print './app_list.py         <-- will use PRODUCTION'
         print './app_list.py qa      <-- will use QA'
-        print './app_list.py -h      <-- Displays this help screen'
-        print './app_list.py -help   <-- Displays this help screen'
-        print './app_list.py --help  <-- Displays this help screen'
+        print './app_list.py h      <-- Displays this help screen'
+        print './app_list.py help   <-- Displays this help screen'
         print ''
         print 'search:'
         print './app_list.py dev | grep \'Ryan\'    <-- Simple case-sensitive search'
@@ -106,7 +105,7 @@ def main(argv):
     if len(argv) == 1:
         server = 'production'
     else:
-        if argv[1] == '-h' or argv[1] == '--help' or argv[1] == '-help':
+        if argv[1] == 'h' or argv[1] == 'help':
             showProperUsage()
         else:
             server = argv[1]
