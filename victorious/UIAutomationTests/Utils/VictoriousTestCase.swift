@@ -37,7 +37,7 @@ class VictoriousTestCase: KIFTestCase {
     override func beforeAll() {
         super.beforeAll()
         
-        let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
+        let title = (NSStringFromClass(self.dynamicType) as NSString).pathExtension.camelCaseSeparatedString.capitalizedString
         self.addTextToReport( "\n\n# \(title)\n\(self.testDescription)\n" )
     }
     
@@ -45,11 +45,10 @@ class VictoriousTestCase: KIFTestCase {
     /// This method is called automatically before each test is run, but it is exposed here
     /// so that tests can manually reset the session if needed.
     func resetSession() {
-        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
-            let rootViewController = window.rootViewController as? VRootViewController {
-                rootViewController.startNewSession()
-                self.configureTemplateIfNecessary()
-                self.tester().waitWithCountdownForInterval( 10.0 )
+        if let rootViewController = UIApplication.sharedApplication().windows[0].rootViewController as? VRootViewController {
+            rootViewController.startNewSession()
+            self.configureTemplateIfNecessary()
+            self.tester().waitWithCountdownForInterval( 10.0 )
         }
     }
     
@@ -76,8 +75,7 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     private func configureTemplateIfNecessary() {
-        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
-            let rootViewController = window.rootViewController as? VRootViewController,
+        if let rootViewController = UIApplication.sharedApplication().windows[0].rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
                 loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
                     self.configureTemplate(decorator)
@@ -146,8 +144,8 @@ class VictoriousTestCase: KIFTestCase {
         }
         do {
             try text.writeToFile(TEST_SUMMARY_PATH, atomically: false, encoding: NSUTF8StringEncoding)
-        } catch var error as NSError {
-            print( "Failed to write to file: \(error?.localizedDescription)" )
+        } catch let error as NSError {
+            print( "Failed to write to file: \(error.localizedDescription)" )
         }
         if !VictoriousTestCase.shouldAppend {
             VictoriousTestCase.shouldAppend = true

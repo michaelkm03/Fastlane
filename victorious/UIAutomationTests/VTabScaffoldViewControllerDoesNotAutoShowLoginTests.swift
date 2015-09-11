@@ -29,9 +29,14 @@ class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
     
     func testDoesNotAutoShow() {
         self.addStep("look for a regsiter button")
-        let registerButtonExists = self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail, error: nil)
+        var registerButtonExists = false
+        do {
+            try self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail)
+            registerButtonExists = true
+        }
+        catch (_) {
+        }
         XCTAssertFalse(registerButtonExists, "We should not find a register button!")
     }
     
 }
-
