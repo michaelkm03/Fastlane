@@ -45,7 +45,7 @@ class VictoriousTestCase: KIFTestCase {
     /// This method is called automatically before each test is run, but it is exposed here
     /// so that tests can manually reset the session if needed.
     func resetSession() {
-        if let rootViewController = UIApplication.sharedApplication().windows[0].rootViewController as? VRootViewController {
+        if let rootViewController = UIApplication.sharedApplication().windows.first?.rootViewController as? VRootViewController {
             rootViewController.startNewSession()
             self.configureTemplateIfNecessary()
             self.tester().waitWithCountdownForInterval( 10.0 )
@@ -75,7 +75,7 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     private func configureTemplateIfNecessary() {
-        if let rootViewController = UIApplication.sharedApplication().windows[0].rootViewController as? VRootViewController,
+        if let rootViewController = UIApplication.sharedApplication().windows.first?.rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
                 loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
                     self.configureTemplate(decorator)
@@ -144,7 +144,8 @@ class VictoriousTestCase: KIFTestCase {
         }
         do {
             try text.writeToFile(TEST_SUMMARY_PATH, atomically: false, encoding: NSUTF8StringEncoding)
-        } catch let error as NSError {
+        }
+        catch let error as NSError {
             print( "Failed to write to file: \(error.localizedDescription)" )
         }
         if !VictoriousTestCase.shouldAppend {
