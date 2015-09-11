@@ -159,11 +159,11 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.requiresHigherLevel = unlockLevel > userLevel;
     if (self.requiresHigherLevel)
     {
-        NSString *unlockLevelText = [NSString stringWithFormat:@"Level %ld", unlockLevel];
+        NSString *unlockLevelText = [NSString stringWithFormat:@"LEVEL %ld", unlockLevel];
         [self.unlockLevelLabel setText:NSLocalizedString(unlockLevelText, "")];
     }
     
-    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.5f : 1.0f;
+    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.3f : 1.0f;
     self.userInteractionEnabled = !self.requiresHigherLevel;
     self.unlockLevelLabel.hidden = !self.requiresHigherLevel;
 }
@@ -174,7 +174,6 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     if ( dependencyManager != nil )
     {
         self.experienceEnhancerLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-        self.unlockLevelLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
         self.lockedBallisticBackground = [dependencyManager imageForKey:kLockedBallisticBackgroundIconKey];
         self.unlockedBallisticBackground = [dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
         [self updateOverlayImageView];
