@@ -24,7 +24,6 @@ end
 
 target 'UIAutomationTests', :exclusive => true do
   pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
-  pod 'MBProgressHUD'
 end
 
 post_install do |installer|
