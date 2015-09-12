@@ -272,15 +272,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             }
         }
     }
-}
-
-extension VExploreViewController: UISearchBarDelegate {
- 
-    private func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
-            v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
-        }
-    }
+    
+    /// MARK: Search bar management
     
     private func configureSearchBar() {
         if let dependencyManager = self.dependencyManager {
