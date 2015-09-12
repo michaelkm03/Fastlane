@@ -133,8 +133,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     
     /// Mark: - Private Helper Methods
     private func configureSearchBar() {
-        if let dependencyManager = self.dependencyManager {
-            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(dependencyManager)
+        if let dependencyManager = self.dependencyManager,
+            searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: "userHashtagSearch") as? [NSObject : AnyObject],
+            searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) {
+                
+            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
             searchResultsViewController?.navigationDelegate = self
             searchController = UISearchController(searchResultsController: searchResultsViewController)
         }
