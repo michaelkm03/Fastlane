@@ -15,8 +15,4 @@
 - (RKManagedObjectRequestOperation *)registerTestAlert:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)acknowledgeAlert:(NSString *)alertID
-                                          withSuccess:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail;
-
 @end

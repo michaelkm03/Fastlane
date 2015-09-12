@@ -8,13 +8,7 @@
 
 import Foundation
 
-protocol InterstitialConfiguration {
-    
-    func configureWithInfo(info: [String : AnyObject])
-    
-    func viewControllerToPresent() -> InterstitialViewController?
-}
-
+/// An enum describing each type of supported interstitials
 enum InterstitialType : String {
     /// WARNING: change this to "levelUp" when backend implements level up interstitial
     case LevelUp = ""

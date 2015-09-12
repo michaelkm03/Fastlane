@@ -8,16 +8,8 @@
 
 import Foundation
 
-protocol InterstitialViewController: class {
-    weak var interstitialDelegate: InterstitialViewControllerControl? { get set }
-    
-    func presentationDuration() -> Double
-}
-
-protocol InterstitialViewControllerControl: class {
-    func dismissInterstitial()
-}
-
+/// A singleton object for managing interstitial objects and presenting their
+/// associated view controllers
 class InterstitialManager: NSObject, InterstitialViewControllerControl {
     
     /// Returns the interstitial manager singelton
@@ -27,7 +19,10 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
     /// the interstitials in order to build their view controllers
     var dependencyManager: VDependencyManager?
     
+    /// Whether or not the interstitial window is currently on screen
     var isShowingInterstital = false
+    
+    /// Whether or not the interstitial manager should register new interstitials
     var shouldRegisterInterstitials = true
     
     private let interstitialWindow: UIWindow
@@ -43,6 +38,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
     
     private var registeredInterstitials = Set<Interstitial>()
     
+    /// Register an array of interstitials. Will automatically show the most recent one in the array.
     func registerInterstitials(interstitials: [Interstitial]) {
         
         if !shouldRegisterInterstitials {
@@ -61,7 +57,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
         }
         
         // Show most recent interstitial
-        show(Array(registeredInterstitials).last)
+        show(Array(registeredInterstitials).first)
     }
     
     private func show(interstitial: Interstitial?) {
@@ -79,7 +75,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
                 isShowingInterstital = true
                 animateWindowIn()
                 
-                // Mark the rest of interstitials as seen
+                // Mark this and the rest of the interstitials as seen
                 for interstitial in registeredInterstitials {
                     VObjectManager.sharedManager().markInterstitialAsSeen(interstitial.remoteID, success: nil, failure: nil)
                 }
@@ -97,7 +93,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
     
     /// MARK: Helpers
     
-    func animateWindowIn() {
+    private func animateWindowIn() {
         interstitialWindow.hidden = false
         interstitialWindow.makeKeyAndVisible()
         if let interstitialViewController = interstitialWindow.rootViewController as? InterstitialViewController {
@@ -107,7 +103,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
         }
     }
     
-    func animateWindowOut() {
+    private func animateWindowOut() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.interstitialWindow.alpha = 0
             }) { (completed) -> Void in

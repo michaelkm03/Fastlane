@@ -14,7 +14,12 @@
 - (RKManagedObjectRequestOperation *)registerTestAlert:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"level" : @{@"number" : @5},
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSInteger testLevel = [ud integerForKey:@"levelNumber"] ?: 1;
+    [ud setInteger:testLevel + 1 forKey:@"levelNumber"];
+    [ud synchronize];
+    
+    NSDictionary *parameters = @{@"level" : @{@"number" : @(testLevel)},
                                  @"backgroundVideo" : @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8",
                                  @"title" : @"YEAH!!",
                                  @"description" : @"You won new stuff!",
@@ -27,17 +32,6 @@
     return [self POST:@"/api/alert/create"
                object:nil
            parameters:@{@"type" : @"level", @"params" : jsonString}
-         successBlock:success
-            failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)acknowledgeAlert:(NSString *)alertID
-                                          withSuccess:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/alert/acknowledge"
-               object:nil
-           parameters:@{@"alert_id" : alertID}
          successBlock:success
             failBlock:fail];
 }

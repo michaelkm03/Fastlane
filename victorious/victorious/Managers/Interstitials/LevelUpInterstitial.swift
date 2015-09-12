@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// An interstitial that represents the level up screen
 class LevelUpInterstitial: Interstitial {
     
     var level: String?
@@ -15,7 +16,7 @@ class LevelUpInterstitial: Interstitial {
     var description: String?
     var icons: [String]?
     var videoURL: String?
-    
+
     private var allRequiredInfoIsPresent: Bool {
         if let level = level, title = title, description = description, icons = icons {
             return true
@@ -26,7 +27,6 @@ class LevelUpInterstitial: Interstitial {
     /// MARK: InterstitialConfiguration
     
     override func configureWithInfo(info: [String : AnyObject]) {
-        /// WARNING: params if condition should be removed when backend implements level up alert
         if let paramsDict = info["params"] as? [String : AnyObject] {
             if let levelInfo = paramsDict["level"] as? [String : AnyObject],
                 levelNumber = levelInfo["number"] as? Int {
@@ -40,7 +40,8 @@ class LevelUpInterstitial: Interstitial {
     }
     
     override func viewControllerToPresent() -> InterstitialViewController? {
-        if let dependencyManager = dependencyManager, levelUpVC = dependencyManager.levelUpViewController(self) as? InterstitialViewController where allRequiredInfoIsPresent {
+        if let dependencyManager = dependencyManager,
+            levelUpVC = dependencyManager.levelUpViewController(self) as? InterstitialViewController where allRequiredInfoIsPresent {
             return levelUpVC
         }
         
