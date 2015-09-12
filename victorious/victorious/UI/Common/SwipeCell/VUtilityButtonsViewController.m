@@ -61,8 +61,10 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     // Since this view will be added to another view that persists beyond the lifetime
     // of the view controller (self), we have to kill the collection view so it doesn't try to send
     // its datasource and delegate methods to a deallocated instance (self).
-    [self.collectionView removeFromSuperview];
-    self.collectionView = nil;
+    [_collectionView removeFromSuperview];
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+    _collectionView = nil;
 }
 
 - (void)constraintsDidUpdate

@@ -39,13 +39,6 @@ class VictoriousTestCase: KIFTestCase {
         
         let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
         self.addTextToReport( "\n\n# \(title)\n\(self.testDescription)\n" )
-        
-        // Login if forced login is presented
-        self.loginIfRequired()
-        self.addStep( "Logs in using email if test is run while no user is logged in." )
-        
-        self.dismissWelcomeIfPresent()
-        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
     }
     
     /// Resets the session, returning the app to a state as if it has just been launched.
@@ -55,7 +48,8 @@ class VictoriousTestCase: KIFTestCase {
         if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
             let rootViewController = window.rootViewController as? VRootViewController {
                 rootViewController.startNewSession()
-                self.tester().waitForTimeInterval( 10.0 )
+                self.configureTemplateIfNecessary()
+                self.tester().waitWithCountdownForInterval( 10.0 )
         }
     }
     
@@ -71,6 +65,28 @@ class VictoriousTestCase: KIFTestCase {
         shouldResetSession = true
     }
     
+    // MARK: Template Configuration
+    
+    /// Provides VictoriousTestCase subclasses a chance to configure the template as appropriate for the particular test.
+    /// This will be called in `resetSession()` of VictoriousTextCase.
+    /// The default implementation of this method simply does nothing.
+    ///
+    /// :param: decorator A VTemplateDecorator pre-populated with what is returned from the server or has already been cached.
+    func configureTemplate(defaultTemplateDecorator: VTemplateDecorator){
+    }
+    
+    private func configureTemplateIfNecessary() {
+        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
+            let rootViewController = window.rootViewController as? VRootViewController,
+            let loadingViewController = rootViewController.loadingViewController {
+                loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
+                    self.configureTemplate(decorator)
+                }
+        }
+    }
+    
+    // MARK: - AccessibilityLabel support
+    
     /// Checks if the element with the provided label is present on screen
     ///
     /// :param: accessibilityLabel The label (or identifier) of the sought element
@@ -82,6 +98,8 @@ class VictoriousTestCase: KIFTestCase {
         self.exceptions = []
         return output
     }
+    
+    // MARK: - FTUE + Login Helpers
     
     /// Dismisses FTUE welcome screen if presented on first install.
     func dismissWelcomeIfPresent() {
@@ -102,6 +120,8 @@ class VictoriousTestCase: KIFTestCase {
             self.tester().waitForTappableViewWithAccessibilityLabel( "Next" ).tap()
         }
     }
+    
+    // MARK: - Report Generation
     
     lazy var dateFormatter: NSDateFormatter = {
         var dateFormatter = NSDateFormatter()
@@ -157,6 +177,28 @@ class VictoriousTestCase: KIFTestCase {
             self.tester().waitForTimeInterval( 3.0 )
         }
     }
+    
+    // MARK: - Login/Logout Helpers
+    
+    func logOutAndResetSession() {
+        
+        let login = VStoredLogin()
+        login.clearLoggedInUserFromDisk()
+        self.addStep("logout")
+        
+        self.resetSession()
+    }
+    
+    func loginAndDismissWelcomeIfPresent() {
+        
+        // Login if forced login is presented
+        self.loginIfRequired()
+        self.addStep( "Logs in using email if test is run while no user is logged in." )
+        
+        self.dismissWelcomeIfPresent()
+        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
+    }
+    
 }
 
 private extension String {

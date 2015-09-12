@@ -363,6 +363,8 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
+		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
+		793301611BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
 		7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */; };
@@ -381,6 +383,8 @@
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
 		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
+		79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */; };
+		79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
@@ -1218,6 +1222,7 @@
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
+		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
@@ -1965,6 +1970,7 @@
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
+		793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift; sourceTree = "<group>"; };
 		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
 		794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
@@ -1986,6 +1992,9 @@
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
 		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
 		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
+		79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTabScaffoldViewControllerTests.swift; sourceTree = "<group>"; };
+		79A80F841B9F970B00522380 /* VRootViewController+UIAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VRootViewController+UIAutomation.h"; sourceTree = "<group>"; };
+		79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRootViewController+UIAutomation.m"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3510,6 +3519,7 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
+		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
@@ -5890,6 +5900,8 @@
 		A76A069E1B87B13600D91214 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				79A80F841B9F970B00522380 /* VRootViewController+UIAutomation.h */,
+				79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */,
 				A76A069F1B87B13600D91214 /* KIFExtensions.swift */,
 				A76A06A01B87B13600D91214 /* VictoriousTestCase.swift */,
 			);
@@ -6179,6 +6191,7 @@
 				C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */,
 				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
 				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
+				F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6341,6 +6354,8 @@
 				A76A069C1B87B13600D91214 /* CommentTests.swift */,
 				A76A069B1B87B13600D91214 /* ContentCreationTests.swift */,
 				A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */,
+				79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */,
+				793301601BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift */,
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
 				A76A069E1B87B13600D91214 /* Utils */,
 			);
@@ -8868,9 +8883,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */,
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
 				A7607DB21B8FEBAF0048B899 /* ContentCreationTests.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
+				793301611BA1F4A700A4435F /* VTabScaffoldViewControllerDoesNotAutoShowLoginTests.swift in Sources */,
+				79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
 			);
@@ -9130,6 +9148,7 @@
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
+				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				A7D0431F1BA221A000FDBBCC /* ContentViewTransitionDismissAnimator.swift in Sources */,
@@ -11121,6 +11140,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					"TEST_SUMMARY_PATH=@\\\"$(PROJECT_DIR)/../../VictoriousiOS.wiki/UI-Automation-Tests.md\\\"",
+					"UITEST=1",
 				);
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -57,6 +57,11 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     return viewController;
 }
 
+- (void)dealloc
+{
+    _editTextView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
