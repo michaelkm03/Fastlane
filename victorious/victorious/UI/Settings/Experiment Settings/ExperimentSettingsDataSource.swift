@@ -12,14 +12,14 @@ import VictoriousCommon
 /// Designed to provided an `ExperimentSettingsDataSource` instance with a reference to
 /// the table view it's feeding so that it can reload it or get access to individual cells
 /// that need updating based on changes in the data model
-protocol ExperimentSettingsDataSourceDelegate {
+protocol ExperimentSettingsDataSourceDelegate: class {
     var tableView: UITableView! { get }
     var dependencyManager: VDependencyManager? { get }
 }
 
 class ExperimentSettingsDataSource: NSObject {
     
-    var delegate:ExperimentSettingsDataSourceDelegate?
+    weak var delegate:ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
         static let unmodified = UIColor.grayColor()
@@ -110,7 +110,8 @@ class ExperimentSettingsDataSource: NSObject {
                     switchCell.switchColor = self.tintColor.current
                     if let indexPath = tableView.indexPathForCell( switchCell ) {
                         let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                        switchCell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                        let nameWithID = "\(experiment.name) (\(experiment.id))"
+                        switchCell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                     }
                 }
             }
@@ -182,7 +183,8 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         if self.state == .Content,
             let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
                 let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                cell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                let nameWithID = "\(experiment.name) (\(experiment.id))"
+                cell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                 cell.delegate = self
                 cell.switchColor = self.tintColor.current
                 return cell

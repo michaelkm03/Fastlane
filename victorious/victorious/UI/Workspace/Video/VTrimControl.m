@@ -79,6 +79,11 @@ const CGFloat VTrimmerTopPadding = 42.0f;
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
 }
 
+- (void)dealloc
+{
+    _animator.delegate = nil;
+}
+
 #pragma mark - UIControl
 
 - (BOOL)isTracking

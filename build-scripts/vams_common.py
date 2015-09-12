@@ -6,6 +6,8 @@
 """
 A set of global variables to be shared and set between the vams_prebuild and vams_postbuild programs.
 
+The Hash calculating code was "borrowed" from Frank Zhao (frank@getvictorious.com).
+https://github.com/TouchFrame/TestAutomation/blob/master/backEndApiDriver.py
 """
 import requests
 import subprocess
@@ -23,6 +25,9 @@ def init():
     global _DEFAULT_VAMS_USERID
     global _DEFAULT_VAMS_USER
     global _DEFAULT_VAMS_PASSWORD
+    global _DEBUG_VAMS_USER
+    global _DEBUG_VAMS_PASSWORD
+    global _DEBUG_USERAGENT
     global _DEFAULT_USERAGENT
     global _DEFAULT_HEADERS
     global _DEFAULT_HEADER_DATE
@@ -36,6 +41,11 @@ def init():
     global _AUTH_TOKEN
     global _PLATFORM_ANDROID
     global _PLATFORM_IOS
+    global _STATE_ARCHIVED
+    global _STATE_LOCKED
+    global _STATE_UNLOCKED
+    global _QA_PROVISIONING_PROFILE
+    global _STAGING_PROVISIONING_PROFILE
 
     _LOGIN_ENDPOINT = '/api/login'
 
@@ -45,14 +55,22 @@ def init():
     _DEFAULT_VAMS_USERID = 0
     _DEFAULT_VAMS_USER = 'autobuild@victorious.com'
     _DEFAULT_VAMS_PASSWORD = 'tGrg9qtxgdRBbbPwiRDNbRJkjwTxXFmEphCbdrdoePdoHdKs3m'
+    _DEBUG_VAMS_USER = 'vicky@example.com'
+    _DEBUG_VAMS_PASSWORD = 'abc123456'
 
     _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
+    _DEBUG_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
+                         'Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
     _DEFAULT_HEADERS = ''
-    _DEFAULT_HEADER_DATE = createDefaultHeaderDate()
+    _DEFAULT_HEADER_DATE = createDateString()
 
     _PLATFORM_ANDROID = 'android'
     _PLATFORM_IOS = 'ios'
+
+    _STATE_ARCHIVED = 'archived'
+    _STATE_LOCKED = 'locked'
+    _STATE_UNLOCKED = 'unlocked'
 
     _DEFAULT_PLATFORM = _PLATFORM_ANDROID
     _PRODUCTION_HOST = 'https://api.getvictorious.com'
@@ -64,10 +82,13 @@ def init():
 
     _AUTH_TOKEN = ''
 
+    _QA_PROVISIONING_PROFILE = 'qa.mobileprovision'
+    _STAGING_PROVISIONING_PROFILE = 'staging.mobileprovision'
 
-def createDefaultHeaderDate():
+
+def createDateString():
     """
-    Creates and sets the _DEFAULT_HEADER_DATE used in authentication
+    Creates a date string
 
     :return:
         A date formatted string
@@ -79,6 +100,34 @@ def createDefaultHeaderDate():
     return ' '.join(date_list)
 
 
+def GetVictoriousHost(host):
+    """
+    Retrieves a Victorious host url
+
+    :param host:
+        The environment to retrieve the Victorious host url for
+
+    :return:
+        A string of a Victorious host url
+    """
+
+    if host.lower() == 'dev':
+        hostURL = _DEV_HOST
+    elif host.lower() == 'qa':
+        hostURL = _QA_HOST
+    elif host.lower() == 'staging':
+        hostURL = _STAGING_HOST
+    elif host.lower() == 'production':
+        hostURL = _PRODUCTION_HOST
+    elif host.lower() == 'localhost':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    elif host.lower() == 'local':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    else:
+        hostURL = _PRODUCTION_HOST
+
+    return hostURL
+
 def authenticateUser(host):
     """
     Authenticates a user against the Victorious backend API.
@@ -88,12 +137,24 @@ def authenticateUser(host):
     """
     url = '%s%s' % (host, _LOGIN_ENDPOINT)
 
+    global _DEFAULT_USERAGENT
+
+    email = _DEFAULT_VAMS_USER
+    pwd = _DEFAULT_VAMS_PASSWORD
+    useragent = _DEFAULT_USERAGENT
+
+    if host != _PRODUCTION_HOST:
+        email = _DEBUG_VAMS_USER
+        pwd = _DEBUG_VAMS_PASSWORD
+        useragent = _DEBUG_USERAGENT
+        _DEFAULT_USERAGENT = _DEBUG_USERAGENT
+
     postData = {
-        'email': _DEFAULT_VAMS_USER,
-        'password': _DEFAULT_VAMS_PASSWORD
+        'email': email,
+        'password': pwd
     }
     headers = {
-        'User-Agent': _DEFAULT_USERAGENT,
+        'User-Agent': useragent,
         'Date': _DEFAULT_HEADER_DATE
     }
     response = requests.post(url, data=postData, headers=headers)
@@ -105,7 +166,7 @@ def authenticateUser(host):
         return False
 
     # Return the authentication JSON object
-    setAuthenticationToken(response.json())
+    setAuthenticationToken(json)
 
     return True
 
@@ -149,4 +210,20 @@ def calcAuthHash(endpoint, reqMethod):
     """
     return hashlib.sha1(_DEFAULT_HEADER_DATE + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
                         reqMethod).hexdigest()
+
+
+def assetFetcher(url, filename):
+    """
+    Requests an asset using a provided url and writes it to a folder
+    :param url:
+        The url of the asset to download
+
+    :param filename:
+        The filename / location to write the downloaded asset to
+    """
+
+    response = requests.get(url)
+    if len(response.content) > 0:
+        with open(filename, 'wb') as outfile:
+            outfile.write(response.content)
 

@@ -152,19 +152,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn() {
         
         // Title animation
-        UIView.animateWithDuration(1, delay: Constants.presentationDuration, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: 0.2, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.titleLabel.transform = CGAffineTransformIdentity
             self.descriptionLabel.transform = CGAffineTransformIdentity
             self.iconCollectionView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: Constants.presentationDuration, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0.2, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.badgeView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: Constants.presentationDuration, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.dismissButton.alpha = 1
             }, completion: nil)
     }

@@ -37,7 +37,8 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
         interstitialWindow.alpha = 0
         interstitialWindow.hidden = true
         interstitialWindow.backgroundColor = UIColor.clearColor()
-        interstitialWindow.windowLevel = UIWindowLevelStatusBar
+        // Shows over keyboard and status bar
+        interstitialWindow.windowLevel = UIWindowLevelAlert
     }
     
     private var registeredInterstitials = Set<Interstitial>()

@@ -37,6 +37,12 @@
     [self.view v_addFitToParentConstraintsToSubview:self.collectionView];
 }
 
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
+}
+
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

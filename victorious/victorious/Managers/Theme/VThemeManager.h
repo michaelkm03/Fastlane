@@ -15,7 +15,6 @@
 // Images
 
 extern NSString * const kVMenuBackgroundImage;
-extern NSString * const VThemeManagerHomeHeaderImageKey;
 
 //Fonts
 extern NSString * const kVHeaderFont;
@@ -53,12 +52,10 @@ extern NSString * const kVSecondaryLinkColor;
 
 + (VThemeManager *)sharedThemeManager;
 
-- (UIImage *)themedBackgroundImageForDevice;
 - (UIColor *)preferredBackgroundColor;
 
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;
-- (UIImage *)themedImageForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
 
 @end

@@ -3,8 +3,8 @@
 # Finds the appropriate app ID for a given build configuration.
 ###########
 
-FOLDER=$1
-CONFIGURATION=$2
+FOLDER=$1        # Folder containing app resources including, crucially, an Info.plist file
+CONFIGURATION=$2 # Build configuration (e.g. Debug, QA, Staging, Stable, Release)
 
 if [ "$FOLDER" == "" ]; then
     exit 0
