@@ -120,7 +120,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.contentView.alpha = _enabled ? 1.0f : 0.5f;
 }
 
-- (void)setRequirespurchase:(BOOL)requiresPurchase
+- (void)setRequiresPurchase:(BOOL)requiresPurchase
 {
     _requiresPurchase = requiresPurchase;
     [self updateOverlayImageView];
