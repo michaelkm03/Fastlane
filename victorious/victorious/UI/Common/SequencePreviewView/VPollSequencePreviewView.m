@@ -15,14 +15,23 @@
 #import "VPollView.h"
 #import "UIView+AutoLayout.h"
 #import "VImageAssetFinder.h"
+#import "VResultView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString *kOrIconKey = @"orIcon";
 
 @interface VPollSequencePreviewView ()
 
 @property (nonatomic, strong) VPollView *pollView;
-@property (nonatomic, assign) BOOL loadedBothPollImages;
-@property (nonatomic, assign) BOOL cancelingImageLoads;
+@property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizerA;
+@property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizerB;
+@property (nonatomic, strong) VImageAssetFinder *assetFinder;
+@property (nonatomic, readonly) VAnswer *answerA;
+@property (nonatomic, readonly) VAnswer *answerB;
+@property (nonatomic, strong) VResultView *answerAResultView;
+@property (nonatomic, strong) VResultView *answerBResultView;
+@property (nonatomic, readonly) UIColor *favoredColor;
+@property (nonatomic, readonly) UIColor *unfavoredColor;
 
 @end
 
@@ -30,22 +39,37 @@ static NSString *kOrIconKey = @"orIcon";
 
 #pragma mark - VHasManagedDependencies
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self.pollView.pollIcon = [dependencyManager imageForKey:kOrIconKey];
-}
-
-#pragma mark - Property Accessors
-
-- (VPollView *)pollView
-{
-    if (_pollView == nil)
+    self = [super initWithFrame:frame];
+    if ( self != nil )
     {
+        self.clipsToBounds = YES;
+        
         _pollView = [[VPollView alloc] initWithFrame:CGRectZero];
         [self addSubview:_pollView];
         [self v_addFitToParentConstraintsToSubview:_pollView];
+        
+        _gestureRecognizerA = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerASelected:)];
+        _pollView.answerAImageView.userInteractionEnabled = YES;
+        [_pollView.answerAImageView addGestureRecognizer:_gestureRecognizerA];
+        
+        _gestureRecognizerB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerBSelected:)];
+        _pollView.answerBImageView.userInteractionEnabled = YES;
+        [_pollView.answerBImageView addGestureRecognizer:_gestureRecognizerB];
+        
+        _assetFinder = [[VImageAssetFinder alloc] init];
     }
-    return _pollView;
+    return self;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    
+    self.pollView.pollIcon = [dependencyManager imageForKey:kOrIconKey];
+    
+    [self setupResultViews];
 }
 
 #pragma mark - VSequencePreviewView Overrides
@@ -53,117 +77,169 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    
-    //Cancel the prior image downloads in the pollview
-    self.cancelingImageLoads = YES;
-    [self.pollView setImageURL:nil forPollAnswer:VPollAnswerA completion:nil];
-    [self.pollView setImageURL:nil forPollAnswer:VPollAnswerB completion:nil];
-    self.loadedBothPollImages = NO;
-    
-    __weak VPollSequencePreviewView *weakSelf = self;
-    void (^pollImageCompletionBlock)(UIImage *) = ^void(UIImage *image)
-    {
-        __strong VPollSequencePreviewView *strongSelf = weakSelf;
-        if ( strongSelf == nil )
-        {
-            return;
-        }
-        
-        if ( strongSelf.cancelingImageLoads )
-        {
-            return;
-        }
-        
-        if ( strongSelf.loadedBothPollImages )
-        {
-            strongSelf.readyForDisplay = YES;
-        }
-        strongSelf.loadedBothPollImages = YES;
-    };
-    
-    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
-    
-    VAnswer *answerA = [assetFinder answerAFromAssets:sequence.previewAssets];
-    VAnswer *answerB = [assetFinder answerBFromAssets:sequence.previewAssets];
-    
-    if (answerA == nil)
-    {
-        // fall back if needed
-        answerA = [sequence.firstNode answerA];
-    }
-    if (answerB == nil)
-    {
-        // fall back if needed
-        answerB = [sequence.firstNode answerB];
-    }
-    
-    self.cancelingImageLoads = NO;
-    [self.pollView setImageURL:answerA.previewMediaURL
-                 forPollAnswer:VPollAnswerA
-                    completion:pollImageCompletionBlock];
-    [self.pollView setImageURL:answerB.previewMediaURL
-                 forPollAnswer:VPollAnswerB
-                    completion:pollImageCompletionBlock];
+    [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL];
+    [self.pollView.answerBImageView sd_setImageWithURL:self.answerB.previewMediaURL];
 }
 
-#pragma mark - IBActions
-
-- (IBAction)pressedAnswerAButton:(id)sender
+- (VAnswer *)answerA
 {
-#warning Define media url
-    NSURL *mediaURL;
+    return [self.assetFinder answerAFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerA];
+}
+
+- (VAnswer *)answerB
+{
+    return [self.assetFinder answerBFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerB];
+}
+
+#pragma mark - Target/Action
+
+- (void)answerASelected:(id)sender
+{
+    NSURL *mediaURL = [NSURL URLWithString:self.answerA.mediaUrl];
     
     NSDictionary *params = @{ VTrackingKeyIndex : @0,
                               VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
     
-    /*[self.detailDelegate previewView:self
+    [self.detailDelegate previewView:self
                    didSelectMediaURL:mediaURL
-                      previewImage:weakPollCell.answerAPreviewImage
-                           isVideo:isVideo
-                        sourceView:weakPollCell.answerAContainer];*/
+                        previewImage:self.pollView.answerAImageView.image
+                             isVideo:NO
+                          sourceView:self.pollView.answerAImageView];
 }
 
-- (IBAction)pressedAnswerBButton:(id)sender
+- (void)answerBSelected:(id)sender
 {
-#warning Define media url
-    NSURL *mediaURL;
-    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+    NSURL *mediaURL = [NSURL URLWithString:self.answerA.mediaUrl];
+    
+    NSDictionary *params = @{ VTrackingKeyIndex : @1,
+                              VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
     
-   /* [self.detailDelegate previewView:self
+    [self.detailDelegate previewView:self
                    didSelectMediaURL:mediaURL
-                      previewImage:weakPollCell.answerBPreviewImage
-                           isVideo:isVideo
-                        sourceView:weakPollCell.answerBContainer];*/
+                        previewImage:self.pollView.answerBImageView.image
+                             isVideo:NO
+                          sourceView:self.pollView.answerBImageView];
 }
 
-- (void)shareAnimationCurveWithAnimations:(void (^)(void))animations
-                           withCompletion:(void (^)(void))completion
+- (void)setFocusType:(VFocusType)focusType
 {
-//    [self bringSubviewToFront:self.answerAResultView];
-//    [self bringSubviewToFront:self.answerBResultView];
-//    [self bringSubviewToFront:self.pollCountContainer];
-    [self layoutIfNeeded];
-    [UIView animateWithDuration:0.5f
-                          delay:0.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-     {
-         if (animations)
-         {
-             animations();
-         }
-     }
-                     completion:^(BOOL finished)
-     {
-         if (completion && finished)
-         {
-             completion();
-         }
-     }];
+    _focusType = focusType;
+    
+    switch ( _focusType )
+    {
+        case VFocusTypeDetail:
+            [self.pollView setPollIconHidden:YES animated:YES];
+            [self setGestureRecognizersEnabled:YES];
+            [self setResultViewsHidden:NO animated:YES];
+            break;
+        default:
+            [self.pollView setPollIconHidden:NO animated:YES];
+            [self setGestureRecognizersEnabled:NO];
+            [self setResultViewsHidden:YES animated:YES];
+    }
+}
+
+- (void)setGestureRecognizersEnabled:(BOOL)enabled
+{
+    _gestureRecognizerA.enabled = enabled;
+    _gestureRecognizerB.enabled = enabled;
+}
+
+- (CGRect)contentArea
+{
+    return self.bounds;
+}
+
+- (UIColor *)favoredColor
+{
+    return [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+}
+
+- (UIColor *)unfavoredColor
+{
+    return [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+}
+
+- (void)setupResultViews
+{
+    NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f) };
+    
+    self.answerAResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
+    NSDictionary *viewsA = @{ @"view" : self.answerAResultView };
+    self.answerAResultView.color = self.unfavoredColor;
+    [self.pollView addSubview:self.answerAResultView];
+    self.answerAResultView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+                                                                          options:kNilOptions
+                                                                          metrics:metrics
+                                                                            views:viewsA]];
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(width)]"
+                                                                          options:kNilOptions
+                                                                          metrics:metrics
+                                                                            views:viewsA]];
+    
+    self.answerBResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
+    NSDictionary *viewsB = @{ @"view" : self.answerBResultView };
+    self.answerBResultView.color = self.unfavoredColor;
+    [self.pollView addSubview:self.answerBResultView];
+    self.answerBResultView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+                                                                          options:kNilOptions
+                                                                          metrics:metrics
+                                                                            views:viewsB]];
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(width)]|"
+                                                                          options:kNilOptions
+                                                                          metrics:metrics
+                                                                            views:viewsB]];
+    
+    [self.pollView layoutIfNeeded];
+    
+    [self.answerAResultView setProgress:0.0f animated:YES];
+    [self.answerBResultView setProgress:1.0f animated:YES];
+    [self setResultViewsHidden:YES animated:NO];
+}
+
+- (void)setResultViewsHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    void (^animations)() = ^
+    {
+        self.answerBResultView.alpha = hidden ? 0.0f : 1.0f;
+        self.answerAResultView.alpha = hidden ? 0.0f : 1.0f;
+    };
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.5f animations:animations];
+    }
+    else
+    {
+        animations();
+    }
+}
+
+#pragma mark - VPollAnswerReceiver
+
+- (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated
+{
+    [self.answerAResultView setProgress:answerAPercentage animated:animated];
+    self.answerAResultView.hidden = NO;
+}
+
+- (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated
+{
+    [self.answerBResultView setProgress:answerBPercentage animated:animated];
+    self.answerBResultView.hidden = NO;
+}
+
+- (void)setAnswerAIsFavored:(BOOL)answerAIsFavored
+{
+    [self.answerBResultView setColor:answerAIsFavored ? self.favoredColor : self.unfavoredColor];
+}
+
+- (void)setAnswerBIsFavored:(BOOL)answerBIsFavored
+{
+    [self.answerBResultView setColor:answerBIsFavored ? self.favoredColor : self.unfavoredColor];
 }
 
 @end

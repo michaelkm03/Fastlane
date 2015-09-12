@@ -2582,6 +2582,7 @@
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
 		A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchViewController.swift; sourceTree = "<group>"; };
 		A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GIFSearch.storyboard; sourceTree = "<group>"; };
+		A7A10D6E1BA38258006035A4 /* VPollAnswerReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollAnswerReceiver.h; sourceTree = "<group>"; };
 		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
 		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
 		A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AESTests.m"; sourceTree = "<group>"; };
@@ -7138,6 +7139,8 @@
 		D85E427B1AFA982000A13BD3 /* SequencePreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				A7D043241BA34C7300FDBBCC /* PollSequencePreviewView.swift */,
+				A7D043261BA34C8000FDBBCC /* PollSequencePreviewView.xib */,
 				C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */,
 				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
 				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
@@ -7152,8 +7155,6 @@
 				D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */,
 				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
-				A7D043241BA34C7300FDBBCC /* PollSequencePreviewView.swift */,
-				A7D043261BA34C8000FDBBCC /* PollSequencePreviewView.xib */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
 				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
@@ -7162,6 +7163,7 @@
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
 				A74783D61B9FBE11005654A6 /* VideoPlayerViewController.swift */,
 				A7D043211BA266E400FDBBCC /* VVideoPreviewView.h */,
+				A7A10D6E1BA38258006035A4 /* VPollAnswerReceiver.h */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";

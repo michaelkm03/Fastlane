@@ -8,6 +8,7 @@
 
 import Foundation
 
+// FIXME: Delete
 class PollSequencePreviewView : VSequencePreviewView {
     
     @IBOutlet private weak var answerContainerA: UIView!
@@ -37,18 +38,6 @@ class PollSequencePreviewView : VSequencePreviewView {
         answerContainerB.v_addFitToParentConstraintsToSubview( answerViewB )
         
         answersContainerToCotainerBottom.active = false
-    }
-    
-    override func setSequence(sequence: VSequence!) {
-        super.setSequence( sequence )
-        
-        let assetFinder = VImageAssetFinder()
-        if let previewAssets = sequence.previewAssets,
-            let answerA = assetFinder.answerAFromAssets( previewAssets ) ?? sequence.firstNode().answerA(),
-            let answerB = assetFinder.answerBFromAssets( previewAssets ) ?? sequence.firstNode().answerB() {
-                answerViewA.answer = answerA
-                answerViewB.answer = answerB
-        }
     }
     
     func expandToShowDetail() {

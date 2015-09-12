@@ -86,6 +86,11 @@
     [super setStreamItem:sequence];
 }
 
+- (VSequence *)sequence
+{
+    return [self.streamItem isKindOfClass:[VSequence class]] ? (VSequence *)self.streamItem : nil;
+}
+
 - (BOOL)canHandleSequence:(VSequence *)sequence
 {
     if ([self class] == [[self class] classTypeForSequence:sequence])

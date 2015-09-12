@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VVideoPlayerDelegate.h"
+#import "VPollAnswerReceiver.h"
 
 @class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
@@ -47,5 +48,7 @@
 @property (nonatomic, weak, readonly) VExperienceEnhancerBarCell *experienceEnhancerCell;
 
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+
+@property (nonatomic, weak) id<VPollAnswerReceiver> pollAnswerReceiver;
 
 @end

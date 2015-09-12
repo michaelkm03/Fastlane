@@ -127,8 +127,7 @@ static NSMutableDictionary *sizingCache;
                          animations:^
         {
             [self setVotingDisabledWithFavoredBallot:ballot];
-        }
-                         completion:nil];
+        } completion:nil];
     }
     else
     {
@@ -138,8 +137,9 @@ static NSMutableDictionary *sizingCache;
 
 - (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
 {
-    self.answerAButton.enabled = NO;
-    self.answerBButton.enabled = NO;
+#warning uncomment when done testing
+    //self.answerAButton.enabled = NO;
+    //self.answerBButton.enabled = NO;
     
     UIColor *selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     UIColor *unselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
@@ -152,11 +152,8 @@ static NSMutableDictionary *sizingCache;
 
 - (IBAction)selectedAnswerA:(id)sender
 {
-    if (self.answerASelectionHandler)
-    {
-        self.answerASelectionHandler();
-        [self setVotingDisabledWithFavoredBallot:VBallotA animated:YES];
-    }
+    [self.delegate answerASelected];
+    [self setVotingDisabledWithFavoredBallot:VBallotA animated:YES];
 }
 
 - (IBAction)touchDownA:(id)sender
@@ -171,11 +168,8 @@ static NSMutableDictionary *sizingCache;
 
 - (IBAction)selectedAnswerB:(id)sender
 {
-    if (self.answerBSelectionHandler)
-    {
-        self.answerBSelectionHandler();
-        [self setVotingDisabledWithFavoredBallot:VBallotB animated:YES];
-    }
+    [self.delegate answerBSelected];
+    [self setVotingDisabledWithFavoredBallot:VBallotB animated:YES];
 }
 
 - (IBAction)touchDownB:(id)sender
@@ -188,8 +182,7 @@ static NSMutableDictionary *sizingCache;
     [self setHighlighted:NO onLabel:self.bLabel];
 }
 
-- (void)setHighlighted:(BOOL)highlighted
-               onLabel:(UILabel *)label
+- (void)setHighlighted:(BOOL)highlighted onLabel:(UILabel *)label
 {
     [UIView animateWithDuration:0.1f
                           delay:0.0f
@@ -197,8 +190,7 @@ static NSMutableDictionary *sizingCache;
                      animations:^
      {
          label.alpha = highlighted ? 0.5f : 1.0f;
-     }
-                     completion:nil];
+     } completion:nil];
 }
 
 @end

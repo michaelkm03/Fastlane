@@ -7,7 +7,11 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VFocusable.h"
+#import "VPollAnswerReceiver.h"
 
-@interface VPollSequencePreviewView : VSequencePreviewView
+@interface VPollSequencePreviewView : VSequencePreviewView <VFocusable, VPollAnswerReceiver>
+
+@property (nonatomic, assign) VFocusType focusType;
 
 @end

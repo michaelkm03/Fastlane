@@ -12,12 +12,9 @@
 #import "UIView+AutoLayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 
-#warning DELETE THIS CLASS
 @interface VPollView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
-@property (nonatomic, strong) UIImageView *answerAImageView;
-@property (nonatomic, strong) UIImageView *answerBImageView;
 @property (nonatomic, strong) UIImageView *pollIconImageView;
 
 @end
@@ -119,25 +116,6 @@
     }
 }
 
-#pragma mark - Public Methods
-
-- (void)setImageURL:(NSURL *)imageURL forPollAnswer:(VPollAnswer)pollAnswer completion:(void (^)(UIImage *))completionBlock
-{
-    switch (pollAnswer)
-    {
-        case VPollAnswerA:
-            [self.answerAImageView fadeInImageAtURL:imageURL
-                                   placeholderImage:nil
-                                         completion:completionBlock];
-            break;
-        case VPollAnswerB:
-            [self.answerBImageView fadeInImageAtURL:imageURL
-                                   placeholderImage:nil
-                                         completion:completionBlock];
-            break;
-    }
-}
-
 - (void)setPollIcon:(UIImage *)pollIcon
 {
     self.pollIconImageView.image = pollIcon;
@@ -146,6 +124,18 @@
 - (UIImage *)pollIcon
 {
     return self.pollIconImageView.image;
+}
+
+- (void)setPollIconHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    [UIView animateWithDuration:0.5f animations:^
+     {
+         self.pollIconImageView.alpha = hidden ? 0.0 : 1.0f;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.pollIconImageView.hidden = hidden;
+     }];
 }
 
 @end

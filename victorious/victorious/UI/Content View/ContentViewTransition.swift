@@ -27,13 +27,21 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     snapshotImage: snapshotImage,
                     toParentView: contentView.contentCell.contentView)
                 
+                
+                // TODO: Move this stuff into the handoff controller
                 if let videoPreviewView = view as? VVideoPreviewView {
                     contentView.videoPlayer = videoPreviewView.videoPlayer
                 }
-                
+                if let pollAnswerReceiver = view as? VPollAnswerReceiver {
+                    contentView.pollAnswerReceiver = pollAnswerReceiver
+                }
                 if let focusableView = view as? VFocusable {
                     focusTypeBeforeTransition = focusableView.focusType
                     focusableView.focusType = VFocusType.Detail
+                }
+                if let previewView = view as? VSequencePreviewView,
+                    let detailDelegate = contentView as? VSequencePreviewViewDetailDelegate {
+                    previewView.detailDelegate = detailDelegate
                 }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()

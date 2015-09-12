@@ -78,11 +78,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <
-UICollectionViewDelegate,
-UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout,
-UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -240,18 +236,16 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
 
 - (void)didUpdatePollsData
 {
-    if (!self.viewModel.votingEnabled)
+    if ( !self.viewModel.votingEnabled )
     {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
+        [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+        [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
         
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+        VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
+        [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
+        
+        [self.pollAnswerReceiver setAnswerAIsFavored:(self.viewModel.favoredAnswer == VPollAnswerA)];
+        [self.pollAnswerReceiver setAnswerBIsFavored:(self.viewModel.favoredAnswer == VPollAnswerB)];
     }
 }
 
@@ -690,11 +684,8 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
     {
         if (welf.presentedViewController == weakLightBox)
         {
-            // sometimes the content dissapears withour reloading due to rotation 😱
-            [welf.contentCollectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]]];
             [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-            [welf dismissViewControllerAnimated:YES
-                                     completion:^
+            [welf dismissViewControllerAnimated:YES completion:^
              {
                  [[welf class] attemptRotationToDeviceOrientation];
              }];
@@ -786,45 +777,12 @@ UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryView
                                                                                 forIndexPath:indexPath];
                 }
 
-                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
-                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.delegate = self;
                 self.ballotCell.orImageView.image = [self.dependencyManager imageForKey:kPollBallotIconKey];
-                
-                __weak typeof(self) welf = self;
-                self.ballotCell.answerASelectionHandler = ^(void)
-                {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
-                    {
-                        if (!authorized)
-                        {
-                            return;
-                        }
-                        
-                        [welf.viewModel answerPollWithAnswer:VPollAnswerA
-                                                  completion:^(BOOL succeeded, NSError *error)
-                         {
-                             [welf.pollCell setAnswerAPercentage:welf.viewModel.answerAPercentage
-                                                        animated:YES];
-                         }];
-                    }];
-                };
-                self.ballotCell.answerBSelectionHandler = ^(void)
-                {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
-                     {
-                         if (!authorized)
-                         {
-                             return;
-                         }
-                         
-                         [welf.viewModel answerPollWithAnswer:VPollAnswerB
-                                                   completion:^(BOOL succeeded, NSError *error)
-                          {
-                              [welf.pollCell setAnswerBPercentage:welf.viewModel.answerBPercentage
-                                                         animated:YES];
-                          }];
-                     }];
-                };
                 
                 return self.ballotCell;
             }
@@ -1460,7 +1418,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self dismissViewControllerAnimated:YES completion:^void
      {
-         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+         for ( VContentCommentsCell *cell in self.contentCollectionView.visibleCells)
          {
              if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
              {
@@ -1481,10 +1439,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  {
                      [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments] ];
                  }
-                 
-                 *stop = YES;
+                 break;
              }
-         }];
+         }
      }];
 }
 
@@ -1723,6 +1680,36 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView
 {
     [self showLightBoxWithMediaURL:mediaURL previewImage:previewImage isVideo:isVideo sourceView:sourceView];
+}
+
+#pragma mark - VContentPollBallotCellDelegate
+
+- (void)answerASelected
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+     {
+         if (authorized)
+         {
+             [self.viewModel answerPollWithAnswer:VPollAnswerA completion:^(BOOL succeeded, NSError *error)
+              {
+                  [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+              }];
+         }
+     }];
+}
+
+- (void)answerBSelected
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+     {
+         if (authorized)
+         {
+             [self.viewModel answerPollWithAnswer:VPollAnswerB completion:^(BOOL succeeded, NSError *error)
+              {
+                  [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
+              }];
+         }
+     }];
 }
 
 @end
