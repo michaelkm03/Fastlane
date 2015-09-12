@@ -10,7 +10,7 @@ import Foundation
 
 private struct Constants {
     static let distanceToContainerFromSide: CGFloat = 50
-    static let collectionViewHeight = 80
+    static let collectionViewHeight: CGFloat = 80
     static let badgeHeight = 150
     static let badgeWidth = 135
     static let presentationDuration = 0.5
@@ -35,12 +35,25 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let videoBackground = VVideoView()
+    private lazy var collectionViewHeightConstraint: NSLayoutConstraint = {
+       let collectionViewHeightConstraint = NSLayoutConstraint(item: self.iconCollectionView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: Constants.collectionViewHeight)
+        return collectionViewHeightConstraint
+    }()
     
     private var displayLink: CADisplayLink!
     private var firstTimeStamp: NSTimeInterval?
     private var hasAppeared = false
-    private var icons: [String] = []
     private var videoURL: String?
+    
+    private var icons: [String]? {
+        didSet {
+            // Reload icon collection view
+            iconCollectionView.reloadData()
+            
+            // Update constraints on collection view
+            collectionViewHeightConstraint.constant = showCollectionView() ? Constants.collectionViewHeight : 0
+        }
+    }
     
     private lazy var iconCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -70,6 +83,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 badgeView.title = NSLocalizedString("LEVEL", comment: "")
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
+                icons = levelUpInterstitial.icons
                 
                 // WARNING: Testing
                 dispatch_after(Constants.presentationDuration, { () -> () in
@@ -183,8 +197,16 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
 }
 
 extension LevelUpViewController: UICollectionViewDelegateFlowLayout {
+    
+    private func showCollectionView() -> Bool {
+        if let icons = icons {
+            return icons.count > 0
+        }
+        return false
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.height, height: collectionView.bounds.height)
+        return showCollectionView() ? CGSize(width: collectionView.bounds.height, height: collectionView.bounds.height) : CGSizeZero
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -194,11 +216,17 @@ extension LevelUpViewController: UICollectionViewDelegateFlowLayout {
 
 extension LevelUpViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        if let icons = icons {
+            return icons.count
+        }
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as? LevelUpIconCollectionViewCell {
+            if let urlString =  icons?[indexPath.row] {
+                cell.iconURL = NSURL(string: urlString)
+            }
             return cell
         }
         return UICollectionViewCell()
@@ -221,10 +249,12 @@ extension LevelUpViewController {
         iconCollectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
         contentContainer.addSubview(iconCollectionView)
         
-        let verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView(==cHeight)]|"
+        let verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
         let views = ["badgeView" : badgeView, "titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: nil, metrics: ["cHeight" : Constants.collectionViewHeight, "bHeight" : Constants.badgeHeight], views: views)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: nil, metrics: ["bHeight" : Constants.badgeHeight], views: views)
         contentContainer.addConstraints(verticalConstraints)
+        
+        iconCollectionView.addConstraint(collectionViewHeightConstraint)
         
         contentContainer.addConstraint(NSLayoutConstraint(item: contentContainer, attribute: .CenterX, relatedBy: .Equal, toItem: badgeView, attribute: .CenterX, multiplier: 1, constant: 0))
         badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: nil, metrics: ["bWidth" : Constants.badgeWidth], views: views))

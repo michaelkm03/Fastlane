@@ -10,18 +10,30 @@ import Foundation
 
 class LevelUpIconCollectionViewCell: UICollectionViewCell {
     
-    let imageView = UIImageView()
+    var iconURL: NSURL? {
+        didSet {
+            if let iconURL = iconURL {
+                imageView.sd_setImageWithURL(iconURL)
+            }
+        }
+    }
+    
+    private let imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView.image = UIImage(named: "rocket")
+        sharedInit()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        sharedInit()
+    }
+    
+    private func sharedInit() {
         imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
         contentView.addSubview(imageView)
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[imgView]-5-|", options: nil, metrics: nil, views: ["imgView" : imageView]))
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[imgView]-5-|", options: nil, metrics: nil, views: ["imgView" : imageView]))
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
