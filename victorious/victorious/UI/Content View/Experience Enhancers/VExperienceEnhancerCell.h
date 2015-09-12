@@ -28,6 +28,14 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 @property (nonatomic, assign) NSTimeInterval cooldownDuration;
 
 - (void)startCooldown;
-- (void)configureUnlockLevelLabelWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel;
+
+/**
+ Update whether to lock the emotive ballsitic or not, based on
+ the unlockLevel of EB and the current level of user
+ 
+ @param unlockLevel The level at which this EB should be unlocked
+ @param userLevel The current level the user is at
+ */
+- (void)updateLevelLockingStatusWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel;
 
 @end
