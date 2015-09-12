@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A UIView subclass which draws a polygon with 6 sides
 class LevelPolygonView: UIView {
     
     override init(frame: CGRect) {
@@ -24,18 +25,21 @@ class LevelPolygonView: UIView {
         self.backgroundColor = UIColor.clearColor()
     }
     
+    /// The polygon's fill color
     var fillColor = UIColor.whiteColor() {
         didSet {
             self.setNeedsDisplay()
         }
     }
     
+    /// The length of each side as a ratio of the total height
     var verticalSideLengthRatio: CGFloat = 0.5 {
         didSet {
             self.setNeedsDisplay()
         }
     }
     
+    /// How round the corners should be
     var cornerRadius: CGFloat = 14 {
         didSet {
             self.setNeedsDisplay()

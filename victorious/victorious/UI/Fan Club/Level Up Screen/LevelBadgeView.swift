@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 
+/// A UIView subclass which is responsible for displaying the user's level
 class LevelBadgeView: UIView {
     
     private let polygon = LevelPolygonView()
@@ -17,6 +18,7 @@ class LevelBadgeView: UIView {
     private let levelNumberLabel = UILabel()
     private var numberHeightConstraint: NSLayoutConstraint!
     
+    /// "Level" label
     var title: String? {
         didSet {
             if let title = title {
@@ -25,6 +27,7 @@ class LevelBadgeView: UIView {
         }
     }
     
+    /// Level number
     var levelNumber: String? {
         didSet {
             if let levelNumber = levelNumber {
@@ -33,6 +36,7 @@ class LevelBadgeView: UIView {
         }
     }
     
+    /// Color of the badge
     var color: UIColor? {
         didSet {
             if let color = color {
