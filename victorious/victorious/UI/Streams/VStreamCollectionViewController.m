@@ -65,9 +65,6 @@
 #import "VUserProfileViewController.h"
 #import "victorious-Swift.h"
 
-#warning REmove this
-#import "VSleekStreamCollectionCell.h"
-
 @import KVOController;
 @import SDWebImage;
 

@@ -15,7 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol VVideoPlayer <NSObject>
 
 - (void)play;
+- (void)playFromStart;
 - (void)pause;
+- (void)pauseFromStart;
+- (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds;
 
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
 @property (nonatomic, readonly, assign) Float64 currentTimeSeconds;

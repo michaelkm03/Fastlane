@@ -26,7 +26,6 @@
 #import "VContentCell.h"
 #import "VContentCommentsCell.h"
 #import "VContentPollBallotCell.h"
-#import "VContentPollCell.h"
 #import "VContentPollQuestionCell.h"
 #import "VContentRepopulateTransition.h"
 #import "VContentViewFactory.h"
@@ -78,7 +77,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -115,7 +114,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, readwrite, weak) VContentCell *contentCell;
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
-@property (nonatomic, weak) VContentPollCell *pollCell;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -358,8 +356,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                    forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
                  forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
@@ -939,8 +935,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             switch (self.viewModel.type)
             {
-                case VContentViewTypePoll:
-                    return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 default:
                 {
                     CGFloat aspectRatio = CLAMP( 1.0, 16.0f/9.0f, self.viewModel.sequence.previewAssetAspectRatio );
@@ -1020,56 +1014,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
-}
-
-#warning Remove this?
-- (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
-{
-    switch (self.viewModel.type)
-    {
-        case VContentViewTypePoll:
-        {
-            VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
-                                                                                   forIndexPath:indexPath];
-            pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-            if (self.viewModel.answerAIsVideo)
-            {
-                [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
-            }
-            pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-            if (self.viewModel.answerBIsVideo)
-            {
-                [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
-            }
-            __weak typeof(pollCell) weakPollCell = pollCell;
-            __weak typeof(self) welf = self;
-            pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
-            {
-                NSDictionary *params = @{ VTrackingKeyIndex : @0,
-                                          VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                
-                [welf showLightBoxWithMediaURL:mediaURL
-                                  previewImage:weakPollCell.answerAPreviewImage
-                                       isVideo:isVideo
-                                    sourceView:weakPollCell.answerAContainer];
-            };
-            pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
-            {
-                NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                
-                [welf showLightBoxWithMediaURL:mediaURL
-                                  previewImage:weakPollCell.answerBPreviewImage
-                                       isVideo:isVideo
-                                    sourceView:weakPollCell.answerBContainer];
-            };
-            
-            self.pollCell = pollCell;
-            return pollCell;
-        }
-    }
-    return nil;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1474,13 +1418,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-#warning FIX, perhaps also search for `videoCell` to make sure you've got them all
     self.likeButton.alpha = 1.0f;
-    //[self.videoCell seekToStart];
+    [self.videoPlayer seekToTimeSeconds:0.0f];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {
          [self.contentCell hideEndCard];
-         //[self.videoCell replay];
+         [self.videoPlayer play];
     }];
 }
 
@@ -1692,7 +1635,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              [self.viewModel answerPollWithAnswer:VPollAnswerA completion:^(BOOL succeeded, NSError *error)
               {
-                  [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+                  [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
               }];
          }
      }];
@@ -1706,7 +1649,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              [self.viewModel answerPollWithAnswer:VPollAnswerB completion:^(BOOL succeeded, NSError *error)
               {
-                  [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
+                  [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
               }];
          }
      }];

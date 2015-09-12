@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, VFocusType)
  */
 @property (nonatomic, assign) VFocusType focusType;
 
+@optional
+
 /**
  Returns the bounding rect for the content relative to the receiving container.
  */

@@ -48,7 +48,7 @@
 
 /**
  Useful for some animation effects.  If you want this to be populated for your transition,
- make sure to return YES on in `requiresImageViewFromWindow: method of
+ make sure to return YES on in `requiresImageViewFromWindow:` method of
  `VAnimatedTransition` protocol.
  */
 @property (nonatomic, readonly, strong) UIView *snapshotOfWindow;

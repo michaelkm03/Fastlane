@@ -19,29 +19,17 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     
     func prepareForTransitionIn(model: VTransitionModel!) {
         if let navController = model.toViewController as? VNavigationController,
-            let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
-            let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
+            let previewView = contentViewController.viewModel.context.contentPreviewProvider?.getPreviewView() {
                 
-                self.handoffController.addPreviewView(view,
-                    snapshotImage: snapshotImage,
-                    toParentView: contentView.contentCell.contentView)
+                self.handoffController.addPreviewView( previewView,
+                    toContentViewController: contentViewController,
+                    originSnapshotImage: snapshotImage )
                 
-                
-                // TODO: Move this stuff into the handoff controller
-                if let videoPreviewView = view as? VVideoPreviewView {
-                    contentView.videoPlayer = videoPreviewView.videoPlayer
-                }
-                if let pollAnswerReceiver = view as? VPollAnswerReceiver {
-                    contentView.pollAnswerReceiver = pollAnswerReceiver
-                }
-                if let focusableView = view as? VFocusable {
+                if let focusableView = previewView as? VFocusable {
                     focusTypeBeforeTransition = focusableView.focusType
                     focusableView.focusType = VFocusType.Detail
-                }
-                if let previewView = view as? VSequencePreviewView,
-                    let detailDelegate = contentView as? VSequencePreviewViewDetailDelegate {
-                    previewView.detailDelegate = detailDelegate
                 }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()

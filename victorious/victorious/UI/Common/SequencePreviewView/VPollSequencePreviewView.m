@@ -126,7 +126,6 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setFocusType:(VFocusType)focusType
 {
     _focusType = focusType;
-    
     switch ( _focusType )
     {
         case VFocusTypeDetail:
