@@ -47,7 +47,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
             if let autoplayURL = autoplayURL {
                 self.videoView.setItemURL(autoplayURL, loop: true, audioMuted: true)
                 self.videoView.hidden = false
-                if ( focusType != .None ) {
+                if focusType != .None {
                     self.videoView.playFromStart()
                 }
             }

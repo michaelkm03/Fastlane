@@ -8,7 +8,9 @@
 
 import UIKit
 
+/// Defines an objec that can respond to UI events that occur in a `VVideoToolbarView`
 @objc protocol VideoToolbarDelegate {
+    
     func videoToolbar( videoToolbar: VideoToolbarView, didScrubToLocation location: Float )
     func videoToolbar( videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float )
     func videoToolbar( videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float )
@@ -16,6 +18,8 @@ import UIKit
     func videoToolbarDidPlay( videoToolbar: VideoToolbarView )
 }
 
+
+/// A generic video toolbar with controls for play, pause, seek (scrub), timeline and current time text.
 class VideoToolbarView: UIView {
     
     var delegate: VideoToolbarDelegate?
@@ -40,7 +44,7 @@ class VideoToolbarView: UIView {
     private lazy var timeFormatter = VElapsedTimeFormatter()
     private var lastInteractionDate = NSDate()
     
-    // MARK: - UI Setters
+    // MARK: - Properties
     
     var elapsedTime: Float64 = 0.0 {
         didSet {
@@ -137,7 +141,7 @@ class VideoToolbarView: UIView {
             comletion(true)
         }
     }
-    
+
     func show( animated:Bool = true ) {
         if self.visible {
             return

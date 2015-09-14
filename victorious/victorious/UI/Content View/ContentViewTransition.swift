@@ -8,9 +8,11 @@
 
 import UIKit
 
+/// A custom transition used to show `VNewContentViewController` with a "split-to-reveal"
+/// style animation.
 class ContentViewTransition : NSObject, VAnimatedTransition {
     
-    private let handoffController = ContentDetailHandoffController()
+    private let handoffController = ContentViewHandoffController()
     private var focusTypeBeforeTransition: VFocusType?
     
     func canPerformCustomTransitionFrom(fromViewController: UIViewController!, to toViewController: UIViewController!) -> Bool {

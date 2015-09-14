@@ -24,17 +24,3 @@ extension UIViewController {
         return storyboard.instantiateInitialViewController() as! T
     }
 }
-
-extension UIView {
-    
-    static func v_fromNib<T: UIView>(nibNameOrNil: String? = nil) -> T {
-        let name = nibNameOrNil ?? NSStringFromClass( self ).pathExtension
-        let nibViews = NSBundle.mainBundle().loadNibNamed(name, owner: nil, options: nil)
-        for view in nibViews {
-            if let typedView = view as? T {
-                return typedView
-            }
-        }
-        fatalError( "Could not load view from nib named: \(name)" )
-    }
-}

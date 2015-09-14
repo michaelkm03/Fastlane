@@ -12,6 +12,4 @@
 
 @interface VPollSequencePreviewView : VSequencePreviewView <VFocusable, VPollAnswerReceiver>
 
-@property (nonatomic, assign) VFocusType focusType;
-
 @end

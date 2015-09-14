@@ -8,6 +8,10 @@
 
 @protocol VVideoPlayer;
 
+/**
+ Defines an object that displays video, exposing a `videoPlayer` object that can
+ be used to control playback and other video-based interactions.
+*/
 @protocol VVideoPreviewView <NSObject>
 
 @property (nonatomic, weak, readonly) id<VVideoPlayer> videoPlayer;

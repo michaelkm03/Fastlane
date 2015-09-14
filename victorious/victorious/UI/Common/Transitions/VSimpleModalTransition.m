@@ -104,11 +104,6 @@
     return YES;
 }
 
-- (BOOL)requiresImageViewFromWindow
-{
-    return NO;
-}
-
 - (NSTimeInterval)transitionInDuration
 {
     return 0.7f;

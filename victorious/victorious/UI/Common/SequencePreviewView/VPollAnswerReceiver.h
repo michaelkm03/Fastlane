@@ -8,11 +8,15 @@
 
 @import UIKit;
 
+/*
+ Defines an objec that can respond to interaction with a poll view.
+ */
 @protocol VPollAnswerReceiver <NSObject>
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated;
-- (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated;
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored;
+
+- (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated;
 - (void)setAnswerBIsFavored:(BOOL)answerBIsFavored;
 
 @end

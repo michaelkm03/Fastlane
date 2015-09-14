@@ -50,10 +50,10 @@ static NSString *kOrIconKey = @"orIcon";
         [self addSubview:_pollView];
         [self v_addFitToParentConstraintsToSubview:_pollView];
         
+        // Add gesture recognizers to show full size asse when previews are tapped
         _gestureRecognizerA = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerASelected:)];
         _pollView.answerAImageView.userInteractionEnabled = YES;
         [_pollView.answerAImageView addGestureRecognizer:_gestureRecognizerA];
-        
         _gestureRecognizerB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerBSelected:)];
         _pollView.answerBImageView.userInteractionEnabled = YES;
         [_pollView.answerBImageView addGestureRecognizer:_gestureRecognizerB];
@@ -123,32 +123,10 @@ static NSString *kOrIconKey = @"orIcon";
                           sourceView:self.pollView.answerBImageView];
 }
 
-- (void)setFocusType:(VFocusType)focusType
-{
-    _focusType = focusType;
-    switch ( _focusType )
-    {
-        case VFocusTypeDetail:
-            [self.pollView setPollIconHidden:YES animated:YES];
-            [self setGestureRecognizersEnabled:YES];
-            [self setResultViewsHidden:NO animated:YES];
-            break;
-        default:
-            [self.pollView setPollIconHidden:NO animated:YES];
-            [self setGestureRecognizersEnabled:NO];
-            [self setResultViewsHidden:YES animated:YES];
-    }
-}
-
 - (void)setGestureRecognizersEnabled:(BOOL)enabled
 {
     _gestureRecognizerA.enabled = enabled;
     _gestureRecognizerB.enabled = enabled;
-}
-
-- (CGRect)contentArea
-{
-    return self.bounds;
 }
 
 - (UIColor *)favoredColor
@@ -239,6 +217,32 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setAnswerBIsFavored:(BOOL)answerBIsFavored
 {
     [self.answerBResultView setColor:answerBIsFavored ? self.favoredColor : self.unfavoredColor];
+}
+
+#pragma mark - VFocusable
+
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
+{
+    _focusType = focusType;
+    switch ( _focusType )
+    {
+        case VFocusTypeDetail:
+            [self.pollView setPollIconHidden:YES animated:YES];
+            [self setGestureRecognizersEnabled:YES];
+            [self setResultViewsHidden:NO animated:YES];
+            break;
+        default:
+            [self.pollView setPollIconHidden:NO animated:YES];
+            [self setGestureRecognizersEnabled:NO];
+            [self setResultViewsHidden:YES animated:YES];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.bounds;
 }
 
 @end

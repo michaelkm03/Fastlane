@@ -45,8 +45,6 @@
 
 @property (nonatomic, weak, readonly) VContentCell *contentCell;
 
-@property (nonatomic, weak, readonly) VExperienceEnhancerBarCell *experienceEnhancerCell;
-
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
 
 @property (nonatomic, weak) id<VPollAnswerReceiver> pollAnswerReceiver;

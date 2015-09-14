@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ A type that distinguishes various levels of "focus" that can selectively
+ change the functionality of UI elements.
+ */
 typedef NS_ENUM(NSInteger, VFocusType)
 {
     VFocusTypeNone,
@@ -15,6 +19,10 @@ typedef NS_ENUM(NSInteger, VFocusType)
     VFocusTypeDetail
 };
 
+/**
+ Defines an object whose `focusType` property can be read and written,
+ thereby requesting that the object update to reflect changes in its focusType.
+ */
 @protocol VFocusable <NSObject>
 
 /**
