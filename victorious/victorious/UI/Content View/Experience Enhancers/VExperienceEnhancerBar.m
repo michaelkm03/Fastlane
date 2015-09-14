@@ -149,7 +149,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     if (enhancerForIndexPath.voteType.unlockLevel != nil)
     {
         NSInteger unlockLevel = enhancerForIndexPath.voteType.unlockLevel.integerValue;
-        NSInteger userLevel = [[VObjectManager sharedManager] mainUser].currentLevel.integerValue;
+        NSInteger userLevel = [[VObjectManager sharedManager] mainUser].level.integerValue;
         [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel andUserLevel:userLevel];
     }
     

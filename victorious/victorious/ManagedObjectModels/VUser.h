@@ -43,7 +43,6 @@
 @property (nonatomic, retain) NSSet *previewAssets;
 @property (nonatomic, retain) NSSet *repostedSequences;
 @property (nonatomic, retain) NSNumber *maxUploadDuration;
-@property (nonatomic, retain) NSNumber *currentLevel;
 
 @end
 

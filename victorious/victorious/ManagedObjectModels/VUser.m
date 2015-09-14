@@ -51,13 +51,4 @@
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
 
-#warning Testing code to return a certain level for the user
-@synthesize currentLevel = _currentLevel;
-
-- (NSNumber *)currentLevel
-{
-    _currentLevel = [NSNumber numberWithInt:3];
-    return _currentLevel;
-}
-
 @end
