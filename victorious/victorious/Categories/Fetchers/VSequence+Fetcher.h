@@ -67,4 +67,6 @@
 
 - (NSURL *)inStreamPreviewImageURL;
 
+- (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
+
 @end
