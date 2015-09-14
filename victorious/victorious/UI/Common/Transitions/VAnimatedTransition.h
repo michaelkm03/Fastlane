@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VTransitionModel.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Any classes that implement an animated transition through VViewControllerTransition
  must conform to this protocol.  VViewControllerTransition will configure the transition
@@ -24,7 +26,7 @@
  to which types of view controllers are being transitioned to and from.  Return YES to allow
  the custom transition or NO to use the default transition.
  */
-- (BOOL)canPerformCustomTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController;
+- (BOOL)canPerformCustomTransitionFrom:(UIViewController *__nullable)fromViewController to:(UIViewController *)toViewController;
 
 @required
 
@@ -36,7 +38,7 @@
 /**
   Do the actual work of the animation, always call `completion` block when finished
  */
-- (void)performTransitionIn:(VTransitionModel *)model completion:(void (^)(BOOL))completion;
+- (void)performTransitionIn:(VTransitionModel *)model completion:(void (^__nullable )(BOOL))completion;
 
 /**
  Set initial state (if required) before animation will actually start
@@ -46,7 +48,7 @@
 /**
  Do the actual work of the animation, always call `completion` block when finished
  */
-- (void)performTransitionOut:(VTransitionModel *)model completion:(void (^)(BOOL))completion;
+- (void)performTransitionOut:(VTransitionModel *)model completion:(void (^__nullable)(BOOL))completion;
 
 /**
  To total duration of the transition in animation
@@ -71,3 +73,5 @@
 @property (nonatomic, readonly) BOOL requiresImageViewFromWindow;
 
 @end
+
+NS_ASSUME_NONNULL_END

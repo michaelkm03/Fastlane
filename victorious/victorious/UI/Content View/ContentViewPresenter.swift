@@ -46,12 +46,6 @@ class ContentViewPresenter: NSObject {
     /// is being presented when the app is launched with a deep link URL.
     func presentContentView( #context: ContentViewContext ) {
         
-        var detailViewController = UIViewController()
-        detailViewController.view.backgroundColor = UIColor.redColor()
-        dispatch_after( 4.0 ) {
-            detailViewController.dismissViewControllerAnimated( true, completion: nil )
-        }
-        
         if let dependencyManager = context.dependencyManager,
             let viewController = context.viewController,
             let contentViewFactory = dependencyManager.contentViewFactory(),

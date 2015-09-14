@@ -16,12 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class AVPlayer;
 
 /**
- A simple video player without any play back controls.
+ A simple video player that displays video content only, without any UI.
+ Conforms to `VVideoPlayer`, which provides the interface for controlling playback
+ and responding to playback events.
  */
 @interface VVideoView : UIView <VVideoPlayer>
 
 @property (nonatomic, strong, nullable) NSURL *itemURL;
-
 @property (nonatomic, assign) BOOL useAspectFit;
 @property (nonatomic, assign) BOOL muted;
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
@@ -31,16 +32,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
 @property (nonatomic, readonly, assign) Float64 durationSeconds;
 
-- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted;
-
-- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations;
-
 - (void)pause;
-- (void)pauseFromStart;
+- (void)pauseAtStart;
 - (void)play;
 - (void)playFromStart;
 - (void)reset;
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds;
+
+- (void)setItemURL:(NSURL *)itemURL
+              loop:(BOOL)loop
+        audioMuted:(BOOL)audioMuted;
+
+- (void)setItemURL:(NSURL *)itemURL
+              loop:(BOOL)loop
+        audioMuted:(BOOL)audioMuted
+alongsideAnimation:(void (^ __nullable)(void))animations;
 
 NS_ASSUME_NONNULL_END
 

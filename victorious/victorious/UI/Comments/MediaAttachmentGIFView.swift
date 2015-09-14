@@ -17,7 +17,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
         didSet {
             switch focusType {
             case .None:
-                self.videoView.pauseFromStart()
+                self.videoView.pauseAtStart()
             default:
                 self.videoView.playFromStart()
             }

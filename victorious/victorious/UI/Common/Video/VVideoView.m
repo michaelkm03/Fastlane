@@ -25,11 +25,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
-@property (nonatomic, strong) NSMutableSet *delegates;
 
 @end
 
 @implementation VVideoView
+
+@synthesize delegate;
 
 @dynamic muted;
 
@@ -292,7 +293,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     }
 }
 
-- (void)pauseFromStart
+- (void)pauseAtStart
 {
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self pause];

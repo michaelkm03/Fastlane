@@ -15,11 +15,16 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     private let handoffController = ContentViewHandoffController()
     private var focusTypeBeforeTransition: VFocusType?
     
-    func canPerformCustomTransitionFrom(fromViewController: UIViewController!, to toViewController: UIViewController!) -> Bool {
-        return true
+    func canPerformCustomTransitionFrom(fromViewController: UIViewController?, to toViewController: UIViewController) -> Bool {
+        for vc in [ fromViewController, Optional(toViewController) ] {
+            if let contentViewController = (vc as? VNavigationController)?.innerNavigationController?.topViewController as? VNewContentViewController {
+                return contentViewController.viewModel.context.contentPreviewProvider?.getPreviewView() != nil
+            }
+        }
+        return false
     }
     
-    func prepareForTransitionIn(model: VTransitionModel!) {
+    func prepareForTransitionIn(model: VTransitionModel) {
         if let navController = model.toViewController as? VNavigationController,
             let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
@@ -38,7 +43,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
     }
     
-    func prepareForTransitionOut(model: VTransitionModel!) {
+    func prepareForTransitionOut(model: VTransitionModel) {
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
         
@@ -47,7 +52,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         }
     }
     
-    func performTransitionIn(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
+    func performTransitionIn(model: VTransitionModel, completion: ((Bool) -> Void)?) {
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
             usingSpringWithDamping: 1.0,
@@ -70,12 +75,12 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 for view in self.handoffController.transitionSliceViews {
                     view.hidden = true
                 }
-                completion(finished)
+                completion?(finished)
             }
         )
     }
     
-    func performTransitionOut(model: VTransitionModel!, completion: ((Bool) -> Void)!) {
+    func performTransitionOut(model: VTransitionModel, completion: ((Bool) -> Void)?) {
         
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
@@ -103,7 +108,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
                         contentPreviewProvider.restorePreviewView( view )
                 }
-                completion(finished)
+                completion?(finished)
             }
         )
     }

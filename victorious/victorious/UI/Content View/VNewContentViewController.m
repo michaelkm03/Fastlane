@@ -494,6 +494,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView resignFirstResponder];
     
     [self.commentHighlighter stopAnimations];
+    
+    [UIView animateWithDuration:0.3f animations:^
+     {
+         self.moreButton.alpha = 0.0f;
+         self.closeButton.alpha = 0.0f;
+     }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

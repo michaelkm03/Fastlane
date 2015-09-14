@@ -10,6 +10,8 @@
 
 @protocol VAnimatedTransition;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  An object that holds important information about the animation transition that
  is taking place, encapsulated here so that it can be pass to transition animation
@@ -59,3 +61,5 @@
 @property (nonatomic, readonly, assign) NSTimeInterval animationDuration;
 
 @end
+
+NS_ASSUME_NONNULL_END

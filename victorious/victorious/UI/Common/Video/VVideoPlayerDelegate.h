@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Seek to start and then pause.
  */
-- (void)pauseFromStart;
+- (void)pauseAtStart;
 
 /**
  Seek to the specified time in seconds and continue playing if already playing,
