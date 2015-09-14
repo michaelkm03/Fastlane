@@ -36,9 +36,9 @@ class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
         interstitialWindow.windowLevel = UIWindowLevelAlert
     }
     
-    private var registeredInterstitials = Set<Interstitial>()
+    private var registeredInterstitials = [Interstitial]()
     
-    /// Register an array of interstitials. Will automatically show the most recent one in the array.
+    /// Register an array of interstitials and start showing them in the order that they were received.
     func registerInterstitials(interstitials: [Interstitial]) {
         
         if !shouldRegisterInterstitials {
@@ -46,18 +46,24 @@ class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
         }
         
         for interstitial in interstitials {
-            // If we haven't already seen this interstitial
-            if !registeredInterstitials.contains(interstitial) {
+            if !contains(registeredInterstitials, interstitial) {
                 // Set the dependency manager
                 if let dependencyManager = dependencyManager {
                     interstitial.dependencyManager = dependencyManager
-                    registeredInterstitials.insert(interstitial)
+                    registeredInterstitials.append(interstitial)
                 }
             }
         }
         
-        // Show most recent interstitial
-        show(Array(registeredInterstitials).first)
+        // Show first interstitial
+        displayNextInterstitial()
+    }
+    
+    private func displayNextInterstitial() {
+        if registeredInterstitials.count > 0 {
+            // Show most recent interstitial
+            show(registeredInterstitials.removeAtIndex(0))
+        }
     }
     
     private func show(interstitial: Interstitial?) {
@@ -75,20 +81,17 @@ class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
                 isShowingInterstital = true
                 animateWindowIn()
                 
-                // Mark this and the rest of the interstitials as seen
-                for interstitial in registeredInterstitials {
-                    VObjectManager.sharedManager().markInterstitialAsSeen(interstitial.remoteID, success: nil, failure: nil)
-                }
-                
-                // Remove all interstitials
-                registeredInterstitials.removeAll(keepCapacity: false)
+                // Mark this interstitial as seen
+                VObjectManager.sharedManager().markInterstitialAsSeen(interstitial.remoteID, success: nil, failure: nil)
         }
     }
     
     /// MARK: InterstitialViewController
     
     func dismissInterstitial() {
-        animateWindowOut()
+        animateWindowOut() {
+            self.displayNextInterstitial()
+        }
     }
     
     /// MARK: Helpers
@@ -103,7 +106,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
         }
     }
     
-    private func animateWindowOut() {
+    private func animateWindowOut(closure:(()->())?) {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.interstitialWindow.alpha = 0
             }) { (completed) -> Void in
@@ -111,6 +114,9 @@ class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
                 self.interstitialWindow.hidden = true
                 self.interstitialWindow.resignKeyWindow()
                 self.isShowingInterstital = false
+                if let closure = closure {
+                    closure()
+                }
         }
     }
 }

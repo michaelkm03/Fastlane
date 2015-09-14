@@ -23,8 +23,7 @@
                                  @"backgroundVideo" : @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8",
                                  @"title" : @"YEAH!!",
                                  @"description" : @"You won new stuff!",
-                                 @"icons" : @[ @"http://unrestrictedstock.com/wp-content/uploads/transportation-icons-rocket-space-ship-launch-shuttle.jpg" ],
-                                 @"type" : @"levelUp"
+                                 @"icons" : @[ @"http://unrestrictedstock.com/wp-content/uploads/transportation-icons-rocket-space-ship-launch-shuttle.jpg" ]
                                  };
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];

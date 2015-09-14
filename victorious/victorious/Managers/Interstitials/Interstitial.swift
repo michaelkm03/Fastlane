@@ -10,19 +10,18 @@ import Foundation
 
 /// An enum describing each type of supported interstitials
 enum InterstitialType : String {
-    /// WARNING: change this to "levelUp" when backend implements level up interstitial
-    case LevelUp = ""
+    case LevelUp = "level"
 }
 
 /// An Interstial object represents a screen that can be displayed over the app
 /// at any time during the app's flow.
 class Interstitial: InterstitialConfiguration, Hashable {
     
-    let remoteID: String
+    let remoteID: Int
     
     var dependencyManager: VDependencyManager?
         
-    init(id: String) {
+    init(id: Int) {
         remoteID = id
     }
     
@@ -31,7 +30,7 @@ class Interstitial: InterstitialConfiguration, Hashable {
     /// :param: info A dictionary representing the interstitial
     class func configuredInterstitial(info: [String : AnyObject]) -> Interstitial? {
         var interstitial: Interstitial?
-        if let type = info["type"] as? String, id = info["id"] as? String {
+        if let type = info["type"] as? String, idString = info["id"] as? String, id = idString.toInt() {
             if type == InterstitialType.LevelUp.rawValue {
                 interstitial = LevelUpInterstitial(id: id)
             }
@@ -54,10 +53,7 @@ class Interstitial: InterstitialConfiguration, Hashable {
     /// MARK: Hashable
     
     var hashValue: Int {
-        if let remoteID = remoteID.toInt() {
-            return remoteID
-        }
-        return 0
+        return remoteID
     }
 }
 

@@ -15,7 +15,7 @@ extension VObjectManager {
     /// :param: remoteID The ID of the interstitial to be marked as seen.
     /// :param: success Closure to be called if server does not return an error.
     /// :param: failure Closure to be called if server returns an error.
-    func markInterstitialAsSeen( remoteID: String, success: VSuccessBlock?, failure: VFailBlock? ) -> RKManagedObjectRequestOperation? {
+    func markInterstitialAsSeen( remoteID: Int, success: VSuccessBlock?, failure: VFailBlock? ) -> RKManagedObjectRequestOperation? {
         return self.POST( "/api/alert/acknowledge",
             object: nil,
             parameters: ["alert_id" : remoteID],
