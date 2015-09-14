@@ -59,14 +59,22 @@
 @property (nonatomic, readonly) VSequencePermissions *permissions;
 
 /**
- *  displayOriginalPoster and displayParentUser can be used to show the creator and parent
- *  user with respect to reposted state.
+ displayOriginalPoster and displayParentUser can be used to show the creator and parent
+ user with respect to reposted state.
  */
 - (VUser *)displayOriginalPoster;
 - (VUser *)displayParentUser;
 
+/**
+ If an image sequence, this will return the url of the original asset. Otherwise, will return
+ the image specified in sequence->preview_image.
+ */
 - (NSURL *)inStreamPreviewImageURL;
 
+/**
+ Returns the largest asset from the preview assets array that fits within the provided size or, if
+ there are no preview assets, falls back to the value returned from inStreamPreviewImageURL.
+ */
 - (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
 
 @end
