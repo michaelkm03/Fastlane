@@ -22,6 +22,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
 @property (nonatomic, assign) CGSize allCommentsHandleSize;
 @property (nonatomic, assign) CGSize experienceEnhancerSize;
 
+@property (nonatomic, assign) CGPoint catchPoint;
+@property (nonatomic, assign) CGPoint lockPoint;
+
 @end
 
 @implementation VShrinkingContentLayout
@@ -43,7 +46,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
     NSMutableArray *attributes = [[NSMutableArray alloc] init];
     
     NSArray *inheritedAttributes = [super layoutAttributesForElementsInRect:rect];
-
+    
     [inheritedAttributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
      {
          if (layoutAttributes.indexPath.section != VContentViewSectionAllComments)
@@ -88,9 +91,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                             self.mediaContentSize.height);
             layoutAttributesForIndexPath.zIndex = kContentLayoutZIndex;
             
-            if (self.collectionView.contentOffset.y > [self catchPoint].y)
+            if (self.collectionView.contentOffset.y > self.catchPoint.y)
             {
-                CGFloat deltaCatchToLock = [self lockPoint].y - [self catchPoint].y;
+                CGFloat deltaCatchToLock = self.lockPoint.y - self.catchPoint.y;
                 CGFloat percentToLockPoint;
                 if (deltaCatchToLock == 0.0f)
                 {
@@ -98,7 +101,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 }
                 else
                 {
-                    percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - [self catchPoint].y) / deltaCatchToLock);
+                    percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - self.catchPoint.y) / deltaCatchToLock);
                 }
                 
                 CGFloat sizeDelta = self.mediaContentSize.height - VShrinkingContentLayoutMinimumContentHeight;
@@ -133,35 +136,6 @@ static const NSInteger kAllCommentsZIndex = 6666;
     return layoutAttributesForIndexPath;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind
-                                                                     atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewLayoutAttributes *layoutAttributesForSupplementaryView = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind
-                                                                                                                                            withIndexPath:indexPath];
-    switch (indexPath.section)
-    {
-        case VContentViewSectionContent:
-        {
-            UICollectionViewLayoutAttributes *contentAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
-            layoutAttributesForSupplementaryView.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                                    self.collectionView.contentOffset.y,
-                                                                    CGRectGetWidth(self.collectionView.bounds),
-                                                                    CGRectGetHeight(contentAttributes.frame));
-            layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
-        }
-            break;
-        case VContentViewSectionPollQuestion:
-            break;
-        case VContentViewSectionExperienceEnhancers:
-            break;
-        case VContentViewSectionAllComments:
-            break;
-    }
-    
-    return [super layoutAttributesForSupplementaryViewOfKind:kind
-                                                 atIndexPath:indexPath];
-}
-
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind
                                                                   atIndexPath:(NSIndexPath *)indexPath
 {
@@ -172,9 +146,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
         UICollectionViewLayoutAttributes *layoutAttributesForDecoration = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:elementKind
                                                                                                                                       withIndexPath:indexPath];
         layoutAttributesForDecoration.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                                self.collectionView.contentOffset.y,
-                                                                CGRectGetWidth(self.collectionView.bounds),
-                                                                CGRectGetHeight(contentAttributes.frame));
+                                                         self.collectionView.contentOffset.y,
+                                                         CGRectGetWidth(self.collectionView.bounds),
+                                                         CGRectGetHeight(contentAttributes.frame));
         layoutAttributesForDecoration.zIndex = kContentBackgroundZIndex;
         return layoutAttributesForDecoration;
     }
@@ -200,21 +174,21 @@ static const NSInteger kAllCommentsZIndex = 6666;
         return proposedContentOffset;
     }
     
-    if ((proposedContentOffset.y > 0) && (proposedContentOffset.y < [self catchPoint].y))
+    if ((proposedContentOffset.y > 0) && (proposedContentOffset.y < self.catchPoint.y))
     {
-        if (proposedContentOffset.y > ([self catchPoint].y * 0.45))
+        if (proposedContentOffset.y > (self.catchPoint.y * 0.45))
         {
-            desiredContentOffset = [self catchPoint];
+            desiredContentOffset = self.catchPoint;
         }
         else
         {
             desiredContentOffset = CGPointZero;
         }
     }
-    else if ((proposedContentOffset.y >= [self catchPoint].y) && (proposedContentOffset.y < [self lockPoint].y))
+    else if ((proposedContentOffset.y >= self.catchPoint.y) && (proposedContentOffset.y < self.lockPoint.y))
     {
-        CGFloat catchToLockDelta = [self lockPoint].y - [self catchPoint].y;
-        CGFloat offsetToCatchDelta = proposedContentOffset.y - [self catchPoint].y;
+        CGFloat catchToLockDelta = self.lockPoint.y - self.catchPoint.y;
+        CGFloat offsetToCatchDelta = proposedContentOffset.y - self.catchPoint.y;
         CGFloat percentCloseToLock = 0.0f;
         if (catchToLockDelta == 0.0f)
         {
@@ -226,11 +200,11 @@ static const NSInteger kAllCommentsZIndex = 6666;
         }
         if (percentCloseToLock < 0.5)
         {
-            desiredContentOffset = [self catchPoint];
+            desiredContentOffset = self.catchPoint;
         }
         else
         {
-            desiredContentOffset = [self lockPoint];
+            desiredContentOffset = self.lockPoint;
         }
     }
     
@@ -244,14 +218,14 @@ static const NSInteger kAllCommentsZIndex = 6666;
         };
         desiredContentOffset = proposedContentOffset;
     }
-
+    
     if (delayedContentOffsetBlock)
     {
         // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            delayedContentOffsetBlock();
-        });
+                       {
+                           delayedContentOffsetBlock();
+                       });
     }
     
     return desiredContentOffset;
@@ -271,8 +245,8 @@ static const NSInteger kAllCommentsZIndex = 6666;
     if ([self.collectionView numberOfItemsInSection:VContentViewSectionPollQuestion])
     {
         self.pollQuestionSize = [layoutDelegate collectionView:self.collectionView
-                                                     layout:self
-                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionPollQuestion]];
+                                                        layout:self
+                                        sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionPollQuestion]];
     }
     if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers])
     {
@@ -285,10 +259,12 @@ static const NSInteger kAllCommentsZIndex = 6666;
         self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
                                                              layout:self
                                     referenceSizeForHeaderInSection:VContentViewSectionAllComments];
+        self.catchPoint = [self calculateCatchPoint];
+        self.lockPoint = [self calculateLockPoint];
     }
 }
 
-- (CGPoint)catchPoint
+- (CGPoint)calculateCatchPoint
 {
     UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                                                     atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionAllComments]];
@@ -296,9 +272,9 @@ static const NSInteger kAllCommentsZIndex = 6666;
     return CGPointMake(CGRectGetMinX(self.collectionView.bounds), CGRectGetMinY(handleLayoutAttributes.frame) - self.mediaContentSize.height);
 }
 
-- (CGPoint)lockPoint
+- (CGPoint)calculateLockPoint
 {
-    CGPoint lockPoint = [self catchPoint];
+    CGPoint lockPoint = self.catchPoint;
     lockPoint.y = lockPoint.y + ABS(VShrinkingContentLayoutMinimumContentHeight - self.mediaContentSize.height);
     
     return lockPoint;
@@ -306,8 +282,8 @@ static const NSInteger kAllCommentsZIndex = 6666;
 
 - (CGFloat)percentCloseToLockPointFromCatchPoint
 {
-    CGFloat totalDiff = [self lockPoint].y - [self catchPoint].y;
-    CGFloat currentDelta = self.collectionView.contentOffset.y - [self catchPoint].y;
+    CGFloat totalDiff = self.lockPoint.y - self.catchPoint.y;
+    CGFloat currentDelta = self.collectionView.contentOffset.y - self.catchPoint.y;
     return CLAMP(0.0f, currentDelta/ totalDiff, 1.0f);
 }
 

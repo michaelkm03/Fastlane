@@ -1286,7 +1286,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         }
     }
 
-    if (self.viewModel.type == VContentViewTypeVideo)
+    if ( self.viewModel.type == VContentViewTypeVideo && [self.contentCollectionView numberOfSections] > 0 )
     {
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
