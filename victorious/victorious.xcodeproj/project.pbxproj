@@ -2913,11 +2913,11 @@
 		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateSheetPresentationController.m; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
-		C3623E581B9A77E0002B121D /* LevelUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpViewController.swift; path = "Fan Club/Level Up Screen/LevelUpViewController.swift"; sourceTree = "<group>"; };
-		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelUpIconCollectionViewCell.swift; path = "Fan Club/Level Up Screen/LevelUpIconCollectionViewCell.swift"; sourceTree = "<group>"; };
-		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelPolygonView.swift; path = "Fan Club/Level Up Screen/LevelPolygonView.swift"; sourceTree = "<group>"; };
-		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelBadgeView.swift; path = "Fan Club/Level Up Screen/LevelBadgeView.swift"; sourceTree = "<group>"; };
-		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LevelUpViewController.storyboard; path = "Fan Club/Level Up Screen/LevelUpViewController.storyboard"; sourceTree = "<group>"; };
+		C3623E581B9A77E0002B121D /* LevelUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpViewController.swift; sourceTree = "<group>"; };
+		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpIconCollectionViewCell.swift; sourceTree = "<group>"; };
+		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelPolygonView.swift; sourceTree = "<group>"; };
+		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBadgeView.swift; sourceTree = "<group>"; };
+		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LevelUpViewController.storyboard; sourceTree = "<group>"; };
 		C3623E641B9F63BD002B121D /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+AlertTesting.h"; sourceTree = "<group>"; };
 		C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+AlertTesting.m"; sourceTree = "<group>"; };
@@ -6930,7 +6930,7 @@
 			children = (
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
 			);
-			name = "Fan Club";
+			path = "Fan Club";
 			sourceTree = "<group>";
 		};
 		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
@@ -6943,7 +6943,7 @@
 				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
 				C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */,
 			);
-			name = "Level Up Screen";
+			path = "Level Up Screen";
 			sourceTree = "<group>";
 		};
 		C3623F211BA3AE54002B121D /* Interstitials */ = {
