@@ -25,6 +25,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         static let marqueeDestinationDirectory = "destionationDirectory"
         static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
+        static let userHashtagSearchKey = "userHashtagSearch"
         static let searchIconImageName = "D_search_small_icon"
     }
     
@@ -133,8 +134,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     
     /// Mark: - Private Helper Methods
     private func configureSearchBar() {
-        if let dependencyManager = self.dependencyManager {
-            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(dependencyManager)
+        if let dependencyManager = self.dependencyManager,
+            searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+            searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) {
+                
+            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
             searchResultsViewController?.navigationDelegate = self
             searchController = UISearchController(searchResultsController: searchResultsViewController)
         }
