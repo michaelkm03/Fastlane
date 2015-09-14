@@ -71,6 +71,13 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     return [ourStoryboard instantiateInitialViewController];
 }
 
+#pragma mark - dealloc
+
+- (void)dealloc
+{
+    _tapAwayGestureRecognizer.delegate = nil;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -128,7 +135,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     return YES;
 }
 
-#pragma mark - Property Accessors
+#pragma mark - Properties
 
 - (UIView *)avatarView
 {
@@ -138,6 +145,16 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 - (CGFloat)totalHeight
 {
     return CGRectGetHeight(self.blurringContainer.bounds) + (CGRectGetHeight(self.profileButton.bounds) * 0.5f);
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if (dependencyManager != nil)
+    {
+        [self.titleTextView setDependencyManager:dependencyManager];
+        self.profileButton.dependencyManager = dependencyManager;
+    }
 }
 
 #pragma mark - IBActions
@@ -352,16 +369,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         self.descriptionItem.hashTagSelectionHandler(value);
     }
 }
-     
- - (void)setDependencyManager:(VDependencyManager *)dependencyManager
- {
-     _dependencyManager = dependencyManager;
-     if (dependencyManager != nil)
-     {
-         [self.titleTextView setDependencyManager:dependencyManager];
-         self.profileButton.dependencyManager = dependencyManager;
-     }
- }
 
 #pragma mark - Gesture Recognizer Delegate
 

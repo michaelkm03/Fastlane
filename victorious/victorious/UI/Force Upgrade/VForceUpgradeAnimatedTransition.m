@@ -84,6 +84,11 @@
     return [image applyDarkEffect];
 }
 
+- (void)dealloc
+{
+    _animator.delegate = nil;
+}
+
 #pragma mark - UIDynamicAnimatorDelegate methods
 
 - (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator

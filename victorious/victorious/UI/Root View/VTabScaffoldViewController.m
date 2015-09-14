@@ -81,6 +81,11 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     return self;
 }
 
+- (void)dealloc
+{
+    _internalTabBarController.delegate = nil;
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad

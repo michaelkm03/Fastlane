@@ -223,6 +223,11 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
         }
         
+        if (self.templateConfigurationBlock != nil)
+        {
+            self.templateConfigurationBlock(templateDecorator);
+        }
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
