@@ -106,8 +106,6 @@ static NSCache *_sharedImageCache = nil;
     self.seperatorImageView.image = [self.seperatorImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.seperatorImageView.tintColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
     
-    [self.commentersAvatarButton setup];
-    
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
 
     [self prepareContentAndMediaView];

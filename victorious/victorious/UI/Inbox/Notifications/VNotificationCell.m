@@ -104,10 +104,4 @@ static const CGFloat kBaselineOffset = 0.5f;
     }
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.notificationWho setup];
-}
-
 @end

@@ -248,6 +248,12 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             [keyPaths addObject:[profileKeyPath stringByDeletingLastPathComponent]];
         }
         
+        NSArray *currentProfileKeyPaths = [templateDecorator keyPathsForValue:@"currentUserProfile.screen"];
+        for ( NSString *currentProfileKeyPath in currentProfileKeyPaths )
+        {
+            [keyPaths addObject:[currentProfileKeyPath stringByDeletingLastPathComponent]];
+        }
+        
         NSArray *discoverKeyPaths = [templateDecorator keyPathsForValue:@"discover.screen"];
         for ( NSString *discoverKeyPath in discoverKeyPaths )
         {

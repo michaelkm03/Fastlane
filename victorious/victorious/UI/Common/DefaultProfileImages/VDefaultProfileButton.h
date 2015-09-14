@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface VDefaultProfileButton : UIButton
 
-- (void)setup;
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState;
 
 - (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color;
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) VUser *user;
 
-@property (nonatomic, assign) VBadgeImageType badgeImageType;
+@property (nonatomic, assign) VLevelBadgeImageType levelBadgeImageType;
 
 @end
 

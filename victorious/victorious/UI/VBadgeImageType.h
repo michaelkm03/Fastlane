@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-typedef NS_ENUM(NSUInteger, VBadgeImageType) {
-    VBadgeImageTypeSmall,
-    VBadgeImageTypeMedium,
-    VBadgeImageTypeLarge
+//An enum representing the type (size) of a level badge image.
+typedef NS_ENUM(NSUInteger, VLevelBadgeImageType) {
+    VLevelBadgeImageTypeSmall,
+    VLevelBadgeImageTypeMedium,
+    VLevelBadgeImageTypeLarge
 };

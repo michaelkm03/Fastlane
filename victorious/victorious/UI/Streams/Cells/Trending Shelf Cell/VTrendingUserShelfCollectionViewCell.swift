@@ -133,7 +133,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        userAvatarButton.setup()
         for constraint in minimumTitleToContentVerticalSpaceConstraints {
             constraint.constant = Constants.minimumTitleToContentVerticalSpace
         }

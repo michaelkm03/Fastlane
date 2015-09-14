@@ -41,6 +41,7 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileButton.dependencyManager = dependencyManager;
+        self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -91,12 +92,6 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.profileButton setup];
 }
 
 @end

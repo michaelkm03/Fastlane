@@ -52,7 +52,7 @@
 #warning TESTING VALUES
 - (NSNumber *)level
 {
-    return @(arc4random() % 100000);
+    return @(arc4random() % 1000000);
 }
 
 - (NSNumber *)isCreator

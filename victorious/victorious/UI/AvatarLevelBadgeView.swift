@@ -8,9 +8,12 @@
 
 import UIKit
 
+/// Objects conforming to this protocol should return an image
+/// from it's set based on various critieria.
 private protocol BadgeImageSet {
     
-    func image(#type: VBadgeImageType) -> UIImage
+    /// Returns an image based on the desired level badge image type.
+    func image(#type: VLevelBadgeImageType) -> UIImage
 }
 
 class AvatarLevelBadgeView: UIView {
@@ -18,13 +21,14 @@ class AvatarLevelBadgeView: UIView {
     static let kLabelSideInset: CGFloat = 3
     
     // MARK: Private structs
+    
     private struct UserBadgeImages: BadgeImageSet {
         
         static let smallImage = UIImage(named: "level_badge_small")!
         static let mediumImage = UIImage(named: "level_badge_medium")!
         static let largeImage = UIImage(named: "level_badge_large")!
         
-        func image(#type: VBadgeImageType) -> UIImage {
+        func image(#type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage
             switch type {
             case .Small:
@@ -38,7 +42,7 @@ class AvatarLevelBadgeView: UIView {
             return image.resizableImageWithCapInsets(UIEdgeInsetsMake(0, sideInset, 0, sideInset))
         }
         
-        func font(#type: VBadgeImageType) -> UIFont? {
+        func font(#type: VLevelBadgeImageType) -> UIFont? {
             switch type {
                 // WARNING: Get these numbers from design
             case .Small:
@@ -57,7 +61,7 @@ class AvatarLevelBadgeView: UIView {
         static let mediumImage = UIImage(named: "level_badge_creator_medium")!
         static let largeImage = UIImage(named: "level_badge_creator_large")!
         
-        func image(#type: VBadgeImageType) -> UIImage {
+        func image(#type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage
             switch type {
             case .Small:
@@ -72,15 +76,23 @@ class AvatarLevelBadgeView: UIView {
     }
     
     // MARK: Private properties
+    
     private let creatorBadgeImages = CreatorBadgeImages()
     private let userBadgeImages = UserBadgeImages()
     private let backgroundImageView = UIImageView()
     private let badgeLabel = UILabel()
     private let numberFormatter = VLargeNumberFormatter()
+    private var text: String? {
+        didSet {
+            updateBadgeText()
+        }
+    }
 
     // MARK: Readonly variables
+    
+    /// Returns the optimium size for this badge view based on this badge view's current state.
     var desiredSize: CGSize {
-        var size = image(isCreator, withImageType: badgeImageType).size
+        var size = image(isCreator, withImageType: levelBadgeImageType).size
         if let text = text where !isCreator
         {
             let textWidth = text.boundingRectWithSize(CGSizeMake(CGFloat.max, size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [ NSFontAttributeName : badgeLabel.font ], context: nil).width + ( AvatarLevelBadgeView.kLabelSideInset * 2 )
@@ -91,28 +103,22 @@ class AvatarLevelBadgeView: UIView {
     }
     
     // MARK: Exposed variables
+    
+    /// The level being represented by this badge view. Defaults to 0.
     var level: Int = 0 {
         didSet {
             text = numberFormatter.stringForInteger(level)
         }
     }
-    var text: String? {
-        didSet {
-            updateBadgeText()
-        }
-    }
-    var badgeBackgroundColor: UIColor? {
-        didSet {
-            if ( !backgroundImageView.tintColor.isEqual(badgeBackgroundColor) ) {
-                backgroundImageView.tintColor = badgeBackgroundColor
-            }
-        }
-    }
+    
+    /// The color of the text displayed atop the badge image.
     var textColor: UIColor? {
         didSet {
             badgeLabel.textColor = textColor
         }
     }
+    
+    /// Whether or not the user being displayed an app "creator". Defaults to false.
     var isCreator = false {
         didSet {
             if isCreator != oldValue {
@@ -121,20 +127,28 @@ class AvatarLevelBadgeView: UIView {
             }
         }
     }
-    var badgeImageType = VBadgeImageType.Small {
+    
+    /// The desired level badge image type. Defaults to Small.
+    var levelBadgeImageType = VLevelBadgeImageType.Small {
         didSet {
-            if badgeImageType != oldValue {
+            if levelBadgeImageType != oldValue {
                 updateBadgeIcon()
             }
         }
     }
-    override var bounds: CGRect {
+    
+    /// Used to update the tint color of the badge background image.
+    var badgeTintColor: UIColor? {
         didSet {
-            updateBadgeIcon()
+            if ( !backgroundImageView.tintColor.isEqual(badgeTintColor) ) {
+                backgroundImageView.tintColor = badgeTintColor
+            }
         }
     }
     
     // MARK: Initialization
+    
+    /// Convenience initializer
     func new() -> AvatarLevelBadgeView {
         return AvatarLevelBadgeView(frame: CGRect.zeroRect)
     }
@@ -150,6 +164,7 @@ class AvatarLevelBadgeView: UIView {
     }
     
     // MARK: Private functions
+    
     private func sharedSetup() {
         badgeLabel.adjustsFontSizeToFitWidth = true
         badgeLabel.textAlignment = NSTextAlignment.Center
@@ -166,8 +181,7 @@ class AvatarLevelBadgeView: UIView {
         return forCreator ? creatorBadgeImages : userBadgeImages
     }
     
-    private func image(forCreator: Bool, withImageType imageType: VBadgeImageType) -> UIImage {
-        let size = bounds.size
+    private func image(forCreator: Bool, withImageType imageType: VLevelBadgeImageType) -> UIImage {
         let imageSet: BadgeImageSet = badgeImageSet(forCreator)
         let image = imageSet.image(type: imageType)
         let renderingMode = forCreator ? UIImageRenderingMode.AlwaysOriginal : UIImageRenderingMode.AlwaysTemplate
@@ -175,12 +189,12 @@ class AvatarLevelBadgeView: UIView {
     }
     
     private func updateBadgeIcon() {
-        let desiredImage = image(isCreator, withImageType: badgeImageType)
+        let desiredImage = image(isCreator, withImageType: levelBadgeImageType)
         if let currentImage = backgroundImageView.image where currentImage.isEqual(desiredImage) { }
         else {
             backgroundImageView.image = desiredImage
             if let imageSet = badgeImageSet(isCreator) as? UserBadgeImages {
-                badgeLabel.font = imageSet.font(type: badgeImageType)
+                badgeLabel.font = imageSet.font(type: levelBadgeImageType)
             }
         }
     }

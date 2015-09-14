@@ -56,10 +56,8 @@
     self.imageEdgeInsets = UIEdgeInsetsZero;
     self.imageView.contentMode = UIViewContentModeScaleToFill;
     
-    if ( self.levelBadgeView.superview == nil )
-    {
-        [self addSubview:self.levelBadgeView];
-    }
+    self.levelBadgeView = [AvatarLevelBadgeView new];
+    [self addSubview:self.levelBadgeView];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -101,20 +99,10 @@
      }];
 }
 
-- (void)setBadgeImageType:(VBadgeImageType)badgeImageType
+- (void)setLevelBadgeImageType:(VLevelBadgeImageType)levelBadgeImageType
 {
-    _badgeImageType = badgeImageType;
+    _levelBadgeImageType = levelBadgeImageType;
     [self updateBadgeViewContent];
-}
-
-- (AvatarLevelBadgeView *)levelBadgeView
-{
-    if ( _levelBadgeView == nil )
-    {
-        _levelBadgeView = [AvatarLevelBadgeView new];
-        [self updateBadgeViewContent];
-    }
-    return _levelBadgeView;
 }
 
 - (void)updateBadgeViewContent
@@ -124,11 +112,11 @@
         NSNumber *userLevel = self.user.level;
         NSNumber *minimumLevel = [self.dependencyManager numberForKey:VDependencyManagerAvatarBadgeAppearanceMinLevelKey];
         self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
-        self.levelBadgeView.badgeBackgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceBackgroundColorKey];
+        self.levelBadgeView.badgeTintColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceBackgroundColorKey];
         self.levelBadgeView.textColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceTextColorKey];
         self.levelBadgeView.level = self.user.level.integerValue;
         self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
-        self.levelBadgeView.badgeImageType = self.badgeImageType;
+        self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
         [self updateBadgeViewFrame];
     }
 }
