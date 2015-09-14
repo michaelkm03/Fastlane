@@ -259,9 +259,13 @@ static const NSInteger kAllCommentsZIndex = 6666;
         self.allCommentsHandleSize = [layoutDelegate collectionView:self.collectionView
                                                              layout:self
                                     referenceSizeForHeaderInSection:VContentViewSectionAllComments];
-        self.catchPoint = [self calculateCatchPoint];
-        self.lockPoint = [self calculateLockPoint];
     }
+}
+
+- (void)calculateCatchAndLockPoints
+{
+    self.catchPoint = [self calculateCatchPoint];
+    self.lockPoint = [self calculateLockPoint];
 }
 
 - (CGPoint)calculateCatchPoint

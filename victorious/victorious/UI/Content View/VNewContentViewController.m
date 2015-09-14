@@ -507,6 +507,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
     }
     
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
+    
     [self updateOrientation];
 }
 
