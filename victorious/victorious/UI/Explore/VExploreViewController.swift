@@ -27,6 +27,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let destinationStreamKey = "destinationStream"
         static let failureReusableViewIdentifier = "failureReusableView"
         static let streamATFThresholdKey = "streamAtfViewThreshold"
+        static let userHashtagSearchKey = "userHashtagSearch"
+        static let searchIconImageName = "D_search_small_icon"
         
         static let interItemSpace: CGFloat = 1
         static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
@@ -35,7 +37,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let maximumContentAspectRatio: CGFloat = 2
         static let minimizedContentAspectRatio: CGFloat = 0.5625 //9 / 16
         static let recentSectionLabelAdditionalTopInset: CGFloat = 15
-        static let searchIconImageName = "D_search_small_icon"
     }
     
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
@@ -276,8 +277,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     /// MARK: Search bar management
     
     private func configureSearchBar() {
-        if let dependencyManager = self.dependencyManager {
-            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(dependencyManager)
+        if let dependencyManager = self.dependencyManager,
+            searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+            searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) {
+                
+            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
             searchResultsViewController?.navigationDelegate = self
             searchController = UISearchController(searchResultsController: searchResultsViewController)
         }
