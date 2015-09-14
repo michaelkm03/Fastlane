@@ -161,13 +161,13 @@
     {
         case VFocusTypeNone:
             self.videoView.backgroundColor = [UIColor clearColor];
-            self.videoView.useAspectFit = YES;
+            self.videoView.useAspectFit = NO;
             break;
             
         case VFocusTypeStream:
             [self setBackgroundContainerViewVisible:YES];
             self.videoView.backgroundColor = [UIColor clearColor];
-            self.videoView.useAspectFit = YES;
+            self.videoView.useAspectFit = NO;
             break;
             
         case VFocusTypeDetail:

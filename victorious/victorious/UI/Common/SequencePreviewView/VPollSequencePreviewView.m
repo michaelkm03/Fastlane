@@ -32,6 +32,7 @@ static NSString *kOrIconKey = @"orIcon";
 @property (nonatomic, strong) VResultView *answerBResultView;
 @property (nonatomic, readonly) UIColor *favoredColor;
 @property (nonatomic, readonly) UIColor *unfavoredColor;
+@property (nonatomic, assign) BOOL haveResultsBeenSet;
 
 @end
 
@@ -173,17 +174,29 @@ static NSString *kOrIconKey = @"orIcon";
     
     [self.pollView layoutIfNeeded];
     
-    [self.answerAResultView setProgress:0.0f animated:YES];
-    [self.answerBResultView setProgress:1.0f animated:YES];
     [self setResultViewsHidden:YES animated:NO];
 }
 
 - (void)setResultViewsHidden:(BOOL)hidden animated:(BOOL)animated
 {
+    for ( VResultView *view in @[ self.answerBResultView, self.answerAResultView ] )
+    {
+        [self setResultView:view hidden:hidden animated:animated];
+    }
+}
+
+- (void)setResultView:(VResultView *)view hidden:(BOOL)hidden animated:(BOOL)animated
+{
     void (^animations)() = ^
     {
-        self.answerBResultView.alpha = hidden ? 0.0f : 1.0f;
-        self.answerAResultView.alpha = hidden ? 0.0f : 1.0f;
+        view.alpha = hidden ? 0.0f : 1.0f;
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        if ( hidden )
+        {
+            [view setProgress:0.0f animated:NO];
+        }
     };
     if ( animated )
     {
@@ -192,26 +205,31 @@ static NSString *kOrIconKey = @"orIcon";
     else
     {
         animations();
+        completion(YES);
     }
 }
 
-#pragma mark - VPollAnswerReceiver
+#pragma mark - VPollResultReceiver
+
+- (void)showResultsAnimated:(BOOL)animated
+{
+    [self setResultViewsHidden:NO animated:animated];
+    self.haveResultsBeenSet = YES;
+}
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated
 {
     [self.answerAResultView setProgress:answerAPercentage animated:animated];
-    self.answerAResultView.hidden = NO;
 }
 
 - (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated
 {
     [self.answerBResultView setProgress:answerBPercentage animated:animated];
-    self.answerBResultView.hidden = NO;
 }
 
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored
 {
-    [self.answerBResultView setColor:answerAIsFavored ? self.favoredColor : self.unfavoredColor];
+    [self.answerAResultView setColor:answerAIsFavored ? self.favoredColor : self.unfavoredColor];
 }
 
 - (void)setAnswerBIsFavored:(BOOL)answerBIsFavored
@@ -231,12 +249,10 @@ static NSString *kOrIconKey = @"orIcon";
         case VFocusTypeDetail:
             [self.pollView setPollIconHidden:YES animated:YES];
             [self setGestureRecognizersEnabled:YES];
-            [self setResultViewsHidden:NO animated:YES];
             break;
         default:
             [self.pollView setPollIconHidden:NO animated:YES];
             [self setGestureRecognizersEnabled:NO];
-            [self setResultViewsHidden:YES animated:YES];
     }
 }
 

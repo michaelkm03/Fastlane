@@ -1,5 +1,5 @@
 //
-//  VPollAnswerReceiver.h
+//  VPollResultReceiver.h
 //  victorious
 //
 //  Created by Patrick Lynch on 9/11/15.
@@ -11,12 +11,14 @@
 /*
  Defines an objec that can respond to interaction with a poll view.
  */
-@protocol VPollAnswerReceiver <NSObject>
+@protocol VPollResultReceiver <NSObject>
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated;
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored;
 
 - (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated;
 - (void)setAnswerBIsFavored:(BOOL)answerBIsFavored;
+
+- (void)showResultsAnimated:(BOOL)animated;
 
 @end

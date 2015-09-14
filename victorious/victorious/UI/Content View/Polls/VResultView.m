@@ -80,7 +80,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+    [self updateHeight];
+}
+
+- (void)updateHeight
+{
     self.heightConstraint.constant = 35.0 + self.bounds.size.height * self.progress;
 }
 
@@ -115,6 +119,8 @@
 - (void)setProgress:(CGFloat)progress
 {
     _progress = progress;
+    
+    [self updateHeight];
     [self layoutIfNeeded];
     
     static NSNumberFormatter *percentFormatter;

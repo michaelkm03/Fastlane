@@ -244,6 +244,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         [self.pollAnswerReceiver setAnswerAIsFavored:(self.viewModel.favoredAnswer == VPollAnswerA)];
         [self.pollAnswerReceiver setAnswerBIsFavored:(self.viewModel.favoredAnswer == VPollAnswerB)];
+        
+        [self.pollAnswerReceiver showResultsAnimated:YES];
     }
 }
 
@@ -494,12 +496,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView resignFirstResponder];
     
     [self.commentHighlighter stopAnimations];
-    
-    [UIView animateWithDuration:0.3f animations:^
-     {
-         self.moreButton.alpha = 0.0f;
-         self.closeButton.alpha = 0.0f;
-     }];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
