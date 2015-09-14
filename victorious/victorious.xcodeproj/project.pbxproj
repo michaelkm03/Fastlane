@@ -900,7 +900,6 @@
 		C3623E6D1B9F80FA002B121D /* VObjectManager+AlertTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */; };
 		C3623E761BA10381002B121D /* VObjectManager+Interstitials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */; };
 		C3623E781BA1ED83002B121D /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = C3623E771BA1ED83002B121D /* test.json */; };
-		C3623F201BA36F9D002B121D /* confetti.m4v in Resources */ = {isa = PBXBuildFile; fileRef = C3623F1F1BA36E5D002B121D /* confetti.m4v */; };
 		C3623F251BA3AE54002B121D /* Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F221BA3AE54002B121D /* Interstitial.swift */; };
 		C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F231BA3AE54002B121D /* InterstitialManager.swift */; };
 		C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */; };
@@ -2922,7 +2921,6 @@
 		C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+AlertTesting.m"; sourceTree = "<group>"; };
 		C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Interstitials.swift"; sourceTree = "<group>"; };
 		C3623E771BA1ED83002B121D /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
-		C3623F1F1BA36E5D002B121D /* confetti.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = confetti.m4v; sourceTree = "<group>"; };
 		C3623F221BA3AE54002B121D /* Interstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interstitial.swift; sourceTree = "<group>"; };
 		C3623F231BA3AE54002B121D /* InterstitialManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialManager.swift; sourceTree = "<group>"; };
 		C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpInterstitial.swift; sourceTree = "<group>"; };
@@ -6933,7 +6931,6 @@
 		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
 			isa = PBXGroup;
 			children = (
-				C3623F1F1BA36E5D002B121D /* confetti.m4v */,
 				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
 				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
 				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
@@ -8288,7 +8285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3623F201BA36F9D002B121D /* confetti.m4v in Resources */,
 				D85B706B1B0EAF3F0038CA5B /* login.storyboard in Resources */,
 				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,

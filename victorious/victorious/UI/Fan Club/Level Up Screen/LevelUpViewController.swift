@@ -85,16 +85,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
                 
-                // WARNING: Testing
-                dispatch_after(Constants.presentationDuration) {
-                    if let path = NSBundle.mainBundle().pathForResource("confetti", ofType: "m4v"), url = NSURL.fileURLWithPath(path) {
+                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
+                    dispatch_after(Constants.presentationDuration) {
                         self.videoBackground.setItemURL(url, loop: true, audioMuted: true)
                     }
                 }
-                
-//                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
-//                    videoBackground.setItemURL(url, loop: true, audioMuted: true)
-//                }
             }
         }
     }
