@@ -46,7 +46,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
     NSMutableArray *attributes = [[NSMutableArray alloc] init];
     
     NSArray *inheritedAttributes = [super layoutAttributesForElementsInRect:rect];
-    
+
     [inheritedAttributes enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop)
      {
          if (layoutAttributes.indexPath.section != VContentViewSectionAllComments)
@@ -218,7 +218,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
         };
         desiredContentOffset = proposedContentOffset;
     }
-    
+
     if (delayedContentOffsetBlock)
     {
         // This is done to prevent cases where merely setting targetContentOffset lead to jumpy scrolling
