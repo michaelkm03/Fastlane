@@ -18,10 +18,7 @@ class LevelUpInterstitial: Interstitial {
     var videoURL: String?
 
     private var allRequiredInfoIsPresent: Bool {
-        if let level = level, title = title, description = description, icons = icons {
-            return true
-        }
-        return false
+        return level != nil && title != nil && description != nil && icons != nil
     }
     
     /// MARK: InterstitialConfiguration
