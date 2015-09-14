@@ -85,7 +85,14 @@
 
 - (void)updateHeight
 {
-    self.heightConstraint.constant = 35.0 + self.bounds.size.height * self.progress;
+    if ( self.progress >= 0.0f )
+    {
+        self.heightConstraint.constant = 35.0 + self.bounds.size.height * self.progress;
+    }
+    else
+    {
+        self.heightConstraint.constant = 0.0f;
+    }
 }
 
 - (void)setColor:(UIColor *)color
@@ -102,6 +109,9 @@
     };
     if ( animated )
     {
+        self.progress = -1.0f;
+        [self updateHeight];
+        
         [UIView animateWithDuration:0.75f
                               delay:0.0f
              usingSpringWithDamping:1.0f

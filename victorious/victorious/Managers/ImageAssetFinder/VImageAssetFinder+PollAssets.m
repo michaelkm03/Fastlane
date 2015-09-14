@@ -19,7 +19,7 @@
     {
         if ([object isKindOfClass:[VAsset class]])
         {
-            VAsset *asset = (VAsset *) object;
+            VAsset *asset = (VAsset *)object;
             if (asset.node.interactions.array.count > 0)
             {
                 answer = [asset.node.interactions.array firstObject];
@@ -37,7 +37,7 @@
     {
         if ([object isKindOfClass:[VAsset class]])
         {
-            VAsset *asset = (VAsset *) object;
+            VAsset *asset = (VAsset *)object;
             if (asset.node.interactions.array.count > 1)
             {
                 answer = asset.node.interactions.array[1];

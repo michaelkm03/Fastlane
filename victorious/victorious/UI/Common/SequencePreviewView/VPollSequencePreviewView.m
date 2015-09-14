@@ -200,7 +200,7 @@ static NSString *kOrIconKey = @"orIcon";
     };
     if ( animated )
     {
-        [UIView animateWithDuration:0.5f animations:animations];
+        [UIView animateWithDuration:0.3f animations:animations];
     }
     else
     {
@@ -213,7 +213,7 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)showResultsAnimated:(BOOL)animated
 {
-    [self setResultViewsHidden:NO animated:animated];
+    [self setResultViewsHidden:NO animated:self.haveResultsBeenSet];
     self.haveResultsBeenSet = YES;
 }
 
@@ -249,10 +249,15 @@ static NSString *kOrIconKey = @"orIcon";
         case VFocusTypeDetail:
             [self.pollView setPollIconHidden:YES animated:YES];
             [self setGestureRecognizersEnabled:YES];
+            if ( self.haveResultsBeenSet )
+            {
+                [self setResultViewsHidden:NO animated:YES];
+            }
             break;
         default:
             [self.pollView setPollIconHidden:NO animated:YES];
             [self setGestureRecognizersEnabled:NO];
+            [self setResultViewsHidden:YES animated:YES];
     }
 }
 
