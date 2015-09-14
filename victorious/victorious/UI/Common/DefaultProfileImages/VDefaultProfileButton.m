@@ -12,12 +12,15 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
+#import "VDependencyManager+VAvatarBadgeAppearance.h"
+#import "victorious-Swift.h"
 
 @interface VDefaultProfileButton ()
 
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, strong) AvatarLevelBadgeView *levelBadgeView;
 
 @end
 
@@ -52,6 +55,11 @@
     self.borderWidth = 0.0f;
     self.imageEdgeInsets = UIEdgeInsetsZero;
     self.imageView.contentMode = UIViewContentModeScaleToFill;
+    
+    if ( self.levelBadgeView.superview == nil )
+    {
+        [self addSubview:self.levelBadgeView];
+    }
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -93,16 +101,85 @@
      }];
 }
 
+- (void)setBadgeImageType:(VBadgeImageType)badgeImageType
+{
+    _badgeImageType = badgeImageType;
+    [self updateBadgeViewContent];
+}
+
+- (AvatarLevelBadgeView *)levelBadgeView
+{
+    if ( _levelBadgeView == nil )
+    {
+        _levelBadgeView = [AvatarLevelBadgeView new];
+        [self updateBadgeViewContent];
+    }
+    return _levelBadgeView;
+}
+
+- (void)updateBadgeViewContent
+{
+    if ( self.dependencyManager != nil )
+    {
+        NSNumber *userLevel = self.user.level;
+        NSNumber *minimumLevel = [self.dependencyManager numberForKey:VDependencyManagerAvatarBadgeAppearanceMinLevelKey];
+        self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
+        self.levelBadgeView.badgeBackgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceBackgroundColorKey];
+        self.levelBadgeView.textColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceTextColorKey];
+        self.levelBadgeView.level = self.user.level.integerValue;
+        self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
+        self.levelBadgeView.badgeImageType = self.badgeImageType;
+        [self updateBadgeViewFrame];
+    }
+}
+
+- (void)updateBadgeViewFrame
+{
+    if ( self.dependencyManager != nil )
+    {
+        CGRect currentBounds = self.bounds;
+        CGFloat radius = CGRectGetWidth(currentBounds) / 2;
+        CGFloat spotOnCircle = radius + sqrt(pow(radius, 2) / 2);
+        CGSize desiredSize = self.levelBadgeView.desiredSize;
+        CGRect badgeFrame = CGRectZero;
+        badgeFrame.size = desiredSize;
+        badgeFrame.origin.x = spotOnCircle - desiredSize.width / 2;
+        badgeFrame.origin.y = spotOnCircle - desiredSize.height / 2;
+        self.levelBadgeView.frame = badgeFrame;
+    }
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self updateBadgeViewFrame];
+}
+
+- (void)setDependencyManager:(VDependencyManager *__nullable)dependencyManager
+{
+    _dependencyManager = dependencyManager.avatarBadgeAppearanceDependencyManager;
+    [self updateBadgeViewContent];
+}
+
+- (void)setUser:(VUser *__nullable)user
+{
+    _user = user;
+    [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
+    [self updateBadgeViewContent];
+}
+
 - (UIImage *)placeholderImage
 {
-    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    NSString *imageName = @"profile_thumb";
+    UIImage *image = [UIImage imageNamed:imageName];
     if (CGRectGetHeight(self.bounds) > image.size.height)
     {
-        image = [UIImage imageNamed:@"profile_full"];
+        imageName = @"profile_full";
+        image = [UIImage imageNamed:imageName];
     }
     
     // Create unique key from tint color
-    NSString *tintKey = [self.tintColor description];
+    NSString *tintKey = [[self.tintColor description] stringByAppendingString:imageName];
     
     // Check cache for already tinted image
     SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
@@ -144,6 +221,16 @@
         CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     }
     CGContextFillPath(context);
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *view = [super hitTest:point withEvent:event];
+    if ( view == self.levelBadgeView )
+    {
+        return self;
+    }
+    return view;
 }
 
 @end

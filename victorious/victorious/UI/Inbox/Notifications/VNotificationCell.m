@@ -51,7 +51,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     _notification = notification;
     
-    [self.notificationWho setProfileImageURL:[NSURL URLWithString:_notification.imageURL] forState:UIControlStateNormal];
+    self.notificationWho.user = notification.user;
     self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     //This paragraph style causes emojis to display correctly
@@ -87,6 +87,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     {
         self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         [self.messageLabel sizeToFit];
+        self.notificationWho.dependencyManager = dependencyManager;
         self.notificationWho.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }

@@ -21,8 +21,10 @@
 @implementation VUser
 
 @dynamic email;
+@dynamic isCreator;
 @dynamic isDirectMessagingDisabled;
 @dynamic isFollowedByMainUser;
+@dynamic level;
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;
@@ -46,5 +48,16 @@
 @dynamic previewAssets;
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
+
+#warning TESTING VALUES
+- (NSNumber *)level
+{
+    return @(arc4random() % 100000);
+}
+
+- (NSNumber *)isCreator
+{
+    return @(arc4random() % 2 == 0);
+}
 
 @end

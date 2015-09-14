@@ -12,7 +12,7 @@
 #import "VThemeManager.h"
 
 // SubViews
-#import "VDefaultProfileImageView.h"
+#import "VDefaultProfileButton.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 
@@ -40,7 +40,7 @@
 @property (weak, nonatomic) IBOutlet UIView *blurringContainer;
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
 @property (weak, nonatomic) IBOutlet UIButton *avatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
@@ -96,9 +96,9 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    self.profileImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.titleTextView.dependencyManager = self.dependencyManager;
+    self.profileButton.dependencyManager = self.dependencyManager;
     [self reloadData];
 }
 
@@ -132,12 +132,12 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (UIView *)avatarView
 {
-    return self.profileImageView;
+    return self.profileButton;
 }
 
 - (CGFloat)totalHeight
 {
-    return CGRectGetHeight(self.blurringContainer.bounds) + (CGRectGetHeight(self.profileImageView.bounds) * 0.5f);
+    return CGRectGetHeight(self.blurringContainer.bounds) + (CGRectGetHeight(self.profileButton.bounds) * 0.5f);
 }
 
 #pragma mark - IBActions
@@ -201,7 +201,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                  blurredContainerHeight = blurredContainerHeight + 44.0f;
                  break;
              case VActionItemTypeUser:
-                 [self.profileImageView setProfileImageURL:actionItem.avatarURL];
+                 self.profileButton.user = actionItem.user;
                  self.usernameLabel.text = actionItem.title;
                  self.userCaptionLabel.text = [actionItem.detailText uppercaseStringWithLocale:[NSLocale currentLocale]];
                  self.userItem = actionItem;
@@ -359,6 +359,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
      if (dependencyManager != nil)
      {
          [self.titleTextView setDependencyManager:dependencyManager];
+         self.profileButton.dependencyManager = dependencyManager;
      }
  }
 

@@ -14,8 +14,10 @@
 @interface VUser : NSManagedObject
 
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSNumber * isCreator;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSNumber * isFollowedByMainUser;
+@property (nonatomic, retain) NSNumber * level;
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfFollowers;

@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VBadgeImageType.h"
+
+@class VDependencyManager, VUser;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState;
 
 - (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color;
+
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong, nullable) VUser *user;
+
+@property (nonatomic, assign) VBadgeImageType badgeImageType;
 
 @end
 

@@ -62,9 +62,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             if let shelf = shelf as? UserShelf {
                 titleLabel.text = shelf.title
                 postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
-                if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
-                    userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
-                }
+                userAvatarButton.user = shelf.user
                 updateUsername()
             }
         }
