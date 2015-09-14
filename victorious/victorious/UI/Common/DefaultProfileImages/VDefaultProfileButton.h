@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface VDefaultProfileButton : UIButton
 
+
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState;
 
 - (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color;

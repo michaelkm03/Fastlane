@@ -16,9 +16,9 @@ private protocol BadgeImageSet {
     func image(#type: VLevelBadgeImageType) -> UIImage
 }
 
-class AvatarLevelBadgeView: UIView {
+class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
-    static let kLabelSideInset: CGFloat = 3
+    static let kLabelInsets: UIEdgeInsets = UIEdgeInsetsMake(0, 3, 1, 3);
     
     // MARK: Private structs
     
@@ -44,11 +44,10 @@ class AvatarLevelBadgeView: UIView {
         
         func font(#type: VLevelBadgeImageType) -> UIFont? {
             switch type {
-                // WARNING: Get these numbers from design
             case .Small:
                 return UIFont(name: "OpenSans-Bold", size: 10)
             case .Medium:
-                return UIFont(name: "OpenSans-Bold", size: 40)
+                return UIFont(name: "OpenSans-Bold", size: 37)
             case .Large:
                 return UIFont(name: "OpenSans-Bold", size: 60)
             }
@@ -95,7 +94,7 @@ class AvatarLevelBadgeView: UIView {
         var size = image(isCreator, withImageType: levelBadgeImageType).size
         if let text = text where !isCreator
         {
-            let textWidth = text.boundingRectWithSize(CGSizeMake(CGFloat.max, size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [ NSFontAttributeName : badgeLabel.font ], context: nil).width + ( AvatarLevelBadgeView.kLabelSideInset * 2 )
+            let textWidth = text.boundingRectWithSize(CGSizeMake(CGFloat.max, size.height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [ NSFontAttributeName : badgeLabel.font ], context: nil).width + ( AvatarLevelBadgeView.kLabelInsets.left + AvatarLevelBadgeView.kLabelInsets.right )
             size.width = max(size.width, textWidth)
         }
         
@@ -103,6 +102,14 @@ class AvatarLevelBadgeView: UIView {
     }
     
     // MARK: Exposed variables
+    
+    /// The dependency manager used to style this view. Setting will
+    /// update all other appearance properties.
+    var badgeDependencyManager: VDependencyManager? {
+        didSet {
+            updateAppearance()
+        }
+    }
     
     /// The level being represented by this badge view. Defaults to 0.
     var level: Int = 0 {
@@ -149,8 +156,13 @@ class AvatarLevelBadgeView: UIView {
     // MARK: Initialization
     
     /// Convenience initializer
-    func new() -> AvatarLevelBadgeView {
-        return AvatarLevelBadgeView(frame: CGRect.zeroRect)
+    required init(dependencyManager: VDependencyManager) {
+        let insets = AvatarLevelBadgeView.kLabelInsets
+        let minimumRect = CGRectMake(0, 0, insets.left + insets.right, insets.top + insets.bottom)
+        super.init(frame: minimumRect)
+        sharedSetup()
+        self.badgeDependencyManager = dependencyManager
+        updateAppearance()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -172,9 +184,17 @@ class AvatarLevelBadgeView: UIView {
         addSubview(backgroundImageView)
         v_addFitToParentConstraintsToSubview(backgroundImageView)
         addSubview(badgeLabel)
-        v_addFitToParentConstraintsToSubview(badgeLabel, leading: AvatarLevelBadgeView.kLabelSideInset, trailing: AvatarLevelBadgeView.kLabelSideInset, top: 0, bottom: 0)
+        let insets = AvatarLevelBadgeView.kLabelInsets
+        v_addFitToParentConstraintsToSubview(badgeLabel, leading: insets.left, trailing: insets.right, top: insets.top, bottom: insets.bottom)
         
         updateBadgeIcon()
+    }
+    
+    private func updateAppearance() {
+        if let badgeDependencyManager = badgeDependencyManager {
+            badgeTintColor = badgeDependencyManager.colorForKey(VDependencyManagerLinkColorKey)
+            textColor = badgeDependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+        }
     }
     
     private func badgeImageSet(forCreator: Bool) -> BadgeImageSet {

@@ -170,5 +170,7 @@
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
 	<string>VUsersAndTagsSearchViewController</string>
+	<key>avatarLevel.badgeView</key>
+	<string>victorious.AvatarLevelBadgeView</string>
 </dict>
 </plist>

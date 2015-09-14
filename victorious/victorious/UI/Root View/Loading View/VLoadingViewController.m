@@ -28,7 +28,6 @@
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
-#import "VDependencyManager+VAvatarBadgeAppearance.h"
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
@@ -201,69 +200,26 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         
 #warning TESTING CODE, REMEMBER TO REMOVE
         NSDictionary *avatarBadgeAppearanceDictionary = @{
-                                                          VDependencyManagerAvatarBadgeAppearanceMinLevelKey : @(5),
-                                                          VDependencyManagerAvatarBadgeAppearanceBackgroundColorKey : @{
+                                                          @"name": @"avatarLevel.badgeView",
+                                                          @"minLevel" : @(5),
+                                                          VDependencyManagerLinkColorKey : @{
                                                                   @"red" : @(255),
                                                                   @"green" : @(100),
                                                                   @"blue" : @(100),
                                                                   @"alpha" : @(255)
                                                                   },
-                                                          VDependencyManagerAvatarBadgeAppearanceTextColorKey : @{
+                                                          VDependencyManagerMainTextColorKey: @{
                                                                   @"red" : @(0),
                                                                   @"green" : @(100),
                                                                   @"blue" : @(100),
                                                                   @"alpha" : @(255)
                                                                   },
                                                           };
-        NSMutableArray *keyPaths = [[templateDecorator keyPathsForKey:@"contentView"] mutableCopy];
-        [keyPaths addObjectsFromArray:[templateDecorator keyPathsForKey:@"commentsScreen"]];
         
-        NSArray *inboxKeyPaths = [templateDecorator keyPathsForValue:@"inbox.screen"];
-        for ( NSString *inboxKeyPath in inboxKeyPaths )
-        {
-            [keyPaths addObject:[inboxKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *notificationsKeyPaths = [templateDecorator keyPathsForValue:@"notifications.screen"];
-        for ( NSString *notificationsKeyPath in notificationsKeyPaths )
-        {
-            [keyPaths addObject:[notificationsKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *followingStreamKeyPaths = [templateDecorator keyPathsForValue:@"followingStream.screen"];
-        for ( NSString *followingStreamKeyPath in followingStreamKeyPaths )
-        {
-            [keyPaths addObject:[followingStreamKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *streamsKeyPaths = [templateDecorator keyPathsForValue:@"stream.screen"];
-        for ( NSString *streamsKeyPath in streamsKeyPaths )
-        {
-            [keyPaths addObject:[streamsKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *profileKeyPaths = [templateDecorator keyPathsForValue:@"userProfile.screen"];
-        for ( NSString *profileKeyPath in profileKeyPaths )
-        {
-            [keyPaths addObject:[profileKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *currentProfileKeyPaths = [templateDecorator keyPathsForValue:@"currentUserProfile.screen"];
-        for ( NSString *currentProfileKeyPath in currentProfileKeyPaths )
-        {
-            [keyPaths addObject:[currentProfileKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        NSArray *discoverKeyPaths = [templateDecorator keyPathsForValue:@"discover.screen"];
-        for ( NSString *discoverKeyPath in discoverKeyPaths )
-        {
-            [keyPaths addObject:[discoverKeyPath stringByDeletingLastPathComponent]];
-        }
-        
-        for ( NSString *keyPath in keyPaths )
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"scaffold"] )
         {
             NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-            [updatedPayload addEntriesFromDictionary:@{ @"avatarBadgeAppearance" : avatarBadgeAppearanceDictionary }];
+            [updatedPayload addEntriesFromDictionary:@{ @"avatarBadgeLevelView" : avatarBadgeAppearanceDictionary }];
             [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
         }
         

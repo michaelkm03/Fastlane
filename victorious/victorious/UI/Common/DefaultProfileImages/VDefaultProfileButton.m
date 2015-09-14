@@ -12,7 +12,6 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
-#import "VDependencyManager+VAvatarBadgeAppearance.h"
 #import "victorious-Swift.h"
 
 @interface VDefaultProfileButton ()
@@ -55,9 +54,6 @@
     self.borderWidth = 0.0f;
     self.imageEdgeInsets = UIEdgeInsetsZero;
     self.imageView.contentMode = UIViewContentModeScaleToFill;
-    
-    self.levelBadgeView = [AvatarLevelBadgeView new];
-    [self addSubview:self.levelBadgeView];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -107,13 +103,11 @@
 
 - (void)updateBadgeViewContent
 {
-    if ( self.dependencyManager != nil )
+    if ( self.levelBadgeView != nil && self.user != nil )
     {
         NSNumber *userLevel = self.user.level;
-        NSNumber *minimumLevel = [self.dependencyManager numberForKey:VDependencyManagerAvatarBadgeAppearanceMinLevelKey];
+        NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:@"minLevel"];
         self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
-        self.levelBadgeView.badgeTintColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceBackgroundColorKey];
-        self.levelBadgeView.textColor = [self.dependencyManager colorForKey:VDependencyManagerAvatarBadgeAppearanceTextColorKey];
         self.levelBadgeView.level = self.user.level.integerValue;
         self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
         self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
@@ -123,7 +117,7 @@
 
 - (void)updateBadgeViewFrame
 {
-    if ( self.dependencyManager != nil )
+    if ( self.levelBadgeView != nil && self.user != nil )
     {
         CGRect currentBounds = self.bounds;
         CGFloat radius = CGRectGetWidth(currentBounds) / 2;
@@ -145,8 +139,11 @@
 
 - (void)setDependencyManager:(VDependencyManager *__nullable)dependencyManager
 {
-    _dependencyManager = dependencyManager.avatarBadgeAppearanceDependencyManager;
-    [self updateBadgeViewContent];
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        [self updateBadgeViewContent];
+    }
 }
 
 - (void)setUser:(VUser *__nullable)user
@@ -154,6 +151,18 @@
     _user = user;
     [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
     [self updateBadgeViewContent];
+}
+
+- (AvatarLevelBadgeView *)levelBadgeView
+{
+    if ( self.dependencyManager == nil || _levelBadgeView != nil )
+    {
+        return _levelBadgeView;
+    }
+    
+    _levelBadgeView = [self.dependencyManager templateValueOfType:[AvatarLevelBadgeView class] forKey:@"avatarBadgeLevelView"];
+    [self addSubview:_levelBadgeView];
+    return _levelBadgeView;
 }
 
 - (UIImage *)placeholderImage
