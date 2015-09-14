@@ -1062,16 +1062,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
          
          [inputAccessoryView clearTextAndResign];
          strongSelf.publishParameters.mediaToUploadURL = nil;
-         
-#warning What to do about auto play in content view?
-         /*NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
-         if (experimentValue != nil)
-         {
-             if ([experimentValue boolValue])
-             {
-                 [strongSelf.videoCell play];
-             }
-         }*/
      }];
 }
 

@@ -267,9 +267,16 @@ static NSCache *_sharedImageCache = nil;
 
 #pragma mark - Focus
 
+@dynamic focusType;
+
 - (void)setFocusType:(VFocusType)focusType
 {
     self.commentAndMediaView.focusType = focusType;
+}
+
+- (VFocusType)focusType
+{
+    return self.commentAndMediaView.focusType;
 }
 
 - (CGRect)contentArea

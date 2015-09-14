@@ -73,8 +73,11 @@
 
 #pragma mark - VFocusable
 
+@synthesize focusType = _focusType;
+
 - (void)setFocusType:(VFocusType)focusType
 {
+    _focusType = focusType;
     if ( focusType != VFocusTypeNone )
     {
         [self.marquee enableTimer];

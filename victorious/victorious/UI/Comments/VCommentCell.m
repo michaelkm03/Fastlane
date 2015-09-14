@@ -70,6 +70,11 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
     self.textAndMediaView.focusType = focusType;
 }
 
+- (VFocusType)focusType
+{
+    return self.textAndMediaView.focusType;
+}
+
 - (CGRect)contentArea
 {
     CGRect mediaThumbnailFrame = self.textAndMediaView.mediaAttachmentView.frame;

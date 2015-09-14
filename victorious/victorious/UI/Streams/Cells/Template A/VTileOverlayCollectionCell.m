@@ -515,12 +515,24 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 #pragma mark - VFocusable
 
+@synthesize focusType = _focusType;
+
 - (void)setFocusType:(VFocusType)focusType
 {
+    _focusType = focusType;
     if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
         [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
+}
+
+- (VFocusType)focusType
+{
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
+    {
+        return [(id <VFocusable>)self.previewView focusType];
+    }
+    return _focusType;
 }
 
 - (CGRect)contentArea

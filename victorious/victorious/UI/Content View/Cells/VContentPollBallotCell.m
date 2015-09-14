@@ -137,9 +137,8 @@ static NSMutableDictionary *sizingCache;
 
 - (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
 {
-#warning uncomment when done testing
-    //self.answerAButton.enabled = NO;
-    //self.answerBButton.enabled = NO;
+    self.answerAButton.enabled = NO;
+    self.answerBButton.enabled = NO;
     
     UIColor *selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     UIColor *unselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];

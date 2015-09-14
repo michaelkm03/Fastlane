@@ -488,11 +488,14 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 #pragma mark - VFocusable
 
+@synthesize focusType = _focusType;
+
 - (void)setFocusType:(VFocusType)focusType
 {
+    _focusType = focusType;
     if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id<VFocusable>)self.previewView setFocusType:focusType];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 

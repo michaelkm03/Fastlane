@@ -190,6 +190,11 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     self.messageTextAndMediaView.focusType = focusType;
 }
 
+- (VFocusType)focusType
+{
+    return self.messageTextAndMediaView.focusType;
+}
+
 - (CGRect)contentArea
 {
     CGRect mediaThumbnailFrame = self.messageTextAndMediaView.mediaAttachmentView.frame;
