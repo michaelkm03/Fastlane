@@ -14,6 +14,8 @@ enum InterstitialType : String {
     case LevelUp = ""
 }
 
+/// An Interstial object represents a screen that can be displayed over the app
+/// at any time during the app's flow.
 class Interstitial: InterstitialConfiguration, Hashable {
     
     let remoteID: String
@@ -24,6 +26,9 @@ class Interstitial: InterstitialConfiguration, Hashable {
         remoteID = id
     }
     
+    /// Returns a properly configured Interstitial subclass
+    ///
+    /// :param: info A dictionary representing the interstitial
     class func configuredInterstitial(info: [String : AnyObject]) -> Interstitial? {
         var interstitial: Interstitial?
         if let type = info["type"] as? String, id = info["id"] as? String {

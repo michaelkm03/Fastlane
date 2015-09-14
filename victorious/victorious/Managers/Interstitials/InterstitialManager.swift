@@ -10,7 +10,7 @@ import Foundation
 
 /// A singleton object for managing interstitial objects and presenting their
 /// associated view controllers
-class InterstitialManager: NSObject, InterstitialViewControllerControl {
+class InterstitialManager: NSObject, InterstitialViewControllerDelegate {
     
     /// Returns the interstitial manager singelton
     static let sharedInstance = InterstitialManager()
@@ -20,7 +20,7 @@ class InterstitialManager: NSObject, InterstitialViewControllerControl {
     var dependencyManager: VDependencyManager?
     
     /// Whether or not the interstitial window is currently on screen
-    var isShowingInterstital = false
+    private(set) var isShowingInterstital = false
     
     /// Whether or not the interstitial manager should register new interstitials
     var shouldRegisterInterstitials = true

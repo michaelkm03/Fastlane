@@ -68,7 +68,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     // MARK: Interstitial View Controller
     
-    weak var interstitialDelegate: InterstitialViewControllerControl?
+    weak var interstitialDelegate: InterstitialViewControllerDelegate?
     
     func presentationDuration() -> Double {
         return Constants.presentationDuration
@@ -86,11 +86,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 icons = levelUpInterstitial.icons
                 
                 // WARNING: Testing
-                dispatch_after(Constants.presentationDuration, { () -> () in
+                dispatch_after(Constants.presentationDuration) {
                     if let path = NSBundle.mainBundle().pathForResource("confetti", ofType: "m4v"), url = NSURL.fileURLWithPath(path) {
                         self.videoBackground.setItemURL(url, loop: true, audioMuted: true)
                     }
-                })
+                }
                 
 //                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
 //                    videoBackground.setItemURL(url, loop: true, audioMuted: true)

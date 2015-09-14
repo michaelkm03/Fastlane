@@ -1,5 +1,5 @@
 //
-//  JSONSerializer.swift
+//  VictoriousAPISerializer.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/8/15.
@@ -10,7 +10,7 @@ import Foundation
 
 /// A RKSerialization subclass that handles registering
 /// any interstitials that it finds in the response
-class JSONSerializer: NSObject, RKSerialization {
+class VictoriousAPISerializer: NSObject, RKSerialization {
     
     static func objectFromData(data: NSData!, error: NSErrorPointer) -> AnyObject! {
         
@@ -19,11 +19,11 @@ class JSONSerializer: NSObject, RKSerialization {
         // Check if we have any interstitials to register
         if let responseObject = responseObject as? [String : AnyObject],
             interstitials = responseObject["alerts"] as? [[String : AnyObject]] {
-                let parsedInterstitials = JSONSerializer.parseInterstitials(interstitials)
+                let parsedInterstitials = VictoriousAPISerializer.parseInterstitials(interstitials)
                 if parsedInterstitials.count > 0 {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
                         InterstitialManager.sharedInstance.registerInterstitials(parsedInterstitials)
-                    })
+                    }
                 }
         }
         

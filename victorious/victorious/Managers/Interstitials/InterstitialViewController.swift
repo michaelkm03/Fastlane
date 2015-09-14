@@ -12,13 +12,13 @@ import Foundation
 protocol InterstitialViewController: class {
     
     /// A delegate to be informed of interstitial events
-    weak var interstitialDelegate: InterstitialViewControllerControl? { get set }
+    weak var interstitialDelegate: InterstitialViewControllerDelegate? { get set }
     
     /// The time interval with which the manager will cross dissolve this view controller into the window
     func presentationDuration() -> Double
 }
 
-protocol InterstitialViewControllerControl: class {
+protocol InterstitialViewControllerDelegate: class {
     
     /// Informs the delegate that the user wants to dismiss the interstitial
     func dismissInterstitial()

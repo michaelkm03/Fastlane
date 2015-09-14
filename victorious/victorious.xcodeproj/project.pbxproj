@@ -896,9 +896,8 @@
 		C3623E5F1B9A7874002B121D /* LevelPolygonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */; };
 		C3623E611B9A78B4002B121D /* LevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* LevelBadgeView.swift */; };
 		C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */; };
-		C3623E651B9F63BD002B121D /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E641B9F63BD002B121D /* JSONSerializer.swift */; };
+		C3623E651B9F63BD002B121D /* VictoriousAPISerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E641B9F63BD002B121D /* VictoriousAPISerializer.swift */; };
 		C3623E6D1B9F80FA002B121D /* VObjectManager+AlertTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */; };
-		C3623E731BA0EA02002B121D /* UIStoryboard+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E721BA0EA02002B121D /* UIStoryboard+Extensions.swift */; };
 		C3623E761BA10381002B121D /* VObjectManager+Interstitials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */; };
 		C3623E781BA1ED83002B121D /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = C3623E771BA1ED83002B121D /* test.json */; };
 		C3623F201BA36F9D002B121D /* confetti.m4v in Resources */ = {isa = PBXBuildFile; fileRef = C3623F1F1BA36E5D002B121D /* confetti.m4v */; };
@@ -2918,10 +2917,9 @@
 		C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelPolygonView.swift; sourceTree = "<group>"; };
 		C3623E601B9A78B4002B121D /* LevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBadgeView.swift; sourceTree = "<group>"; };
 		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LevelUpViewController.storyboard; sourceTree = "<group>"; };
-		C3623E641B9F63BD002B121D /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
+		C3623E641B9F63BD002B121D /* VictoriousAPISerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousAPISerializer.swift; sourceTree = "<group>"; };
 		C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+AlertTesting.h"; sourceTree = "<group>"; };
 		C3623E6C1B9F80FA002B121D /* VObjectManager+AlertTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+AlertTesting.m"; sourceTree = "<group>"; };
-		C3623E721BA0EA02002B121D /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
 		C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Interstitials.swift"; sourceTree = "<group>"; };
 		C3623E771BA1ED83002B121D /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		C3623F1F1BA36E5D002B121D /* confetti.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = confetti.m4v; sourceTree = "<group>"; };
@@ -3784,7 +3782,7 @@
 		0314D09119B4698800FA363C /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				C3623E641B9F63BD002B121D /* JSONSerializer.swift */,
+				C3623E641B9F63BD002B121D /* VictoriousAPISerializer.swift */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				C3623E6B1B9F80FA002B121D /* VObjectManager+AlertTesting.h */,
@@ -5518,7 +5516,6 @@
 				A721E8F11B572454000B7901 /* UIScrollView+VCenterContent.h */,
 				A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */,
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
-				C3623E721BA0EA02002B121D /* UIStoryboard+Extensions.swift */,
 				A721E8F31B572454000B7901 /* UIStoryboard+VMainStoryboard.h */,
 				A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */,
 				A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */,
@@ -8945,7 +8942,7 @@
 				C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
-				C3623E651B9F63BD002B121D /* JSONSerializer.swift in Sources */,
+				C3623E651B9F63BD002B121D /* VictoriousAPISerializer.swift in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
@@ -8972,7 +8969,6 @@
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
 				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
 				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
-				C3623E731BA0EA02002B121D /* UIStoryboard+Extensions.swift in Sources */,
 				7942464C1B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
