@@ -97,11 +97,13 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                badgeView.dependencyManager = dependencyManager
                 titleLabel.font = dependencyManager.titleFont
                 titleLabel.textColor = dependencyManager.textColor
                 descriptionLabel.font = dependencyManager.descriptionFont
                 descriptionLabel.textColor = dependencyManager.textColor
+                badgeView.levelStringLabel.textColor = dependencyManager.badgeTextColor
+                badgeView.levelNumberLabel.textColor = dependencyManager.badgeTextColor
+                badgeView.color = dependencyManager.badgeColor
             }
         }
     }
@@ -132,6 +134,9 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
+        
+        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -287,5 +292,13 @@ private extension VDependencyManager {
     
     var textColor: UIColor {
         return self.colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    var badgeColor: UIColor {
+        return self.colorForKey(VDependencyManagerAccentColorKey)
+    }
+    
+    var badgeTextColor: UIColor {
+        return self.colorForKey(VDependencyManagerSecondaryTextColorKey)
     }
 }

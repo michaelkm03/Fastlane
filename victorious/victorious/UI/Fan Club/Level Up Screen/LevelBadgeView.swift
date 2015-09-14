@@ -14,9 +14,10 @@ class LevelBadgeView: UIView {
     
     private let polygon = LevelPolygonView()
     private let container = UIView()
-    private let levelStringLabel = UILabel()
-    private let levelNumberLabel = UILabel()
     private var numberHeightConstraint: NSLayoutConstraint!
+    
+    let levelStringLabel = UILabel()
+    let levelNumberLabel = UILabel()
     
     /// "Level" label
     var title: String? {
@@ -42,18 +43,6 @@ class LevelBadgeView: UIView {
             if let color = color {
                 polygon.fillColor = color
                 polygon.setNeedsDisplay()
-            }
-        }
-    }
-    
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            if let dependencyManager = dependencyManager {
-                color = dependencyManager.badgeColor
-                levelStringLabel.font = dependencyManager.levelLabelFont
-                levelNumberLabel.font = dependencyManager.numberLabelFont
-                levelStringLabel.textColor = dependencyManager.textColor
-                levelNumberLabel.textColor = dependencyManager.textColor
             }
         }
     }
@@ -112,26 +101,8 @@ class LevelBadgeView: UIView {
         
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: nil, metrics: nil, views: ["label" : levelStringLabel]))
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: nil, metrics: nil, views: ["label" : levelNumberLabel]))
-        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-5-[numLabel]|", options: nil, metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
+        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-2-[numLabel]|", options: nil, metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
         numberHeightConstraint = NSLayoutConstraint(item: levelNumberLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 70)
         levelNumberLabel.addConstraint(numberHeightConstraint)
-    }
-}
-
-private extension VDependencyManager {
-    var badgeColor: UIColor {
-        return self.colorForKey(VDependencyManagerAccentColorKey)
-    }
-    
-    var levelLabelFont: UIFont {
-        return self.fontForKey(VDependencyManagerHeading2FontKey)
-    }
-    
-    var numberLabelFont: UIFont {
-        return self.fontForKey(VDependencyManagerHeading1FontKey)
-    }
-    
-    var textColor: UIColor {
-        return self.colorForKey(VDependencyManagerSecondaryTextColorKey)
     }
 }
