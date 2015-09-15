@@ -47,7 +47,8 @@
             "font.heading2": {
                 "fontName": "OpenSans-Bold",
                 "fontSize": 15
-            }
+            },
+            "button.title": "Dismiss"
 		},
 		"permissionsAlert": {
 			"background": {

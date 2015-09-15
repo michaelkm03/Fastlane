@@ -28,6 +28,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 dismissButton.backgroundColor = dependencyManager.dismissButtonColor
                 dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor, forState: .Normal)
                 dismissButton.titleLabel?.font = dependencyManager.dismissButtonTitleFont
+                dismissButton.setTitle(dependencyManager.dismissButtonTitle, forState: .Normal)
             }
         }
     }
@@ -314,5 +315,9 @@ private extension VDependencyManager {
     
     var badgeTextColor: UIColor {
         return self.colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var dismissButtonTitle: String {
+        return self.stringForKey("button.title")
     }
 }
