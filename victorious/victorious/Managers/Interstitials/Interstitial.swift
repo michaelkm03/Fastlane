@@ -30,7 +30,7 @@ class Interstitial: InterstitialConfiguration, Hashable {
     /// :param: info A dictionary representing the interstitial
     class func configuredInterstitial(info: [String : AnyObject]) -> Interstitial? {
         var interstitial: Interstitial?
-        if let type = info["type"] as? String, idString = info["id"] as? String, id = idString.toInt() {
+        if let type = info["type"] as? String, idString = info["id"] as? String, id = Int(idString) {
             if type == InterstitialType.LevelUp.rawValue {
                 interstitial = LevelUpInterstitial(id: id)
             }

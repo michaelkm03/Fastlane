@@ -12,9 +12,9 @@ import Foundation
 /// any interstitials that it finds in the response
 class VictoriousAPISerializer: NSObject, RKSerialization {
     
-    static func objectFromData(data: NSData!, error: NSErrorPointer) -> AnyObject! {
+    static func objectFromData(data: NSData!) throws -> AnyObject {
         
-        let responseObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: error)
+        let responseObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
         
         // Check if we have any interstitials to register
         if let responseObject = responseObject as? [String : AnyObject],
@@ -30,8 +30,8 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
         return responseObject
     }
     
-    static func dataFromObject(object: AnyObject!, error: NSErrorPointer) -> NSData! {
-        return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: error)
+    static func dataFromObject(object: AnyObject!) throws -> NSData {
+        return try NSJSONSerialization.dataWithJSONObject(object, options: [])
     }
     
     // Class function for parsing interstitials

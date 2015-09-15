@@ -238,7 +238,7 @@ extension LevelUpViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as? LevelUpIconCollectionViewCell {
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as? LevelUpIconCollectionViewCell {
             if let urlString =  icons?[indexPath.row] {
                 cell.iconURL = NSURL(string: urlString)
             }
@@ -255,32 +255,32 @@ extension LevelUpViewController {
         
         view.v_addFitToParentConstraintsToSubview(videoBackground)
         
-        badgeView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(badgeView)
-        titleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(titleLabel)
-        descriptionLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(descriptionLabel)
-        iconCollectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        iconCollectionView.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(iconCollectionView)
         
         let verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
         let views = ["badgeView" : badgeView, "titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: nil, metrics: ["bHeight" : Constants.badgeHeight], views: views)
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: [], metrics: ["bHeight" : Constants.badgeHeight], views: views)
         contentContainer.addConstraints(verticalConstraints)
         
         iconCollectionView.addConstraint(collectionViewHeightConstraint)
         
         contentContainer.addConstraint(NSLayoutConstraint(item: contentContainer, attribute: .CenterX, relatedBy: .Equal, toItem: badgeView, attribute: .CenterX, multiplier: 1, constant: 0))
-        badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: nil, metrics: ["bWidth" : Constants.badgeWidth], views: views))
-        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[titleLabel]|", options: nil, metrics: nil, views: views))
-        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[descriptionLabel]|", options: nil, metrics: nil, views: views))
-        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[iconCollectionView]|", options: nil, metrics: nil, views: views))
+        badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: [], metrics: ["bWidth" : Constants.badgeWidth], views: views))
+        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[titleLabel]|", options: [], metrics: nil, views: views))
+        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[descriptionLabel]|", options: [], metrics: nil, views: views))
+        contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[iconCollectionView]|", options: [], metrics: nil, views: views))
         
-        contentContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
+        contentContainer.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(contentContainer)
         self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .CenterY, relatedBy: .Equal, toItem: contentContainer, attribute: .CenterY, multiplier: 1, constant: 0))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-distance-[contentContainer]-distance-|", options: nil, metrics: ["distance" : Constants.distanceToContainerFromSide], views: ["contentContainer" : contentContainer]))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-distance-[contentContainer]-distance-|", options: [], metrics: ["distance" : Constants.distanceToContainerFromSide], views: ["contentContainer" : contentContainer]))
     }
 }
 

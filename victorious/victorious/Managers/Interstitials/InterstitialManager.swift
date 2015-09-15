@@ -48,15 +48,13 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             return
         }
         
-        for interstitial in interstitials {
-            if !contains(registeredInterstitials, interstitial) && !contains(shownInterstitials, interstitial)  {
-                // Set the dependency manager
-                if let dependencyManager = dependencyManager {
-                    interstitial.dependencyManager = dependencyManager
-                    registeredInterstitials.append(interstitial)
-                    if let interstitialListener = interstitialListener {
-                        interstitialListener.newInterstitialHasBeenRegistered()
-                    }
+        for interstitial in interstitials where !registeredInterstitials.contains(interstitial) && !shownInterstitials.contains(interstitial) {
+            // Set the dependency manager
+            if let dependencyManager = dependencyManager {
+                interstitial.dependencyManager = dependencyManager
+                registeredInterstitials.append(interstitial)
+                if let interstitialListener = interstitialListener {
+                    interstitialListener.newInterstitialHasBeenRegistered()
                 }
             }
         }
