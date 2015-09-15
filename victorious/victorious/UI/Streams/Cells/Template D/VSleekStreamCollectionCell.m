@@ -605,6 +605,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return self.previewView;
 }
 
+- (UIView *)getContainerView
+{
+    return self.previewView;
+}
+
 - (void)restorePreviewView:(VStreamItemPreviewView *)previewView
 {
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];

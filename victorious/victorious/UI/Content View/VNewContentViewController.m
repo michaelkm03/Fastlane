@@ -76,7 +76,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -493,6 +493,15 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView resignFirstResponder];
     
     [self.commentHighlighter stopAnimations];
+    
+    if ( self.isBeingDismissed )
+    {
+        [UIView animateWithDuration:0.4f animations:^
+         {
+             self.moreButton.alpha = 0.0f;
+             self.closeButton.alpha = 0.0f;
+         }];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1568,16 +1577,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)previewView:(VSequencePreviewView *)previewView wantsOverlayElementsHidden:(BOOL)hidden
-{
-    [UIView animateWithDuration:0.4f animations:^
-     {
-         const BOOL alpha = hidden ? 0.0f : 1.0f;
-         self.moreButton.alpha = alpha;
-         self.closeButton.alpha = alpha;
-     }];
-}
-
 #pragma mark - VContentPollBallotCellDelegate
 
 - (void)answerASelected
@@ -1606,6 +1605,20 @@ referenceSizeForHeaderInSection:(NSInteger)section
               }];
          }
      }];
+}
+
+#pragma mark - VVideoSequenceDelegate
+
+- (void)animateAlongsideVideoToolbarWillAppear
+{
+    self.closeButton.alpha = 1.0f;
+    self.moreButton.alpha = 1.0f;
+}
+
+- (void)animateAlongsideVideoToolbarWillDisappear
+{
+    self.closeButton.alpha = 0.0f;
+    self.moreButton.alpha = 0.0f;
 }
 
 @end

@@ -41,15 +41,18 @@
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidBecomeReady:videoPlayer];
-    
-    [self focusDidUpdate];
 }
 
 #pragma mark - Focus
 
-- (void)focusDidUpdate
+- (void)setFocusType:(VFocusType)focusType
 {
-    [super focusDidUpdate];
+    if ( super.focusType == focusType)
+    {
+        return;
+    }
+    
+    super.focusType = focusType;
     
     if ( self.focusType != VFocusTypeNone )
     {

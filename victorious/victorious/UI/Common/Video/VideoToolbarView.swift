@@ -8,8 +8,11 @@
 
 import UIKit
 
-/// Defines an objec that can respond to UI events that occur in a `VVideoToolbarView`
+/// Defines an objec that can respond to UI and playback events that occur in a `VVideoToolbarView`
 @objc protocol VideoToolbarDelegate {
+    
+    optional func animateAlongsideVideoToolbarWillAppear( videoToolbar: VideoToolbarView )
+    optional func animateAlongsideVideoToolbarWillDisappear( videoToolbar: VideoToolbarView )
     
     func videoToolbar( videoToolbar: VideoToolbarView, didScrubToLocation location: Float )
     func videoToolbar( videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float )
@@ -107,7 +110,7 @@ class VideoToolbarView: UIView {
     
     // MARK: - Visibility
     
-    func hide( animated:Bool = true, withAlongsideAnimations alongsideAnimations: (()->())? = nil ) {
+    func hide( animated:Bool = true ) {
         if !self.visible {
             return
         }
@@ -118,7 +121,7 @@ class VideoToolbarView: UIView {
             self.containerBottomConstraint.constant = -self.frame.height
             self.layoutIfNeeded()
             
-            alongsideAnimations?()
+            self.delegate?.animateAlongsideVideoToolbarWillDisappear?(self)
         }
         let comletion: Bool->() = { finished in
             self.autoVisbilityTimer.invalidate()
@@ -137,7 +140,7 @@ class VideoToolbarView: UIView {
         }
     }
     
-    func show( animated:Bool = true, withAlongsideAnimations alongsideAnimations: (()->())? = nil ) {
+    func show( animated:Bool = true ) {
         if self.visible {
             return
         }
@@ -148,7 +151,7 @@ class VideoToolbarView: UIView {
             self.containerBottomConstraint.constant = 0.0
             self.layoutIfNeeded()
             
-            alongsideAnimations?()
+            self.delegate?.animateAlongsideVideoToolbarWillAppear?(self)
         }
         let comletion: Bool->() = { finished in
             if self.autoVisbilityTimerEnabled {

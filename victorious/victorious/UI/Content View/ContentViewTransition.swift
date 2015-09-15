@@ -13,7 +13,6 @@ import UIKit
 class ContentViewTransition : NSObject, VAnimatedTransition {
     
     private let handoffController = ContentViewHandoffController()
-    private var focusTypeBeforeTransition: VFocusType?
     
     func canPerformCustomTransitionFrom(fromViewController: UIViewController?, to toViewController: UIViewController) -> Bool {
         for vc in [ fromViewController, Optional(toViewController) ] {
@@ -28,24 +27,23 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         if let navController = model.toViewController as? VNavigationController,
             let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
-            let previewView = contentViewController.viewModel.context.contentPreviewProvider?.getPreviewView() {
+            let contentPreviewProvider = contentViewController.viewModel.context.contentPreviewProvider {
                 
-                self.handoffController.addPreviewView( previewView,
+                self.handoffController.addPreviewView( contentPreviewProvider,
                     toContentViewController: contentViewController,
                     originSnapshotImage: snapshotImage )
-                
-                if let focusableView = previewView as? VFocusable {
-                    focusTypeBeforeTransition = focusableView.focusType
-                    focusableView.focusType = VFocusType.Detail
-                }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
-        self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
+        for layout in self.handoffController.sliceLayouts {
+            layout.parent.layoutIfNeeded()
+        }
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
-        self.handoffController.bottomSliceLayout?.parent.layoutIfNeeded()
+        for layout in self.handoffController.sliceLayouts {
+            layout.parent.layoutIfNeeded()
+        }
         
         for view in self.handoffController.transitionSliceViews {
             view.hidden = false
@@ -55,8 +53,8 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     func performTransitionIn(model: VTransitionModel, completion: ((Bool) -> Void)?) {
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
-            usingSpringWithDamping: 1.0,
-            initialSpringVelocity: 0.5,
+            usingSpringWithDamping: 0.9,
+            initialSpringVelocity: 0.0,
             options: nil,
             animations: {
                 if let previewLayout = self.handoffController.previewLayout {
@@ -66,9 +64,9 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     previewLayout.center.apply()
                     previewLayout.parent.layoutIfNeeded()
                 }
-                if let bottomSliceLayout = self.handoffController.bottomSliceLayout {
-                    bottomSliceLayout.bottom.apply()
-                    bottomSliceLayout.parent.layoutIfNeeded()
+                for layout in self.handoffController.sliceLayouts {
+                    layout.constraint.apply()
+                    layout.parent.layoutIfNeeded()
                 }
             },
             completion: { finished in
@@ -84,8 +82,8 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
-            usingSpringWithDamping: 1.0,
-            initialSpringVelocity: 0.5,
+            usingSpringWithDamping: 0.9,
+            initialSpringVelocity: 0.2,
             options: nil,
             animations: {
                 if let layout = self.handoffController.previewLayout {
@@ -96,9 +94,8 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     layout.parent.layoutIfNeeded()
                 }
                 
-                if let bottomSliceLayout = self.handoffController.bottomSliceLayout {
-                    bottomSliceLayout.bottom.restore()
-                    bottomSliceLayout.parent.layoutIfNeeded()
+                for layout in self.handoffController.sliceLayouts {
+                    layout.constraint.restore()
                 }
             },
             completion: { finished in

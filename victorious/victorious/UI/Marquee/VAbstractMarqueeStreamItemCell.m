@@ -156,6 +156,11 @@
     return self.previewView;
 }
 
+- (UIView *)getContainerView
+{
+    return self.contentView;
+}
+
 - (void)restorePreviewView:(UIView *)previewView
 {
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];

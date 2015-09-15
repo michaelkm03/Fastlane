@@ -148,9 +148,14 @@
 
 #pragma mark - Focus
 
-- (void)focusDidUpdate
+- (void)setFocusType:(VFocusType)focusType
 {
-    [super focusDidUpdate];
+    if ( super.focusType == focusType)
+    {
+        return;
+    }
+    
+    super.focusType = focusType;
     
     switch (self.focusType)
     {

@@ -43,11 +43,6 @@
 @property (nonatomic, weak) id<VVideoPlayerDelegate> videoPlayerDelegate;
 
 /**
- * Indicated whether or not this preview view is currently in focus.
- */
-@property (nonatomic, assign) VFocusType focusType;
-
-/**
  *  If YES, this preview view will only display the preview image for this content.
  */
 @property (nonatomic, assign) BOOL onlyShowPreview;

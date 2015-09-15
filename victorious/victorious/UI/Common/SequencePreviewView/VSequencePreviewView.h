@@ -19,8 +19,6 @@
 - (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence
  completion:(void(^)(BOOL))completion;
 
-- (void)previewView:(VSequencePreviewView *)previewView wantsOverlayElementsHidden:(BOOL)hidden;
-
 @end
 
 /**
@@ -59,7 +57,4 @@
 - (BOOL)canHandleSequence:(VSequence *)sequence;
 
 - (void)setGesturesEnabled:(BOOL)enabled;
-
-- (void)focusDidUpdate;
-
 @end

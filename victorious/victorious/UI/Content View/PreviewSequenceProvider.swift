@@ -14,4 +14,5 @@ import Foundation
 @objc protocol VContentPreviewViewProvider {
     func getPreviewView() -> UIView
     func restorePreviewView( previewView: UIView )
+    func getContainerView() -> UIView
 }

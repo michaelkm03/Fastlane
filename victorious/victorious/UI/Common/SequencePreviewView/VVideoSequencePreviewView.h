@@ -10,8 +10,14 @@
 
 @protocol VVideoSequenceDelegate
 
+- (void)animateAlongsideVideoToolbarWillAppear;
+
+- (void)animateAlongsideVideoToolbarWillDisappear;
+
 @end
 
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
+
+@property (nonatomic, weak, nullable) id<VVideoSequenceDelegate> delegate;
 
 @end

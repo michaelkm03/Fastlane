@@ -36,6 +36,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
+@property (nonatomic, strong) UICollectionViewCell *selectedCell;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
 
@@ -188,9 +189,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
     {
-        if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
+        if ( self.selectedCell == nil || cell != self.selectedCell )
         {
-            [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:VFocusTypeNone];
+            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
+            {
+                [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:VFocusTypeNone];
+            }
         }
     }
 }
@@ -297,6 +301,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
+    
     [self.selectionDelegate marqueeController:self
                                 didSelectItem:self.marqueeItems[indexPath.row]
                              withPreviewImage:nil
