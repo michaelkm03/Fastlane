@@ -506,7 +506,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    
+    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
+    // its catchPoint and lockPoint.
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     [layout calculateCatchAndLockPoints];
     
