@@ -51,4 +51,15 @@
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
 
+#warning TESTING CODE, REMEMBER TO REMOVE
+- (NSNumber *)level
+{
+    return @(arc4random() % 100);
+}
+
+- (NSNumber *)isCreator
+{
+    return @(arc4random() % 2 == 0);
+}
+
 @end

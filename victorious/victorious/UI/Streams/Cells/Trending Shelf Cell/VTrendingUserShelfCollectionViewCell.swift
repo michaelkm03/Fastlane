@@ -82,6 +82,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 
                 let accentColor = dependencyManager.accentColor
                 separatorView.backgroundColor = accentColor
+                userAvatarButton.dependencyManager = dependencyManager
                 userAvatarButton.tintColor = accentColor
                 userAvatarButton.addBorderWithWidth(2, andColor: accentColor)
                 

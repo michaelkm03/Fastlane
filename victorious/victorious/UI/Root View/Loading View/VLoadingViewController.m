@@ -200,7 +200,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         
 #warning TESTING CODE, REMEMBER TO REMOVE
         NSDictionary *avatarBadgeAppearanceDictionary = @{
-                                                          @"name": @"avatarLevel.badgeView",
+                                                          @"name": @"standard.badgeView",
                                                           @"minLevel" : @(5),
                                                           VDependencyManagerLinkColorKey : @{
                                                                   @"red" : @(255),
