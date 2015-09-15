@@ -132,7 +132,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 - (void)setSequencePermissions:(nonnull VSequencePermissions *)sequencePermissions
 {
     _sequencePermissions = sequencePermissions;
-    self.gifButton.hidden = !self.sequencePermissions.canAddGifComments;
+    self.gifButton.hidden = !sequencePermissions.canAddGifComments;
 }
 
 - (void)addTextViewToContainer
