@@ -22,11 +22,10 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
         let containerView = transitionContext.containerView()
         
-        if let toViewController = toViewController, fromViewController = fromViewController {
+        if let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
+            let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
             
             toViewController.view.frame = containerView.bounds
             fromViewController.view.frame = containerView.bounds
@@ -35,9 +34,9 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 
                 containerView.addSubview(fromViewController.view)
                 
-                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration, animations: { () -> Void in
+                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration, animations: {
                     fromViewController.view.alpha = 0
-                    }, completion: { (completed) -> Void in
+                    }, completion: { (completed) in
                         transitionContext.completeTransition(true)
                 })
             }
@@ -45,9 +44,9 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 toViewController.view.alpha = 0
                 containerView.addSubview(toViewController.view)
                 
-                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration, animations: { () -> Void in
+                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration, animations: {
                     toViewController.view.alpha = 1
-                    }, completion: { (completed) -> Void in
+                    }, completion: { (completed) in
                         transitionContext.completeTransition(true)
                 })
             }
