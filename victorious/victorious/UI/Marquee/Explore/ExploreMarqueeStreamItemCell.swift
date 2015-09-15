@@ -12,7 +12,7 @@ import UIKit
 class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        let side = bounds.width / ExploreMarqueeController.marqueeShelfAspectRatio
+        let side = floor( bounds.width / ExploreMarqueeController.marqueeShelfAspectRatio )
         return CGSizeMake( side, side )
     }
     

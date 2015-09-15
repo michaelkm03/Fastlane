@@ -36,13 +36,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
                 url = NSURL(string: previewImageURL)  {
                     
                 // Download preview image
-                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] (image, error, cacheType, url) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if let strongSelf = self {
-                            strongSelf.updateWithImage(image, url: url, animated: cacheType != .Memory)
-                        }
-                    })
-                })
+                updateImageView(url: url)
+            }
+            else if let stream = streamItem as? VStream,
+                item = stream.streamItems.array.first as? VStreamItem,
+                previewUrlString = item.previewImagesObject as? String,
+                url = NSURL(string: previewUrlString) {
+                    
+                updateImageView(url: url)
             }
         }
     }
@@ -94,6 +95,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
         
         updateToInitialState()
+    }
+    
+    private func updateImageView(#url: NSURL) {
+        imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] (image, error, cacheType, url) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if let strongSelf = self {
+                    strongSelf.updateWithImage(image, url: url, animated: cacheType != .Memory)
+                }
+            })
+        })
     }
     
     private func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {

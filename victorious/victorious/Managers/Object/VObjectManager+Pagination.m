@@ -504,7 +504,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                     Shelf *oldShelf = (Shelf *)oldStreamItems[index];
                     if ( [oldShelf.streamItems isEqualToOrderedSet:newStreamItems] )
                     {
-                        for ( NSUInteger index = 0; index < oldStreamItems.count; index++ )
+                        for ( NSUInteger index = 0; index < oldShelf.streamItems.count; index++ )
                         {
                             //Compare headlines to see if we need an update
                             VStreamItem *newStreamItem = newStreamItems[index];
@@ -546,6 +546,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         {
             stream.marqueeItems = marqueeItems;
         }
+        
         NSString *streamId = fullResponse[ @"stream_id" ];
         NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
