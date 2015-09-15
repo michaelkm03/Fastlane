@@ -483,3 +483,6 @@
 "Use mobile data and Wi-Fi" = "Use mobile data and Wi-Fi";
 "Use Wi-Fi only" = "Use Wi-Fi only";
 "Never play videos automatically" = "Never play videos automatically";
+
+"LevelFormat" = "LEVEL %@";
+"LEVEL" = "LEVEL";

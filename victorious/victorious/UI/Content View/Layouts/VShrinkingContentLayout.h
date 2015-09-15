@@ -30,4 +30,9 @@ static const CGFloat VShrinkingContentLayoutMinimumContentHeight = 125.0f;
  */
 - (CGFloat)percentCloseToLockPointFromCatchPoint;
 
+/**
+ *  Tells VShrinkingContentLayout to calculate catchPoint and lockPoint after the collectionView becomes aware of its frame information
+ */
+- (void)calculateCatchAndLockPoints;
+
 @end

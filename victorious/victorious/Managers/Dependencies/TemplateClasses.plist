@@ -172,5 +172,7 @@
 	<string>VUsersAndTagsSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
+	<key>levelUp.interstitial</key>
+	<string>victorious.LevelUpViewController</string>
 </dict>
 </plist>
