@@ -94,6 +94,8 @@
         [self addGestureRecognizer:_doubleTapGesture];
         
         [_singleTapGesture requireGestureRecognizerToFail:_doubleTapGesture];
+        
+        [self setGesturesEnabled:NO];
     }
     return self;
 }
@@ -171,6 +173,10 @@
     }
     
     _focusType = focusType;
+    
+    NSArray *colors = @[ [UIColor redColor], [UIColor blueColor], [UIColor purpleColor] ];
+    self.layer.borderColor = ((UIColor *)colors[ (NSInteger)_focusType]).CGColor;
+    self.layer.borderWidth = 10.0f;
     
     [self focusDidUpdate];
 }

@@ -58,7 +58,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     {
         _soundIndicator = [[SoundBarView alloc] init];
         _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        _soundIndicator.hidden = YES;
         [self addSubview:_soundIndicator];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(20)]"
                                                                                options:0
@@ -72,14 +71,12 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
         _activityIndicator.hidesWhenStopped = YES;
-        _activityIndicator.hidden = YES;
         [self addSubview:_activityIndicator];
         [self v_addCenterToParentContraintsToSubview:_activityIndicator];
         
         _videoSettings = [[VVideoSettings alloc] init];
         
-        [self updateFocusType];
-        [self updateUIState];
+        [self focusDidUpdate];
     }
     return self;
 }
@@ -163,8 +160,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             }
         }
     }
-    [self updateFocusType];
-    [self updateUIState];
 }
 
 - (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
@@ -244,29 +239,17 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 {
     [super focusDidUpdate];
     
-    [self updateFocusType];
-    [self updateUIState];
-}
-
-- (void)updateFocusType
-{
-    // If we're not autoplaying, return right away
-    if (self.assetURL == nil)
-    {
-        return;
-    }
-    
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            [self pauseVideo];
-            [self showPreview];
             self.userInteractionEnabled = NO;
             self.toolbar.autoVisbilityTimerEnabled = NO;
             break;
             
         case VFocusTypeStream:
-            [self playVideo];
+            [self.videoView play];
+            [self setState:VSequenceVideoPreviewViewUIStatePlaying];
+            self.toolbar.paused = false;
             [self hidePreview];
             [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
             [self setGesturesEnabled:NO];
@@ -276,9 +259,11 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             break;
             
         case VFocusTypeDetail:
-            [self playVideo];
-            [self hidePreview];
+            [self.videoView play];
+            [self setState:VSequenceVideoPreviewViewUIStatePlaying];
+            self.toolbar.paused = false;
             [self setGesturesEnabled:YES];
+            [self hidePreview];
             self.userInteractionEnabled = YES;
             self.toolbar.autoVisbilityTimerEnabled = YES;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -290,27 +275,16 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             });
             break;
     }
+    
+    NSLog( @"Sequence %@, VFocusType = %@", self.sequence.name, @(self.focusType) );
+    
+    [self updateUIState];
 }
 
-- (void)playVideo
+- (void)trackViewStart
 {
-    if (![self.videoView playbackLikelyToKeepUp])
-    {
-        [self setState:VSequenceVideoPreviewViewUIStateBuffering];
-        [self trackAutoplayEvent:VTrackingEventVideoDidStall urls:self.trackingItem.videoStall];
-    }
-    else
-    {
-        [self setState:VSequenceVideoPreviewViewUIStatePlaying];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
-    }
-    self.toolbar.paused = false;
-}
-
-- (void)pauseVideo
-{
-    [self.videoView pause];
-    self.toolbar.paused = true;
+    // WARNING: Do something with this!!
+    [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
 }
 
 - (void)showPreview
@@ -385,7 +359,8 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     [super videoPlayerDidBecomeReady:videoView];
     if ( self.focusType != VFocusTypeNone )
     {
-        [self playVideo];
+        [self.videoView play];
+        self.toolbar.paused = false;
     }
 }
 
