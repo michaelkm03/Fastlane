@@ -111,15 +111,16 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
         NSNumber *userLevel = self.user.level;
         NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
         self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
-        self.levelBadgeView.level = self.user.level.integerValue;
+        self.levelBadgeView.level = userLevel.integerValue;
         self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
         self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
-        [self updateBadgeViewFrame];
+        [self setNeedsLayout];
     }
 }
 
-- (void)updateBadgeViewFrame
+- (void)layoutSubviews
 {
+    [super layoutSubviews];
     if ( self.levelBadgeView != nil && self.user != nil )
     {
         CGRect currentBounds = self.bounds;
@@ -137,7 +138,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self updateBadgeViewFrame];
+    [self setNeedsLayout];
 }
 
 - (void)setDependencyManager:(VDependencyManager *__nullable)dependencyManager
