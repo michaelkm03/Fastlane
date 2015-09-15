@@ -18,16 +18,16 @@ private protocol BadgeImageSet {
 
 class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
-    static let kFontName = "OpenSans-Bold"
-    static let kLabelInsets = UIEdgeInsetsMake(0, 3, 1, 3);
+    private static let kFontName = "OpenSans-Bold"
+    private static let kLabelInsets = UIEdgeInsetsMake(0, 3, 1, 3);
     
     // MARK: Private structs
     
     private struct UserBadgeImages: BadgeImageSet {
         
-        static let smallImage = UIImage(named: "level_badge_small")!
-        static let mediumImage = UIImage(named: "level_badge_medium")!
-        static let largeImage = UIImage(named: "level_badge_large")!
+        private static let smallImage = UIImage(named: "level_badge_small")!
+        private static let mediumImage = UIImage(named: "level_badge_medium")!
+        private static let largeImage = UIImage(named: "level_badge_large")!
         
         func image(#type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage
@@ -57,9 +57,9 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
     private struct CreatorBadgeImages: BadgeImageSet {
         
-        static let smallImage = UIImage(named: "level_badge_creator_small")!
-        static let mediumImage = UIImage(named: "level_badge_creator_medium")!
-        static let largeImage = UIImage(named: "level_badge_creator_large")!
+        private static let smallImage = UIImage(named: "level_badge_creator_small")!
+        private static let mediumImage = UIImage(named: "level_badge_creator_medium")!
+        private static let largeImage = UIImage(named: "level_badge_creator_large")!
         
         func image(#type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage

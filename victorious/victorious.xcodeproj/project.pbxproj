@@ -1225,8 +1225,8 @@
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
-		F0A34A881BA0F7E7000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A871BA0F7E7000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
+		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
@@ -3525,9 +3525,9 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
-		F0A34A871BA0F7E7000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarLevelBadgeView.swift; sourceTree = "<group>"; };
-		F0A34A931BA39CAB000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VBadgeImageType.h; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
+		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvatarLevelBadgeView.swift; path = "Avatar Badging/AvatarLevelBadgeView.swift"; sourceTree = "<group>"; };
+		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBadgeImageType.h; path = "Avatar Badging/VBadgeImageType.h"; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
@@ -3851,7 +3851,6 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				F0A34A861BA0F39D000D70EF /* Fan Club */,
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
@@ -6921,6 +6920,7 @@
 		C3623E561B9A779A002B121D /* Fan Club */ = {
 			isa = PBXGroup;
 			children = (
+				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
 			);
 			path = "Fan Club";
@@ -7815,13 +7815,13 @@
 			path = Blurred;
 			sourceTree = "<group>";
 		};
-		F0A34A861BA0F39D000D70EF /* Fan Club */ = {
+		F0A34AA91BA89F95000D70EF /* Avatar Badging */ = {
 			isa = PBXGroup;
 			children = (
-				F0A34A871BA0F7E7000D70EF /* AvatarLevelBadgeView.swift */,
-				F0A34A931BA39CAB000D70EF /* VBadgeImageType.h */,
+				F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */,
+				F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */,
 			);
-			name = "Fan Club";
+			name = "Avatar Badging";
 			sourceTree = "<group>";
 		};
 		F0A82AFB1AE1D12700EB2257 /* Card Directory Cell Factory */ = {
@@ -8974,7 +8974,6 @@
 				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
 				7942464C1B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
-				F0A34A881BA0F7E7000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
 				F059A0031B852D1800037BC8 /* Shelf.swift in Sources */,
@@ -9513,6 +9512,7 @@
 				C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
+				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
