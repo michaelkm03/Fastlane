@@ -97,6 +97,11 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager trackingURLsForKey:VTrackingBallisticCountKey];
 }
 
+- (NSNumber *)unlockLevel
+{
+    return [self.dependencyManager numberForKey:@"fanloyalty_level"];
+}
+
 + (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
 {
     NSMutableSet *productIdentifiers = [[NSMutableSet alloc] init];
