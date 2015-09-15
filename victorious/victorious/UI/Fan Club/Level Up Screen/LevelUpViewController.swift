@@ -13,10 +13,14 @@ private struct Constants {
     static let collectionViewHeight: CGFloat = 80
     static let badgeHeight = 150
     static let badgeWidth = 135
-    static let presentationDuration = 0.5
 }
 
 class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
+    
+    struct AnimationConstants {
+        static let presentationDuration = 0.5
+        static let dismissalDuration = 0.2
+    }
     
     @IBOutlet weak var dismissButton: UIButton! {
         didSet {
@@ -70,8 +74,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     weak var interstitialDelegate: InterstitialViewControllerDelegate?
     
-    func presentationDuration() -> Double {
-        return Constants.presentationDuration
+    func presentationAnimator() -> UIViewControllerAnimatedTransitioning {
+        return LevelUpAnimator()
+    }
+    
+    func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
+        let levelUpAnimator = LevelUpAnimator()
+        levelUpAnimator.isDismissal = true
+        return levelUpAnimator
     }
     
     // MARK: - Public Properties
@@ -86,7 +96,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 icons = levelUpInterstitial.icons
                 
                 if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
-                    dispatch_after(Constants.presentationDuration) {
+                    dispatch_after(AnimationConstants.presentationDuration) {
                         self.videoBackground.setItemURL(url, loop: true, audioMuted: true)
                     }
                 }
@@ -153,10 +163,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     /// MARK: Actions
     
     @IBAction func pressedDismiss(sender: AnyObject) {
-        self.interstitialDelegate?.dismissInterstitial()
+        self.interstitialDelegate?.dismissInterstitial(self)
     }
     
     /// MARK: Helpers
@@ -164,19 +178,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn() {
         
         // Title animation
-        UIView.animateWithDuration(0.6, delay: Constants.presentationDuration - 0.3, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: AnimationConstants.presentationDuration - 0.3, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.titleLabel.transform = CGAffineTransformIdentity
             self.descriptionLabel.transform = CGAffineTransformIdentity
             self.iconCollectionView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: Constants.presentationDuration - 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: AnimationConstants.presentationDuration - 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.badgeView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: Constants.presentationDuration - 0.3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: AnimationConstants.presentationDuration - 0.3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.dismissButton.alpha = 1
             }, completion: nil)
     }

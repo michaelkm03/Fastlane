@@ -905,6 +905,7 @@
 		C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */; };
 		C3623F291BA3AE6E002B121D /* InterstitialConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */; };
 		C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */; };
+		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
@@ -2926,6 +2927,7 @@
 		C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpInterstitial.swift; sourceTree = "<group>"; };
 		C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialConfiguration.swift; sourceTree = "<group>"; };
 		C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
+		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
 		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
@@ -6931,11 +6933,12 @@
 		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
 			isa = PBXGroup;
 			children = (
-				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
-				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
-				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
 				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
+				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
+				C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */,
+				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
 				C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */,
+				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
 			);
 			path = "Level Up Screen";
 			sourceTree = "<group>";
@@ -6944,10 +6947,10 @@
 			isa = PBXGroup;
 			children = (
 				C3623F221BA3AE54002B121D /* Interstitial.swift */,
-				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
-				C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */,
 				C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */,
+				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
 				C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */,
+				C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */,
 			);
 			path = Interstitials;
 			sourceTree = "<group>";
@@ -9199,6 +9202,7 @@
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
+				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
