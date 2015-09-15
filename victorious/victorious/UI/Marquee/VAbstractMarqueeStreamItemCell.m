@@ -149,7 +149,7 @@
     return [self.previewView trackingInfo] ?: @{};
 }
 
-#pragma mark - VSequencePreviewProvider
+#pragma mark - VContentPreviewViewProvider
 
 - (UIView *)getPreviewView
 {

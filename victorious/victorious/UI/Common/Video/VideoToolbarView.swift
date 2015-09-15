@@ -114,7 +114,7 @@ class VideoToolbarView: UIView {
     
     // MARK: - Visibility
     
-    func hide( animated:Bool = true ) {
+    func hide( animated:Bool = true, withAlongsideAnimations alongsideAnimations: (()->())? = nil ) {
         if !self.visible {
             return
         }
@@ -124,6 +124,8 @@ class VideoToolbarView: UIView {
             self.containerTopConstraint.constant = self.frame.height
             self.containerBottomConstraint.constant = -self.frame.height
             self.layoutIfNeeded()
+            
+            alongsideAnimations?()
         }
         let comletion: Bool->() = { finished in
             self.autoVisbilityTimer.invalidate()
@@ -141,8 +143,8 @@ class VideoToolbarView: UIView {
             comletion(true)
         }
     }
-
-    func show( animated:Bool = true ) {
+    
+    func show( animated:Bool = true, withAlongsideAnimations alongsideAnimations: (()->())? = nil ) {
         if self.visible {
             return
         }
@@ -152,6 +154,8 @@ class VideoToolbarView: UIView {
             self.containerTopConstraint.constant = 0.0
             self.containerBottomConstraint.constant = 0.0
             self.layoutIfNeeded()
+            
+            alongsideAnimations?()
         }
         let comletion: Bool->() = { finished in
             if self.autoVisbilityTimerEnabled {

@@ -834,9 +834,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         if ( collectionView != nil && indexPath != nil )
         {
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-            if ( [cell conformsToProtocol:@protocol(VSequencePreviewProvider)] )
+            if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
             {
-                context.contentPreviewProvider = (id<VSequencePreviewProvider>)cell;
+                context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
             }
         }
         

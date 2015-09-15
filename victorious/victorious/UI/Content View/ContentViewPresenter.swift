@@ -8,14 +8,6 @@
 
 import UIKit
 
-/// Defines an object that (1) can provide a view from its hiearchy to be handed off to another
-/// context (such as the custom transition to `VNewContentViewController`),  and (2) can receive that
-/// view when transitioning back from that context and insert it back into its original view hiearchy
-@objc protocol VSequencePreviewProvider {
-    func getPreviewView() -> UIView
-    func restorePreviewView( previewView: UIView )
-}
-
 /// :param: sequence The sequence to display
 /// :param: placeHolderImage  An image, typically the sequence's thumbnail, that can be displayed
 /// in the place of content while the real thing is being loaded
@@ -28,7 +20,7 @@ class ContentViewContext: NSObject {
     var commentId: NSNumber!
     var streamId: NSString!
     var placeholderImage: UIImage!
-    var contentPreviewProvider: VSequencePreviewProvider?
+    var contentPreviewProvider: VContentPreviewViewProvider?
 }
 
 /// A helper presenter class that helps VStreamCollectionViewController

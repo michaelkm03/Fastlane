@@ -30,7 +30,7 @@
         UIImage *arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
         UIEdgeInsets edgeInsets;
         edgeInsets.left = 0.0f;
-        edgeInsets.top = arrowImage.size.height * 0.5f;
+        edgeInsets.top = 10.0f;
         edgeInsets.right = 0.0f;
         edgeInsets.bottom = 0.0f;
         arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets resizingMode:UIImageResizingModeTile];
@@ -72,6 +72,9 @@
                                                                      metrics:metrics
                                                                        views:views]];
         
+        _progress = -1.0f;
+        [self updateHeight];
+        
         [self layoutSubviews];
     }
     return self;
@@ -109,9 +112,6 @@
     };
     if ( animated )
     {
-        self.progress = -1.0f;
-        [self updateHeight];
-        
         [UIView animateWithDuration:0.75f
                               delay:0.0f
              usingSpringWithDamping:1.0f

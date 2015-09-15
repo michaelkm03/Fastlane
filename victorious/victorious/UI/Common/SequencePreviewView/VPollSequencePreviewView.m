@@ -237,14 +237,13 @@ static NSString *kOrIconKey = @"orIcon";
     [self.answerBResultView setColor:answerBIsFavored ? self.favoredColor : self.unfavoredColor];
 }
 
-#pragma mark - VFocusable
+#pragma mark - Focus
 
-@synthesize focusType = _focusType;
-
-- (void)setFocusType:(VFocusType)focusType
+- (void)focusDidUpdate
 {
-    _focusType = focusType;
-    switch ( _focusType )
+    [super focusDidUpdate];
+    
+    switch ( self.focusType )
     {
         case VFocusTypeDetail:
             [self.pollView setPollIconHidden:YES animated:YES];
@@ -259,11 +258,6 @@ static NSString *kOrIconKey = @"orIcon";
             [self setGestureRecognizersEnabled:NO];
             [self setResultViewsHidden:YES animated:YES];
     }
-}
-
-- (CGRect)contentArea
-{
-    return self.bounds;
 }
 
 @end

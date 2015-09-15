@@ -42,25 +42,15 @@
 {
     [super videoPlayerDidBecomeReady:videoPlayer];
     
-    [self updateFocus];
+    [self focusDidUpdate];
 }
 
-#pragma mark - VFocusable
+#pragma mark - Focus
 
-- (void)setFocusType:(VFocusType)focusType
+- (void)focusDidUpdate
 {
-    if ( self.focusType == focusType )
-    {
-        return;
-    }
+    [super focusDidUpdate];
     
-    [super setFocusType:focusType];
-    
-    [self updateFocus];
-}
-
-- (void)updateFocus
-{
     if ( self.focusType != VFocusTypeNone )
     {
         [self.videoView play];

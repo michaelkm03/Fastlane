@@ -146,41 +146,34 @@
     [self.videoPlayerDelegate videoPlayer:videoPlayer didPlayToTime:time];
 }
 
-#pragma mark - VFocusable
+#pragma mark - Focus
 
-- (void)setFocusType:(VFocusType)focusType
+- (void)focusDidUpdate
 {
-    if ( focusType == _focusType )
-    {
-        return;
-    }
-    
-    _focusType = focusType;
+    [super focusDidUpdate];
     
     switch (self.focusType)
     {
         case VFocusTypeNone:
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
+            [self.likeButton hide];
             break;
             
         case VFocusTypeStream:
             [self setBackgroundContainerViewVisible:YES];
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
+            [self.likeButton hide];
             break;
             
         case VFocusTypeDetail:
             [self setBackgroundContainerViewVisible:YES];
             self.videoView.backgroundColor = [UIColor blackColor];
             self.videoView.useAspectFit = YES;
+            [self.likeButton show];
             break;
     }
-}
-
-- (CGRect)contentArea
-{
-    return self.bounds;
 }
 
 #pragma mark - VContentModeAdjustablePreviewView

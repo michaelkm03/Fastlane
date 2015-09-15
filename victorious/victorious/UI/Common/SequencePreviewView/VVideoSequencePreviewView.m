@@ -47,9 +47,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 @property (nonatomic, assign) BOOL didPlay75;
 @property (nonatomic, assign) BOOL didPlay100;
 
-@property (nonatomic, strong) UITapGestureRecognizer *toolbarToggleTapGesture;
-@property (nonatomic, strong) UITapGestureRecognizer *videoAspectToggleTapGesture;
-
 @end
 
 @implementation VVideoSequencePreviewView
@@ -81,29 +78,13 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         
         _videoSettings = [[VVideoSettings alloc] init];
         
-        _toolbarToggleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
-        _toolbarToggleTapGesture.numberOfTapsRequired = 1;
-        [self addGestureRecognizer:_toolbarToggleTapGesture];
-        
-        _videoAspectToggleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTap)];
-        _videoAspectToggleTapGesture.numberOfTapsRequired = 2;
-        [self addGestureRecognizer:_videoAspectToggleTapGesture];
-        
-        [_toolbarToggleTapGesture requireGestureRecognizerToFail:_videoAspectToggleTapGesture];
-        
         [self updateFocusType];
         [self updateUIState];
     }
     return self;
 }
 
-- (void)setVideoPlayerGesturesEnabled:(BOOL)enabled
-{
-    self.toolbarToggleTapGesture.enabled = enabled;
-    self.videoAspectToggleTapGesture.enabled = enabled;
-}
-
-- (void)onTap
+- (void)onContentTap
 {
     if ( !self.toolbar.isVisible )
     {
@@ -115,7 +96,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-- (void)onDoubleTap
+- (void)onContentDoubleTap
 {
     self.videoView.useAspectFit = !self.videoView.useAspectFit;
 }
@@ -134,11 +115,19 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             [self v_addPinToBottomToSubview:self.toolbar];
             self.toolbar.paused = !self.videoView.isPlaying;
         }
-        [self.toolbar showWithAnimated:animated];
+        [self.detailDelegate previewView:self wantsOverlayElementsHidden:NO];
+        [self.toolbar showWithAnimated:YES withAlongsideAnimations:^
+         {
+             self.likeButton.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.likeButton.bounds));
+         }];
     }
     else if ( _toolbar != nil )
     {
-        [self.toolbar hideWithAnimated:animated];
+        [self.detailDelegate previewView:self wantsOverlayElementsHidden:YES];
+        [self.toolbar hideWithAnimated:animated withAlongsideAnimations:^
+         {
+             self.likeButton.transform = CGAffineTransformIdentity;
+         }];
     }
 }
 
@@ -249,13 +238,11 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     }
 }
 
-- (void)setFocusType:(VFocusType)focusType
+#pragma mark - Focus
+
+- (void)focusDidUpdate
 {
-    if ( self.focusType == focusType )
-    {
-        return;
-    }
-    [super setFocusType:focusType];
+    [super focusDidUpdate];
     
     [self updateFocusType];
     [self updateUIState];
@@ -282,7 +269,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             [self playVideo];
             [self hidePreview];
             [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
-            [self setVideoPlayerGesturesEnabled:NO];
+            [self setGesturesEnabled:NO];
             [self setToolbarHidden:YES animated:YES];
             self.userInteractionEnabled = NO;
             self.toolbar.autoVisbilityTimerEnabled = NO;
@@ -291,7 +278,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         case VFocusTypeDetail:
             [self playVideo];
             [self hidePreview];
-            [self setVideoPlayerGesturesEnabled:YES];
+            [self setGesturesEnabled:YES];
             self.userInteractionEnabled = YES;
             self.toolbar.autoVisbilityTimerEnabled = YES;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^

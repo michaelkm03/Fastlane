@@ -60,7 +60,6 @@
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
-#import "VSequenceExpressionsObserver.h"
 #import "VShrinkingContentLayout.h"
 #import "VSimpleModalTransition.h"
 #import "VTag.h"
@@ -93,11 +92,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
-@property (nonatomic, strong) VContentLikeButton *likeButton;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 @property (nonatomic, strong) VPublishParameters *publishParameters;
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -234,7 +231,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdatePollsData
 {
-    if ( !self.viewModel.votingEnabled )
+    if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
     {
         [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
         [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
@@ -581,15 +578,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)selectedLikeButton:(UIButton *)likeButton
-{
-    likeButton.enabled = NO;
-    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self withActionView:likeButton completion:^(BOOL success)
-     {
-         likeButton.enabled = YES;
-     }];
-}
-
 #pragma mark - Private Mehods
 
 - (void)updateInsetsForKeyboardBarState
@@ -755,7 +743,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                          forIndexPath:indexPath];
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
-            [self configureLikeButtonWithContentCell:self.contentCell forSequence:self.viewModel.sequence];
             return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
@@ -1036,12 +1023,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
             [self.scrollPaginator scrollViewDidScroll:scrollView];
         }
     }
-
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-        self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
-    }
     
     // Update focus on cells
     [self.focusHelper updateFocus];
@@ -1246,40 +1227,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
-{
-    if ( contentCell.likeButton == nil )
-    {
-        return;
-    }
-    
-    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
-    {
-        self.likeButton = contentCell.likeButton;
-        self.likeButton.hidden = NO;
-        
-        [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-        
-        __weak typeof(self) welf = self;
-        [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
-         {
-             __strong typeof(self) strongSelf = welf;
-             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
-         }];
-        if (self.viewModel.type == VContentViewTypeVideo)
-        {
-            self.likeButton.alpha = 0.0f;
-        }
-    }
-    else
-    {
-        contentCell.likeButton.hidden = YES;
-    }
-}
-
 #pragma mark - VExperienceEnhancerControllerDelegate
 
 - (void)experienceEnhancersDidUpdate
@@ -1410,7 +1357,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    self.likeButton.alpha = 1.0f;
     [self.videoPlayer seekToTimeSeconds:0.0f];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {
@@ -1601,20 +1547,35 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)showLikeButtonAnimated
-{
-    [UIView animateWithDuration:0.5f
-                     animations:^
-     {
-         self.likeButton.alpha = 1.0f;
-     }];
-}
-
 #pragma mark - VSequencePreviewViewDetailDelegate
 
 - (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView
 {
     [self showLightBoxWithMediaURL:mediaURL previewImage:previewImage isVideo:isVideo sourceView:sourceView];
+}
+
+- (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+{
+    [self.sequenceActionController likeSequence:self.viewModel.sequence
+                             fromViewController:self
+                                 withActionView:previewView.likeButton
+                                     completion:^(BOOL success)
+     {
+         if ( completion != nil )
+         {
+             completion(success);
+         }
+     }];
+}
+
+- (void)previewView:(VSequencePreviewView *)previewView wantsOverlayElementsHidden:(BOOL)hidden
+{
+    [UIView animateWithDuration:0.4f animations:^
+     {
+         const BOOL alpha = hidden ? 0.0f : 1.0f;
+         self.moreButton.alpha = alpha;
+         self.closeButton.alpha = alpha;
+     }];
 }
 
 #pragma mark - VContentPollBallotCellDelegate

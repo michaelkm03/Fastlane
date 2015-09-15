@@ -7,14 +7,9 @@
 //
 
 #import "VImageSequencePreviewView.h"
-
-// Models + Helpers
 #import "VSequence+Fetcher.h"
-
-// Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 
@@ -40,6 +35,29 @@
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
     return _previewImageView;
+}
+
+- (void)focusDidUpdate
+{
+    [super focusDidUpdate];
+    
+    switch (self.focusType)
+    {
+        case VFocusTypeNone:
+            self.backgroundContainerView.backgroundColor = [UIColor clearColor];
+            [self.likeButton hide];
+            break;
+            
+        case VFocusTypeStream:
+            self.backgroundContainerView.backgroundColor = [UIColor clearColor];
+            [self.likeButton hide];
+            break;
+            
+        case VFocusTypeDetail:
+            self.backgroundContainerView.backgroundColor = [UIColor blackColor];
+            [self.likeButton show];
+            break;
+    }
 }
 
 #pragma mark - VSequencePreviewView Overrides
@@ -76,7 +94,6 @@
     }
     
     _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
     _backgroundContainerView.alpha = 0.0f;
     [self addSubview:_backgroundContainerView];
     [self sendSubviewToBack:_backgroundContainerView];

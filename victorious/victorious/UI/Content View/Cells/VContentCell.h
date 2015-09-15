@@ -76,9 +76,4 @@
 
 @property (nonatomic, strong) UIView *shrinkingContentView;
 
-/**
- The like button for the content being displayed.
- */
-@property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
-
 @end

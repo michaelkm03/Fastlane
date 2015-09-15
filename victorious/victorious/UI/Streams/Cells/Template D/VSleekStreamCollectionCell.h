@@ -21,7 +21,7 @@
  * VSleekStreamCollectionCell is a stream cell component more commonly known as 
  *  template D or Hera. It represents a sequence.
  */
-@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VFocusable, VStreamCellTracking, VHighlighting, VSequencePreviewProvider>
+@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VFocusable, VStreamCellTracking, VHighlighting, VContentPreviewViewProvider>
 
 /**
  *  Sizing method. All parameters are required.

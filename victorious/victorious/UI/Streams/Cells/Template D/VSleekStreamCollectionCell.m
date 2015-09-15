@@ -598,7 +598,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return _inStreamCommentsController;
 }
 
-#pragma mark - VSequencePreviewProvider
+#pragma mark - VContentPreviewViewProvider
 
 - (UIView *)getPreviewView
 {

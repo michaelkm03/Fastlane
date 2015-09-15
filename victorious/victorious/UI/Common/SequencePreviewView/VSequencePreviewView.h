@@ -7,16 +7,19 @@
 //
 
 #import "VStreamItemPreviewView.h"
+#import "VContentLikeButton.h"
+#import "VFocusable.h"
 
 @class VSequence, VSequencePreviewView;
 
 @protocol VSequencePreviewViewDetailDelegate <NSObject>
 
-- (void)previewView:(VSequencePreviewView *)previewView
-  didSelectMediaURL:(NSURL *)mediaURL
-       previewImage:(UIImage *)previewImage
-            isVideo:(BOOL)isVideo
-         sourceView:(UIView *)sourceView;
+- (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView;
+
+- (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence
+ completion:(void(^)(BOOL))completion;
+
+- (void)previewView:(VSequencePreviewView *)previewView wantsOverlayElementsHidden:(BOOL)hidden;
 
 @end
 
@@ -26,7 +29,7 @@
  *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
-@interface VSequencePreviewView : VStreamItemPreviewView
+@interface VSequencePreviewView : VStreamItemPreviewView <VFocusable>
 
 /**
  *  Returns a sequence preview view class for the provided sequence.
@@ -46,11 +49,17 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 
+@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
+
+@property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
+
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */
 - (BOOL)canHandleSequence:(VSequence *)sequence;
 
-@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
+- (void)setGesturesEnabled:(BOOL)enabled;
+
+- (void)focusDidUpdate;
 
 @end
