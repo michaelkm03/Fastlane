@@ -33,13 +33,11 @@
 @import MediaPlayer;
 @import CoreLocation;
 
-static BOOL shouldCompleteLaunch(void) __attribute__((const));
-
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ( !shouldCompleteLaunch() )
+    if ( ![self shouldCompleteLaunch] )
     {
         return YES;
     }
@@ -155,19 +153,37 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
-@end
+#pragma mark - Testing Helpers
 
-#pragma mark -
-
-static BOOL shouldCompleteLaunch(void)
+- (BOOL)shouldCompleteLaunch
 {
-    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-    NSString *injectBundle = environment[@"XCInjectBundle"];
-    if ( [[injectBundle pathExtension] isEqualToString:@"xctest"] )
+    NSBundle *testBundle = [self testBundle];
+    if ( testBundle != nil )
     {
-        NSBundle *testBundle = [NSBundle bundleWithPath:injectBundle];
         NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
         return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
     }
     return YES;
 }
+
+- (nullable NSBundle *)testBundle
+{
+    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+    NSString *injectBundlePath = environment[@"XCInjectBundle"];
+    
+    if ( [[injectBundlePath pathExtension] isEqualToString:@"xctest"] )
+    {
+        NSBundle *bundleInCorrectLocation = [NSBundle bundleWithPath:injectBundlePath];
+
+        if ( bundleInCorrectLocation != nil )
+        {
+            return bundleInCorrectLocation;
+        }
+        NSString *bundleName = [injectBundlePath lastPathComponent];
+        NSString *alternateBundlePath = [NSTemporaryDirectory() stringByAppendingPathComponent:bundleName];
+        return [NSBundle bundleWithPath:alternateBundlePath];
+    }
+    return nil;
+}
+
+@end
