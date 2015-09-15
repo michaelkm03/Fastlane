@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, getter=isAttachmentsBarHidden) BOOL attachmentsBarHidden;
 
 /**
- *  The sequence object permissions to which this VKeyboardInputAccessoryView is attached to
+ *  The sequence permissions of the content that this KeyboardInputAccessoryView is attached to
  */
 @property (nonatomic, assign) VSequencePermissions *sequencePermissions;
 
