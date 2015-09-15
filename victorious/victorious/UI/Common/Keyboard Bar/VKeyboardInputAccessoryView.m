@@ -129,6 +129,12 @@ static NSString * const kCommentBarKey = @"commentBar";
     self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
 }
 
+- (void)setSequencePermissions:(nonnull VSequencePermissions *)sequencePermissions
+{
+    _sequencePermissions = sequencePermissions;
+    self.gifButton.hidden = !self.sequencePermissions.canAddGifComments;
+}
+
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];

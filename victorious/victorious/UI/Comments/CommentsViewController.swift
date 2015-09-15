@@ -83,6 +83,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         scrollPaginator.delegate = self
         commentsDataSourceSwitcher.dataSource.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
+        if let sequence = self.sequence {
+            keyboardBar?.sequencePermissions = sequence.permissions
+        }
         collectionView.accessoryView = keyboardBar
 
         noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
