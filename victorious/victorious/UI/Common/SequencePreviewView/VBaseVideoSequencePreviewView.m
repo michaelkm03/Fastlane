@@ -104,7 +104,9 @@
          {
              __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
              // that URL failed, lets gracefully fall back
-             [strongSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+             UIScreen *mainScreen = [UIScreen mainScreen];
+             CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
+             [strongSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)]
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
