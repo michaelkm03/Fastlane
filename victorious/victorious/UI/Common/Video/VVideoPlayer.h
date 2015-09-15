@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol VVideoPlayerDelegate;
 
 /**
- An object that provides playback controls and other interactions
+ Defines an object that provides playback controls and other interactions
  with a visible video UI.
  */
 @protocol VVideoPlayer <NSObject>

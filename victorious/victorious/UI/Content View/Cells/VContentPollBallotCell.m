@@ -127,7 +127,8 @@ static NSMutableDictionary *sizingCache;
                          animations:^
         {
             [self setVotingDisabledWithFavoredBallot:ballot];
-        } completion:nil];
+        }
+                         completion:nil];
     }
     else
     {
@@ -189,7 +190,8 @@ static NSMutableDictionary *sizingCache;
                      animations:^
      {
          label.alpha = highlighted ? 0.5f : 1.0f;
-     } completion:nil];
+     }
+                     completion:nil];
 }
 
 @end

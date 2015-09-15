@@ -13,7 +13,7 @@ import UIKit
 /// `VNewContentViewController`
 class ContentViewHandoffController {
     
-    struct LayoutItem {
+    struct MementoConstraint {
         let constraint: NSLayoutConstraint
         let originValue: CGFloat
         let destinationValue: CGFloat
@@ -27,16 +27,16 @@ class ContentViewHandoffController {
     }
     
     struct PreviewLayout {
-        let height: LayoutItem
-        let width: LayoutItem
-        let top: LayoutItem
-        let center: LayoutItem
+        let height: MementoConstraint
+        let width: MementoConstraint
+        let top: MementoConstraint
+        let center: MementoConstraint
         let view: UIView
         let parent: UIView
     }
     
     struct BottomSliceLayout {
-        let bottom: LayoutItem
+        let bottom: MementoConstraint
         let parent: UIView
     }
     
@@ -61,6 +61,10 @@ class ContentViewHandoffController {
         let originFrame = parentView.convertRect( previewView.frame, fromView: previewView )
         
         parentView.addSubview(previewView)
+        
+        if let focusableView = previewView as? VFocusable {
+            focusableView.focusType = .Detail
+        }
         
         let widthConstraint = NSLayoutConstraint(item: previewView,
             attribute: .Width,
@@ -99,16 +103,13 @@ class ContentViewHandoffController {
         parentView.addConstraint( centerConstraint )
         
         self.previewLayout = PreviewLayout(
-            height: LayoutItem(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue:0.0),
-            width: LayoutItem(constraint: widthConstraint, originValue: widthConstraint.constant, destinationValue:0.0 ),
-            top: LayoutItem(constraint: topConstraint, originValue: topConstraint.constant, destinationValue:0.0),
-            center: LayoutItem(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue:0.0),
+            height: MementoConstraint(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue:0.0),
+            width: MementoConstraint(constraint: widthConstraint, originValue: widthConstraint.constant, destinationValue:0.0 ),
+            top: MementoConstraint(constraint: topConstraint, originValue: topConstraint.constant, destinationValue:0.0),
+            center: MementoConstraint(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue:0.0),
             view: previewView,
             parent: parentView )
         
-        if let focusableView = previewView as? VFocusable {
-            focusableView.focusType = .Detail
-        }
         let topFrame = CGRect(
             x: 0,
             y: 0,
@@ -218,7 +219,7 @@ class ContentViewHandoffController {
             transitionSliceViews.append( botImageView )
             
             self.bottomSliceLayout = BottomSliceLayout(
-                bottom: LayoutItem(
+                bottom: MementoConstraint(
                     constraint: bottomConstraint,
                     originValue: 0.0,
                     destinationValue: topConstraint.constant + snapshotImage.size.height - originFrame.maxY

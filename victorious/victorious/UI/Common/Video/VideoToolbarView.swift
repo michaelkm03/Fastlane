@@ -24,7 +24,7 @@ class VideoToolbarView: UIView {
     
     var delegate: VideoToolbarDelegate?
     
-    private var autoVisbilityTimer = NSTimer()
+    private var autoVisbilityTimer = VTimerManager()
     
     private let kPlayButtonPlayImageName = "player-play-icon"
     private let kPlayButtonPauseImageName = "player-pause-icon"
@@ -95,14 +95,7 @@ class VideoToolbarView: UIView {
     // MARK: - Initialization
     
     static func viewFromNib() -> VideoToolbarView {
-        let nibName = StringFromClass(self)
-        let nib = UINib(nibName: nibName, bundle: nil)
-        for obj in nib.instantiateWithOwner(nil, options: nil) {
-            if let toolbar = obj as? VideoToolbarView {
-                return toolbar
-            }
-        }
-        fatalError( "Unable to load VideoToolbarView from nib." )
+        return VideoToolbarView.v_fromNib()
     }
     
     override func awakeFromNib() {
@@ -236,7 +229,7 @@ class VideoToolbarView: UIView {
         }
         autoVisbilityTimer.invalidate()
         refreshVisibilityDate()
-        autoVisbilityTimer = NSTimer.scheduledTimerWithTimeInterval( 0.5,
+        autoVisbilityTimer = VTimerManager.scheduledTimerManagerWithTimeInterval( 0.5,
             target: self,
             selector: "onTimer",
             userInfo: nil,

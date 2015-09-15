@@ -45,8 +45,15 @@
 
 @property (nonatomic, weak, readonly) VContentCell *contentCell;
 
+/*
+ Provides playback controls and other interactions
+ with a visible video UI.
+ */
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
 
+/*
+ Object that responds to interaction with a poll view.
+ */
 @property (nonatomic, weak) id<VPollResultReceiver> pollAnswerReceiver;
 
 @end

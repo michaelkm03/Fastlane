@@ -9,7 +9,7 @@
 @import UIKit;
 
 /*
- Defines an objec that can respond to interaction with a poll view.
+ Defines an object that can respond to interaction with a poll view.
  */
 @protocol VPollResultReceiver <NSObject>
 

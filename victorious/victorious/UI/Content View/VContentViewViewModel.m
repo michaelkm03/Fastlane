@@ -326,7 +326,6 @@
     [self fetchPollData];
     [self fetchComments];
     [self fetchUserinfo];
-    //[self fetchSequenceData];
 }
 
 - (VLargeNumberFormatter *)largeNumberFormatter
