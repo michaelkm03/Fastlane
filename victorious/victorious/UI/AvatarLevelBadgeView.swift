@@ -18,7 +18,8 @@ private protocol BadgeImageSet {
 
 class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     
-    static let kLabelInsets: UIEdgeInsets = UIEdgeInsetsMake(0, 3, 1, 3);
+    static let kFontName = "OpenSans-Bold"
+    static let kLabelInsets = UIEdgeInsetsMake(0, 3, 1, 3);
     
     // MARK: Private structs
     
@@ -45,11 +46,11 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         func font(#type: VLevelBadgeImageType) -> UIFont? {
             switch type {
             case .Small:
-                return UIFont(name: "OpenSans-Bold", size: 10)
+                return UIFont(name: kFontName, size: 10)
             case .Medium:
-                return UIFont(name: "OpenSans-Bold", size: 37)
+                return UIFont(name: kFontName, size: 37)
             case .Large:
-                return UIFont(name: "OpenSans-Bold", size: 60)
+                return UIFont(name: kFontName, size: 60)
             }
         }
     }

@@ -14,6 +14,9 @@
 #import "UIImage+Round.h"
 #import "victorious-Swift.h"
 
+static NSString * const kMinUserLevelKey = @"minLevel";
+static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
+
 @interface VDefaultProfileButton ()
 
 @property (nonatomic, strong) NSURL *imageURL;
@@ -106,7 +109,7 @@
     if ( self.levelBadgeView != nil && self.user != nil )
     {
         NSNumber *userLevel = self.user.level;
-        NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:@"minLevel"];
+        NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
         self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
         self.levelBadgeView.level = self.user.level.integerValue;
         self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
@@ -160,7 +163,7 @@
         return _levelBadgeView;
     }
     
-    _levelBadgeView = [self.dependencyManager templateValueOfType:[AvatarLevelBadgeView class] forKey:@"avatarBadgeLevelView"];
+    _levelBadgeView = [self.dependencyManager templateValueOfType:[AvatarLevelBadgeView class] forKey:kAvatarBadgeLevelViewKey];
     [self addSubview:_levelBadgeView];
     return _levelBadgeView;
 }
