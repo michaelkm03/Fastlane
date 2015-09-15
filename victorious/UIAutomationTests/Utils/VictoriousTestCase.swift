@@ -109,7 +109,7 @@ class VictoriousTestCase: KIFTestCase {
     /// Logs in with an existing user account
     ///
     /// - parameter email: An email account to use.  Default is "user@user.com"
-    /// - parameter ",: password A ", password to use.  Default is "password"
+    /// - parameter password: A password to use.  Default is "password"
     func loginIfRequired( email: String = "user@user.com", password: String = "password" ) {
         if self.elementExistsWithAccessibilityLabel( "Log In" ) {
             self.tester().waitForTappableViewWithAccessibilityLabel( "Log In" ).tap()

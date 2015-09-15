@@ -34,7 +34,7 @@ class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
             try self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail)
             registerButtonExists = true
         }
-        catch (_) {
+        catch {
         }
         XCTAssertFalse(registerButtonExists, "We should not find a register button!")
     }
