@@ -227,7 +227,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *view = [super hitTest:point withEvent:event];
-    if ( view == self.levelBadgeView )
+    if ( self.levelBadgeView != nil && view == self.levelBadgeView )
     {
         return self;
     }
