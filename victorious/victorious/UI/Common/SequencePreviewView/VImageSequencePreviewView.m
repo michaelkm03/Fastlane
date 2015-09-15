@@ -48,7 +48,18 @@
 {
     [super setSequence:sequence];
     [self setBackgroundContainerViewVisible:NO];
-    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
+    NSURL *previewURL = nil;
+    if ( [sequence isImage] )
+    {
+        previewURL = sequence.inStreamPreviewImageURL;
+    }
+    else
+    {
+        UIScreen *mainScreen = [UIScreen mainScreen];
+        CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
+        previewURL = [sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
+    }
+    [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
                         alongsideAnimations:^
      {

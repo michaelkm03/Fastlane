@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     VObjectManager *manager = [self managerWithBaseURL:currentEnvironment.baseURL];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
+    [RKMIMETypeSerialization registerClass:[VictoriousAPISerializer class] forMIMEType:RKMIMETypeJSON];
     
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;

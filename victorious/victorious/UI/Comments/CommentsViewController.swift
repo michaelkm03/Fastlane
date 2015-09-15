@@ -97,7 +97,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             noContentView.setDependencyManager(dependencyManager)
         }
         
-        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
+        let mainScreen = UIScreen.mainScreen()
+        let maxWidth = mainScreen.bounds.width * mainScreen.scale
+        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURLWithMaximumSize(CGSizeMake(maxWidth, CGFloat.max)) {
             
             imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
         }
