@@ -18,7 +18,7 @@ private struct Constants {
 class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
     
     struct AnimationConstants {
-        static let presentationDuration = 0.5
+        static let presentationDuration = 0.4
         static let dismissalDuration = 0.2
     }
     
@@ -178,19 +178,19 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn() {
         
         // Title animation
-        UIView.animateWithDuration(0.6, delay: AnimationConstants.presentationDuration - 0.3, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
             self.titleLabel.transform = CGAffineTransformIdentity
             self.descriptionLabel.transform = CGAffineTransformIdentity
             self.iconCollectionView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: AnimationConstants.presentationDuration - 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
             self.badgeView.transform = CGAffineTransformIdentity
             }, completion: nil)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: AnimationConstants.presentationDuration - 0.3, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.6, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
             self.dismissButton.alpha = 1
             }, completion: nil)
     }
