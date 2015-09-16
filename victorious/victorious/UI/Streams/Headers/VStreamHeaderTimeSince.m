@@ -21,10 +21,13 @@
 #import "VLargeNumberFormatter.h"
 #import "UIView+AutoLayout.h"
 #import "VTimeSinceWidget.h"
+#import "VFollowControl.h"
+#import "VFollowResponder.h"
 
 // Models
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
+#import "VObjectManager.h"
 
 // Frameworks
 @import KVOController;
@@ -41,6 +44,8 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VTimeSinceWidget *timeSinceWidget;
+@property (nonatomic, strong) VFollowControl *followControl;
+@property (nonatomic, assign) BOOL shouldShowFollowControl;
 
 @end
 
@@ -81,7 +86,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 {
     [super layoutSubviews];
     
-    if (self.actionBar.actionItems == nil)
+    if ( [self actionBarNeedsSetup] )
     {
         VDefaultProfileButton *button = [[VDefaultProfileButton alloc] initWithFrame:CGRectZero];
         button.translatesAutoresizingMaskIntoConstraints = NO;
@@ -101,24 +106,36 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
         self.creationInfoContainer = creationContainer;
         self.creationInfoContainer.shouldShowTimeSince = NO;
         
-        self.timeSinceWidget = [[VTimeSinceWidget alloc] initWithFrame:CGRectZero];
-        if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [self.timeSinceWidget setDependencyManager:self.dependencyManager];
-        }
-        self.timeSinceWidget.sequence = self.sequence;
-        
-        self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
-                                       button,
-                                       [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
-                                       creationContainer,
-                                       [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
-                                       self.timeSinceWidget,
-                                       [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
+        [self updateActionBarActionItems];
         [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
         [self updateInfoContainerForSequence:self.sequence];
     }
+}
+
+- (void)updateActionBarActionItems
+{
+    UIView *rightMostWidget = self.shouldShowFollowControl ? self.followControl : self.timeSinceWidget;
+    self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
+                                   self.profileButton,
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
+                                   self.creationInfoContainer,
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
+                                   rightMostWidget,
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
+    if ( self.shouldShowFollowControl )
+    {
+        self.followControl.controlState = [VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue];
+    }
+    else
+    {
+        self.timeSinceWidget.sequence = self.sequence;
+    }
+}
+
+- (BOOL)actionBarNeedsSetup
+{
+    return self.actionBar.actionItems == nil;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -127,8 +144,14 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     _sequence = sequence;
     
+    BOOL shouldShowFollowControl = ![self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]] && !self.sequence.user.isFollowedByMainUser.boolValue;
+    if ( self.shouldShowFollowControl != shouldShowFollowControl && ![self actionBarNeedsSetup] )
+    {
+        self.shouldShowFollowControl = shouldShowFollowControl;
+        [self updateActionBarActionItems];
+    }
+    
     self.creationInfoContainer.sequence = sequence;
-    self.timeSinceWidget.sequence = sequence;
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
                                   forState:UIControlStateNormal];
     
@@ -187,6 +210,15 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
      {
          [welf updateInfoContainerForSequence:welf.sequence];
      }];
+    
+    [self.KVOController observe:sequence.user
+                       keyPaths:@[NSStringFromSelector(@selector(isFollowedByMainUser))]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, VSequence *sequence, NSDictionary *change)
+     {
+         [welf updateFollowStatus];
+     }];
+    
     [self.KVOController observe:sequence.user
                        keyPaths:@[NSStringFromSelector(@selector(pictureUrl))]
                         options:NSKeyValueObservingOptionNew
@@ -194,6 +226,55 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
      {
          [welf updateInfoContainerForSequence:welf.sequence];
      }];
+}
+
+- (void)updateFollowStatus
+{
+    [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue] animated:YES];
+}
+
+- (IBAction)followUnfollowUser:(VFollowControl *)sender
+{
+    if ( sender.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
+    void (^authorizedBlock)() = ^
+    {
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowStatus];
+    };
+    
+    if ( sender.controlState == VFollowControlStateFollowed )
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+        
+        [followResponder unfollowUser:self.sequence.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock
+                   fromViewController:nil
+                       withScreenName:nil];
+    }
+    else
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+        
+        [followResponder followUser:self.sequence.user
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:nil];
+    }
 }
 
 #pragma mark - Internal Methods
@@ -207,6 +288,37 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 {
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
                                   forState:UIControlStateNormal];
+}
+
+#pragma mark - Lazy properties
+
+- (VTimeSinceWidget *)timeSinceWidget
+{
+    if ( _timeSinceWidget == nil )
+    {
+        VTimeSinceWidget *timeSinceWidget = [[VTimeSinceWidget alloc] initWithFrame:CGRectZero];
+        if ([timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [timeSinceWidget setDependencyManager:self.dependencyManager];
+        }
+        timeSinceWidget.sequence = self.sequence;
+        _timeSinceWidget = timeSinceWidget;
+    }
+    
+    return _timeSinceWidget;
+}
+
+- (VFollowControl *)followControl
+{
+    if ( _followControl == nil )
+    {
+        VFollowControl *followControl = [[VFollowControl alloc] initWithFrame:CGRectZero];
+        followControl.dependencyManager = self.dependencyManager;
+        [followControl addTarget:self action:@selector(followUnfollowUser:) forControlEvents:UIControlEventTouchUpInside];
+        _followControl = followControl;
+    }
+    
+    return _followControl;
 }
 
 @end
