@@ -22,16 +22,21 @@ class VTabScaffoldViewControllerDoesNotAutoShowLoginTests: VictoriousTestCase {
     }
     
     override func configureTemplate(defaultTemplateDecorator: VTemplateDecorator) {
-        println("configuring scaffold tests!")
+        print("configuring scaffold tests!")
         defaultTemplateDecorator.setTemplateValue(NSNumber(bool: false), forKeyPath: "scaffold/showLoginOnStartup")
         self.addStep("set scaffold/showLoginOnStartup in template to false")
     }
     
     func testDoesNotAutoShow() {
         self.addStep("look for a regsiter button")
-        let registerButtonExists = self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail, error: nil)
+        var registerButtonExists = false
+        do {
+            try self.tester().tryFindingViewWithAccessibilityLabel(VAutomationIdentifierLRegistrationEmail)
+            registerButtonExists = true
+        }
+        catch {
+        }
         XCTAssertFalse(registerButtonExists, "We should not find a register button!")
     }
     
 }
-

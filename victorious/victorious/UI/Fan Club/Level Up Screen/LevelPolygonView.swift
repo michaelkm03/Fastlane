@@ -16,7 +16,7 @@ class LevelPolygonView: UIView {
         sharedInit()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }

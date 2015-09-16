@@ -39,21 +39,19 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     }
 }
 
-extension VListPlaylistShelfCollectionViewCell : UICollectionViewDataSource {
+extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDataSource methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
             var streamItem: VStreamItem = shelf
-            var isCoverCell = false
             var T = VShelfContentCollectionViewCell.self
             if indexPath.row == 0 {
                 T = VListShelfContentCoverCell.self
-                isCoverCell = true
             }
             else {
                 streamItem = streamItems[indexPath.row - 1]
             }
-            var identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
                 cell.streamItem = streamItem
                 cell.dependencyManager = dependencyManager
@@ -79,7 +77,7 @@ extension VListPlaylistShelfCollectionViewCell : UICollectionViewDataSource {
     
 }
 
-extension VListPlaylistShelfCollectionViewCell : UICollectionViewDelegate {
+extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDelegate methods
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let shelf = shelf {
