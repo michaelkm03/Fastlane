@@ -18,5 +18,5 @@
 @dynamic isPostFromFollowedEnabled;
 @dynamic isPostOnFollowedHashTagEnabled;
 @dynamic isUserTagInCommentEnabled;
-
+@dynamic isPeopleLikeMyPostEnabled;
 @end
