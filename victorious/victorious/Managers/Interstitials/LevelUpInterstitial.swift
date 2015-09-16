@@ -9,36 +9,26 @@
 import Foundation
 
 /// An interstitial that represents the level up screen
-class LevelUpInterstitial: Interstitial {
+struct LevelUpInterstitial: Interstitial {
     
-    var level: String?
-    var title: String?
-    var description: String?
-    var icons: [String]?
-    var videoURL: String?
-
-    private var allRequiredInfoIsPresent: Bool {
-        return level != nil && title != nil && description != nil && icons != nil
+    let remoteID: Int
+    let level: String
+    let title: String
+    let description: String
+    let icons: [NSURL]
+    let videoURL: NSURL
+    
+    init(remoteID: Int, level: String, title: String, description: String, icons: [NSURL], videoURL: NSURL) {
+        self.remoteID = remoteID
+        self.level = level
+        self.title = title
+        self.description = description
+        self.icons = icons
+        self.videoURL = videoURL
     }
     
-    /// MARK: InterstitialConfiguration
-    
-    override func configureWithInfo(info: [String : AnyObject]) {
-        if let paramsDict = info["params"] as? [String : AnyObject] {
-            if let levelInfo = paramsDict["level"] as? [String : AnyObject],
-                levelNumber = levelInfo["number"] as? Int {
-                    level = String(levelNumber)
-            }
-            title = paramsDict["title"] as? String
-            description = paramsDict["description"] as? String
-            icons = paramsDict["icons"] as? [String]
-            videoURL = paramsDict["backgroundVideo"] as? String
-        }
-    }
-    
-    override func viewControllerToPresent() -> InterstitialViewController? {
-        if let dependencyManager = dependencyManager,
-            levelUpVC = dependencyManager.levelUpViewController(self) as? InterstitialViewController where allRequiredInfoIsPresent {
+    func viewControllerToPresent(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController? {
+        if let levelUpVC = dependencyManager.levelUpViewController(self) as? InterstitialViewController {
             return levelUpVC
         }
         

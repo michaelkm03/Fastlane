@@ -71,6 +71,17 @@
                BlueprintName = "UIAutomationTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "CommentTests">
+               </Test>
+               <Test
+                  Identifier = "ContentCreationTests">
+               </Test>
+               <Test
+                  Identifier = "RegistrationTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
