@@ -58,7 +58,7 @@ class VideoToolbarView: UIView {
     
     var remainingTime: Float64 = 0.0 {
         didSet {
-            let text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
+            let text = self.timeFormatter.stringForSeconds( clampTime(remainingTime) )
             remainingTimeLabel.text = text
         }
     }

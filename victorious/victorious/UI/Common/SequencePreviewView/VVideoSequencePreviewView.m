@@ -18,10 +18,10 @@
  */
 typedef NS_ENUM(NSUInteger, VSequenceVideoPreviewViewUIState)
 {
+    VSequenceVideoPreviewViewUIStateEnded,
     VSequenceVideoPreviewViewUIStateBuffering,
     VSequenceVideoPreviewViewUIStatePlaying,
     VSequenceVideoPreviewViewUIStatePaused,
-    VSequenceVideoPreviewViewUIStateEnded
 };
 
 static const CGFloat kMaximumLoopingTime = 30.0f;
@@ -46,6 +46,8 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 @property (nonatomic, assign) BOOL didPlay50;
 @property (nonatomic, assign) BOOL didPlay75;
 @property (nonatomic, assign) BOOL didPlay100;
+
+@property (nonatomic, readonly) BOOL shouldAutoplay;
 
 @end
 
@@ -134,27 +136,21 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 {
     [super setSequence:sequence];
     
-    [self setState:VSequenceVideoPreviewViewUIStateEnded];
     self.videoView.alpha = 0;
     
     if ( !self.onlyShowPreview )
     {
-        self.assetURL = nil;
-        
         self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
-        
-        // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-        if ( self.HLSAsset.streamAutoplay.boolValue )
-        {
-            // Check if autoplay is enabled before loading asset URL
-            if ([self.videoSettings isAutoplayEnabled])
-            {
-                self.trackingItem = sequence.tracking;
-                [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
-            }
-        }
+        self.trackingItem = sequence.tracking;
+        [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
     }
     [self updateUIState];
+}
+
+- (BOOL)shouldAutoplay
+{
+    self.HLSAsset = [self.sequence.firstNode httpLiveStreamingAsset];
+    return !self.onlyShowPreview && self.HLSAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
 }
 
 - (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
@@ -200,7 +196,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             [self.soundIndicator stopAnimating];
             self.soundIndicator.hidden = YES;
             self.videoView.hidden = NO;
-            self.playIconContainerView.hidden = YES;
+            self.largePlayButton.hidden = YES;
             break;
         case VSequenceVideoPreviewViewUIStatePlaying:
             [self setBackgroundContainerViewVisible:YES];
@@ -208,7 +204,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             self.soundIndicator.hidden = self.focusType != VFocusTypeStream;
             [self.soundIndicator startAnimating];
             self.videoView.hidden = NO;
-            self.playIconContainerView.hidden = YES;
+            self.largePlayButton.hidden = YES;
             break;
         case VSequenceVideoPreviewViewUIStatePaused:
             [self setBackgroundContainerViewVisible:YES];
@@ -216,14 +212,14 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             self.soundIndicator.hidden = YES;
             [self.soundIndicator stopAnimating];
             self.videoView.hidden = YES;
-            self.playIconContainerView.hidden = YES;
+            self.largePlayButton.hidden = YES;
             break;
         case VSequenceVideoPreviewViewUIStateEnded:
             [self.activityIndicator stopAnimating];
             self.soundIndicator.hidden = YES;
             [self.soundIndicator stopAnimating];
             self.videoView.hidden = YES;
-            self.playIconContainerView.hidden = NO;
+            self.largePlayButton.hidden = NO;
             break;
     }
 }
@@ -232,6 +228,12 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 
 - (void)setFocusType:(VFocusType)focusType
 {
+    
+    if ( !self.shouldAutoplay && focusType == VFocusTypeStream )
+    {
+        focusType = VFocusTypeNone;
+    }
+    
     if ( super.focusType == focusType)
     {
         return;
@@ -245,14 +247,14 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         return;
     }
     
-    if ( [self.sequence.name isEqualToString:@"23232323232"] )
-    {
-        
-    }
-    
     switch (self.focusType)
     {
         case VFocusTypeNone:
+            if ( !self.shouldAutoplay )
+            {
+                [self setState:VSequenceVideoPreviewViewUIStateEnded];
+                [self.videoView seekToTimeSeconds:0.0f];
+            }
             [self pauseVideo];
             [self showPreview];
             [self setToolbarHidden:YES animated:YES];
@@ -273,6 +275,8 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             break;
             
         case VFocusTypeDetail:
+            self.trackingItem = self.sequence.tracking;
+            [self loadAssetURL:[NSURL URLWithString:[self.sequence.firstNode httpLiveStreamingAsset].data] andLoop:NO];
             [self playVideo];
             [self hidePreview];
             [self setGesturesEnabled:YES];
@@ -298,6 +302,13 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     self.toolbar.paused = false;
+}
+
+- (void)onPreviewPlayButtonTapped:(UIButton *)button
+{
+    [self.videoView playFromStart];
+    self.toolbar.paused = false;
+    [self playVideo];
 }
 
 - (void)pauseVideo
@@ -376,7 +387,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 - (void)videoPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
 {
     [super videoPlayerDidBecomeReady:videoView];
-    if ( self.focusType != VFocusTypeNone )
+    if ( self.focusType != VFocusTypeNone && self.shouldAutoplay )
     {
         [self playVideo];
     }
@@ -384,13 +395,16 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
-    // Loop if asset is under max looping time
-    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
+    if ( self.focusType != VFocusTypeDetail || self.HLSAsset.loop.boolValue )
     {
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [self.videoView playFromStart];
-                       });
+        // Loop if asset is under max looping time
+        if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [self.videoView playFromStart];
+                           });
+        }
     }
     else
     {

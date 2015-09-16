@@ -16,7 +16,7 @@
     if ( self != nil )
     {
         self.videoView.hidden = NO;
-        self.playIconContainerView.hidden = YES;
+        self.largePlayButton.hidden = YES;
     }
     return self;
 }

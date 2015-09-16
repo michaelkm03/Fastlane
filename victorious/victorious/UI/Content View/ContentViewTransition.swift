@@ -32,6 +32,10 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 self.handoffController.addPreviewView( contentPreviewProvider,
                     toContentViewController: contentViewController,
                     originSnapshotImage: snapshotImage )
+                
+                if let focusableView = contentPreviewProvider.getPreviewView() as? VFocusable {
+                    focusableView.focusType = VFocusType.Detail
+                }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         for layout in self.handoffController.sliceLayouts {
@@ -40,6 +44,14 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {
+        
+        if let navController = model.fromViewController as? VNavigationController,
+            let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentPreviewProvider = contentViewController.viewModel.context.contentPreviewProvider,
+            let focusableView = contentPreviewProvider.getPreviewView() as? VFocusable {
+                focusableView.focusType = VFocusType.Stream
+        }
+        
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         for layout in self.handoffController.sliceLayouts {
             layout.parent.layoutIfNeeded()

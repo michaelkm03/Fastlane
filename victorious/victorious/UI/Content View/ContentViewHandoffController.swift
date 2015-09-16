@@ -60,9 +60,6 @@ class ContentViewHandoffController {
             let detailDelegate = contentViewController as? VSequencePreviewViewDetailDelegate {
                 previewView.detailDelegate = detailDelegate
         }
-        if let focusableView = previewView as? VFocusable {
-            focusableView.focusType = VFocusType.Detail
-        }
         if let videoSequenceDelegate = contentViewController as? VVideoSequenceDelegate,
             let videoSequence = previewView as? VVideoSequencePreviewView {
             videoSequence.delegate = videoSequenceDelegate

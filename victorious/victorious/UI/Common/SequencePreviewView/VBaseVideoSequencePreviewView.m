@@ -43,18 +43,13 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
-        _playIconContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        _playIconContainerView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_playIconContainerView];
-        [self v_addCenterToParentContraintsToSubview:_playIconContainerView];
-        
-        UIImageView *playIconCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayCircle"]];
-        [_playIconContainerView addSubview:playIconCircle];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconCircle];
-        
-        UIImageView *playIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
-        [_playIconContainerView addSubview:playIconView];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconView];
+        UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
+        _largePlayButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        [_largePlayButton setImage:playIcon forState:UIControlStateNormal];
+        [_largePlayButton addTarget:self action:@selector(onPreviewPlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        _largePlayButton.backgroundColor = [UIColor clearColor];
+        [self addSubview:_largePlayButton];
+        [self v_addCenterToParentContraintsToSubview:_largePlayButton];
         
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
@@ -62,6 +57,11 @@
         [self v_addFitToParentConstraintsToSubview:_videoView];
     }
     return self;
+}
+
+- (void)onPreviewPlayButtonTapped:(UIButton *)button
+{
+    // Override in subclasses
 }
 
 #pragma mark - VSequencePreviewView Overrides

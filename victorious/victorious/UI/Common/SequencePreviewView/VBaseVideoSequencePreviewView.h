@@ -26,7 +26,7 @@
  * Responsible for the play icon that appears on the preview view.
  * Subclasses can hide this if they are playing video in-line.
  */
-@property (nonatomic, strong, readonly) UIView *playIconContainerView;
+@property (nonatomic, strong, readonly) UIButton *largePlayButton;
 
 /**
  * Responsible for playing video in-line. Subclasses can hide this if
@@ -53,5 +53,7 @@
  *  @parameter visible If YES, the background container is made visible without animation.
  */
 - (void)setBackgroundContainerViewVisible:(BOOL)visible;
+
+- (void)onPreviewPlayButtonTapped:(UIButton *)button;
 
 @end
