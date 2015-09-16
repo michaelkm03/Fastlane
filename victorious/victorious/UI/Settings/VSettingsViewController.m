@@ -211,7 +211,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

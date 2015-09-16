@@ -103,7 +103,7 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

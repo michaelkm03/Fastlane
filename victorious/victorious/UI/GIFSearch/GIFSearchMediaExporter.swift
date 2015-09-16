@@ -16,16 +16,16 @@ struct GIFSearchMediaExporter {
     
     /// Completion closure to be called when all operations are complete.
     ///
-    /// :param: previewImage A UIImage loaded with a still thumbnail asset
-    /// :param: mediaUrl The URL on disk of the downloaded media file
-    /// :param: error An NSError instance defined if there was en error, otherwise `nil`
+    /// - parameter previewImage: A UIImage loaded with a still thumbnail asset
+    /// - parameter mediaUrl: The URL on disk of the downloaded media file
+    /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
     typealias GIFSearchMediaExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
     /// For the provided GIFSearchResult, downlods its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
-    /// :param: gifSearchResult The GIFSearchResult whose assets will be loaded/downloaded
-    /// :param: completion A completion closure called wehn all opeartions are complete
+    /// - parameter gifSearchResult: The GIFSearchResult whose assets will be loaded/downloaded
+    /// - parameter completion: A completion closure called wehn all opeartions are complete
     func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
         if let searchResultURL = NSURL(string: gifSearchResult.mp4Url) {
@@ -39,7 +39,7 @@ struct GIFSearchMediaExporter {
                         
                         // Load the image synchronously before we leave this thread
                         let previewImage: UIImage? = {
-                            if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: nil) {
+                            if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
                                 return UIImage(data: previewImageData)
                             }
                             return nil
@@ -64,14 +64,14 @@ struct GIFSearchMediaExporter {
         
         if let filename = remoteURL.lastPathComponent,
            let uniqueID = remoteURL.URLByDeletingLastPathComponent?.lastPathComponent,
-           let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first as? String,
-           let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath) {
+           let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first {
             
+            let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath)
             let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
             
             var isDirectory: ObjCBool = false
             if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
-                NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
+                let _ = try? NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
             }
             
             // Create a unique URL for the gif

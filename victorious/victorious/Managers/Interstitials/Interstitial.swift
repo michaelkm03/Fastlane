@@ -8,56 +8,19 @@
 
 import Foundation
 
-/// An enum describing each type of supported interstitials
-enum InterstitialType : String {
-    case LevelUp = "level"
-}
+/// An abstract interface that interstitial objects can use to configure themselves
+/// with their parameters payload and return a custom view controller representing itself
+protocol Interstitial {
 
-/// An Interstial object represents a screen that can be displayed over the app
-/// at any time during the app's flow.
-class Interstitial: InterstitialConfiguration, Hashable {
+    /// A unique ID defined by the back-end
+    var remoteID: Int { get }
     
-    let remoteID: Int
-    
-    var dependencyManager: VDependencyManager?
-        
-    init(id: Int) {
-        remoteID = id
-    }
-    
-    /// Returns a properly configured Interstitial subclass
+    /// Returns a view controller that will show in its own window when the interstitial is registered
     ///
-    /// :param: info A dictionary representing the interstitial
-    class func configuredInterstitial(info: [String : AnyObject]) -> Interstitial? {
-        var interstitial: Interstitial?
-        if let type = info["type"] as? String, idString = info["id"] as? String, id = idString.toInt() {
-            if type == InterstitialType.LevelUp.rawValue {
-                interstitial = LevelUpInterstitial(id: id)
-            }
-        }
-        interstitial?.configureWithInfo(info)
-        return interstitial
-    }
-    
-    /// MARK: InterstitialConfiguration
-    
-    func configureWithInfo(info: [String : AnyObject]) {
-        // Subclasses should implement to set correct info
-    }
-    
-    func viewControllerToPresent() -> InterstitialViewController? {
-        // Subclasses should implement to return appropriate view controller for Interstitial
-        return nil
-    }
-    
-    /// MARK: Hashable
-    
-    var hashValue: Int {
-        return remoteID
-    }
+    /// - parameter dependencyManager: An instance of VDependencyManager to define the appearance of the returned view controller
+    func viewControllerToPresent(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController?
 }
 
-// Equatable conformance
 func ==(lhs: Interstitial, rhs: Interstitial) -> Bool {
     return lhs.remoteID == rhs.remoteID
 }

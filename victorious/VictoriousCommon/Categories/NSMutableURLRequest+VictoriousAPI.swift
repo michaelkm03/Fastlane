@@ -37,7 +37,7 @@ extension NSMutableURLRequest {
     
     /// Sets the "Authentication" header appropriately for Victorious API requests. Since the Date and User-Agent headers are
     /// used in calculating the correct Authentication header, this method calculates and sets those, too.
-    public func v_setAuthenticationHeader(#appID: Int, deviceID: String, buildNumber: String, userID: Int = 0, authenticationToken: String = "") {
+    public func v_setAuthenticationHeader(appID appID: Int, deviceID: String, buildNumber: String, userID: Int = 0, authenticationToken: String = "") {
         
         let currentDate = NSMutableURLRequest.dateFormatter.stringFromDate(NSDate())
         setValue(currentDate, forHTTPHeaderField: HTTPHeader.date)
@@ -85,11 +85,11 @@ extension NSMutableURLRequest {
     }
     
     /// Sets the value of the "X-Geo-Location" header
-    public func v_setGeoLocationHeader(#location: CLLocationCoordinate2D, postalCode: String?) {
+    public func v_setGeoLocationHeader(location location: CLLocationCoordinate2D, postalCode: String?) {
         setValue(locationHeaderValue(location: location, postalCode: postalCode), forHTTPHeaderField: HTTPHeader.geoLocation)
     }
     
-    private func locationHeaderValue(#location: CLLocationCoordinate2D, postalCode: String?) -> String {
+    private func locationHeaderValue(location location: CLLocationCoordinate2D, postalCode: String?) -> String {
         
         if let postalCode = postalCode {
             return "latitude:\(location.latitude), longitude:\(location.longitude), postal_code:\(postalCode)"

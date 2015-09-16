@@ -111,8 +111,8 @@ class GIFSearchDataSource: NSObject {
     
     /// Fetches data from the server and repopulates its backing model collection
     ///
-    /// :param: searchTerm A string to be used for the GIF search on the server
-    /// :param: completion A closure to be call when the operation is complete
+    /// - parameter searchTerm: A string to be used for the GIF search on the server
+    /// - parameter completion: A closure to be call when the operation is complete
     func performSearch( searchText:String, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
@@ -169,7 +169,7 @@ class GIFSearchDataSource: NSObject {
     
     /// Removes the current full size asset section, wherever it may be.
     ///
-    /// :returns: `ChangeResult` indicating whether or not the total section count was changed
+    /// - returns: `ChangeResult` indicating whether or not the total section count was changed
     func removeHighlightSection() -> ChangeResult {
         var result = ChangeResult()
         if let highlightedSection = self.highlightedSection {
@@ -185,7 +185,7 @@ class GIFSearchDataSource: NSObject {
     /// For the provided index path, adds a section beneath that shows the fullsize
     /// asset for the item at the index path.
     ///
-    /// :returns: whether or not the total section count was changed
+    /// - returns: whether or not the total section count was changed
     func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
         var result = self.removeHighlightSection()
         
