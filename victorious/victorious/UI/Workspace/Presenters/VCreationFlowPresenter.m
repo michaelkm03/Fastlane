@@ -28,6 +28,8 @@
 #import "VTrackingManager.h"
 #import "victorious-swift.h"
 
+#import "VObjectManager+AlertTesting.h"
+
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
 static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
@@ -64,6 +66,18 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 - (void)authorizedPresent
 {
+    
+#warning TESTING
+    
+    [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:NO];
+    [[VObjectManager sharedManager] registerTestAlert:^(NSOperation *__nullable operation, id  __nullable result, NSArray *__nonnull resultObjects)
+    {
+        [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:YES];
+    } failBlock:^(NSOperation *__nullable operation, NSError *__nullable error)
+    {
+        [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:YES];
+    }];
+    
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
 
     VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
