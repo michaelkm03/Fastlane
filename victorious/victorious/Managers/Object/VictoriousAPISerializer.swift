@@ -8,6 +8,11 @@
 
 import Foundation
 
+/// An enum describing each type of supported interstitials
+private enum InterstitialType : String {
+    case LevelUp = "level"
+}
+
 /// A RKSerialization subclass that handles registering
 /// any interstitials that it finds in the response
 class VictoriousAPISerializer: NSObject, RKSerialization {
@@ -36,14 +41,35 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
     
     // Class function for parsing interstitials
     private class func parseInterstitials(interstitials: [[String : AnyObject]]) -> [Interstitial] {
-        var parsedInterstitials: [Interstitial] = []
-        for interstitial in interstitials {
-            // Instantiate and configure the correct interstitial sublass based on this payload
-            if let configuredInterstitial = Interstitial.configuredInterstitial(interstitial) {
-                parsedInterstitials.append(configuredInterstitial)
-            }
-        }
         
-        return parsedInterstitials
+        return interstitials.flatMap() { (config: [String : AnyObject]) -> Interstitial? in
+            if let typeString = config["type"] as? String,
+               let type = InterstitialType(rawValue: typeString) {
+                switch (type)
+                {
+                case .LevelUp:
+                    return levelUpInterstitial(configuration: config)
+                }
+            }
+            return nil
+        }
+    }
+    
+    /// Returns a fully-configured level-up interstitial
+    ///
+    /// - parameter configuration: A JSON dictionary containing all the configuration info for a level-up interstitial. If this information is invalid, this method returns nil.
+    private static func levelUpInterstitial( configuration paramsDict: [String : AnyObject] ) -> LevelUpInterstitial? {
+        if let idString = paramsDict["id"] as? String,
+           let remoteID = Int(idString),
+           let levelInfo = paramsDict["level"] as? [String : AnyObject],
+           let levelNumber = levelInfo["number"] as? Int,
+           let title = paramsDict["title"] as? String,
+           let description = paramsDict["description"] as? String,
+            let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
+           let videoURLString = paramsDict["backgroundVideo"] as? String,
+           let videoURL = NSURL(string: videoURLString) {
+            return LevelUpInterstitial(remoteID: remoteID, level: String(levelNumber), title: title, description: description, icons: icons, videoURL: videoURL)
+        }
+        return nil
     }
 }

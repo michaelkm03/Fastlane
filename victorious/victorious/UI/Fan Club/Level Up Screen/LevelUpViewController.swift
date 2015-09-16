@@ -48,9 +48,9 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private var displayLink: CADisplayLink!
     private var firstTimeStamp: NSTimeInterval?
     private var hasAppeared = false
-    private var videoURL: String?
+    private var videoURL: NSURL?
     
-    private var icons: [String]? {
+    private var icons: [NSURL]? {
         didSet {
             // Reload icon collection view
             iconCollectionView.reloadData()
@@ -96,10 +96,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
                 
-                if let urlString = levelUpInterstitial.videoURL, url = NSURL(string: urlString) {
-                    dispatch_after(AnimationConstants.presentationDuration) {
-                        self.videoBackground.setItemURL(url, loop: true, audioMuted: true)
-                    }
+                dispatch_after(AnimationConstants.presentationDuration) {
+                    self.videoBackground.setItemURL(levelUpInterstitial.videoURL, loop: true, audioMuted: true)
                 }
             }
         }
@@ -239,8 +237,8 @@ extension LevelUpViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as? LevelUpIconCollectionViewCell {
-            if let urlString =  icons?[indexPath.row] {
-                cell.iconURL = NSURL(string: urlString)
+            if let url =  icons?[indexPath.row] {
+                cell.iconURL = url
             }
             return cell
         }

@@ -900,7 +900,6 @@
 		C3623F251BA3AE54002B121D /* Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F221BA3AE54002B121D /* Interstitial.swift */; };
 		C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F231BA3AE54002B121D /* InterstitialManager.swift */; };
 		C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */; };
-		C3623F291BA3AE6E002B121D /* InterstitialConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */; };
 		C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */; };
 		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
@@ -2919,7 +2918,6 @@
 		C3623F221BA3AE54002B121D /* Interstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interstitial.swift; sourceTree = "<group>"; };
 		C3623F231BA3AE54002B121D /* InterstitialManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialManager.swift; sourceTree = "<group>"; };
 		C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpInterstitial.swift; sourceTree = "<group>"; };
-		C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialConfiguration.swift; sourceTree = "<group>"; };
 		C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
 		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
@@ -6938,7 +6936,6 @@
 			isa = PBXGroup;
 			children = (
 				C3623F221BA3AE54002B121D /* Interstitial.swift */,
-				C3623F281BA3AE6E002B121D /* InterstitialConfiguration.swift */,
 				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
 				C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */,
 				C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */,
@@ -9149,7 +9146,6 @@
 				C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */,
 				67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
-				C3623F291BA3AE6E002B121D /* InterstitialConfiguration.swift in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
