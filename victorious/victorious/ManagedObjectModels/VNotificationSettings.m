@@ -19,4 +19,5 @@
 @dynamic isPostOnFollowedHashTagEnabled;
 @dynamic isUserTagInCommentEnabled;
 @dynamic isPeopleLikeMyPostEnabled;
+
 @end
