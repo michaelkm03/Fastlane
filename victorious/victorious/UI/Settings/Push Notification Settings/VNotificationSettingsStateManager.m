@@ -70,6 +70,11 @@ static const char *VNotificationSettingsStateNames[] = {
     VLog( @">>>>>>> %@", [NSString stringWithCString:name encoding:NSUTF8StringEncoding] );
 #endif
     
+#if TARGET_IPHONE_SIMULATOR
+    // Make push notification settings table show up for simulator
+    _state = VNotificationSettingsStateRegistered;
+#endif
+    
     switch (_state)
     {
         case VNotificationSettingsStateDefault:
