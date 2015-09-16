@@ -83,9 +83,9 @@ class ExperimentSettingsDataSource: NSObject {
                 
                 self.updateTintColor()
                 
-                let layers = Set<String>( map( experiments, { $0.layerName }) )
+                let layers = Set<String>( experiments.map { $0.layerName } )
                 for layer in layers {
-                    let experimentsInLayer = filter( experiments, { $0.layerName == layer })
+                    let experimentsInLayer = experiments.filter { $0.layerName == layer }
                     self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
                 }
                 
@@ -105,7 +105,7 @@ class ExperimentSettingsDataSource: NSObject {
     
     private func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
-            for cell in tableView.visibleCells() {
+            for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {
                     switchCell.switchColor = self.tintColor.current
                     if let indexPath = tableView.indexPathForCell( switchCell ) {
@@ -223,6 +223,6 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
 
 private extension UITableView {
     func lastSection() -> Int {
-        return max( 0, self.numberOfSections() - 1)
+        return max( 0, self.numberOfSections - 1)
     }
 }

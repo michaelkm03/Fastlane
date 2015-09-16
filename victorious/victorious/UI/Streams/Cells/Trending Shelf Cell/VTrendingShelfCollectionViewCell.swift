@@ -38,7 +38,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
-                    for (index, streamItem) in enumerate(streamItems) {
+                    for (index, streamItem) in streamItems.enumerate() {
                         if index == streamItems.count - 1 {
                             
                             let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
@@ -75,7 +75,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     /// Override in subclasses to update the follow button at the proper times
     func updateFollowControlState() {}
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("loginStatusDidChange"), name: kLoggedInChangedNotification, object: VObjectManager.sharedManager())
     }
@@ -90,7 +90,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     override func prepareForReuse() {
-        collectionView.contentOffset = CGPoint.zeroPoint
+        collectionView.contentOffset = CGPoint.zero
     }
     
 }
@@ -99,18 +99,16 @@ extension VTrendingShelfCollectionViewCell: TrackableShelf {
 
     func trackVisibleSequences() {
         let streamVisibleRect = collectionView.bounds;
-        if let visibleCells = collectionView.visibleCells() as? [UICollectionViewCell] {
-            for cell in visibleCells {
-                let intersection = streamVisibleRect.rectByIntersecting(cell.frame)
-                let visibleWidthRatio = intersection.width / cell.frame.width
-                let visibleHeightRatio = intersection.height / cell.frame.height
-                let visibleContentRatio = visibleWidthRatio * visibleHeightRatio
-                if visibleContentRatio >= trackingMinRequiredCellVisibilityRatio {
-                    if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
-                        let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                            let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                            streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
-                    }
+        for cell in collectionView.visibleCells() {
+            let intersection = streamVisibleRect.intersect(cell.frame)
+            let visibleWidthRatio = intersection.width / cell.frame.width
+            let visibleHeightRatio = intersection.height / cell.frame.height
+            let visibleContentRatio = visibleWidthRatio * visibleHeightRatio
+            if visibleContentRatio >= trackingMinRequiredCellVisibilityRatio {
+                if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
+                    let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                 }
             }
         }

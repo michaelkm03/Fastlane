@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - Rotation
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return self.currentViewController.supportedInterfaceOrientations;
 }

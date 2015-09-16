@@ -103,7 +103,7 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
                                                                                         attributes:placeholderAttributes];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

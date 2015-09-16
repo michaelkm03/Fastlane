@@ -12,13 +12,13 @@ import UIKit
 /// cell is twice the size (+ the space between cells) by comparison to the other cells.
 class VListShelfCollectionViewFlowLayout: UICollectionViewFlowLayout {
    
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         scrollDirection = UICollectionViewScrollDirection.Horizontal
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-        if let attributes = super.layoutAttributesForElementsInRect(rect) as? [UICollectionViewLayoutAttributes] {
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        if let attributes = super.layoutAttributesForElementsInRect(rect) {
             attributes.first?.frame.origin.y = 0
             return attributes
         }
