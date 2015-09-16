@@ -28,6 +28,7 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 @property (nonatomic, readonly) NSString *imageContentMode;
 @property (nonatomic, readonly) NSString *productIdentifier;
 @property (nonatomic, readonly) NSArray *trackingURLs;
+@property (nonatomic, readonly) NSNumber *unlockLevel;
 
 @property (nonatomic, readonly) UIViewContentMode contentMode;
 @property (nonatomic, readonly) BOOL containsRequiredData;
