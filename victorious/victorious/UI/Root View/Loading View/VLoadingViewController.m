@@ -198,31 +198,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         
-#warning TESTING CODE, REMEMBER TO REMOVE
-        NSDictionary *avatarBadgeAppearanceDictionary = @{
-                                                          @"name": @"standard.badgeView",
-                                                          @"minLevel" : @(5),
-                                                          VDependencyManagerLinkColorKey : @{
-                                                                  @"red" : @(255),
-                                                                  @"green" : @(100),
-                                                                  @"blue" : @(100),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          VDependencyManagerMainTextColorKey: @{
-                                                                  @"red" : @(0),
-                                                                  @"green" : @(100),
-                                                                  @"blue" : @(100),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          };
-        
-        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"scaffold"] )
-        {
-            NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-            [updatedPayload addEntriesFromDictionary:@{ @"avatarBadgeLevelView" : avatarBadgeAppearanceDictionary }];
-            [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
-        }
-        
         if (self.templateConfigurationBlock != nil)
         {
             self.templateConfigurationBlock(templateDecorator);
