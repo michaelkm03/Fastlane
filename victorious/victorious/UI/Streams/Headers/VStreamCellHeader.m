@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -37,7 +37,7 @@ static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 7.0f;
 static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
-@interface VStreamHeaderTimeSince ()
+@interface VStreamCellHeader ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VFlexBar *actionBar;
@@ -49,7 +49,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 @end
 
-@implementation VStreamHeaderTimeSince
+@implementation VStreamCellHeader
 
 #pragma mark - Init
 
@@ -123,14 +123,6 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
                                    [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
                                    rightMostWidget,
                                    [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
-    if ( self.shouldShowFollowControl )
-    {
-        self.followControl.controlState = [VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue];
-    }
-    else
-    {
-        self.timeSinceWidget.sequence = self.sequence;
-    }
 }
 
 - (BOOL)actionBarNeedsSetup
@@ -149,6 +141,14 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     {
         self.shouldShowFollowControl = shouldShowFollowControl;
         [self updateActionBarActionItems];
+    }
+    if ( self.shouldShowFollowControl )
+    {
+        self.followControl.controlState = [VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue];
+    }
+    else
+    {
+        self.timeSinceWidget.sequence = self.sequence;
     }
     
     self.creationInfoContainer.sequence = sequence;
@@ -261,7 +261,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
                   withAuthorizedBlock:authorizedBlock
                         andCompletion:completionBlock
                    fromViewController:nil
-                       withScreenName:nil];
+                       withScreenName:VFollowSourceScreenSleekCell];
     }
     else
     {
@@ -273,7 +273,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
                 withAuthorizedBlock:authorizedBlock
                       andCompletion:completionBlock
                  fromViewController:nil
-                     withScreenName:nil];
+                     withScreenName:VFollowSourceScreenSleekCell];
     }
 }
 
