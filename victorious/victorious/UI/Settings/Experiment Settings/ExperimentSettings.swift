@@ -48,7 +48,7 @@ class ExperimentSettings: NSObject {
         if let activeExperiments = self.activeExperiments {
             // An empty string used in a header indicates to the backend that the user has
             // manually opted out of all experiments
-            return ",".join( map(activeExperiments) { "\($0)" } )
+            return activeExperiments.map { "\($0)" }.joinWithSeparator( "," )
         }
         else {
             // A nil value used in a header indicates to the backend that the user does not wish

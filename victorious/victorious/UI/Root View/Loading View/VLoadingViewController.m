@@ -90,7 +90,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

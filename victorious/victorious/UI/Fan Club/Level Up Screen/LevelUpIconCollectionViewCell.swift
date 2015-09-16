@@ -25,15 +25,15 @@ class LevelUpIconCollectionViewCell: UICollectionViewCell {
         sharedInit()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
     
     private func sharedInit() {
-        imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[imgView]-5-|", options: nil, metrics: nil, views: ["imgView" : imageView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[imgView]-5-|", options: nil, metrics: nil, views: ["imgView" : imageView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView" : imageView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[imgView]-5-|", options: [], metrics: nil, views: ["imgView" : imageView]))
     }
 }

@@ -57,7 +57,7 @@
     return self.hasAppeared;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {

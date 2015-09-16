@@ -14,9 +14,9 @@ extension VObjectManager {
     
     /// Loads all available experiments from the backend as `Experiment`
     ///
-    /// :param: success Closure to be called if server does not return an error.
-    /// :param: failure Closure to be called if server returns an error.
-    func getDeviceExperiments( #success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
+    /// - parameter success: Closure to be called if server does not return an error.
+    /// - parameter failure: Closure to be called if server returns an error.
+    func getDeviceExperiments( success success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
         
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
