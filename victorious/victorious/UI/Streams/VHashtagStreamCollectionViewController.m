@@ -69,6 +69,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     streamCollection.dependencyManager = dependencyManager;
     
     streamCollection.followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    streamCollection.followControl.translatesAutoresizingMaskIntoConstraints = YES;
     streamCollection.followControl.dependencyManager = dependencyManager;
     streamCollection.followControl.tintUnselectedImage = YES;
     streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];

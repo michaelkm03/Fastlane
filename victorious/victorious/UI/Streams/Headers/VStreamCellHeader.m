@@ -137,10 +137,13 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     _sequence = sequence;
     
     BOOL shouldShowFollowControl = ![self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]] && !self.sequence.user.isFollowedByMainUser.boolValue;
-    if ( self.shouldShowFollowControl != shouldShowFollowControl && ![self actionBarNeedsSetup] )
+    if ( self.shouldShowFollowControl != shouldShowFollowControl )
     {
         self.shouldShowFollowControl = shouldShowFollowControl;
-        [self updateActionBarActionItems];
+        if ( ![self actionBarNeedsSetup] )
+        {
+            [self updateActionBarActionItems];
+        }
     }
     if ( self.shouldShowFollowControl )
     {
