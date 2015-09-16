@@ -245,11 +245,17 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         return;
     }
     
+    if ( [self.sequence.name isEqualToString:@"23232323232"] )
+    {
+        
+    }
+    
     switch (self.focusType)
     {
         case VFocusTypeNone:
             [self pauseVideo];
             [self showPreview];
+            [self setToolbarHidden:YES animated:YES];
             self.userInteractionEnabled = NO;
             self.toolbar.autoVisbilityTimerEnabled = NO;
             self.videoView.muted = YES;
@@ -273,13 +279,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             self.videoView.muted = NO;
             self.userInteractionEnabled = YES;
             self.toolbar.autoVisbilityTimerEnabled = YES;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                           {
-                               if ( self.focusType == VFocusTypeDetail )
-                               {
-                                   [self setToolbarHidden:NO animated:YES];
-                               }
-                           });
+            [self setToolbarHidden:NO animated:YES];
             break;
     }
     [self updateUIState];

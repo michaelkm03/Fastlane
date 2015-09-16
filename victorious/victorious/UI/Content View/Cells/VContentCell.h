@@ -76,4 +76,6 @@
 
 @property (nonatomic, strong) UIView *shrinkingContentView;
 
+@property (nonatomic, assign) CGFloat shrinkingContentDefaultHeight;
+
 @end

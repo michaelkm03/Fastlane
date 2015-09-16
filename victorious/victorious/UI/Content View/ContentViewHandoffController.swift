@@ -67,52 +67,55 @@ class ContentViewHandoffController {
             let videoSequence = previewView as? VVideoSequencePreviewView {
             videoSequence.delegate = videoSequenceDelegate
         }
-        
-        let parentView = contentViewController.contentCell.contentView
-        let previewFrame = parentView.convertRect( previewView.frame, fromView: previewView )
-        let containerFrame = parentView.convertRect( containerView.frame, fromView: containerView )
-        
-        parentView.addSubview(previewView)
-        
         if let focusableView = previewView as? VFocusable {
             focusableView.focusType = .Detail
         }
         
+        let previewViewReceiver = contentViewController as! VSequencePreviewViewReceiver //< Change to guard/else
+        let superview = previewViewReceiver.getPreviewSuperview()
+        previewViewReceiver.didAddPreviewView(previewView, toSuperview: superview)
+        
+        // Calculate these frame values before adding to superview
+        let previewFrame = superview.convertRect( previewView.frame, fromView: previewView )
+        let containerFrame = superview.convertRect( containerView.frame, fromView: containerView )
+        
+        superview.addSubview( previewView )
+        
         let widthConstraint = NSLayoutConstraint(item: previewView,
             attribute: .Width,
             relatedBy: .Equal,
-            toItem: parentView,
+            toItem: superview,
             attribute: .Width,
             multiplier: 1.0,
-            constant: previewFrame.width - parentView.frame.width )
-        parentView.addConstraint( widthConstraint )
+            constant: previewFrame.width - superview.frame.width )
+        superview.addConstraint( widthConstraint )
         
         let heightConstraint = NSLayoutConstraint(item: previewView,
             attribute: .Height,
             relatedBy: .Equal,
-            toItem: parentView,
+            toItem: superview,
             attribute: .Height,
             multiplier: 1.0,
-            constant: previewFrame.height - parentView.frame.height )
-        parentView.addConstraint( heightConstraint )
+            constant: previewFrame.height - superview.frame.height )
+        superview.addConstraint( heightConstraint )
         
         let topConstraint = NSLayoutConstraint(item: previewView,
             attribute: .Top,
             relatedBy: .Equal,
-            toItem: parentView,
+            toItem: superview,
             attribute: .Top,
             multiplier: 1.0,
             constant: previewFrame.origin.y )
-        parentView.addConstraint( topConstraint )
+        superview.addConstraint( topConstraint )
         
         let centerConstraint = NSLayoutConstraint(item: previewView,
             attribute: .CenterX,
             relatedBy: .Equal,
-            toItem: parentView,
+            toItem: superview,
             attribute: .CenterX,
             multiplier: 1.0,
-            constant: previewFrame.midX - parentView.frame.midX )
-        parentView.addConstraint( centerConstraint )
+            constant: previewFrame.midX - superview.frame.midX )
+        superview.addConstraint( centerConstraint )
         
         self.previewLayout = PreviewLayout(
             height: AnimatedConstraint(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue:0.0),
@@ -120,7 +123,7 @@ class ContentViewHandoffController {
             top: AnimatedConstraint(constraint: topConstraint, originValue: topConstraint.constant, destinationValue:0.0),
             center: AnimatedConstraint(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue:0.0),
             view: previewView,
-            parent: parentView )
+            parent: superview )
         
         
         // WARNING: Get real values
@@ -135,7 +138,7 @@ class ContentViewHandoffController {
         )
         if let topImage = self.imageFromImage( snapshotImage, rect: topFrame) {
             let topImageView = UIImageView(image: topImage)
-            parentView.addSubview( topImageView )
+            superview.addSubview( topImageView )
             topImageView.frame = topFrame
             topImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
             
@@ -147,7 +150,7 @@ class ContentViewHandoffController {
                 metrics: [ "height" : topImageView.frame.height, ],
                 views: views
             )
-            parentView.addConstraints( constraintsV )
+            superview.addConstraints( constraintsV )
             
             let topConstraint = NSLayoutConstraint(item: topImageView,
                 attribute: .Bottom,
@@ -156,7 +159,7 @@ class ContentViewHandoffController {
                 attribute: .Top,
                 multiplier: 1.0,
                 constant: containerFrame.minY - previewFrame.minY )
-            parentView.addConstraint( topConstraint )
+            superview.addConstraint( topConstraint )
             
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
@@ -164,7 +167,7 @@ class ContentViewHandoffController {
                 metrics: nil,
                 views: views
             )
-            parentView.addConstraints( constraintsH )
+            superview.addConstraints( constraintsH )
             
             sliceLayouts.append( SliceLayout(
                 constraint: AnimatedConstraint(
@@ -172,7 +175,7 @@ class ContentViewHandoffController {
                     originValue: topConstraint.constant,
                     destinationValue: 0.0
                 ),
-                parent: parentView
+                parent: superview
             ) )
             
             transitionSliceViews.append( topImageView )
@@ -186,11 +189,11 @@ class ContentViewHandoffController {
         )
         if let midImage = self.imageFromImage( snapshotImage, rect: midFrame) {
             let midImageView = UIImageView(image: midImage)
-            parentView.insertSubview( midImageView, belowSubview: previewView )
+            superview.insertSubview( midImageView, belowSubview: previewView )
             midImageView.frame = midFrame
             midImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
             
-            parentView.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat("H:|[midImageView]|",
+            superview.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat("H:|[midImageView]|",
                 options: nil,
                 metrics: nil,
                 views: [ "midImageView" : midImageView ])
@@ -201,7 +204,7 @@ class ContentViewHandoffController {
                 toItem: previewView,
                 attribute: .Top,
                 multiplier: 1.0, constant: containerFrame.minY - previewFrame.minY)
-            parentView.addConstraint( topConstraint )
+            superview.addConstraint( topConstraint )
 
             let bottomConstraint = NSLayoutConstraint(item: midImageView,
                 attribute: .Bottom,
@@ -209,7 +212,7 @@ class ContentViewHandoffController {
                 toItem: previewView,
                 attribute: .Bottom,
                 multiplier: 1.0, constant: containerFrame.maxY - previewFrame.maxY)
-            parentView.addConstraint( bottomConstraint )
+            superview.addConstraint( bottomConstraint )
             
             transitionSliceViews.append( midImageView )
             
@@ -219,7 +222,7 @@ class ContentViewHandoffController {
                     originValue: topConstraint.constant,
                     destinationValue: 0.0
                 ),
-                parent: parentView
+                parent: superview
             ) )
             
             sliceLayouts.append( SliceLayout(
@@ -228,7 +231,7 @@ class ContentViewHandoffController {
                     originValue: bottomConstraint.constant,
                     destinationValue: 0.0
                 ),
-                parent: parentView
+                parent: superview
             ) )
         }
         
@@ -240,18 +243,18 @@ class ContentViewHandoffController {
         )
         if let botImage = self.imageFromImage( snapshotImage, rect: botFrame) {
             let botImageView = UIImageView(image: botImage)
-            parentView.addSubview( botImageView )
+            superview.addSubview( botImageView )
             botImageView.frame = botFrame
             botImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
             
             let bottomConstraint = NSLayoutConstraint(item: botImageView,
                 attribute: .Top,
                 relatedBy: .Equal,
-                toItem: parentView,
+                toItem: superview,
                 attribute: .Top,
                 multiplier: 1.0,
                 constant: snapshotImage.size.height - botFrame.height)
-            parentView.addConstraint( bottomConstraint )
+            superview.addConstraint( bottomConstraint )
             
             let views = [ "botImageView" : botImageView ]
             let constraintsV = NSLayoutConstraint.constraintsWithVisualFormat( "V:[botImageView(height)]",
@@ -264,7 +267,7 @@ class ContentViewHandoffController {
                 metrics: nil,
                 views: views
             )
-            parentView.addConstraints( constraintsH )
+            superview.addConstraints( constraintsH )
             
             transitionSliceViews.append( botImageView )
             
@@ -274,7 +277,7 @@ class ContentViewHandoffController {
                     originValue: bottomConstraint.constant,
                     destinationValue: snapshotImage.size.height
                 ),
-                parent: parentView
+                parent: superview
             ) )
         }
     }

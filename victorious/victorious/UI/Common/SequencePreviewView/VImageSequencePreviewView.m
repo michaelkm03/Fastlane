@@ -49,18 +49,18 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            self.backgroundContainerView.backgroundColor = [UIColor clearColor];
             [self.likeButton hide];
+            self.previewImageView.backgroundColor = [UIColor clearColor];
             break;
             
         case VFocusTypeStream:
-            self.backgroundContainerView.backgroundColor = [UIColor clearColor];
             [self.likeButton hide];
+            self.previewImageView.backgroundColor = [UIColor clearColor];
             break;
             
         case VFocusTypeDetail:
-            self.backgroundContainerView.backgroundColor = [UIColor blackColor];
             [self.likeButton show];
+            self.previewImageView.backgroundColor = [UIColor blackColor];
             break;
     }
 }
@@ -70,12 +70,12 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    [self setBackgroundContainerViewVisible:NO];
+    [self setBackgroundContainerViewVisible:YES];
     [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self setBackgroundContainerViewVisible:YES];
+         [self setBackgroundContainerViewVisible:NO];
      }
                                  completion:^(UIImage *image)
      {
@@ -88,7 +88,7 @@
 - (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
 {
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
+    //[dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 - (UIView *)backgroundContainerView
@@ -99,6 +99,7 @@
     }
     
     _backgroundContainerView = [[UIView alloc] init];
+    _backgroundContainerView.backgroundColor = [UIColor clearColor];
     _backgroundContainerView.alpha = 0.0f;
     [self addSubview:_backgroundContainerView];
     [self sendSubviewToBack:_backgroundContainerView];

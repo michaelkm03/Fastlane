@@ -328,6 +328,15 @@
     [self fetchUserinfo];
 }
 
+- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize
+{
+    CGFloat maxAspect = 16.0f/9.0f;
+    CGFloat minAspect = 1.0;
+    CGFloat aspectRatio = CLAMP( minAspect, maxAspect, self.sequence.previewAssetAspectRatio );
+    CGFloat height = containerSize.width / aspectRatio;
+    return CGSizeMake( containerSize.width, height );
+}
+
 - (VLargeNumberFormatter *)largeNumberFormatter
 {
     if ( _largeNumberFormatter == nil )

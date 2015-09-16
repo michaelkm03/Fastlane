@@ -75,7 +75,8 @@
     {
         [self v_addPinToTopBottomToSubview:self.answerAImageView];
         [self v_addPinToTopBottomToSubview:self.answerBImageView];
-        
+        [self.answerAImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.answerBImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                          attribute:NSLayoutAttributeLeft
                                                          relatedBy:NSLayoutRelationEqual

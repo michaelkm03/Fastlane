@@ -2642,6 +2642,7 @@
 		A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayer.h; sourceTree = "<group>"; };
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
+		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
 		A7C713B11B74450A00089B5E /* GCDUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDUtils.swift; sourceTree = "<group>"; };
 		A7CD87501B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VAccessoryScreens.m"; sourceTree = "<group>"; };
@@ -7144,6 +7145,7 @@
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
 				A7D043211BA266E400FDBBCC /* VVideoPreviewView.h */,
 				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
+				A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";

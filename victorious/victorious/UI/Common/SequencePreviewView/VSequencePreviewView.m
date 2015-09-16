@@ -95,6 +95,8 @@
         
         [_singleTapGesture requireGestureRecognizerToFail:_doubleTapGesture];
         
+        self.backgroundColor = [UIColor clearColor];
+        
         [self setGesturesEnabled:NO];
     }
     return self;

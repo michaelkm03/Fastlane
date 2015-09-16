@@ -50,7 +50,7 @@
 
 - (void)setup
 {
-    if (!self.animationImageView)
+    if ( self.animationImageView == nil )
     {
         UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         animationImageView.backgroundColor = [UIColor clearColor];
@@ -67,6 +67,32 @@
     
     self.contentView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
+    
+    if ( self.shrinkingContentView == nil )
+    {
+        self.shrinkingContentView = [[UIView alloc] initWithFrame:self.bounds];
+        self.shrinkingContentView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.shrinkingContentView];
+        [self.shrinkingContentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.shrinkingContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:nil
+                                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                                             multiplier:1.0
+                                                                               constant:CGRectGetHeight(self.shrinkingContentView.frame)]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                                                     options:kNilOptions
+                                                                     metrics:nil
+                                                                       views:@{ @"view" : self.shrinkingContentView }]];
+    }
 }
 
 - (void)prepareForReuse
@@ -83,6 +109,13 @@
     [super applyLayoutAttributes:layoutAttributes];
 
     self.shrinkingContentView.frame = self.contentView.bounds;
+    
+    CGFloat scale = 1.0f;
+    if ( self.shrinkingContentDefaultHeight > 0.0 )
+    {
+        scale = CGRectGetHeight(self.contentView.bounds) / self.shrinkingContentDefaultHeight;
+    }
+    self.shrinkingContentView.transform = CGAffineTransformMakeScale( scale, scale );
 }
 
 #pragma mark - Rotation
@@ -100,7 +133,6 @@
     {
         self.shrinkingContentView.transform = CGAffineTransformIdentity;
         self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
-        self.shrinkingContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.shrinkingContentView layoutIfNeeded];
     }
     else

@@ -142,9 +142,15 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setupResultViews
 {
+    if ( self.answerAResultView != nil && self.answerBResultView != nil )
+    {
+        return;
+    }
+    
     NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f) };
     
     self.answerAResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
+    self.answerBResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
     NSDictionary *viewsA = @{ @"view" : self.answerAResultView };
     self.answerAResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerAResultView];

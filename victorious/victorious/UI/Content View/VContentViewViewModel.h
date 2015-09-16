@@ -225,6 +225,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)repost;
 
+- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
+
 #pragma mark - Polls
 
 @property (nonatomic, readonly) NSString *answerALabelText;

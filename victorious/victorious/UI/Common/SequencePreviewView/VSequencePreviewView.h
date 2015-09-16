@@ -9,17 +9,9 @@
 #import "VStreamItemPreviewView.h"
 #import "VContentLikeButton.h"
 #import "VFocusable.h"
+#import "VSequencePreviewViewProtocols.h"
 
-@class VSequence, VSequencePreviewView;
-
-@protocol VSequencePreviewViewDetailDelegate <NSObject>
-
-- (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView;
-
-- (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence
- completion:(void(^)(BOOL))completion;
-
-@end
+@class VSequence;
 
 /**
  *  VSequencePreviewView is a class cluster for previewing a sequence. A concrete subclass is provided

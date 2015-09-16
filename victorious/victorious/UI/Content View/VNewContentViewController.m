@@ -71,12 +71,13 @@
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
+#import "VSequencePreviewViewProtocols.h"
 
 #define HANDOFFENABLED 0
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate, VSequencePreviewViewReceiver>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -502,6 +503,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
              self.closeButton.alpha = 0.0f;
          }];
     }
+    
+    UIInterfaceOrientation currentOrientation = UIInterfaceOrientationPortrait;
+    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -584,6 +588,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (IBAction)pressedClose:(id)sender
 {
+    [self.contentCollectionView setContentOffset:CGPointZero animated:NO];
+    self.contentCell.shrinkingContentDefaultHeight = 0.0f;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -935,9 +942,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 default:
                 {
-                    CGFloat aspectRatio = CLAMP( 1.0, 16.0f/9.0f, self.viewModel.sequence.previewAssetAspectRatio );
-                    CGFloat height = CGRectGetWidth(self.view.bounds) / aspectRatio;
-                    return CGSizeMake( CGRectGetWidth(self.view.bounds), height );
+                    return [self.viewModel contentSizeWithinContainerSize:self.view.bounds.size];
                 }
                 case VContentViewTypeInvalid:
                     return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -1605,6 +1610,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
               }];
          }
      }];
+}
+
+#pragma mark - VSequencePreviewViewReceiver
+
+- (UIView *)getPreviewSuperview
+{
+    return self.contentCell.shrinkingContentView;
+}
+
+- (void)didAddPreviewView:(UIView *)previewView toSuperview:(UIView *)superview
+{
+    self.contentCell.shrinkingContentDefaultHeight = [self.viewModel contentSizeWithinContainerSize:self.view.bounds.size].height;
 }
 
 #pragma mark - VVideoSequenceDelegate
