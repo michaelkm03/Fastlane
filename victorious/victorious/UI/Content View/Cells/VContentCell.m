@@ -50,14 +50,11 @@
 
 - (void)setup
 {
-    if ( self.animationImageView == nil )
-    {
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
-        animationImageView.backgroundColor = [UIColor clearColor];
-        animationImageView.userInteractionEnabled = NO;
-        self.animationImageView = animationImageView;
-        [self.contentView addSubview:animationImageView];
-    }
+    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
+    animationImageView.backgroundColor = [UIColor clearColor];
+    animationImageView.userInteractionEnabled = NO;
+    self.animationImageView = animationImageView;
+    [self.contentView addSubview:animationImageView];
     
     // Set some initial/default values
     self.maxSize = self.frame.size;
@@ -68,31 +65,28 @@
     self.contentView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
     
-    if ( self.shrinkingContentView == nil )
-    {
-        self.shrinkingContentView = [[UIView alloc] initWithFrame:self.bounds];
-        self.shrinkingContentView.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.shrinkingContentView];
-        [self.shrinkingContentView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.shrinkingContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
-                                                                              attribute:NSLayoutAttributeHeight
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:nil
-                                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                                             multiplier:1.0
-                                                                               constant:CGRectGetHeight(self.shrinkingContentView.frame)]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
-                                                                     options:kNilOptions
-                                                                     metrics:nil
-                                                                       views:@{ @"view" : self.shrinkingContentView }]];
-    }
+    self.shrinkingContentView = [[UIView alloc] initWithFrame:self.bounds];
+    self.shrinkingContentView.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.shrinkingContentView];
+    [self.shrinkingContentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.shrinkingContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                                          attribute:NSLayoutAttributeHeight
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:nil
+                                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                                         multiplier:1.0
+                                                                           constant:CGRectGetHeight(self.shrinkingContentView.frame)]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.contentView
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                                                             options:kNilOptions
+                                                                             metrics:nil
+                                                                               views:@{ @"view" : self.shrinkingContentView }]];
 }
 
 - (void)prepareForReuse
