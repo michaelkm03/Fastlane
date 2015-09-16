@@ -205,7 +205,7 @@
         NSString *productIdentifier = enhancer.voteType.productIdentifier;
         if ( productIdentifier != nil )
         {
-            enhancer.isLocked = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
+            enhancer.requiresPurchase = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
             
             // If there's an error of any kind that has led to the product not being present in purchase manager,
             // we should not even show the enhancer because it will be locked and will fail when the user tries to purchase it.
