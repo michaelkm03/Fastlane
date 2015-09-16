@@ -129,8 +129,8 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
         CGSize desiredSize = self.levelBadgeView.desiredSize;
         CGRect badgeFrame = CGRectZero;
         badgeFrame.size = desiredSize;
-        badgeFrame.origin.x = spotOnCircle - desiredSize.width / 2;
-        badgeFrame.origin.y = spotOnCircle - desiredSize.height / 2;
+        badgeFrame.origin.x = VFLOOR(spotOnCircle - desiredSize.width / 2);
+        badgeFrame.origin.y = VFLOOR(spotOnCircle - desiredSize.height / 2);
         self.levelBadgeView.frame = badgeFrame;
     }
 }
