@@ -102,7 +102,7 @@ private extension GIFSearchDataSource.Section {
     func resultSectionDisplaySizes( withinSize totalSize: CGSize ) -> [CGSize] {
         assert( self.results.count == 2, "This method only calculates sizes for sections with exactly 2 results" )
         
-        var output = [CGSize](count: self.results.count, repeatedValue: CGSize.zeroSize)
+        var output = [CGSize](count: self.results.count, repeatedValue: CGSize.zero)
         
         let gifA = self.results[0]
         let gifB = self.results[1]

@@ -61,7 +61,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private var keyboardBar: VKeyboardInputAccessoryView? {
         didSet {
             if let keyboardBar = keyboardBar {
-                keyboardBar.setTranslatesAutoresizingMaskIntoConstraints(false)
+                keyboardBar.translatesAutoresizingMaskIntoConstraints = false
                 keyboardBar.delegate = self
                 keyboardBar.textStorageDelegate = self
             }
@@ -90,7 +90,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
         noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
         if let noContentView = noContentView {
-            noContentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            noContentView.translatesAutoresizingMaskIntoConstraints = false
             view.insertSubview(noContentView, aboveSubview: imageView)
             view.v_addFitToParentConstraintsToSubview(noContentView)
             noContentView.icon = UIImage(named: "noCommentIcon")
@@ -304,12 +304,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
                 }
             }
-            cell.commentAndMediaView.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in
-                if let strongSelf = self, strongCell = cell {
+            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in
+                if let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView {
                     strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
                             previewImage: previewImage,
                             isVideo: strongCell.mediaIsVideo,
-                            sourceView: strongCell.commentAndMediaView)
+                            sourceView: commentAndMediaView)
                 }
             }
             return cell
@@ -358,9 +358,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
             // We only need to update if things have changed
             collectionView.reloadData()
-            dispatch_after(0.1, { () -> () in
+            dispatch_after(0.1) {
                 self.collectionView.flashScrollIndicators()
-            })
+            }
         }
         dispatch_after(0.1) {
             self.focusHelper?.updateFocus()
@@ -485,7 +485,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         keyboardBar?.attachmentsBarHidden = true
         
         let searchTableView = viewController.view
-        searchTableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        searchTableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchTableView)
         if let ownWindow = view.window, keyboardBar = keyboardBar {
             let obscuredRectInWindow = keyboardBar.obscuredRectInWindow(ownWindow)

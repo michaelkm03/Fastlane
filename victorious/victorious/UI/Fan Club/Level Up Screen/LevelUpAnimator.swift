@@ -13,7 +13,7 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     var isDismissal = false
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         if isDismissal {
             return LevelUpViewController.AnimationConstants.dismissalDuration
         }
@@ -22,9 +22,8 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        let containerView = transitionContext.containerView()
-        
-        if let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
+        if let containerView = transitionContext.containerView(),
+            let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
             let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
             
             toViewController.view.frame = containerView.bounds
