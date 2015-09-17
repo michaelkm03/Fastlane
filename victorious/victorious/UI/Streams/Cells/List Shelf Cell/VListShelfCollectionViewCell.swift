@@ -157,12 +157,21 @@ extension VListShelfCollectionViewCell: TrackableShelf {
     
     func trackVisibleSequences() {
         for cell in collectionView.visibleCells() {
-            if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
-                let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                    let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                    streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
+            if let indexPath = collectionView.indexPathForCell(cell), shelf = shelf,
+                streamItem = streamItemAt(indexPath: indexPath) {
+                let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
             }
         }
+    }
+    
+    /// The stream item displayed at the provided index path.
+    ///
+    /// :param: indexPath The index path of the cell whose represented stream item is desired.
+    ///
+    /// :return: The stream item displayed at the provided index path.
+    func streamItemAt(indexPath indexPath: NSIndexPath) -> VStreamItem? {
+        fatalError("Subclasses of VListShelfCollectionViewCell must override streamItemAtIndexPath:")
     }
 }
 
