@@ -32,7 +32,6 @@
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VUserProfileViewController.h"
-#import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"

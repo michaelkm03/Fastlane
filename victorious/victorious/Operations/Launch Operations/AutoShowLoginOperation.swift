@@ -22,7 +22,6 @@ import Foundation
 /// An `Operation` subclass for auto-showing login on startup.
 class AutoShowLoginOperation: Operation {
     
-    private let autoShowLoginKey = "showLoginOnStartup"
     let loginAuthorizedAction: VAuthorizedAction
     private let dependencyManager: VDependencyManager
     private let viewControllerToPresentFrom: UIViewController
@@ -59,28 +58,21 @@ class AutoShowLoginOperation: Operation {
         
         beganExecuting()
         
-        let shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
-        if shouldAutoShowLogin.boolValue {
-            dispatch_async(dispatch_get_main_queue(), {
-                let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
-                    withCompletion: { (success: Bool) in
-                        self.delegate?.hideLoginViewController() {
-                            self.finishedExecuting()
-                        }
-                    })
-                if let loginVC = loginVC {
-                    self.delegate?.showLoginViewController(loginVC)
-                }
-                else {
-                    // If the loginVC is nil we should not show and just finish up
-                    self.finishedExecuting()
-                }
+        dispatch_async(dispatch_get_main_queue(), {
+            let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
+                withCompletion: { (success: Bool) in
+                    self.delegate?.hideLoginViewController() {
+                        self.finishedExecuting()
+                    }
             })
-        }
-        else
-        {
-            finishedExecuting()
-        }
+            if let loginVC = loginVC {
+                self.delegate?.showLoginViewController(loginVC)
+            }
+            else {
+                // If the loginVC is nil we should not show and just finish up
+                self.finishedExecuting()
+            }
+        })
     }
     
 }

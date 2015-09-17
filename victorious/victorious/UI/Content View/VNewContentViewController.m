@@ -53,7 +53,6 @@
 
 // Logged in
 #import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
