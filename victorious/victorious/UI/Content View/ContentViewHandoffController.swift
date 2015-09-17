@@ -9,7 +9,7 @@
 import UIKit
 
 /// An object sets up the view hiearachy and sets up relationships between objects
-/// to facilitate the "split-to-reveal" style animated transition used when showing
+/// to facilitate the "split-reveal" style animated transition used when showing
 /// `VNewContentViewController`
 class ContentViewHandoffController {
     
@@ -44,39 +44,19 @@ class ContentViewHandoffController {
     private(set) var sliceLayouts = [SliceLayout]()
     private(set) var transitionSliceViews = [UIView]()
     
-    func addPreviewView( contentPreviewProvider: VContentPreviewViewProvider, toContentViewController contentViewController: VNewContentViewController, originSnapshotImage snapshotImage: UIImage) {
+    func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider, toReceiver previewReceiver: VContentPreviewViewReceiver, originSnapshotImage snapshotImage: UIImage) {
         
-        let previewView = contentPreviewProvider.getPreviewView()
-        let containerView = contentPreviewProvider.getContainerView()
+        let previewView = previewProvider.getPreviewView()
+        let containerView = previewProvider.getContainerView()
         
-        // Set up some of the important relationships between these objects
-        if let videoPreviewView = previewView as? VVideoPreviewView {
-            contentViewController.videoPlayer = videoPreviewView.videoPlayer
-        }
-        if let pollAnswerReceiver = previewView as? VPollResultReceiver {
-            contentViewController.pollAnswerReceiver = pollAnswerReceiver
-        }
-        if let previewView = previewView as? VSequencePreviewView,
-            let detailDelegate = contentViewController as? VSequencePreviewViewDetailDelegate {
-                previewView.detailDelegate = detailDelegate
-        }
-        if let videoSequenceDelegate = contentViewController as? VVideoSequenceDelegate,
-            let videoSequence = previewView as? VVideoSequencePreviewView {
-            videoSequence.delegate = videoSequenceDelegate
-        }
-        if let focusableView = previewView as? VFocusable {
-            focusableView.focusType = .Detail
-        }
-        
-        let previewViewReceiver = contentViewController as! VSequencePreviewViewReceiver //< Change to guard/else
-        let superview = previewViewReceiver.getPreviewSuperview()
-        previewViewReceiver.didAddPreviewView(previewView, toSuperview: superview)
+        let superview = previewReceiver.getTargetSuperview()
         
         // Calculate these frame values before adding to superview
         let previewFrame = superview.convertRect( previewView.frame, fromView: previewView )
         let containerFrame = superview.convertRect( containerView.frame, fromView: containerView )
         
         superview.addSubview( previewView )
+        previewReceiver.setPreviewView( previewView )
         
         let widthConstraint = NSLayoutConstraint(item: previewView,
             attribute: .Width,

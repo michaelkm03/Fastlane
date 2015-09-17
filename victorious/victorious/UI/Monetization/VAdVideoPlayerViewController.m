@@ -12,6 +12,7 @@
 #import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
 #import "VTremorAdViewController.h"
+#import "UIView+AutoLayout.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -79,18 +80,14 @@
 {
     self.adViewController.delegate = self;
     self.adViewController.adServerMonetizationDetails = self.adDetails;
-    if (self.monetizationPartner != VMonetizationPartnerTremor)
-    {
-        CGFloat width = CGRectGetWidth(self.view.bounds);
-        CGFloat topInset = 40.0f;
-        self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.adViewController.view.frame = CGRectMake(0.0f, topInset, width, width - topInset);
-    }
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
+    if (self.monetizationPartner != VMonetizationPartnerTremor)
+    {
+        [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view
+                                                leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];
+    }
     [self.adViewController didMoveToParentViewController:self];
-    
-    // Start the Ad Manager
     [self.adViewController startAdManager];
 }
 

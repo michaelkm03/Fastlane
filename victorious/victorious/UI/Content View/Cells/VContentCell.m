@@ -11,16 +11,24 @@
 #import "VAdVideoPlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "VTimerManager.h"
+#import "victorious-Swift.h"
+
+#warning Abstract this to protocol?
+#import "VSequencePreviewView.h"
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
-@interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate>
+@interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
 
-@property (nonatomic, weak) UIImageView *animationImageView;
+@property (nonatomic, assign) BOOL hasBeenReset;
+@property (nonatomic, assign) BOOL shrinkingDisabled;
+@property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
-@property (nonatomic, assign) BOOL shrinkingDisabled;
+@property (nonatomic, weak) UIImageView *animationImageView;
+@property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
+@property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
 
 @end
 
@@ -102,6 +110,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     [super prepareForReuse];
     
+    self.hasBeenReset = NO;
+    [self resumeContentPlaybackAnimated:NO];
     [self hideEndCard:YES];
 }
 
@@ -142,6 +152,30 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [super layoutSubviews];
     [self.contentView bringSubviewToFront:self.animationImageView];
     [self updateShrinkingView];
+}
+
+#pragma mark - VContentPreviewViewReceiver
+
+- (UIView *)getTargetSuperview
+{
+    return self.shrinkingContentView;
+}
+
+- (void)setPreviewView:(VSequencePreviewView *)previewView
+{
+    self.sequencePreviewView = previewView;
+}
+
+- (void)setVideoPlayer:(id<VVideoPlayer>)videoPlayer
+{
+    _videoPlayer = videoPlayer;
+}
+
+- (void)resetView
+{
+    self.hasBeenReset = YES;
+    [self resumeContentPlaybackAnimated:NO];
+    [self hideEndCard:YES];
 }
 
 #pragma mark - Public Methods
@@ -203,8 +237,38 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     }
 }
 
-- (void)resumeContentPlayback
+- (void)resumeContentPlaybackAnimated:(BOOL)animated
 {
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
+    
+    [self.videoPlayer play];
+    self.sequencePreviewView.hidden = NO;
+    [self layoutIfNeeded];
+    
+    void (^animations)() = ^
+    {
+        self.sequencePreviewView.alpha = 1.0f;
+        self.adVideoPlayerViewController.view.alpha = 0.0f;
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        self.adVideoPlayerViewController.delegate = nil;
+        [self.adVideoPlayerViewController.view removeFromSuperview];
+        self.adVideoPlayerViewController = nil;
+    };
+    
+    if ( animated )
+    {
+        [self.sequencePreviewView.layer removeAllAnimations];
+        [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+        [UIView animateWithDuration:0.5f animations:animations completion:completion];
+    }
+    else
+    {
+        animations();
+        completion(YES);
+    }
 }
 
 #pragma mark - VEndCardViewControllerDelegate
@@ -226,44 +290,51 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 #pragma mark  Ad Video Player
 
-- (void)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+- (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner details:details];
-    self.adVideoPlayerViewController.delegate = self;
-    [self.contentView addSubview:self.adVideoPlayerViewController.view];
-    [self.contentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
-}
-
-- (void)addAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
-{
-    [self.contentView addSubview:adVideoPlayerViewController.view];
-    [adVideoPlayerViewController start];
+    if ( self.hasBeenReset )
+    {
+        return;
+    }
     
-    // This timer is added as a workaround to kill the ad video if it has not started playing after kAdTimeoutTimeInterval seconds.
+    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
+                                                                                                 details:details];
+    self.adVideoPlayerViewController.delegate = self;
+    self.adVideoPlayerViewController.view.frame = self.shrinkingContentView.bounds;
+    self.adVideoPlayerViewController.view.alpha = 0.0f;
+    [self.shrinkingContentView addSubview:self.adVideoPlayerViewController.view];
+    [self.shrinkingContentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
+    [self.adVideoPlayerViewController start];
+    
+    [self layoutIfNeeded];
+    [UIView animateWithDuration:0.5f animations:^
+     {
+         self.sequencePreviewView.alpha = 0.0f;
+         self.adVideoPlayerViewController.view.alpha = 1.0f;
+     } completion:^(BOOL finished)
+     {
+         [self.videoPlayer pause];
+         self.sequencePreviewView.hidden = YES;
+     }];
+    
+    // This timer is added as a workaround to kill the ad video if it has not started playing
     self.adTimeoutTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval
                                                                         target:self
-                                                                      selector:@selector(adTimerFired)
+                                                                      selector:@selector(adTimerDidFire)
                                                                       userInfo:nil
                                                                        repeats:NO];
 }
 
-- (void)adTimerFired
+- (void)adTimerDidFire
 {
-    [self removeAdVideoPlayerViewController];
-    [self resumeContentPlayback];
-}
-
-- (void)removeAdVideoPlayerViewController
-{
-    [self.adVideoPlayerViewController.view removeFromSuperview];
-    self.adVideoPlayerViewController = nil;
+    [self resumeContentPlaybackAnimated:YES];
 }
 
 #pragma mark  VAdVideoPlayerViewControllerDelegate
 
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    [self resumeContentPlayback];
+    [self resumeContentPlaybackAnimated:YES];
 }
 
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
@@ -283,7 +354,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    [self resumeContentPlayback];
+    [self resumeContentPlaybackAnimated:YES];
 }
 
 @end

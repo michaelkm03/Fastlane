@@ -49,4 +49,5 @@
 - (BOOL)canHandleSequence:(VSequence *)sequence;
 
 - (void)setGesturesEnabled:(BOOL)enabled;
+
 @end

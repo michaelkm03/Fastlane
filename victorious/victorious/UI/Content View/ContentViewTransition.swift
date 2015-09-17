@@ -8,8 +8,7 @@
 
 import UIKit
 
-/// A custom transition used to show `VNewContentViewController` with a "split-to-reveal"
-/// style animation.
+/// A custom transition used to show `VNewContentViewController` with a "split-reveal" style animation.
 class ContentViewTransition : NSObject, VAnimatedTransition {
     
     private let handoffController = ContentViewHandoffController()
@@ -27,14 +26,23 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
         if let navController = model.toViewController as? VNavigationController,
             let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
-            let contentPreviewProvider = contentViewController.viewModel.context.contentPreviewProvider {
+            let previewProvider = contentViewController.viewModel.context.contentPreviewProvider,
+            let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver {
                 
-                self.handoffController.addPreviewView( contentPreviewProvider,
-                    toContentViewController: contentViewController,
+                // Mediate the handoff of views
+                self.handoffController.addPreviewView(
+                    fromProvider: previewProvider,
+                    toReceiver: previewReceiver,
                     originSnapshotImage: snapshotImage )
                 
-                if let focusableView = contentPreviewProvider.getPreviewView() as? VFocusable {
-                    focusableView.focusType = VFocusType.Detail
+                // Wire up some relationships
+                let previewView = previewProvider.getPreviewView()
+                contentViewController.pollAnswerReceiver = previewView as? VPollResultReceiver
+                previewView.focusType = VFocusType.Detail
+                previewView.detailDelegate = contentViewController as? VSequencePreviewViewDetailDelegate
+                if let videoPlayer = (previewView as? VVideoPreviewView)?.videoPlayer {
+                    contentViewController.videoPlayer = videoPlayer
+                    previewReceiver.setVideoPlayer( videoPlayer )
                 }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
@@ -44,14 +52,6 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {
-        
-        if let navController = model.fromViewController as? VNavigationController,
-            let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
-            let contentPreviewProvider = contentViewController.viewModel.context.contentPreviewProvider,
-            let focusableView = contentPreviewProvider.getPreviewView() as? VFocusable {
-                focusableView.focusType = VFocusType.Stream
-        }
-        
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         for layout in self.handoffController.sliceLayouts {
             layout.parent.layoutIfNeeded()
@@ -117,6 +117,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                     let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider,
                     let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
                         contentPreviewProvider.restorePreviewView( view )
+                        contentPreviewProvider.getPreviewView().focusType = .Stream
                 }
                 completion?(finished)
             }

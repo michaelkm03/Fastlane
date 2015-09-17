@@ -119,11 +119,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, assign, readonly) VContentViewType type;
 
 /**
- *  The type of asset we are currently viewing.
- */
-@property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
-
-/**
  *  A view model for the real time comments for the given sequence.
  */
 @property (nonatomic, strong, readonly) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
@@ -157,6 +152,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) UIColor *textBackgroundColor;
 @property (nonatomic, readonly) NSString *textContent;
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
+
+@property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
+@property (nonatomic, assign, readonly) NSArray *monetizationDetails;
 
 #pragma mark - Videos
 

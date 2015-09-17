@@ -183,9 +183,9 @@
 
 #pragma mark - Create the ad chain
 
-- (void)createAdChainWithCompletion
+- (void)setupAdChain
 {
-    if ( self.adChain == nil )
+    if ( self.adChain != nil )
     {
         return;
     }
@@ -223,8 +223,7 @@
          // Sets up the monetization chain
          if (self.sequence.adBreaks.count > 0)
          {
-             [self createAdChainWithCompletion];
-#warning TODO: Set up ads
+             [self setupAdChain];
          }
          
          // Sets up end card

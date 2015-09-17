@@ -76,7 +76,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate, VSequencePreviewViewReceiver>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -86,7 +86,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
-@property (nonatomic, strong) NSDate *videoLoadedDate;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -225,7 +224,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateContent
 {
-    self.videoLoadedDate = [NSDate date];
+    if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
+    {
+        [self.contentCell playAd:self.viewModel.monetizationPartner
+                         details:self.viewModel.monetizationDetails];
+    }
 }
 
 - (void)didUpdatePollsData
@@ -492,15 +495,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView resignFirstResponder];
     
     [self.commentHighlighter stopAnimations];
-    
-    if ( self.isBeingDismissed )
-    {
-        [UIView animateWithDuration:0.4f animations:^
-         {
-             self.moreButton.alpha = 0.0f;
-             self.closeButton.alpha = 0.0f;
-         }];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -557,24 +551,20 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)trackNonVideoViewStart
 {
-    NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                               VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                              VTrackingKeyLoadTime : @(videoLoadTime),
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 - (void)trackVideoViewStart
 {
-    NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
     NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyStreamId : self.viewModel.streamId,
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                               VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                              VTrackingKeyLoadTime : @(videoLoadTime),
                               VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
@@ -585,6 +575,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [self.contentCollectionView setContentOffset:CGPointZero animated:NO];
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    [self.contentCell resetView];
+    [UIView animateWithDuration:0.25f animations:^
+     {
+         self.moreButton.alpha = 0.0f;
+         self.closeButton.alpha = 0.0f;
+     }];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1598,18 +1594,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
               }];
          }
      }];
-}
-
-#pragma mark - VSequencePreviewViewReceiver
-
-- (UIView *)getPreviewSuperview
-{
-    return self.contentCell.shrinkingContentView;
-}
-
-#warning Remove this from protoco?
-- (void)didAddPreviewView:(UIView *)previewView toSuperview:(UIView *)superview
-{
 }
 
 #pragma mark - VVideoSequenceDelegate

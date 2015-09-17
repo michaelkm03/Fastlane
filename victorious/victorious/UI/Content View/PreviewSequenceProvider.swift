@@ -12,7 +12,14 @@ import Foundation
 /// context (such as the custom transition to `VNewContentViewController`),  and (2) can receive that
 /// view when transitioning back from that context and insert it back into its original view hiearchy
 @objc protocol VContentPreviewViewProvider {
-    func getPreviewView() -> UIView
-    func restorePreviewView( previewView: UIView )
+    func getPreviewView() -> VSequencePreviewView
+    func restorePreviewView( previewView: VSequencePreviewView )
     func getContainerView() -> UIView
+}
+
+/// Defines an object that can display a VSeqencePreviewView
+@objc protocol VContentPreviewViewReceiver {
+    func getTargetSuperview() -> UIView
+    func setPreviewView( previewView: VSequencePreviewView )
+    func setVideoPlayer( videoPlayer: VVideoPlayer )
 }

@@ -12,14 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol VSequencePreviewViewReceiver
-
-- (UIView *)getPreviewSuperview;
-
-- (void)didAddPreviewView:(UIView *)previewView toSuperview:(UIView *)superview;
-
-@end
-
 @protocol VSequencePreviewViewDetailDelegate <NSObject>
 
 - (void)previewView:(VSequencePreviewView *)previewView

@@ -78,8 +78,8 @@
 /**
  Creates the appropraite ad video player and UI for the parameters provided.
  */
-- (void)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
+- (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
 
-@property (nonatomic, strong) UIView *shrinkingContentView;
+- (void)resetView;
 
 @end
