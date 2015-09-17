@@ -32,7 +32,7 @@ class AutoShowLoginOperation: Operation {
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
     /// - parameter objectManager: The object manager to use when creating an internal VAuthorizedAction. Will be used to dervie current login status.
-    /// - parameter dependencyManager: The dependency manager to use for determinging whether or not to auto-show login based on `showLoginOnStartup` key. Also passed to the internal VAuthorizedAction.
+    /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
     /// - parameter viewControllerToPresentFrom: A `UIViewController` to provide to VAuthorizedAction.
     ///
     /// - returns: An AutoShowLoginOperation.
