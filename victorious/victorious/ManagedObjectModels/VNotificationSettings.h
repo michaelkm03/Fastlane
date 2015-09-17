@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSNumber * isPostFromFollowedEnabled;
 @property (nonatomic, retain) NSNumber * isPostOnFollowedHashTagEnabled;
 @property (nonatomic, retain) NSNumber * isUserTagInCommentEnabled;
+@property (nonatomic, retain) NSNumber * isPeopleLikeMyPostEnabled;
 
 @end

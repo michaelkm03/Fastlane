@@ -156,7 +156,9 @@
                                     [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
                                                                                  enabled:_settings.isNewFollowerEnabled.boolValue],
                                     [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"TagInComment", nil)
-                                                                                 enabled:_settings.isUserTagInCommentEnabled.boolValue]];
+                                                                                 enabled:_settings.isUserTagInCommentEnabled.boolValue],
+                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"LikePost", nil)
+                                                                                 enabled:_settings.isPeopleLikeMyPostEnabled.boolValue]];
     NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
     VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
                                                                                                            rows:sectionPeopleRows ];
@@ -176,7 +178,8 @@
     section = self.sections[ 1 ];
     self.settings.isNewPrivateMessageEnabled = @( [section rowAtIndex:0].isEnabled );
     self.settings.isNewFollowerEnabled = @( [section rowAtIndex:1].isEnabled );
-    self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:1].isEnabled );
+    self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:2].isEnabled );
+    self.settings.isPeopleLikeMyPostEnabled = @( [section rowAtIndex:3].isEnabled );
 }
 
 - (void)saveSettings
@@ -283,6 +286,8 @@
             case 2:
                 permissionChanged = VTrackingValueUsertagInComment;
                 break;
+            case 3:
+                permissionChanged = VTrackingValuePeopleLikeMyPost;
             default:
                 break;
         }
