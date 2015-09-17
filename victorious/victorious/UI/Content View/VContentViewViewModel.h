@@ -12,6 +12,28 @@
 #import "VExperienceEnhancerController.h"
 #import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
+#import "VEndCardModel.h"
+#import "VMonetizationPartner.h"
+
+/**
+ *  An enumeration of the various content types supported by VContentViewModel.
+ */
+typedef NS_ENUM(NSInteger, VContentViewType)
+{
+    VContentViewTypeInvalid,
+    VContentViewTypeImage,
+    VContentViewTypeVideo,
+    VContentViewTypeGIFVideo,
+    VContentViewTypePoll,
+    VContentViewTypeText
+};
+
+typedef NS_ENUM(NSInteger, VPollAnswer)
+{
+    VPollAnswerInvalid,
+    VPollAnswerA,
+    VPollAnswerB,
+};
 
 @class ContentViewContext;
 
@@ -40,44 +62,6 @@
 - (void)didUpdatePollsData;
 
 @end
-
-/**
- *  An enumeration of the various content types supported by VContentViewModel.
- */
-typedef NS_ENUM(NSInteger, VContentViewType)
-{
-    /**
-     *  Invalid content type, use to fail gracefully.
-     */
-    VContentViewTypeInvalid,
-    /**
-     *  Image content type.
-     */
-    VContentViewTypeImage,
-    /**
-     *  Video content type.
-     */
-    VContentViewTypeVideo,
-    /**
-     *  GIF content type.
-     */
-    VContentViewTypeGIFVideo,
-    /**
-     *  Poll content type.
-     */
-    VContentViewTypePoll,
-    /**
-     *  Text content type.
-     */
-    VContentViewTypeText
-};
-
-typedef NS_ENUM(NSInteger, VPollAnswer)
-{
-    VPollAnswerInvalid,
-    VPollAnswerA,
-    VPollAnswerB,
-};
 
 /**
  * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
@@ -157,58 +141,40 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The name of the sequence.
  */
 @property (nonatomic, readonly) NSString *name;
-
 @property (nonatomic, readonly) BOOL shouldShowTitle;
-
 @property (nonatomic, strong, readonly) VNode *currentNode;
-
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
-
 @property (nonatomic, assign) BOOL hasReposted;
-
 @property (nonatomic, readonly) NSString *memeCountText;
-
 @property (nonatomic, readonly) NSString *gifCountText;
-
 @property (nonatomic, readonly) NSString *repostCountText;
-
 @property (nonatomic, readonly) NSString *shareCountText;
-
 @property (nonatomic, readonly) NSString *authorName;
-
 @property (nonatomic, readonly) NSString *authorCaption;
-
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
-
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
-
 @property (nonatomic, readonly) NSURL *shareURL;
-
 @property (nonatomic, readonly) UIColor *textBackgroundColor;
-
 @property (nonatomic, readonly) NSString *textContent;
-
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
 
 #pragma mark - Videos
 
-@property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;
+/**
+ All the data necessary to display and populate the end card
+ after a video has finished playing.  If this is `nil`, then there is
+ no end card for this video and it should not be displayed.
+ */
+@property (nonatomic, strong, readwrite) VEndCardModel *endCardViewModel;
 
 @property (nonatomic, readonly) float speed;
-
 @property (nonatomic, readonly) BOOL loop;
-
-/**
- Determines whether the video player will show its toolbar with play controls.
- */
-@property (nonatomic, readonly) BOOL playerControlsDisabled;
-
-/**
- Determines whether the video will play with audio.
- */
-@property (nonatomic, readonly) BOOL audioMuted;
+@property (nonatomic, readonly) BOOL playerControlsDisabled; //< Determines whether the video player will show its toolbar with play controls.
+@property (nonatomic, readonly) BOOL audioMuted; //< Determines whether the video will play with audio.
 
 #pragma mark - Comments
+
+@property (nonatomic, readonly) NSArray *comments;
 
 /**
  *  Fetches comments and realtime comments for this viewModel's sequence.
@@ -216,8 +182,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  determines which page of comments to load, if that page exists.
  */
 - (void)loadComments:(VPageType)pageType;
-
-@property (nonatomic, readonly) NSArray *comments;
 
 - (void)removeCommentAtIndex:(NSUInteger)index;
 
@@ -230,30 +194,19 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 #pragma mark - Polls
 
 @property (nonatomic, readonly) NSString *answerALabelText;
-
 @property (nonatomic, readonly) NSString *answerBLabelText;
-
 @property (nonatomic, readonly) NSURL *answerAThumbnailMediaURL;
-
 @property (nonatomic, readonly) NSURL *answerBThumbnailMediaURL;
-
 @property (nonatomic, readonly) BOOL answerAIsVideo;
-
 @property (nonatomic, readonly) BOOL answerBIsVideo;
-
 @property (nonatomic, readonly) NSURL *answerAVideoUrl;
-
 @property (nonatomic, readonly) NSURL *answerBVideoUrl;
-
 @property (nonatomic, readonly) BOOL votingEnabled;
-
 @property (nonatomic, readonly) CGFloat answerAPercentage;
-
 @property (nonatomic, readonly) CGFloat answerBPercentage;
-
 @property (nonatomic, readonly) NSString *numberOfVotersText;
 
-- (VPollAnswer)favoredAnswer; // By the current user.
+- (VPollAnswer)favoredAnswer; //< By the current user.
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion;

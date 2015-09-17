@@ -8,12 +8,19 @@
 
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
+#import "VAdVideoPlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "VTimerManager.h"
 
-@interface VContentCell () <VEndCardViewControllerDelegate>
+static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
+
+@interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
+@property (nonatomic, strong) VTimerManager *adTimeoutTimer;
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
+@property (nonatomic, assign) BOOL shrinkingDisabled;
 
 @end
 
@@ -87,6 +94,8 @@
                                                                              options:kNilOptions
                                                                              metrics:nil
                                                                                views:@{ @"view" : self.shrinkingContentView }]];
+    
+    self.adVideoPlayerViewController.view.frame = self.contentView.bounds;
 }
 
 - (void)prepareForReuse
@@ -101,11 +110,20 @@
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     [super applyLayoutAttributes:layoutAttributes];
+    [self updateShrinkingView];
+}
 
-    self.shrinkingContentView.frame = self.contentView.bounds;
-    
-    CGFloat scale = CGRectGetHeight(self.contentView.bounds) / CGRectGetWidth(self.contentView.bounds);
-    self.shrinkingContentView.transform = CGAffineTransformMakeScale( scale, scale );
+- (void)updateShrinkingView
+{
+    if ( self.shrinkingDisabled )
+    {
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+    }
+    else
+    {
+        CGFloat scale = CGRectGetHeight(self.contentView.bounds) / CGRectGetWidth(self.contentView.bounds);
+        self.shrinkingContentView.transform = CGAffineTransformMakeScale( scale, scale );
+    }
 }
 
 #pragma mark - Rotation
@@ -113,23 +131,8 @@
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     [self.endCardViewController handleRotationToInterfaceOrientation:toInterfaceOrientation];
-    
-    self.shrinkingContentView.frame = self.bounds;
-    
-    // If we're in landscape, we need to add autolayout constraints to make sure the view set as
-    // the `shrinkingContentView` will size to fit the full screen.  Otherwise we remove all constraints
-    // so that transformations can be applied properly in `updateContentToShrinkingLayout` method.
-    if ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) )
-    {
-        self.shrinkingContentView.transform = CGAffineTransformIdentity;
-        self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
-        [self.shrinkingContentView layoutIfNeeded];
-    }
-    else
-    {
-        self.shrinkingContentView.autoresizingMask = 0;
-        [self.shrinkingContentView layoutIfNeeded];
-    }
+    self.shrinkingDisabled = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    [self.shrinkingContentView layoutIfNeeded];
 }
 
 #pragma mark - UIView
@@ -138,6 +141,7 @@
 {
     [super layoutSubviews];
     [self.contentView bringSubviewToFront:self.animationImageView];
+    [self updateShrinkingView];
 }
 
 #pragma mark - Public Methods
@@ -199,6 +203,10 @@
     }
 }
 
+- (void)resumeContentPlayback
+{
+}
+
 #pragma mark - VEndCardViewControllerDelegate
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
@@ -214,6 +222,68 @@
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
+}
+
+#pragma mark  Ad Video Player
+
+- (void)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+{
+    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner details:details];
+    self.adVideoPlayerViewController.delegate = self;
+    [self.contentView addSubview:self.adVideoPlayerViewController.view];
+    [self.contentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
+}
+
+- (void)addAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self.contentView addSubview:adVideoPlayerViewController.view];
+    [adVideoPlayerViewController start];
+    
+    // This timer is added as a workaround to kill the ad video if it has not started playing after kAdTimeoutTimeInterval seconds.
+    self.adTimeoutTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval
+                                                                        target:self
+                                                                      selector:@selector(adTimerFired)
+                                                                      userInfo:nil
+                                                                       repeats:NO];
+}
+
+- (void)adTimerFired
+{
+    [self removeAdVideoPlayerViewController];
+    [self resumeContentPlayback];
+}
+
+- (void)removeAdVideoPlayerViewController
+{
+    [self.adVideoPlayerViewController.view removeFromSuperview];
+    self.adVideoPlayerViewController = nil;
+}
+
+#pragma mark  VAdVideoPlayerViewControllerDelegate
+
+- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlayback];
+}
+
+- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    // This is where we can preload the content video after the ad video has loaded
+}
+
+- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
+}
+
+- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+}
+
+- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlayback];
 }
 
 @end

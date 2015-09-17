@@ -29,7 +29,6 @@
 #import "VContentPollQuestionCell.h"
 #import "VContentRepopulateTransition.h"
 #import "VContentViewFactory.h"
-#import "VContentViewRotationHelper.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
@@ -104,7 +103,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
-@property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
@@ -256,8 +254,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
-    return hasVideoAsset ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return [self shouldAutorotate] ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -272,31 +269,30 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    // We need to update first responder status on the collection view for the comment bar
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         [self.textEntryView stopEditing];
         [self.contentCollectionView resignFirstResponder];
         self.offsetBeforeLandscape = self.contentCollectionView.contentOffset;
+        
+        CGSize cellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                           dependencyManager:self.dependencyManager];
+        CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
+        self.contentCollectionView.contentOffset = fixedLandscapeOffset;
+        
+        self.closeButton.hidden = YES;
+        self.moreButton.hidden = YES;
+        self.contentCollectionView.scrollEnabled = NO;
     }
     else
     {
         self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
         [self.contentCollectionView becomeFirstResponder];
-    }
-
-    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-    if ( self.moreButton != nil )
-    {
-        [affectedViews addObject:self.moreButton];
+        self.closeButton.hidden = NO;
+        self.moreButton.hidden = NO;
+        self.contentCollectionView.scrollEnabled = YES;
     }
     
-    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds dependencyManager:self.dependencyManager];
-    const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
-    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
-                                          targetContentOffset:fixedLandscapeOffset
-                                               collectionView:self.contentCollectionView
-                                                affectedViews:[NSArray arrayWithArray:affectedViews]];
     [self.contentCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
 }
 
@@ -501,16 +497,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
              self.closeButton.alpha = 0.0f;
          }];
     }
-    
-    UIInterfaceOrientation currentOrientation = UIInterfaceOrientationPortrait;
-    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    // Stop all video cells
+    // Stop all video comment cells
     [self.focusHelper endFocusOnAllCells];
 }
 
@@ -926,17 +919,25 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - UICollectionViewDelegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout *)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    const BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     VContentViewSection vSection = indexPath.section;
+    
     switch (vSection)
     {
         case VContentViewSectionContent:
         {
-            // Always return 1:1 aspect ratio, end card requires it
-            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
+            if ( isLandscape )
+            {
+                // Match width and height for full screen
+                return self.view.bounds.size;
+            }
+            else
+            {
+                // Match width and keep 1:1 aspect
+                return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
+            }
         }
         case VContentViewSectionPollQuestion:
             return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
@@ -1002,8 +1003,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     const BOOL isContentSection = [indexPath compare:[self indexPathForContentView]] == NSOrderedSame;
-    
-    if ( !self.rotationHelper.isLandscape && isContentSection )
+    const BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if ( !isLandscape && isContentSection )
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
@@ -1623,9 +1624,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoPlaybackDidFinish
 {
-    if (self.viewModel.videoViewModel.endCardViewModel != nil)
+    if (self.viewModel.endCardViewModel != nil)
     {
-        [self.contentCell showEndCardWithViewModel:self.viewModel.videoViewModel.endCardViewModel];
+        [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
 }
 

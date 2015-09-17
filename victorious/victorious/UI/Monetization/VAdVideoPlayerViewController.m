@@ -32,7 +32,27 @@
     if (self)
     {
         NSAssert(details != nil, @"%@ needs a details array in order to initialize.", [VAdVideoPlayerViewController class]);
-        [self assignMonetizationPartner:monetizationPartner details:details];
+        
+        _adDetails = details;
+        _monetizationPartner = monetizationPartner;
+        
+        switch (_monetizationPartner)
+        {
+            case VMonetizationPartnerLiveRail:
+                _adViewController = [[VLiveRailAdViewController alloc] initWithNibName:nil bundle:nil];
+                break;
+                
+            case VMonetizationPartnerOpenX:
+                _adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
+                break;
+                
+            case VMonetizationPartnerTremor:
+                _adViewController = [[VTremorAdViewController alloc] initWithNibName:nil bundle:nil];
+                break;
+                
+            default:
+                break;
+        }
     }
     return self;
 }
@@ -53,32 +73,6 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
-}
-
-#pragma mark - Monetization and details setter
-
-- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
-{
-    self.adDetails = details;
-    self.monetizationPartner = monetizationPartner;
-    
-    switch (self.monetizationPartner)
-    {
-        case VMonetizationPartnerLiveRail:
-            self.adViewController = [[VLiveRailAdViewController alloc] initWithNibName:nil bundle:nil];
-            break;
-            
-        case VMonetizationPartnerOpenX:
-            self.adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
-            break;
-            
-        case VMonetizationPartnerTremor:
-            self.adViewController = [[VTremorAdViewController alloc] initWithNibName:nil bundle:nil];
-            break;
-            
-        default:
-            break;
-    }
 }
 
 - (void)start
@@ -104,13 +98,11 @@
 
 - (void)adDidLoadForAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"");
     [self.delegate adDidLoadForAdVideoPlayerViewController:self];
 }
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"");
     self.adPlaying = NO;
     
     // Remove the adViewController from the view hierarchy
@@ -118,14 +110,11 @@
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
     
-    // Go to content video
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
-// Optional delegate methods
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"");
     self.adPlaying = NO;
 
     // Remove the adViewController from the view hierarchy
@@ -143,7 +132,6 @@
 
 - (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"");
     if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadImpressionForAdVideoPlayerViewController:self];
@@ -152,9 +140,7 @@
 
 - (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"");
     self.adPlaying = adViewController.isAdPlaying;
-    
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStartPlaybackForAdVideoPlayerViewController:self];
@@ -163,9 +149,7 @@
 
 - (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
 {
-    VLog(@"ad stopped");
     self.adPlaying = adViewController.isAdPlaying;
-    
     if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])
     {
         [self.delegate adDidStopPlaybackForAdVideoPlayerViewController:self];

@@ -10,6 +10,7 @@
 #import "VEndCardViewController.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
+#import "VMonetizationPartner.h"
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -73,6 +74,11 @@
  Make sure to forward this from your collection view controller.
  */
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+
+/**
+ Creates the appropraite ad video player and UI for the parameters provided.
+ */
+- (void)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
 
 @property (nonatomic, strong) UIView *shrinkingContentView;
 

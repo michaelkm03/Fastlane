@@ -66,14 +66,12 @@
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
 
 @property (nonatomic, strong) NSString *followersText;
-@property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
 @property (nonatomic, strong) NSMutableArray *adChain;
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 
-@property (nonatomic, assign) BOOL hasCreatedAdChain;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
@@ -187,7 +185,7 @@
 
 - (void)createAdChainWithCompletion
 {
-    if (self.hasCreatedAdChain)
+    if ( self.adChain == nil )
     {
         return;
     }
@@ -209,30 +207,30 @@
     int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner;
     self.monetizationDetails = self.adChain;
-    self.hasCreatedAdChain = YES;
 }
 
 #pragma mark - Sequence data fetching methods
 
 - (void)fetchSequenceData
 {
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    // Check for the cached mp4
-    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
-    if (assetIsCached)
-    {
-        [self createVideoModel];
-        [self.delegate didUpdateContent];
-    }
-#endif
-    
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                  inStreamWithStreamID:self.streamId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          // This is here to update the vote counts
          [self.experienceEnhancerController updateData];
-         [self createVideoModel];
+         
+         // Sets up the monetization chain
+         if (self.sequence.adBreaks.count > 0)
+         {
+             [self createAdChainWithCompletion];
+#warning TODO: Set up ads
+         }
+         
+         // Sets up end card
+         VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
+         self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
+         
          [self.delegate didUpdateContent];
      }
                                             failBlock:nil];
@@ -240,7 +238,7 @@
 
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure
 {
-    NSString *nextSequenceId = self.videoViewModel.endCardViewModel.nextSequenceId;
+    NSString *nextSequenceId = self.endCardViewModel.nextSequenceId;
     if ( nextSequenceId == nil )
     {
         if ( failure != nil )
@@ -277,46 +275,6 @@
              failure( error );
          }
      }];
-}
-
-- (void)createVideoModel
-{
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    // Check for the cached mp4
-    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
-    if (assetIsCached)
-    {
-        VLog(@"asset cached!");
-        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                    withAdSystem:VMonetizationPartnerNone
-                                                                     withDetails:nil
-                                                                        withLoop:[self loop]
-                                                                    withStreamID:self.streamId];
-        return;
-    }
-#endif
-    
-    // Sets up the monetization chain
-    if (self.sequence.adBreaks.count > 0)
-    {
-        [self createAdChainWithCompletion];
-        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                    withAdSystem:self.monetizationPartner
-                                                                     withDetails:self.monetizationDetails
-                                                                        withLoop:[self loop]
-                                                                    withStreamID:self.streamId];
-    }
-    else
-    {
-        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                    withAdSystem:VMonetizationPartnerNone
-                                                                     withDetails:nil
-                                                                        withLoop:[self loop]
-                                                                    withStreamID:self.streamId];
-    }
-    
-    VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
-    self.videoViewModel.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
 - (void)reloadData
