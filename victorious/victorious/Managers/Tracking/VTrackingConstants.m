@@ -326,6 +326,7 @@ NSString * const VTrackingValueFacebookDidAllow = @"FacebookDidAllow";
 NSString * const VTrackingValueTwitterDidAllow = @"TwitterDidAllow";
 NSString * const VTrackingValueLocationDidAllow = @"LocationDidAllow";
 NSString * const VTrackingValueUsertagInComment = @"UsertagInComment";
+NSString * const VTrackingValuePeopleLikeMyPost = @"PeopleLikeMyPost";
 NSString * const VTrackingValuePostFromFollowed = @"PostFromFollowed";
 NSString * const VTrackingValuePostFromCreator = @"PostFromCreator";
 NSString * const VTrackingValueNewCommentOnMyPost = @"NewCommentOnMyPost";
