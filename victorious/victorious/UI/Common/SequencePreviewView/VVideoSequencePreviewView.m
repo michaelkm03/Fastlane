@@ -114,7 +114,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
             [self.toolbar v_addHeightConstraint:41.0f];
             [self v_addPinToLeadingTrailingToSubview:self.toolbar];
             [self v_addPinToBottomToSubview:self.toolbar];
-            self.toolbar.paused = !self.videoView.isPlaying;
         }
         [self.toolbar showWithAnimated:YES];
     }
@@ -301,20 +300,17 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
         [self setState:VSequenceVideoPreviewViewUIStatePlaying];
         [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
-    self.toolbar.paused = false;
 }
 
 - (void)onPreviewPlayButtonTapped:(UIButton *)button
 {
     [self.videoView playFromStart];
-    self.toolbar.paused = false;
     [self playVideo];
 }
 
 - (void)pauseVideo
 {
     [self.videoView pause];
-    self.toolbar.paused = true;
 }
 
 - (void)showPreview
@@ -410,6 +406,7 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
     {
         self.noReplay = YES;
         [self setState:VSequenceVideoPreviewViewUIStateEnded];
+        [self.delegate videoPlaybackDidFinish];
     }
 }
 
@@ -432,13 +429,22 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 - (void)videoPlayer:(VVideoView *__nonnull)videoView didPlayToTime:(Float64)time
 {
     if ( self.toolbar != nil )
-    {
-        self.toolbar.elapsedTime = time;
-        self.toolbar.remainingTime = videoView.durationSeconds - time;
-        self.toolbar.videoProgressRatio = videoView.currentTimeSeconds / videoView.durationSeconds;
+    {   
+        [self.toolbar setCurrentTime:videoView.currentTimeSeconds duration:videoView.durationSeconds];
     }
     
     [self updateQuartileTracking];
+}
+
+- (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    self.toolbar.paused = NO;
+}
+
+- (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    self.toolbar.paused = YES;
+    [self.toolbar showWithAnimated:YES];
 }
 
 #pragma mark - VideoToolbarDelegate

@@ -282,6 +282,10 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( self.isPlaying )
     {
         [self.player pause];
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        {
+            [self.delegate videoPlayerDidPause:self];
+        }
     }
 }
 
@@ -290,6 +294,10 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( !self.isPlaying )
     {
         [self.player play];
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        {
+            [self.delegate videoPlayerDidPlay:self];
+        }
     }
 }
 

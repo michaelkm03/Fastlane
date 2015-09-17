@@ -160,6 +160,7 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
+            self.largePlayButton.userInteractionEnabled = NO;
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
             [self.likeButton hide];
@@ -167,6 +168,7 @@
             
         case VFocusTypeStream:
             [self setBackgroundContainerViewVisible:YES];
+            self.largePlayButton.userInteractionEnabled = NO;
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
             [self.likeButton hide];
@@ -174,6 +176,7 @@
             
         case VFocusTypeDetail:
             [self setBackgroundContainerViewVisible:YES];
+            self.largePlayButton.userInteractionEnabled = YES;
             self.videoView.backgroundColor = [UIColor blackColor];
             self.videoView.useAspectFit = YES;
             [self.likeButton show];

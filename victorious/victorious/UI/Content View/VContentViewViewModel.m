@@ -232,9 +232,7 @@
      {
          // This is here to update the vote counts
          [self.experienceEnhancerController updateData];
-         
          [self createVideoModel];
-         
          [self.delegate didUpdateContent];
      }
                                             failBlock:nil];
@@ -326,6 +324,7 @@
     [self fetchPollData];
     [self fetchComments];
     [self fetchUserinfo];
+    [self fetchSequenceData];
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize

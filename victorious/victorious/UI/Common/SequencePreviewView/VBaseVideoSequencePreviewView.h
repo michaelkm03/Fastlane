@@ -45,6 +45,7 @@
 /**
  *  If YES, this preview view will only display the preview image for this content.
  */
+#warning Remove this
 @property (nonatomic, assign) BOOL onlyShowPreview;
 
 /**

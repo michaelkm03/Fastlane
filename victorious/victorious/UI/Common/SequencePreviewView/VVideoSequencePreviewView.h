@@ -14,6 +14,8 @@
 
 - (void)animateAlongsideVideoToolbarWillDisappear;
 
+- (void)videoPlaybackDidFinish;
+
 @end
 
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView

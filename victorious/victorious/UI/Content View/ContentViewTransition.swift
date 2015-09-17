@@ -108,6 +108,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 
                 for layout in self.handoffController.sliceLayouts {
                     layout.constraint.restore()
+                    layout.parent.layoutIfNeeded()
                 }
             },
             completion: { finished in

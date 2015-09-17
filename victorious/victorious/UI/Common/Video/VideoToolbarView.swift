@@ -21,7 +21,6 @@ import UIKit
     func videoToolbarDidPlay( videoToolbar: VideoToolbarView )
 }
 
-
 /// A generic video toolbar with controls for play, pause, seek (scrub), timeline and current time text.
 class VideoToolbarView: UIView {
     
@@ -47,20 +46,19 @@ class VideoToolbarView: UIView {
     private lazy var timeFormatter = VElapsedTimeFormatter()
     private var lastInteractionDate = NSDate()
     
-    // MARK: - Properties
-    
-    var elapsedTime: Float64 = 0.0 {
-        didSet {
-            let text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
-            elapsedTimeLabel.text = text
-        }
+    func setCurrentTime( timeSeconds: Float64, duration: Float64 )
+    {
+        slider.value = clampRatio( Float(timeSeconds / duration) )
+        remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
+        elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - timeSeconds) )
     }
     
-    var remainingTime: Float64 = 0.0 {
-        didSet {
-            let text = self.timeFormatter.stringForSeconds( clampTime(remainingTime) )
-            remainingTimeLabel.text = text
-        }
+    func setProgress( progress: Float, duration: Float64 )
+    {
+        slider.value = clampRatio( progress )
+        let elapsedTime = Float64(progress) * duration
+        remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - elapsedTime) )
+        elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
     }
     
     var paused: Bool = true {
@@ -68,14 +66,6 @@ class VideoToolbarView: UIView {
             let imageName = paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
             let image = UIImage(named: imageName)!
             playButton.setImage( image, forState: .Normal )
-        }
-    }
-    
-    var videoProgressRatio: Float = 0.0 {
-        didSet {
-            if !isSliderDown {
-                slider.value = clampRatio( videoProgressRatio )
-            }
         }
     }
     

@@ -104,11 +104,7 @@
 
     self.shrinkingContentView.frame = self.contentView.bounds;
     
-    CGFloat scale = 1.0f;
-    if ( self.shrinkingContentDefaultHeight > 0.0 )
-    {
-        scale = CGRectGetHeight(self.contentView.bounds) / self.shrinkingContentDefaultHeight;
-    }
+    CGFloat scale = CGRectGetHeight(self.contentView.bounds) / CGRectGetWidth(self.contentView.bounds);
     self.shrinkingContentView.transform = CGAffineTransformMakeScale( scale, scale );
 }
 

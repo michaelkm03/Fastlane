@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  Defines an object that can respond to playback events from a `VVideoPlayer` instance.
  */
 @protocol VVideoPlayerDelegate <NSObject>
+@optional
 
 /**
  All pre-processing of video is complete and it can now be played
@@ -22,7 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer;
 
-@optional
+/**
+ This video view's video reached the end
+ */
+- (void)videoPlayerDidPlay:(id<VVideoPlayer>)videoPlayer;
+
+/**
+ This video view's video reached the end
+ */
+- (void)videoPlayerDidPause:(id<VVideoPlayer>)videoPlayer;
 
 /**
  This video view's video reached the end

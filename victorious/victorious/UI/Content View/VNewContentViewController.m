@@ -468,10 +468,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if ( self.isVideoContent )
+    if ( self.isVideoContent && self.videoPlayer != nil)
     {
-        NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
-        
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
@@ -589,7 +587,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (IBAction)pressedClose:(id)sender
 {
     [self.contentCollectionView setContentOffset:CGPointZero animated:NO];
-    self.contentCell.shrinkingContentDefaultHeight = 0.0f;
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
@@ -938,15 +935,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         case VContentViewSectionContent:
         {
-            switch (self.viewModel.type)
-            {
-                default:
-                {
-                    return [self.viewModel contentSizeWithinContainerSize:self.view.bounds.size];
-                }
-                case VContentViewTypeInvalid:
-                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
-            }
+            // Always return 1:1 aspect ratio, end card requires it
+            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
         }
         case VContentViewSectionPollQuestion:
             return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
@@ -1128,14 +1118,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
         
-        NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
-        if (experimentValue != nil)
-        {
-            if ([experimentValue boolValue])
-            {
-                [self.videoPlayer pause];
-            }
-        }
+        [self.videoPlayer pause];
         __weak typeof(self) welf = self;
         [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
          {
@@ -1619,9 +1602,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     return self.contentCell.shrinkingContentView;
 }
 
+#warning Remove this from protoco?
 - (void)didAddPreviewView:(UIView *)previewView toSuperview:(UIView *)superview
 {
-    self.contentCell.shrinkingContentDefaultHeight = [self.viewModel contentSizeWithinContainerSize:self.view.bounds.size].height;
 }
 
 #pragma mark - VVideoSequenceDelegate
@@ -1636,6 +1619,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     self.closeButton.alpha = 0.0f;
     self.moreButton.alpha = 0.0f;
+}
+
+- (void)videoPlaybackDidFinish
+{
+    if (self.viewModel.videoViewModel.endCardViewModel != nil)
+    {
+        [self.contentCell showEndCardWithViewModel:self.viewModel.videoViewModel.endCardViewModel];
+    }
 }
 
 @end
