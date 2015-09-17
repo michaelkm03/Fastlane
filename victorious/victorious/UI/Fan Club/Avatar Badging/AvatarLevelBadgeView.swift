@@ -13,7 +13,7 @@ import UIKit
 private protocol BadgeImageSet {
     
     /// Returns an image based on the desired level badge image type.
-    func image(#type: VLevelBadgeImageType) -> UIImage
+    func image(type type: VLevelBadgeImageType) -> UIImage
 }
 
 class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
@@ -29,7 +29,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         private static let mediumImage = UIImage(named: "level_badge_medium")!
         private static let largeImage = UIImage(named: "level_badge_large")!
         
-        func image(#type: VLevelBadgeImageType) -> UIImage {
+        func image(type type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage
             switch type {
             case .Small:
@@ -43,7 +43,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
             return image.resizableImageWithCapInsets(UIEdgeInsetsMake(0, sideInset, 0, sideInset))
         }
         
-        func font(#type: VLevelBadgeImageType) -> UIFont? {
+        func font(type type: VLevelBadgeImageType) -> UIFont? {
             switch type {
             case .Small:
                 return UIFont(name: kFontName, size: 10)
@@ -61,7 +61,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         private static let mediumImage = UIImage(named: "level_badge_creator_medium")!
         private static let largeImage = UIImage(named: "level_badge_creator_large")!
         
-        func image(#type: VLevelBadgeImageType) -> UIImage {
+        func image(type type: VLevelBadgeImageType) -> UIImage {
             var image: UIImage
             switch type {
             case .Small:
@@ -166,7 +166,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         updateAppearance()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedSetup()
     }
