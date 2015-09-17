@@ -42,16 +42,15 @@
 
 @implementation VSuggestedUsersViewController
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *nib = NSStringFromClass([self class]);
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    self = [super initWithNibName:nib bundle:bundle];
-    if ( self != nil )
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
+    
+    VSuggestedUsersViewController *viewController = [[VSuggestedUsersViewController alloc] initWithNibName:nib bundle:bundle];
+    viewController.dependencyManager = dependencyManager;
+    
+    return viewController;
 }
 
 - (void)dealloc

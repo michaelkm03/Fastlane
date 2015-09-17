@@ -85,12 +85,10 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         _registrationScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
                                                                              forKey:kRegistrationScreens];
         [self setDelegateForScreensInArray:_registrationScreens];
-        [self setBoundsForScreensInArray:_registrationScreens];
         
         _loginScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
                                                                       forKey:kLoginScreens];
         [self setDelegateForScreensInArray:_loginScreens];
-        [self setBoundsForScreensInArray:_loginScreens];
         
         _loginFlowHelper = [[VLoginFlowAPIHelper alloc] initWithViewControllerToPresentOn:self
                                                                         dependencyManager:dependencyManager];
@@ -165,14 +163,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             screen.delegate = self;
         }
-    }
-}
-
-- (void)setBoundsForScreensInArray:(NSArray *)array
-{
-    for ( UIViewController *screen in array )
-    {
-        screen.view.frame = self.view.bounds;
     }
 }
 
