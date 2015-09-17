@@ -142,7 +142,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

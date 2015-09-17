@@ -14,8 +14,8 @@ import UIKit
     
     /// Sent when a user is selected from this shelf.
     ///
-    /// :param: user The user that was selected.
-    /// :param: fromShelf The shelf that the user was selected from.
+    /// - parameter user: The user that was selected.
+    /// - parameter fromShelf: The shelf that the user was selected from.
     func trendingUserShelfSelected(user: VUser, fromShelf: UserShelf)
     
 }
@@ -128,7 +128,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         return UINib(nibName: "VTrendingUserShelfCollectionViewCell", bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -151,9 +151,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     /// The optimal size for this cell.
     ///
-    /// :param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
-    /// :param: shelf The shelf whose content will populate this cell
-    /// :param: dependencyManager The dependency manager that will be used to style the cell
+    /// - parameter bounds: The bounds of the collection view containing this cell (minus any relevant insets)
+    /// - parameter shelf: The shelf whose content will populate this cell
+    /// - parameter dependencyManager: The dependency manager that will be used to style the cell
     ///
     /// :return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds bounds: CGRect, shelf: UserShelf, dependencyManager: VDependencyManager) -> CGSize {

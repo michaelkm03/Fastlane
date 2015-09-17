@@ -100,7 +100,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
