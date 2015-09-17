@@ -904,6 +904,7 @@
 		C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */; };
 		C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */; };
 		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
+		C375DDE91BAA309A008A25A5 /* ProfileBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C375DDE81BAA309A008A25A5 /* ProfileBadgeView.swift */; settings = {ASSET_TAGS = (); }; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
@@ -2923,6 +2924,7 @@
 		C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpInterstitial.swift; sourceTree = "<group>"; };
 		C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
 		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
+		C375DDE81BAA309A008A25A5 /* ProfileBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileBadgeView.swift; path = "../Avatar Badging/ProfileBadgeView.swift"; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
 		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
@@ -6928,6 +6930,7 @@
 		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
 			isa = PBXGroup;
 			children = (
+				C375DDE81BAA309A008A25A5 /* ProfileBadgeView.swift */,
 				C3623E601B9A78B4002B121D /* LevelBadgeView.swift */,
 				C3623E5E1B9A7874002B121D /* LevelPolygonView.swift */,
 				C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */,
@@ -9153,6 +9156,7 @@
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
+				C375DDE91BAA309A008A25A5 /* ProfileBadgeView.swift in Sources */,
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,

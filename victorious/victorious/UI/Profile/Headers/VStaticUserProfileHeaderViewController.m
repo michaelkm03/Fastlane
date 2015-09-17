@@ -13,6 +13,7 @@
 #import "UIImage+ImageCreation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -21,6 +22,7 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
+@property (weak, nonatomic) IBOutlet ProfileBadgeView *badgeView;
 
 @end
 
@@ -40,6 +42,20 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     {
         self.state = self.state; // Trigger a state refresh
     }
+    
+    self.badgeView.color = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+    self.badgeView.levelNumber = @"100";
+    self.badgeView.title = @"LEVEL";
+    self.badgeView.cornerRadius = 2;
+    self.badgeView.borderWidth = 2;
+    [self.badgeView animate:2.0 startValue:0 endValue:1.0];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - VUserProfileHeader

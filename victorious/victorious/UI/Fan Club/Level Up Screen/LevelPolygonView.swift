@@ -32,6 +32,20 @@ class LevelPolygonView: UIView {
         }
     }
     
+    /// The polygon's border width
+    var borderWidth: CGFloat = 0 {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+    
+    /// The polygon's stroke color
+    var strokeColor = UIColor.whiteColor() {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+    
     /// The length of each side as a ratio of the total height
     var verticalSideLengthRatio: CGFloat = 0.5 {
         didSet {
@@ -48,29 +62,36 @@ class LevelPolygonView: UIView {
     
     override func drawRect(rect: CGRect) {
         
-        let verticalSideLength: CGFloat = ceil(rect.height * verticalSideLengthRatio)
-        let insetHeight = rect.height
-        let insetWidth = rect.width
-        let verticalMidpoint = ceil(insetHeight / 2.0)
-        let horizontalMidpoint = ceil(insetWidth / 2.0)
+        let adjustedRect = CGRectInset(rect, borderWidth / 2, borderWidth / 2)
+        
+        let verticalSideLength: CGFloat = adjustedRect.height * verticalSideLengthRatio
+        
+        let insetHeight = adjustedRect.height
+        let insetWidth = adjustedRect.width
+        let verticalMidpoint = insetHeight / 2.0
+        let horizontalMidpoint = insetWidth / 2.0
         let difference = insetHeight - verticalSideLength
-        let aLength: CGFloat = ceil(difference / 2.0)
+        let aLength: CGFloat = difference / 2.0
         
         let path = CGPathCreateMutable()
         
-        CGPathMoveToPoint(path, nil, rect.origin.x, verticalMidpoint);
-        CGPathAddArcToPoint(path, nil, rect.origin.x, aLength, horizontalMidpoint, rect.origin.y, cornerRadius);
-        CGPathAddArcToPoint(path, nil, horizontalMidpoint, rect.origin.y, insetWidth, aLength, cornerRadius);
+        CGPathMoveToPoint(path, nil, adjustedRect.origin.x, verticalMidpoint);
+        CGPathAddArcToPoint(path, nil, adjustedRect.origin.x, aLength, horizontalMidpoint, adjustedRect.origin.y, cornerRadius);
+        CGPathAddArcToPoint(path, nil, horizontalMidpoint, adjustedRect.origin.y, insetWidth, aLength, cornerRadius);
         CGPathAddArcToPoint(path, nil, insetWidth, aLength, insetWidth, aLength + verticalSideLength, cornerRadius);
         CGPathAddArcToPoint(path, nil, insetWidth, aLength + verticalSideLength, horizontalMidpoint, insetHeight, cornerRadius);
-        CGPathAddArcToPoint(path, nil, horizontalMidpoint, insetHeight, rect.origin.x, aLength + verticalSideLength, cornerRadius);
-        CGPathAddArcToPoint(path, nil, rect.origin.x, aLength + verticalSideLength, rect.origin.x, aLength, cornerRadius);
+        CGPathAddArcToPoint(path, nil, horizontalMidpoint, insetHeight, adjustedRect.origin.x, aLength + verticalSideLength, cornerRadius);
+        CGPathAddArcToPoint(path, nil, adjustedRect.origin.x, aLength + verticalSideLength, adjustedRect.origin.x, aLength, cornerRadius);
         
         CGPathCloseSubpath(path);
         
         let bezierPath = UIBezierPath(CGPath: path)
         
+        bezierPath.lineWidth = borderWidth
+        
         fillColor.setFill()
+        strokeColor.setStroke()
         bezierPath.fill()
+        bezierPath.stroke()
     }
 }

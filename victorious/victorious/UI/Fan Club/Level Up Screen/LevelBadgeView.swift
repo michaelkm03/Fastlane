@@ -9,15 +9,24 @@
 import UIKit
 import Foundation
 
-/// A UIView subclass which is responsible for displaying the user's level
+/// A UIView subclass that draws it's badge and displays the user's level 
+/// as two labels: a "LEVEL" label and a number label below it.
 class LevelBadgeView: UIView {
     
-    private let polygon = LevelPolygonView()
+    let polygon = LevelPolygonView()
     private let container = UIView()
     private var numberHeightConstraint: NSLayoutConstraint!
+    private var numberLabelHorizontalConstraints = [NSLayoutConstraint]()
     
     let levelStringLabel = UILabel()
     let levelNumberLabel = UILabel()
+    
+    /// The insets for the level number label
+    var labelInsets = UIEdgeInsetsMake(0, 0, 0, 0) {
+        didSet {
+            self.setNeedsUpdateConstraints()
+        }
+    }
     
     /// "Level" label
     var title: String? {
@@ -33,17 +42,25 @@ class LevelBadgeView: UIView {
         didSet {
             if let levelNumber = levelNumber {
                 levelNumberLabel.text = levelNumber
+                self.setNeedsUpdateConstraints()
             }
         }
     }
     
     /// Color of the badge
-    var color: UIColor? {
+    var color: UIColor? = UIColor.redColor() {
         didSet {
             if let color = color {
                 polygon.fillColor = color
                 polygon.setNeedsDisplay()
             }
+        }
+    }
+    
+    /// How round the corners should be
+    var cornerRadius: CGFloat = 14 {
+        didSet {
+            polygon.cornerRadius = cornerRadius
         }
     }
     
@@ -62,7 +79,9 @@ class LevelBadgeView: UIView {
         super.updateConstraints()
         
         if let levelNumber = levelNumber {
-            levelNumberLabel.removeConstraint(numberHeightConstraint)
+            if let numberHeightConstraint = numberHeightConstraint {
+                levelNumberLabel.removeConstraint(numberHeightConstraint)
+            }
             let currentFontSize = levelNumberLabel.font.pointSize
             // Subtract a bit because boundingRectWithSize is inaccurate with large font sizes
             let fontSizeOffset = currentFontSize - currentFontSize * 0.4
@@ -70,9 +89,28 @@ class LevelBadgeView: UIView {
             numberHeightConstraint = NSLayoutConstraint(item: levelNumberLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: boundingRect.height)
             levelNumberLabel.addConstraint(numberHeightConstraint)
         }
+        
+        // Remove all width constraints from number label
+        for constraint in numberLabelHorizontalConstraints {
+            container.removeConstraint(constraint)
+        }
+        
+        // Clear constraints from array
+        numberLabelHorizontalConstraints.removeAll()
+        
+        // Add new constraints to array
+        numberLabelHorizontalConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("|-linset-[label]-rinset-|", options: [], metrics: ["linset" : labelInsets.left, "rinset" : labelInsets.right], views: ["label" : levelNumberLabel]))
+        
+        // Addnew constraints to number label
+        for constraint in numberLabelHorizontalConstraints {
+            container.addConstraint(constraint)
+        }
+
     }
     
     func sharedInit() {
+        
+        self.backgroundColor = UIColor.clearColor()
         
         polygon.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(polygon)
@@ -100,9 +138,6 @@ class LevelBadgeView: UIView {
         self.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterY, relatedBy: .Equal, toItem: container, attribute: .CenterY, multiplier: 1, constant: 0))
         
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelStringLabel]))
-        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelNumberLabel]))
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-2-[numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
-        numberHeightConstraint = NSLayoutConstraint(item: levelNumberLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 70)
-        levelNumberLabel.addConstraint(numberHeightConstraint)
     }
 }
