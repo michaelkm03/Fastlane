@@ -167,9 +167,9 @@ extension VListShelfCollectionViewCell: TrackableShelf {
     
     /// The stream item displayed at the provided index path.
     ///
-    /// :param: indexPath The index path of the cell whose represented stream item is desired.
+    /// - param indexPath The index path of the cell whose represented stream item is desired.
     ///
-    /// :return: The stream item displayed at the provided index path.
+    /// - returns The stream item displayed at the provided index path.
     func streamItemAt(indexPath indexPath: NSIndexPath) -> VStreamItem? {
         fatalError("Subclasses of VListShelfCollectionViewCell must override streamItemAtIndexPath:")
     }
