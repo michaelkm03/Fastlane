@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The sequence permissions of the content that this KeyboardInputAccessoryView is attached to
  */
-@property (nonatomic, assign) VSequencePermissions *sequencePermissions;
+@property (nonatomic, weak) VSequencePermissions *sequencePermissions;
 
 /**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.

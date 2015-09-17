@@ -129,7 +129,7 @@ static NSString * const kCommentBarKey = @"commentBar";
     self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
 }
 
-- (void)setSequencePermissions:(nonnull VSequencePermissions *)sequencePermissions
+- (void)setSequencePermissions:(VSequencePermissions *)sequencePermissions
 {
     _sequencePermissions = sequencePermissions;
     self.gifButton.hidden = !sequencePermissions.canAddGifComments;
