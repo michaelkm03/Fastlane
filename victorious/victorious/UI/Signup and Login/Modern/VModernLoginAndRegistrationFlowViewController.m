@@ -87,7 +87,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         [self setDelegateForScreensInArray:_registrationScreens];
         [self setBoundsForScreensInArray:_registrationScreens];
         
-        
         _loginScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
                                                                       forKey:kLoginScreens];
         [self setDelegateForScreensInArray:_loginScreens];
