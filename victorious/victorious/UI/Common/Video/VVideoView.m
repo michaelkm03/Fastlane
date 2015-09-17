@@ -31,7 +31,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @implementation VVideoView
 
 @synthesize delegate;
-
 @dynamic muted;
 
 - (void)dealloc

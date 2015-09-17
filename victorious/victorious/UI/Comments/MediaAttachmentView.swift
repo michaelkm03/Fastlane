@@ -84,6 +84,6 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     var focusType: VFocusType = .None
     
     func contentArea() -> CGRect {
-        return CGRect.zeroRect
+        return CGRect.zero
     }
 }

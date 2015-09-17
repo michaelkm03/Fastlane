@@ -43,7 +43,7 @@
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -117,6 +117,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
     
     self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:_internalTabBarController.tabBar];
+    
+    // Make sure we're listening for interstitial events
+    [[InterstitialManager sharedInstance] setInterstitialListener:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -125,12 +128,22 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self setupFirstLaunchOperations];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.presentedViewController == nil)
+    {
+        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+    }
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -538,6 +551,16 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     else
     {
         [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
+}
+
+#pragma mark - Interstitial Listener
+
+- (void)newInterstitialHasBeenRegistered
+{
+    if (self.presentedViewController == nil)
+    {
+        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
     }
 }
 

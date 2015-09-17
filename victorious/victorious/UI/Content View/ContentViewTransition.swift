@@ -67,7 +67,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
             delay: 0.0,
             usingSpringWithDamping: 0.9,
             initialSpringVelocity: 0.0,
-            options: nil,
+            options: [],
             animations: {
                 if let previewLayout = self.handoffController.previewLayout {
                     previewLayout.top.apply()
@@ -96,7 +96,7 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
             delay: 0.0,
             usingSpringWithDamping: 0.9,
             initialSpringVelocity: 0.2,
-            options: nil,
+            options: [],
             animations: {
                 if let layout = self.handoffController.previewLayout {
                     layout.top.restore()

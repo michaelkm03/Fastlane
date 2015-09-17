@@ -137,13 +137,13 @@ class ContentViewHandoffController {
             let topImageView = UIImageView(image: topImage)
             superview.addSubview( topImageView )
             topImageView.frame = topFrame
-            topImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            topImageView.translatesAutoresizingMaskIntoConstraints = false
             
             let views = [ "topImageView" : topImageView ]
             
             let constraintsV = NSLayoutConstraint.constraintsWithVisualFormat(
                 "V:[topImageView(height)]",
-                options: nil,
+                options: [],
                 metrics: [ "height" : topImageView.frame.height, ],
                 views: views
             )
@@ -160,7 +160,7 @@ class ContentViewHandoffController {
             
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
-                options: nil,
+                options: [],
                 metrics: nil,
                 views: views
             )
@@ -188,10 +188,10 @@ class ContentViewHandoffController {
             let midImageView = UIImageView(image: midImage)
             superview.insertSubview( midImageView, belowSubview: previewView )
             midImageView.frame = midFrame
-            midImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            midImageView.translatesAutoresizingMaskIntoConstraints = false
             
             superview.addConstraints( NSLayoutConstraint.constraintsWithVisualFormat("H:|[midImageView]|",
-                options: nil,
+                options: [],
                 metrics: nil,
                 views: [ "midImageView" : midImageView ])
             )
@@ -242,7 +242,7 @@ class ContentViewHandoffController {
             let botImageView = UIImageView(image: botImage)
             superview.addSubview( botImageView )
             botImageView.frame = botFrame
-            botImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            botImageView.translatesAutoresizingMaskIntoConstraints = false
             
             let bottomConstraint = NSLayoutConstraint(item: botImageView,
                 attribute: .Top,
@@ -255,15 +255,16 @@ class ContentViewHandoffController {
             
             let views = [ "botImageView" : botImageView ]
             let constraintsV = NSLayoutConstraint.constraintsWithVisualFormat( "V:[botImageView(height)]",
-                options: nil,
+                options: [],
                 metrics: [ "height" : botImageView.frame.height, ],
                 views: views
             )
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[botImageView]|",
-                options: nil,
+                options: [],
                 metrics: nil,
                 views: views
             )
+            superview.addConstraints( constraintsV )
             superview.addConstraints( constraintsH )
             
             transitionSliceViews.append( botImageView )
@@ -281,7 +282,9 @@ class ContentViewHandoffController {
     
     func imageFromImage( sourceImage: UIImage, rect: CGRect ) -> UIImage? {
         let sourceImageRef = sourceImage.CGImage
-        let imageRef = CGImageCreateWithImageInRect( sourceImageRef, rect )
-        return UIImage(CGImage: imageRef)
+        if let imageRef = CGImageCreateWithImageInRect( sourceImageRef, rect ) {
+            return UIImage(CGImage: imageRef)
+        }
+        return nil
     }
 }

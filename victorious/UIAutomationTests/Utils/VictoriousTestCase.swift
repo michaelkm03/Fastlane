@@ -37,7 +37,7 @@ class VictoriousTestCase: KIFTestCase {
     override func beforeAll() {
         super.beforeAll()
         
-        let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
+        let title = (NSStringFromClass(self.dynamicType) as NSString).pathExtension.camelCaseSeparatedString.capitalizedString
         self.addTextToReport( "\n\n# \(title)\n\(self.testDescription)\n" )
     }
     
@@ -45,11 +45,10 @@ class VictoriousTestCase: KIFTestCase {
     /// This method is called automatically before each test is run, but it is exposed here
     /// so that tests can manually reset the session if needed.
     func resetSession() {
-        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
-            let rootViewController = window.rootViewController as? VRootViewController {
-                rootViewController.startNewSession()
-                self.configureTemplateIfNecessary()
-                self.tester().waitWithCountdownForInterval( 10.0 )
+        if let rootViewController = UIApplication.sharedApplication().windows.first?.rootViewController as? VRootViewController {
+            rootViewController.startNewSession()
+            self.configureTemplateIfNecessary()
+            self.tester().waitWithCountdownForInterval( 10.0 )
         }
     }
     
@@ -71,13 +70,12 @@ class VictoriousTestCase: KIFTestCase {
     /// This will be called in `resetSession()` of VictoriousTextCase.
     /// The default implementation of this method simply does nothing.
     ///
-    /// :param: decorator A VTemplateDecorator pre-populated with what is returned from the server or has already been cached.
+    /// - parameter decorator: A VTemplateDecorator pre-populated with what is returned from the server or has already been cached.
     func configureTemplate(defaultTemplateDecorator: VTemplateDecorator){
     }
     
     private func configureTemplateIfNecessary() {
-        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
-            let rootViewController = window.rootViewController as? VRootViewController,
+        if let rootViewController = UIApplication.sharedApplication().windows.first?.rootViewController as? VRootViewController,
             let loadingViewController = rootViewController.loadingViewController {
                 loadingViewController.templateConfigurationBlock = { (decorator: VTemplateDecorator!) in
                     self.configureTemplate(decorator)
@@ -89,7 +87,7 @@ class VictoriousTestCase: KIFTestCase {
     
     /// Checks if the element with the provided label is present on screen
     ///
-    /// :param: accessibilityLabel The label (or identifier) of the sought element
+    /// - parameter accessibilityLabel: The label (or identifier) of the sought element
     func elementExistsWithAccessibilityLabel( accessibilityLabel: String ) -> Bool {
         self.ignoreExceptions = true
         self.tester().waitForViewWithAccessibilityLabel( accessibilityLabel )
@@ -110,8 +108,8 @@ class VictoriousTestCase: KIFTestCase {
     
     /// Logs in with an existing user account
     ///
-    /// :param: email An email account to use.  Default is "user@user.com"
-    /// :param: ", password A ", password to use.  Default is "password"
+    /// - parameter email: An email account to use.  Default is "user@user.com"
+    /// - parameter password: A password to use.  Default is "password"
     func loginIfRequired( email: String = "user@user.com", password: String = "password" ) {
         if self.elementExistsWithAccessibilityLabel( "Log In" ) {
             self.tester().waitForTappableViewWithAccessibilityLabel( "Log In" ).tap()
@@ -141,12 +139,14 @@ class VictoriousTestCase: KIFTestCase {
             let versionText = "v\(appVersion) (\(appBuildNumber))"
             text = "Updated: \(dateString)\n\n\(versionText)\n\(text)"
         }
-        else if let existingText = String(contentsOfFile: TEST_SUMMARY_PATH, encoding: NSUTF8StringEncoding, error: nil) {
+        else if let existingText = try? String(contentsOfFile: TEST_SUMMARY_PATH, encoding: NSUTF8StringEncoding) {
             text = existingText + "\n" + text
         }
-        var error: NSError?
-        if !text.writeToFile(TEST_SUMMARY_PATH, atomically: false, encoding: NSUTF8StringEncoding, error: &error) {
-            println( "Failed to write to file: \(error?.localizedDescription)" )
+        do {
+            try text.writeToFile(TEST_SUMMARY_PATH, atomically: false, encoding: NSUTF8StringEncoding)
+        }
+        catch let error as NSError {
+            print( "Failed to write to file: \(error.localizedDescription)" )
         }
         if !VictoriousTestCase.shouldAppend {
             VictoriousTestCase.shouldAppend = true
@@ -162,7 +162,7 @@ class VictoriousTestCase: KIFTestCase {
             steps[ testTitle ] = [String]()
             self.addTextToReport( "\n#### \(testTitle)" )
         }
-        println( ">>> \(text)" )
+        print( ">>> \(text)" )
         self.addTextToReport( "- \(text)" )
     }
     
@@ -204,10 +204,10 @@ class VictoriousTestCase: KIFTestCase {
 private extension String {
     
     var camelCaseSeparatedString: String {
-        if let regex = NSRegularExpression(pattern: "([a-z])([A-Z])", options: nil, error: nil) {
+        if let regex = try? NSRegularExpression(pattern: "([a-z])([A-Z])", options: []) {
             return regex.stringByReplacingMatchesInString(self,
-                options:nil,
-                range: NSMakeRange(0, count(self)),
+                options:[],
+                range: NSMakeRange(0, self.characters.count),
                 withTemplate:"$1 $2")
         }
         return self

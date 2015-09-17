@@ -36,7 +36,7 @@ class ContentViewPresenter: NSObject {
     /// in the place of content while the real thing is being loaded
     /// :param: comment A comment ID to scroll to and highlight, typically used when content view
     /// is being presented when the app is launched with a deep link URL.
-    func presentContentView( #context: ContentViewContext ) {
+    func presentContentView( context context: ContentViewContext ) {
         
         if let dependencyManager = context.dependencyManager,
             let viewController = context.viewController,

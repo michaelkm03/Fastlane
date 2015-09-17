@@ -11,7 +11,7 @@ import UIKit
 extension GIFSearchViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if let searchBarText = searchBar.text where count(searchBarText) > 0 {
+        if let searchBarText = searchBar.text where searchBarText.characters.count > 0 {
             self.performSearchWithText( searchBarText )
             self.clearSearch()
             searchBar.resignFirstResponder()

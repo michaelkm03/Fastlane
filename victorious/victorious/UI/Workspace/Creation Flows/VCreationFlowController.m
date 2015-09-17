@@ -72,7 +72,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     return [self.dependencyManager statusBarStyleForKey:kStatusBaryStleKey];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

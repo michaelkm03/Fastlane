@@ -17,7 +17,7 @@ extension ListShelf {
     }
     
     override static func entityMapping() -> RKEntityMapping {
-        var mapping = Shelf.mappingBaseForEntity(named: entityName())
+        let mapping = Shelf.mappingBaseForEntity(named: entityName())
         mapping.addAttributeMappingsFromDictionary(propertyMap)
         return mapping
     }

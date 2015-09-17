@@ -125,7 +125,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
