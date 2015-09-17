@@ -65,6 +65,10 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
                     userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
                 }
+                if let oldValue = oldValue as? UserShelf {
+                    KVOController.unobserve(oldValue.user)
+                }
+                KVOController.observe(shelf.user, keyPath: "isFollowedByMainUser", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState"))
                 updateUsername()
             }
         }

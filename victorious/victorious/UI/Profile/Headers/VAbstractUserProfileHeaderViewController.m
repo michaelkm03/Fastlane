@@ -168,34 +168,27 @@
 - (void)setFollowersCount:(NSNumber *)followersCount
 {
     _followersCount = followersCount;
-    if ( followersCount != nil )
+    BOOL hasFollowersCount = followersCount != nil;
+    if ( hasFollowersCount )
     {
         self.followersLabel.text = [self.largeNumberFormatter stringForInteger:followersCount.integerValue];
     }
-    [self updateHiddenStateOfFollowCounts];
+    self.followersButton.hidden = !hasFollowersCount;
+    self.followersHeader.hidden = !hasFollowersCount;
+    self.followersLabel.hidden = !hasFollowersCount;
 }
 
 - (void)setFollowingCount:(NSNumber *)followingCount
 {
     _followingCount = followingCount;
-    if ( followingCount != nil )
+    BOOL hasFollowingCount = followingCount != nil;
+    if ( hasFollowingCount )
     {
         self.followingLabel.text = [self.largeNumberFormatter stringForInteger:followingCount.integerValue];
     }
-    [self updateHiddenStateOfFollowCounts];
-}
-
-- (void)updateHiddenStateOfFollowCounts
-{
-    BOOL hidden = self.followingCount == nil || self.followingCount == nil;
-    
-    self.followingButton.hidden = hidden;
-    self.followingHeader.hidden = hidden;
-    self.followingLabel.hidden = hidden;
-    
-    self.followersButton.hidden = hidden;
-    self.followersHeader.hidden = hidden;
-    self.followersLabel.hidden = hidden;
+    self.followingButton.hidden = !hasFollowingCount;
+    self.followingHeader.hidden = !hasFollowingCount;
+    self.followingLabel.hidden = !hasFollowingCount;
 }
 
 - (void)applyStyle

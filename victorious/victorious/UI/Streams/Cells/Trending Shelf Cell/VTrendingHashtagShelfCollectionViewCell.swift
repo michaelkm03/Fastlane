@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KVOController
 
 /// Classes that conform to this protocol will receive messages when
 /// a hashtag is selected from this shelf.
@@ -120,6 +121,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.textContainerInset = UIEdgeInsetsZero
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
+        
+        KVOController.observe(VObjectManager.sharedManager().mainUser, keyPath: "hashtags", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState"))
     }
     
     override class func nibForCell() -> UINib {

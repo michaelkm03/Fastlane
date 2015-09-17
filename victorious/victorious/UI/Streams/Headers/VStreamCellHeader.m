@@ -201,6 +201,8 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
                           keyPath:NSStringFromSelector(@selector(name))];
     [self.KVOController unobserve:sequence.user
                           keyPath:NSStringFromSelector(@selector(pictureUrl))];
+    [self.KVOController unobserve:sequence.user
+                          keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
 }
 
 - (void)observeSequence:(VSequence *)sequence

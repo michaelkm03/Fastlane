@@ -117,6 +117,7 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         return;
     }
     
+    //Flip at all times EXCEPT when transitioning FROM following TO loading and TO following FROM loading.
     BOOL shouldFlip = !( ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateFollowed ) || ( controlState == VFollowControlStateFollowed && self.controlState == VFollowControlStateLoading ) );
     void (^animationBlock)(void) = ^
     {
