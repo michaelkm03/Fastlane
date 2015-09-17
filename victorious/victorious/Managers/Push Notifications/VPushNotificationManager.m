@@ -107,7 +107,8 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
 - (BOOL)isRegisteredForPushNotifications
 {
     UIApplication *app = [UIApplication sharedApplication];
-    return app.isRegisteredForRemoteNotifications;
+    
+    return app.currentUserNotificationSettings.types != UIUserNotificationTypeNone;
 }
 
 @end
