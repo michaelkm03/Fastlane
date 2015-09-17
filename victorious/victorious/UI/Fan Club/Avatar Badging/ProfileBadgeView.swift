@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProfileBadgeView: LevelBadgeView {
+class ProfileBadgeView: LevelBadgeView, VHasManagedDependencies {
     
     private let animatingPolygonView = LevelPolygonView()
     private let radialAnimatingView = RadialAnimatingView()
@@ -24,6 +24,29 @@ class ProfileBadgeView: LevelBadgeView {
         didSet {
             animatingPolygonView.borderWidth = borderWidth
         }
+    }
+    
+    var user: VUser? {
+        didSet {
+            // Do sum
+        }
+    }
+    
+    /// The dependency manager used to style this view. Setting will
+    /// update all other appearance properties.
+    var badgeDependencyManager: VDependencyManager? {
+        didSet {
+            
+        }
+    }
+    
+    // MARK: Initialization
+    
+    /// Convenience initializer
+    required init(dependencyManager: VDependencyManager) {
+        super.init(frame: CGRectZero)
+        sharedInit()
+        self.badgeDependencyManager = dependencyManager
     }
     
     override init(frame: CGRect) {

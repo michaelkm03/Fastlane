@@ -22,7 +22,8 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
-@property (weak, nonatomic) IBOutlet ProfileBadgeView *badgeView;
+
+@property (nonatomic, strong) ProfileBadgeView *badgeView;
 
 @end
 
@@ -43,14 +44,6 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
         self.state = self.state; // Trigger a state refresh
     }
     
-    self.badgeView.color = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
-    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
-    self.badgeView.levelNumber = @"100";
-    self.badgeView.title = @"LEVEL";
-    self.badgeView.cornerRadius = 2;
-    self.badgeView.borderWidth = 2;
-    [self.badgeView animate:2.0 startValue:0 endValue:1.0];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -91,6 +84,26 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL
                                                    withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.badgeView = [self.dependencyManager templateValueOfType:[ProfileBadgeView class] forKey:@"animatedBadge"];
+    self.badgeView.color = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+    self.badgeView.levelNumber = @"100";
+    self.badgeView.title = @"LEVEL";
+    self.badgeView.cornerRadius = 2;
+    self.badgeView.borderWidth = 2;
+    [self.badgeView animate:2.0 startValue:0 endValue:1.0];
+}
+
+- (void)setUser:(VUser *)user
+{
+    [super setUser:user];
+    self.badgeView.user = user;
 }
 
 - (void)clearBackgroundImage
