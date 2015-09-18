@@ -24,7 +24,6 @@
 #import "VCommentTextAndMediaView.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
-#import "VContentCommentsCell.h"
 #import "VContentPollBallotCell.h"
 #import "VContentPollQuestionCell.h"
 #import "VContentViewFactory.h"
@@ -46,7 +45,6 @@
 #import "VInlineSearchTableViewController.h"
 #import "VKeyboardInputAccessoryView.h"
 #import "VLightboxTransitioningDelegate.h"
-#import "VLoginViewController.h"
 #import "VMediaAttachmentPresenter.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
@@ -58,6 +56,7 @@
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
+#import "VSequencePreviewViewProtocols.h"
 #import "VShrinkingContentLayout.h"
 #import "VSimpleModalTransition.h"
 #import "VTag.h"
@@ -69,7 +68,6 @@
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
-#import "VSequencePreviewViewProtocols.h"
 
 #define HANDOFFENABLED 0
 
@@ -346,6 +344,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         inputAccessoryView.delegate = self;
         inputAccessoryView.textStorageDelegate = self;
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
+        inputAccessoryView.sequencePermissions = self.viewModel.sequence.permissions;
+        
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
     }
