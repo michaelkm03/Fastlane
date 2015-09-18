@@ -96,7 +96,7 @@
                 [mainUser.managedObjectContext saveToPersistentStore:nil];
             }
         }
-        else if ( pageType == VPageTypeFirst )
+        else if ( pageType == VPageTypeFirst && mainUser.hashtags.count > 0 )
         {
             mainUser.hashtags = nil;
         }
