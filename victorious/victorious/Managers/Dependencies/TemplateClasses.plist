@@ -175,6 +175,6 @@
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
-	<string>victorious.ProfileBadgeView</string>
+	<string>victorious.AnimatedBadgeView</string>
 </dict>
 </plist>

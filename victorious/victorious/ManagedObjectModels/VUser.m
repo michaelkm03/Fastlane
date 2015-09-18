@@ -52,6 +52,12 @@
 @dynamic maxUploadDuration;
 
 #warning TESTING CODE, REMEMBER TO REMOVE
+
+- (NSNumber *)levelProgressPercentage
+{
+    return @(arc4random() % 100);
+}
+
 - (NSNumber *)level
 {
     return @(arc4random() % 100);

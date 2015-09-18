@@ -17,13 +17,18 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
+static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 @interface VStaticUserProfileHeaderViewController ()
 
+@property (nonatomic, assign) BOOL hasAppeared;
+
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
 
-@property (nonatomic, strong) ProfileBadgeView *badgeView;
+@property (weak, nonatomic) IBOutlet UIView *badgeContainerView;
+@property (nonatomic, strong) AnimatedBadgeView *badgeView;
 
 @end
 
@@ -44,11 +49,46 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
         self.state = self.state; // Trigger a state refresh
     }
     
+    [self setupBadgeView];
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (!self.hasAppeared)
+    {
+        self.hasAppeared = YES;
+        if ([[[VObjectManager sharedManager] mainUser] isEqual:self.user])
+        {
+            // Animate progress towards next level for current user's profile
+            CGFloat progressRatio = self.user.levelProgressPercentage.floatValue / 100;
+            [self.badgeView animateProgress:levelProgressAnimationTime endValue:progressRatio];
+        }
+    }
+}
+
+#pragma mark - Helpers
+
+- (void)setupBadgeView
+{
+    self.badgeView = [self.dependencyManager templateValueOfType:[AnimatedBadgeView class] forKey:kLevelBadgeKey];
+    self.badgeView.cornerRadius = 8;
+    self.badgeView.animatedBorderWidth = 2;
+    self.badgeView.progressBarInset = 3;
+    self.badgeView.title = NSLocalizedString(@"LEVEL", "");
+    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+    self.badgeView.levelNumber = [self.user.level stringValue];
+    [self.badgeContainerView addSubview:self.badgeView];
+    [self.badgeContainerView v_addFitToParentConstraintsToSubview:self.badgeView];
+}
+
+- (void)adjustLevelBadgeProgressAnimated:(BOOL)animated
+{
+    
 }
 
 #pragma mark - VUserProfileHeader
@@ -84,26 +124,6 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL
                                                    withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    [super setDependencyManager:dependencyManager];
-    self.badgeView = [self.dependencyManager templateValueOfType:[ProfileBadgeView class] forKey:@"animatedBadge"];
-    self.badgeView.color = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
-    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
-    self.badgeView.levelNumber = @"100";
-    self.badgeView.title = @"LEVEL";
-    self.badgeView.cornerRadius = 2;
-    self.badgeView.borderWidth = 2;
-    [self.badgeView animate:2.0 startValue:0 endValue:1.0];
-}
-
-- (void)setUser:(VUser *)user
-{
-    [super setUser:user];
-    self.badgeView.user = user;
 }
 
 - (void)clearBackgroundImage

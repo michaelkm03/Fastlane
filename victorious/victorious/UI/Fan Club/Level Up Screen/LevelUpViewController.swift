@@ -36,7 +36,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
-    private let badgeView = LevelBadgeView()
+    private let badgeView = AnimatedBadgeView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let videoBackground = VVideoView()

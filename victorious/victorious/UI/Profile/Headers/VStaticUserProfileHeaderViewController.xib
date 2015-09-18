@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VStaticUserProfileHeaderViewController">
             <connections>
                 <outlet property="backgroundImageView" destination="Nua-VV-KOT" id="JWb-8j-a9j"/>
+                <outlet property="badgeContainerView" destination="Qmh-5E-xej" id="W4f-OP-YVW"/>
                 <outlet property="badgeView" destination="Qmh-5E-xej" id="VPE-q6-pCH"/>
                 <outlet property="followersButton" destination="Ezs-M5-j6u" id="Wml-oO-qic"/>
                 <outlet property="followersHeader" destination="Mu0-ll-MRk" id="03Y-W8-1US"/>
@@ -170,9 +171,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qmh-5E-xej" userLabel="Badge View" customClass="ProfileBadgeView" customModule="victorious" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qmh-5E-xej" userLabel="Badge View">
                     <rect key="frame" x="310" y="62" width="55" height="63"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="63" id="6FQ-OT-Tak"/>
                         <constraint firstAttribute="width" constant="55" id="gtj-Dd-NMo"/>

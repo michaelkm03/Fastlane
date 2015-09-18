@@ -216,10 +216,34 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
                                                                   },
                                                           };
         
+        NSDictionary *animatedBadgeAppearanceDictionary = @{
+                                                          @"name": @"animated.badgeView",
+                                                          @"minLevel" : @(5),
+                                                          VDependencyManagerSecondaryAccentColorKey : @{
+                                                                  @"red" : @(255),
+                                                                  @"green" : @(255),
+                                                                  @"blue" : @(255),
+                                                                  @"alpha" : @(255)
+                                                                  },
+                                                          VDependencyManagerMainTextColorKey: @{
+                                                                  @"red" : @(255),
+                                                                  @"green" : @(255),
+                                                                  @"blue" : @(255),
+                                                                  @"alpha" : @(255)
+                                                                  },
+                                                          };
+        
         for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"scaffold"] )
         {
             NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
             [updatedPayload addEntriesFromDictionary:@{ @"avatarBadgeLevelView" : avatarBadgeAppearanceDictionary }];
+            [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
+        }
+        
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"userProfileHeader"] )
+        {
+            NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
+            [updatedPayload addEntriesFromDictionary:@{ @"animatedBadge" : animatedBadgeAppearanceDictionary }];
             [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
         }
         
