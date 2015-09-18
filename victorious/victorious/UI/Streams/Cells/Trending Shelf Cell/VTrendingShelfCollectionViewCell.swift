@@ -73,7 +73,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     /// Override in subclasses to update the follow button at the proper times
-    func updateFollowControlState() {}
+    func updateFollowControlState(changeInfo: [NSObject : AnyObject]? = nil) {}
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

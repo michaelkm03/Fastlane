@@ -122,23 +122,38 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe(VObjectManager.sharedManager().mainUser, keyPath: "hashtags", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState"))
+        KVOController.observe(VObjectManager.sharedManager().mainUser, keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("updateFollowControlState:"))
     }
     
     override class func nibForCell() -> UINib {
         return UINib(nibName: "VTrendingHashtagShelfCollectionViewCell", bundle: nil)
     }
     
-    override func updateFollowControlState() {
-        if let shelf = shelf as? HashtagShelf {
-            var controlState: VFollowControlState = .Unfollowed
-            if let mainUser = VObjectManager.sharedManager().mainUser {
-                if mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
-                    controlState = .Followed
-                }
-            }
-            followControl.setControlState(controlState, animated: true)
+    override func updateFollowControlState(changeInfo: [NSObject : AnyObject]? = nil) {
+        guard let shelf = shelf as? HashtagShelf where shouldUpdateFollowControlState(forChangeInfo: changeInfo) else {
+            return
         }
+        var controlState: VFollowControlState = .Unfollowed
+        if let mainUser = VObjectManager.sharedManager().mainUser {
+            if mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+                controlState = .Followed
+            }
+        }
+        followControl.setControlState(controlState, animated: true)
+    }
+    
+    private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject : AnyObject]?) -> Bool {
+        guard let changeInfo = changeInfo else { return false }
+        if let oldValue = changeInfo[NSKeyValueChangeOldKey] as? NSOrderedSet {
+            if let hashtags = VObjectManager.sharedManager().mainUser?.hashtags
+                where oldValue.isEqualToOrderedSet(hashtags) {
+                    return false // Old hashtags and new hashtags are identical, don't update
+            }
+        }
+        else if VObjectManager.sharedManager().mainUser?.hashtags == nil {
+            return false // Hashtags was nil and continues to be nil, don't update
+        }
+        return true
     }
 
     /// The optimal size for this cell.
