@@ -46,8 +46,10 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    VFindFriendsViewController *viewController = (VFindFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                         bundle:bundleForClass];
+    VFindFriendsViewController *viewController = (VFindFriendsViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
     return viewController;
 }
