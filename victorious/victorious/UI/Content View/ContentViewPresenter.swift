@@ -27,7 +27,7 @@ class ContentViewContext: NSObject {
 /// or VScaffoldViewController to present a VNewContentView
 class ContentViewPresenter: NSObject {
     
-    let transitionDelegate = VTransitionDelegate(transition: ContentViewTransition() )
+    let transitionDelegate = VTransitionDelegate(transition: ContentViewStreamTransition() )
     
     /// Presents a content view for the specified VSequence object.
     ///

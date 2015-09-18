@@ -20,7 +20,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 @interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
 
-@property (nonatomic, assign) BOOL hasBeenReset;
+@property (nonatomic, assign) BOOL isPreparedForDismissal;
 @property (nonatomic, assign) BOOL shrinkingDisabled;
 @property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
@@ -110,7 +110,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     [super prepareForReuse];
     
-    self.hasBeenReset = NO;
+    self.isPreparedForDismissal = NO;
     [self resumeContentPlaybackAnimated:NO];
     [self hideEndCard:YES];
 }
@@ -171,9 +171,9 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     _videoPlayer = videoPlayer;
 }
 
-- (void)resetView
+- (void)prepareForDismissal
 {
-    self.hasBeenReset = YES;
+    self.isPreparedForDismissal = YES;
     [self resumeContentPlaybackAnimated:NO];
     [self hideEndCard:YES];
 }
@@ -292,7 +292,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    if ( self.hasBeenReset )
+    if ( self.isPreparedForDismissal )
     {
         return;
     }

@@ -80,6 +80,10 @@
  */
 - (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
 
-- (void)resetView;
+/**
+ Puts the cell into a state where dismissal of its parent view collection view and view controller
+ can continue.
+ */
+- (void)prepareForDismissal;
 
 @end

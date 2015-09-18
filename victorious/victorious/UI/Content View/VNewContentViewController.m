@@ -27,7 +27,6 @@
 #import "VContentCommentsCell.h"
 #import "VContentPollBallotCell.h"
 #import "VContentPollQuestionCell.h"
-#import "VContentRepopulateTransition.h"
 #import "VContentViewFactory.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -81,11 +80,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
-@property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
+@property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
+@property (nonatomic, readwrite, weak) VContentCell *contentCell;
+@property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -94,8 +95,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 @property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, strong) VStreamItemPreviewView *nextSequencePreviewView;
+@property (nonatomic, strong) VTransitionDelegate *endcardNextTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
-@property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
@@ -106,8 +108,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
-@property (nonatomic, readwrite, weak) VContentCell *contentCell;
-@property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
@@ -130,8 +130,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
-    VContentRepopulateTransition *repopulateTransition = [[VContentRepopulateTransition alloc] init];
-    contentViewController.repopulateTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:repopulateTransition];
+    ContentViewNextTransition *endcardNextTransition = [[ContentViewNextTransition alloc] init];
+    contentViewController.endcardNextTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:endcardNextTransition];
     
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
@@ -283,16 +283,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         
-        self.closeButton.hidden = YES;
-        self.moreButton.hidden = YES;
+        [self setAccessoryButtonsHidden:YES];
         self.contentCollectionView.scrollEnabled = NO;
     }
     else
     {
         self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
         [self.contentCollectionView becomeFirstResponder];
-        self.closeButton.hidden = NO;
-        self.moreButton.hidden = NO;
+        [self setAccessoryButtonsHidden:NO];
         self.contentCollectionView.scrollEnabled = YES;
     }
     
@@ -575,13 +573,22 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [self.contentCollectionView setContentOffset:CGPointZero animated:NO];
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    [self.contentCell resetView];
+    [self.contentCell prepareForDismissal];
+    [self setAccessoryButtonsHidden:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setAccessoryButtonsHidden:(BOOL)hidden
+{
+    if ( self.contentCell.isEndCardShowing )
+    {
+        hidden = YES;
+    }
     [UIView animateWithDuration:0.25f animations:^
      {
-         self.moreButton.alpha = 0.0f;
-         self.closeButton.alpha = 0.0f;
+         self.moreButton.alpha = hidden ? 0.0f : 1.0f;
+         self.closeButton.alpha = hidden ? 0.0f : 1.0f;
      }];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -749,6 +756,21 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                          forIndexPath:indexPath];
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
+            
+            if ( self.nextSequencePreviewView != nil )
+            {
+                id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
+                UIView *superview = [receiver getTargetSuperview];
+                self.nextSequencePreviewView.frame = superview.bounds;
+                [superview addSubview:self.nextSequencePreviewView];
+                [superview v_addFitToParentConstraintsToSubview:self.nextSequencePreviewView];
+                if ( [self.nextSequencePreviewView conformsToProtocol:@protocol(VVideoPreviewView)] )
+                {
+                    id<VVideoPlayer> videoPlayer = ((id<VVideoPreviewView>)self.nextSequencePreviewView).videoPlayer;
+                    [receiver setVideoPlayer:videoPlayer];
+                }
+            }
+            
             return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
@@ -1449,8 +1471,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
+    
+    VStreamItemPreviewView *previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:nextSequence];
+    [previewView setDependencyManager:self.dependencyManager];
+    [previewView setStreamItem:nextSequence];
+    contentViewController.nextSequencePreviewView = previewView;
+    
     self.navigationController.delegate = contentViewController;
-    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
+    contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
@@ -1476,7 +1504,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    return [self.repopulateTransitionDelegate navigationController:navigationController
+    return [self.endcardNextTransitionDelegate navigationController:navigationController
                                    animationControllerForOperation:operation
                                                 fromViewController:fromVC
                                                   toViewController:toVC];
@@ -1600,20 +1628,27 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillAppear
 {
-    self.closeButton.alpha = 1.0f;
-    self.moreButton.alpha = 1.0f;
+    if ( !self.contentCell.isEndCardShowing )
+    {
+        self.closeButton.alpha = 1.0f;
+        self.moreButton.alpha = 1.0f;
+    }
 }
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    self.closeButton.alpha = 0.0f;
-    self.moreButton.alpha = 0.0f;
+    if ( !self.contentCell.isEndCardShowing )
+    {
+        self.closeButton.alpha = 0.0f;
+        self.moreButton.alpha = 0.0f;
+    }
 }
 
 - (void)videoPlaybackDidFinish
 {
     if (self.viewModel.endCardViewModel != nil)
     {
+        [self setAccessoryButtonsHidden:NO];
         [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
 }

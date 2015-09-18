@@ -1,5 +1,5 @@
 //
-//  ContentViewTransition.swift
+//  ContentViewStreamTransition.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 9/2/15.
@@ -9,7 +9,7 @@
 import UIKit
 
 /// A custom transition used to show `VNewContentViewController` with a "split-reveal" style animation.
-class ContentViewTransition : NSObject, VAnimatedTransition {
+class ContentViewStreamTransition : NSObject, VAnimatedTransition {
     
     private let handoffController = ContentViewHandoffController()
     
@@ -29,13 +29,13 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
             let previewProvider = contentViewController.viewModel.context.contentPreviewProvider,
             let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver {
                 
-                // Mediate the handoff of views
+                // Mediate the handoff of views and setup of constraints
                 self.handoffController.addPreviewView(
                     fromProvider: previewProvider,
                     toReceiver: previewReceiver,
                     originSnapshotImage: snapshotImage )
                 
-                // Wire up some relationships
+                // Wire up some relationships through protocols
                 let previewView = previewProvider.getPreviewView()
                 contentViewController.pollAnswerReceiver = previewView as? VPollResultReceiver
                 previewView.focusType = VFocusType.Detail
@@ -43,6 +43,9 @@ class ContentViewTransition : NSObject, VAnimatedTransition {
                 if let videoPlayer = (previewView as? VVideoPreviewView)?.videoPlayer {
                     contentViewController.videoPlayer = videoPlayer
                     previewReceiver.setVideoPlayer( videoPlayer )
+                }
+                if let videoSequencePreview = previewView as? VVideoSequencePreviewView {
+                    videoSequencePreview.delegate = contentViewController as? VVideoSequenceDelegate
                 }
         }
         self.handoffController.previewLayout?.parent.layoutIfNeeded()

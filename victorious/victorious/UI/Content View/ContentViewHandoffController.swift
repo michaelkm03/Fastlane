@@ -102,8 +102,7 @@ class ContentViewHandoffController {
             view: previewView,
             parent: superview )
         
-        
-        // WARNING: Get real values
+        // TODO: Get real values
         let tabbarHeight: CGFloat = 49.0
         let statusBarHeight: CGFloat = 20.0
         
