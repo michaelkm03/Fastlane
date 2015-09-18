@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VCardDirectoryCell" id="I6G-G0-y8J" customClass="VCardDirectoryCell">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="I6G-G0-y8J" customClass="VCardDirectoryCell">
             <rect key="frame" x="0.0" y="0.0" width="145" height="225"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -29,13 +30,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="217"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gXM-go-fxe">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAl-Yt-cX3" userLabel="Preview container">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
-                                <color key="backgroundColor" red="0.5" green="0.5" blue="0.5" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="gXM-go-fxe" secondAttribute="height" multiplier="1:1" id="iWz-Zy-3Pc"/>
+                                    <constraint firstAttribute="width" secondItem="zAl-Yt-cX3" secondAttribute="height" multiplier="1:1" id="V2r-7c-oTe"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stream Item Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e" userLabel="Stream Name Label">
                                 <rect key="frame" x="10" y="155" width="125" height="37"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -51,33 +52,24 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="directory_play_btn" translatesAutoresizingMaskIntoConstraints="NO" id="qhD-tk-G4t">
-                                <rect key="frame" x="54" y="55" width="36" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="36" id="QX1-6L-3DZ"/>
-                                    <constraint firstAttribute="height" constant="36" id="e2B-g0-tLH"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="qhD-tk-G4t" secondAttribute="centerY" constant="35.5" id="3SC-Zm-yby"/>
                             <constraint firstItem="gga-cU-6P5" firstAttribute="top" secondItem="deE-HG-45e" secondAttribute="bottom" constant="4" id="6ps-P9-YsL"/>
+                            <constraint firstAttribute="trailing" secondItem="zAl-Yt-cX3" secondAttribute="trailing" id="8zR-aC-87U"/>
                             <constraint firstAttribute="bottom" secondItem="dXz-4U-iLz" secondAttribute="bottom" id="E7t-2t-Khq"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="JBv-WH-TQ0"/>
                             <constraint firstItem="deE-HG-45e" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="10" id="QT2-Zu-cbW"/>
                             <constraint firstAttribute="trailing" secondItem="dXz-4U-iLz" secondAttribute="trailing" id="SB1-n9-Kgg"/>
+                            <constraint firstItem="zAl-Yt-cX3" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="Shf-bh-dA5"/>
                             <constraint firstItem="gga-cU-6P5" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="10" id="Yg0-Sk-O61"/>
                             <constraint firstItem="gga-cU-6P5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="deE-HG-45e" secondAttribute="bottom" id="dFA-h7-B6S"/>
                             <constraint firstAttribute="centerX" secondItem="deE-HG-45e" secondAttribute="centerX" id="dFt-yS-FrA"/>
-                            <constraint firstAttribute="trailing" secondItem="gXM-go-fxe" secondAttribute="trailing" id="h6U-wK-t9o"/>
                             <constraint firstAttribute="trailing" secondItem="gga-cU-6P5" secondAttribute="trailing" constant="10" id="hY2-yv-7Uw"/>
                             <constraint firstAttribute="bottom" secondItem="gga-cU-6P5" secondAttribute="bottom" constant="10" id="k9J-OH-QLK"/>
-                            <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="gXM-go-fxe" secondAttribute="bottom" constant="10" id="p9C-Xj-5gE"/>
-                            <constraint firstItem="gXM-go-fxe" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="sJp-cj-nVB"/>
-                            <constraint firstAttribute="centerX" secondItem="qhD-tk-G4t" secondAttribute="centerX" constant="0.5" id="uKl-6z-fcj"/>
+                            <constraint firstItem="zAl-Yt-cX3" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="o0e-cy-bqg"/>
+                            <constraint firstItem="deE-HG-45e" firstAttribute="top" secondItem="zAl-Yt-cX3" secondAttribute="bottom" constant="10" id="uHm-ax-K4X"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="ujn-4O-CVm"/>
-                            <constraint firstItem="gXM-go-fxe" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" id="w5L-tK-KzP"/>
                             <constraint firstAttribute="trailing" secondItem="deE-HG-45e" secondAttribute="trailing" constant="10" id="wRp-51-yRL"/>
                         </constraints>
                     </view>
@@ -105,24 +97,12 @@
                 <outlet property="countLabel" destination="gga-cU-6P5" id="ccm-Ny-KPc"/>
                 <outlet property="middleStack" destination="3UW-gy-ZA4" id="Khh-Wu-Hhw"/>
                 <outlet property="nameLabel" destination="deE-HG-45e" id="5gl-bA-Unx"/>
-                <outlet property="previewImageLeadingConstraint" destination="w5L-tK-KzP" id="MuU-Na-bBM"/>
-                <outlet property="previewImageTopConstraint" destination="sJp-cj-nVB" id="1eq-7Z-HT0"/>
-                <outlet property="previewImageTrailingConstraint" destination="h6U-wK-t9o" id="Yjj-Td-jGS"/>
-                <outlet property="previewImageView" destination="gXM-go-fxe" id="bUL-M1-ixG"/>
+                <outlet property="previewViewContainer" destination="zAl-Yt-cX3" id="Squ-gd-Oo4"/>
                 <outlet property="streamItemContainerOrTopStackItem" destination="Sik-LB-7bi" id="BfN-Ve-t3G"/>
                 <outlet property="topStack" destination="dXz-4U-iLz" id="6Jr-Qn-lrh"/>
                 <outlet property="topStackBottomConstraint" destination="ZyF-a0-7FC" id="xmf-SV-FOT"/>
-                <outlet property="videoPlayButtonImageView" destination="qhD-tk-G4t" id="zss-UI-Z05"/>
             </connections>
             <point key="canvasLocation" x="275.5" y="379.5"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="directory_play_btn" width="36" height="36"/>
-    </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
