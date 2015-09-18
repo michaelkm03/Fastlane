@@ -43,10 +43,12 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)collectionView.delegate;
-    CGSize cellSize = [delegate collectionView:collectionView layout:collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    CGSize imageSize = [delegate collectionView:collectionView layout:collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    
+    //Multiply size of cell by screen scale to get size of image needed to display at proper resolution
     CGFloat screenScale = [[UIScreen mainScreen] scale];
-    cellSize.height *= screenScale;
-    cellSize.width *= screenScale;
+    imageSize.height *= screenScale;
+    imageSize.width *= screenScale;
     
     NSString *identifier = [VContentThumbnailCell suggestedReuseIdentifier];
     VContentThumbnailCell *cell = (VContentThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -54,10 +56,10 @@
     {
         NSInteger index = indexPath.row;
         VSequence *sequence = self.sequences[ index ];
-        VImageAsset *asset = [self.assetFinder assetWithPreferredMinimumSize:cellSize fromAssets:sequence.previewAssets];
+        VImageAsset *asset = [self.assetFinder assetWithPreferredMinimumSize:imageSize fromAssets:sequence.previewAssets];
         NSURL *imageURL = [NSURL URLWithString:asset.imageURL];
         __weak typeof(cell) weakCell = cell;
-        [self loadImageWith:imageURL withSize:cellSize atIndex:index completion:^(UIImage *image, BOOL didDownload, NSInteger loadedIndex)
+        [self loadImageWith:imageURL withSize:imageSize atIndex:index completion:^(UIImage *image, BOOL didDownload, NSInteger loadedIndex)
          {
              VContentThumbnailCell *strongCell = weakCell;
              if ( strongCell == nil )
