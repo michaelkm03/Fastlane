@@ -7,17 +7,18 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VStreamCellSpecialization.h"
 
 extern const CGFloat VDirectoryItemBaseHeight;
 extern const CGFloat VDirectoryItemStackHeight;
 extern const CGFloat VDirectoryItemBaseWidth;
 
-@class VStreamItem;
+@class VStreamItem, VDependencyManager;
 
 /**
  A cell for the VDirectoryCollectionViewController.
  */
-@interface VCardDirectoryCell : VBaseCollectionViewCell
+@interface VCardDirectoryCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization>
 
 /**
  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
@@ -28,14 +29,6 @@ extern const CGFloat VDirectoryItemBaseWidth;
  The desired height for a directory item cell that is just a stream of content.
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
-
-/**
- Updates the preview image by loading it from the provided path
- 
- @param previewImagePath A string that will be used to create a URL and then loaded into this cell's image view
- @param placeholderImage A UIImage that will be shown while the image at the previewImagePath is loaded
- */
-- (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage;
 
 /**
  Returns whether or not a stack background is expected to display behind a stream item
@@ -77,5 +70,15 @@ extern const CGFloat VDirectoryItemBaseWidth;
  multiple subitems in the stream or stream of streams being displayed.
  */
 @property (nonatomic, strong) UIColor *stackBorderColor;
+
+/**
+ The stream item that will be represented by this cell.
+ */
+@property (nonatomic, strong) VStreamItem *streamItem;
+
+/**
+ The dependency manager used to style this cell
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
