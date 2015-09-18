@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VLoginViewController.h"
+#import "VLoginType.h"
 #import "VRegistrationModel.h"
 #import "VAuthorizationProvider.h"
 #import "VRegistration.h"
 
-@class VUser;
+@class VUser, VDependencyManager;
 
 @interface VProfileCreateViewController : UIViewController <VAuthorizationProvider, VRegistrationStep>
 
