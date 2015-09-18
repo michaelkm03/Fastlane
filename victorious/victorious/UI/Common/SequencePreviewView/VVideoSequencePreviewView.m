@@ -148,8 +148,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 
 - (BOOL)shouldAutoplay
 {
-    return NO;
-    
     self.HLSAsset = [self.sequence.firstNode httpLiveStreamingAsset];
     return !self.onlyShowPreview && self.HLSAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
 }
@@ -229,7 +227,6 @@ static const NSTimeInterval kPreviewVisibilityAnimationDuration = 0.4f;
 
 - (void)setFocusType:(VFocusType)focusType
 {
-    
     if ( !self.shouldAutoplay && focusType == VFocusTypeStream )
     {
         focusType = VFocusTypeNone;

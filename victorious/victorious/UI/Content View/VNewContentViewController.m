@@ -283,7 +283,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         
-        [self setAccessoryButtonsHidden:YES];
+        
+        if ( !self.contentCell.isEndCardShowing )
+        {
+            [self setAccessoryButtonsHidden:YES];
+        }
         self.contentCollectionView.scrollEnabled = NO;
     }
     else
@@ -414,12 +418,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
-    // its catchPoint and lockPoint.
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
-    
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     
     [self trackVideoViewStart];
     
@@ -459,6 +457,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     // Update cell focus
     [self.focusHelper updateFocus];
+    
+    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
+    // its catchPoint and lockPoint.
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
+    
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -580,10 +585,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)setAccessoryButtonsHidden:(BOOL)hidden
 {
-    if ( self.contentCell.isEndCardShowing )
-    {
-        hidden = YES;
-    }
     [UIView animateWithDuration:0.25f animations:^
      {
          self.moreButton.alpha = hidden ? 0.0f : 1.0f;
@@ -979,8 +980,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
             }
-            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
-                                                                 dependencyManager:self.dependencyManager];
+            else
+            {
+                CGSize experienceEnhancerSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                                              dependencyManager:self.dependencyManager];
+                return experienceEnhancerSize;
+            }
         }
         case VContentViewSectionAllComments:
         {
@@ -1464,6 +1469,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showNextSequence:(VSequence *)nextSequence
 {
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    
     ContentViewContext *context = [[ContentViewContext alloc] init];
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
@@ -1472,10 +1479,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
     
+    // Create a new sequence preview for the next view controller
     VStreamItemPreviewView *previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:nextSequence];
     [previewView setDependencyManager:self.dependencyManager];
     [previewView setStreamItem:nextSequence];
     contentViewController.nextSequencePreviewView = previewView;
+    
+    // Put back our current sequence preview
+    [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
     
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
@@ -1651,6 +1662,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self setAccessoryButtonsHidden:NO];
         [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
+}
+
+#pragma mark - VContentCellDelegate
+
+- (void)contentCellDidEndPlayingAd:(VContentCell *)cell
+{
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+}
+
+- (void)contentCellDidStartPlayingAd:(VContentCell *)cell
+{
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
 }
 
 @end

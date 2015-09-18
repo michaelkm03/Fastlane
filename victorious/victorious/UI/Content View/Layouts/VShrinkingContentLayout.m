@@ -265,6 +265,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
 - (void)calculateCatchAndLockPoints
 {
     self.catchPoint = [self calculateCatchPoint];
+    NSLog( @"self.catchPoint = %@", NSStringFromCGPoint(self.catchPoint) );
     self.lockPoint = [self calculateLockPoint];
 }
 

@@ -16,7 +16,7 @@ class ContentViewNextTransition : NSObject, VAnimatedTransition {
     }
     
     func prepareForTransitionIn(model: VTransitionModel) {
-        model.fromViewController.view.alpha = 0.0
+        model.toViewController.view.alpha = 0.0
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {
@@ -30,7 +30,7 @@ class ContentViewNextTransition : NSObject, VAnimatedTransition {
             initialSpringVelocity: 0.0,
             options: [],
             animations: {
-                model.fromViewController.view.alpha = 1.0
+                model.toViewController.view.alpha = 1.0
             },
             completion: { finished in
                 completion?(finished)

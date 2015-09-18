@@ -12,8 +12,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "VTimerManager.h"
 #import "victorious-Swift.h"
-
-#warning Abstract this to protocol?
 #import "VSequencePreviewView.h"
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
@@ -27,8 +25,9 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
 @property (nonatomic, weak) UIImageView *animationImageView;
-@property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
+@property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, weak) id<VContentCellDelegate> delegate;
 
 @end
 
@@ -256,6 +255,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
         self.adVideoPlayerViewController.delegate = nil;
         [self.adVideoPlayerViewController.view removeFromSuperview];
         self.adVideoPlayerViewController = nil;
+        
+        [self.delegate contentCellDidEndPlayingAd:self];
     };
     
     if ( animated )
@@ -269,6 +270,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
         animations();
         completion(YES);
     }
+}
+
+- (BOOL)isPlayingAd
+{
+    return self.adVideoPlayerViewController != nil;
 }
 
 #pragma mark - VEndCardViewControllerDelegate
@@ -292,7 +298,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    if ( self.isPreparedForDismissal )
+    if ( self.isPreparedForDismissal && !self.isPlayingAd )
     {
         return;
     }
@@ -344,6 +350,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.delegate contentCellDidStartPlayingAd:self];
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
 }

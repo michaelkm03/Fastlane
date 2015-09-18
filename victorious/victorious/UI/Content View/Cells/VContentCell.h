@@ -12,6 +12,16 @@
 #import "VContentLikeButton.h"
 #import "VMonetizationPartner.h"
 
+@class VSequencePreviewView, VContentCell;
+
+@protocol VContentCellDelegate
+
+- (void)contentCellDidEndPlayingAd:(VContentCell *)cell;
+
+- (void)contentCellDidStartPlayingAd:(VContentCell *)cell;
+
+@end
+
 @interface VContentCell : VBaseCollectionViewCell
 
 /**
@@ -50,6 +60,10 @@
  added as a subview.
  */
 @property (nonatomic, assign, readonly) BOOL isEndCardShowing;
+
+@property (nonatomic, assign, readonly) BOOL isPlayingAd;
+
+@property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
 
 - (void)playAnimation;
 
