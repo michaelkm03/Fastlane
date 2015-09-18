@@ -11,7 +11,7 @@
 #import "VInStreamCommentsShowMoreAttributes.h"
 
 static UIEdgeInsets const kPromptInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
-static NSString * const kPromptTextLocalizedStringKey = @"Show Previous Comments";
+static NSString * const kPromptTextLocalizedStringKey = @"View Previous Comments";
 
 @interface VInStreamCommentsShowMoreCell ()
 
