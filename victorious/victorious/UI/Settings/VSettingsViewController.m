@@ -17,7 +17,6 @@
 #import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "VLoginViewController.h"
 #import "VObjectManager+Websites.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"

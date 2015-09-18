@@ -21,7 +21,7 @@
 {
     // Common data
     cell.nameLabel.text = streamItem.name;
-    [cell setPreviewImagePath:[streamItem.previewImagePaths firstObject] placeholderImage:nil];
+    cell.streamItem = streamItem;
     cell.showVideo = NO;
     
     // Model-specific data
@@ -65,6 +65,8 @@
     
     cell.countLabel.textColor = secondaryTextColor;
     cell.countLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    
+    cell.dependencyManager = dependencyManager;
 }
 
 - (void)applyStyleToSeeMoreCell:(VCardSeeMoreDirectoryCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager

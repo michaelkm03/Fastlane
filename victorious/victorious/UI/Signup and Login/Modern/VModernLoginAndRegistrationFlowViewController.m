@@ -32,7 +32,6 @@ static NSString * const kLoginScreens = @"loginScreens";
 static NSString * const kLandingScreen = @"landingScreen";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
-static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerDelegate, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -71,15 +70,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
                                                          forKey:kLandingScreen];
         [self setDelegateForScreensInArray:@[_landingScreen]];
         [self setViewControllers:@[_landingScreen]];
-        
-        NSNumber *shouldForce = [dependencyManager numberForKey:kForceRegistrationKey];
-        if (!shouldForce.boolValue)
-        {
-            UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelLoginAndRegistration)];
-            _landingScreen.navigationItem.leftBarButtonItem = cancelButton;
-        }
         
         // Login + Registration
         _registrationScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
