@@ -33,20 +33,31 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 
                 containerView.addSubview(fromViewController.view)
                 
+                fromViewController.beginAppearanceTransition(false, animated: true)
+                toViewController.beginAppearanceTransition(true, animated: true)
+                
                 UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration, animations: {
                     fromViewController.view.alpha = 0
                     }, completion: { (completed) in
                         transitionContext.completeTransition(true)
+                        toViewController.endAppearanceTransition()
+                        fromViewController.endAppearanceTransition()
                 })
             }
             else {
+                
                 toViewController.view.alpha = 0
                 containerView.addSubview(toViewController.view)
+                
+                fromViewController.beginAppearanceTransition(false, animated: true)
+                toViewController.beginAppearanceTransition(true, animated: true)
                 
                 UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration, animations: {
                     toViewController.view.alpha = 1
                     }, completion: { (completed) in
                         transitionContext.completeTransition(true)
+                        fromViewController.endAppearanceTransition()
+                        toViewController.endAppearanceTransition()
                 })
             }
         }
