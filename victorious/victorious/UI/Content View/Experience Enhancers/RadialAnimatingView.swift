@@ -19,7 +19,7 @@ class RadialAnimatingView : UIView {
         return self.circleLayer.animationForKey(self.circleAnimationKey) != nil
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
@@ -48,8 +48,8 @@ class RadialAnimatingView : UIView {
     
     /// Starts the radial animation
     ///
-    /// :param: startValue A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// :param: endValue A value between 0 and 1 determining how far around the circumference the animation will end
+    /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
+    /// - parameter endValue: A value between 0 and 1 determining how far around the circumference the animation will end
     func animate(duration: NSTimeInterval, startValue: CGFloat, endValue: CGFloat) {
         
         let animation = CABasicAnimation(keyPath: "strokeEnd")

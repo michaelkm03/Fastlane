@@ -40,7 +40,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
-                    for (index, streamItem) in enumerate(streamItems) {
+                    for (index, streamItem) in streamItems.enumerate() {
                         if index == streamItems.count - 1 {
                             
                             let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
@@ -77,7 +77,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     /// Override in subclasses to update the follow button at the proper times
     func updateFollowControlState() {}
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("loginStatusDidChange"), name: kLoggedInChangedNotification, object: VObjectManager.sharedManager())
     }
@@ -92,7 +92,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     override func prepareForReuse() {
-        collectionView.contentOffset = CGPoint.zeroPoint
+        collectionView.contentOffset = CGPoint.zero
     }
     
 }

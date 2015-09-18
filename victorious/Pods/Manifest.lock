@@ -44,7 +44,7 @@ PODS:
 DEPENDENCIES:
   - CCHLinkTextView
   - CHTCollectionViewWaterfallLayout
-  - FlurrySDK
+  - FlurrySDK (~> 6.6.0)
   - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
   - MBProgressHUD

@@ -14,6 +14,6 @@ extension NSString {
     /// Intended for getting accurate character count that accounts for emojis, which
     /// can be counted as 2 or more characters using NSString's `length` property.
     @objc public var lengthWithUnicode: Int {
-        return count( self as String )
+        return (self as String).characters.count
     }
 }

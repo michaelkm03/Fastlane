@@ -176,5 +176,7 @@
 	<string>victorious.VExploreViewController</string>
 	<key>trendingTopic.shelf</key>
 	<string>victorious.TrendingTopicShelfFactory</string>
+	<key>levelUp.interstitial</key>
+	<string>victorious.LevelUpViewController</string>
 </dict>
 </plist>

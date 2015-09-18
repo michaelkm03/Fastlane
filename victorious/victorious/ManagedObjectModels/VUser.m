@@ -21,8 +21,12 @@
 @implementation VUser
 
 @dynamic email;
+@dynamic isCreator;
 @dynamic isDirectMessagingDisabled;
 @dynamic isFollowedByMainUser;
+@dynamic level;
+@dynamic levelProgressPercentage;
+@dynamic levelProgressPoints;
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;

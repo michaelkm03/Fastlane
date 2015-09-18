@@ -30,6 +30,24 @@
 	<string>900</string>
 	<key>CreatorSalutation</key>
 	<string>Debug Victorious</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.getvictorious.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+			<key>staging.getvictorious.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
 	<key>FacebookAppID</key>
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>

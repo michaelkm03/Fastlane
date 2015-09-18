@@ -31,7 +31,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 @implementation VVideoView
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+- (nullable instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if ( self != nil )

@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - Rotation
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return self.currentViewController.supportedInterfaceOrientations;
 }
@@ -256,6 +256,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
+    
+    [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
     NSURL *appStoreURL = appInfo.appURL;
     if ( appStoreURL != nil )
