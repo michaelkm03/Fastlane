@@ -11,9 +11,7 @@
 @protocol VVideoSequenceDelegate
 
 - (void)animateAlongsideVideoToolbarWillAppear;
-
 - (void)animateAlongsideVideoToolbarWillDisappear;
-
 - (void)videoPlaybackDidFinish;
 
 @end

@@ -580,6 +580,7 @@
 		A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
+		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; settings = {ASSET_TAGS = (); }; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
 		A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */; };
@@ -913,7 +914,6 @@
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
-		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
 		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
 		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
 		C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */; };
@@ -2328,6 +2328,7 @@
 		A734A04A1A98018800C3E86F /* VMultipleContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainer.h; sourceTree = "<group>"; };
 		A734A04B1A98278100C3E86F /* VSettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsTableViewCell.h; sourceTree = "<group>"; };
 		A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsTableViewCell.m; sourceTree = "<group>"; };
+		A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayer.m; sourceTree = "<group>"; };
 		A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamWebViewController.h; sourceTree = "<group>"; };
 		A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamWebViewController.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
@@ -2940,8 +2941,6 @@
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionMicrophone.m; sourceTree = "<group>"; };
 		C39B220C1B0A693600D3DFE7 /* VPermissionProfilePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionProfilePicture.h; sourceTree = "<group>"; };
 		C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionProfilePicture.m; sourceTree = "<group>"; };
-		C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGIFVideoSequencePreviewView.h; sourceTree = "<group>"; };
-		C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGIFVideoSequencePreviewView.m; sourceTree = "<group>"; };
 		C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
 		C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSequencePreviewView.m; sourceTree = "<group>"; };
 		C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundBarView.swift; sourceTree = "<group>"; };
@@ -6213,6 +6212,7 @@
 				A7AEF9CF1A83F2F500A3D3A0 /* VVideoView.m */,
 				A74783D81B9FC792005654A6 /* VVideoPlayerDelegate.h */,
 				A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */,
+				A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -7178,8 +7178,6 @@
 				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
 				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
 				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
-				C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */,
-				C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
 				D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */,
 				F059A0061B86B98F00037BC8 /* VImagePreviewView.h */,
@@ -8916,7 +8914,6 @@
 			files = (
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
-				C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				C3623E651B9F63BD002B121D /* VictoriousAPISerializer.swift in Sources */,
@@ -9730,6 +9727,7 @@
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
+				A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,

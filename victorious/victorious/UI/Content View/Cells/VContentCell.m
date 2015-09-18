@@ -173,7 +173,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)prepareForDismissal
 {
     self.isPreparedForDismissal = YES;
-    [self resumeContentPlaybackAnimated:NO];
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
     [self hideEndCard:YES];
 }
 

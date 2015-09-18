@@ -97,7 +97,10 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 icons = levelUpInterstitial.icons
                 
                 dispatch_after(AnimationConstants.presentationDuration) {
-                    self.videoBackground.setItemURL(levelUpInterstitial.videoURL, loop: true, audioMuted: true)
+                    let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
+                    videoPlayerItem.loop = true
+                    videoPlayerItem.muted = true
+                    self.videoBackground.setItem( videoPlayerItem )
                 }
             }
         }

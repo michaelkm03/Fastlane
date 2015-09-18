@@ -10,6 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface VVideoPlayerItem : NSObject
+
+- (instancetype)initWithURL:(NSURL *)url;
+
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, assign) BOOL loop;
+@property (nonatomic, assign) BOOL muted;
+@property (nonatomic, assign) BOOL useAspectFit;
+
+@end
+
 @protocol VVideoPlayerDelegate, VVideoToolbar;
 
 /**
@@ -45,6 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds;
 
 /**
+ The primary way to configure a video asset to play using this video player.
+ */
+- (void)setItem:(VVideoPlayerItem *)item;
+
+/**
  The time of the current position of the video in milliseconds.
  */
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
@@ -55,9 +71,35 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
 
 /**
+ The time of the total duration of the video in seconds.
+ */
+@property (nonatomic, readonly, assign) Float64 durationSeconds;
+
+/**
  The object responding to internal playback events.
  */
 @property (nonatomic, weak, nullable) id<VVideoPlayerDelegate> delegate;
+
+/**
+ Returns a view that contains the visible video player output.
+ */
+@property (nonatomic, assign, readonly) BOOL isPlaying;
+
+/**
+ Determines if the video will be laid out using "aspect fit", otherwise "aspect fill" will be used.
+ Defults is NO.
+ */
+@property (nonatomic, assign) BOOL useAspectFit;
+
+/**
+ Determines if the audio will be muted.  Default is NO.
+ */
+@property (nonatomic, assign) BOOL muted;
+
+/**
+ Returns a view that contains the visible video player output.
+ */
+@property (nonatomic, readonly) UIView *view;
 
 @end
 

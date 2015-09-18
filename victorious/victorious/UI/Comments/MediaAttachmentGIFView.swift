@@ -11,15 +11,15 @@ import Foundation
 // A media attachment view used for showing animated GIFs inline
 class MediaAttachmentGIFView : MediaAttachmentView {
     
-    let videoView = VVideoView()
+    let videoPlayer: VVideoPlayer = VVideoView()
     
     override var focusType: VFocusType {
         didSet {
             switch focusType {
             case .None:
-                self.videoView.pauseAtStart()
+                self.videoPlayer.pauseAtStart()
             default:
-                self.videoView.playFromStart()
+                self.videoPlayer.playFromStart()
             }
         }
     }
@@ -38,17 +38,20 @@ class MediaAttachmentGIFView : MediaAttachmentView {
         
         self.backgroundColor = UIColor.blackColor()
         
-        self.addSubview(self.videoView)
-        self.v_addFitToParentConstraintsToSubview(self.videoView)
+        self.addSubview(self.videoPlayer.view)
+        self.v_addFitToParentConstraintsToSubview(self.videoPlayer.view)
     }
     
     private var autoplayURL: NSURL? {
         didSet {
             if let autoplayURL = autoplayURL {
-                self.videoView.setItemURL(autoplayURL, loop: true, audioMuted: true)
-                self.videoView.hidden = false
+                var videoPlayerItem = VVideoPlayerItem(URL: autoplayURL)
+                videoPlayerItem.loop = true
+                videoPlayerItem.muted = true
+                self.videoPlayer.setItem( videoPlayerItem )
+                self.videoPlayer.view.hidden = false
                 if focusType != .None {
-                    self.videoView.playFromStart()
+                    self.videoPlayer.playFromStart()
                 }
             }
         }

@@ -22,7 +22,6 @@
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
 
-
 @interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) UIView *backgroundContainerView;
@@ -43,32 +42,44 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
-        UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
-        _largePlayButton = [[UIButton alloc] initWithFrame:CGRectZero];
-        [_largePlayButton setImage:playIcon forState:UIControlStateNormal];
-        [_largePlayButton addTarget:self action:@selector(onPreviewPlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        _largePlayButton.backgroundColor = [UIColor clearColor];
-        [self addSubview:_largePlayButton];
-        [self v_addCenterToParentContraintsToSubview:_largePlayButton];
-        
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
         [self addSubview:_videoView];
         [self v_addFitToParentConstraintsToSubview:_videoView];
+        
+        _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
 }
 
-- (void)onPreviewPlayButtonTapped:(UIButton *)button
+- (BOOL)shouldAutoplay
 {
-    // Override in subclasses
+    return self.videoAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+}
+
+- (BOOL)shouldLoop
+{
+    switch (self.focusType)
+    {
+        case VFocusTypeDetail:
+            return self.videoAsset.loop.boolValue;
+        default:
+            return YES;
+    }
 }
 
 #pragma mark - VSequencePreviewView Overrides
 
 - (void)setSequence:(VSequence *)sequence
 {
+    if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
+    {
+        return;
+    }
+    
     [super setSequence:sequence];
+    
+    [self loadVideoAsset];
     
     [self setBackgroundContainerViewVisible:NO];
     
@@ -76,6 +87,7 @@
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
     
     __weak VBaseVideoSequencePreviewView *weakSelf = self;
+    
     void (^completionBlock)(void) = ^void(void)
     {
         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
@@ -116,6 +128,15 @@
      }];
 }
 
+- (void)loadVideoAsset
+{
+    self.videoAsset = [self.sequence.firstNode mp4Asset];
+    VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
+    item.loop = YES;
+    item.muted = YES;
+    [self.videoView setItem:item];
+}
+
 #pragma mark - VVideoPlayerDelegate
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
@@ -128,9 +149,9 @@
     [self.videoPlayerDelegate videoPlayerDidBecomeReady:videoPlayer];
 }
 
-- (void)videoDidReachEnd:(id<VVideoPlayer>)videoPlayer
+- (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
-    [self.videoPlayerDelegate videoDidReachEnd:videoPlayer];
+    [self.videoPlayerDelegate videoPlayerDidReachEnd:videoPlayer];
 }
 
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
@@ -148,6 +169,16 @@
     [self.videoPlayerDelegate videoPlayer:videoPlayer didPlayToTime:time];
 }
 
+- (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    [self.videoPlayerDelegate videoPlayerDidPlay:videoPlayer];
+}
+
+- (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    [self.videoPlayerDelegate videoPlayerDidPause:videoPlayer];
+}
+
 #pragma mark - Focus
 
 - (void)setFocusType:(VFocusType)focusType
@@ -162,26 +193,38 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            self.largePlayButton.userInteractionEnabled = NO;
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
             [self.likeButton hide];
+            [self.videoView pause];
+            self.videoView.muted = YES;
+            self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeStream:
             [self setBackgroundContainerViewVisible:YES];
-            self.largePlayButton.userInteractionEnabled = NO;
             self.videoView.backgroundColor = [UIColor clearColor];
             self.videoView.useAspectFit = NO;
             [self.likeButton hide];
+            if ( self.shouldAutoplay )
+            {
+                [self.videoView play];
+                self.videoView.muted = YES;
+            }
+            self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeDetail:
             [self setBackgroundContainerViewVisible:YES];
-            self.largePlayButton.userInteractionEnabled = YES;
             self.videoView.backgroundColor = [UIColor blackColor];
             self.videoView.useAspectFit = YES;
             [self.likeButton show];
+            if ( self.shouldAutoplay )
+            {
+                [self.videoView play];
+                self.videoView.muted = NO;
+            }
+            self.userInteractionEnabled = YES;
             break;
     }
 }

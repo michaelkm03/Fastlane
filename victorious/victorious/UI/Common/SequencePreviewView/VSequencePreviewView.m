@@ -15,7 +15,6 @@
 #import "VImageSequencePreviewView.h"
 #import "VHTMLSequncePreviewView.h"
 #import "VFailureSequencePreviewView.h"
-#import "VGIFVideoSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
 #import "VSequenceExpressionsObserver.h"
 
@@ -45,7 +44,7 @@
     {
         if ([sequence isGIFVideo])
         {
-            classType = [VGIFVideoSequencePreviewView class];
+            classType = [VBaseVideoSequencePreviewView class];
         }
         else
         {
@@ -217,6 +216,7 @@
         
         self.expressionsObserver = nil;
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+        
         __weak typeof(self) welf = self;
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {

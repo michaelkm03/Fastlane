@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  This video view's video reached the end
  */
-- (void)videoDidReachEnd:(id<VVideoPlayer>)videoPlayer;
+- (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer;
 
 /**
  Called when the video's buffer is empty
@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
  Called when the video view plays to the time provided.
  */
 - (void)videoPlayer:(id<VVideoPlayer>)videoPlayer didPlayToTime:(Float64)time;
+
+/**
+ This video is loaded and ready to display its first frame.
+ */
+- (void)videoPlayerIsReadyForDisplay:(id<VVideoPlayer>)videoPlayer;
 
 @end
 

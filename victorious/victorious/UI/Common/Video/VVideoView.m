@@ -24,13 +24,16 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
+@property (nonatomic, assign) BOOL loop;
 @property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
+@property (nonatomic, strong, nullable) NSURL *itemURL;
 
 @end
 
 @implementation VVideoView
 
 @synthesize delegate;
+@synthesize useAspectFit = _useAspectFit;
 @dynamic muted;
 
 - (void)dealloc
@@ -51,11 +54,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     [self.player pause];
     self.player = nil;
     self.itemURL = nil;
-}
-
-- (void)setItemURL:(NSURL *__nullable)itemURL
-{
-    [self setItemURL:itemURL loop:NO audioMuted:NO];
 }
 
 - (void)setUseAspectFit:(BOOL)useAspectFit
@@ -79,21 +77,21 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     return self.useAspectFit ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
 }
 
-- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
+- (void)setItem:(VVideoPlayerItem *)playerItem
 {
-    [self setItemURL:itemURL loop:loop audioMuted:audioMuted alongsideAnimation:nil];
-}
-
-- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations
-{
-    if ( [_itemURL isEqual:itemURL] )
+    if ( self.itemURL != nil && [self.itemURL isEqual:playerItem.url] )
     {
-        if ( animations != nil )
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
         {
-            animations();
+            [self.delegate videoPlayerIsReadyForDisplay:self];
         }
         return;
     }
+    
+    self.itemURL = playerItem.url;
+    self.loop = playerItem.loop;
+    self.muted = playerItem.muted;
+    self.useAspectFit = playerItem.useAspectFit;
     
     if ( self.player == nil )
     {
@@ -120,9 +118,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              if ([playerLayer.player.currentItem isEqual:newestPlayerItem] && playerLayer.isReadyForDisplay)
              {
                  playerLayer.opacity = 1.0f;
-                 if ( animations != nil )
+                 if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
                  {
-                     animations();
+                     [self.delegate videoPlayerIsReadyForDisplay:self];
                  }
              }
          }];
@@ -130,14 +128,14 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
         self.videoUtils = [[VVideoUtils alloc] init];
     }
     
-    self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
-    self.player.muted = audioMuted;
-    
-    _itemURL = itemURL;
+    self.player.actionAtItemEnd = self.loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+    self.player.muted = self.muted;
     
     self.newestPlayerItem = nil;
     self.playerLayer.opacity = 0.0f;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
+    [self.videoUtils createPlayerItemWithURL:self.itemURL
+                                        loop:self.loop
+                               readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
      {
          if ( [composedItemURL isEqual:_itemURL] )
          {
@@ -155,6 +153,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                              selector:@selector(enterBackground)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:nil];
+}
+
+- (UIView *)view
+{
+    return self;
 }
 
 - (void)setMuted:(BOOL)muted
@@ -247,9 +250,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     [self.player.currentItem seekToTime:kCMTimeZero];
     
-    if ([self.delegate respondsToSelector:@selector(videoDidReachEnd:)])
+    if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachEnd:)])
     {
-        [self.delegate videoDidReachEnd:self];
+        [self.delegate videoPlayerDidReachEnd:self];
     }
 }
 

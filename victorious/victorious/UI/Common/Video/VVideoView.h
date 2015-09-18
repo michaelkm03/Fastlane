@@ -22,31 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface VVideoView : UIView <VVideoPlayer>
 
-@property (nonatomic, strong, nullable) NSURL *itemURL;
-@property (nonatomic, assign) BOOL useAspectFit;
-@property (nonatomic, assign) BOOL muted;
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
-@property (nonatomic, assign, readonly) BOOL isPlaying;
-@property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
-@property (nonatomic, readonly, assign) Float64 currentTimeSeconds;
-@property (nonatomic, readonly, assign) Float64 durationSeconds;
-
-- (void)pause;
-- (void)pauseAtStart;
-- (void)play;
-- (void)playFromStart;
-- (void)reset;
-- (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds;
-
-- (void)setItemURL:(NSURL *)itemURL
-              loop:(BOOL)loop
-        audioMuted:(BOOL)audioMuted;
-
-- (void)setItemURL:(NSURL *)itemURL
-              loop:(BOOL)loop
-        audioMuted:(BOOL)audioMuted
-alongsideAnimation:(void (^ __nullable)(void))animations;
 
 NS_ASSUME_NONNULL_END
 

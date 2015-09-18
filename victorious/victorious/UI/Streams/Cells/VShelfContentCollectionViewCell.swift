@@ -53,7 +53,8 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
     private func updatePreviewView(streamItem: VStreamItem?) {
         if let videoPreviewView = previewView as? VBaseVideoSequencePreviewView {
-            videoPreviewView.onlyShowPreview = true
+            // WARNING: Fix this, don't use sequence preview use, use image ors omething else
+            //videoPreviewView.onlyShowPreview = true
         }
         
         if let dependencyManager = previewView.dependencyManager {
