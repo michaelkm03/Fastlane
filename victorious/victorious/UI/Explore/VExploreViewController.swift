@@ -66,20 +66,21 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     class func new( dependencyManager dependencyManager: VDependencyManager ) -> VExploreViewController {
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
-        if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
-            exploreVC.dependencyManager = dependencyManager
-            let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
-            let urlPath = url.v_pathComponent()
-            exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-            // Factory for marquee shelf
-            exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
-            // Factory for trending topic shelf
-            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
-            exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
-            exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
-            return exploreVC
+        guard let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController else {
+            fatalError("Failed to instantiate an explore view controller!")
         }
-        fatalError("Failed to instantiate an explore view controller!")
+        
+        exploreVC.dependencyManager = dependencyManager
+        let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
+        let urlPath = url.v_pathComponent()
+        exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
+        // Factory for marquee shelf
+        exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
+        // Factory for trending topic shelf
+        exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
+        exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
+        exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
+        return exploreVC
     }
     
     /// MARK: - View Controller LifeCycle
@@ -88,27 +89,25 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewDidLoad()
         
         configureSearchBar()
-        if let collectionView = collectionView {
-            collectionView.backgroundColor = UIColor.whiteColor()
-            marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
-            marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
-            trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
-            streamShelfFactory?.registerCellsWithCollectionView(collectionView)
-            failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
-            collectionView.registerClass(RecentPostsExploreHeaderView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: RecentPostsExploreHeaderView.suggestedReuseIdentifier())
-            collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
-            collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
-            collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
-            collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
-            
-            let dataSource = VStreamCollectionViewDataSource(stream: currentStream)
-            dataSource.delegate = self;
-            dataSource.collectionView = collectionView;
-            streamDataSource = dataSource
-            collectionView.dataSource = streamDataSource;
-            collectionView.backgroundColor = UIColor.clearColor()
-            definesPresentationContext = true
-        }
+        collectionView.backgroundColor = UIColor.whiteColor()
+        marqueeShelfFactory?.registerCellsWithCollectionView(collectionView)
+        marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
+        trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
+        streamShelfFactory?.registerCellsWithCollectionView(collectionView)
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        collectionView.registerClass(RecentPostsExploreHeaderView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: RecentPostsExploreHeaderView.suggestedReuseIdentifier())
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        
+        let dataSource = VStreamCollectionViewDataSource(stream: currentStream)
+        dataSource.delegate = self;
+        dataSource.collectionView = collectionView;
+        streamDataSource = dataSource
+        collectionView.dataSource = streamDataSource;
+        collectionView.backgroundColor = UIColor.clearColor()
+        definesPresentationContext = true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -125,15 +124,15 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             if let subType = shelf.itemSubType {
                 switch subType {
                 case VStreamItemSubTypeMarquee:
-                    if let marqueeCell = marqueeShelfFactory?.collectionView(collectionView!, cellForStreamItem: shelf, atIndexPath: indexPath) as? ExploreMarqueeCollectionViewCell {
+                    if let marqueeCell = marqueeShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? ExploreMarqueeCollectionViewCell {
                         return marqueeCell
                     }
                 case VStreamItemSubTypeTrendingTopic:
-                    if let trendingTopicsCell = trendingTopicShelfFactory?.collectionView(collectionView!, cellForStreamItem: shelf, atIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
+                    if let trendingTopicsCell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
                         return trendingTopicsCell
                     }
                 default:
-                    if let cell = streamShelfFactory?.collectionView(collectionView!, cellForStreamItem: shelf, atIndexPath: indexPath) {
+                    if let cell = streamShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
                         return cell
                     }
                 }
@@ -142,7 +141,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         else if let sequence = streamItem as? VSequence {
             //Try to create a "recent content" cell
             let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(sequence, baseIdentifier: nil, dependencyManager: dependencyManager)
-            if let cell = collectionView!.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath:indexPath) as? VShelfContentCollectionViewCell {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath:indexPath) as? VShelfContentCollectionViewCell {
                 cell.dependencyManager = dependencyManager
                 cell.streamItem = sequence
                 return cell
@@ -156,7 +155,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
             for streamItem in recentItems {
                 let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-                collectionView!.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
             }
         }
         updateSectionRanges()
@@ -209,7 +208,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     override func hasEnoughItemsToShowLoadingIndicatorFooterInSection(section: Int) -> Bool {
         // Always return YES for our empty last section containing the footer
-        return section == collectionView!.numberOfSections() - 1
+        return section == collectionView.numberOfSections() - 1
     }
     
     override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
@@ -246,7 +245,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func trackVisibleCells() {
         dispatch_after(0.1) {
-            for cell in self.collectionView!.visibleCells() {
+            for cell in self.collectionView.visibleCells() {
                 if let cell = cell as? TrendingTopicShelfCollectionViewCell {
                     cell.streamItemVisibilityTrackingHelper.trackVisibleSequences()
                 }
@@ -267,7 +266,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func updateTrackingFor(recentPostCell: VShelfContentCollectionViewCell) {
         if let sequence = recentPostCell.sequenceToTrack() {
-            let intersection = self.collectionView!.bounds.intersect(recentPostCell.frame)
+            let intersection = self.collectionView.bounds.intersect(recentPostCell.frame)
             let visibilityRatio = intersection.height / recentPostCell.frame.height
             if visibilityRatio > trackingMinRequiredCellVisibilityRatio {
                 let event = StreamCellContext(streamItem: sequence, stream: currentStream, fromShelf: false)
@@ -288,31 +287,32 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             searchController = UISearchController(searchResultsController: searchResultsViewController)
         }
         
-        if let searchController = searchController {
-            searchController.hidesNavigationBarDuringPresentation = false
-            searchController.dimsBackgroundDuringPresentation = true
-            
-            let searchBar = searchController.searchBar
-            searchBar.sizeToFit()
-            searchBar.delegate = searchResultsViewController
-            navigationItem.titleView = searchBar
-            
-            if let searchTextField = searchBar.v_textField,
-                let dependencyManager = self.dependencyManager {
-                    searchTextField.font = dependencyManager.textFont
-                    searchTextField.textColor = dependencyManager.textColor
-                    searchTextField.backgroundColor = dependencyManager.backgroundColor
-                    searchTextField.attributedPlaceholder = NSAttributedString(
-                        string: NSLocalizedString("Search people and hashtags", comment: ""),
-                        attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
-                    )
-                    
-                    searchBar.tintColor = dependencyManager.textColor
-                    if var image = UIImage(named: Constants.searchIconImageName) {
-                        image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
-                        searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
-                    }
-            }
+        guard let searchController = searchController else {
+            return
+        }
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
+        
+        let searchBar = searchController.searchBar
+        searchBar.sizeToFit()
+        searchBar.delegate = searchResultsViewController
+        navigationItem.titleView = searchBar
+        
+        if let searchTextField = searchBar.v_textField,
+            let dependencyManager = self.dependencyManager {
+                searchTextField.font = dependencyManager.textFont
+                searchTextField.textColor = dependencyManager.textColor
+                searchTextField.backgroundColor = dependencyManager.backgroundColor
+                searchTextField.attributedPlaceholder = NSAttributedString(
+                    string: NSLocalizedString("Search people and hashtags", comment: ""),
+                    attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
+                )
+                
+                searchBar.tintColor = dependencyManager.textColor
+                if var image = UIImage(named: Constants.searchIconImageName) {
+                    image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+                    searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
+                }
         }
     }
 }
@@ -397,37 +397,39 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
         else if pageLocation == 1 {
             return width
         }
-        else if let layout = collectionView!.collectionViewLayout as? CHTCollectionViewWaterfallLayout where pageLocation >= perPageNumber - 2 {
+        else if let layout = collectionView.collectionViewLayout as? CHTCollectionViewWaterfallLayout where pageLocation >= perPageNumber - 2 {
             //Need to consider the height of the bottom 2 cells to make sure they level out properly
-            if let columnsAsNumbers = layout.heightsForColumnsInSection(UInt(indexPath.section)) as? [NSNumber] {
-                let columnHeights = columnsAsNumbers.map({CGFloat($0.floatValue)})
-                if let shortColumnHeight = columnHeights.minElement(), tallColumnHeight = columnHeights.maxElement() {
-                    if pageLocation == perPageNumber - 2 {
-                        //Make sure 2nd to last cell leaves enough space for the last cell to show properly
-                        let contentHeight = recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
-                        let potentialColumnHeight = shortColumnHeight + contentHeight + Constants.interItemSpace
-                        let minimumLastCellHeight = Constants.minimumContentAspectRatio * width + Constants.interItemSpace
-                        
-                        if abs(potentialColumnHeight - tallColumnHeight) < minimumLastCellHeight {
-                            //We don't enough space for the last cell to be shown with the minimum height, adjust this cell to make that possible.
-                            if shortColumnHeight + minimumLastCellHeight * 2 < tallColumnHeight {
-                                //Can fit both into the currently short column, just do that.
-                                return tallColumnHeight - shortColumnHeight - minimumLastCellHeight
-                            }
-                            else {
-                                //The added height of this cell's content, even at maximum shortness, will make us unable to add more to this column.
-                                //Extend the height of this cell's content to allow the last cell to get added to the other column.
-                                return tallColumnHeight + minimumLastCellHeight - shortColumnHeight - Constants.interItemSpace
-                            }
-                        }
-                        else {
-                            return contentHeight
-                        }
+            guard let columnsAsNumbers = layout.heightsForColumnsInSection(UInt(indexPath.section)) as? [NSNumber] else {
+                return 0
+            }
+            let columnHeights = columnsAsNumbers.map({CGFloat($0.floatValue)})
+            guard let shortColumnHeight = columnHeights.minElement(), tallColumnHeight = columnHeights.maxElement() else {
+                return 0
+            }
+            if pageLocation == perPageNumber - 2 {
+                //Make sure 2nd to last cell leaves enough space for the last cell to show properly
+                let contentHeight = recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
+                let potentialColumnHeight = shortColumnHeight + contentHeight + Constants.interItemSpace
+                let minimumLastCellHeight = Constants.minimumContentAspectRatio * width + Constants.interItemSpace
+                
+                if abs(potentialColumnHeight - tallColumnHeight) < minimumLastCellHeight {
+                    //We don't enough space for the last cell to be shown with the minimum height, adjust this cell to make that possible.
+                    if shortColumnHeight + minimumLastCellHeight * 2 < tallColumnHeight {
+                        //Can fit both into the currently short column, just do that.
+                        return tallColumnHeight - shortColumnHeight - minimumLastCellHeight
                     }
-                    else if pageLocation == perPageNumber - 1 {
-                        return tallColumnHeight - shortColumnHeight - Constants.interItemSpace
+                    else {
+                        //The added height of this cell's content, even at maximum shortness, will make us unable to add more to this column.
+                        //Extend the height of this cell's content to allow the last cell to get added to the other column.
+                        return tallColumnHeight + minimumLastCellHeight - shortColumnHeight - Constants.interItemSpace
                     }
                 }
+                else {
+                    return contentHeight
+                }
+            }
+            else if pageLocation == perPageNumber - 1 {
+                return tallColumnHeight - shortColumnHeight - Constants.interItemSpace
             }
         }
         return recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
@@ -635,7 +637,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
     
     private func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
         
-        if let _ = event.streamItem as? VSequence {
+        if event.streamItem is VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
             VContentViewPresenter.presentContentViewFromViewController(self,
@@ -668,6 +670,6 @@ extension VExploreViewController: ExploreSearchResultNavigationDelegate {
 extension VExploreViewController: VTabMenuContainedViewControllerNavigation {
     func reselected() {
         v_navigationController().setNavigationBarHidden(false)
-        collectionView!.setContentOffset(CGPointZero, animated: true)
+        collectionView.setContentOffset(CGPointZero, animated: true)
     }
 }

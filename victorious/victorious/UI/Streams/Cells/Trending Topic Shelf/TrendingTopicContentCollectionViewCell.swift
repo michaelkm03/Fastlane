@@ -120,17 +120,15 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
                 self.updateToReadyState(animated)
             }
             
-            let cacheIdentifier: String? = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
+            let cacheIdentifier = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
             
-            if let cacheIdentifier = cacheIdentifier, cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
+            if let cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
                 finish(cachedImage)
             }
             
             // Blur the preview image
             self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
-                if let cacheIdentifier = cacheIdentifier {
-                    SDWebImageManager.sharedManager().imageCache.storeImage(img, forKey: cacheIdentifier)
-                }
+                SDWebImageManager.sharedManager().imageCache.storeImage(img, forKey: cacheIdentifier)
                 finish(img)
             })
         }

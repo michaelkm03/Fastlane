@@ -20,12 +20,13 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
     
     override func awakeFromNib() {
-        if let marqueeCollectionView = marqueeCollectionView {
-            marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
-            let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
-            marqueeCollectionView.collectionViewLayout = flowLayout
-            marqueeCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
+        guard let marqueeCollectionView = marqueeCollectionView else {
+            return
         }
+        marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
+        let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
+        marqueeCollectionView.collectionViewLayout = flowLayout
+        marqueeCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
     }
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
