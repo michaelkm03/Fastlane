@@ -108,7 +108,14 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (void)setDirectoryCellFactory:(NSObject<VDirectoryCellFactory> *)directoryCellFactory
 {
     _directoryCellFactory = directoryCellFactory;
-    [_directoryCellFactory registerCellsWithCollectionView:self.collectionView];
+    if ( ![_directoryCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)] )
+    {
+        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView];
+    }
+    else if ( [self stream] != nil )
+    {
+        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:[self stream].streamItems.array];
+    }
 }
 
 #pragma mark - Property Accessors
@@ -116,6 +123,11 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
+    VStream *stream = [self stream];
+    if ( [_directoryCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)] )
+    {
+        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:stream.streamItems.array];
+    }
     
     self.nameLabel.text = [streamItem.name uppercaseString];
     [self.collectionView reloadData];
