@@ -53,7 +53,6 @@
 
 // Logged in
 #import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
 
 // Formatters
 #import "VElapsedTimeFormatter.h"
@@ -422,6 +421,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         inputAccessoryView.delegate = self;
         inputAccessoryView.textStorageDelegate = self;
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
+        inputAccessoryView.sequencePermissions = self.viewModel.sequence.permissions;
+        
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
     }

@@ -355,6 +355,7 @@
 "NewPrivateMessage"     = "New Private Message";
 "NewFollower"           = "Someone follows me";
 "TagInComment"          = "Someone mentions me";
+"LikePost"              = "Someone likes my post";
 
 "NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "People";

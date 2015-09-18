@@ -8,7 +8,6 @@
 
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"

@@ -65,8 +65,10 @@
 
 + (VProfileCreateViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                         bundle:bundleForClass];
+    VProfileCreateViewController *viewController = (VProfileCreateViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
     return viewController;
 }
