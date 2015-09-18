@@ -45,10 +45,10 @@
 {
     NSString *storyboardName = NSStringFromClass([self class]);
     
-    VSuggestedUsersViewController *viewControlelr = [[UIStoryboard storyboardWithName:storyboardName bundle:nil] instantiateInitialViewController];
-    viewControlelr.dependencyManager = dependencyManager;
+    VSuggestedUsersViewController *viewController = [[UIStoryboard storyboardWithName:storyboardName bundle:nil] instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager;
     
-    return viewControlelr;
+    return viewController;
 }
 
 - (void)dealloc
