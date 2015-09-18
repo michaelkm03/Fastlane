@@ -1,7 +1,26 @@
 PODS:
   - AFNetworking (1.3.4)
+  - Bolts (1.2.2):
+    - Bolts/AppLinks (= 1.2.2)
+    - Bolts/Tasks (= 1.2.2)
+  - Bolts/AppLinks (1.2.2):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.2.2)
   - CCHLinkTextView (1.2.0)
   - CHTCollectionViewWaterfallLayout (0.9.2)
+  - FBSDKCoreKit (4.6.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.6.0)
+    - FBSDKCoreKit/no-arc (= 4.6.0)
+  - FBSDKCoreKit/arc (4.6.0):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.6.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.6.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.6.0):
+    - FBSDKCoreKit
   - FlurrySDK (6.6.0):
     - FlurrySDK/FlurrySDK (= 6.6.0)
   - FlurrySDK/FlurrySDK (6.6.0)
@@ -44,6 +63,9 @@ PODS:
 DEPENDENCIES:
   - CCHLinkTextView
   - CHTCollectionViewWaterfallLayout
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - FlurrySDK (~> 6.6.0)
   - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
@@ -71,8 +93,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
   CCHLinkTextView: bfe688e0b7d34088375a466524158765832f7657
   CHTCollectionViewWaterfallLayout: 43232febcb3e4d3985cd758718cbe499b21b822f
+  FBSDKCoreKit: 9954492d90c5fd65ae831395697a1660360d61f1
+  FBSDKLoginKit: 3d07febbfa884b9878cacba54f705bb41f07d4b6
+  FBSDKShareKit: f474f1123791e215d0299b98b3ee92ddd9187d86
   FlurrySDK: b79d7125293904a572d7539e64cd9d887f46176b
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e

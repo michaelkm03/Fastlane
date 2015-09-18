@@ -14,6 +14,9 @@ target :victorious do
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
     pod 'OAStackView'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
+    pod 'FBSDKShareKit'
     pod 'CHTCollectionViewWaterfallLayout'
     link_with 'victorious'
 
