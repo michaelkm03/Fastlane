@@ -407,8 +407,7 @@
 {
     [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                       isModern:NO
-                                                   OnCompletion:^(VUser *user, BOOL created)
+                                                   onCompletion:^(VUser *user, BOOL created)
      {
          [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
