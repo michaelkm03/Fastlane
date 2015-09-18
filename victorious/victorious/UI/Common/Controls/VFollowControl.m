@@ -162,7 +162,7 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
             
         case VFollowControlStateUnfollowed:
         {
-            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.controlState == VFollowControlStateUnfollowed && self.tintUnselectedImage;
+            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.tintUnselectedImage;
             tintColor = showUnselectedTintColor ? self.unselectedTintColor : self.selectedTintColor;
         }
         default:

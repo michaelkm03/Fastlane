@@ -175,16 +175,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.followHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] (_: [AnyObject]) in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    },
-                    failureBlock: { [weak self] (NSError) in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    })
+                    successBlock: { (_: [AnyObject]) in },
+                    failureBlock: { (NSError) in })
             }
             else {
                 assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
@@ -193,15 +185,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] (_: [AnyObject]) in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    }, failureBlock: { [weak self] (NSError) in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    })
+                    successBlock: { (_: [AnyObject]) in },
+                    failureBlock: { (NSError) in })
             }
             else {
                 assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to unfollow non-HashtagShelf shelf")
