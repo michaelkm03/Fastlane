@@ -320,6 +320,8 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
         VFollowControl *followControl = [[VFollowControl alloc] initWithFrame:CGRectZero];
         followControl.dependencyManager = self.dependencyManager;
         [followControl addTarget:self action:@selector(followUnfollowUser:) forControlEvents:UIControlEventTouchUpInside];
+        //Disallow constraints created by the autoresizing mask to allow the action bar that contains it to adjust this control as needed.
+        followControl.translatesAutoresizingMaskIntoConstraints = NO;
         _followControl = followControl;
     }
     

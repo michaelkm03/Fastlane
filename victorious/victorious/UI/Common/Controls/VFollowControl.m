@@ -57,8 +57,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 
 - (void)sharedInit
 {
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
     backgroundImageView.backgroundColor = [UIColor clearColor];
     backgroundImageView.contentMode = UIViewContentModeScaleToFill;
