@@ -10,12 +10,14 @@
 
 // Views
 #import "VExtendedView.h"
+#import "VStreamItemPreviewView.h"
 
 // Categories
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream.h"
+#import "UIView+AutoLayout.h"
 
 const CGFloat VDirectoryItemBaseHeight = 217.0f;
 const CGFloat VDirectoryItemStackHeight = 8.0f;
@@ -25,7 +27,7 @@ static const CGFloat kBorderWidth = 0.5f;
 
 @interface VCardDirectoryCell()
 
-@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
+@property (nonatomic, weak) IBOutlet UIView *previewViewContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageTrailingConstraint;
@@ -36,6 +38,8 @@ static const CGFloat kBorderWidth = 0.5f;
 @property (nonatomic, weak) IBOutlet VExtendedView *bottomStack;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topStackBottomConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *videoPlayButtonImageView;
+
+@property (nonatomic, strong) VStreamItemPreviewView *previewView;
 
 @end
 
@@ -72,10 +76,38 @@ static const CGFloat kBorderWidth = 0.5f;
 
 #pragma mark - Property Accessors
 
-- (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString * __nullable)baseIdentifier
+                         dependencyManager:(VDependencyManager * __nullable)dependencyManager
 {
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:previewImagePath]
-                           placeholderImage:placeholderImage];
+    NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
+    identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
+    return [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
+                                                 baseIdentifier:identifier
+                                              dependencyManager:dependencyManager];
+    
+}
+
+- (void)setStreamItem:(VStreamItem *)streamItem
+{
+    _streamItem = streamItem;
+    if ( [self.previewView canHandleStreamItem:streamItem] )
+    {
+        self.previewView.streamItem = streamItem;
+        return;
+    }
+    
+    [self.previewView removeFromSuperview];
+    self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    [self.previewViewContainer addSubview:self.previewView];
+    [self.previewViewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    self.previewView.streamItem = streamItem;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.previewView.dependencyManager = dependencyManager;
 }
 
 - (void)setShowVideo:(BOOL)showVideo
