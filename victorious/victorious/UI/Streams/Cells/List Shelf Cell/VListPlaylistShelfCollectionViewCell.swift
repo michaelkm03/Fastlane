@@ -42,14 +42,10 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
 extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDataSource methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-            var streamItem: VStreamItem = shelf
+        if let shelf = shelf, streamItem = streamItemAt(indexPath: indexPath) {
             var T = VShelfContentCollectionViewCell.self
             if indexPath.row == 0 {
                 T = VListShelfContentCoverCell.self
-            }
-            else {
-                streamItem = streamItems[indexPath.row - 1]
             }
             let identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
@@ -73,6 +69,22 @@ extension VListPlaylistShelfCollectionViewCell { // UICollectionViewDataSource m
             return min(numberOfItems, VListShelfCollectionViewCell.Constants.maxItemsCount)
         }
         return 0
+    }
+    
+}
+
+extension VListPlaylistShelfCollectionViewCell { // TrackableShelf methods
+    
+    override func streamItemAt(indexPath indexPath: NSIndexPath) -> VStreamItem? {
+        if let shelf = shelf where indexPath.row < shelf.streamItems.count + 1 {
+            if indexPath.row == 0 {
+                return shelf
+            }
+            else if let streamItem = shelf.streamItems[indexPath.row - 1] as? VStreamItem {
+                return streamItem
+            }
+        }
+        return nil
     }
     
 }
