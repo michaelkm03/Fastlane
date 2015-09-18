@@ -62,6 +62,9 @@ class HexagonView: UIView {
         }
     }
     
+    /// Whether or not the stroke is being animated
+    private(set) var isAnimating = false
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         configureShapeLayer()
@@ -83,8 +86,11 @@ class HexagonView: UIView {
         
         let path = CGPathCreateMutable()
         
+        // Being at the top center
         CGPathMoveToPoint(path, nil, horizontalMidpoint, adjustedRect.origin.y);
+        // Move to half way down the first edge
         CGPathAddLineToPoint(path, nil, horizontalMidpoint + horizontalMidpoint / 2, aLength / 2)
+        // Begin drawing the arcs
         CGPathAddArcToPoint(path, nil, insetWidth, aLength, insetWidth, aLength + verticalSideLength, cornerRadius);
         CGPathAddArcToPoint(path, nil, insetWidth, aLength + verticalSideLength, horizontalMidpoint, insetHeight, cornerRadius);
         CGPathAddArcToPoint(path, nil, horizontalMidpoint, insetHeight, adjustedRect.origin.x, aLength + verticalSideLength, cornerRadius);
@@ -92,14 +98,15 @@ class HexagonView: UIView {
         CGPathAddArcToPoint(path, nil, adjustedRect.origin.x, aLength, horizontalMidpoint, adjustedRect.origin.y, cornerRadius);
         CGPathAddArcToPoint(path, nil, horizontalMidpoint, adjustedRect.origin.y, insetWidth, aLength, cornerRadius);
         
-//        CGPathCloseSubpath(path)
-        
         let bezierPath = UIBezierPath(CGPath: path)
         bezierPath.lineCapStyle = .Round
         
         shapeLayer = CAShapeLayer()
         shapeLayer.path = bezierPath.CGPath
-        shapeLayer.strokeStart = 0.01
+        // For animation purposes, offset the start of the stroke so that there's still a small
+        // gap between the beginning and the end of the stroke when the user si very close to
+        // the next level
+        shapeLayer.strokeStart = 0.015
         shapeLayer.strokeEnd = 0
         shapeLayer.lineWidth = borderWidth
         shapeLayer.strokeColor = strokeColor.CGColor
@@ -109,12 +116,18 @@ class HexagonView: UIView {
     }
     
     func animateBorder(endValue: CGFloat, duration: NSTimeInterval) {
+        isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.fromValue = 0.1
         basicAnimation.toValue = endValue
         basicAnimation.duration = duration
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.removedOnCompletion = false
+        basicAnimation.delegate = self
         shapeLayer.addAnimation(basicAnimation, forKey: "strokeEndAnimation")
+    }
+    
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        isAnimating = false
     }
 }

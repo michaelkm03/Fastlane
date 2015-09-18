@@ -55,7 +55,8 @@
 
 - (NSNumber *)levelProgressPercentage
 {
-    return @(arc4random() % 100);
+    return @(70);
+//    return @(arc4random() % 100);
 }
 
 - (NSNumber *)level

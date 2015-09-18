@@ -49,46 +49,101 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         self.state = self.state; // Trigger a state refresh
     }
     
-    [self setupBadgeView];
-    
-    
+    [self updateBadgeView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    self.user.level = @(self.user.level.integerValue + 1);
+    
     if (!self.hasAppeared)
     {
         self.hasAppeared = YES;
-        if ([[[VObjectManager sharedManager] mainUser] isEqual:self.user])
-        {
-            // Animate progress towards next level for current user's profile
-            CGFloat progressRatio = self.user.levelProgressPercentage.floatValue / 100;
-            [self.badgeView animateProgress:levelProgressAnimationTime endValue:progressRatio];
-        }
+        [self animateBadge];
     }
 }
 
 #pragma mark - Helpers
 
-- (void)setupBadgeView
+- (void)updateBadgeView
 {
-    self.badgeView = [self.dependencyManager templateValueOfType:[AnimatedBadgeView class] forKey:kLevelBadgeKey];
-    self.badgeView.cornerRadius = 8;
-    self.badgeView.animatedBorderWidth = 2;
-    self.badgeView.progressBarInset = 3;
-    self.badgeView.title = NSLocalizedString(@"LEVEL", "");
-    self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
-    self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
-    self.badgeView.levelNumber = [self.user.level stringValue];
-    [self.badgeContainerView addSubview:self.badgeView];
-    [self.badgeContainerView v_addFitToParentConstraintsToSubview:self.badgeView];
+    // Remove all subviews from badge container view
+    for (UIView *view in self.badgeContainerView.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    
+    UIView *viewToContain = [self configuredBadgeView];
+    if (viewToContain != nil)
+    {
+        [self.badgeContainerView addSubview:viewToContain];
+        [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
+    }
 }
 
-- (void)adjustLevelBadgeProgressAnimated:(BOOL)animated
+- (UIView *)configuredBadgeView
 {
+    AnimatedBadgeView *animatedBadgeView = [self.dependencyManager templateValueOfType:[AnimatedBadgeView class] forKey:kLevelBadgeKey];
+    // Make sure we have a badge component and that this user is a high enough level to show it
+    if (animatedBadgeView != nil && self.user.level.integerValue >= animatedBadgeView.minLevel && self.user != nil)
+    {
+        if (self.user.isCreator.boolValue)
+        {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+            return imageView;
+        }
+        else
+        {
+            self.badgeView = animatedBadgeView;
+            self.badgeView.cornerRadius = 4;
+            self.badgeView.animatedBorderWidth = 2;
+            self.badgeView.progressBarInset = 3;
+            self.badgeView.title = NSLocalizedString(@"LEVEL", "");
+            self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+            self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+            self.badgeView.levelNumberString = self.user.level.stringValue;
+            return self.badgeView;
+        }
+    }
+        
+    return nil;
+}
+
+- (void)animateBadge
+{
+    if (self.badgeView != nil && self.state == VUserProfileHeaderStateCurrentUser && !self.badgeView.isAnimating)
+    {
+        // Animate progress towards next level for current user's profile
+        CGFloat progressRatio = self.user.levelProgressPercentage.floatValue / 100;
+        [self.badgeView animateProgress:levelProgressAnimationTime * progressRatio endValue:progressRatio];
+    }
+}
+
+- (void)updateLevelViews
+{
+    if ([self badgeNeedsToBeUpdated])
+    {
+        // Update the badge to reflect changes
+        [self updateBadgeView];
+        
+        // Small delay before animation begins
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            // Animated progress if needed
+            [self animateBadge];
+        });
+    }
+}
+
+- (BOOL)badgeNeedsToBeUpdated
+{
+    BOOL progressDiffers = self.user.levelProgressPercentage.floatValue / 100 != self.badgeView.currentProgress;
+    BOOL levelDiffers = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue];
+    return (progressDiffers || levelDiffers) && !self.badgeView.isAnimating;
     
+    return NO;
 }
 
 #pragma mark - VUserProfileHeader

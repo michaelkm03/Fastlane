@@ -485,6 +485,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 {
                     completionBlock();
                 }
+                [self.profileHeaderViewController updateLevelViews];
                 [self.profileHeaderViewController reloadProfileImage];
                 [self reloadUserFollowingRelationship];
             };

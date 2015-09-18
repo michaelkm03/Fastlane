@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="backgroundImageView" destination="Nua-VV-KOT" id="JWb-8j-a9j"/>
                 <outlet property="badgeContainerView" destination="Qmh-5E-xej" id="W4f-OP-YVW"/>
-                <outlet property="badgeView" destination="Qmh-5E-xej" id="VPE-q6-pCH"/>
                 <outlet property="followersButton" destination="Ezs-M5-j6u" id="Wml-oO-qic"/>
                 <outlet property="followersHeader" destination="Mu0-ll-MRk" id="03Y-W8-1US"/>
                 <outlet property="followersLabel" destination="deh-3g-hYk" id="Z2w-Vc-IbT"/>
