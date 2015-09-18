@@ -24,7 +24,8 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     VSequencePermissionCanFlagSequence      = 1 << 7,
     VSequencePermissionCanGif               = 1 << 8,
     VSequencePermissionCanMeme              = 1 << 9,
-    VSequencePermissionCanQuote             = 1 << 10
+    VSequencePermissionCanQuote             = 1 << 10,
+    VSequencePermissionCanAddGifComments    = 1 << 11
 };
 
 @interface VSequencePermissions()
@@ -110,6 +111,11 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
 - (BOOL)canQuote
 {
     return (self.value & VSequencePermissionCanQuote) != 0ul;
+}
+
+- (BOOL)canAddGifComments
+{
+    return (self.value & VSequencePermissionCanAddGifComments) != 0ul;
 }
 
 - (NSString *)description
