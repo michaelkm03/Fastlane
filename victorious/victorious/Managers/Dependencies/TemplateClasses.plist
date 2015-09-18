@@ -20,8 +20,6 @@
 	<string>VModernLandingViewController</string>
 	<key>modernLoginAndRegistration.flow</key>
 	<string>VModernLoginAndRegistrationFlowViewController</string>
-	<key>standard.loginAndRegistrationView</key>
-	<string>VStandardLoginFlowViewController</string>
 	<key>image.creationFlow</key>
 	<string>VImageCreationFlowController</string>
 	<key>translucent.background</key>
