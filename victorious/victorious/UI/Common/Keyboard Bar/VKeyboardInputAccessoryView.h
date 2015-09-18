@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
     VKeyboardBarAttachmentTypeGIF,
 };
 
-@class VKeyboardInputAccessoryView, VDependencyManager;
+@class VKeyboardInputAccessoryView, VDependencyManager, VSequencePermissions;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -94,6 +94,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Use this property to override the default behavior of the attachments bar and force it to hidden.
  */
 @property (nonatomic, assign, getter=isAttachmentsBarHidden) BOOL attachmentsBarHidden;
+
+/**
+ *  The sequence permissions of the content that this KeyboardInputAccessoryView is attached to
+ */
+@property (nonatomic, weak) VSequencePermissions *sequencePermissions;
 
 /**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
