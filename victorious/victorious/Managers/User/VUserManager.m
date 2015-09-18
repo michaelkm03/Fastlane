@@ -129,29 +129,16 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                isNewUser = NO;
-                [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                            SuccessBlock:success
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-                 {
-                     if (errorBlock)
-                     {
-                         errorBlock(error, NO);
-                     }
-                 }];
-            }
-            else if (errorBlock)
+            if (errorBlock)
             {
                 errorBlock(error, NO);
             }
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
         };
-        [[VObjectManager sharedManager] modernCreateFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                         SuccessBlock:success
-                                                            failBlock:failed];
+        [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                   successBlock:success
+                                                      failBlock:failed];
     };
     
     void (^failureBlock)() = ^(NSError *error)
@@ -274,35 +261,17 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            VFailBlock blockFail = ^(NSOperation *operation, NSError *error)
+            if (errorBlock)
             {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
-            };
-             
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
-                                                           accessSecret:tokenSecret
-                                                              twitterId:twitterId
-                                                           SuccessBlock:success failBlock:blockFail];
-            }
-            else
-            {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
+                errorBlock(error, NO);
             }
         };
         
-        [[VObjectManager sharedManager] modernCreateTwitterWithToken:oauthToken
-                                                        accessSecret:tokenSecret
-                                                           twitterId:twitterId
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
+        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                  accessSecret:tokenSecret
+                                                     twitterId:twitterId
+                                                  successBlock:success
+                                                     failBlock:failed];
     }];
 }
 
