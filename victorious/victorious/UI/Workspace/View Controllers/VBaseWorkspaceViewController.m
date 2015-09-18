@@ -83,7 +83,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

@@ -16,6 +16,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
 static NSString * const kUnlockedBallisticBackgroundIconKey = @"ballistic_background_icon";
 static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_background_icon";
+static NSString * const kLevelFormatLocalizationKey = @"LevelFormat";
 
 NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCount";
 
@@ -24,10 +25,12 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 @property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *padlockImageView;
+@property (weak, nonatomic) IBOutlet UILabel *unlockLevelLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
 @property (nonatomic, strong) UIImage *unlockedBallisticBackground;
 @property (nonatomic, strong) UIImage *lockedBallisticBackground;
+@property (nonatomic, assign) BOOL requiresHigherLevel;
 
 @end
 
@@ -49,8 +52,12 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     {
         self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
     }
-    self.isLocked = NO;
+    self.requiresPurchase = NO;
+    self.requiresHigherLevel = NO;
     self.enabled = YES;
+    self.unlockLevelLabel.hidden = YES;
+    [self.unlockLevelLabel sizeToFit];
+    [self.contentView bringSubviewToFront:self.unlockLevelLabel];
 }
 
 - (void)prepareForReuse
@@ -66,7 +73,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     [super setHighlighted:highlighted];
     
     // Return if we're cooling down
-    if (highlighted && [self.ballisticIconView isAnimating])
+    if ( highlighted && [self.ballisticIconView isAnimating] )
     {
         return;
     }
@@ -113,9 +120,9 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.contentView.alpha = _enabled ? 1.0f : 0.5f;
 }
 
-- (void)setIsLocked:(BOOL)isLocked
+- (void)setRequiresPurchase:(BOOL)requiresPurchase
 {
-    _isLocked = isLocked;
+    _requiresPurchase = requiresPurchase;
     [self updateOverlayImageView];
 }
 
@@ -140,13 +147,26 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)updateOverlayImageView
 {
-    UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
+    UIImage *image = self.requiresPurchase ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
         self.ballisticIconView.overlayImage = image;
     }
     
-    self.padlockImageView.hidden = !self.isLocked;
+    self.padlockImageView.hidden = !self.requiresPurchase;
+}
+
+- (void)updateLevelLockingStatusWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel
+{
+    self.requiresHigherLevel = unlockLevel > userLevel;
+    if (self.requiresHigherLevel)
+    {
+        [self.unlockLevelLabel setText: [NSString stringWithFormat:NSLocalizedString(kLevelFormatLocalizationKey, ""), @(unlockLevel)]];
+    }
+    
+    self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.3f : 1.0f;
+    self.userInteractionEnabled = !self.requiresHigherLevel;
+    self.unlockLevelLabel.hidden = !self.requiresHigherLevel;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

@@ -35,7 +35,7 @@ static NSString * const kTextAsset = @"text";
     return assetsByAscendingArea.lastObject;
 }
 
-- (VImageAsset *)assetWithPreferredMaximumSize:(CGSize)minimumSize fromAssets:(NSSet *)imageAssets
+- (VImageAsset *)assetWithPreferredMaximumSize:(CGSize)maximumSize fromAssets:(NSSet *)imageAssets
 {
     if ( imageAssets == nil || imageAssets.count == 0 )
     {
@@ -45,7 +45,7 @@ static NSString * const kTextAsset = @"text";
     NSArray *assetsByDescendingArea = [self arrayDescendingByAreaFromAssets:imageAssets];
     for ( VImageAsset *imageAsset in assetsByDescendingArea )
     {
-        if ( [imageAsset fitsWithinSize:minimumSize] )
+        if ( [imageAsset fitsWithinSize:maximumSize] )
         {
             return imageAsset;
         }

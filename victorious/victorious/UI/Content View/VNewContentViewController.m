@@ -319,7 +319,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     return shouldRotate;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
     BOOL isVideoAndReadyToPlay = hasVideoAsset &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
@@ -506,6 +506,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
+    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
+    // its catchPoint and lockPoint.
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
     
     [self updateOrientation];
 }
@@ -1286,7 +1290,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         }
     }
 
-    if (self.viewModel.type == VContentViewTypeVideo)
+    if ( self.viewModel.type == VContentViewTypeVideo && [self.contentCollectionView numberOfSections] > 0 )
     {
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;

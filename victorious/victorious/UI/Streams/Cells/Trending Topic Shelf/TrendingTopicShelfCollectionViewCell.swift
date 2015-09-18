@@ -34,13 +34,13 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -89,7 +89,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         setup()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -101,9 +101,9 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         contentView.addSubview(collectionView)
         
         // Setup constraints
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: nil, metrics: ["height" : Constants.collectionViewHeight, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView" : collectionView]))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: nil, metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: [], metrics: ["height" : Constants.collectionViewHeight, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: [], metrics: nil, views: ["collectionView" : collectionView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: [], metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
         
         // Register trending topic content cell
         collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TrendingTopicContentCollectionViewCell.self))

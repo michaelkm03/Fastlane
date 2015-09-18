@@ -58,7 +58,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -97,7 +97,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         updateToInitialState()
     }
     
-    private func updateImageView(#url: NSURL) {
+    private func updateImageView(url url: NSURL) {
         imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] (image, error, cacheType, url) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if let strongSelf = self {
@@ -114,13 +114,13 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
                 self.gradient.primaryColor = color
             }
             
-            var finish = { (blurredImage: UIImage) -> Void in
+            let finish = { (blurredImage: UIImage) -> Void in
                 self.blurredImageView.image = blurredImage
                 self.blurredImageView.layer.mask = self.blurMask.layer
                 self.updateToReadyState(animated)
             }
             
-            let cacheIdentifier: String? = url.absoluteString?.stringByAppendingString(Constants.blurCacheString)
+            let cacheIdentifier: String? = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
             
             if let cacheIdentifier = cacheIdentifier, cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
                 finish(cachedImage)

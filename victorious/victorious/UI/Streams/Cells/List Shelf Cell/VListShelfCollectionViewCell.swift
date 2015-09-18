@@ -123,15 +123,14 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     /// The optimal size for this cell.
     ///
-    /// :param: collectionViewBounds The bounds of the collection view containing this cell (minus any relevant insets)
-    /// :param: shelf The shelf whose content will populate this cell
-    /// :param: dependencyManager The dependency manager that will be used to style the cell
+    /// - parameter collectionViewBounds: The bounds of the collection view containing this cell (minus any relevant insets)
+    /// - parameter shelf: The shelf whose content will populate this cell
+    /// - parameter dependencyManager: The dependency manager that will be used to style the cell
     ///
-    /// :return: The optimal size for this cell.
+    /// - returns: The optimal size for this cell.
     class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         let width = collectionViewBounds.width
         let length = cellSideLength(totalCellWidths(width))
-        let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
         let collectionViewHeight = self.collectionViewHeight(cellSideLength: length)
         let height = Constants.baseHeight + collectionViewHeight
         return CGSizeMake(width, height)
@@ -157,13 +156,11 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
 extension VListShelfCollectionViewCell: TrackableShelf {
     
     func trackVisibleSequences() {
-        if let visibleCells = collectionView.visibleCells() as? [UICollectionViewCell] {
-            for cell in visibleCells {
-                if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
-                    let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
-                }
+        for cell in collectionView.visibleCells() {
+            if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
+                let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+                    let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                    streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
             }
         }
     }

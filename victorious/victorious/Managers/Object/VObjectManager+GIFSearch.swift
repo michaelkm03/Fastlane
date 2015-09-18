@@ -13,21 +13,21 @@ extension VObjectManager {
     
     /// Closure called when GIF search request succeeds
     ///
-    /// :param: results An array of GIFSearchResult models found
-    /// :param: isLastPage A bool indicating if there are are more results that can be loaded
+    /// - parameter results: An array of GIFSearchResult models found
+    /// - parameter isLastPage: A bool indicating if there are are more results that can be loaded
     typealias GIFSearchSuccess = (results: [GIFSearchResult], isLastPage: Bool) -> ()
     
     /// Closure called when GIF search request fails
     ///
-    /// :param: error An array of GIFSearchResult models found
+    /// - parameter error: An array of GIFSearchResult models found
     typealias GIFSearchFailure = (error: NSError?, isLastPage: Bool) -> ()
     
     /// Fetches GIF search results for the provided keyword lsit
     ///
-    /// :param: keywords Array of string keywords used to search for GIFs
-    /// :param: pageType An enum value indicating which page to load in a series of paginated requests
-    /// :param: success Closure to be called when request receives a non-error response
-    /// :param: failure Closure to be called when request receives an error response
+    /// - parameter keywords: Array of string keywords used to search for GIFs
+    /// - parameter pageType: An enum value indicating which page to load in a series of paginated requests
+    /// - parameter success: Closure to be called when request receives a non-error response
+    /// - parameter failure: Closure to be called when request receives an error response
     func searchForGIF( searchText: String, pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
         let filter = self.filterForKeywords( searchText )
@@ -48,9 +48,9 @@ extension VObjectManager {
     
     /// Fetches trending GIF search results to show as default content
     ///
-    /// :param: pageType An enum value indicating which page to load in a series of paginated requests
-    /// :param: success Closure to be called when request receives a non-error response
-    /// :param: failure Closure to be called when request receives an error response
+    /// - parameter pageType: An enum value indicating which page to load in a series of paginated requests
+    /// - parameter success: Closure to be called when request receives a non-error response
+    /// - parameter failure: Closure to be called when request receives an error response
     func loadTrendingGIFs( pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
         let filter = self.filterForTrending()

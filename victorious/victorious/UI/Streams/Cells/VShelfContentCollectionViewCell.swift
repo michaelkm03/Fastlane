@@ -96,7 +96,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         setup()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -136,8 +136,8 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
     
     /// The suggested identifier based on the provided baseIdentifier and class name.
     ///
-    /// :param: baseIdentifier The existing identifier, if present.
-    /// :param: className The string representation of the current class or another unique identifier.
+    /// - parameter baseIdentifier: The existing identifier, if present.
+    /// - parameter className: The string representation of the current class or another unique identifier.
     ///
     /// :return: A string based on the provided inputs.
     static func identifier(baseIdentifier: String?, className: String) -> String {

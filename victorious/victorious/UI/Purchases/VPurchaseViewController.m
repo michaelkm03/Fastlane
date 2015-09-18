@@ -71,7 +71,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
     [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

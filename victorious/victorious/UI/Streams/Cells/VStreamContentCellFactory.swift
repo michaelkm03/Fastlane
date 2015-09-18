@@ -13,8 +13,8 @@ import UIKit
 @objc protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
     /// Sent when a stream item is selected from a trending shelf.
     ///
-    /// :param: streamItem The selected stream item.
-    /// :param: fromShelf The shelf that the stream item was selected from.
+    /// - parameter streamItem: The selected stream item.
+    /// - parameter fromShelf: The shelf that the stream item was selected from.
     func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf)
 }
 
@@ -110,7 +110,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         if let factory = factoryForStreamItem(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

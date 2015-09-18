@@ -19,7 +19,7 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;
 @property (nonatomic, strong) UIImage *experienceEnhancerIcon;
-@property (nonatomic, assign) BOOL isLocked;
+@property (nonatomic, assign) BOOL requiresPurchase;
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -28,5 +28,14 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 @property (nonatomic, assign) NSTimeInterval cooldownDuration;
 
 - (void)startCooldown;
+
+/**
+ Update whether to lock the emotive ballsitic or not, based on
+ the unlockLevel of EB and the current level of user
+ 
+ @param unlockLevel The level at which this EB should be unlocked
+ @param userLevel The current level the user is at
+ */
+- (void)updateLevelLockingStatusWithUnlockLevel:(NSInteger)unlockLevel andUserLevel:(NSInteger)userLevel;
 
 @end

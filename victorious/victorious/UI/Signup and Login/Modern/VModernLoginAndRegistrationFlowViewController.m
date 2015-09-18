@@ -150,7 +150,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
