@@ -209,6 +209,7 @@
         <attribute name="isNewCommentOnMyPostEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isNewFollowerEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isNewPrivateMessageEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isPeopleLikeMyPostEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPostFromCreatorEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPostFromFollowedEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPostOnFollowedHashTagEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -378,7 +379,7 @@
         <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
         <element name="NodeAction" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Notification" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="165"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
