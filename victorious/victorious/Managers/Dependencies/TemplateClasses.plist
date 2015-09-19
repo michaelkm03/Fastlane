@@ -152,6 +152,8 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>explore.marqueeCell</key>
+	<string>victorious.ExploreMarqueeController</string>
 	<key>webView.screen</key>
 	<string>VWebBrowserViewController</string>
 	<key>standard.coachmark</key>
@@ -170,6 +172,10 @@
 	<string>VUsersAndTagsSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
+	<key>explore.screen</key>
+	<string>victorious.VExploreViewController</string>
+	<key>trendingTopic.shelf</key>
+	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
 </dict>

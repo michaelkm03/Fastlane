@@ -15,7 +15,6 @@
     self = [super initWithFrame:frame];
     if ( self != nil )
     {
-        self.videoView.hidden = NO;
         self.playIconContainerView.hidden = YES;
     }
     return self;
@@ -25,15 +24,19 @@
 {
     [super setSequence:sequence];
     
-    VAsset *asset = [sequence.firstNode mp4Asset];
-    __weak VBaseVideoSequencePreviewView *weakSelf = self;
-    [self.videoView setItemURL:[NSURL URLWithString:asset.data]
-                          loop:asset.loop.boolValue
-                    audioMuted:asset.audioMuted.boolValue
-            alongsideAnimation:^
-     {
-         [weakSelf makeBackgroundContainerViewVisible:YES];
-     }];
+    self.videoView.hidden = self.onlyShowPreview;
+    if ( !self.onlyShowPreview )
+    {
+        VAsset *asset = [sequence.firstNode mp4Asset];
+        __weak VBaseVideoSequencePreviewView *weakSelf = self;
+        [self.videoView setItemURL:[NSURL URLWithString:asset.data]
+                              loop:asset.loop.boolValue
+                        audioMuted:asset.audioMuted.boolValue
+                alongsideAnimation:^
+         {
+             [weakSelf makeBackgroundContainerViewVisible:YES];
+         }];
+    }
 }
 
 #pragma mark - VVideoViewDelegate

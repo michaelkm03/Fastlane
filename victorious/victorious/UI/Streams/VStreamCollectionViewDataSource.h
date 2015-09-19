@@ -32,6 +32,25 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @optional
 
 /**
+ *  Allows a delegate to control the number of sections for the provided dataSource.
+ *
+ *  @param dataSource The dataSource whose content will be displayed.
+ *
+ *  @return The number of sections that should be displayed for the dataSource.
+ */
+- (NSInteger)numberOfSectionsForDataSource:(VStreamCollectionViewDataSource *)dataSource;
+
+/**
+ *  Allows a delegate to control the number of rows in a section for the provided dataSource.
+ *
+ *  @param dataSource The dataSource whose content will be displayed.
+ *  @param section The section that will contain the number of rows returned from this method.
+ *
+ *  @return The number of rows that should be displayed for the dataSource in the provided section.
+ */
+- (NSInteger)dataSource:(VStreamCollectionViewDataSource *)dataSource numberOfRowsInSection:(NSUInteger)section;
+
+/**
  *  Notifies the data delgate that the datasource has received new stream
  *  items and it should prepare to display cells for each of the stream items.
  */
@@ -54,7 +73,9 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @property (nonatomic, weak) id<VStreamCollectionDataDelegate> delegate;
 @property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
 @property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
-@property (nonatomic) BOOL hasHeaderCell;///<If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
+@property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
+@property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
+@property (nonatomic, readonly) NSArray *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
 
 /**
  *  Initializes the data source with a default stream.
