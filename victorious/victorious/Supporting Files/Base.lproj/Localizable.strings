@@ -453,7 +453,7 @@
 "Watch GIF" = "Watch GIF";
 
 "See all" = "See all";
-"Show Previous Comments" = "Show Previous Comments";
+"View previous comments" = "View previous comments";
 "CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
