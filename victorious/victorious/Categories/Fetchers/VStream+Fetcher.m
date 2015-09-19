@@ -44,6 +44,7 @@
 
 + (VStream *)streamForPath:(NSString *)apiPath
                  inContext:(NSManagedObjectContext *)context
+            withEntityName:(NSString *)entityName
 {
     static NSCache *streamCache;
     static dispatch_once_t onceToken;
@@ -66,7 +67,7 @@
         }
     }
     
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VStream entityName]];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
     NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", @"apiPath", apiPath];
     [request setPredicate:idFilter];
     NSError *error = nil;
@@ -83,7 +84,7 @@
     else
     {
         //Create a new one if it doesn't exist
-        object = [NSEntityDescription insertNewObjectForEntityForName:[VStream entityName]
+        object = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                inManagedObjectContext:context];
         object.apiPath = apiPath;
         object.name = @"";
@@ -94,6 +95,12 @@
     }
     
     return object;
+}
+
++ (VStream *)streamForPath:(NSString *)apiPath
+                 inContext:(NSManagedObjectContext *)context
+{
+    return [self streamForPath:apiPath inContext:context withEntityName:[VStream entityName]];
 }
 
 @end

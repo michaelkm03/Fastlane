@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VHashTags : NSObject
 
 /**
@@ -19,11 +21,11 @@
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
-+ (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
-                 withTagRanges:(NSArray *)tagRanges
-                    attributes:(NSDictionary *)attributes;
++ (BOOL)formatHashTagsInString:(nullable NSMutableAttributedString *)fieldText
+                 withTagRanges:(nullable NSArray *)tagRanges
+                    attributes:(nullable NSDictionary *)attributes;
 
-+ (NSArray *)detectHashTags:(NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol;
++ (nullable NSArray *)detectHashTags:(nullable NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol;
 
 /**
  *  Find all hash tags within a given string.
@@ -32,20 +34,20 @@
  *
  *  @return An arry of NSRanges wrapped in NSValues.
  */
-+ (NSArray *)detectHashTags:(NSString *)fieldText;
++ (nullable NSArray *)detectHashTags:(nullable NSString *)fieldText;
 
 /**
  Creates a copy of the input string with a hash mark (#) prepending, if it is not already prepending.
  @param string The string with which to copy and prepend the hash mark.
  */
-+ (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string;
++ (nullable NSString *)stringWithPrependedHashmarkFromString:(nullable NSString *)string;
 
 /**
  Creates a copy of the input string with a prepended hash mark (#) removed.  If there is no prepended
  hashtag, an unmodified copy is returned.
  @param string The string with which to copy and remove the prepended hash mark.
  */
-+ (NSString *)stringByRemovingPrependingHashmarkFromString:(NSString *)string;
++ (nullable NSString *)stringByRemovingPrependingHashmarkFromString:(nullable NSString *)string;
 
 /**
  *  Find all hash tags within a given string and return the text of each one in an array.
@@ -54,9 +56,11 @@
  *
  *  @return An arry of NSStrings wrapped in NSValues.
  */
-+ (NSArray *)getHashTags:(NSString *)fieldText includeHashMark:(BOOL)includeHashMark;
++ (NSArray *)getHashTags:(nullable NSString *)fieldText includeHashMark:(BOOL)includeHashMark;
 
 
-+ (NSArray *)getHashTags:(NSString *)fieldText;
++ (NSArray *)getHashTags:(nullable NSString *)fieldText;
 
 @end
+
+NS_ASSUME_NONNULL_END

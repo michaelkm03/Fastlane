@@ -61,6 +61,11 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL readyForDisplay;
 
 /**
+ *  If YES, this preview view will only display the preview image for this content.
+ */
+@property (nonatomic, assign) BOOL onlyShowPreview;
+
+/**
  *  The dependency manager used, by some preview views, for styling
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;

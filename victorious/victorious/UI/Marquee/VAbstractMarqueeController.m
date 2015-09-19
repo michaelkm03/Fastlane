@@ -123,6 +123,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     return [marqueeItems array];
 }
 
+- (CGFloat)pageWidth
+{    
+    Class<VSharedCollectionReusableViewMethods> itemCellClass = [self.class marqueeStreamItemCellClass];
+    return [itemCellClass desiredSizeWithCollectionViewBounds:self.collectionView.bounds].width;
+}
+
 - (void)reset
 {
     self.currentPage = 0;
@@ -143,8 +149,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    NSUInteger currentPage = self.collectionView.contentOffset.x / self.pageWidth;
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;
@@ -161,9 +166,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateFocus
 {
-    //Update the focus of preview views that conform to VFocusable
-    CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
+    //Update the focus of preview views that conform to VCellFocus
+    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + self.pageWidth / 2 ) / self.pageWidth;
     currentFocusPage = MIN( currentFocusPage, (NSInteger)self.marqueeItems.count - 1 );
     currentFocusPage = MAX( currentFocusPage, 0 );
 
@@ -207,14 +211,13 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         return;
     }
     
-    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
-    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / self.pageWidth ) + 1;
     if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
     }
     
-    [self.collectionView setContentOffset:CGPointMake(currentPage * pageWidth, self.collectionView.contentOffset.y) animated:YES];
+    [self.collectionView setContentOffset:CGPointMake(currentPage * self.pageWidth, self.collectionView.contentOffset.y) animated:YES];
 }
 
 - (void)scrolledToPage:(NSInteger)currentPage
