@@ -882,6 +882,9 @@
 		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
+		C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */; settings = {ASSET_TAGS = (); }; };
+		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; settings = {ASSET_TAGS = (); }; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
@@ -2883,6 +2886,9 @@
 		C30AA4F21B067C370010CEFE /* VPermissionCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionCamera.m; sourceTree = "<group>"; };
 		C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionPhotoLibrary.h; sourceTree = "<group>"; };
 		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
+		C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementInterstitial.swift; sourceTree = "<group>"; };
+		C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
+		C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementAnimator.swift; sourceTree = "<group>"; };
 		C3345F601B59ACB30091D889 /* VMenuItemControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuItemControl.h; sourceTree = "<group>"; };
 		C3345F611B59ACB30091D889 /* VMenuItemControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuItemControl.m; sourceTree = "<group>"; };
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
@@ -6874,6 +6880,15 @@
 			path = Permissions;
 			sourceTree = "<group>";
 		};
+		C3186DF71BACE84C00F4BCFF /* Achievement */ = {
+			isa = PBXGroup;
+			children = (
+				C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */,
+				C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */,
+			);
+			path = Achievement;
+			sourceTree = "<group>";
+		};
 		C35265F91B28E349001F093F /* Create Sheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -6894,6 +6909,7 @@
 		C3623E561B9A779A002B121D /* Fan Club */ = {
 			isa = PBXGroup;
 			children = (
+				C3186DF71BACE84C00F4BCFF /* Achievement */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
 			);
 			path = "Fan Club";
@@ -6919,6 +6935,7 @@
 				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
 				C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */,
 				C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */,
+				C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */,
 			);
 			path = Interstitials;
 			sourceTree = "<group>";
@@ -8935,6 +8952,7 @@
 				A721E92B1B572454000B7901 /* VMessage+RestKit.m in Sources */,
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */,
+				C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */,
 				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
@@ -9075,6 +9093,7 @@
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
+				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
@@ -9393,6 +9412,7 @@
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				A7A0617D1B4DB39900E8FFCF /* GIFSearchViewController.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
+				C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */,
 				F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,

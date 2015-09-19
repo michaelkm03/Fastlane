@@ -11,6 +11,7 @@ import Foundation
 /// An enum describing each type of supported interstitials
 private enum InterstitialType : String {
     case LevelUp = "level"
+    case Achievement = "achievement"
 }
 
 /// A RKSerialization subclass that handles registering
@@ -52,7 +53,10 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
                 {
                 case .LevelUp:
                     return levelUpInterstitial(remoteID: remoteID, params: params)
+                case .Achievement:
+                    return achievementInterstitial(remoteID: remoteID, params: params)
                 }
+                
             }
             return nil
         }
@@ -71,6 +75,13 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
            let videoURL = NSURL(string: videoURLString) {
             return LevelUpInterstitial(remoteID: remoteID, level: String(levelNumber), title: title, description: description, icons: icons, videoURL: videoURL)
         }
+        return nil
+    }
+    
+    /// Returns a fully-configured achievement interstitial
+    ///
+    /// - parameter configuration: A JSON dictionary containing all the configuration info for an achievement interstitial. If this information is invalid, this method returns nil.
+    private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> AchievementInterstitial? {
         return nil
     }
 }
