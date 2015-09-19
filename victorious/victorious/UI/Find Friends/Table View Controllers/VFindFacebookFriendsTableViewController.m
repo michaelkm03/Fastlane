@@ -8,10 +8,12 @@
 
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsTableView.h"
-#import "VFacebookManager.h"
+#import "victorious-swift.h"
 #import "VObjectManager+Users.h"
 #import "VConstants.h"
 
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
 
 @implementation VFindFacebookFriendsTableViewController
 
@@ -25,39 +27,37 @@
 
 - (void)connectToSocialNetworkWithPossibleUserInteraction:(BOOL)userInteraction completion:(void (^)(BOOL, NSError *))completionBlock
 {
-    void (^success)() = ^(void)
+    if ( [FBSDKAccessToken currentAccessToken] != nil )
     {
-        if (completionBlock)
+        if ( completionBlock != nil )
         {
             completionBlock(YES, nil);
         }
-    };
-    void (^failure)(NSError *) = ^(NSError *error)
-    {
-        if (completionBlock)
-        {
-            completionBlock(NO, error);
-        }
-    };
-    
-    if ([[VFacebookManager sharedFacebookManager] isSessionValid])
-    {
-        success();
     }
     else if (userInteraction)
     {
-        [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent onSuccess:success onFailure:failure];
+        FBSDKLoginManager *loginManager = [VFacebookHelper loginManager];
+        [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
+                            fromViewController:self.parentViewController
+                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
+        {
+            if ( completionBlock != nil )
+            {
+                BOOL loginSuccessful = [FBSDKAccessToken currentAccessToken] != nil;
+                completionBlock(loginSuccessful, error);
+            }
+        }];
     }
-    else
+    else if ( completionBlock != nil )
     {
-        [[VFacebookManager sharedFacebookManager] loginWithStoredTokenOnSuccess:success onFailure:failure];
+        completionBlock(NO, nil);
     }
 }
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
     [[VObjectManager sharedManager] findFriendsBySocial:kVFacebookSocialSelector
-                                                  token:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                  token:[[FBSDKAccessToken currentAccessToken] tokenString]
                                                  secret:nil
                                        withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {

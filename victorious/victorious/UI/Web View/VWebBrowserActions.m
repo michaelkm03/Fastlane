@@ -10,7 +10,6 @@
 #import "UIActionSheet+VBlocks.h"
 #import "VFacebookActivity.h"
 #import "VSequence+Fetcher.h"
-#import "VFacebookManager.h"
 
 @import Social;
 @import MessageUI;
@@ -32,7 +31,7 @@
     
     [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
      {
-         [[VFacebookManager sharedFacebookManager] shareLink:url description:description name:title previewUrl:url];
+//         [[VFacebookManager sharedFacebookManager] shareLink:url description:description name:title previewUrl:url];
      }];
     
     if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )

@@ -10,8 +10,6 @@
 
 #import "VSequence+Fetcher.h"
 
-#import "VFacebookManager.h"
-
 #import "VConstants.h"
 
 static NSString * const VFacebookActivityType = @"com.victorious.facebook";
@@ -61,11 +59,12 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
             shareUrl = item;
         }
     }
-    
-    [[VFacebookManager sharedFacebookManager] shareLink:shareUrl
-                                            description:sequence.sequenceDescription
-                                                   name:sequence.name
-                                             previewUrl:nil];
+
+#warning todo
+//    [[VFacebookManager sharedFacebookManager] shareLink:shareUrl
+//                                            description:sequence.sequenceDescription
+//                                                   name:sequence.name
+//                                             previewUrl:nil];
 }
 
 + (UIActivityCategory)activityCategory

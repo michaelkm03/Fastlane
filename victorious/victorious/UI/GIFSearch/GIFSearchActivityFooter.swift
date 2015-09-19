@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// Collection view footer that shows acitivyt indicator or a message, intended
+/// Collection view footer that shows activity indicator or a message, intended
 /// for letting the user know when there are no more results to load.
 class GIFSearchActivityFooter: UICollectionReusableView {
     
