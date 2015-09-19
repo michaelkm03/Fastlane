@@ -186,9 +186,17 @@
     __block BOOL doesEventExistForKey = NO;
     [self.queuedEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
      {
-         BOOL matchesEventId = [event.eventId isEqualToString:eventId] || eventId == nil;
-         BOOL matchesEventName = event.name == eventName;
-         BOOL matchesStream = [parameters[VTrackingKeyStreamId] isEqualToString:event.parameters[VTrackingKeyStreamId]];
+         BOOL matchesEventId = eventId == nil;
+         if ( !matchesEventId && [eventId isKindOfClass:[event.eventId class]] )
+         {
+             matchesEventId = [eventId isEqual:event.eventId];
+         }
+         BOOL matchesEventName = [event.name isEqualToString:eventName];
+         BOOL matchesStream = parameters == nil;
+         if ( !matchesStream && [parameters[VTrackingKeyStreamId] isKindOfClass:[event.parameters[VTrackingKeyStreamId] class]] )
+         {
+             matchesStream = [parameters[VTrackingKeyStreamId] isEqual:event.parameters[VTrackingKeyStreamId]];
+         }
          if ( matchesEventId && matchesEventName && matchesStream )
          {
              
