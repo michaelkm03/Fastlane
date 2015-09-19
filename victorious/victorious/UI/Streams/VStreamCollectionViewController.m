@@ -265,8 +265,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         self.collectionView.collectionViewLayout = flowLayout;
     }
     
-    [self.KVOController observe:self.streamDataSource.stream
-                        keyPath:NSStringFromSelector(@selector(streamItems))
+    [self.KVOController observe:self.streamDataSource
+                        keyPath:NSStringFromSelector(@selector(visibleStreamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(dataSourceDidChange)];
     [self.KVOController observe:self.streamDataSource
@@ -414,7 +414,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSArray *streamItems = [self.streamDataSource.stream.streamItems array];
+    NSArray *streamItems = self.streamDataSource.visibleStreamItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -674,7 +674,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                             atIndexPath:indexPath];
     }
     
-    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
+    VSequence *sequence = (VSequence *)[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {
@@ -931,7 +931,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     void (^noContentUpdates)(void);
     
-    if ( self.streamDataSource.stream.streamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
+    if ( self.streamDataSource.visibleStreamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
         {

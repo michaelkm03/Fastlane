@@ -157,8 +157,9 @@ extension VListShelfCollectionViewCell: TrackableShelf {
     
     func trackVisibleSequences() {
         for cell in collectionView.visibleCells() {
-            if let indexPath = collectionView.indexPathForCell(cell), shelf = shelf,
-                streamItem = streamItemAt(indexPath: indexPath) {
+            if let indexPath = collectionView.indexPathForCell(cell),
+               let shelf = shelf,
+               let streamItem = streamItemAt(indexPath: indexPath) {
                 let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
                 streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
             }
