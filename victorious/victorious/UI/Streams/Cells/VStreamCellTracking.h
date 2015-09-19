@@ -21,6 +21,6 @@
 /**
  Returns the sequence that should be tracked for this cell
  */
-- (VSequence *)sequenceToTrack;
+- (nullable VSequence *)sequenceToTrack;
 
 @end
