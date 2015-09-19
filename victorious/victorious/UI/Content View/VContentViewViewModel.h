@@ -88,6 +88,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
 
+- (void)addCommentWidhText:(NSString *)text
+         publishParameters:(VPublishParameters *)publishParameters
+                completion:(void (^)(BOOL succeeded))completion;
+
 - (void)addCommentWithText:(NSString *)text
          publishParameters:(VPublishParameters *)publishParameters
                currentTime:(Float64)currentTime

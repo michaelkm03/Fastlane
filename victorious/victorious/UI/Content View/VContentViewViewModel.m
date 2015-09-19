@@ -472,48 +472,48 @@
                currentTime:(Float64)currentTime
                 completion:(void (^)(BOOL succeeded))completion
 {
-    if (isnan(currentTime))
-    {
-        [[VObjectManager sharedManager] addCommentWithText:text
-                                         publishParameters:publishParameters
-                                                toSequence:self.sequence
-                                                 andParent:nil
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [[VObjectManager sharedManager] addRealtimeCommentWithText:text
+                                             publishParameters:publishParameters
+                                                       toAsset:self.currentAsset
+                                                        atTime:@(currentTime)
+                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         if (completion)
          {
-             if (completion)
-             {
-                 completion(YES);
-             }
+             completion(YES);
          }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
+     }
+                                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if (completion)
          {
-             if (completion)
-             {
-                 completion(NO);
-             }
-         }];
-    }
-    else
-    {
-        [[VObjectManager sharedManager] addRealtimeCommentWithText:text
-                                                 publishParameters:publishParameters
-                                                           toAsset:self.currentAsset
-                                                            atTime:@(currentTime)
-                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             if (completion)
-             {
-                 completion(YES);
-             }
+             completion(NO);
          }
-                                                         failBlock:^(NSOperation *operation, NSError *error)
+     }];
+}
+
+- (void)addCommentWidhText:(NSString *)text
+         publishParameters:(VPublishParameters *)publishParameters
+                completion:(void (^)(BOOL succeeded))completion
+{
+    [[VObjectManager sharedManager] addCommentWithText:text
+                                     publishParameters:publishParameters
+                                            toSequence:self.sequence
+                                             andParent:nil
+                                          successBlock:^(NSOperation *_Nullable operation, id  _Nullable result, NSArray *_Nonnull resultObjects)
+     {
+         if (completion)
          {
-             if (completion)
-             {
-                 completion(NO);
-             }
-         }];
-    }
+             completion(YES);
+         }
+     }
+                                             failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if (completion)
+         {
+             completion(NO);
+         }
+     }];
 }
 
 - (void)fetchComments

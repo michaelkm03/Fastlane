@@ -915,7 +915,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                             });
          }];
     }
-    else // full overlay
+    else
     {
         UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
         animationImageView.animationDuration = enhancer.animationDuration;
@@ -1137,12 +1137,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self updateInsetsForKeyboardBarState];
     
-    if ( self.viewModel.type != VContentViewTypeVideo )
-    {
-        return;
-    }
-    
-    if ( self.isVideoContent )
+    if ( self.viewModel.type == VContentViewTypeVideo )
     {
         NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
         
@@ -1195,14 +1190,27 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)submitCommentWithText:(NSString *)commentText
 {
     __weak typeof(self) welf = self;
-    [self.viewModel addCommentWithText:commentText
-                     publishParameters:welf.publishParameters
-                           currentTime:welf.realtimeCommentBeganTime
-                            completion:^(BOOL succeeded)
-     {
-         __strong typeof(welf) strongSelf = welf;
-         [strongSelf reloadComments];
-     }];
+    if ( self.enteringRealTimeComment )
+    {
+        [self.viewModel addCommentWithText:commentText
+                         publishParameters:self.publishParameters
+                               currentTime:self.realtimeCommentBeganTime
+                                completion:^(BOOL succeeded)
+         {
+             __strong typeof(welf) strongSelf = welf;
+             [strongSelf reloadComments];
+         }];
+    }
+    else
+    {
+        [self.viewModel addCommentWidhText:commentText
+                         publishParameters:self.publishParameters
+                                completion:^(BOOL succeeded)
+         {
+             __strong typeof(welf) strongSelf = welf;
+             [strongSelf reloadComments];
+         }];
+    }
 }
 
 - (void)reloadComments

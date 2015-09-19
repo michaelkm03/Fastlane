@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, VFocusType)
 @optional
 
 /**
- Returns the bounding rect for the content relative to the receiving container.
+ Returns the bounding rect for the content rect to be used for focus calculations.
  */
 - (CGRect)contentArea;
 
