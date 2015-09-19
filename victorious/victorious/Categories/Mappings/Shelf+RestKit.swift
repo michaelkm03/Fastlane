@@ -35,6 +35,8 @@ extension Shelf {
     
     class func mapping(itemSubType: String) -> RKObjectMapping? {
         switch itemSubType {
+        case VStreamItemSubTypeTrendingTopic:
+            return mappingBaseForEntity(named: "Shelf")
         case VStreamItemSubTypeMarquee:
             return mappingBaseForEntity(named: entityName())
         case VStreamItemSubTypeUser:
@@ -46,6 +48,18 @@ extension Shelf {
         default:()
             return nil
         }
+    }
+    
+    class func dynamicMapping() -> RKDynamicMapping {
+        let dynamicMapping = RKDynamicMapping()
+        dynamicMapping.addMatcher(RKObjectMappingMatcher(possibleMappings: [], block: { (mappable: AnyObject!) -> RKObjectMapping! in
+            var shelfMapping: RKObjectMapping?
+            if let dictionary = mappable as? [String : AnyObject], let subtype = dictionary["subtype"] as? String {
+                shelfMapping = Shelf.mapping(subtype)
+            }
+            return shelfMapping
+        }))
+        return dynamicMapping
     }
     
 }
