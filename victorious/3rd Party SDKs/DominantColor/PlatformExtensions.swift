@@ -74,8 +74,8 @@ public extension UIImage {
         seed: UInt32 = DefaultParameterValues.seed,
         memoizeConversions: Bool = DefaultParameterValues.memoizeConversions
     ) -> [UIColor] {
-        let colors = dominantColorsInImage(self.CGImage, maxSampledPixels: maxSampledPixels, accuracy: accuracy, seed: seed, memoizeConversions: memoizeConversions)
-        return colors.map { UIColor(CGColor: $0)! }
+        let colors = dominantColorsInImage(self.CGImage!, maxSampledPixels: maxSampledPixels, accuracy: accuracy, seed: seed, memoizeConversions: memoizeConversions)
+        return colors.map { UIColor(CGColor: $0) }
     }
 }
 

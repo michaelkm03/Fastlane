@@ -20,6 +20,9 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
     
     override func awakeFromNib() {
+        guard let marqueeCollectionView = marqueeCollectionView else {
+            return
+        }
         marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
         let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
         marqueeCollectionView.collectionViewLayout = flowLayout
@@ -32,7 +35,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
 }
 
-extension ExploreMarqueeCollectionViewCell: VBackgroundContainer {
+extension ExploreMarqueeCollectionViewCell { //VBackgroundContainer
     func backgroundContainerView() -> UIView {
         return contentView
     }

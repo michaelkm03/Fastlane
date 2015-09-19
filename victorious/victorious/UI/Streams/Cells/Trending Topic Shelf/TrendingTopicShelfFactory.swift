@@ -44,7 +44,7 @@ extension TrendingTopicShelfFactory: VStreamCellFactory {
         if let shelf = streamItem as? Shelf {
             return TrendingTopicShelfCollectionViewCell.desiredSize(collectionViewBounds: bounds, shelf: shelf, dependencyManager: dependencyManager)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

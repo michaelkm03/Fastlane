@@ -34,7 +34,7 @@ class TrendingTopicGradientView: UIView {
     private func drawGradient() {
         gradientLayer?.removeFromSuperlayer()
         if let primaryColor = primaryColor {
-            var gradient: CAGradientLayer = CAGradientLayer()
+            let gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = bounds
             gradient.colors = [primaryColor.colorWithAlphaComponent(CGFloat(gradientAlphas.0)).CGColor,
                 primaryColor.colorWithAlphaComponent(CGFloat(gradientAlphas.1)).CGColor,

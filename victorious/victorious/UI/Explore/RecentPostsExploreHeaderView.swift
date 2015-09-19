@@ -45,7 +45,7 @@ class RecentPostsExploreHeaderView: UICollectionReusableView {
     }
     
     class func desiredHeight(dependencyManager: VDependencyManager) -> CGFloat {
-        var height = Constants.baseHeight
+        let height = Constants.baseHeight
         if let font = dependencyManager.labelTextFont, text = dependencyManager.labelText {
             return text.frameSizeForWidth(CGFloat.max, andAttributes: [ NSFontAttributeName : font ]).height
         }

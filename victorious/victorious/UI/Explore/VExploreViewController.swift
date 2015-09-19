@@ -18,7 +18,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+class VExploreViewController: VAbstractStreamCollectionViewController, UISearchBarDelegate {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
@@ -64,22 +64,23 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     /// MARK: - View Controller Initialization
     
-    class func new( #dependencyManager: VDependencyManager ) -> VExploreViewController {
+    class func new( dependencyManager dependencyManager: VDependencyManager ) -> VExploreViewController {
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
-        if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
-            exploreVC.dependencyManager = dependencyManager
-            let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
-            let urlPath = url.v_pathComponent()
-            exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-            // Factory for marquee shelf
-            exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
-            // Factory for trending topic shelf
-            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
-            exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
-            exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
-            return exploreVC
+        guard let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController else {
+            fatalError("Failed to instantiate an explore view controller!")
         }
-        fatalError("Failed to instantiate an explore view controller!")
+        
+        exploreVC.dependencyManager = dependencyManager
+        let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
+        let urlPath = url.v_pathComponent()
+        exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
+        // Factory for marquee shelf
+        exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
+        // Factory for trending topic shelf
+        exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
+        exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
+        exploreVC.trackingMinRequiredCellVisibilityRatio = CGFloat(dependencyManager.numberForKey(Constants.streamATFThresholdKey).floatValue)
+        return exploreVC
     }
     
     /// MARK: - View Controller LifeCycle
@@ -100,9 +101,10 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
-        streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
-        streamDataSource.delegate = self;
-        streamDataSource.collectionView = collectionView;
+        let dataSource = VStreamCollectionViewDataSource(stream: currentStream)
+        dataSource.delegate = self;
+        dataSource.collectionView = collectionView;
+        streamDataSource = dataSource
         collectionView.dataSource = streamDataSource;
         collectionView.backgroundColor = UIColor.clearColor()
         definesPresentationContext = true
@@ -162,7 +164,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func updateSectionRanges() {
         var tempRanges = [SectionRange]()
-        if let streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
+        if let streamDataSource = streamDataSource, streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
@@ -230,7 +232,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             }
         }
         // Return a proper view for unexpected supplementary views to avoid crashes
-        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
+        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath)
     }
     
     override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
@@ -264,8 +266,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func updateTrackingFor(recentPostCell: VShelfContentCollectionViewCell) {
         if let sequence = recentPostCell.sequenceToTrack() {
-            var intersection = self.collectionView.bounds
-            intersection.intersect(recentPostCell.frame)
+            let intersection = self.collectionView.bounds.intersect(recentPostCell.frame)
             let visibilityRatio = intersection.height / recentPostCell.frame.height
             if visibilityRatio > trackingMinRequiredCellVisibilityRatio {
                 let event = StreamCellContext(streamItem: sequence, stream: currentStream, fromShelf: false)
@@ -286,31 +287,32 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
             searchController = UISearchController(searchResultsController: searchResultsViewController)
         }
         
-        if let searchController = searchController {
-            searchController.hidesNavigationBarDuringPresentation = false
-            searchController.dimsBackgroundDuringPresentation = true
-            
-            let searchBar = searchController.searchBar
-            searchBar.sizeToFit()
-            searchBar.delegate = searchResultsViewController
-            navigationItem.titleView = searchBar
-            
-            if let searchTextField = searchBar.v_textField,
-                let dependencyManager = self.dependencyManager {
-                    searchTextField.font = dependencyManager.textFont
-                    searchTextField.textColor = dependencyManager.textColor
-                    searchTextField.backgroundColor = dependencyManager.backgroundColor
-                    searchTextField.attributedPlaceholder = NSAttributedString(
-                        string: NSLocalizedString("Search people and hashtags", comment: ""),
-                        attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
-                    )
-                    
-                    searchBar.tintColor = dependencyManager.textColor
-                    if var image = UIImage(named: Constants.searchIconImageName) {
-                        image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
-                        searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
-                    }
-            }
+        guard let searchController = searchController else {
+            return
+        }
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
+        
+        let searchBar = searchController.searchBar
+        searchBar.sizeToFit()
+        searchBar.delegate = searchResultsViewController
+        navigationItem.titleView = searchBar
+        
+        if let searchTextField = searchBar.v_textField,
+            let dependencyManager = self.dependencyManager {
+                searchTextField.font = dependencyManager.textFont
+                searchTextField.textColor = dependencyManager.textColor
+                searchTextField.backgroundColor = dependencyManager.backgroundColor
+                searchTextField.attributedPlaceholder = NSAttributedString(
+                    string: NSLocalizedString("Search people and hashtags", comment: ""),
+                    attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
+                )
+                
+                searchBar.tintColor = dependencyManager.textColor
+                if var image = UIImage(named: Constants.searchIconImageName) {
+                    image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+                    searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
+                }
         }
     }
 }
@@ -367,7 +369,7 @@ private extension VDependencyManager {
     }
 }
 
-extension VExploreViewController: UICollectionViewDelegateFlowLayout {
+extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForHeaderInSection section: Int) -> CGFloat {
         if let dependencyManager = dependencyManager where isRecentContent(section) {
@@ -397,36 +399,37 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
         }
         else if let layout = collectionView.collectionViewLayout as? CHTCollectionViewWaterfallLayout where pageLocation >= perPageNumber - 2 {
             //Need to consider the height of the bottom 2 cells to make sure they level out properly
-            if let columnsAsNumbers = layout.heightsForColumnsInSection(UInt(indexPath.section)) as? [NSNumber] {
-                let columnHeights = columnsAsNumbers.map({CGFloat($0.floatValue)})
-                let shortColumnHeight = minElement(columnHeights)
-                let tallColumnHeight = maxElement(columnHeights)
+            guard let columnsAsNumbers = layout.heightsForColumnsInSection(UInt(indexPath.section)) as? [NSNumber] else {
+                return 0
+            }
+            let columnHeights = columnsAsNumbers.map({CGFloat($0.floatValue)})
+            guard let shortColumnHeight = columnHeights.minElement(), tallColumnHeight = columnHeights.maxElement() else {
+                return 0
+            }
+            if pageLocation == perPageNumber - 2 {
+                //Make sure 2nd to last cell leaves enough space for the last cell to show properly
+                let contentHeight = recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
+                let potentialColumnHeight = shortColumnHeight + contentHeight + Constants.interItemSpace
+                let minimumLastCellHeight = Constants.minimumContentAspectRatio * width + Constants.interItemSpace
                 
-                if pageLocation == perPageNumber - 2 {
-                    //Make sure 2nd to last cell leaves enough space for the last cell to show properly
-                    var contentHeight = recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
-                    let potentialColumnHeight = shortColumnHeight + contentHeight + Constants.interItemSpace
-                    let minimumLastCellHeight = Constants.minimumContentAspectRatio * width + Constants.interItemSpace
-                    
-                    if abs(potentialColumnHeight - tallColumnHeight) < minimumLastCellHeight {
-                        //We don't enough space for the last cell to be shown with the minimum height, adjust this cell to make that possible.
-                        if shortColumnHeight + minimumLastCellHeight * 2 < tallColumnHeight {
-                            //Can fit both into the currently short column, just do that.
-                            return tallColumnHeight - shortColumnHeight - minimumLastCellHeight
-                        }
-                        else {
-                            //The added height of this cell's content, even at maximum shortness, will make us unable to add more to this column.
-                            //Extend the height of this cell's content to allow the last cell to get added to the other column.
-                            return tallColumnHeight + minimumLastCellHeight - shortColumnHeight - Constants.interItemSpace
-                        }
+                if abs(potentialColumnHeight - tallColumnHeight) < minimumLastCellHeight {
+                    //We don't enough space for the last cell to be shown with the minimum height, adjust this cell to make that possible.
+                    if shortColumnHeight + minimumLastCellHeight * 2 < tallColumnHeight {
+                        //Can fit both into the currently short column, just do that.
+                        return tallColumnHeight - shortColumnHeight - minimumLastCellHeight
                     }
                     else {
-                        return contentHeight
+                        //The added height of this cell's content, even at maximum shortness, will make us unable to add more to this column.
+                        //Extend the height of this cell's content to allow the last cell to get added to the other column.
+                        return tallColumnHeight + minimumLastCellHeight - shortColumnHeight - Constants.interItemSpace
                     }
                 }
-                else if pageLocation == perPageNumber - 1 {
-                    return tallColumnHeight - shortColumnHeight - Constants.interItemSpace
+                else {
+                    return contentHeight
                 }
+            }
+            else if pageLocation == perPageNumber - 1 {
+                return tallColumnHeight - shortColumnHeight - Constants.interItemSpace
             }
         }
         return recentCellHeightFor(streamItem, inCollectionViewWithWidth: width)
@@ -463,7 +466,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
     private func streamItemFor(indexPath: NSIndexPath) -> VStreamItem? {
         let index = streamItemIndexFor(indexPath)
-        if index < streamDataSource.visibleStreamItems.count {
+        if let streamDataSource = streamDataSource where index < streamDataSource.visibleStreamItems.count {
             return streamDataSource.visibleStreamItems[index] as? VStreamItem
         }
         return nil
@@ -514,7 +517,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension VExploreViewController: UICollectionViewDelegate {
+extension VExploreViewController { //UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let streamItem = streamItemFor(indexPath) {
@@ -549,7 +552,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         
         // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
         let baseDict = [Constants.sequenceIDKey : stream.remoteId]
-        var configDict = NSMutableDictionary(dictionary: baseDict)
+        let configDict = NSMutableDictionary(dictionary: baseDict)
         if let name = stream.name {
             configDict[VDependencyManagerTitleKey] = name
         }
@@ -572,7 +575,9 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
-            streamCollection?.streamDataSource.suppressShelves = stream == currentStream
+            if let streamDataSource = streamCollection?.streamDataSource {
+                streamDataSource.suppressShelves = stream == currentStream
+            }
         }
         
         // show the stream view controller if it has been instantiated
@@ -599,7 +604,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
                     message: NSLocalizedString("GenericFailMessage", comment: ""),
                     delegate: nil,
                     cancelButtonTitle: NSLocalizedString("OK", comment: "")
-                )
+                ).show()
             }
         }
     }
@@ -632,7 +637,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
     
     private func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
         
-        if let streamItem = event.streamItem as? VSequence {
+        if event.streamItem is VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
             VContentViewPresenter.presentContentViewFromViewController(self,

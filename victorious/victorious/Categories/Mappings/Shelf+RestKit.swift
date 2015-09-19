@@ -51,7 +51,7 @@ extension Shelf {
     }
     
     class func dynamicMapping() -> RKDynamicMapping {
-        var dynamicMapping = RKDynamicMapping()
+        let dynamicMapping = RKDynamicMapping()
         dynamicMapping.addMatcher(RKObjectMappingMatcher(possibleMappings: [], block: { (mappable: AnyObject!) -> RKObjectMapping! in
             var shelfMapping: RKObjectMapping?
             if let dictionary = mappable as? [String : AnyObject], let subtype = dictionary["subtype"] as? String {

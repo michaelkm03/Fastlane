@@ -33,7 +33,7 @@
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
