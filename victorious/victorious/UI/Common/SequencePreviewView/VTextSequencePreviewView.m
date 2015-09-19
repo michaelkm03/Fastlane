@@ -52,7 +52,7 @@
     }
 }
 
-- (void)setDependencyManager:(VDependencyManager * __nullable)dependencyManager
+- (void)setDependencyManager:(VDependencyManager *__nullable)dependencyManager
 {
     BOOL needsUpdate = dependencyManager != self.dependencyManager;
     [super setDependencyManager:dependencyManager];
