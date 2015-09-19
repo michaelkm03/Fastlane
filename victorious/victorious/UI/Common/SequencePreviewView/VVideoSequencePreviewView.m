@@ -41,8 +41,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @property (nonatomic, assign) BOOL didPlay75;
 @property (nonatomic, assign) BOOL didPlay100;
 
-@property (nonatomic, strong) UILabel *debugLabel;
-
 @property (nonatomic, strong) UIButton *largePlayButton;
 
 @end
@@ -59,13 +57,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
         [self v_addFitToParentConstraintsToSubview:_videoUIContainer];
         
         [self setupVideoUI];
-        
-        self.debugLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 250, 50)];
-        self.debugLabel.backgroundColor = [UIColor redColor];
-        self.debugLabel.textColor = [UIColor whiteColor];
-        self.debugLabel.textAlignment = NSTextAlignmentCenter;
-        self.debugLabel.userInteractionEnabled = NO;
-        [self addSubview:self.debugLabel];
     }
     return self;
 }
@@ -186,37 +177,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)updateUIState
 {
-    NSString *focus = (NSString *)^
-    {
-        switch (self.focusType)
-    {
-            case VFocusTypeDetail:
-                return @"Detail";
-            case VFocusTypeStream:
-                return @"Stream";
-            case VFocusTypeNone:
-                return @"None";
-        }
-    }();
-    NSString *ui = (NSString *)^
-    {
-        switch (self.state)
-        {
-            case VVideoStateBuffering:
-                return @"Buffering";
-            case VVideoStatePlaying:
-                return @"Playing";
-            case VVideoStatePaused:
-                return @"Paused";
-            case VVideoStateNotStarted:
-                return @"Not Started";
-            case VVideoStateEnded:
-                return @"Ended";
-        }
-    }();
-    NSString *autoplay = [self shouldAutoplay] ? @"autoplay" : @"";
-    self.debugLabel.text = [NSString stringWithFormat:@"%@ | %@ | %@", focus, ui, autoplay];
-    
     if ( self.focusType == VFocusTypeDetail )
     {
         self.largePlayButton.hidden = !((self.state == VVideoStateEnded || self.state == VVideoStateNotStarted) && ![self shouldLoop]);

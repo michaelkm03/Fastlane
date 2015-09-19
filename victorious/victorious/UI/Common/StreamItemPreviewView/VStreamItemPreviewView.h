@@ -12,6 +12,7 @@
 #import "VStreamCellSpecialization.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
 @class VStreamItem, VStreamItemPreviewView;
 
 /**

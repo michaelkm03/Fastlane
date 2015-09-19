@@ -28,6 +28,8 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
+            // WARNING: Fix the `onlyShowPreview` thing
+            
             if streamItem?.itemSubType == VStreamItemSubTypeText {
                 //Dealing with a text post
                 if previewView.conformsToProtocol(VImagePreviewView.self) {
@@ -52,10 +54,6 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func updatePreviewView(streamItem: VStreamItem?) {
-        if let videoPreviewView = previewView as? VBaseVideoSequencePreviewView {
-            // WARNING: Fix this, don't use sequence preview use, use image ors omething else
-            //videoPreviewView.onlyShowPreview = true
-        }
         
         if let dependencyManager = previewView.dependencyManager {
             if streamItem?.itemSubType != VStreamItemSubTypeText {

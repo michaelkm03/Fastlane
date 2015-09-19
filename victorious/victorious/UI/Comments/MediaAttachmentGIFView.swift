@@ -45,7 +45,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
     private var autoplayURL: NSURL? {
         didSet {
             if let autoplayURL = autoplayURL {
-                var videoPlayerItem = VVideoPlayerItem(URL: autoplayURL)
+                let videoPlayerItem = VVideoPlayerItem(URL: autoplayURL)
                 videoPlayerItem.loop = true
                 videoPlayerItem.muted = true
                 self.videoPlayer.setItem( videoPlayerItem )

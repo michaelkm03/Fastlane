@@ -46,6 +46,10 @@ class ContentViewHandoffController {
     
     func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider, toReceiver previewReceiver: VContentPreviewViewReceiver, originSnapshotImage snapshotImage: UIImage) {
         
+        // TODO: Get real values
+        let tabbarHeight: CGFloat = 49.0
+        let statusBarHeight: CGFloat = 20.0
+        
         let previewView = previewProvider.getPreviewView()
         let containerView = previewProvider.getContainerView()
         
@@ -82,7 +86,7 @@ class ContentViewHandoffController {
             toItem: superview,
             attribute: .Top,
             multiplier: 1.0,
-            constant: previewFrame.origin.y )
+            constant: previewFrame.origin.y - statusBarHeight )
         superview.addConstraint( topConstraint )
         
         let centerConstraint = NSLayoutConstraint(item: previewView,
@@ -97,14 +101,10 @@ class ContentViewHandoffController {
         self.previewLayout = PreviewLayout(
             height: AnimatedConstraint(constraint: heightConstraint, originValue: heightConstraint.constant, destinationValue:0.0),
             width: AnimatedConstraint(constraint: widthConstraint, originValue: widthConstraint.constant, destinationValue:0.0 ),
-            top: AnimatedConstraint(constraint: topConstraint, originValue: topConstraint.constant, destinationValue:0.0),
+            top: AnimatedConstraint(constraint: topConstraint, originValue: previewFrame.origin.y, destinationValue:0.0),
             center: AnimatedConstraint(constraint: centerConstraint, originValue: centerConstraint.constant, destinationValue:0.0),
             view: previewView,
             parent: superview )
-        
-        // TODO: Get real values
-        let tabbarHeight: CGFloat = 49.0
-        let statusBarHeight: CGFloat = 20.0
         
         let topFrame = CGRect(
             x: 0,
@@ -136,7 +136,6 @@ class ContentViewHandoffController {
                 multiplier: 1.0,
                 constant: containerFrame.minY - previewFrame.minY )
             superview.addConstraint( topConstraint )
-            
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
                 options: [],

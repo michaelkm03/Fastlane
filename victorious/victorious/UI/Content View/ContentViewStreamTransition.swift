@@ -98,7 +98,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
             usingSpringWithDamping: 0.9,
-            initialSpringVelocity: 0.2,
+            initialSpringVelocity: 0.0,
             options: [],
             animations: {
                 if let layout = self.handoffController.previewLayout {
