@@ -319,7 +319,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         )
         
         // Set tinted image for magnifying glass icon and clear button
-        // Made 2 UIImage instances with the same image asset because we cannot 
+        
+        // Made 2 UIImage instances with the same image asset because we cannot
         // set the same instance for .Highlight and .Normal
         guard var searchIconImage = UIImage(named: Constants.searchIconImageName),
               var searchClearImageHighlighted = UIImage(named: Constants.searchClearImageName),
