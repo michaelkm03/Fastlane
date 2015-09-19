@@ -68,7 +68,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 if let oldValue = oldValue as? UserShelf {
                     KVOController.unobserve(oldValue.user)
                 }
-                KVOController.observe(shelf.user, keyPath: "isFollowedByMainUser", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState:"))
+                KVOController.observe(shelf.user, keyPath: "isFollowedByMainUser", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState"))
                 updateUsername()
             }
         }
@@ -181,7 +181,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
 
     //MARK: - View updating
     
-    override func updateFollowControlState(changeInfo: [NSObject : AnyObject]? = nil) {
+    override func updateFollowControlState() {
         if let shelf = shelf as? UserShelf {
             var controlState: VFollowControlState = .Unfollowed
             if shelf.user.isFollowedByMainUser.boolValue {
