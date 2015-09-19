@@ -127,10 +127,9 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     {
         // Opens up the webview with SFSafariViewController in iOS9 and above
         NSOperatingSystemVersion iOS9 = {9, 0, 0};
-        if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] && [[NSProcessInfo new] isOperatingSystemAtLeastVersion:iOS9])
+        if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] && [[[NSProcessInfo alloc] init] isOperatingSystemAtLeastVersion:iOS9])
         {
             SFSafariViewController *webVC = (url != nil) ? [[SFSafariViewController alloc] initWithURL:url] : nil;
-            
             return webVC;
         }
         
