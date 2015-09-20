@@ -3088,7 +3088,6 @@
 		D858E0D01B1FAD6000437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
 		D858E0D21B1FAD6200437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
 		D858E0D41B1FC32300437DDE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VModernEnterNameViewController.storyboard; sourceTree = "<group>"; };
-		D858E0D71B1FC32500437DDE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0D91B1FC32700437DDE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0DB1B1FC32900437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0DD1B1FC32B00437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
@@ -7209,8 +7208,7 @@
 				D85B70541B0EAF3F0038CA5B /* VTabInfo.h */,
 				D85B70551B0EAF3F0038CA5B /* VTabInfo.m */,
 			);
-			name = "Find Friends";
-			path = "Signup and Login/Standard/Find Friends";
+			path = "Find Friends";
 			sourceTree = "<group>";
 		};
 		D85B70381B0EAF3F0038CA5B /* Table View Controllers */ = {
@@ -10190,7 +10188,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				D858E0D41B1FC32300437DDE /* Base */,
-				D858E0D71B1FC32500437DDE /* en */,
 				D858E0D91B1FC32700437DDE /* es */,
 				D858E0DB1B1FC32900437DDE /* fr */,
 				D858E0DD1B1FC32B00437DDE /* de */,
@@ -10343,7 +10340,6 @@
 				F0FDB3751BAB2DDD002DFE5B /* vi */,
 			);
 			name = VFindFriendsViewController.storyboard;
-			path = ../../Modern;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
