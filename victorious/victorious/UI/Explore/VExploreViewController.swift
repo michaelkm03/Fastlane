@@ -331,10 +331,10 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         searchIconImage = searchIconImage.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
         searchBar.setImage(searchIconImage, forSearchBarIcon: .Search, state: .Normal)
         
-        searchClearImageHighlighted = searchClearImageHighlighted.v_tintedTemplateImageWithColor(dependencyManager.textColor)
+        searchClearImageHighlighted = searchClearImageHighlighted.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
         searchBar.setImage(searchClearImageHighlighted, forSearchBarIcon: .Clear, state: .Highlighted)
         
-        searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(dependencyManager.textColor)
+        searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
         searchBar.setImage(searchClearImageNormal, forSearchBarIcon: .Clear, state: .Normal)
     }
 }
