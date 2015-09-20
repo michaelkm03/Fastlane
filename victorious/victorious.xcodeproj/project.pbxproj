@@ -1577,7 +1577,6 @@
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
 		035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultTemplateTests.m; sourceTree = "<group>"; };
 		035CD7881BA222DE008A01EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Explore.storyboard; sourceTree = "<group>"; };
-		035CD78B1BA222E0008A01EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Explore.strings; sourceTree = "<group>"; };
 		035CD78D1BA222E2008A01EB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Explore.strings; sourceTree = "<group>"; };
 		035CD78F1BA222E4008A01EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Explore.strings; sourceTree = "<group>"; };
 		035CD7911BA222E6008A01EB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Explore.strings; sourceTree = "<group>"; };
@@ -5277,13 +5276,13 @@
 		672E5F3C1B83A22200D898DE /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				035CD7891BA222DE008A01EB /* Explore.storyboard */,
-				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
-				F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */,
 				F0A34A891BA24274000D70EF /* CHTCollectionViewWaterfallLayout+ColumnAccessor.h */,
 				F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */,
+				035CD7891BA222DE008A01EB /* Explore.storyboard */,
+				F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */,
 				67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */,
 				67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */,
+				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -9992,7 +9991,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				035CD7881BA222DE008A01EB /* Base */,
-				035CD78B1BA222E0008A01EB /* en */,
 				035CD78D1BA222E2008A01EB /* es */,
 				035CD78F1BA222E4008A01EB /* fr */,
 				035CD7911BA222E6008A01EB /* de */,
