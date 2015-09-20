@@ -3093,8 +3093,8 @@
 		D858E0DB1B1FC32900437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D858E0DD1B1FC32B00437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D85B702E1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VProfileCreateViewController.storyboard; sourceTree = "<group>"; };
-		D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTemplateBackgroundView.h; path = "../Standard/Custom Views/VTemplateBackgroundView.h"; sourceTree = "<group>"; };
-		D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTemplateBackgroundView.m; path = "../Standard/Custom Views/VTemplateBackgroundView.m"; sourceTree = "<group>"; };
+		D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateBackgroundView.h; sourceTree = "<group>"; };
+		D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateBackgroundView.m; sourceTree = "<group>"; };
 		D85B703A1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
 		D85B703F1B0EAF3F0038CA5B /* VFindContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindContactsTableViewController.h; sourceTree = "<group>"; };
 		D85B70401B0EAF3F0038CA5B /* VFindContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindContactsTableViewController.m; sourceTree = "<group>"; };
@@ -3119,11 +3119,11 @@
 		D85B70531B0EAF3F0038CA5B /* VTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabBarViewController.m; sourceTree = "<group>"; };
 		D85B70541B0EAF3F0038CA5B /* VTabInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabInfo.h; sourceTree = "<group>"; };
 		D85B70551B0EAF3F0038CA5B /* VTabInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabInfo.m; sourceTree = "<group>"; };
-		D85B705C1B0EAF3F0038CA5B /* VRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistration.h; path = ../Standard/Helpers/VRegistration.h; sourceTree = "<group>"; };
-		D85B705D1B0EAF3F0038CA5B /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRegistrationModel.h; path = ../Standard/Helpers/VRegistrationModel.h; sourceTree = "<group>"; };
-		D85B705E1B0EAF3F0038CA5B /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRegistrationModel.m; path = ../Standard/Helpers/VRegistrationModel.m; sourceTree = "<group>"; };
-		D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileCreateViewController.h; path = ../Standard/VProfileCreateViewController.h; sourceTree = "<group>"; };
-		D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileCreateViewController.m; path = ../Standard/VProfileCreateViewController.m; sourceTree = "<group>"; };
+		D85B705C1B0EAF3F0038CA5B /* VRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistration.h; sourceTree = "<group>"; };
+		D85B705D1B0EAF3F0038CA5B /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistrationModel.h; sourceTree = "<group>"; };
+		D85B705E1B0EAF3F0038CA5B /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRegistrationModel.m; sourceTree = "<group>"; };
+		D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileCreateViewController.h; sourceTree = "<group>"; };
+		D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileCreateViewController.m; sourceTree = "<group>"; };
 		D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginRegistrationFlow.h; sourceTree = "<group>"; };
 		D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLoginAndRegistrationFlowViewController.h; sourceTree = "<group>"; };
 		D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginAndRegistrationFlowViewController.m; sourceTree = "<group>"; };
@@ -7175,18 +7175,18 @@
 				D8D812AE1B14EAA200E93B37 /* VModernResetTokenViewController.h */,
 				D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */,
 				D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */,
+				D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */,
+				D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */,
+				D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */,
 				D80536221B17B4310049B77A /* VPromptCarouselViewController.h */,
 				D80536231B17B4310049B77A /* VPromptCarouselViewController.m */,
 				D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */,
 				D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */,
-				D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */,
-				D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */,
-				D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */,
 				D85B705C1B0EAF3F0038CA5B /* VRegistration.h */,
-				D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */,
-				D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */,
 				D85B705D1B0EAF3F0038CA5B /* VRegistrationModel.h */,
 				D85B705E1B0EAF3F0038CA5B /* VRegistrationModel.m */,
+				D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */,
+				D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */,
 			);
 			path = Modern;
 			sourceTree = "<group>";
@@ -10207,7 +10207,6 @@
 				F0FDB3641BAB2D9D002DFE5B /* de */,
 			);
 			name = VProfileCreateViewController.storyboard;
-			path = ../Standard;
 			sourceTree = "<group>";
 		};
 		D85B70391B0EAF3F0038CA5B /* FindFriendsTableView.xib */ = {
