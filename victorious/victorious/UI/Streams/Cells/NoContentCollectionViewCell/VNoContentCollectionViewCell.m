@@ -10,7 +10,7 @@
 #import "VDependencyManager.h"
 #import "UIView+AutoLayout.h"
 
-static const CGFloat kErrorCellHeight = 100;
+static const CGFloat kErrorCellHeight = 0;
 
 @implementation VNoContentCollectionViewCell
 

@@ -14,6 +14,8 @@
 #import "VNavigationViewFloatingController.h"
 #import "VNavigationControllerScrollDelegate.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
@@ -29,29 +31,29 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
  */
-@property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
+@property (nonatomic, strong, nullable) VStreamCollectionViewDataSource *streamDataSource;
 
-@property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
+@property (nonatomic, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper; ///< An aide for sending tracking events
-@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
-@property (nonatomic, strong) id<VNavigationViewFloatingController> navigationViewfloatingController;
+@property (nonatomic, strong, nullable) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
+@property (nonatomic, strong, nullable) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
-@property (nonatomic, strong) VStreamItem *targetStreamItem;
+@property (nonatomic, strong, nullable) VStreamItem *targetStreamItem; ///< The stream item that should be scroll to once this VC becomes visible
 
 /**
     Called by the refresh controller when the user activates it by scrolling up to the top.
         Forwards onto `refreshWithCompletion:`.
  */
-- (IBAction)refresh:(UIRefreshControl *)sender;
+- (IBAction)refresh:(nullable UIRefreshControl *)sender;
 
 /**
     A helper method to handle triggering the refresh and responding to success or failure.
  */
-- (void)refreshWithCompletion:(void(^)(void))completionBlock;
+- (void)refreshWithCompletion:(void(^ __nullable)(void))completionBlock;
 
 /**
     Intended to be called by subclasses on `collectionView:willDisplayCell:atIndexPath:` to
@@ -67,4 +69,15 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
  */
 - (void)updateNavigationItems;
 
+/**
+    By default, returns YES when there is more than 1 item in the provided section.
+ 
+    @param section The section that will present the loading indicator footer if YES is returned.
+ 
+    @return YES if there are enough items to cause the loading indicator to show in the provided section.
+ */
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section;
+
 @end
+
+NS_ASSUME_NONNULL_END
