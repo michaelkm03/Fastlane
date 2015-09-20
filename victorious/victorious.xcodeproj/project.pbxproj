@@ -989,7 +989,6 @@
 		D85B706B1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */; };
 		D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */; };
 		D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D85B70391B0EAF3F0038CA5B /* FindFriendsTableView.xib */; };
-		D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */ = {isa = PBXBuildFile; fileRef = D85B703B1B0EAF3F0038CA5B /* FindFriendsTableView.strings */; };
 		D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70401B0EAF3F0038CA5B /* VFindContactsTableViewController.m */; };
 		D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70421B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m */; };
 		D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70441B0EAF3F0038CA5B /* VFindFriendsTableView.m */; };
@@ -1758,6 +1757,9 @@
 		03848F981B0A410C0092C660 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03848F991B0A410C0092C660 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03848F9A1B0A410D0092C660 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03858EA21BAE9C87008EC656 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		03858EA31BAE9C8A008EC656 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		03858EA41BAE9C8E008EC656 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
 		0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VNavigationItem.h"; sourceTree = "<group>"; };
@@ -3094,9 +3096,6 @@
 		D85B70321B0EAF3F0038CA5B /* VTemplateBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTemplateBackgroundView.h; path = "../Standard/Custom Views/VTemplateBackgroundView.h"; sourceTree = "<group>"; };
 		D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTemplateBackgroundView.m; path = "../Standard/Custom Views/VTemplateBackgroundView.m"; sourceTree = "<group>"; };
 		D85B703A1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
-		D85B703C1B0EAF3F0038CA5B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		D85B703D1B0EAF3F0038CA5B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		D85B703E1B0EAF3F0038CA5B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
 		D85B703F1B0EAF3F0038CA5B /* VFindContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindContactsTableViewController.h; sourceTree = "<group>"; };
 		D85B70401B0EAF3F0038CA5B /* VFindContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindContactsTableViewController.m; sourceTree = "<group>"; };
 		D85B70411B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFacebookFriendsTableViewController.h; sourceTree = "<group>"; };
@@ -7213,7 +7212,6 @@
 		D85B70381B0EAF3F0038CA5B /* Table View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D85B703B1B0EAF3F0038CA5B /* FindFriendsTableView.strings */,
 				D85B70391B0EAF3F0038CA5B /* FindFriendsTableView.xib */,
 				D85B703F1B0EAF3F0038CA5B /* VFindContactsTableViewController.h */,
 				D85B70401B0EAF3F0038CA5B /* VFindContactsTableViewController.m */,
@@ -8377,7 +8375,6 @@
 				B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
-				D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */,
 				A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */,
 				F03C137B1B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib in Resources */,
 				036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */,
@@ -10221,18 +10218,11 @@
 				03F2F7591B55828D00F2EF16 /* ja */,
 				03669B6E1B632D53003C2D8F /* ko */,
 				03669B8F1B6332D8003C2D8F /* vi */,
+				03858EA21BAE9C87008EC656 /* es */,
+				03858EA31BAE9C8A008EC656 /* fr */,
+				03858EA41BAE9C8E008EC656 /* de */,
 			);
 			name = FindFriendsTableView.xib;
-			sourceTree = "<group>";
-		};
-		D85B703B1B0EAF3F0038CA5B /* FindFriendsTableView.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D85B703C1B0EAF3F0038CA5B /* de */,
-				D85B703D1B0EAF3F0038CA5B /* es */,
-				D85B703E1B0EAF3F0038CA5B /* fr */,
-			);
-			name = FindFriendsTableView.strings;
 			sourceTree = "<group>";
 		};
 		DB2A48F919DF2D1000CB687B /* Localizable.strings */ = {
