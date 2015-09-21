@@ -47,8 +47,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 @implementation VVideoSequencePreviewView
 
-@synthesize willShowEndCard;
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

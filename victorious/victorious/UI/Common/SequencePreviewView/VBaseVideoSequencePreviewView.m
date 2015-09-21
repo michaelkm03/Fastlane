@@ -30,6 +30,7 @@
 
 @synthesize videoPlayer = _videoPlayer;
 @synthesize delegate;
+@synthesize willShowEndCard;
 
 #pragma mark - Initialization
 
