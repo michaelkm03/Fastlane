@@ -27,6 +27,6 @@
 
 @property (nonatomic, weak, readonly) id<VVideoPlayer> videoPlayer;
 @property (nonatomic, weak, nullable) id<VVideoPreviewViewDelegate> delegate;
-@property (nonatomic, assign) BOOL preventSeekToStartOnFinish;
+@property (nonatomic, assign) BOOL willShowEndCard;
 
 @end

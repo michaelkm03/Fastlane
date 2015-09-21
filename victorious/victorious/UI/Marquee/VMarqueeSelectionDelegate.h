@@ -10,6 +10,8 @@
 
 @class VAbstractMarqueeController, VStreamItem, VUser;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Allows delegates to respond to selection of marquee items.
  */
@@ -17,8 +19,10 @@
 
 - (void)marqueeController:(VAbstractMarqueeController *)marquee
             didSelectItem:(VStreamItem *)streamItem
-         withPreviewImage:(UIImage *)image
+         withPreviewImage:(nullable UIImage *)image
        fromCollectionView:(UICollectionView *)collectionView
               atIndexPath:(NSIndexPath *)path;
 
 @end
+
+NS_ASSUME_NONNULL_END

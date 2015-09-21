@@ -14,7 +14,7 @@
 #import "VEndCardActionModel.h"
 #import "VDependencyManager.h"
 
-#define FORCE_SHOW_DEBUG_END_CARD 1
+#define FORCE_SHOW_DEBUG_END_CARD 0
 
 static NSString * const kGifActionIconKey = @"action_gif_icon";
 static NSString * const kRepostActionIconKey = @"action_repost_icon";
@@ -161,14 +161,14 @@ static NSString * const kMemeActionIconKey = @"action_meme_icon";
 - (VEndCardModel *)DEBUG_createWithSequence:(VSequence *)sequence
 {
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = sequence.sequenceDescription;
-    endCardModel.nextSequenceId = sequence.remoteId;
-    endCardModel.nextVideoTitle = sequence.name;
+    endCardModel.videoTitle = @"videoTitle";
+    endCardModel.nextSequenceId = @"15461";
+    endCardModel.nextVideoTitle = @"nextVideoTitle";
     endCardModel.nextVideoThumbailImageURL = sequence.previewImageUrl;
-    endCardModel.streamName = sequence.endCard.streamName ?: @"";
+    endCardModel.streamName = @"STREAM NAME";
     endCardModel.videoAuthorName = sequence.user.name;
     endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:sequence.user.pictureUrl];
-    endCardModel.countdownDuration = 10000;
+    endCardModel.countdownDuration = 20000;
     endCardModel.dependencyManager = self.dependencyManager;
     endCardModel.actions = [self createActionsWithPermissions:sequence.endCard.permissions];
     return endCardModel;

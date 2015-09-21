@@ -45,6 +45,5 @@
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, readonly) BOOL shouldAutoplay;
 @property (nonatomic, readonly) BOOL shouldLoop;
-@property (nonatomic, assign) BOOL preventSeekToStartOnFinish;
 
 @end

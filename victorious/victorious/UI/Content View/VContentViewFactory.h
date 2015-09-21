@@ -58,4 +58,6 @@
  */
 - (VContentViewFactory *)contentViewFactory;
 
+- (VDependencyManager *)contentViewDependencyManager;
+
 @end

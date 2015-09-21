@@ -182,7 +182,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     context.commentId = commentID;
     context.placeholderImage = placeholderImage;
     context.viewController = self.rootNavigationController;
-    context.dependencyManager = self.dependencyManager;
+    context.originDependencyManager = self.dependencyManager;
     [self.contentViewPresenter presentContentViewWithContext:context];
 }
 

@@ -97,6 +97,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
                currentTime:(Float64)currentTime
                 completion:(void (^)(BOOL succeeded))completion;
 
+- (void)updateEndcard;
+
 @property (nonatomic, readonly) ContentViewContext *context;
 
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;

@@ -27,7 +27,6 @@
 #import "VContentCell.h"
 #import "VContentPollBallotCell.h"
 #import "VContentPollQuestionCell.h"
-#import "VContentViewFactory.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
@@ -86,7 +85,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
 @property (nonatomic, readwrite, weak) VContentCell *contentCell;
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
-@property (nonatomic, strong) VContentViewFactory *contentViewFactory;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -759,6 +757,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
             
+            [self.viewModel updateEndcard];
+            
             id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
             VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
             
@@ -791,6 +791,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 id<VVideoPlayer> videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:videoPlayer];
+                
+                // If the end card is going to show after the video finishes,
+                // set this to make a clean transition in for the end card
+                videoPreviewView.willShowEndCard = self.viewModel.endCardViewModel != nil;
             }
             
             return self.contentCell;
@@ -1496,15 +1500,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.contentCell disableEndcardAutoplay];
 }
 
-- (VContentViewFactory *)contentViewFactory
-{
-    if ( _contentViewFactory == nil )
-    {
-        _contentViewFactory = [[VContentViewFactory alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    return _contentViewFactory;
-}
-
 - (void)showNextSequence:(VSequence *)nextSequence
 {
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
@@ -1512,10 +1507,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     ContentViewContext *context = [[ContentViewContext alloc] init];
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
-    context.dependencyManager = self.dependencyManager;
+    context.originDependencyManager = self.dependencyManager;
     context.viewController = self;
     
-    VNewContentViewController *contentViewController = (VNewContentViewController *)[self.contentViewFactory contentViewForContext:context];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];

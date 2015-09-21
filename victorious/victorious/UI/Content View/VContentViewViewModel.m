@@ -90,10 +90,10 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
-        _dependencyManager = context.dependencyManager;
+        _dependencyManager = context.destinationDependencyManager;
         
         NSDictionary *configuration = @{ @"sequence" : _sequence, @"voteTypes" : [_dependencyManager voteTypes] };
-        VDependencyManager *childDependencyManager = [context.dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
+        VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
         
         _currentNode = [_sequence firstNode];
@@ -226,13 +226,21 @@
              [self setupAdChain];
          }
          
-         // Sets up end card
-         VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
-         self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
+         if ( self.endCardViewModel == nil )
+         {
+             [self updateEndcard];
+         }
          
          [self.delegate didUpdateContent];
      }
                                             failBlock:nil];
+}
+
+- (void)updateEndcard
+{
+    // Sets up end card
+    VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
+    self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure

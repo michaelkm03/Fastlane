@@ -15,11 +15,12 @@ import UIKit
 /// is being presented when the app is launched with a deep link URL.
 class ContentViewContext: NSObject {
     var viewController: UIViewController?
-    var dependencyManager: VDependencyManager?
+    var originDependencyManager: VDependencyManager?
+    var destinationDependencyManager: VDependencyManager?
     var sequence: VSequence?
-    var commentId: NSNumber!
-    var streamId: NSString!
-    var placeholderImage: UIImage!
+    var commentId: NSNumber?
+    var streamId: NSString?
+    var placeholderImage: UIImage?
     var contentPreviewProvider: VContentPreviewViewProvider?
 }
 
@@ -38,10 +39,12 @@ class ContentViewPresenter: NSObject {
     /// is being presented when the app is launched with a deep link URL.
     func presentContentView( context context: ContentViewContext ) {
         
-        if let dependencyManager = context.dependencyManager,
+        if let originDependencyManager = context.originDependencyManager,
             let viewController = context.viewController,
-            let contentViewFactory: VContentViewFactory = dependencyManager.contentViewFactory(),
+            let contentViewFactory: VContentViewFactory = originDependencyManager.contentViewFactory(),
             let sequence = context.sequence {
+                
+                context.destinationDependencyManager = originDependencyManager.contentViewDependencyManager()
             
                 var reason: NSString?
                 if !contentViewFactory.canDisplaySequence( sequence, localizedReason: &reason ) {

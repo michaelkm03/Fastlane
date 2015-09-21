@@ -47,6 +47,8 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 @implementation VVideoSequencePreviewView
 
+@synthesize willShowEndCard;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -288,12 +290,15 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                            [self.videoPlayer playFromStart];
                        });
     }
-    else if ( !self.preventSeekToStartOnFinish )
+    else if ( !self.willShowEndCard )
+    {
+        [self.videoPlayer pause];
+        self.state = VVideoStateEnded;
+        [super videoPlayerDidReachEnd:videoPlayer];
+    }
+    else
     {
         [super videoPlayerDidReachEnd:videoPlayer];
-        [self.videoPlayer pause];
-        [self setToolbarHidden:NO animated:YES];
-        self.state = VVideoStateEnded;
     }
 }
 

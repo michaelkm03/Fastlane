@@ -844,7 +844,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         context.placeholderImage = previewImage;
         context.streamId = streamID;
         context.viewController = self;
-        context.dependencyManager = self.dependencyManager;
+        context.originDependencyManager = self.dependencyManager;
         [self.contentViewPresenter presentContentViewWithContext:context];
     }
 }

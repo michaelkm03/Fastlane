@@ -539,7 +539,9 @@ extension VExploreViewController: VHashtagSelectionResponder {
 
 extension VExploreViewController : VMarqueeSelectionDelegate {
     
-    func marqueeController(marquee: VAbstractMarqueeController!, didSelectItem streamItem: VStreamItem!, withPreviewImage image: UIImage!, fromCollectionView collectionView: UICollectionView!, atIndexPath path: NSIndexPath!) {
+    
+    
+    func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
         
         if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
             navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
@@ -612,7 +614,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         }
     }
     
-    private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage, inCell cell: UICollectionViewCell) {
+    private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage?, inCell cell: UICollectionViewCell) {
         
         /// Marquee item selection tracking
         let params = [
@@ -629,7 +631,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             let streamId = isFromShelf ? event.stream.shelfId : event.stream.streamId
             
             let context = ContentViewContext()
-            context.dependencyManager = dependencyManager
+            context.originDependencyManager = dependencyManager
             context.sequence = sequence
             context.streamId = streamId
             context.placeholderImage = image
