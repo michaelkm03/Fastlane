@@ -63,9 +63,9 @@ PODS:
 DEPENDENCIES:
   - CCHLinkTextView
   - CHTCollectionViewWaterfallLayout
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
+  - FBSDKCoreKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
+  - FBSDKLoginKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
+  - FBSDKShareKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
   - FlurrySDK (~> 6.6.0)
   - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
@@ -77,6 +77,12 @@ DEPENDENCIES:
   - TTTAttributedLabel
 
 EXTERNAL SOURCES:
+  FBSDKCoreKit:
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
+  FBSDKLoginKit:
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
+  FBSDKShareKit:
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
   KIF:
     :git: https://github.com/TouchFrame/KIF.git
   Nocilla:
@@ -84,6 +90,15 @@ EXTERNAL SOURCES:
     :git: https://github.com/TouchFrame/Nocilla.git
 
 CHECKOUT OPTIONS:
+  FBSDKCoreKit:
+    :commit: 4a287f08cf91d0ca64a303004c397272bbec7fcb
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
+  FBSDKLoginKit:
+    :commit: 4a287f08cf91d0ca64a303004c397272bbec7fcb
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
+  FBSDKShareKit:
+    :commit: 4a287f08cf91d0ca64a303004c397272bbec7fcb
+    :git: https://github.com/TouchFrame/facebook-ios-sdk.git
   KIF:
     :commit: 9dc5e754f3fcced8104b90af5832f003495f1232
     :git: https://github.com/TouchFrame/KIF.git
