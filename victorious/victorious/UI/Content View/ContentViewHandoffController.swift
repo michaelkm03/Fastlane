@@ -40,15 +40,16 @@ class ContentViewHandoffController {
         let parent: UIView
     }
     
+    var statusBarHeight: CGFloat = 0.0
+    var tabbarHeight: CGFloat = 0.0
+    
     private(set) var previewLayout: PreviewLayout?
     private(set) var sliceLayouts = [SliceLayout]()
     private(set) var transitionSliceViews = [UIView]()
     
-    func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider, toReceiver previewReceiver: VContentPreviewViewReceiver, originSnapshotImage snapshotImage: UIImage) {
-        
-        // TODO: Get real values
-        let tabbarHeight: CGFloat = 49.0
-        let statusBarHeight: CGFloat = 20.0
+    func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider,
+        toReceiver previewReceiver: VContentPreviewViewReceiver,
+        originSnapshotImage snapshotImage: UIImage ) {
         
         let previewView = previewProvider.getPreviewView()
         let containerView = previewProvider.getContainerView()

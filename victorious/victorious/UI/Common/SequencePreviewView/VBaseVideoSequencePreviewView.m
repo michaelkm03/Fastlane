@@ -160,7 +160,6 @@
     [self.delegate videoPlaybackDidFinish];
 }
 
-#warning TODO: Remove these if not needed, they are optional
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
 }

@@ -32,6 +32,14 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 fatalError( "Missing references required for transition animation" )
         }
         
+        model.fromViewController.tabBarController
+        
+        self.handoffController.statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+        if let rootViewController = model.fromViewController as? VRootViewController,
+            let scaffold = rootViewController.currentViewController as? VTabScaffoldViewController {
+                self.handoffController.tabbarHeight = scaffold.tabBarController?.tabBar.frame.height ?? 0.0
+        }
+        
         // Mediate the handoff of views and setup of constraints
         self.handoffController.addPreviewView(
             fromProvider: previewProvider,

@@ -10,6 +10,7 @@
 #import "victorious-Swift.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "NSNumber+VBitmask.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIView+AutoLayout.h"
@@ -254,7 +255,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    return [self shouldAutorotate] ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    UIInterfaceOrientationMask output = [self shouldAutorotate] ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    return output;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -279,12 +281,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                            dependencyManager:self.dependencyManager];
         CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
-        
-        
-        if ( !self.contentCell.isEndCardShowing )
-        {
-            [self setAccessoryButtonsHidden:YES];
-        }
         self.contentCollectionView.scrollEnabled = NO;
     }
     else
@@ -300,8 +296,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)updateOrientation
 {
+    NSLog( @"frame BEFORE = %@", NSStringFromCGRect(self.view.frame) );
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     [self handleRotationToInterfaceOrientation:currentOrientation];
+    NSLog( @"frame AFTER  = %@", NSStringFromCGRect(self.view.frame) );
 }
 
 #pragma mark View Lifecycle
@@ -668,10 +666,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     __weak typeof(self) welf = self;
     VLightboxViewController *lightbox;
-    if (isVideo)
+    if ( isVideo )
     {
-        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage
-                                                                     videoURL:mediaURL];
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage videoURL:mediaURL];
         ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
     }
     else

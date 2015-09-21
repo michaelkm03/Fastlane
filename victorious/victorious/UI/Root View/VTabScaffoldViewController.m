@@ -82,6 +82,11 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     return self;
 }
 
+- (UITabBarController *)tabBarController
+{
+    return self.internalTabBarController;
+}
+
 - (void)dealloc
 {
     _internalTabBarController.delegate = nil;

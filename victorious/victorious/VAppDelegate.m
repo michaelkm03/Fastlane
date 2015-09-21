@@ -68,6 +68,8 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
+    self.window.frame = [UIScreen mainScreen].bounds;
+    
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if ( localNotification != nil )
     {
