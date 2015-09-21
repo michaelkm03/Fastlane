@@ -23,5 +23,13 @@ class FacebookHelper: NSObject {
         return !fbSchemeRegex.matchesInString(url.scheme, options: [], range: NSMakeRange(0, url.scheme.characters.count)).isEmpty
     }
     
+    /// - returns: true if a Facebook app ID is present in the app's Info.plist file.
+    class func facebookAppIDPresent() -> Bool {
+        if let facebookID = NSBundle(forClass: self).objectForInfoDictionaryKey("FacebookAppID") as? String {
+            return facebookID != ""
+        }
+        return false
+    }
+    
     private static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.CaseInsensitive])
 }

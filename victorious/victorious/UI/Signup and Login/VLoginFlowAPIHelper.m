@@ -14,6 +14,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 // Pods
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -122,8 +123,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     
     VUserManager *userManager = [[VUserManager alloc] init];
-    userManager.forceNativeFacebookLogin = YES;
-#warning here
+    userManager.forceNativeFacebookLogin = [self.dependencyManager shouldForceNativeFacebookLogin];
     [userManager loginViaFacebookOnCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)

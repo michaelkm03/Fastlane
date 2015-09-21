@@ -9,6 +9,7 @@
 #import "VPublishViewController.h"
 #import "UIView+VDynamicsHelpers.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 #import "VPlaceholderTextView.h"
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+ContentCreation.h"
@@ -702,8 +703,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             shareItemCell.state = VShareItemCellStateLoading;
             
             FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-#warning here
-            loginManager.forceNative = YES;
+            loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
             [loginManager logInWithPublishPermissions:@[kFBPermissionPublishActionsKey]
                                    fromViewController:self
                                               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

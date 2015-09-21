@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VDependencyManager+VLoginAndRegistration.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsTableView.h"
 #import "victorious-swift.h"
@@ -37,8 +38,7 @@
     else if (userInteraction)
     {
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        loginManager.forceNative = YES;
-#warning here
+        loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
         [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
                             fromViewController:self.parentViewController
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

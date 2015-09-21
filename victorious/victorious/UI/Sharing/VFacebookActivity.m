@@ -7,11 +7,10 @@
 //
 
 #import "VFacebookActivity.h"
+#import "victorious-swift.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "VSequence+Fetcher.h"
-
-@import FBSDKShareKit;
 
 static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
@@ -45,7 +44,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
     {
         if ([item isKindOfClass:[VSequence class]])
         {
-            return YES;
+            return [VFacebookHelper facebookAppIDPresent];
         }
     }
     
@@ -80,8 +79,14 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
     
     FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
     shareDialog.shareContent = link;
-#warning here
-    shareDialog.mode = FBSDKShareDialogModeNative;
+    
+    shareDialog.mode = self.shareMode;
+    if ( ![shareDialog canShow] )
+    {
+        // if the mode that's been selected isn't avaliable, setting it to automatic should let the SDK choose a mode that will work.
+        shareDialog.mode = FBSDKShareDialogModeAutomatic;
+    }
+    
     [shareDialog show];
 }
 
