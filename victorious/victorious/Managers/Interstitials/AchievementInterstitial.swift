@@ -12,13 +12,13 @@ import Foundation
 struct AchievementInterstitial: Interstitial {
     
     let remoteID: Int
-    let level: String
+    let level: Int
     let progressPercentage: Int
     let title: String
     let description: String
     let icon: NSURL
     
-    init(remoteID: Int, level: String, progressPercentage: Int, title: String, description: String, icon: NSURL) {
+    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icon: NSURL) {
         self.remoteID = remoteID
         self.level = level
         self.progressPercentage = progressPercentage
@@ -28,20 +28,20 @@ struct AchievementInterstitial: Interstitial {
     }
     
     func viewControllerToPresent(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController? {
-        if let levelUpVC = dependencyManager.levelUpViewController(self) as? InterstitialViewController {
-            return levelUpVC
+        if let achievementVC = dependencyManager.achievementViewController(self) as? InterstitialViewController {
+            return achievementVC
         }
         
         return nil
     }
 }
 
-extension VDependencyManager {
+private extension VDependencyManager {
     
-    func levelUpViewController(levelUpInterstitial: LevelUpInterstitial) -> LevelUpViewController? {
-        if let levelUpVC = self.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen") as? LevelUpViewController {
-            levelUpVC.levelUpInterstitial = levelUpInterstitial
-            return levelUpVC
+    func achievementViewController(achievementInterstitial: AchievementInterstitial) -> AchievementViewController? {
+        if let achievementVC = self.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen") as? AchievementViewController {
+            achievementVC.achievementInterstitial = achievementInterstitial
+            return achievementVC
         }
         
         return nil

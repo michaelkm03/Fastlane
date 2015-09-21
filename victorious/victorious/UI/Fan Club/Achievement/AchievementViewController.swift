@@ -13,6 +13,24 @@ class AchievementViewController: UIViewController, InterstitialViewController {
     let achievementAnimator = AchievementAnimator()
     let containerView = UIView()
     
+    // MARK: - Public Properties
+    
+    var achievementInterstitial: AchievementInterstitial! {
+        didSet {
+            if let achievementInterstitial = achievementInterstitial {
+                // TODO: customize
+            }
+        }
+    }
+    
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                // TODO: customize
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.clearColor()
