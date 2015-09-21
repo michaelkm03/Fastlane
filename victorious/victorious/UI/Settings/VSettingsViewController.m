@@ -301,7 +301,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         else if ( indexPath.row == VSettingsActionRegisterTestAlert )
         {
             // Register a test alert that will show up in the next network response
-            [[InterstitialManager sharedInstance] registerTestLevelUpAlert];
+            [[InterstitialManager sharedInstance] registerTestAchievementAlert];
         }
     }
     

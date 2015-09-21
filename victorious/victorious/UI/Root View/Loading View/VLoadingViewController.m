@@ -196,6 +196,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
+#warning testing
+        templateConfiguration = [VTemplateDecorator dictionaryFromJSONFile:@"test"][@"payload"];
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         
         if (self.templateConfigurationBlock != nil)

@@ -10,14 +10,16 @@ import Foundation
 
 class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
+    private let overlayOpacity: CGFloat = 0.75
+    
     var isDismissal = false
-    var overlay = UIView()
+    private let overlay = UIView()
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         if isDismissal {
-            return LevelUpViewController.AnimationConstants.dismissalDuration
+            return AchievementViewController.AnimationConstants.dismissalDuration
         }
-        return LevelUpViewController.AnimationConstants.presentationDuration
+        return AchievementViewController.AnimationConstants.presentationDuration
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -29,12 +31,14 @@ class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 toViewController.view.frame = containerView.bounds
                 fromViewController.view.frame = containerView.bounds
                 
+                overlay.backgroundColor = UIColor.blackColor()
+                
                 if isDismissal {
                     
                     containerView.addSubview(fromViewController.view)
                     toViewController.beginAppearanceTransition(true, animated: true)
                     fromViewController.beginAppearanceTransition(false, animated: true)
-                    UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration, animations: {
+                    UIView.animateWithDuration(AchievementViewController.AnimationConstants.dismissalDuration, animations: {
                         self.overlay.alpha = 0
                         }, completion: { (completed) in
                             transitionContext.completeTransition(true)
@@ -45,15 +49,15 @@ class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 else {
                     
                     overlay.alpha = 0
-                    overlay.bounds = containerView.bounds
                     containerView.addSubview(overlay)
+                    containerView.v_addFitToParentConstraintsToSubview(overlay)
                     
-                    containerView.addSubview(toViewController.view)
                     toViewController.beginAppearanceTransition(true, animated: true)
                     fromViewController.beginAppearanceTransition(false, animated: true)
-                    UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration, animations: {
-                        self.overlay.alpha = 1
+                    UIView.animateWithDuration(AchievementViewController.AnimationConstants.presentationDuration, animations: {
+                        self.overlay.alpha = self.overlayOpacity
                         }, completion: { (completed) in
+                            containerView.addSubview(toViewController.view)
                             transitionContext.completeTransition(true)
                             toViewController.endAppearanceTransition()
                             fromViewController.endAppearanceTransition()

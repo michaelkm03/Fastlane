@@ -119,4 +119,17 @@ extension InterstitialManager {
         }
         #endif
     }
+    
+    /// Registers a test "achievement" alert for testing interstitials
+    func registerTestAchievementAlert() {
+        #if V_SHOW_TEST_ALERT_SETTINGS
+//            self.shouldRegisterInterstitials = false
+            let params = ["type" : "achievement", "params" : ["level" : ["number" : 5, "tier" : "Bronze", "name" : "Level 5", "progressPercentage" : 70], "title" : "Congrats", "description" : "You won some new stuff", "icon" : "http://i.imgur.com/ietHgk6.png"]]
+            VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
+//                self.shouldRegisterInterstitials = true
+                }) { (op, err) -> Void in
+//                    self.shouldRegisterInterstitials = true
+            }
+        #endif
+    }
 }
