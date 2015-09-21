@@ -30,6 +30,7 @@ extension VObjectManager {
     /// - parameter failure: Closure to be called if server returns an error.
     func registerTestAlert( params: [String : AnyObject], success: VSuccessBlock?, failure: VFailBlock? ) -> RKManagedObjectRequestOperation? {
         
+        #if V_SHOW_TEST_ALERT_SETTINGS
         if let paramsInfo = params["params"] as? [String : AnyObject], type = params["type"] as? String {
             let jsonData = try! NSJSONSerialization.dataWithJSONObject(paramsInfo, options: [])
             let paramsString = String(data: jsonData, encoding: NSUTF8StringEncoding)
@@ -42,6 +43,7 @@ extension VObjectManager {
                 successBlock: success,
                 failBlock: failure)
         }
+        #endif
         
         return nil
     }

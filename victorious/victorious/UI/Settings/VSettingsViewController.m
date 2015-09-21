@@ -169,7 +169,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.showExperimentSettings = NO;
 #endif
     
-#ifdef V_SHOW_TEST_ALERT_CELL
+#ifdef V_SHOW_TEST_ALERT_SETTINGS
     self.showTestAlertCell = YES;
 #else
     self.showTestAlertCell = NO;
