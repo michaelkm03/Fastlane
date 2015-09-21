@@ -20,10 +20,14 @@ extension VObjectManager {
         
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
-            let defaultExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
-            let experiments = resultObjects as? [Experiment] ?? [Experiment]()
-            
-            success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
+            if let result = result as? [String : AnyObject],
+               let testArray = result[ "experiment_ids" ] as? [Int] {
+                    
+                let defaultExperimentIds = Set<Int>( testArray ?? [Int]() )
+                let experiments = resultObjects as? [Experiment] ?? [Experiment]()
+                
+                success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
+            }
         }
         
         return self.GET( "/api/device/experiments",

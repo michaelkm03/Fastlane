@@ -11,9 +11,8 @@
 #import "VStreamCellSpecialization.h"
 #import "VHighlightContainer.h"
 #import "VStreamCellTracking.h"
-#import "victorious-swift.h"
 
-@class VStreamItem, VUser, VAbstractMarqueeStreamItemCell, VDependencyManager, VStreamItemPreviewView;
+@class VStreamItem, VUser, VAbstractMarqueeStreamItemCell, VDependencyManager, VStreamItemPreviewView, StreamCellContext;
 
 /**
     A collection view cell that displays stream item content in a marquee
@@ -34,6 +33,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager that is used to style the cell and the content it displays
 @property (nonatomic, strong) VStreamItemPreviewView *previewView;
 @property (nonatomic, strong) UIView *dimmingContainer;
+@property (nonatomic, readonly) BOOL shouldSupportAutoplay;
 
 /*
  * A context object used for tracking purposes.

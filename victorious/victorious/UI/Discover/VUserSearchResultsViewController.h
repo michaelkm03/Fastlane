@@ -10,6 +10,8 @@
 
 @class VDependencyManager, VUserSearchResultsViewController;
 
+@protocol ExploreSearchResultNavigationDelegate;
+
 /**
  Protocol to report when searching has been completed
  */
@@ -44,5 +46,7 @@
  Delegate object to report on user search
  */
 @property (nonatomic, weak) id<VUserSearchResultsViewControllerDelegate>delegate;
+
+@property (nonatomic, weak) id<ExploreSearchResultNavigationDelegate>navigationDelegate;
 
 @end

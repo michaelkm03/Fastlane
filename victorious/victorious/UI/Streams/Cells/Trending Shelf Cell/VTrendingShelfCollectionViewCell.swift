@@ -13,8 +13,6 @@ import UIKit
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private let kLoggedInChangedNotification = "com.getvictorious.LoggedInChangedNotification"
-    private let kStreamATFThresholdKey = "streamAtfViewThreshold"
-    private let streamTrackingHelper = VStreamTrackingHelper()
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,7 +24,9 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
+    lazy var streamItemVisibilityTrackingHelper: ShelfVisibilityTrackingHelper = {
+        return ShelfVisibilityTrackingHelper(collectionView: self.collectionView)
+    }()
     
     private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
@@ -35,6 +35,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             if oldValue == shelf {
                 return
             }
+            
+            streamItemVisibilityTrackingHelper.shelf = shelf
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
@@ -66,7 +68,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
-                trackingMinRequiredCellVisibilityRatio = dependencyManager.numberForKey(kStreamATFThresholdKey) as CGFloat
+                streamItemVisibilityTrackingHelper.trackingMinRequiredCellVisibilityRatio = dependencyManager.minTrackingRequiredCellVisibilityRatio
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
@@ -98,20 +100,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
 extension VTrendingShelfCollectionViewCell: TrackableShelf {
 
     func trackVisibleSequences() {
-        let streamVisibleRect = collectionView.bounds;
-        for cell in collectionView.visibleCells() {
-            let intersection = streamVisibleRect.intersect(cell.frame)
-            let visibleWidthRatio = intersection.width / cell.frame.width
-            let visibleHeightRatio = intersection.height / cell.frame.height
-            let visibleContentRatio = visibleWidthRatio * visibleHeightRatio
-            if visibleContentRatio >= trackingMinRequiredCellVisibilityRatio {
-                if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
-                    let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
-                }
-            }
-        }
+        streamItemVisibilityTrackingHelper.trackVisibleSequences()
     }
 }
 
@@ -140,7 +129,6 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1;
     }
-    
 }
 
 extension VTrendingShelfCollectionViewCell: UICollectionViewDelegate {
@@ -173,11 +161,16 @@ extension VTrendingShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
     
 }
 
-
 extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
     
     func backgroundContainerView() -> UIView {
         return contentView
     }
+}
+
+extension VDependencyManager {
     
+    var minTrackingRequiredCellVisibilityRatio: CGFloat {
+        return numberForKey("streamAtfViewThreshold") as CGFloat
+    }
 }

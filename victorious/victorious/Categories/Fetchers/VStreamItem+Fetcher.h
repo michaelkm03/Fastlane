@@ -17,10 +17,12 @@ extern NSString * const VStreamItemTypeShelf;
 extern NSString * const VStreamItemTypeFeed;
 
 //Subtype values
+extern NSString * const VStreamItemSubTypeExplore;
 extern NSString * const VStreamItemSubTypeMarquee;
 extern NSString * const VStreamItemSubTypeUser;
 extern NSString * const VStreamItemSubTypeHashtag;
-extern NSString * const VStreamItemSubTypePlaylist;;
+extern NSString * const VStreamItemSubTypeTrendingTopic;
+extern NSString * const VStreamItemSubTypePlaylist;
 extern NSString * const VStreamItemSubTypeRecent;
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
