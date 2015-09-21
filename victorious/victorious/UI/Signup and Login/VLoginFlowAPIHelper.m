@@ -89,8 +89,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          }
          
          [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                            isModern:YES
-                                                        OnCompletion:^(VUser *user, BOOL isNewUser)
+                                                        onCompletion:^(VUser *user, BOOL isNewUser)
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
@@ -121,8 +120,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaFacebookModern:YES
-                                             OnCompletion:^(VUser *user, BOOL isNewUser)
+    [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
