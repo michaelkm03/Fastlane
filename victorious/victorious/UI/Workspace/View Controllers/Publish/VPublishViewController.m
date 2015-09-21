@@ -700,8 +700,10 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         if ( ![[[FBSDKAccessToken currentAccessToken] permissions] containsObject:kFBPermissionPublishActionsKey] )
         {
             shareItemCell.state = VShareItemCellStateLoading;
-            FBSDKLoginManager *loginManager = [VFacebookHelper loginManager];
             
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+#warning here
+            loginManager.forceNative = YES;
             [loginManager logInWithPublishPermissions:@[kFBPermissionPublishActionsKey]
                                    fromViewController:self
                                               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

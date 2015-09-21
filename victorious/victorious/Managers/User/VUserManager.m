@@ -34,18 +34,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 
 @implementation VUserManager
 
-+ (VUserManager *)sharedInstance
-{
-    static VUserManager *sharedInstance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
-    {
-        sharedInstance = [[self alloc] init];
-    });
-                  
-    return sharedInstance;
-}
-
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
@@ -73,7 +61,8 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    FBSDKLoginManager *loginManager = [VFacebookHelper loginManager];
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    loginManager.forceNative = self.forceNativeFacebookLogin;
     [loginManager logOut];
     [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
                         fromViewController:nil

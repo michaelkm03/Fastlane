@@ -36,7 +36,9 @@
     }
     else if (userInteraction)
     {
-        FBSDKLoginManager *loginManager = [VFacebookHelper loginManager];
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        loginManager.forceNative = YES;
+#warning here
         [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
                             fromViewController:self.parentViewController
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

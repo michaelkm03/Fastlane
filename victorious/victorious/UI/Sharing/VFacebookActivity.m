@@ -7,12 +7,20 @@
 //
 
 #import "VFacebookActivity.h"
-
+#import "VImageAsset.h"
+#import "VImageAssetFinder.h"
 #import "VSequence+Fetcher.h"
 
-#import "VConstants.h"
+@import FBSDKShareKit;
 
 static NSString * const VFacebookActivityType = @"com.victorious.facebook";
+
+@interface VFacebookActivity () <FBSDKSharingDelegate>
+
+@property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong) NSURL *shareURL;
+
+@end
 
 @implementation VFacebookActivity
 
@@ -46,30 +54,57 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
-    VSequence *sequence;
-    NSURL *shareUrl;
     for (id item in activityItems)
     {
         if ([item isKindOfClass:[VSequence class]])
         {
-            sequence = item;
+            self.sequence = item;
         }
         if ([item isKindOfClass:[NSURL class]])
         {
-            shareUrl = item;
+            self.shareURL = item;
         }
     }
+}
 
-#warning todo
-//    [[VFacebookManager sharedFacebookManager] shareLink:shareUrl
-//                                            description:sequence.sequenceDescription
-//                                                   name:sequence.name
-//                                             previewUrl:nil];
+- (void)performActivity
+{
+    FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
+    link.contentURL = self.shareURL;
+    
+    VImageAsset *thumbnail = [[[VImageAssetFinder alloc] init] largestAssetFromAssets:self.sequence.previewAssets];
+    if ( thumbnail.imageURL != nil )
+    {
+        link.imageURL = [NSURL URLWithString:thumbnail.imageURL];
+    }
+    
+    FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
+    shareDialog.shareContent = link;
+#warning here
+    shareDialog.mode = FBSDKShareDialogModeNative;
+    [shareDialog show];
 }
 
 + (UIActivityCategory)activityCategory
 {
     return UIActivityCategoryShare;
+}
+
+#pragma mark - FBSDKSharingDelegate methods
+
+- (void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results
+{
+    [self activityDidFinish:YES];
+}
+
+- (void)sharer:(id<FBSDKSharing>)sharer didFailWithError:(NSError *)error
+{
+    [self activityDidFinish:NO];
+}
+
+- (void)sharerDidCancel:(id<FBSDKSharing>)sharer
+{
+    [self activityDidFinish:NO];
 }
 
 @end

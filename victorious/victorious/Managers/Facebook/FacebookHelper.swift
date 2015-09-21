@@ -23,15 +23,5 @@ class FacebookHelper: NSObject {
         return !fbSchemeRegex.matchesInString(url.scheme, options: [], range: NSMakeRange(0, url.scheme.characters.count)).isEmpty
     }
     
-    /// Returns a pre-configured login manager. For consistency, all Facebook logins should
-    /// use an instance of FBSDKLoginManager returned from this function. Additionally,
-    /// please request, at a minimum, the read permissions contained in the 
-    /// `readPermissions` property of this class.
-    class func loginManager() -> FBSDKLoginManager {
-        let loginManager = FBSDKLoginManager()
-        loginManager.loginBehavior = .SystemAccount
-        return loginManager
-    }
-    
     private static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.CaseInsensitive])
 }
