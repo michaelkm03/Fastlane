@@ -22,6 +22,7 @@
 #import "VComment+Fetcher.h"
 #import "VCommentAlertHelper.h"
 #import "VCommentTextAndMediaView.h"
+#import "VContentAlertHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
 #import "VContentPollBallotCell.h"
@@ -73,7 +74,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VVideoSequenceDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -85,6 +86,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
 @property (nonatomic, readwrite, weak) VContentCell *contentCell;
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
+@property (nonatomic, strong) VContentViewFactory *contentViewFactory;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -93,7 +95,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 @property (nonatomic, strong) VPublishParameters *publishParameters;
-@property (nonatomic, strong) VStreamItemPreviewView *nextSequencePreviewView;
 @property (nonatomic, strong) VTransitionDelegate *endcardNextTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -758,18 +759,38 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
             
-            if ( self.nextSequencePreviewView != nil )
+            id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
+            VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
+            
+            if ( previewView == nil )
             {
-                id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
+                // Create a new sequence preview if we haven't been given one from the context
+                previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
+                [previewView setDependencyManager:self.dependencyManager];
+                [previewView setStreamItem:self.viewModel.sequence];
+                
                 UIView *superview = [receiver getTargetSuperview];
-                self.nextSequencePreviewView.frame = superview.bounds;
-                [superview addSubview:self.nextSequencePreviewView];
-                [superview v_addFitToParentConstraintsToSubview:self.nextSequencePreviewView];
-                if ( [self.nextSequencePreviewView conformsToProtocol:@protocol(VVideoPreviewView)] )
-                {
-                    id<VVideoPlayer> videoPlayer = ((id<VVideoPreviewView>)self.nextSequencePreviewView).videoPlayer;
-                    [receiver setVideoPlayer:videoPlayer];
-                }
+                previewView.frame = superview.bounds;
+                [superview addSubview:previewView];
+                [superview v_addFitToParentConstraintsToSubview:previewView];
+            }
+            
+            previewView.focusType = VFocusTypeDetail;
+            previewView.detailDelegate = self;
+            
+            // Setup relationships for polls
+            if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
+            {
+                self.pollAnswerReceiver = (id<VPollResultReceiver>)previewView;
+            }
+            
+            // Setup relationships for video playback
+            if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
+            {
+                id<VVideoPreviewView> videoPreviewView = (id<VVideoPreviewView>)previewView;
+                id<VVideoPlayer> videoPlayer = videoPreviewView.videoPlayer;
+                videoPreviewView.delegate = self;
+                [receiver setVideoPlayer:videoPlayer];
             }
             
             return self.contentCell;
@@ -1411,7 +1432,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.contentCell hideEndCard];
          
-         [self presentViewController:[VCommentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
+         [self presentViewController:[VContentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 
@@ -1475,6 +1496,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.contentCell disableEndcardAutoplay];
 }
 
+- (VContentViewFactory *)contentViewFactory
+{
+    if ( _contentViewFactory == nil )
+    {
+        _contentViewFactory = [[VContentViewFactory alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    return _contentViewFactory;
+}
+
 - (void)showNextSequence:(VSequence *)nextSequence
 {
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
@@ -1483,22 +1513,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
     context.dependencyManager = self.dependencyManager;
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
+    context.viewController = self;
     
-    // Create a new sequence preview for the next view controller
-    VStreamItemPreviewView *previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:nextSequence];
-    [previewView setDependencyManager:self.dependencyManager];
-    [previewView setStreamItem:nextSequence];
-    contentViewController.nextSequencePreviewView = previewView;
-    
-    // Put back our current sequence preview
-    [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
-    
+    VNewContentViewController *contentViewController = (VNewContentViewController *)[self.contentViewFactory contentViewForContext:context];
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
+    
+    // Put back our current sequence preview
+    if ( self.viewModel.context.contentPreviewProvider != nil )
+    {
+        [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
+    }
 }
 
 #pragma mark - VSequenceActionsDelegate
@@ -1643,7 +1669,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-#pragma mark - VVideoSequenceDelegate
+#pragma mark - VVideoPreviewViewDelegate
 
 - (void)animateAlongsideVideoToolbarWillAppear
 {

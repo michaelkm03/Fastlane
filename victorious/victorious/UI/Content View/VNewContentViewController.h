@@ -12,13 +12,14 @@
 #import "VHasManagedDependencies.h"
 #import "VVideoPlayerDelegate.h"
 #import "VPollResultReceiver.h"
+#import "VVideoPreviewView.h"
 
 @class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
 /**
  *  The content view controller.
  */
-@interface VNewContentViewController : UIViewController <VHasManagedDependencies>
+@interface VNewContentViewController : UIViewController <VHasManagedDependencies, VVideoPreviewViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

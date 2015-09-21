@@ -153,9 +153,8 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.videoAsset = [self.sequence.firstNode httpLiveStreamingAsset];
     self.trackingItem = self.sequence.tracking;
     
-    self.videoAsset = [self.sequence.firstNode mp4Asset];
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
-    [self.videoView setItem:item];
+    [self.videoPlayer setItem:item];
     
     [self updateUIState];
 }
@@ -289,7 +288,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                            [self.videoPlayer playFromStart];
                        });
     }
-    else
+    else if ( !self.preventSeekToStartOnFinish )
     {
         [super videoPlayerDidReachEnd:videoPlayer];
         [self.videoPlayer pause];

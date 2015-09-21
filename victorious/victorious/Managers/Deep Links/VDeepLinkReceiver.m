@@ -17,7 +17,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VTabScaffoldViewController.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 
@@ -37,9 +37,9 @@
 #if FORCE_DEEPLINK
 #warning FORCE_DEEPLINK is activated.  A hardcoded deep link will automatically open with each app launch
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
+        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/15461"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/431"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
         [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];

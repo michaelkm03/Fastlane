@@ -7,16 +7,11 @@
 //
 
 #import "VBaseVideoSequencePreviewView.h"
-
-// Models + Helpers
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
-
-// Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 #import "VImageAssetFinder.h"
@@ -31,6 +26,13 @@
 
 @implementation VBaseVideoSequencePreviewView
 
+#pragma mark - VVideoPlayerView
+
+@synthesize videoPlayer = _videoPlayer;
+@synthesize delegate;
+
+#pragma mark - Initialization
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -42,12 +44,14 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
-        _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
-        _videoView.delegate = self;
-        [self addSubview:_videoView];
-        [self v_addFitToParentConstraintsToSubview:_videoView];
+        _videoPlayer = [[VVideoView alloc] initWithFrame:self.bounds];
+        _videoPlayer.delegate = self;
+        [self addSubview:_videoPlayer.view];
+        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
         
         _videoSettings = [[VVideoSettings alloc] init];
+        
+        self.onlyShowPreview = YES;
     }
     return self;
 }
@@ -79,7 +83,10 @@
     
     [super setSequence:sequence];
     
-    [self loadVideoAsset];
+    if ( !self.onlyShowPreview )
+    {
+        [self loadVideoAsset];
+    }
     
     [self setBackgroundContainerViewVisible:NO];
     
@@ -134,7 +141,7 @@
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.loop = YES;
     item.muted = YES;
-    [self.videoView setItem:item];
+    [self.videoPlayer setItem:item];
 }
 
 #pragma mark - VVideoPlayerDelegate
@@ -145,38 +152,32 @@
     {
         [self setBackgroundContainerViewVisible:YES];
     }
-    
-    [self.videoPlayerDelegate videoPlayerDidBecomeReady:videoPlayer];
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
-    [self.videoPlayerDelegate videoPlayerDidReachEnd:videoPlayer];
+    [self.delegate videoPlaybackDidFinish];
 }
 
+#warning TODO: Remove these if not needed, they are optional
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
-    [self.videoPlayerDelegate videoPlayerDidStartBuffering:videoPlayer];
 }
 
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
 {
-    [self.videoPlayerDelegate videoPlayerDidStopBuffering:videoPlayer];
 }
 
 - (void)videoPlayer:(id<VVideoPlayer>)videoPlayer didPlayToTime:(Float64)time
 {
-    [self.videoPlayerDelegate videoPlayer:videoPlayer didPlayToTime:time];
 }
 
 - (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
 {
-    [self.videoPlayerDelegate videoPlayerDidPlay:videoPlayer];
 }
 
 - (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
 {
-    [self.videoPlayerDelegate videoPlayerDidPause:videoPlayer];
 }
 
 #pragma mark - Focus
@@ -193,37 +194,46 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            self.videoView.backgroundColor = [UIColor clearColor];
-            self.videoView.useAspectFit = NO;
+            self.videoPlayer.view.backgroundColor = [UIColor clearColor];
+            self.videoPlayer.useAspectFit = NO;
             [self.likeButton hide];
-            [self.videoView pause];
-            self.videoView.muted = YES;
+            [self.videoPlayer pause];
+            self.videoPlayer.muted = YES;
+            if ( self.onlyShowPreview )
+            {
+                [self.videoPlayer pauseAtStart];
+            }
             self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeStream:
             [self setBackgroundContainerViewVisible:YES];
-            self.videoView.backgroundColor = [UIColor clearColor];
-            self.videoView.useAspectFit = NO;
+            self.videoPlayer.view.backgroundColor = [UIColor clearColor];
+            self.videoPlayer.useAspectFit = NO;
             [self.likeButton hide];
-            if ( self.shouldAutoplay )
+            if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
-                [self.videoView play];
-                self.videoView.muted = YES;
+                [self.videoPlayer play];
+                self.videoPlayer.muted = YES;
+            }
+            if ( self.onlyShowPreview )
+            {
+                [self.videoPlayer pauseAtStart];
             }
             self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeDetail:
-            [self setBackgroundContainerViewVisible:YES];
-            self.videoView.backgroundColor = [UIColor blackColor];
-            self.videoView.useAspectFit = YES;
-            [self.likeButton show];
-            if ( self.shouldAutoplay )
+            if ( self.onlyShowPreview )
             {
-                [self.videoView play];
-                self.videoView.muted = NO;
+                [self loadVideoAsset];
             }
+            [self setBackgroundContainerViewVisible:YES];
+            self.videoPlayer.view.backgroundColor = [UIColor blackColor];
+            self.videoPlayer.useAspectFit = YES;
+            [self.likeButton show];
+            [self.videoPlayer play];
+            self.videoPlayer.muted = NO;
             self.userInteractionEnabled = YES;
             break;
     }
@@ -233,7 +243,7 @@
 
 - (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
 {
-    self.videoView.useAspectFit = fit;
+    self.videoPlayer.useAspectFit = fit;
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
     [dependencyManager addBackgroundToBackgroundHost:self];
 }
@@ -256,11 +266,6 @@
 - (void)setBackgroundContainerViewVisible:(BOOL)visible
 {
     self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
-}
-
-- (id<VVideoPlayer>)videoPlayer
-{
-    return self.videoView;
 }
 
 @end

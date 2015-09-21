@@ -23,31 +23,20 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
     }
     
     func prepareForTransitionIn(model: VTransitionModel) {
-        if let navController = model.toViewController as? VNavigationController,
+        
+        guard let navController = model.toViewController as? VNavigationController,
             let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
             let snapshotImage = self.imageOfView( model.fromViewController.view ),
             let previewProvider = contentViewController.viewModel.context.contentPreviewProvider,
-            let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver {
-                
-                // Mediate the handoff of views and setup of constraints
-                self.handoffController.addPreviewView(
-                    fromProvider: previewProvider,
-                    toReceiver: previewReceiver,
-                    originSnapshotImage: snapshotImage )
-                
-                // Wire up some relationships through protocols
-                let previewView = previewProvider.getPreviewView()
-                contentViewController.pollAnswerReceiver = previewView as? VPollResultReceiver
-                previewView.focusType = VFocusType.Detail
-                previewView.detailDelegate = contentViewController as? VSequencePreviewViewDetailDelegate
-                if let videoPlayer = (previewView as? VVideoPreviewView)?.videoPlayer {
-                    contentViewController.videoPlayer = videoPlayer
-                    previewReceiver.setVideoPlayer( videoPlayer )
-                }
-                if let videoSequencePreview = previewView as? VVideoSequencePreviewView {
-                    videoSequencePreview.delegate = contentViewController as? VVideoSequenceDelegate
-                }
+            let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver else {
+                fatalError( "Missing references required for transition animation" )
         }
+        
+        // Mediate the handoff of views and setup of constraints
+        self.handoffController.addPreviewView(
+            fromProvider: previewProvider,
+            toReceiver: previewReceiver,
+            originSnapshotImage: snapshotImage )
         self.handoffController.previewLayout?.parent.layoutIfNeeded()
         for layout in self.handoffController.sliceLayouts {
             layout.parent.layoutIfNeeded()
@@ -95,6 +84,15 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
     
     func performTransitionOut(model: VTransitionModel, completion: ((Bool) -> Void)?) {
         
+        guard let navController = model.fromViewController as? VNavigationController,
+            let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider,
+            let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() else {
+                fatalError( "Missing references required for transition animation" )
+        }
+        
+        contentPreviewProvider.getPreviewView().focusType = .Stream
+        
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
             usingSpringWithDamping: 0.9,
@@ -115,13 +113,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 }
             },
             completion: { finished in
-                if let navController = model.fromViewController as? VNavigationController,
-                    let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
-                    let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider,
-                    let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
-                        contentPreviewProvider.restorePreviewView( view )
-                        contentPreviewProvider.getPreviewView().focusType = .Stream
-                }
+                contentPreviewProvider.restorePreviewView( view )
                 completion?(finished)
             }
         )

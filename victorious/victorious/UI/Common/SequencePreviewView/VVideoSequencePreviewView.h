@@ -8,16 +8,6 @@
 
 #import "VBaseVideoSequencePreviewView.h"
 
-@protocol VVideoSequenceDelegate
-
-- (void)animateAlongsideVideoToolbarWillAppear;
-- (void)animateAlongsideVideoToolbarWillDisappear;
-- (void)videoPlaybackDidFinish;
-
-@end
-
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
-
-@property (nonatomic, weak, nullable) id<VVideoSequenceDelegate> delegate;
 
 @end

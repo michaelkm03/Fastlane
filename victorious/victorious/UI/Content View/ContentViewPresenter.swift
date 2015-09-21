@@ -40,7 +40,7 @@ class ContentViewPresenter: NSObject {
         
         if let dependencyManager = context.dependencyManager,
             let viewController = context.viewController,
-            let contentViewFactory = dependencyManager.contentViewFactory(),
+            let contentViewFactory: VContentViewFactory = dependencyManager.contentViewFactory(),
             let sequence = context.sequence {
             
                 var reason: NSString?

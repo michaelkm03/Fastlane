@@ -27,15 +27,12 @@
  * Responsible for playing video in-line. Subclasses can hide this if
  * there is no need to play video.
  */
-@property (nonatomic, strong, readonly) VVideoView *videoView;
+@property (nonatomic, strong, readonly) id<VVideoPlayer> videoPlayer;
 
 /**
  * The image view responsible for showing the video's preview image
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
-
-
-@property (nonatomic, weak) id<VVideoPlayerDelegate> videoPlayerDelegate;
 
 /**
  *  Hides or shows the background that holds the image view. Defaults to hidden.
@@ -48,5 +45,6 @@
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, readonly) BOOL shouldAutoplay;
 @property (nonatomic, readonly) BOOL shouldLoop;
+@property (nonatomic, assign) BOOL preventSeekToStartOnFinish;
 
 @end

@@ -27,24 +27,29 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             if streamItem == oldValue {
                 return
             }
-            
             if previewView.canHandleStreamItem(streamItem) {
                 updatePreviewView(streamItem)
                 return
             }
             
-            // WARNING: Fix the `onlyShowPreview` thing
-
-            previewView.removeFromSuperview()
-            
-            previewView = VStreamItemPreviewView(streamItem: streamItem)
-            previewView.dependencyManager = dependencyManager
-            updatePreviewView(streamItem)
+            if let streamItem = streamItem {
+                
+                previewView.removeFromSuperview()
+                
+                previewView = VStreamItemPreviewView(streamItem: streamItem)
+                previewView.dependencyManager = dependencyManager
+                updatePreviewView(streamItem)
+            }
         }
     }
     
     private func updatePreviewView(streamItem: VStreamItem?) {
         if let streamItem = streamItem {
+            
+            if ( !previewView.onlyShowPreview )
+            {
+                previewView.onlyShowPreview = true
+            }
             
             if ( previewView.streamItem != streamItem )
             {
@@ -82,10 +87,11 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             updatePreviewView(streamItem)
             return
         }
-        previewView.removeFromSuperview()
-        
-        previewView = VStreamItemPreviewView(streamItem: streamItem)
-        updatePreviewView(streamItem)
+        if let streamItem = streamItem {
+            previewView.removeFromSuperview()
+            previewView = VStreamItemPreviewView(streamItem: streamItem)
+            updatePreviewView(streamItem)
+        }
     }
     
     required override init(frame: CGRect) {
@@ -102,7 +108,6 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         contentView.addSubview(previewViewContainer)
         contentView.v_addFitToParentConstraintsToSubview(previewViewContainer)
     }
-    
 }
 
 extension VShelfContentCollectionViewCell: VStreamCellTracking {
@@ -145,7 +150,6 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         updatedIdentifier += "."
         return updatedIdentifier
     }
-    
 }
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
@@ -153,5 +157,4 @@ extension VShelfContentCollectionViewCell: VBackgroundContainer {
     func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
     }
-    
 }

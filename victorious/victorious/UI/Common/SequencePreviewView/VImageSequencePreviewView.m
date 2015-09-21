@@ -46,16 +46,21 @@
     
     super.focusType = focusType;
     
+    [self focusDidUpdate];
+}
+
+- (void)focusDidUpdate
+{
     switch (self.focusType)
     {
         case VFocusTypeNone:
             [self.likeButton hide];
-            self.previewImageView.backgroundColor = [UIColor clearColor];
+            self.previewImageView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
             break;
             
         case VFocusTypeStream:
             [self.likeButton hide];
-            self.previewImageView.backgroundColor = [UIColor clearColor];
+            self.previewImageView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
             break;
             
         case VFocusTypeDetail:
@@ -92,6 +97,7 @@
      {
          self.readyForDisplay = YES;
      }];
+    [self focusDidUpdate];
 }
 
 #pragma mark - VContentModeAdjustablePreviewView
@@ -99,7 +105,7 @@
 - (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
 {
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    //[dependencyManager addBackgroundToBackgroundHost:self];
+    [dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 - (UIView *)backgroundContainerView
