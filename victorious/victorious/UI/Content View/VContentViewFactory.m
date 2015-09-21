@@ -15,6 +15,7 @@
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+@import SafariServices;
 
 static NSString * const kContentViewComponentKey = @"contentView";
 static NSString * const kSequenceIdKey = @"sequenceId";
@@ -124,6 +125,15 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     }
     else
     {
+        // Opens up the webview with SFSafariViewController in iOS9 and above
+        NSOperatingSystemVersion iOS9 = {9, 0, 0};
+        if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] && [[[NSProcessInfo alloc] init] isOperatingSystemAtLeastVersion:iOS9])
+        {
+            SFSafariViewController *webVC = (url != nil) ? [[SFSafariViewController alloc] initWithURL:url] : nil;
+            return webVC;
+        }
+        
+        // Opens up the webview with WKWebview in iOS 8
         VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
         VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
         viewController.isLandscapeOrientationSupported = YES;
