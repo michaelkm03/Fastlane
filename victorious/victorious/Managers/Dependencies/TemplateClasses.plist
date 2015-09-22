@@ -170,6 +170,8 @@
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
 	<string>VUsersAndTagsSearchViewController</string>
+	<key>standard.badgeView</key>
+	<string>victorious.AvatarLevelBadgeView</string>
 	<key>explore.screen</key>
 	<string>victorious.VExploreViewController</string>
 	<key>trendingTopic.shelf</key>
