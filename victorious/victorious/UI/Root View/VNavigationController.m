@@ -469,7 +469,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     // Update the supplementaryHeader only when the newValue is different
     if ( self.supplementaryHeaderView != newSupplementaryHeaderView)
     {
-        // Updating with a valid newSupplementaryHeaderView
+        // We are being told to remove the supplementaryHeaderView
         if ( newSupplementaryHeaderView == nil )
         {
             if ( viewController.transitionCoordinator == nil )
@@ -481,7 +481,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
                 [self removeSupplementaryHeaderViewWithTransitionCoordinator:viewController.transitionCoordinator];
             }
         }
-        // We are being told to remove the supplementaryHeaderView
+        // Updating with a valid newSupplementaryHeaderView
         else
         {
             if ( viewController.transitionCoordinator == nil )
