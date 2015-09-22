@@ -30,11 +30,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Log in here"           =   "Se connecter ici";
-"Already Registered?"   =   "Déjà inscrit?";
 "Get Started"           =   "A vous de jouer !";
-"Forgot Password?"      =   "Mot de passe oublié ?";
-"Reset here"            =   "Réinitialiser ici";
 "SetupButton"           =   "Installer";
 "EmailValidation"       =   "Adresse e-mail non valide";
 "Minimum 8 characters"  =   "Minimum 8 caractères";
@@ -54,7 +50,6 @@
 "ProfileRequiredPhoto"  =   "Image de profil";
 "ProfileNameSpaces"     =   "Votre nom ne peut pas être constitué uniquement d'espaces.";
 "ProfileRequiredName"   =   "Nom";
-"ProfileRequiredToS"    =   "Acceptez nos conditions d'utilisation";
 "Profile load failed!"  =   "Le chargement du profil a échoué !";
 
 "User already exists"   =   "L'utilisateur existe déjà";
@@ -219,7 +214,6 @@
 
 "ResetPassword"         =   "Réinitialiser le mot de passe";
 "ResetPasswordPrompt"   =   "Veuillez saisir votre adresse e-mail.";
-"ResetPasswordPlaceholder" = "Adresse e-mail";
 
 "PasswordError"         =   "Le mot de passe est incorrect";
 
@@ -233,21 +227,10 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Nouveau mot de passe non valide.";
 "ResetPasswordNewEqualsCurrentMessage" = "Veuillez saisir un mot de passe différent de votre mot de passe actuel.";
 
-"ResetPasswordConfirmCancelTitle" = "Confirmer";
-"ResetPasswordConfirmCancelMessage" = "Souhaitez-vous annuler la réinitialisation de votre mot de passe ?";
-"ResetPasswordYesCancelButton" = "Oui, annuler";
-"ResetPasswordNoContinueButton" = "Non, poursuivre";
-
-"Error Resetting Password" = "La réinitialisation du mot de passe a échoué";
-"Please check your network connection or try again later." = "Veuillez vérifier votre connexion internet ou réessayer ultérieurement.";
-
-"EnterResetCodeMessage" =   "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
-"EnterCodeTitle"        =   "SAISIR LE CODE";
 "Resend Email"           =   "Renvoyer l'e-mail";
 
 "EmailNotFound"         =   "L'e-mail fourni n'a pas pu être trouvé. Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
 "EmailNotValid"         =   "Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
-"Thanks"                =   "Merci !";
 "CannotVerify"          =   "La vérification de ce compte a échoué";
 "IncorrectCode"         =   "Le code utilisé pour la vérification du compte est incorrect.";
 
@@ -294,7 +277,6 @@
 "Version"               =   "Version %@";
 
 "ToSText"               =   "Conditions d'utilisation";
-"ToSAgreement"          =   "J'ai au moins 13 ans et j'accepte les conditions d'utilisation";
 
 "Privacy Policy"        =   "Politique de confidentialité";
 
@@ -355,6 +337,7 @@
 "NewPrivateMessage"     = "Vous avez un nouveau message privé";
 "NewFollower"           = "Vous avez un nouvel abonné";
 "TagInComment"          = "Vous avez été mentionné(e)";
+"LikePost"              = "Someone likes my post";
 
 "NotificationSettingSectionFeeds" = "Flux";
 "NotificationSettingSectionPeople" = "Personnes";
@@ -386,19 +369,7 @@
 "PurchaseUnlockWithPrice"               = "Débloquer pour %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restaurer les achats";
 "SettingsRestorePurchasesPrompt"        = "Vous n'avez effectué aucun achat sur cet appareil.\nSi vous avez effectué des achats sur un autre appareil, cliquez sur « Restaurer les achats » pour les restaurer.";
-
-"AuthorizationContextDefault"                   = "Nous sommes heureux que vous ayez rejoint notre communauté ! Créez un compte et vous pourrez créer, publier et partager !";
-"AuthorizationContextCreatePost"                = "Super! Nous avons hâte de découvrir votre première publication. Créez simplement un compte et commencez à partager vos créations avec la communauté!";
-"AuthorizationContextFollowHashtag"             = "Les hashtags ont la côte. Créez votre compte, puis suivez quelques-unes des passionnantes conversations qui se déroulent ici!";
-"AuthorizationContextFollowUser"                = "Nous sommes heureux que vous ayez rejoint notre communauté et que vous suiviez le contenu d'autres fans. Créez votre profil pour que les autres utilisateurs puissent vous suivre à leur tour !";
-"AuthorizationContextVoteBallistic"             = "Ces émoticônes vous plaisent? Créez votre compte pour pouvoir partager vos émotions! ";
-"AuthorizationContextVotePoll"                  = "Nous aimerions voir votre vote! Créez d'abord un compte et faites entendre votre voix!";
-"AuthorizationContextRepost"                    = "Cette publication vous plaît? Créez d'abord votre compte et republiez-la!";
-"AuthorizationContextRemix"                     = "Nous sommes impatients de découvrir vos créations. Créez un compte pour qu'elles puissent être conservées sur votre profil.";
-"AuthorizationContextViewProfile"               = "Nous sommes ravis que vous ayez rejoint notre communauté. Créez un compte pour partager vos créations avec tous les autres membres!";
-"AuthorizationContextAddComment"                = "Nous avons hâte d'entendre ce que vous avez à nous dire! Créez votre compte et lancez-vous!";
-"AuthorizationContextInbox"                     = "Nous sommes ravis que vous ayez rejoint notre communauté! Créez simplement votre compte pour pouvoir envoyer et recevoir des messages!";
-"AuthorizationContextNotification"              = "Nous sommes ravis que vous ayez rejoint notre communauté et que vous communiquiez avec des fans. Créez simplement un compte pour recevoir des notifications relatives aux informations importantes!";
+"Reset Purchases"                       = "Reset Purchases";
 
 "This will discard any content added to your post" = "Cette action va supprimer le contenu que vous avez ajouté à votre publication";
 
@@ -451,15 +422,17 @@
 "Watch GIF" = "Regarder le GIF";
 
 "See all" = "Voir tout";
-"Show Previous Comments" = "Afficher les commentaires précédents";
+"View previous comments" = "View previous comments";
 "CommentsSingularFormat" = "%@ commentaire";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ commentaires";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ mention J'aime";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ mentions J'aime";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Personnes qui aiment";
 
-"posts" = "Publications";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
 "HashtagPostsCountFormat" = "Dans %@ publications";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelone";
 "London" = "Londres";
@@ -480,3 +453,6 @@
 "Use mobile data and Wi-Fi" = "Utiliser les données mobiles et le Wi-Fi";
 "Use Wi-Fi only" = "Utiliser seulement le Wi-Fi";
 "Never play videos automatically" = "Ne jamais lire de vidéos automatiquement";
+
+"LevelFormat" = "LEVEL %@";
+"LEVEL" = "LEVEL";
