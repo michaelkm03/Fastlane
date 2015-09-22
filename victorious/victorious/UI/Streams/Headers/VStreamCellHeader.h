@@ -15,9 +15,9 @@
  *  A Stream header view for displaying information about a sequence. 
  *  It displays a user profile button, a creation info container 
  *  (containing username and any reposted remixed info) and a time 
- *  since label that is right justified.
+ *  since label or follow control that is right justified.
  */
-@interface VStreamHeaderTimeSince : UIView <VHasManagedDependencies>
+@interface VStreamCellHeader : UIView <VHasManagedDependencies>
 
 /**
  *  The sequence for this header to represent.
