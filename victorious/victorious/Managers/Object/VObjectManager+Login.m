@@ -68,52 +68,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 #pragma mark - Facebook
 
-- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
-                                                 SuccessBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)failed
-{
-    
-    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: @""};
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeFaceBook];
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self POST:@"/api/login/facebook"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:failed];
-}
-
 - (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
-                                                SuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)failed
-{
-    return [self createFacebookWithToken:accessToken
-                                isModern:NO
-                            SuccessBlock:success
-                               failBlock:failed];
-}
-
-- (RKManagedObjectRequestOperation *)modernCreateFacebookWithToken:(NSString *)accessToken
-                                                      SuccessBlock:(VSuccessBlock)success
-                                                         failBlock:(VFailBlock)failed
-{
-    return [self createFacebookWithToken:accessToken
-                                isModern:YES
-                            SuccessBlock:success
-                               failBlock:failed];
-}
-
-- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
-                                                    isModern:(BOOL)isModern
-                                                SuccessBlock:(VSuccessBlock)success
+                                                successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
@@ -127,9 +83,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
     };
     
-    NSString *url = isModern ? @"/api/account/create/via_facebook_modern" : @"/api/account/create/via_facebook";
-    
-    return [self POST:url
+    return [self POST:@"/api/account/create/via_facebook_modern"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
@@ -138,66 +92,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 #pragma mark - Twitter
 
-- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString *)accessToken
-                                                accessSecret:(NSString *)accessSecret
-                                                   twitterId:(NSString *)twitterId
-                                                SuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)failed
-{
-    
-    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
-                                 @"access_secret":  accessSecret ?: @"",
-                                 @"twitter_id":     twitterId ?: @""};
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeTwitter];
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self POST:@"/api/login/twitter"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:failed];
-}
-
-- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
-                                                     accessSecret:(NSString *)accessSecret
-                                                        twitterId:(NSString *)twitterId
-                                                     SuccessBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)failed
-{
-    return [self createTwitterWithToken:accessToken
-                           accessSecret:accessSecret
-                              twitterId:twitterId
-                               isModern:NO
-                           SuccessBlock:success
-                              failBlock:failed];
-}
-
-- (RKManagedObjectRequestOperation *)modernCreateTwitterWithToken:(NSString *)accessToken
-                                               accessSecret:(NSString *)accessSecret
-                                                  twitterId:(NSString *)twitterId
-                                               SuccessBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)failed
-{
-    return [self createTwitterWithToken:accessToken
-                           accessSecret:accessSecret
-                              twitterId:twitterId
-                               isModern:YES
-                           SuccessBlock:success
-                              failBlock:failed];
-}
-
 - (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
                                                accessSecret:(NSString *)accessSecret
                                                   twitterId:(NSString *)twitterId
-                                                   isModern:(BOOL)isModern
-                                               SuccessBlock:(VSuccessBlock)success
+                                               successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed
 {
     NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
@@ -213,9 +111,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
     };
     
-    NSString *url = isModern ? @"/api/account/create/via_twitter_modern" : @"/api/account/create/via_twitter";
-    
-    return [self POST:url
+    return [self POST:@"/api/account/create/via_twitter_modern"
                object:nil
            parameters:parameters
          successBlock:fullSuccess

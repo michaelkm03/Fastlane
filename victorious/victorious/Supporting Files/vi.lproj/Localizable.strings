@@ -30,11 +30,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Log in here"           =   "Đăng nhập tại đây";
-"Already Registered?"   =   "Đã đăng ký?";
 "Get Started"           =   "Bắt đầu!";
-"Forgot Password?"      =   "Quên Tài khoản?";
-"Reset here"            =   "Đặt lại tại đây";
 "SetupButton"           =   "Cài đặt";
 "EmailValidation"       =   "Địa chỉ Email Không Hợp lệ";
 "Minimum 8 characters"  =   "Tối thiểu 8 kí tự";
@@ -54,7 +50,6 @@
 "ProfileRequiredPhoto"  =   "Ảnh hồ sơ";
 "ProfileNameSpaces"     =   "Tên hồ sơ của bạn không thể chỉ bao gồm khoảng trống.";
 "ProfileRequiredName"   =   "Tên";
-"ProfileRequiredToS"    =   "Đồng ý các điều khoản của chúng tôi";
 "Profile load failed!"  =   "Tải Hồ sơ Không thành công!";
 
 "User already exists"   =   "Người dùng đã tồn tại";
@@ -219,7 +214,6 @@
 
 "ResetPassword"         =   "Đặt lại Mật khẩu";
 "ResetPasswordPrompt"   =   "Vui lòng nhập địa chỉ email của bạn.";
-"ResetPasswordPlaceholder" = "Địa chỉ Email";
 
 "PasswordError"         =   "Lỗi Mật khẩu";
 
@@ -233,21 +227,10 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Mật khẩu Mới Không hợp lệ";
 "ResetPasswordNewEqualsCurrentMessage" = "Vui lòng nhập một mật khẩu khác với mật khẩu hiện tại của bạn.";
 
-"ResetPasswordConfirmCancelTitle" = "Xác nhận";
-"ResetPasswordConfirmCancelMessage" = "Bạn có muốn hủy đặt lại mật khẩu của mình?";
-"ResetPasswordYesCancelButton" = "Có, xin hủy";
-"ResetPasswordNoContinueButton" = "Không, tiếp tục";
-
-"Error Resetting Password" = "Lỗi Đặt lại Mật khẩu";
-"Please check your network connection or try again later." = "Vui lòng kiểm tra kết nối mạng của bạn hoặc thử lại sau.";
-
-"EnterResetCodeMessage" =   "Một email đã được gửi tới địa chỉ này có chứa các hướng dẫn đặt lại mật khẩu.";
-"EnterCodeTitle"        =   "NHẬP MÃ";
 "Resend Email"           =   "Gửi lại Email";
 
 "EmailNotFound"         =   "Không tìm thấy email đã cung cấp. Vui lòng nhập email đã dùng để tạo ra tài khoản này. ";
 "EmailNotValid"         =   "Vui lòng nhập email đã dùng để tạo ra tài khoản này.";
-"Thanks"                =   "Xin cám ơn!";
 "CannotVerify"          =   "Không thể Xác thực Tài khoản";
 "IncorrectCode"         =   "Mã dùng để xác thực tài khoản không đúng.";
 
@@ -294,7 +277,6 @@
 "Version"               =   "Phiên bản %@";
 
 "ToSText"               =   "Điều khoản Dịch vụ";
-"ToSAgreement"          =   "Tôi ít nhất 13 tuổi và đồng ý với Điều khoản Dịch vụ";
 
 "Privacy Policy"        =   "Chính sách Bảo mật";
 
@@ -355,6 +337,7 @@
 "NewPrivateMessage"     = "Tin nhắn cá nhân mới";
 "NewFollower"           = "Ai đó theo dõi tôi";
 "TagInComment"          = "Ai đó nhắc đến tôi";
+"LikePost"              = "Someone likes my post";
 
 "NotificationSettingSectionFeeds" = "Dòng tin";
 "NotificationSettingSectionPeople" = "Người";
@@ -386,19 +369,7 @@
 "PurchaseUnlockWithPrice"               = "Mở cho %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Khôi phục lại Thanh toán";
 "SettingsRestorePurchasesPrompt"        = "Bạn chưa thanh toán bất kỳ thứ gì trên thiết bị này.\nNếu bạn đã thực hiện thanh toán trên một thiết bị khác, hãy chạm vào Khôi phục lại Thanh toán để khôi phục chúng.";
-
-"AuthorizationContextDefault"                   = "Chúng tôi rất hào hứng khi có bạn tham gia vào cộng đồng của mình! Hãy tạo một tài khoản và bạn sẽ có thể tạo, đăng bài và chia sẻ!";
-"AuthorizationContextCreatePost"                = "Này! Chúng tôi không thể đợi để xem bài đăng đầu tiên của bạn. Chỉ cần tạo ra một tài khoản và bắt đầu chia sẻ mục tạo đáng yêu của bạn với cộng đồng!";
-"AuthorizationContextFollowHashtag"             = "Dấu tag # là tốt nhất. Hãy tạo tài khoản của bạn sau đó theo dõi một số hội thoại thú vị diễn ra tại đây!";
-"AuthorizationContextFollowUser"                = "Chúng tôi rất hào hứng khi có bạn tham gia vào cộng đồng của mình và theo dõi các nội dung từ những người hâm mộ khác. Tạo lập hồ sơ của bạn để những người dùng khác có thể theo dõi lại bạn!";
-"AuthorizationContextVoteBallistic"             = "Những emoji này thật tuyệt vời, có đúng không? Hãy tạo ra tài khoản của bạn trước tiên, rồi sau đó gửi đi một chút tình cảm. ";
-"AuthorizationContextVotePoll"                  = "Chúng tôi muốn xem phiếu bầu của bạn! Hãy tạo ra một tài khoản trước tiên và bắt đầu thực hiện bầu chọn của bạn!";
-"AuthorizationContextRepost"                    = "Bài đăng đó rất tuyệt. Hãy tạo ra một tài khoản của bạn trước tiên và đăng lại ngay! ";
-"AuthorizationContextRemix"                     = "Chúng tôi rất hào hứng khi xem được những gì bạn tạo ra. Hãy tạo ra một tài khoản để chúng tôi có thể giữ nó trong hồ sơ của bạn. ";
-"AuthorizationContextViewProfile"               = "Chưa có gì để xem tại đây! Chúng tôi rất hào hứng khi có bạn tham gia vào cộng đồng của mình. Hãy tạo ra một tài khoản để cho mọi người thấy bạn độc đáo thế nào. ";
-"AuthorizationContextAddComment"                = "Tham gia vào hội thoại! Chúng tôi muốn nghe những gì bạn nói. Hãy tạo ra một tài khoản và bạn sẽ tiếp tục theo cách của mình!";
-"AuthorizationContextInbox"                     = "Chúng tôi rất hào hứng khi có bạn tham gia vào cộng đồng của mình và gửi tin cho người hâm mộ. Chỉ cần tạo ra một tài khoản để bạn có thể gửi và nhận tin nhắn!";
-"AuthorizationContextNotification"              = "Chúng tôi rất hào hứng khi có bạn tham gia vào cộng đồng của mình và giao tiếp với người hâm mộ. Chỉ cần tạo ra một tài khoản và bạn sẽ được thông báo các thông tin quan trọng!";
+"Reset Purchases"                       = "Reset Purchases";
 
 "This will discard any content added to your post" = "Điều này sẽ loại bỏ bất kỳ nội dung nào được thêm vào bài đăng của bạn";
 
@@ -417,7 +388,7 @@
 
 "#nofilter" = "#nofilter";
 "Create a meme" = "Tạo ra một meme";
-"Create a GIF" = "Tạo ra một ảnh động GIF";
+"Create a GIF" = "Tạo một GIF";
 "Pick an attachment style" = "Lấy một loại đính kèm";
 "Image" = "Hình ảnh";
 "Video" = "Video";
@@ -433,7 +404,7 @@
 "Error rendering GIF" = "Tôi khi đang hoàn lại ảnh động GIF. Xin hãy thử lại.";
 
 "By signing up you are agreeing to our" = "Qua việc đăng ký, bạn đã đồng ý với";
-"terms of service"      =   "các điều khoản dịch vụ của chúng tôi";
+"terms of service"      =   "điều khoản dịch vụ";
 "privacy policy"        =   "chính sách quyền riêng tư";
 "Enter Email" = "Nhập Email";
 "Enter name" = "Nhập tên";
@@ -451,15 +422,17 @@
 "Watch GIF" = "Xem ảnh động GIF";
 
 "See all" = "Xem tất cả";
-"Show Previous Comments" = "Hiện thị bình luận trước";
+"View previous comments" = "View previous comments";
 "CommentsSingularFormat" = "%@ Bình luận";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Bình luận";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Thích";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ Thích";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Người thích";
 
-"posts" = "Bài đăng";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
 "HashtagPostsCountFormat" = "Trong %@ Bài đăng";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "London";
@@ -480,3 +453,6 @@
 "Use mobile data and Wi-Fi" = "Sử dụng dữ liệu di động và Wi-Fi";
 "Use Wi-Fi only" = "Chỉ sử dụng Wi-Fi";
 "Never play videos automatically" = "Chưa bao giờ bật video tự động";
+
+"LevelFormat" = "LEVEL %@";
+"LEVEL" = "LEVEL";

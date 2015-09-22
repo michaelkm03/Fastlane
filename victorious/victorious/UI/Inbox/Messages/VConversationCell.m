@@ -40,6 +40,7 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileButton.dependencyManager = dependencyManager;
         self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
@@ -74,7 +75,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl] forState:UIControlStateNormal];
+    self.profileButton.user = conversation.user;
 
     if (self.conversation.isRead.boolValue)
     {
@@ -91,12 +92,6 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.profileButton setup];
 }
 
 @end

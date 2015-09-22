@@ -174,7 +174,7 @@
             {
                 if ( child )
                 {
-                    mapping = [self childStreamMapping];
+                    mapping = [self entityMapping];
                 }
                 else
                 {
@@ -293,7 +293,7 @@
                                                      pathPattern:@"/api/sequence/feed/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              ];
+             ];
 }
 
 @end

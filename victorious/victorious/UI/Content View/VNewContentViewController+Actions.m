@@ -32,7 +32,6 @@
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VUserProfileViewController.h"
-#import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
@@ -71,7 +70,7 @@
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
-                                                           avatarURL:self.viewModel.avatarForAuthor
+                                                                user:self.viewModel.user
                                                           detailText:self.viewModel.authorCaption];
     userItem.selectionHandler = ^(VActionItem *item)
     {
