@@ -23,6 +23,7 @@
 #import "VSequenceActionController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
+#import "VMultipleContainerViewController.h"
 
 //Views
 #import "VNoContentView.h"
@@ -901,7 +902,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( !hidden && self.navigationController.navigationBarHidden )
     {
-        [[self v_navigationController] setNavigationBarHidden:NO];
+        [self.navigationController setNavigationBarHidden:NO];
+        if ([self.navigationController.topViewController isKindOfClass:[VMultipleContainerViewController class]])
+        {
+            [self.v_navigationController updateSupplementaryHeaderViewForViewController:self.parentViewController];
+        }
     }
     self.uploadProgressViewController.view.hidden = hidden;
     self.navigationBarShouldAutoHide = hidden;
@@ -997,7 +1002,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
 {
     BOOL uploadsShouldBeHidden = uploadCount <= 0;
-    [self setUploadsHidden:uploadsShouldBeHidden];
+    
+    if (self.uploadProgressViewController.view.hidden != uploadsShouldBeHidden)
+    {
+        [self setUploadsHidden:uploadsShouldBeHidden];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
