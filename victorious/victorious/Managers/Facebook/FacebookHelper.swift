@@ -7,6 +7,7 @@
 //
 
 import FBSDKLoginKit
+import FBSDKShareKit
 
 @objc(VFacebookHelper)
 class FacebookHelper: NSObject {
@@ -29,6 +30,23 @@ class FacebookHelper: NSObject {
             return facebookID != ""
         }
         return false
+    }
+    
+    /// Create and return an instance of FBSDKShareDialog with a correct mode set.
+    ///
+    /// - parameter content: The content to be shared
+    /// - parameter mode: A mode to use. If this mode is unavailable, the object will be returned with FBSDKShareDialogModeAutomatic set.
+    class func shareDialog( content shareContent: FBSDKSharingContent, mode: FBSDKShareDialogMode = .Automatic ) -> FBSDKSharingDialog {
+        
+        let shareDialog = FBSDKShareDialog()
+        shareDialog.shareContent = shareContent
+        shareDialog.mode = mode
+        
+        if !shareDialog.canShow() {
+            // if the mode that's been selected isn't avaliable, setting it to automatic should let the SDK choose a mode that will work.
+            shareDialog.mode = .Automatic
+        }
+        return shareDialog
     }
     
     private static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.CaseInsensitive])

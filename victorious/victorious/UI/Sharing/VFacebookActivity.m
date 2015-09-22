@@ -77,17 +77,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
         link.imageURL = [NSURL URLWithString:thumbnail.imageURL];
     }
     
-    FBSDKShareDialog *shareDialog = [[FBSDKShareDialog alloc] init];
-    shareDialog.shareContent = link;
-    
-    shareDialog.mode = self.shareMode;
-    if ( ![shareDialog canShow] )
-    {
-        // if the mode that's been selected isn't avaliable, setting it to automatic should let the SDK choose a mode that will work.
-        shareDialog.mode = FBSDKShareDialogModeAutomatic;
-    }
-    
-    [shareDialog show];
+    [[VFacebookHelper shareDialogWithContent:link mode:self.shareMode] show];
 }
 
 + (UIActivityCategory)activityCategory
