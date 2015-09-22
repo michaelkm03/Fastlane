@@ -31,37 +31,15 @@ extern NSString * const kLoggedInChangedNotification;
 - (RKManagedObjectRequestOperation *)templateWithSuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
-                                                 SuccessBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)failed;
-
 - (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
-                                                SuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)failed;
-
-// A create Facebook endpoint variant for the new modern login flow.
-- (RKManagedObjectRequestOperation *)modernCreateFacebookWithToken:(NSString *)accessToken
-                                                      SuccessBlock:(VSuccessBlock)success
-                                                         failBlock:(VFailBlock)failed;
-
-- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString *)accessToken
-                                                accessSecret:(NSString *)accessSecret
-                                                   twitterId:(NSString *)twitterId
-                                                SuccessBlock:(VSuccessBlock)success
+                                                successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
                                                accessSecret:(NSString *)accessSecret
                                                   twitterId:(NSString *)twitterId
-                                               SuccessBlock:(VSuccessBlock)success
+                                               successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed;
-
-// A create Twitter endpoint variant for the new modern login flow.
-- (RKManagedObjectRequestOperation *)modernCreateTwitterWithToken:(NSString *)accessToken
-                                                     accessSecret:(NSString *)accessSecret
-                                                        twitterId:(NSString *)twitterId
-                                                     SuccessBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password

@@ -53,13 +53,13 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
     {
         case kVLastLoginTypeFacebook:
         {
-            [self loginViaFacebookWithStoredToken:YES isModern:NO onCompletion:completion onError:errorBlock];
+            [self loginViaFacebookWithStoredToken:YES onCompletion:completion onError:errorBlock];
             break;
         }
             
         case kVLastLoginTypeTwitter:
         {
-            [self loginViaTwitterAccountWithIdentifier:identifier isModern:NO onCompletion:completion onError:errorBlock];
+            [self loginViaTwitterAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
             break;
         }
         
@@ -83,26 +83,14 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
     }
 }
 
-- (void)loginViaFacebookModern:(BOOL)isModern
-                  OnCompletion:(VUserManagerLoginCompletionBlock)completion
-                       onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    [self loginViaFacebookWithStoredToken:NO
-                                 isModern:isModern
-                             onCompletion:completion
-                                  onError:errorBlock];
-}
-
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaFacebookWithStoredToken:NO
-                                 isModern:NO
                              onCompletion:completion
                                   onError:errorBlock];
 }
 
 - (void)loginViaFacebookWithStoredToken:(BOOL)stored
-                               isModern:(BOOL)isModern
                            onCompletion:(VUserManagerLoginCompletionBlock)completion
                                 onError:(VUserManagerLoginErrorBlock)errorBlock
 {
@@ -141,39 +129,16 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                isNewUser = NO;
-                [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                            SuccessBlock:success
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-                 {
-                     if (errorBlock)
-                     {
-                         errorBlock(error, NO);
-                     }
-                 }];
-            }
-            else if (errorBlock)
+            if (errorBlock)
             {
                 errorBlock(error, NO);
             }
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
         };
-        if (isModern)
-        {
-            [[VObjectManager sharedManager] modernCreateFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                             SuccessBlock:success
-                                                                failBlock:failed];
-        }
-        else
-        {
-            [[VObjectManager sharedManager]  createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
-            
-        }
+        [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                   successBlock:success
+                                                      failBlock:failed];
     };
     
     void (^failureBlock)() = ^(NSError *error)
@@ -206,28 +171,23 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
 }
 
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
-                            isModern:(BOOL)isModern
-                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                        onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:twitterID
-                                      isModern:isModern
                                   onCompletion:completion
                                        onError:errorBlock];
 }
 
-- (void)loginViaTwitterModern:(BOOL)isModern
-                 onCompletion:(VUserManagerLoginCompletionBlock)completion
-                      onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                            onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:nil
-                                      isModern:isModern
                                   onCompletion:completion
                                        onError:errorBlock];
 }
 
 - (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier
-                                    isModern:(BOOL)isModern
                                 onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
@@ -301,46 +261,17 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            VFailBlock blockFail = ^(NSOperation *operation, NSError *error)
+            if (errorBlock)
             {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
-            };
-             
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
-                                                           accessSecret:tokenSecret
-                                                              twitterId:twitterId
-                                                           SuccessBlock:success failBlock:blockFail];
-            }
-            else
-            {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
+                errorBlock(error, NO);
             }
         };
         
-        if (isModern)
-        {
-            [[VObjectManager sharedManager] modernCreateTwitterWithToken:oauthToken
-                                                            accessSecret:tokenSecret
-                                                               twitterId:twitterId
-                                                            SuccessBlock:success
-                                                               failBlock:failed];
-        }
-        else
-        {
-            [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                      accessSecret:tokenSecret
-                                                         twitterId:twitterId
-                                                      SuccessBlock:success
-                                                         failBlock:failed];
-        }
+        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                  accessSecret:tokenSecret
+                                                     twitterId:twitterId
+                                                  successBlock:success
+                                                     failBlock:failed];
     }];
 }
 
