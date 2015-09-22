@@ -143,12 +143,10 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         guard let shelf = shelf as? HashtagShelf else {
             return
         }
-        followingCallComplete = false
         var controlState: VFollowControlState = .Unfollowed
-        if let mainUser = VObjectManager.sharedManager().mainUser {
-            if mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
-                controlState = .Followed
-            }
+        if let mainUser = VObjectManager.sharedManager().mainUser
+            where mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+            controlState = .Followed
         }
         followControl.setControlState(controlState, animated: true)
     }
@@ -199,6 +197,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         switch followControl.controlState {
         case .Unfollowed:
             if let shelf = shelf as? HashtagShelf {
+                followingCallComplete = false
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.followHashtag(shelf.hashtagTitle,
                     successBlock: { [weak self] ( _:[AnyObject] ) in
@@ -221,6 +220,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             }
         case .Followed:
             if let shelf = shelf as? HashtagShelf {
+                followingCallComplete = false
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowHashtag(shelf.hashtagTitle,
                     successBlock: { [weak self] ( _:[AnyObject] ) in
