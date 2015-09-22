@@ -12,12 +12,17 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
+#import "victorious-Swift.h"
+
+static NSString * const kMinUserLevelKey = @"minLevel";
+static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 
 @interface VDefaultProfileButton ()
 
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, strong) AvatarLevelBadgeView *levelBadgeView;
 
 @end
 
@@ -93,16 +98,89 @@
      }];
 }
 
+- (void)setLevelBadgeImageType:(VLevelBadgeImageType)levelBadgeImageType
+{
+    _levelBadgeImageType = levelBadgeImageType;
+    [self updateBadgeViewContent];
+}
+
+- (void)updateBadgeViewContent
+{
+    if ( self.levelBadgeView != nil && self.user != nil )
+    {
+        NSNumber *userLevel = self.user.level;
+        NSNumber *minimumLevel = [self.levelBadgeView.badgeDependencyManager numberForKey:kMinUserLevelKey];
+        self.levelBadgeView.hidden = userLevel.integerValue < minimumLevel.integerValue;
+        self.levelBadgeView.level = userLevel.integerValue;
+        self.levelBadgeView.isCreator = self.user.isCreator.boolValue;
+        self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ( self.levelBadgeView != nil && self.user != nil )
+    {
+        CGRect currentBounds = self.bounds;
+        CGFloat radius = CGRectGetWidth(currentBounds) / 2;
+        CGFloat spotOnCircle = radius + sqrt(pow(radius, 2) / 2);
+        CGSize desiredSize = self.levelBadgeView.desiredSize;
+        CGRect badgeFrame = CGRectZero;
+        badgeFrame.size = desiredSize;
+        badgeFrame.origin.x = VFLOOR(spotOnCircle - desiredSize.width / 2);
+        badgeFrame.origin.y = VFLOOR(spotOnCircle - desiredSize.height / 2);
+        self.levelBadgeView.frame = badgeFrame;
+    }
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self setNeedsLayout];
+}
+
+- (void)setDependencyManager:(VDependencyManager *__nullable)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        [self updateBadgeViewContent];
+    }
+}
+
+- (void)setUser:(VUser *__nullable)user
+{
+    _user = user;
+    [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
+    [self updateBadgeViewContent];
+}
+
+- (AvatarLevelBadgeView *)levelBadgeView
+{
+    if ( self.dependencyManager == nil || _levelBadgeView != nil )
+    {
+        return _levelBadgeView;
+    }
+    
+    _levelBadgeView = [self.dependencyManager templateValueOfType:[AvatarLevelBadgeView class] forKey:kAvatarBadgeLevelViewKey];
+    [self addSubview:_levelBadgeView];
+    return _levelBadgeView;
+}
+
 - (UIImage *)placeholderImage
 {
-    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    NSString *imageName = @"profile_thumb";
+    UIImage *image = [UIImage imageNamed:imageName];
     if (CGRectGetHeight(self.bounds) > image.size.height)
     {
-        image = [UIImage imageNamed:@"profile_full"];
+        imageName = @"profile_full";
+        image = [UIImage imageNamed:imageName];
     }
     
     // Create unique key from tint color
-    NSString *tintKey = [self.tintColor description];
+    NSString *tintKey = [[self.tintColor description] stringByAppendingString:imageName];
     
     // Check cache for already tinted image
     SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
@@ -144,6 +222,16 @@
         CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     }
     CGContextFillPath(context);
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *view = [super hitTest:point withEvent:event];
+    if ( self.levelBadgeView != nil && view == self.levelBadgeView )
+    {
+        return self;
+    }
+    return view;
 }
 
 @end
