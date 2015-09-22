@@ -113,7 +113,7 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
             return;
         }
 
-        CGSize systemSize = [actionItem systemLayoutSizeFittingSize:CGSizeMake(HUGE_VALF, HUGE_VALF)];
+        CGSize systemSize = [actionItem systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
         if (systemSize.width != 0.0f)
         {
             return;
