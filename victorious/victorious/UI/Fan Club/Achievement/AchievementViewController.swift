@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AchievementViewController: UIViewController, InterstitialViewController {
+class AchievementViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
@@ -47,6 +47,7 @@ class AchievementViewController: UIViewController, InterstitialViewController {
                 dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor, forState: .Normal)
                 dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor.colorWithAlphaComponent(0.5), forState: .Highlighted)
                 dismissButton.titleLabel?.font = dependencyManager.dismissButtonTitleFont
+                dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
     }
@@ -142,7 +143,7 @@ class AchievementViewController: UIViewController, InterstitialViewController {
         containerView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - containerView.bounds.origin.y)
     }
     
-    // MARK: Interstitial View Controller
+    /// MARK: Interstitial View Controller
     
     weak var interstitialDelegate: InterstitialViewControllerDelegate?
     
@@ -153,6 +154,12 @@ class AchievementViewController: UIViewController, InterstitialViewController {
     func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
         achievementAnimator.isDismissal = true
         return achievementAnimator
+    }
+    
+    /// MARK: Background
+    
+    func backgroundContainerView() -> UIView {
+        return self.containerView
     }
 }
 

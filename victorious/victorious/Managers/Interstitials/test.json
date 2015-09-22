@@ -13016,6 +13016,15 @@
 		},
 		"achievementScreen": {
 			"name": "achievement.interstitial",
+            "background": {
+                "name": "solidColor.background",
+                "color": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 255
+                }
+            },
 			"animatedBadge": {
 				"name": "animated.badgeView",
 				"color.link": {
