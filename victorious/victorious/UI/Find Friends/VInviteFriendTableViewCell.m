@@ -14,12 +14,13 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VFollowResponder.h"
 #import "VDependencyManager.h"
+#import "VDefaultProfileButton.h"
 
 static const CGFloat kInviteCellHeight = 50.0f;
 
 @interface VInviteFriendTableViewCell ()
 
-@property (nonatomic, weak) IBOutlet UIImageView *profileImage;
+@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UIView *labelsSuperview;
 @property (nonatomic, strong) UIImage *followIcon;
@@ -31,10 +32,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (void)awakeFromNib
 {
-    self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
-    self.profileImage.layer.borderWidth = 1.0;
-    self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.profileImage.clipsToBounds = YES;
+    [self.profileButton addBorderWithWidth:1.0f andColor:[UIColor whiteColor]];
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
@@ -59,8 +57,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
 {
     _profile = profile;
     
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:profile.pictureUrl]
-                         placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    self.profileButton.user = profile;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
@@ -95,7 +92,8 @@ static const CGFloat kInviteCellHeight = 50.0f;
     if ( dependencyManager != nil )
     {
         self.followUserControl.dependencyManager = dependencyManager;
-        self.profileImage.backgroundColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+        self.profileButton.dependencyManager = dependencyManager;
+        self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileName.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     }
 }

@@ -215,12 +215,6 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     return commentString;
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.profileButton setup];
-}
-
 /**
  Creates and returns a sample cell that can be used to calculate sizing
  */

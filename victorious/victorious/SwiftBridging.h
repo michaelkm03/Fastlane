@@ -29,6 +29,7 @@
 #import "VAuthorizedAction.h"
 #import "VAutomation.h"
 #import "VBackgroundContainer.h"
+#import "VBadgeImageType.h"
 #import "VBaseCollectionViewCell.h"
 #import "VBaseVideoSequencePreviewView.h"
 #import "VButton.h"
