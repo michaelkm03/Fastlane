@@ -35,7 +35,9 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *superAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *layoutAttributes = [[NSArray alloc] initWithArray:superAttributes copyItems:YES];
+    
     CGFloat pageWidth = [self getPageWidth];
     CGFloat newOffset = self.collectionView.contentOffset.x / pageWidth;
     CGFloat maxHorizontalOffset = pageWidth / kMaxHorizontalOffsetDivisor;
