@@ -104,3 +104,19 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         return presentedInterstitial?.dismissalAnimator()
     }
 }
+
+extension InterstitialManager {
+    
+    /// Registers a test "level" alert for testing interstitials
+    func registerTestLevelUpAlert() {
+        #if V_SHOW_TEST_ALERT_SETTINGS
+        self.shouldRegisterInterstitials = false
+        let params = ["type" : "level", "params" : ["level" : ["number" : 5, "tier" : "Bronze", "name" : "Level 5"], "title" : "Congrats", "description" : "You won some new stuff", "icons" : ["http://i.imgur.com/ietHgk6.png"], "backgroundVideo" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8"]]
+        VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
+            self.shouldRegisterInterstitials = true
+            }) { (op, err) -> Void in
+                self.shouldRegisterInterstitials = true
+        }
+        #endif
+    }
+}

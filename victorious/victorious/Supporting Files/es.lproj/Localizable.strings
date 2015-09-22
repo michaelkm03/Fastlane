@@ -30,11 +30,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Log in here"           =   "Ingresa aquí";
-"Already Registered?"   =   "¿Ya estás registrado?";
 "Get Started"           =   "¡Empieza!";
-"Forgot Password?"      =   "¿Olvidaste tu contraseña?";
-"Reset here"            =   "Reiniciar aquí";
 "SetupButton"           =   "Establecer";
 "EmailValidation"       =   "Email inválido";
 "Minimum 8 characters"  =   "Mínimo 8 caracteres";
@@ -54,7 +50,6 @@
 "ProfileRequiredPhoto"  =   "Imagen del perfil";
 "ProfileNameSpaces"     =   "Tu nombre de perfil no puede contener sólo espacios.";
 "ProfileRequiredName"   =   "Nombre";
-"ProfileRequiredToS"    =   "Acuerda nuestros términos";
 "Profile load failed!"  =   "Error al cargar el perfil";
 
 "User already exists"   =   "El usuario ya existe";
@@ -219,7 +214,6 @@
 
 "ResetPassword"         =   "Cambiar contraseña";
 "ResetPasswordPrompt"   =   "Por favor, ingresa tu email";
-"ResetPasswordPlaceholder" = "Email";
 
 "PasswordError"         =   "Error en la contraseña";
 
@@ -233,21 +227,10 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Nueva contraseña inválida";
 "ResetPasswordNewEqualsCurrentMessage" = "Por favor, introduce una contraseña que es diferente a la actual.";
 
-"ResetPasswordConfirmCancelTitle" = "Confirmar";
-"ResetPasswordConfirmCancelMessage" = "¿Quieres cancelar tu contraseña?";
-"ResetPasswordYesCancelButton" = "Sí, cancelar";
-"ResetPasswordNoContinueButton" = "No, continuar";
-
-"Error Resetting Password" = "Error al cambiar la contraseña";
-"Please check your network connection or try again later." = "Por favor, comprueba la conexión de red o intenta de nuevo más tarde.";
-
-"EnterResetCodeMessage" =   "Se envió un correo  que contiene instrucciones cómo cambiar su contraseña..";
-"EnterCodeTitle"        =   "INGRESAR CÓDIGO";
 "Resend Email"           =   "Reenviar email";
 
 "EmailNotFound"         =   "No se encontró el email proporcionado; por favor, ponga el correo que usó para crear la cuenta.";
 "EmailNotValid"         =   "Por favor, ponga el email que usó para crear la cuenta.";
-"Thanks"                =   "¡Gracias!";
 "CannotVerify"          =   "No se puede verificar la cuenta";
 "IncorrectCode"         =   "El código usado para la verificación de cuenta no es correcto.";
 
@@ -294,7 +277,6 @@
 "Version"               =   "Versión %@";
 
 "ToSText"               =   "Términos del servicio";
-"ToSAgreement"          =   "Soy mayor de 13 años de edad y estoy de acuerdo con los términos del servicio";
 
 "Privacy Policy"        =   "Política de privacidad";
 
@@ -355,6 +337,7 @@
 "NewPrivateMessage"     = "No hay mensajes privados";
 "NewFollower"           = "Nuevo seguidor";
 "TagInComment"          = "Alguien me comenta";
+"LikePost"              = "Someone likes my post";
 
 "NotificationSettingSectionFeeds" = "Alimentación";
 "NotificationSettingSectionPeople" = "Persona";
@@ -386,19 +369,7 @@
 "PurchaseUnlockWithPrice"               = "Desbloquear para %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restaurar compras";
 "SettingsRestorePurchasesPrompt"        = "No has comprado en este dispositivo.\nSi has hecho compras en otro dispositivo, haz clic en Restaurar compras para reiniciarlas.";
-
-"AuthorizationContextDefault"                   = "¡Estamos muy contentos de que te unas a nuestra comunidad! ¡Abre una cuenta y podrás crear, publicar y compartir!";
-"AuthorizationContextCreatePost"                = "¡Sí! No podemos esperar para ver tu primera publicación. ¡Solo tienes que crear una cuenta y empezar a compartir tus ideas con la comunidad!";
-"AuthorizationContextFollowHashtag"             = "Los hashtags son lo mejor. Crea tu cuenta y ¡sigue algunas de las conversaciones increíbles que se dan aquí!";
-"AuthorizationContextFollowUser"                = "Estamos muy contentos de que te unas a nuestra comunidad y sigas el contenido de otros fans. ¡Haz tu perfil para que los demás puedan seguirte!";
-"AuthorizationContextVoteBallistic"             = "Estos emojis son increíbles, ¿verdad? Crea tu cuenta primero y luego envía un poco de amor. ";
-"AuthorizationContextVotePoll"                  = "¡Queremos ver tu voto! ¡Crea una cuenta primero y empieza a votar!";
-"AuthorizationContextRepost"                    = "Esta publicación es demasiado grande. ¡Crea tu cuenta primero y volver a publicar! ";
-"AuthorizationContextRemix"                     = "Estamos muy contentos de ver lo que estás creando; saca una cuenta para que podamos ponerlo en tu perfil. ";
-"AuthorizationContextViewProfile"               = "¡Nada que ver aquí todavía! Estamos muy contentos de que te unas a nuestra comunidad. Crear una cuenta para mostrar a todos lo único que eres. ";
-"AuthorizationContextAddComment"                = "¡Únete a la conversación! Queremos escuchar lo que tienes que decir. ¡Crea una cuenta y estarás en el camino!";
-"AuthorizationContextInbox"                     = "Estamos muy contentos de que te unas a nuestra comunidad de fans y mensajes. ¡ Sólo crea una cuenta para que puedas enviar y recibir mensajes!";
-"AuthorizationContextNotification"              = "Estamos tan emocionados de que te unas a nuestra comunidad y te comuniques con los fans. ¡Solo crea una cuenta y te notificaremos acerca de toda la información relevante!";
+"Reset Purchases"                       = "Reset Purchases";
 
 "This will discard any content added to your post" = "Esto eliminará cualquier contenido que hayas añadido a tu publicación";
 
@@ -451,15 +422,17 @@
 "Watch GIF" = "Ver GIF";
 
 "See all" = "Ver todo";
-"Show Previous Comments" = "Mostrar comentarios anteriores";
+"View previous comments" = "View previous comments";
 "CommentsSingularFormat" = "%@ Comentario";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comentarios";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Me gusta";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ Me gusta";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Les gusta";
 
-"posts" = "Publicaciones";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
 "HashtagPostsCountFormat" = "En %@ publicaciones";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "Londres";
@@ -480,3 +453,6 @@
 "Use mobile data and Wi-Fi" = "Usar datos móviles y Wi-Fi";
 "Use Wi-Fi only" = "Solo usar Wi-Fi";
 "Never play videos automatically" = "Nunca jugar videos automáticamente";
+
+"LevelFormat" = "LEVEL %@";
+"LEVEL" = "LEVEL";

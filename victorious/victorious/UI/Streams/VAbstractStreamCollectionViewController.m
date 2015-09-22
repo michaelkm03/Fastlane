@@ -33,7 +33,7 @@
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
@@ -100,6 +100,9 @@
 
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -175,13 +178,21 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.currentStream.streamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            UICollectionViewLayoutAttributes *attributes = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+            if ( !CGSizeEqualToSize(attributes.size, CGSizeZero) )
+            {
+                CGPoint offset = attributes.frame.origin;
+                offset.x = 0;
+                offset.y -= self.v_layoutInsets.top;
+                self.collectionView.contentOffset = offset;
+                self.targetStreamItem = nil;
+            }
         }
     }
-    self.targetStreamItem = nil;
 }
 
 - (void)addScrollDelegate
@@ -346,8 +357,13 @@
 {
     const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
-    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
+}
+
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
+{
+    return [self.collectionView numberOfItemsInSection:section] > 1;
 }
 
 - (BOOL)shouldAnimateActivityViewFooter

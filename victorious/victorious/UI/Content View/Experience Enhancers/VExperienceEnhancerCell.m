@@ -16,7 +16,6 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
 static NSString * const kUnlockedBallisticBackgroundIconKey = @"ballistic_background_icon";
 static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_background_icon";
-static NSString * const kLevelFormatLocalizationKey = @"LevelFormat";
 
 NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCount";
 
@@ -161,7 +160,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     self.requiresHigherLevel = unlockLevel > userLevel;
     if (self.requiresHigherLevel)
     {
-        [self.unlockLevelLabel setText: [NSString stringWithFormat:NSLocalizedString(kLevelFormatLocalizationKey, ""), @(unlockLevel)]];
+        [self.unlockLevelLabel setText: [NSString stringWithFormat:NSLocalizedString(@"LevelFormat", ""), @(unlockLevel)]];
     }
     
     self.ballisticIconView.alpha = self.requiresHigherLevel ? 0.3f : 1.0f;

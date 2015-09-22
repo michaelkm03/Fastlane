@@ -546,6 +546,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         {
             stream.marqueeItems = marqueeItems;
         }
+        
         NSString *streamId = fullResponse[ @"stream_id" ];
         NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;

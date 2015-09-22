@@ -69,14 +69,13 @@ static CGFloat const kAnimationBounceCoefficient = 0.008;
 
 - (void)selectNextTab
 {
-    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
-    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / self.pageWidth ) + 1;
     if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
     }
     
-    [self animateToHorizontalOffset:currentPage * pageWidth];
+    [self animateToHorizontalOffset:currentPage * self.pageWidth];
 }
 
 - (void)animateToHorizontalOffset:(CGFloat)offset

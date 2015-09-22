@@ -34,6 +34,7 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "victorious-swift.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
 
@@ -48,7 +49,8 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
     VSettingsActionServerEnvironment,
     VSettingsActionTracking,
     VSettingsActionExperiments,
-    VSettingsActionResetCoachmarks
+    VSettingsActionResetCoachmarks,
+    VSettingsActionRegisterTestAlert
 };
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
@@ -71,6 +73,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 @property (nonatomic, assign) BOOL showResetCoachmarks;
 @property (nonatomic, assign) BOOL showExperimentSettings;
+@property (nonatomic, assign) BOOL showTestAlertCell;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -164,6 +167,12 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.showExperimentSettings = YES;
 #else
     self.showExperimentSettings = NO;
+#endif
+    
+#ifdef V_SHOW_TEST_ALERT_SETTINGS
+    self.showTestAlertCell = YES;
+#else
+    self.showTestAlertCell = NO;
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
@@ -289,6 +298,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
         }
+        else if ( indexPath.row == VSettingsActionRegisterTestAlert )
+        {
+            // Register a test alert that will show up in the next network response
+            [[InterstitialManager sharedInstance] registerTestLevelUpAlert];
+        }
     }
     
     // Tracking
@@ -354,6 +368,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetCoachmarks)
     {
         return self.showResetCoachmarks ? self.tableView.rowHeight : 0.0;
+    }
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
+    {
+        BOOL shouldShow = self.showTestAlertCell && [VObjectManager sharedManager].mainUserLoggedIn;
+        return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
     {
