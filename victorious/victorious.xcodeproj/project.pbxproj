@@ -1078,7 +1078,7 @@
 		D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */; };
 		D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE58F1ADD835B0004B782 /* VFlexBar.m */; };
 		D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
-		D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */; };
+		D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DC1AFBE12B002EA7A5 /* VStreamCellHeader.m */; };
 		D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71E31AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m */; };
 		D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71E61AFC3784002EA7A5 /* VTileOverlayCollectionCell.m */; };
 		D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */; };
@@ -3267,8 +3267,8 @@
 		D8DCE58E1ADD835B0004B782 /* VFlexBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFlexBar.h; sourceTree = "<group>"; };
 		D8DCE58F1ADD835B0004B782 /* VFlexBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlexBar.m; sourceTree = "<group>"; };
 		D8DCE5911ADD85820004B782 /* VActionBarTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarTests.m; sourceTree = "<group>"; };
-		D8DF71DB1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamHeaderTimeSince.h; sourceTree = "<group>"; };
-		D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamHeaderTimeSince.m; sourceTree = "<group>"; };
+		D8DF71DB1AFBE12B002EA7A5 /* VStreamCellHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellHeader.h; sourceTree = "<group>"; };
+		D8DF71DC1AFBE12B002EA7A5 /* VStreamCellHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeader.m; sourceTree = "<group>"; };
 		D8DF71E21AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTitleOverlayStreamCellFactory.h; sourceTree = "<group>"; };
 		D8DF71E31AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTitleOverlayStreamCellFactory.m; sourceTree = "<group>"; };
 		D8DF71E51AFC3784002EA7A5 /* VTileOverlayCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTileOverlayCollectionCell.h; sourceTree = "<group>"; };
@@ -7472,8 +7472,8 @@
 			children = (
 				B0D8BAAB1B545A3600087057 /* VListicleView.h */,
 				B0D8BAAC1B545A3600087057 /* VListicleView.m */,
-				D8DF71DB1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.h */,
-				D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */,
+				D8DF71DB1AFBE12B002EA7A5 /* VStreamCellHeader.h */,
+				D8DF71DC1AFBE12B002EA7A5 /* VStreamCellHeader.m */,
 				F0411E7F1B45AACD00557176 /* VTimeSinceWidget.h */,
 				F0411E801B45AACD00557176 /* VTimeSinceWidget.m */,
 			);
@@ -9184,7 +9184,7 @@
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
-				D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */,
+				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */,
 				A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */,
