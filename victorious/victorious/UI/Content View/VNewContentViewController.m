@@ -250,13 +250,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (BOOL)shouldAutorotate
 {
-    return self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
+    return !self.isBeingDismissed && !self.isBeingPresented;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    UIInterfaceOrientationMask output = [self shouldAutorotate] ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
-    return output;
+    BOOL isVideoContent = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
+    BOOL shouldShowLandscape = isVideoContent && !self.presentedViewController && [self shouldAutorotate];
+    return shouldShowLandscape ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -296,10 +297,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)updateOrientation
 {
-    NSLog( @"frame BEFORE = %@", NSStringFromCGRect(self.view.frame) );
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     [self handleRotationToInterfaceOrientation:currentOrientation];
-    NSLog( @"frame AFTER  = %@", NSStringFromCGRect(self.view.frame) );
 }
 
 #pragma mark View Lifecycle
@@ -371,11 +370,15 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.viewModel reloadData];
     
     self.view.backgroundColor = [UIColor blackColor];
+    
+    [self forceOrientation:UIInterfaceOrientationPortrait];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self forceOrientation:UIInterfaceOrientationPortrait];
     
     [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
@@ -449,6 +452,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.hasBeenPresented = YES;
         [self trackNonVideoViewStart];
     }
+    
+    [self updateOrientation];
     
     [self.contentCollectionView flashScrollIndicators];
     
@@ -577,7 +582,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
     [self.contentCell prepareForDismissal];
     [self setAccessoryButtonsHidden:YES];
+    [self forceOrientation:UIInterfaceOrientationPortrait];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)forceOrientation:(UIInterfaceOrientation)orientation
+{
+    NSNumber *value = [NSNumber numberWithInt:orientation];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
 - (void)setAccessoryButtonsHidden:(BOOL)hidden
@@ -1161,8 +1173,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     if ( self.viewModel.type == VContentViewTypeVideo )
     {
-        NSAssert( self.videoPlayer != nil, @"Expecting to have `videoPlayer` set if content is video/GIF." );
-        
         [self.videoPlayer pause];
         __weak typeof(self) welf = self;
         [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)

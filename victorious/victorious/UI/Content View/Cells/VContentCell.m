@@ -20,6 +20,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 @property (nonatomic, assign) BOOL isPreparedForDismissal;
 @property (nonatomic, assign) BOOL shrinkingDisabled;
+@property (nonatomic, strong) UIView *adContainer;
 @property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
@@ -101,8 +102,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
                                                                              options:kNilOptions
                                                                              metrics:nil
                                                                                views:@{ @"view" : self.shrinkingContentView }]];
-    
-    self.adVideoPlayerViewController.view.frame = self.contentView.bounds;
 }
 
 - (void)prepareForReuse
@@ -250,6 +249,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         self.sequencePreviewView.alpha = 1.0f;
         self.adVideoPlayerViewController.view.alpha = 0.0f;
+        self.backgroundColor = [UIColor clearColor];
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
@@ -304,6 +304,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
         return;
     }
     
+    self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
                                                                                                  details:details];
     self.adVideoPlayerViewController.delegate = self;
