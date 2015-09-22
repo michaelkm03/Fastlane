@@ -903,9 +903,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( !hidden && self.navigationController.navigationBarHidden )
     {
         [self.navigationController setNavigationBarHidden:NO];
-        if ([self.navigationController.topViewController isKindOfClass:[VMultipleContainerViewController class]])
+        
+        UIViewController *topVC = self.navigationController.topViewController;
+        if ([topVC isKindOfClass:[VMultipleContainerViewController class]])
         {
-            [self.v_navigationController updateSupplementaryHeaderViewForViewController:self.parentViewController];
+            [self.v_navigationController updateSupplementaryHeaderViewForViewController:topVC];
         }
     }
     self.uploadProgressViewController.view.hidden = hidden;
