@@ -197,56 +197,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        
-#warning TESTING CODE, REMEMBER TO REMOVE
-        NSDictionary *avatarBadgeAppearanceDictionary = @{
-                                                          @"name": @"standard.badgeView",
-                                                          @"minLevel" : @(5),
-                                                          VDependencyManagerLinkColorKey : @{
-                                                                  @"red" : @(255),
-                                                                  @"green" : @(100),
-                                                                  @"blue" : @(100),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          VDependencyManagerMainTextColorKey: @{
-                                                                  @"red" : @(0),
-                                                                  @"green" : @(100),
-                                                                  @"blue" : @(100),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          };
-        
-        NSDictionary *animatedBadgeAppearanceDictionary = @{
-                                                          @"name": @"animated.badgeView",
-                                                          @"minLevel" : @(5),
-                                                          VDependencyManagerSecondaryAccentColorKey : @{
-                                                                  @"red" : @(255),
-                                                                  @"green" : @(255),
-                                                                  @"blue" : @(255),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          VDependencyManagerMainTextColorKey: @{
-                                                                  @"red" : @(255),
-                                                                  @"green" : @(255),
-                                                                  @"blue" : @(255),
-                                                                  @"alpha" : @(255)
-                                                                  },
-                                                          };
-        
-        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"scaffold"] )
-        {
-            NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-            [updatedPayload addEntriesFromDictionary:@{ @"avatarBadgeLevelView" : avatarBadgeAppearanceDictionary }];
-            [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
-        }
-        
-        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"userProfileHeader"] )
-        {
-            NSMutableDictionary *updatedPayload = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-            [updatedPayload addEntriesFromDictionary:@{ @"animatedBadge" : animatedBadgeAppearanceDictionary }];
-            [templateDecorator setTemplateValue:[updatedPayload copy] forKeyPath:keyPath];
-        }
-        
+                
         if (self.templateConfigurationBlock != nil)
         {
             self.templateConfigurationBlock(templateDecorator);

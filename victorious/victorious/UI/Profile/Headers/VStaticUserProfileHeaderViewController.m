@@ -56,8 +56,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     [super viewDidAppear:animated];
     
-    self.user.level = @(self.user.level.integerValue + 1);
-    
     if (!self.hasAppeared)
     {
         self.hasAppeared = YES;
