@@ -26,6 +26,8 @@
 #import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kURLKey = @"url";
+static NSString * const kOKButtonKey = @"OK";
+static NSString * const kCancelButtonKey = @"CancelButton";
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -352,6 +354,75 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         [webView loadRequest:navigationAction.request];
     }
     return nil;
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    // Add one single "OK" button
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    completionHandler();
+                                }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    // Add a "Cancel" button
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kCancelButtonKey, "")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    completionHandler(NO);
+                                }]];
+    // Add a "OK" button
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    completionHandler(YES);
+                                }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString *))completionHandler
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:prompt
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    // Add a input text field
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+    {
+        textField.placeholder = defaultText;
+    }];
+    
+    // Add a "Cancel" button
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kCancelButtonKey, "")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    completionHandler(nil);
+                                }]];
+    // Add a "OK" button
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(kOKButtonKey, "")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    UITextField *userInputTextField = alertController.textFields.firstObject;
+                                    completionHandler(userInputTextField.text);
+                                }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - VWebBrowserHeaderStateDataSource

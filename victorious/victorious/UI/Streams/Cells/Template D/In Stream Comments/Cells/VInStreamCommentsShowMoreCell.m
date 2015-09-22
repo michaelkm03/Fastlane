@@ -11,7 +11,6 @@
 #import "VInStreamCommentsShowMoreAttributes.h"
 
 static UIEdgeInsets const kPromptInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
-static NSString * const kPromptTextLocalizedStringKey = @"View previous comments";
 
 @interface VInStreamCommentsShowMoreCell ()
 
@@ -28,7 +27,7 @@ static NSString * const kPromptTextLocalizedStringKey = @"View previous comments
     self.promptTextView.contentInset = UIEdgeInsetsZero;
     self.promptTextView.textContainerInset = UIEdgeInsetsZero;
     self.promptTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.promptTextView.text = NSLocalizedString(kPromptTextLocalizedStringKey, nil);
+    self.promptTextView.text = [[self class] previousCommentsLabel];
 }
 
 - (void)setupWithAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andLinkDelegate:(id <CCHLinkTextViewDelegate>)linkDelegate
@@ -54,12 +53,17 @@ static NSString * const kPromptTextLocalizedStringKey = @"View previous comments
 + (CGFloat)desiredHeightForAttributes:(VInStreamCommentsShowMoreAttributes *)attributes withMaxWidth:(CGFloat)width
 {
     CGFloat maxWidth = width - kPromptInsets.left - kPromptInsets.right;
-    NSAttributedString *promptAttributedString = [[NSAttributedString alloc] initWithString:NSLocalizedString(kPromptTextLocalizedStringKey, nil) attributes:attributes.unselectedTextAttributes];
+    NSAttributedString *promptAttributedString = [[NSAttributedString alloc] initWithString:[self previousCommentsLabel] attributes:attributes.unselectedTextAttributes];
     CGFloat height = VCEIL([promptAttributedString boundingRectWithSize:CGSizeMake(width, maxWidth)
                                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                                                 context:nil].size.height);
     height += kPromptInsets.bottom + kPromptInsets.top;
     return height;
+}
+
++ (NSString *)previousCommentsLabel
+{
+    return NSLocalizedString(@"View previous comments", nil);
 }
 
 @end
