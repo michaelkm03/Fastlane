@@ -36,7 +36,7 @@
               @"max_video_duration" : VSelectorName(maxUploadDuration),
               @"fanloyalty.level" : VSelectorName(level),
               @"fanloyalty.points" : VSelectorName(levelProgressPoints),
-              @"fanloyalty.percent" : VSelectorName(levelProgressPercentage),
+              @"fanloyalty.progress" : VSelectorName(levelProgressPercentage),
               @"isCreator" : VSelectorName(isCreator),
     };
 }
