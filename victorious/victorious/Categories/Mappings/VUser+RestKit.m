@@ -34,9 +34,9 @@
               @"am_following" : VSelectorName(isFollowedByMainUser),
               @"number_of_followers" : VSelectorName(numberOfFollowers),
               @"max_video_duration" : VSelectorName(maxUploadDuration),
-              @"fanLoyalty.level" : VSelectorName(level),
-              @"fanLoyalty.points" : VSelectorName(levelProgressPoints),
-              @"fanLoyalty.percent" : VSelectorName(levelProgressPercentage),
+              @"fanloyalty.level" : VSelectorName(level),
+              @"fanloyalty.points" : VSelectorName(levelProgressPoints),
+              @"fanloyalty.progress" : VSelectorName(levelProgressPercentage),
               @"isCreator" : VSelectorName(isCreator),
     };
 }

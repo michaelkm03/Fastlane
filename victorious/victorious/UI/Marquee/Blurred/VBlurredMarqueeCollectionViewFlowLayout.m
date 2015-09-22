@@ -15,7 +15,9 @@ static const CGFloat kScaleDivisor = 6.0f;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *superAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *layoutAttributes = [[NSArray alloc] initWithArray:superAttributes copyItems:YES];
+    
     CGFloat newOffset = self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.bounds);
     for ( UICollectionViewLayoutAttributes *attributes in layoutAttributes )
     {
