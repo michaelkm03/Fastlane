@@ -239,7 +239,10 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
+        if ( user.numberOfFollowers != nil )
+        {
+            user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
+        }
         [self.mainUser addFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.isFollowedByMainUser = @YES;
@@ -280,7 +283,10 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
+        if ( user.numberOfFollowers != nil )
+        {
+            user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
+        }
         [self.mainUser removeFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.isFollowedByMainUser = @NO;

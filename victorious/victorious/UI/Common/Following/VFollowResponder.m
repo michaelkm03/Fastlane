@@ -24,6 +24,7 @@ NSString * const VFollowSourceScreenStream = @"stream";
 NSString * const VFollowSourceScreenTrendingUserShelf = @"trending_user";
 NSString * const VFollowSourceScreenRecommendedUserShelf = @"recommended_user";
 NSString * const VFollowSourceScreenRegistrationSuggestedUsers = @"registration.suggest";
+NSString * const VFollowSourceScreenSleekCell = @"sleek_cell";
 // Untracked is used when a screen performs 'follow' action
 // through the responder chain unexpectedly. Instead of sending nil,
 // send this so we can track them down later

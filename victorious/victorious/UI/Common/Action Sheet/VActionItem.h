@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VUser;
+
 typedef NS_ENUM(NSInteger, VActionItemType)
 {
     VActionItemTypeDefault,
@@ -46,7 +48,7 @@ typedef NS_ENUM(NSInteger, VActionItemType)
                                    enabled:(BOOL)enabled;
 
 + (instancetype)userActionItemUserWithTitle:(NSString *)title
-                                  avatarURL:(NSURL *)avatarURL
+                                       user:(VUser *)user
                                  detailText:(NSString *)detailText;
 
 + (instancetype)descriptionActionItemWithText:(NSString *)text
@@ -56,7 +58,7 @@ typedef NS_ENUM(NSInteger, VActionItemType)
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *detailText;
 @property (nonatomic, readonly) UIImage *icon;
-@property (nonatomic, readonly) NSURL *avatarURL;
+@property (nonatomic, readonly) VUser *user;
 /**
  *  YES by default.
  */
