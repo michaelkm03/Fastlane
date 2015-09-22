@@ -89,6 +89,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
         [button v_addWidthConstraint:kAvatarSize];
         [button addTarget:self action:@selector(selectedUserButton:) forControlEvents:UIControlEventTouchUpInside];
         self.profileButton = button;
+        self.profileButton.dependencyManager = self.dependencyManager;
         self.profileButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
@@ -129,8 +130,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     self.creationInfoContainer.sequence = sequence;
     self.timeSinceWidget.sequence = sequence;
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
-                                  forState:UIControlStateNormal];
+    self.profileButton.user = sequence.displayOriginalPoster;
     
     [self observeSequence:_sequence];
 }
@@ -164,6 +164,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     {
         [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
+    self.profileButton.dependencyManager = dependencyManager;
     self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
@@ -205,8 +206,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 - (void)updateUserAvatarForSequence:(VSequence *)sequence
 {
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
-                                  forState:UIControlStateNormal];
+    self.profileButton.user = sequence.displayOriginalPoster;
 }
 
 @end
