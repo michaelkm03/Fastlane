@@ -62,9 +62,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             if let shelf = shelf as? UserShelf {
                 titleLabel.text = shelf.title
                 postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
-                if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
-                    userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
-                }
+                userAvatarButton.user = shelf.user
                 updateUsername()
             }
         }
@@ -84,6 +82,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 
                 let accentColor = dependencyManager.accentColor
                 separatorView.backgroundColor = accentColor
+                userAvatarButton.dependencyManager = dependencyManager
                 userAvatarButton.tintColor = accentColor
                 userAvatarButton.addBorderWithWidth(2, andColor: accentColor)
                 
@@ -135,7 +134,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        userAvatarButton.setup()
         for constraint in minimumTitleToContentVerticalSpaceConstraints {
             constraint.constant = Constants.minimumTitleToContentVerticalSpace
         }

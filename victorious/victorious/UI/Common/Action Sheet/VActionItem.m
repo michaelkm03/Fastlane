@@ -7,6 +7,7 @@
 //
 
 #import "VActionItem.h"
+#import "VUser.h"
 
 @interface VActionItem ()
 
@@ -14,7 +15,7 @@
 @property (nonatomic, strong, readwrite) NSString *title;
 @property (nonatomic, strong, readwrite) NSString *detailText;
 @property (nonatomic, strong, readwrite) UIImage *icon;
-@property (nonatomic, strong, readwrite) NSURL *avatarURL;
+@property (nonatomic, strong, readwrite) VUser *user;
 @property (nonatomic, assign, readwrite) BOOL enabled;
 
 @end
@@ -49,13 +50,13 @@
 }
 
 + (instancetype)userActionItemUserWithTitle:(NSString *)title
-                                  avatarURL:(NSURL *)avatarURL
+                                       user:(VUser *)user
                                  detailText:(NSString *)detailText
 {
     VActionItem *actionItem  = [[VActionItem alloc] init];
     actionItem.type = VActionItemTypeUser;
     actionItem.title = [title copy];
-    actionItem.avatarURL = [avatarURL copy];
+    actionItem.user = user;
     actionItem.detailText = [detailText copy];
 
     return actionItem;
@@ -100,9 +101,9 @@
         [descriptionString appendString:[NSString stringWithFormat:@"detailText: %@", self.detailText]];
     }
     
-    if (self.avatarURL != nil)
+    if (self.user != nil)
     {
-        [descriptionString appendString:[NSString stringWithFormat:@"avatarURL: %@", self.avatarURL.absoluteString]];
+        [descriptionString appendString:[NSString stringWithFormat:@"userId: %@", self.user.remoteId]];
     }
     
     return descriptionString;
