@@ -213,7 +213,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             {
                 BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
                 
-                [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter   forKey:kLastLoginTypeUserDefaultsKey];
+                [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter forKey:kLastLoginTypeUserDefaultsKey];
                 [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
                 
                 if (completion)
