@@ -66,10 +66,11 @@
 {
     switch (self.focusType)
     {
+        case VFocusTypeStream:
+        case VFocusTypeNone:
+            return YES;
         case VFocusTypeDetail:
             return self.videoAsset.loop.boolValue;
-        default:
-            return YES;
     }
 }
 
