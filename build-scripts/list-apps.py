@@ -13,6 +13,7 @@ This script assumes it is being run from the root of the code directory.
 This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousiOS
 """
+import os
 import requests
 import sys
 import subprocess
@@ -79,9 +80,10 @@ def cleanUp():
 
 
 def showProperUsage():
+        my_name = os.path.basename(__file__)
         print ''
         print 'Displays a list of currently active apps in VAMS'
-        print 'Usage: ./app_list.py <environment>'
+        print 'Usage: ' + my_name + ' <environment>'
         print ''
         print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
         print '<environment> choices are: dev, qa, staging, production or localhost'
@@ -90,13 +92,13 @@ def showProperUsage():
         print 'If no <environment> parameter is provided, the script will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './app_list.py         <-- will use PRODUCTION'
-        print './app_list.py qa      <-- will use QA'
-        print './app_list.py h      <-- Displays this help screen'
-        print './app_list.py help   <-- Displays this help screen'
+        print my_name + '      <-- will use PRODUCTION'
+        print my_name + '      <-- will use QA'
+        print my_name + ' h    <-- Displays this help screen'
+        print my_name + ' help <-- Displays this help screen'
         print ''
         print 'search:'
-        print './app_list.py dev | grep \'Ryan\'    <-- Simple case-sensitive search'
+        print my_name + ' dev | grep \'Ryan\'    <-- Simple case-sensitive search'
         sys.exit(1)
 
 
