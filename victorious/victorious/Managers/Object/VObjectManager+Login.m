@@ -189,8 +189,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         if (success)
         {
-            [[VUserManager sharedInstance] savePassword:newPassword forEmail:self.mainUser.email];
-            
+            [[[VUserManager alloc] init] savePassword:newPassword forEmail:self.mainUser.email];
             success(operation, fullResponse, resultObjects);
         }
     };
@@ -365,7 +364,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     self.loginType = VLoginTypeNone;
     
     [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
-    [[VUserManager sharedInstance] userDidLogout];
+    [[[VUserManager alloc] init] userDidLogout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
