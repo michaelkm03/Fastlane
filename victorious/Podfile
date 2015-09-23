@@ -9,7 +9,6 @@ target :victorious do
     pod 'RestKit'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
-    pod 'FlurrySDK', '~> 6.6.0'
     pod 'KVOController'
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
