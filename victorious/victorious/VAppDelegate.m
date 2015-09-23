@@ -24,7 +24,6 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "VFlurryTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-swift.h"
@@ -59,11 +58,6 @@
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
-    VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
-    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
-    [flurryTracking enable];
-    [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
-
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
     self.window.rootViewController = [storyboard instantiateInitialViewController];

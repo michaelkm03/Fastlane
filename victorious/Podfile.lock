@@ -21,9 +21,6 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.6.0):
     - FBSDKCoreKit
-  - FlurrySDK (6.6.0):
-    - FlurrySDK/FlurrySDK (= 6.6.0)
-  - FlurrySDK/FlurrySDK (6.6.0)
   - ISO8601DateFormatterValueTransformer (0.6.1):
     - RKValueTransformers (~> 1.1.0)
   - KIF (3.2.3):
@@ -66,7 +63,6 @@ DEPENDENCIES:
   - FBSDKCoreKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
   - FBSDKLoginKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
   - FBSDKShareKit (from `https://github.com/TouchFrame/facebook-ios-sdk.git`)
-  - FlurrySDK (~> 6.6.0)
   - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
   - MBProgressHUD
@@ -114,7 +110,6 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 9954492d90c5fd65ae831395697a1660360d61f1
   FBSDKLoginKit: 3d07febbfa884b9878cacba54f705bb41f07d4b6
   FBSDKShareKit: f474f1123791e215d0299b98b3ee92ddd9187d86
-  FlurrySDK: b79d7125293904a572d7539e64cd9d887f46176b
   ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
