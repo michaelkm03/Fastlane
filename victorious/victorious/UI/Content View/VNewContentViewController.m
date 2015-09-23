@@ -81,6 +81,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) BOOL hasBeenPresented;
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 @property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
+@property (nonatomic, assign) BOOL isTransitionComplete;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
@@ -246,11 +247,27 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
+#pragma mark Accessory buttons
+
+- (BOOL)shouldShowAccessoryButtons
+{
+    return UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+}
+
+- (void)setAccessoryButtonsHidden:(BOOL)hidden
+{
+    [UIView animateWithDuration:0.25f animations:^
+     {
+         self.moreButton.alpha = hidden ? 0.0f : 1.0f;
+         self.closeButton.alpha = hidden ? 0.0f : 1.0f;
+     }];
+}
+
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotate
 {
-    return !self.isBeingDismissed && !self.isBeingPresented;
+    return self.isTransitionComplete;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -283,6 +300,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         self.contentCollectionView.scrollEnabled = NO;
+        
+        [self setAccessoryButtonsHidden:YES];
     }
     else
     {
@@ -293,12 +312,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self.contentCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
-}
-
-- (void)updateOrientation
-{
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 #pragma mark View Lifecycle
@@ -370,15 +383,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.viewModel reloadData];
     
     self.view.backgroundColor = [UIColor blackColor];
-    
-    [self forceOrientation:UIInterfaceOrientationPortrait];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self forceOrientation:UIInterfaceOrientationPortrait];
     
     [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
@@ -420,8 +429,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self trackVideoViewStart];
-    
-    [self updateOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -453,8 +460,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self trackNonVideoViewStart];
     }
     
-    [self updateOrientation];
-    
     [self.contentCollectionView flashScrollIndicators];
     
     // Update cell focus
@@ -466,6 +471,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [layout calculateCatchAndLockPoints];
     
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+    
+    self.isTransitionComplete = YES;
+    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -582,23 +590,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView.collectionViewLayout invalidateLayout];
     [self.contentCell prepareForDismissal];
     [self setAccessoryButtonsHidden:YES];
-    [self forceOrientation:UIInterfaceOrientationPortrait];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)forceOrientation:(UIInterfaceOrientation)orientation
-{
-    NSNumber *value = [NSNumber numberWithInt:orientation];
-    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
-}
-
-- (void)setAccessoryButtonsHidden:(BOOL)hidden
-{
-    [UIView animateWithDuration:0.25f animations:^
-     {
-         self.moreButton.alpha = hidden ? 0.0f : 1.0f;
-         self.closeButton.alpha = hidden ? 0.0f : 1.0f;
-     }];
 }
 
 #pragma mark - Private Mehods
@@ -1677,7 +1669,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillAppear
 {
-    if ( !self.contentCell.isEndCardShowing )
+    if ( !self.contentCell.isEndCardShowing && [self shouldShowAccessoryButtons] )
     {
         self.closeButton.alpha = 1.0f;
         self.moreButton.alpha = 1.0f;
@@ -1686,18 +1678,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isEndCardShowing )
-    {
-        self.closeButton.alpha = 0.0f;
-        self.moreButton.alpha = 0.0f;
-    }
+    self.closeButton.alpha = 0.0f;
+    self.moreButton.alpha = 0.0f;
 }
 
 - (void)videoPlaybackDidFinish
 {
     if (self.viewModel.endCardViewModel != nil)
     {
-        [self setAccessoryButtonsHidden:NO];
+        if ( [self shouldShowAccessoryButtons] )
+        {
+            [self setAccessoryButtonsHidden:NO];
+        }
         [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
 }
