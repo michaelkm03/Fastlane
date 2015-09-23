@@ -62,6 +62,10 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             if let shelf = shelf as? UserShelf {
                 titleLabel.text = shelf.title
                 postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
+                if let oldValue = oldValue as? UserShelf {
+                    KVOController.unobserve(oldValue.user)
+                }
+                KVOController.observe(shelf.user, keyPath: "isFollowedByMainUser", options: NSKeyValueObservingOptions.New, action: Selector("updateFollowControlState"))
                 userAvatarButton.user = shelf.user
                 updateUsername()
             }
