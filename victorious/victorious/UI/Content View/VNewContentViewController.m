@@ -245,7 +245,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         [self.pollAnswerReceiver showResults];
         
-        //if ( self.viewModel.sequence.permissions.canShowVoteCount )
+        if ( self.viewModel.sequence.permissions.canShowVoteCount )
         {
             [self.pollAnswerReceiver setVoterCountText:self.viewModel.numberOfVotersText];
         }
