@@ -7,7 +7,8 @@
 //
 
 #import "VStreamCollectionViewController.h"
-#import "victorious-Swift.h"
+
+@protocol VShelfStreamItemSelectionResponder, VTrendingUserShelfResponder, VTrendingHashtagShelfResponder;
 
 @interface VStreamCollectionViewController (TrendingShelfResponder) <VShelfStreamItemSelectionResponder, VTrendingUserShelfResponder, VTrendingHashtagShelfResponder>
 

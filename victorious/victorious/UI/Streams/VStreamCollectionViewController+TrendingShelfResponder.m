@@ -7,6 +7,7 @@
 //
 
 #import "VStreamCollectionViewController+TrendingShelfResponder.h"
+#import "victorious-Swift.h"
 
 @implementation VStreamCollectionViewController (TrendingShelfResponder)
 

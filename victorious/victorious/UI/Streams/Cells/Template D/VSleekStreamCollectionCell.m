@@ -32,6 +32,7 @@
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
 #import "UIResponder+VResponderChain.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
