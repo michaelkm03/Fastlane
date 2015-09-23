@@ -243,7 +243,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.pollAnswerReceiver setAnswerAIsFavored:(self.viewModel.favoredAnswer == VPollAnswerA)];
         [self.pollAnswerReceiver setAnswerBIsFavored:(self.viewModel.favoredAnswer == VPollAnswerB)];
         
-        [self.pollAnswerReceiver showResultsAnimated:YES];
+        [self.pollAnswerReceiver showResults];
+        
+        //if ( self.viewModel.sequence.permissions.canShowVoteCount )
+        {
+            [self.pollAnswerReceiver setVoterCountText:self.viewModel.numberOfVotersText];
+        }
     }
 }
 

@@ -158,6 +158,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) UIColor *textBackgroundColor;
 @property (nonatomic, readonly) NSString *textContent;
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
+@property (nonatomic, readonly) NSInteger totalVotes;
 
 @property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readonly) NSArray *monetizationDetails;

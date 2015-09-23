@@ -14,11 +14,15 @@
 @protocol VPollResultReceiver <NSObject>
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated;
+
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored;
 
 - (void)setAnswerBPercentage:(CGFloat)answerBPercentage animated:(BOOL)animated;
+
 - (void)setAnswerBIsFavored:(BOOL)answerBIsFavored;
 
-- (void)showResultsAnimated:(BOOL)animated;
+- (void)showResults;
+
+- (void)setVoterCountText:(NSString *)text;
 
 @end

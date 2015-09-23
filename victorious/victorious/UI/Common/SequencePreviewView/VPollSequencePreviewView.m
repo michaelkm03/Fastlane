@@ -23,6 +23,9 @@ static NSString *kOrIconKey = @"orIcon";
 @interface VPollSequencePreviewView ()
 
 @property (nonatomic, strong) VPollView *pollView;
+@property (nonatomic, strong) UILabel *voterCountLabel;
+@property (nonatomic, strong) UIView *voterCountLabelContainer;
+@property (nonatomic, strong) NSLayoutConstraint *voterCountLabelWidth;
 @property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizerA;
 @property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizerB;
 @property (nonatomic, strong) VImageAssetFinder *assetFinder;
@@ -60,6 +63,24 @@ static NSString *kOrIconKey = @"orIcon";
         [_pollView.answerBImageView addGestureRecognizer:_gestureRecognizerB];
         
         _assetFinder = [[VImageAssetFinder alloc] init];
+        
+        CGRect labelFrame = CGRectMake( 0, 0, 120.0f, 30.0f );
+        _voterCountLabelContainer = [[UIView alloc] initWithFrame:labelFrame];
+        _voterCountLabelContainer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.25f];
+        [self addSubview:_voterCountLabelContainer];
+        [_voterCountLabelContainer v_addHeightConstraint:labelFrame.size.height];
+        _voterCountLabelWidth = [_voterCountLabelContainer v_addWidthConstraint:labelFrame.size.height];
+        [self v_addPinToTopToSubview:_voterCountLabelContainer topMargin:12.0f];
+        [self v_addCenterHorizontallyConstraintsToSubview:_voterCountLabelContainer];
+        _voterCountLabelContainer.layer.cornerRadius = CGRectGetHeight(_voterCountLabelContainer.bounds) * 0.5f;
+        _voterCountLabelContainer.alpha = 0.0f;
+        
+        _voterCountLabel = [[UILabel alloc] initWithFrame:labelFrame];
+        _voterCountLabel.userInteractionEnabled = NO;
+        _voterCountLabel.textColor = [UIColor whiteColor];
+        _voterCountLabel.textAlignment = NSTextAlignmentCenter;
+        [_voterCountLabelContainer addSubview:_voterCountLabel];
+        [_voterCountLabelContainer v_addFitToParentConstraintsToSubview:_voterCountLabel];
     }
     return self;
 }
@@ -69,6 +90,7 @@ static NSString *kOrIconKey = @"orIcon";
     [super setDependencyManager:dependencyManager];
     
     self.pollView.pollIcon = [dependencyManager imageForKey:kOrIconKey];
+    self.voterCountLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
     [self setupResultViews];
 }
@@ -217,10 +239,32 @@ static NSString *kOrIconKey = @"orIcon";
 
 #pragma mark - VPollResultReceiver
 
-- (void)showResultsAnimated:(BOOL)animated
+- (void)showResults
 {
     [self setResultViewsHidden:NO animated:self.haveResultsBeenSet];
     self.haveResultsBeenSet = YES;
+}
+
+- (void)setVoterCountText:(NSString *)text
+{
+    if ( text.length > 0 )
+    {
+        self.voterCountLabel.text = text;
+        self.voterCountLabelWidth.active = NO;
+        [self.voterCountLabel sizeToFit];
+        self.voterCountLabelWidth.constant = CGRectGetWidth(self.voterCountLabel.frame) + 20.0f;
+        self.voterCountLabelWidth.active = YES;
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0
+                            options:kNilOptions
+                         animations:^
+         {
+             self.voterCountLabelContainer.alpha = 1.0f;
+         }
+                         completion:nil];
+    }
 }
 
 - (void)setAnswerAPercentage:(CGFloat)answerAPercentage animated:(BOOL)animated
