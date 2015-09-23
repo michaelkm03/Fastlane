@@ -240,7 +240,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
     
-    if ( self.delegate != nil )
+    if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
     }
