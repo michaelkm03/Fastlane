@@ -77,7 +77,9 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
         link.imageURL = [NSURL URLWithString:thumbnail.imageURL];
     }
     
-    [[VFacebookHelper shareDialogWithContent:link mode:self.shareMode] show];
+    FBSDKShareDialog *shareDialog = [VFacebookHelper shareDialogWithContent:link mode:self.shareMode];
+    shareDialog.delegate = self;
+    [shareDialog show];
 }
 
 + (UIActivityCategory)activityCategory
