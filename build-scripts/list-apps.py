@@ -48,7 +48,8 @@ def fetchAppList(server):
 
     if error_code == 0:
         app_count = 0
-        print '\nVAMS Active Apps List\n----------------------'
+        print '\nVAMS Active Apps List\n---------------------------------------------------------------------------------------------'
+        print 'id   Build Name                              Name                                    Status\n---------------------------------------------------------------------------------------------'
         for app in json_obj['payload']:
             app_id = app['app_id']
             app_state = app['app_state']
@@ -61,11 +62,11 @@ def fetchAppList(server):
                 state = ccodes.ColorCodes.OKGREEN + app_state.upper() + ccodes.ColorCodes.ENDC
             else:
                 state = ccodes.ColorCodes.OKBLUE + app_state.upper() + ccodes.ColorCodes.ENDC
-            print 'Name: %s (%s)\nBuild Name: %s\nStatus: %s\n' % (app_name, ccodes.ColorCodes.HEADER + str(app_id) +
-                                                             ccodes.ColorCodes.ENDC, build_name, state)
+            print '%s%s%s%s' % (ccodes.ColorCodes.HEADER + str(app_id).ljust(5) + ccodes.ColorCodes.ENDC, build_name.ljust(40), app_name.ljust(40), state)
             app_count = app_count + 1
 
-        print '----------------\nTotal of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
+        print '---------------------------------------------------------------------------------------------'
+        print 'Total of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
 
     else:
         print 'No app data found. Uhh... obviously, something went wrong.'
