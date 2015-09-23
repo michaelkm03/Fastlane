@@ -306,7 +306,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         self.contentCollectionView.scrollEnabled = NO;
         
-        [self setAccessoryButtonsHidden:YES];
+        if ( !self.contentCell.isPlayingAd )
+        {
+            [self setAccessoryButtonsHidden:YES];
+        }
     }
     else
     {
@@ -1683,8 +1686,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    self.closeButton.alpha = 0.0f;
-    self.moreButton.alpha = 0.0f;
+    if ( !self.contentCell.isPlayingAd )
+    {
+        self.closeButton.alpha = 0.0f;
+        self.moreButton.alpha = 0.0f;
+    }
 }
 
 - (void)videoPlaybackDidFinish
@@ -1708,6 +1714,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)contentCellDidStartPlayingAd:(VContentCell *)cell
 {
+    self.closeButton.alpha = 1.0f;
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
 }
 

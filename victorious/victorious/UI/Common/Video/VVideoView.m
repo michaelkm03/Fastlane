@@ -276,7 +276,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
 {
-    [self.player.currentItem seekToTime:CMTimeMakeWithSeconds( timeSeconds, 1)];
+    [self.player.currentItem seekToTime:CMTimeMake( timeSeconds, 1.0 )];
 }
 
 - (void)pause
