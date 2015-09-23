@@ -12,6 +12,7 @@ import Foundation
 class HexagonView: UIView {
     
     private var shapeLayer = CAShapeLayer()
+    private let strokeAnimationKey = "strokeEndAnimation"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,6 +77,10 @@ class HexagonView: UIView {
         
         let rect = bounds
         
+        if rect == CGRectZero {
+            return
+        }
+        
         let sideLength: CGFloat = rect.height * verticalSideLengthRatio
         let b: CGFloat = (rect.height - sideLength) / 2
         
@@ -121,9 +126,6 @@ class HexagonView: UIView {
         
         shapeLayer = CAShapeLayer()
         shapeLayer.path = bezierPath.CGPath
-        // For animation purposes, offset the start of the stroke so that there's still a small
-        // gap between the beginning and the end of the stroke when the user si very close to
-        // the next level
         shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
         shapeLayer.lineWidth = borderWidth
@@ -133,6 +135,7 @@ class HexagonView: UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
+    // Animated the stroke of the hexagon's shape layer
     func animateBorder(endValue: CGFloat, duration: NSTimeInterval) {
         isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
@@ -142,7 +145,13 @@ class HexagonView: UIView {
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.removedOnCompletion = false
         basicAnimation.delegate = self
-        shapeLayer.addAnimation(basicAnimation, forKey: "strokeEndAnimation")
+        shapeLayer.addAnimation(basicAnimation, forKey: strokeAnimationKey)
+    }
+    
+    // Removes animation from hexagon's shape layer
+    func reset() {
+        shapeLayer.removeAnimationForKey(strokeAnimationKey)
+        isAnimating = false
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {

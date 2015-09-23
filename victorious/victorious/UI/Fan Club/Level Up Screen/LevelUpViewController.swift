@@ -180,6 +180,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 if let levelUpInterstitial = self.levelUpInterstitial {
                     self.badgeView.levelNumberString = levelUpInterstitial.level
                 }
+                self.badgeView.resetProgress()
                 UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                     self.badgeView.transform = CGAffineTransformIdentity
                     }, completion: nil)
