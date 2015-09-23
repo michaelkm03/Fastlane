@@ -22,9 +22,6 @@
 #import "VUser.h"
 #import "VSequence+Fetcher.h"
 
-// Activities
-#import "VFacebookActivity.h"
-
 //Views
 #import "VNoContentView.h"
 
@@ -70,7 +67,7 @@
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
     
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
-                                                           avatarURL:self.viewModel.avatarForAuthor
+                                                                user:self.viewModel.user
                                                           detailText:self.viewModel.authorCaption];
     userItem.selectionHandler = ^(VActionItem *item)
     {

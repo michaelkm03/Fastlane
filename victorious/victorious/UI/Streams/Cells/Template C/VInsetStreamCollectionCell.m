@@ -18,7 +18,7 @@
 #import "NSString+VParseHelp.h"
 #import "VInsetActionView.h"
 #import "VHashTagTextView.h"
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 #import "VCompatibility.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
@@ -38,7 +38,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 @interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VStreamHeaderTimeSince *header;
+@property (nonatomic, strong) VStreamCellHeader *header;
 @property (nonatomic, strong) UIView *previewContainer;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
@@ -80,7 +80,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     _actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
     
     // Header at the top, left to right and kInsetCellHeaderHeight
-    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamCellHeader alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_header];
     [self.contentView v_addPinToLeadingTrailingToSubview:_header];
     [self.contentView v_addPinToTopToSubview:_header];

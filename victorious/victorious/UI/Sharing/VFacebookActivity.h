@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@import FBSDKShareKit;
+
 @interface VFacebookActivity : UIActivity
+
+/**
+ The mode to use when creating a Facebook share dialog.
+ Default is FBSDKShareDialogModeAutomatic
+ */
+@property (nonatomic) FBSDKShareDialogMode shareMode;
 
 @end

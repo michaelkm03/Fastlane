@@ -17,7 +17,7 @@
 #import "NSString+VParseHelp.h"
 #import "VSleekActionView.h"
 #import "VHashTagTextView.h"
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -53,7 +53,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
-@property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
+@property (nonatomic, weak) IBOutlet VStreamCellHeader *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;

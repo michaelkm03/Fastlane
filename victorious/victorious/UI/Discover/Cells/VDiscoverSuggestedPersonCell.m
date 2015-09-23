@@ -7,7 +7,7 @@
 //
 
 #import "VDiscoverSuggestedPersonCell.h"
-#import "VDefaultProfileImageView.h"
+#import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
 #import "VObjectManager+Users.h"
@@ -19,7 +19,7 @@
 @interface VDiscoverSuggestedPersonCell()
 
 @property (nonatomic, weak) IBOutlet VFollowControl *followButton;
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
@@ -36,8 +36,8 @@
 {
     [super awakeFromNib];
     
-    CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
-    self.profileImageView.layer.cornerRadius = radius;
+    CGFloat radius = self.profileButton.bounds.size.width * 0.5f;
+    self.profileButton.layer.cornerRadius = radius;
     self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
 }
 
@@ -51,7 +51,8 @@
         self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileButton.dependencyManager = dependencyManager;
+        self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -82,7 +83,6 @@
     [self updateFollowingAnimated:NO];
 }
 
-
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated
 {
@@ -102,11 +102,7 @@
     self.descriptionLabel.text = [VFollowersTextFormatter followerTextWithNumberOfFollowers:intValue];
     
     self.usernameLabel.text = self.user.name;
-    
-    if ( self.user.pictureUrl != nil )
-    {
-        [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.user.pictureUrl]];
-    }
+    self.profileButton.user = self.user;
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated
