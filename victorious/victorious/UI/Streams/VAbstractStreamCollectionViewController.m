@@ -76,7 +76,7 @@
 - (void)commonInit
 {
     self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
-
+    
     self.scrollPaginator = [[VScrollPaginator alloc] init];
     self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -97,7 +97,7 @@
     [super viewDidLoad];
     
     self.collectionView.accessibilityIdentifier = VAutomationIDentifierStreamCollectionView;
-
+    
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
@@ -273,10 +273,15 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:^
-    {
-        const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
-        self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
-    }];
+     {
+         [self updateRowCount];
+     }];
+}
+
+- (void)updateRowCount
+{
+    const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
+    self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
@@ -306,7 +311,7 @@
              completionBlock();
          }
      }
-                                         failure:^(NSError *error)
+                            failure:^(NSError *error)
      {
          [self.refreshControl endRefreshing];
          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -332,7 +337,7 @@
                       atIndexPath:(NSIndexPath *)indexPath
 {
     const NSUInteger currentCount = [self.collectionView numberOfItemsInSection:indexPath.section];
-    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection;
+    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection && self.previousNumberOfRowsInStreamSection > 0;
     const BOOL isFirstRowOfNewPage = indexPath.row == (NSInteger) self.previousNumberOfRowsInStreamSection;
     if ( newPageDidLoad && isFirstRowOfNewPage )
     {
@@ -430,6 +435,7 @@
     }
     
     self.shouldAnimateActivityViewFooter = YES;
+    [self updateRowCount];
     [self.streamDataSource loadPage:VPageTypeNext withSuccess:
      ^{
          __weak typeof(self) welf = self;
@@ -438,7 +444,7 @@
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                                              failure:nil];
+                            failure:nil];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -447,7 +453,7 @@
 {
     [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
-
+    
     [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
 }
 
