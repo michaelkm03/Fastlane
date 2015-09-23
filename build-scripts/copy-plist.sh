@@ -45,6 +45,7 @@ copyPListValue(){
 copyPListValue 'CFBundleDisplayName'
 copyPListValue 'CFBundleIdentifier'
 copyPListValue 'FacebookAppID'
+copyPListValue 'FacebookDisplayName'
 copyPListValue 'TWITTER_CONSUMER_KEY'
 copyPListValue 'TWITTER_CONSUMER_SECRET'
 copyPListValue 'FlurryAPIKey'

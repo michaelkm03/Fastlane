@@ -14,6 +14,9 @@ target :victorious do
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
     pod 'OAStackView'
+    pod 'FBSDKCoreKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKLoginKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKShareKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
     pod 'CHTCollectionViewWaterfallLayout'
     link_with 'victorious'
 

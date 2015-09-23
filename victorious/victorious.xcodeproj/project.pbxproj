@@ -174,6 +174,7 @@
 		035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
+		0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0362656A1BAB99ED00C34C73 /* FacebookHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		03645B0D1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03645B0C1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib */; };
 		03645B0F1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03645B0E1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib */; };
@@ -336,7 +337,6 @@
 		03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */; };
 		03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */; };
 		03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859519B42D3000E27D05 /* Crashlytics.framework */; };
-		03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859619B42D3000E27D05 /* FacebookSDK.framework */; };
 		03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185AF19B42E5D00E27D05 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B119B42E5D00E27D05 /* OAuth+Additions.m */; };
 		03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B319B42E5D00E27D05 /* OAuthCore.m */; };
@@ -347,7 +347,6 @@
 		03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */; };
 		03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C92D131ABB96030057D30E /* LightweightContentView.storyboard */; };
 		03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C92D151ABB96030057D30E /* VLightweightContentViewController.m */; };
-		03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F219B47B590011BB9E /* VFacebookManager.m */; };
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
 		03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FF19B640CD0011BB9E /* VDeviceInfo.m */; };
@@ -1595,6 +1594,7 @@
 		035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadMessageCountCoordinator.m; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0362656A1BAB99ED00C34C73 /* FacebookHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookHelper.swift; sourceTree = "<group>"; };
 		03645B0C1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPublishSaveCollectionViewCell.xib; sourceTree = "<group>"; };
 		03645B0E1B9EB39E0038231E /* VPublishShareCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPublishShareCollectionViewCell.xib; sourceTree = "<group>"; };
 		03669B641B632D50003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
@@ -1918,7 +1918,6 @@
 		03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		03C1859519B42D3000E27D05 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		03C1859619B42D3000E27D05 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		03C185A619B42D3000E27D05 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		03C185AE19B42E5D00E27D05 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		03C185AF19B42E5D00E27D05 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
@@ -1939,8 +1938,6 @@
 		03C92D131ABB96030057D30E /* LightweightContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightweightContentView.storyboard; sourceTree = "<group>"; };
 		03C92D141ABB96030057D30E /* VLightweightContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightweightContentViewController.h; sourceTree = "<group>"; };
 		03C92D151ABB96030057D30E /* VLightweightContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightweightContentViewController.m; sourceTree = "<group>"; };
-		03CE66F119B47B590011BB9E /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFacebookManager.h; sourceTree = "<group>"; };
-		03CE66F219B47B590011BB9E /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFacebookManager.m; sourceTree = "<group>"; };
 		03CE66F419B47B590011BB9E /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
 		03CE66F519B47B590011BB9E /* VTwitterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterManager.m; sourceTree = "<group>"; };
 		03CE66FA19B59F260011BB9E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -3745,7 +3742,6 @@
 				DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */,
 				DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */,
 				DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */,
-				03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */,
 				03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */,
 				03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
@@ -5102,7 +5098,6 @@
 				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
-				03C1859619B42D3000E27D05 /* FacebookSDK.framework */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
 				03C185A619B42D3000E27D05 /* Reveal.framework */,
 				03C185AD19B42E5D00E27D05 /* TWAPIManager */,
@@ -5169,8 +5164,7 @@
 		03CE66F019B47B590011BB9E /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
-				03CE66F119B47B590011BB9E /* VFacebookManager.h */,
-				03CE66F219B47B590011BB9E /* VFacebookManager.m */,
+				0362656A1BAB99ED00C34C73 /* FacebookHelper.swift */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -9312,6 +9306,7 @@
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
 				F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */,
+				0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */,
 				A721E9271B572454000B7901 /* VHashtag+RestKit.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
 				F03C134E1B69373200287F4C /* VUser.m in Sources */,
@@ -9760,7 +9755,6 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
 				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,
-				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
