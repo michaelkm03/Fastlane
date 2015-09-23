@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+
 #import "NSArray+VMap.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
@@ -17,7 +18,6 @@
 #import "VAbstractMarqueeController.h"
 #import "VAlertController.h"
 #import "VAuthorizedAction.h"
-#import "VFocusable.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
@@ -34,10 +34,12 @@
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDirectoryCollectionViewController.h"
+#import "VFocusable.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VHashtag.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 #import "VNoContentCollectionViewCellFactory.h"
@@ -903,7 +905,13 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( !hidden && self.navigationController.navigationBarHidden )
     {
-        [[self v_navigationController] setNavigationBarHidden:NO];
+        [self.navigationController setNavigationBarHidden:NO];
+        
+        UIViewController *topVC = self.navigationController.topViewController;
+        if ([topVC isKindOfClass:[VMultipleContainerViewController class]])
+        {
+            [self.v_navigationController updateSupplementaryHeaderViewForViewController:topVC];
+        }
     }
     self.uploadProgressViewController.view.hidden = hidden;
     self.navigationBarShouldAutoHide = hidden;
@@ -999,7 +1007,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
 {
     BOOL uploadsShouldBeHidden = uploadCount <= 0;
-    [self setUploadsHidden:uploadsShouldBeHidden];
+    
+    if (self.uploadProgressViewController.view.hidden != uploadsShouldBeHidden)
+    {
+        [self setUploadsHidden:uploadsShouldBeHidden];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
