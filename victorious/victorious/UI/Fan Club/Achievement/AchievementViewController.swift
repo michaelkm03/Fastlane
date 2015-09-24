@@ -22,7 +22,8 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let animatedBadge = AnimatedBadgeView()
+    private var animatedBadge: AnimatedBadgeView?
+    private let animatedBadgeKey = "animatedBadge"
     
     private var hasAppeared = false
     
@@ -49,6 +50,14 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
                 dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor.colorWithAlphaComponent(0.5), forState: .Highlighted)
                 dismissButton.titleLabel?.font = dependencyManager.dismissButtonTitleFont
                 dependencyManager.addBackgroundToBackgroundHost(self)
+                
+                // Initialize our animated badge view component
+                guard let badgeView = dependencyManager.templateValueOfType(AnimatedBadgeView.self, forKey: animatedBadgeKey) as? AnimatedBadgeView else {
+                    return
+                }
+                
+                // Set our animated badge property
+                animatedBadge = badgeView
             }
         }
     }
@@ -110,10 +119,24 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[label]-10-|", options: [], metrics: nil, views: ["label" : titleLabel]))
         
-        containerView.addSubview(animatedBadge)
+        var verticalConstraintString = ""
+        var views: [String : UIView]
         
+        if let animatedBadge = animatedBadge {
+            animatedBadge.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(animatedBadge)
+            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description][icon(135)][button(40)]|"
+            views = ["badgeView" : animatedBadge, "button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
+            
+            animatedBadge.v_addWidthConstraint(60)
+            containerView.v_addCenterHorizontallyConstraintsToSubview(animatedBadge)
+        }
+        else {
+            verticalConstraintString = "V:|-23-[title]-20-[description][icon(135)][button(40)]|"
+            views = ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
+        }
         
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[title]-20-[description][icon(135)][button(40)]|", options: [], metrics: nil, views: ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]))
+        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalConstraintString, options: [], metrics: nil, views: views))
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
