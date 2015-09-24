@@ -115,7 +115,8 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         return;
     }
     
-    BOOL shouldFlip = ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateUnfollowed ) || ( controlState == VFollowControlStateUnfollowed && self.controlState == VFollowControlStateLoading );
+    //Flip at all times EXCEPT when transitioning FROM following TO loading and TO following FROM loading.
+    BOOL shouldFlip = !( ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateFollowed ) || ( controlState == VFollowControlStateFollowed && self.controlState == VFollowControlStateLoading ) );
     void (^animationBlock)(void) = ^
     {
         self.controlState = controlState;
@@ -159,7 +160,7 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
             
         case VFollowControlStateUnfollowed:
         {
-            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.controlState == VFollowControlStateUnfollowed && self.tintUnselectedImage;
+            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.tintUnselectedImage;
             tintColor = showUnselectedTintColor ? self.unselectedTintColor : self.selectedTintColor;
         }
         default:

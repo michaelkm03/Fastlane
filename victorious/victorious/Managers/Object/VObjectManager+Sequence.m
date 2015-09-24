@@ -118,7 +118,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     }
     NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID];
     
-    if ( streamId != nil )
+    if ( streamId.length > 0 )
     {
         NSString *percentEncodedStreamId = [streamId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
         path = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", percentEncodedStreamId]];
