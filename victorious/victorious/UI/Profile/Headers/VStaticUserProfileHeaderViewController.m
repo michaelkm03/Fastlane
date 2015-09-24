@@ -96,7 +96,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         {
             self.badgeView = animatedBadgeView;
             self.badgeView.cornerRadius = 4;
-            self.badgeView.animatedBorderWidth = 2;
+            self.badgeView.animatedBorderWidth = 3;
             self.badgeView.progressBarInset = 3;
             self.badgeView.title = NSLocalizedString(@"LEVEL", "");
             self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
