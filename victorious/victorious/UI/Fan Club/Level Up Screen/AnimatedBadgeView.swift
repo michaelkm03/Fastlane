@@ -42,11 +42,11 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// Color of the badge
-    var color: UIColor? = UIColor.redColor() {
+    var badgeBackgroundColor: UIColor? {
         didSet {
-            if let color = color {
-                backgroundHexagonView.fillColor = color
-                animatingHexagonView.fillColor = color
+            if let badgeBackgroundColor = badgeBackgroundColor {
+                backgroundHexagonView.fillColor = badgeBackgroundColor
+                animatingHexagonView.fillColor = badgeBackgroundColor
             }
         }
     }
@@ -60,7 +60,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// Color of the progress indicator
-    var animatedBorderColor: UIColor? = UIColor.whiteColor() {
+    var animatedBorderColor: UIColor? {
         didSet {
             if let animatedBorderColor = animatedBorderColor {
                 animatingHexagonView.strokeColor = animatedBorderColor
@@ -86,8 +86,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// The minimum level it takes to expose this badge view
     private(set) var minLevel = 0
     
-    /// A value between 0 and 1 representing where the progress indicator currently ends
-    private(set) var currentProgress: CGFloat = 0
+    /// A percentage between 0 and 100 representing where the progress indicator currently ends
+    private(set) var currentProgressPercentage: Int = 0
     
     /// Whether or not the progress bar is currently being animated
     var isAnimating: Bool {
@@ -121,7 +121,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
             }
             let currentFontSize = levelNumberLabel.font.pointSize
             // Subtract a bit because boundingRectWithSize is inaccurate with large font sizes
-            let fontSizeOffset = currentFontSize - currentFontSize * 0.4
+            let fontSizeOffset = currentFontSize - currentFontSize * 0.3
             let boundingRect = String(levelNumberString).boundingRectWithSize(CGSize(width: bounds.width, height: CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes:[NSFontAttributeName : levelNumberLabel.font.fontWithSize(fontSizeOffset)], context:nil)
             numberHeightConstraint = NSLayoutConstraint(item: levelNumberLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: boundingRect.height)
             levelNumberLabel.addConstraint(numberHeightConstraint)
@@ -136,12 +136,13 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     
     func sharedInit() {
         
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
         
         backgroundHexagonView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(backgroundHexagonView)
+        addSubview(backgroundHexagonView)
+        v_addFitToParentConstraintsToSubview(backgroundHexagonView)
         
-        self.addSubview(animatingHexagonView)
+        addSubview(animatingHexagonView)
         
         levelStringLabel.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(levelStringLabel)
@@ -149,25 +150,17 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         container.addSubview(levelNumberLabel)
         
         container.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(container)
+        addSubview(container)
         
         levelStringLabel.textAlignment = .Center
         levelNumberLabel.textAlignment = .Center
-        levelStringLabel.textColor = UIColor.whiteColor()
-        levelNumberLabel.textColor = UIColor.whiteColor()
-        
-        levelStringLabel.font = UIFont.boldSystemFontOfSize(14)
-        levelNumberLabel.font = UIFont.boldSystemFontOfSize(60)
         
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelStringLabel]))
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelNumberLabel]))
-        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-2-[numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
+        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel][numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[hexagonView]|", options: [], metrics: nil, views: ["hexagonView" : backgroundHexagonView]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[hexagonView]|", options: [], metrics: nil, views: ["hexagonView" : backgroundHexagonView]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[container]|", options: [], metrics: nil, views: ["container" : container]))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterX, relatedBy: .Equal, toItem: container, attribute: .CenterX, multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterY, relatedBy: .Equal, toItem: container, attribute: .CenterY, multiplier: 1, constant: 0))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[container]|", options: [], metrics: nil, views: ["container" : container]))
+        v_addCenterToParentContraintsToSubview(container)
     }
     
     /// MARK: Public Functions
@@ -175,10 +168,10 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// Starts the radial animation of the inner hexagon
     ///
     /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// - parameter endValue: A value between 0 and 1 determining how far around the circumference the animation will end
-    func animateProgress(duration: NSTimeInterval, endValue: CGFloat) {
-        currentProgress = endValue
-        animatingHexagonView.animateBorder(endValue, duration: duration)
+    /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
+    func animateProgress(duration: NSTimeInterval, endPercentage: Int) {
+        currentProgressPercentage = endPercentage
+        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration)
     }
     
     /// Resets progress bar back to zero
@@ -190,12 +183,14 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// MARK: Helpers
     
     private func configureWithDependencyManager(dependencyManager: VDependencyManager?) {
-        if let dependencyManager = dependencyManager {
-            minLevel = dependencyManager.numberForKey("minLevel").integerValue
-            color = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
-            animatedBorderColor = dependencyManager.colorForKey(VDependencyManagerSecondaryAccentColorKey)
-            levelNumberLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
-            levelStringLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+        guard let dependencyManager = dependencyManager else {
+            return
         }
+        
+        minLevel = dependencyManager.numberForKey("minLevel").integerValue
+        badgeBackgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
+        animatedBorderColor = dependencyManager.colorForKey(VDependencyManagerSecondaryAccentColorKey)
+        levelNumberLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+        levelStringLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
     }
 }
