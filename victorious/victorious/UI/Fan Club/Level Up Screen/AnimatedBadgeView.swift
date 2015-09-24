@@ -121,7 +121,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
             }
             let currentFontSize = levelNumberLabel.font.pointSize
             // Subtract a bit because boundingRectWithSize is inaccurate with large font sizes
-            let fontSizeOffset = currentFontSize - currentFontSize * 0.4
+            let fontSizeOffset = currentFontSize - currentFontSize * 0.3
             let boundingRect = String(levelNumberString).boundingRectWithSize(CGSize(width: bounds.width, height: CGFloat.max), options: [.UsesLineFragmentOrigin, .UsesFontLeading], attributes:[NSFontAttributeName : levelNumberLabel.font.fontWithSize(fontSizeOffset)], context:nil)
             numberHeightConstraint = NSLayoutConstraint(item: levelNumberLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: boundingRect.height)
             levelNumberLabel.addConstraint(numberHeightConstraint)
@@ -154,15 +154,10 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         
         levelStringLabel.textAlignment = .Center
         levelNumberLabel.textAlignment = .Center
-        levelStringLabel.textColor = UIColor.whiteColor()
-        levelNumberLabel.textColor = UIColor.whiteColor()
-        
-        levelStringLabel.font = UIFont.boldSystemFontOfSize(14)
-        levelNumberLabel.font = UIFont.boldSystemFontOfSize(60)
         
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelStringLabel]))
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelNumberLabel]))
-        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-2-[numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
+        container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel][numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
         
         addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[container]|", options: [], metrics: nil, views: ["container" : container]))
         v_addCenterToParentContraintsToSubview(container)
