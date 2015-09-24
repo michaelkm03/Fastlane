@@ -86,8 +86,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// The minimum level it takes to expose this badge view
     private(set) var minLevel = 0
     
-    /// A value between 0 and 1 representing where the progress indicator currently ends
-    private(set) var currentProgress: CGFloat = 0
+    /// A percentage between 0 and 100 representing where the progress indicator currently ends
+    private(set) var currentProgressPercentage: Int = 0
     
     /// Whether or not the progress bar is currently being animated
     var isAnimating: Bool {
@@ -173,10 +173,10 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// Starts the radial animation of the inner hexagon
     ///
     /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// - parameter endValue: A value between 0 and 1 determining how far around the circumference the animation will end
-    func animateProgress(duration: NSTimeInterval, endValue: CGFloat) {
-        currentProgress = endValue
-        animatingHexagonView.animateBorder(endValue, duration: duration)
+    /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
+    func animateProgress(duration: NSTimeInterval, endPercentage: Int) {
+        currentProgressPercentage = endPercentage
+        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration)
     }
     
     /// MARK: Helpers

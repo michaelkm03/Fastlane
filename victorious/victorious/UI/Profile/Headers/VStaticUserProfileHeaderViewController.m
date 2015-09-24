@@ -48,6 +48,9 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         self.state = self.state; // Trigger a state refresh
     }
+    
+    // Setup badge view
+    [self updateBadgeView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -111,8 +114,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     if (self.badgeView != nil && self.state == VUserProfileHeaderStateCurrentUser && !self.badgeView.isAnimating)
     {
         // Animate progress towards next level for current user's profile
-        CGFloat progressRatio = self.user.levelProgressPercentage.floatValue / 100;
-        [self.badgeView animateProgress:levelProgressAnimationTime * progressRatio endValue:progressRatio];
+        NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
+        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage];
     }
 }
 
@@ -134,7 +137,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 - (BOOL)badgeNeedsToBeUpdated
 {
-    BOOL progressDiffers = self.user.levelProgressPercentage.floatValue / 100 != self.badgeView.currentProgress;
+    BOOL progressDiffers = self.user.levelProgressPercentage.integerValue != self.badgeView.currentProgressPercentage;
     BOOL levelDiffers = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue];
     return (progressDiffers || levelDiffers) && !self.badgeView.isAnimating;
     

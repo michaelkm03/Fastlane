@@ -394,11 +394,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                   forceReload:forceReload
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         [self.profileHeaderViewController updateLevelViews];
          [self.retryHUD hide:YES];
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
+         [self.profileHeaderViewController updateLevelViews];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
