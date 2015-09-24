@@ -227,6 +227,7 @@
         case VFocusTypeDetail:
             if ( self.onlyShowPreview )
             {
+                // If we were previously only showing the preview, now we need to load the video asset
                 [self loadVideoAsset];
             }
             [self setBackgroundContainerViewVisible:YES];

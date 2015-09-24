@@ -24,7 +24,7 @@ import UIKit
 /// A generic video toolbar with controls for play, pause, seek (scrub), timeline and current time text.
 class VideoToolbarView: UIView {
     
-    var delegate: VideoToolbarDelegate?
+    weak var delegate: VideoToolbarDelegate?
     
     private var autoVisbilityTimer = VTimerManager()
     

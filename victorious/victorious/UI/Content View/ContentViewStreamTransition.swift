@@ -99,8 +99,6 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 fatalError( "Missing references required for transition animation" )
         }
         
-        contentPreviewProvider.getPreviewView().focusType = .Stream
-        
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
             usingSpringWithDamping: 0.9,

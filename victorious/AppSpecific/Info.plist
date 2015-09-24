@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}victorious</string>
+	<string>${ProductPrefix}Victorians</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}victorious</string>
+	<string>com.getvictorious.${ProductPrefix}ivictorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -29,11 +29,11 @@
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>Debug Victorious</string>
+	<string>Victorians</string>
 	<key>FacebookAppID</key>
-	<string>664946900317058</string>
+	<string>816327885127751</string>
 	<key>FacebookDisplayName</key>
-	<string>Victorious-dev</string>
+	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -66,9 +66,9 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>LubB9WRysMX1Q2oE5Q15VDS9J</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<string>AYlYTpHwc0B5QkSpifyDmVRrM29ZXLWgIovXc7CyZBf36wTFW2</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>

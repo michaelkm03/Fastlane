@@ -97,6 +97,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.largePlayButton.backgroundColor = [UIColor clearColor];
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
+    self.largePlayButton.userInteractionEnabled = NO;
 }
 
 - (void)onContentTap
@@ -178,10 +179,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 {
     if ( self.focusType == VFocusTypeDetail )
     {
+        self.largePlayButton.userInteractionEnabled = YES;
         self.largePlayButton.hidden = !((self.state == VVideoStateEnded || self.state == VVideoStateNotStarted) && ![self shouldLoop]);
     }
     else
     {
+        self.largePlayButton.userInteractionEnabled = NO;
         self.largePlayButton.hidden = !(self.state == VVideoStateNotStarted && ![self shouldAutoplay]);
     }
     
@@ -208,7 +211,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     super.focusType = focusType;
     
     [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
-    [self setGesturesEnabled:YES];
+    [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
     
     if ( ![self shouldAutoplay] && focusType != VFocusTypeDetail)
     {
