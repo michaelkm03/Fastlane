@@ -221,10 +221,14 @@ class GIFSearchDataSource: NSObject {
         }
         let prevSectionCount = self.sections.count
         for var i = 0; i < results.count; i+=2 {
-            var resultsForSection = [results[i]];
-            if i + 1 < results.count {
-                resultsForSection.append(results[i+1])
-            }
+            let resultsForSection: [GIFSearchResult] = {
+                if i + 1 < results.count {
+                    return [results[i], results[i+1]]
+                }
+                else {
+                    return [results[i]]
+                }
+            }()
             
             let section = Section( results:resultsForSection, isFullSize: false )
             self.sections.append( section )
