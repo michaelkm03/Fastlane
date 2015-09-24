@@ -42,11 +42,11 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// Color of the badge
-    var color: UIColor? = UIColor.redColor() {
+    var badgeBackgroundColor: UIColor? {
         didSet {
-            if let color = color {
-                backgroundHexagonView.fillColor = color
-                animatingHexagonView.fillColor = color
+            if let badgeBackgroundColor = badgeBackgroundColor {
+                backgroundHexagonView.fillColor = badgeBackgroundColor
+                animatingHexagonView.fillColor = badgeBackgroundColor
             }
         }
     }
@@ -60,7 +60,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// Color of the progress indicator
-    var animatedBorderColor: UIColor? = UIColor.whiteColor() {
+    var animatedBorderColor: UIColor? {
         didSet {
             if let animatedBorderColor = animatedBorderColor {
                 animatingHexagonView.strokeColor = animatedBorderColor
@@ -136,12 +136,13 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     
     func sharedInit() {
         
-        self.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clearColor()
         
         backgroundHexagonView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(backgroundHexagonView)
+        addSubview(backgroundHexagonView)
+        v_addFitToParentConstraintsToSubview(backgroundHexagonView)
         
-        self.addSubview(animatingHexagonView)
+        addSubview(animatingHexagonView)
         
         levelStringLabel.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(levelStringLabel)
@@ -149,7 +150,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         container.addSubview(levelNumberLabel)
         
         container.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(container)
+        addSubview(container)
         
         levelStringLabel.textAlignment = .Center
         levelNumberLabel.textAlignment = .Center
@@ -163,11 +164,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[label]|", options: [], metrics: nil, views: ["label" : levelNumberLabel]))
         container.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stLabel]-2-[numLabel]|", options: [], metrics: nil, views: ["stLabel" : levelStringLabel, "numLabel" : levelNumberLabel]))
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[hexagonView]|", options: [], metrics: nil, views: ["hexagonView" : backgroundHexagonView]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[hexagonView]|", options: [], metrics: nil, views: ["hexagonView" : backgroundHexagonView]))
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[container]|", options: [], metrics: nil, views: ["container" : container]))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterX, relatedBy: .Equal, toItem: container, attribute: .CenterX, multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterY, relatedBy: .Equal, toItem: container, attribute: .CenterY, multiplier: 1, constant: 0))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[container]|", options: [], metrics: nil, views: ["container" : container]))
+        v_addCenterToParentContraintsToSubview(container)
     }
     
     /// MARK: Public Functions
@@ -184,12 +182,14 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// MARK: Helpers
     
     private func configureWithDependencyManager(dependencyManager: VDependencyManager?) {
-        if let dependencyManager = dependencyManager {
-            minLevel = dependencyManager.numberForKey("minLevel").integerValue
-            color = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
-            animatedBorderColor = dependencyManager.colorForKey(VDependencyManagerSecondaryAccentColorKey)
-            levelNumberLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
-            levelStringLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+        guard let dependencyManager = dependencyManager else {
+            return
         }
+        
+        minLevel = dependencyManager.numberForKey("minLevel").integerValue
+        badgeBackgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
+        animatedBorderColor = dependencyManager.colorForKey(VDependencyManagerSecondaryAccentColorKey)
+        levelNumberLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+        levelStringLabel.textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
     }
 }

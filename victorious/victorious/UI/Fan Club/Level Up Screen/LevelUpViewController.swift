@@ -112,7 +112,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 descriptionLabel.textColor = dependencyManager.textColor
                 badgeView.levelStringLabel.textColor = dependencyManager.badgeTextColor
                 badgeView.levelNumberLabel.textColor = dependencyManager.badgeTextColor
-                badgeView.color = dependencyManager.badgeColor
+                badgeView.badgeBackgroundColor = dependencyManager.badgeColor
             }
         }
     }

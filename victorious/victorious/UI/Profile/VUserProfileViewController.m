@@ -394,6 +394,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                   forceReload:forceReload
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         [self.profileHeaderViewController updateLevelViews];
          [self.retryHUD hide:YES];
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
@@ -485,7 +486,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 {
                     completionBlock();
                 }
-                [self.profileHeaderViewController updateLevelViews];
                 [self.profileHeaderViewController reloadProfileImage];
                 [self reloadUserFollowingRelationship];
             };

@@ -48,8 +48,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         self.state = self.state; // Trigger a state refresh
     }
-    
-    [self updateBadgeView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -89,8 +87,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         if (self.user.isCreator.boolValue)
         {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
-            return imageView;
+            return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
         }
         else
         {
