@@ -21,6 +21,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
     private var blurredImageView = UIImageView()
+    private let colorCache = NSCache()
     
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
@@ -110,8 +111,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
         if let image = image, url = url {
             
-            if let color = image.dominantColors().first {
+            let colorCacheKey = url.absoluteString
+            
+            if let cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
+                self.gradient.primaryColor = cachedColor
+            }
+            else if let color = image.dominantColors(accuracy: .Low).first {
                 self.gradient.primaryColor = color
+                colorCache.setObject(color, forKey: colorCacheKey)
             }
             
             let finish = { (blurredImage: UIImage) -> Void in
