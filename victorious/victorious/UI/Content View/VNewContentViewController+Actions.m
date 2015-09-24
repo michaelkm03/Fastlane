@@ -22,9 +22,6 @@
 #import "VUser.h"
 #import "VSequence+Fetcher.h"
 
-// Activities
-#import "VFacebookActivity.h"
-
 //Views
 #import "VNoContentView.h"
 

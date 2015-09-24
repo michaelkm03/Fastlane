@@ -459,10 +459,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
 - (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController
 {
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
-    if (prefersNavigationBarHidden)
-    {
-        return;
-    }
     
     UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
     
@@ -482,7 +478,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
             }
         }
         // Updating with a valid newSupplementaryHeaderView
-        else
+        else if ( !prefersNavigationBarHidden )
         {
             if ( viewController.transitionCoordinator == nil )
             {
