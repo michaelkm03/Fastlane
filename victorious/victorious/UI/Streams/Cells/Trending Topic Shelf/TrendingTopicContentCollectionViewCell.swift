@@ -22,6 +22,9 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private var label = UILabel()
     private var blurredImageView = UIImageView()
     
+    // A cache to check for the dominant color in the preview image
+    var colorCache: NSCache?
+    
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
         blurMask.primaryColor = UIColor.blackColor()
@@ -108,29 +111,39 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
-        if let image = image, url = url {
-            
-            if let color = image.dominantColors().first {
-                self.gradient.primaryColor = color
-            }
-            
-            let finish = { (blurredImage: UIImage) -> Void in
+        
+        guard let image = image, url = url else {
+            return
+        }
+        
+        let colorCacheKey = url.absoluteString
+        
+        if let colorCache = colorCache, cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
+            gradient.primaryColor = cachedColor
+        }
+        else if let color = image.dominantColors(accuracy: .Low).first {
+            gradient.primaryColor = color
+            colorCache?.setObject(color, forKey: colorCacheKey)
+        }
+        
+        let finish = { (blurredImage: UIImage) -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
                 self.blurredImageView.image = blurredImage
                 self.blurredImageView.layer.mask = self.blurMask.layer
                 self.updateToReadyState(animated)
             }
-            
-            let cacheIdentifier = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
-            
-            if let cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
-                finish(cachedImage)
-            }
-            
-            // Blur the preview image
-            self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
-                SDWebImageManager.sharedManager().imageCache.storeImage(img, forKey: cacheIdentifier)
-                finish(img)
-            })
+        }
+        
+        let cacheIdentifier = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
+        
+        if let cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
+            finish(cachedImage)
+        }
+        
+        // Blur the preview image
+        self.blurredImageView.blurImage(image, withTintColor: nil) { img in
+            SDWebImageManager.sharedManager().imageCache.storeImage(img, forKey: cacheIdentifier)
+            finish(img)
         }
     }
     
