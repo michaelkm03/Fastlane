@@ -9,6 +9,12 @@
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
 
+@interface VExploreSearchResultsViewController ()
+
+@property (nonatomic, strong) NSString *lastSearchText;
+
+@end
+
 @implementation VExploreSearchResultsViewController
 
 #pragma mark - Factory Methods
@@ -43,7 +49,7 @@
     [self textFieldShouldClear:nil];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if (searchBar.text.length > 0)
     {

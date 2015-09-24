@@ -126,7 +126,7 @@
 
 #pragma mark - TableView Datasource
 
-- (void)setSearchResults:(NSMutableArray *)searchResults
+- (void)setSearchResults:(NSArray *)searchResults
 {
     _searchResults = searchResults;
     

@@ -35,6 +35,7 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
  */
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)clearSearchResults;
 - (void)userSearch:(NSString *)userName;
 - (void)hashtagSearch:(NSString *)tagName;
 - (BOOL)textFieldShouldClear:(UITextField *)textField;

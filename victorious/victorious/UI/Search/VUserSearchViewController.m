@@ -58,6 +58,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *vrWidthConstraint;
 @property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
 
+@property (nonatomic, strong) NSString *validSearchText;
 @property (nonatomic, strong) NSArray *foundUsers;
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
@@ -197,19 +198,6 @@ static const NSInteger kSearchResultLimit = 100;
     }
 }
 
-- (void)typingTimerCheck:(id)sender
-{
-    if (self.typeDelay)
-    {
-        if ([self.typeDelay isValid])
-        {
-            [self.typeDelay invalidate];
-        }
-        self.typeDelay = nil;
-    }
-    self.typeDelay = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(runUserSearch:) userInfo:nil repeats:NO];
-}
-
 - (IBAction)closeButtonAction:(id)sender
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -223,32 +211,46 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)runUserSearch:(id)sender
 {
+    self.foundUsers = [[NSArray alloc] init];
+    [self.tableView reloadData];
+    
+    self.validSearchText = self.searchField.text;
+    NSString *validSearchSentinel = [self.validSearchText copy];
+    __weak typeof(self) welf = self;
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.foundUsers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self setHaveSearchResults:self.foundUsers.count];
-        self.tableView.hidden = NO;
-        [self.tableView reloadData];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.activityIndicatorView stopAnimating];
+        NSArray *sortedUsers =  [resultObjects sortedArrayUsingDescriptors:@[sort]];
+
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.foundUsers = sortedUsers;
+            [self setHaveSearchResults:self.foundUsers.count];
+            
+            if ([validSearchSentinel isEqualToString:welf.validSearchText])
+            {
+                self.tableView.hidden = NO;
+                [self.tableView reloadData];
+                [self.activityIndicatorView stopAnimating];
+            }
         });
     };
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
-        [self setHaveSearchResults:NO];
-        self.tableView.hidden = YES;
-        if (error.code)
+        dispatch_async(dispatch_get_main_queue(), ^
         {
-            self.foundUsers = [[NSArray alloc] init];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setHaveSearchResults:NO];
+            self.tableView.hidden = YES;
+            if (error.code)
+            {
+                self.foundUsers = [[NSArray alloc] init];
+            }
+
             [self.activityIndicatorView stopAnimating];
         });
     };
-
+    
     if ([self.searchField.text length] > 0)
     {
         [self.activityIndicatorView startAnimating];
@@ -261,9 +263,7 @@ static const NSInteger kSearchResultLimit = 100;
     }
     else
     {
-        self.foundUsers = [[NSArray alloc] init];
         self.tableView.hidden = YES;
-        
     }
 }
 
@@ -322,6 +322,13 @@ static const NSInteger kSearchResultLimit = 100;
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - UITextField Notification Handlers
+
+- (void)textFieldDidChange:(NSNotification *)textDidChange
+{
+    [self runUserSearch:nil];
 }
 
 #pragma mark - VFollowResponder

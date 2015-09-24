@@ -227,6 +227,12 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 #pragma mark - Search Actions
 
+- (void)clearSearchResults
+{
+    [self.userSearchResultsVC setSearchResults:@[]];
+    [self.tagsSearchResultsVC setSearchResults:@[]];
+}
+
 - (void)hashtagSearch:(NSString *)tagName
 {
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
