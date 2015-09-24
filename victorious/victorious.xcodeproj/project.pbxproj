@@ -197,8 +197,6 @@
 		036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38231A0C4DE90014DF66 /* JosefinSans-SemiBold.ttf */; };
 		036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38251A0C4DE90014DF66 /* JosefinSlab-Bold.ttf */; };
 		036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38261A0C4DE90014DF66 /* JosefinSlab-SemiBold.ttf */; };
-		036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38281A0C4DE90014DF66 /* Junction-bold.otf */; };
-		036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38291A0C4DE90014DF66 /* Junction-regular.otf */; };
 		036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382B1A0C4DE90014DF66 /* Jura-DemiBold.ttf */; };
 		036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382C1A0C4DE90014DF66 /* Jura-Medium.ttf */; };
 		036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382E1A0C4DE90014DF66 /* Kreon-Bold.ttf */; };
@@ -1238,8 +1236,8 @@
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */; };
-		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A34A8D1BA24290000D70EF /* RecentPostsExploreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */; };
+		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
@@ -1673,8 +1671,6 @@
 		036F38231A0C4DE90014DF66 /* JosefinSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		036F38251A0C4DE90014DF66 /* JosefinSlab-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSlab-Bold.ttf"; sourceTree = "<group>"; };
 		036F38261A0C4DE90014DF66 /* JosefinSlab-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSlab-SemiBold.ttf"; sourceTree = "<group>"; };
-		036F38281A0C4DE90014DF66 /* Junction-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Junction-bold.otf"; sourceTree = "<group>"; };
-		036F38291A0C4DE90014DF66 /* Junction-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Junction-regular.otf"; sourceTree = "<group>"; };
 		036F382B1A0C4DE90014DF66 /* Jura-DemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jura-DemiBold.ttf"; sourceTree = "<group>"; };
 		036F382C1A0C4DE90014DF66 /* Jura-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jura-Medium.ttf"; sourceTree = "<group>"; };
 		036F382E1A0C4DE90014DF66 /* Kreon-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kreon-Bold.ttf"; sourceTree = "<group>"; };
@@ -3552,10 +3548,10 @@
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
-		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvatarLevelBadgeView.swift; path = "Avatar Badging/AvatarLevelBadgeView.swift"; sourceTree = "<group>"; };
-		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBadgeImageType.h; path = "Avatar Badging/VBadgeImageType.h"; sourceTree = "<group>"; };
 		F0A34A891BA24274000D70EF /* CHTCollectionViewWaterfallLayout+ColumnAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"; sourceTree = "<group>"; };
 		F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentPostsExploreHeaderView.swift; sourceTree = "<group>"; };
+		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvatarLevelBadgeView.swift; path = "Avatar Badging/AvatarLevelBadgeView.swift"; sourceTree = "<group>"; };
+		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBadgeImageType.h; path = "Avatar Badging/VBadgeImageType.h"; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
@@ -4580,15 +4576,6 @@
 			path = JosefinSlab;
 			sourceTree = "<group>";
 		};
-		036F38271A0C4DE90014DF66 /* Junction */ = {
-			isa = PBXGroup;
-			children = (
-				036F38281A0C4DE90014DF66 /* Junction-bold.otf */,
-				036F38291A0C4DE90014DF66 /* Junction-regular.otf */,
-			);
-			path = Junction;
-			sourceTree = "<group>";
-		};
 		036F382A1A0C4DE90014DF66 /* Jura */ = {
 			isa = PBXGroup;
 			children = (
@@ -5031,7 +5018,6 @@
 				03C1856319B42C9100E27D05 /* Impact */,
 				036F38211A0C4DE90014DF66 /* JosefinSans */,
 				036F38241A0C4DE90014DF66 /* JosefinSlab */,
-				036F38271A0C4DE90014DF66 /* Junction */,
 				036F382A1A0C4DE90014DF66 /* Jura */,
 				036F382D1A0C4DE90014DF66 /* Kreon */,
 				036F38301A0C4DE90014DF66 /* Lato */,
@@ -8488,7 +8474,6 @@
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
-				036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */,
 				F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
@@ -8526,7 +8511,6 @@
 				C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */,
 				0366EAE51B67E89C0073A233 /* EndCard.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
-				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */,
