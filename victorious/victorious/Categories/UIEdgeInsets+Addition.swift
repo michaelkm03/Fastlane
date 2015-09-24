@@ -1,5 +1,5 @@
 //
-//  OverloadedOperators.swift
+//  UIEdgeInsets+Addition.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 8/30/15.
