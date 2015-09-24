@@ -53,9 +53,9 @@ def fetchAppList(server):
         print 'id   Build Name                              Name                                    Status\n---------------------------------------------------------------------------------------------'
         for app in json_obj['payload']:
             app_id = app['app_id']
-            app_state = app['app_state']
-            app_name = app['app_name']
-            build_name = app['build_name']
+            app_state = app['app_state'] or ""
+            app_name = app['app_name'] or ""
+            build_name = app['build_name'] or ""
 
             if app_state == vams._STATE_LOCKED:
                 state = ccodes.ColorCodes.FAIL + app_state.upper() + ccodes.ColorCodes.ENDC
