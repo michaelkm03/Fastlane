@@ -124,7 +124,7 @@ extension InterstitialManager {
     func registerTestAchievementAlert() {
         #if V_SHOW_TEST_ALERT_SETTINGS
             self.shouldRegisterInterstitials = false
-            let params = ["type" : "achievement", "params" : ["level" : ["number" : 5, "tier" : "Bronze", "name" : "Level 5", "progressPercentage" : 70], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icon" : "http://i.imgur.com/4V0xxZC.png"]]
+            let params = ["type" : "achievement", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icon" : "http://i.imgur.com/4V0xxZC.png"]]
             VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
                 self.shouldRegisterInterstitials = true
                 }) { (op, err) -> Void in

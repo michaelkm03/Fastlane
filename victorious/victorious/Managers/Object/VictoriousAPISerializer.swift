@@ -82,9 +82,10 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
     ///
     /// - parameter configuration: A JSON dictionary containing all the configuration info for an achievement interstitial. If this information is invalid, this method returns nil.
     private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> AchievementInterstitial? {
-        if let levelInfo = paramsDict["level"] as? [String : AnyObject],
-            let levelNumber = levelInfo["number"] as? Int,
-            let progressPercentage = levelInfo["progressPercentage"] as? Int,
+        if let userInfo = paramsDict["user"] as? [String : AnyObject],
+            let levelInfo = userInfo["fanloyalty"] as? [String : AnyObject],
+            let levelNumber = levelInfo["level"] as? Int,
+            let progressPercentage = levelInfo["progress"] as? Int,
             let title = paramsDict["title"] as? String,
             let description = paramsDict["description"] as? String,
             let iconString = paramsDict["icon"] as? String,

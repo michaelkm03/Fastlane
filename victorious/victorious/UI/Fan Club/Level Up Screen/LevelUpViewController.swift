@@ -93,7 +93,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 if let levelNumber = Int(levelUpInterstitial.level)  {
                     badgeView?.levelNumberString = String(levelNumber - 1)
                 }
-                badgeView?.title = NSLocalizedString("LEVEL", comment: "")
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons

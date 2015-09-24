@@ -8,12 +8,17 @@
 
 import Foundation
 
+private struct AchievementConstants {
+    static let animatedBadgeKey = "animatedBadge"
+}
+
 class AchievementViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
         static let dismissalDuration = 0.2
         static let containerWidth: CGFloat = 292
+        static let badgeAnimationTotalDuration = 2.0
     }
     
     private let achievementAnimator = AchievementAnimator()
@@ -23,7 +28,6 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private var animatedBadge: AnimatedBadgeView?
-    private let animatedBadgeKey = "animatedBadge"
     
     private var hasAppeared = false
     
@@ -35,6 +39,8 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
                 descriptionLabel.text = achievementInterstitial.description
                 titleLabel.text = achievementInterstitial.title
                 iconImageView.setImageWithURL(achievementInterstitial.icon)
+                
+                animatedBadge?.levelNumberString = String(achievementInterstitial.level)
             }
         }
     }
@@ -50,14 +56,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
                 dismissButton.setTitleColor(dependencyManager.dismissButtonTitleColor.colorWithAlphaComponent(0.5), forState: .Highlighted)
                 dismissButton.titleLabel?.font = dependencyManager.dismissButtonTitleFont
                 dependencyManager.addBackgroundToBackgroundHost(self)
-                
-                // Initialize our animated badge view component
-                guard let badgeView = dependencyManager.templateValueOfType(AnimatedBadgeView.self, forKey: animatedBadgeKey) as? AnimatedBadgeView else {
-                    return
-                }
-                
-                // Set our animated badge property
-                animatedBadge = badgeView
+                animatedBadge = dependencyManager.animatedBadge
             }
         }
     }
@@ -78,7 +77,10 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn()
+            animateIn() { completed in
+                let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
+                self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage)
+            }
         }
     }
     
@@ -153,11 +155,11 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     /// MARK: Helpers
     
-    private func animateIn() {
+    private func animateIn(completion: ((Bool) -> Void)?) {
         
         UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: .CurveEaseInOut, animations: {
             self.containerView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+            }, completion: completion)
     }
     
     private func animateOut(completion: ((Bool) -> Void)?) {
@@ -217,5 +219,21 @@ private extension VDependencyManager {
     
     var dismissButtonTitle: String {
         return self.stringForKey("button.title")
+    }
+    
+    var animatedBadge: AnimatedBadgeView? {
+        
+        // Initialize our animated badge view component
+        guard let badgeView = self.templateValueOfType(AnimatedBadgeView.self, forKey: AchievementConstants.animatedBadgeKey) as? AnimatedBadgeView else {
+            return nil
+        }
+        
+        // Set our animated badge property
+        badgeView.progressBarInset = 3
+        badgeView.animatedBorderWidth = 3
+        badgeView.cornerRadius = 4
+        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 8)
+        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 18)
+        return badgeView
     }
 }
