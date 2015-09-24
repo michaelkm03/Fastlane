@@ -707,12 +707,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    // Don't hide the title when we are back at top triggered by setContentOffset to CGPointZero
-    if ( self.collectionView.contentOffset.y == 0 )
-    {
-        NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-        self.navigationItem.title = title;
-    }
+    // Hide title if necessary
+    [self updateTitleVisibilityWithVerticalOffset:scrollView.contentOffset.y];
 }
 
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
