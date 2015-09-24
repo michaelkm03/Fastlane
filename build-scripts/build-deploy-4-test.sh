@@ -44,14 +44,14 @@ if [ "device" == $Deploy ]; then
     fi
     dest="platform=iOS,id=$UDID"
 else
-    osvsn=`xcodebuild -showsdks | grep Simulator | tail -1 |  awk -F " " '{print $4}'` 
+    osvsn=`xcodebuild -showsdks | grep iphonesimulator | tail -1 |  awk -F " " '{print $4}'`
     dest='platform=iOS Simulator,name=iPhone 6,OS='$osvsn
 fi
 
 
 
 ### Clean
-xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "$dest" clean 
+xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "$dest" clean
 
 ### Build 
 xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "$dest"

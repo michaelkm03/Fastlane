@@ -13,7 +13,11 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 
 @interface VUserManager : NSObject
 
-+ (VUserManager *)sharedInstance;
+/**
+ if YES, native login will be used even if the powers that be try to disable
+ it. If NO, native login will follow the whims of the Facebook overlords.
+ */
+@property (nonatomic) BOOL forceNativeFacebookLogin;
 
 /**
  Log in using Facebook credentials

@@ -34,6 +34,7 @@ extern NSString * const VFollowSourceScreenStream;
 extern NSString * const VFollowSourceScreenTrendingUserShelf;
 extern NSString * const VFollowSourceScreenRecommendedUserShelf;
 extern NSString * const VFollowSourceScreenRegistrationSuggestedUsers;
+extern NSString * const VFollowSourceScreenSleekCell;
 // Untracked is used when a screen performs 'follow' action
 // through the responder chain unexpectedly. Instead of sending nil,
 // send this so we can track them down later
