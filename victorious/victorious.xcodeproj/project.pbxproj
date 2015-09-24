@@ -1160,7 +1160,7 @@
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
-		F027D8DF1B93A6FB00BC6322 /* OverloadedOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* OverloadedOperators.swift */; };
+		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
@@ -3424,7 +3424,7 @@
 		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
-		F027D8DE1B93A6FB00BC6322 /* OverloadedOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverloadedOperators.swift; sourceTree = "<group>"; };
+		F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Addition.swift"; sourceTree = "<group>"; };
 		F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.m"; sourceTree = "<group>"; };
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
@@ -5549,6 +5549,7 @@
 				A721E8D81B572453000B7901 /* UIColor+VBrightness.m */,
 				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
 				A721E8DA1B572453000B7901 /* UIColor+VHex.m */,
+				F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */,
 				A721E8DB1B572453000B7901 /* UIImage+Cropping.h */,
 				A721E8DC1B572453000B7901 /* UIImage+Cropping.m */,
 				A721E8DD1B572453000B7901 /* UIImage+ImageCreation.h */,
@@ -6628,7 +6629,6 @@
 				D800A6161AEEAA0F00F1A06A /* VCompatibility.h */,
 				0314D07719B4685C00FA363C /* VConstants.h */,
 				0314D07819B4685C00FA363C /* VConstants.m */,
-				F027D8DE1B93A6FB00BC6322 /* OverloadedOperators.swift */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -9270,7 +9270,7 @@
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
-				F027D8DF1B93A6FB00BC6322 /* OverloadedOperators.swift in Sources */,
+				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
 				A685A5D31B6801CF00389DA5 /* VInputAccessoryCollectionView.swift in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
