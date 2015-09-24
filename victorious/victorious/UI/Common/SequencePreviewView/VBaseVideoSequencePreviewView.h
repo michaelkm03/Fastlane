@@ -41,6 +41,8 @@
  */
 - (void)setBackgroundContainerViewVisible:(BOOL)visible;
 
+- (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame;
+
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, readonly) BOOL shouldAutoplay;

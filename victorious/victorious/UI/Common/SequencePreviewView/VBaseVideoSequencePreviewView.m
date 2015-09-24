@@ -45,16 +45,29 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
-        _videoPlayer = [[VVideoView alloc] initWithFrame:self.bounds];
+        _videoPlayer = [self createVideoPlayerWithFrame:frame];
+        _videoPlayer.view.frame = self.bounds;
         _videoPlayer.delegate = self;
-        [self addSubview:_videoPlayer.view];
-        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
         
         _videoSettings = [[VVideoSettings alloc] init];
         
         self.onlyShowPreview = YES;
     }
     return self;
+}
+
+- (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame
+{
+    return [[VVideoView alloc] initWithFrame:self.bounds];
+}
+
+- (void)updateVideoPlayerView
+{
+    if ( [_videoPlayer.view.superview isEqual:self] )
+    {
+        [self addSubview:_videoPlayer.view];
+        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
+    }
 }
 
 - (BOOL)shouldAutoplay
@@ -150,7 +163,7 @@
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    if (self.focusType)
+    if ( self.focusType != VFocusTypeNone )
     {
         [self setBackgroundContainerViewVisible:YES];
     }

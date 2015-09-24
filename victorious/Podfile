@@ -17,6 +17,7 @@ target :victorious do
     pod 'FBSDKLoginKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
     pod 'FBSDKShareKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
     pod 'CHTCollectionViewWaterfallLayout'
+    pod 'youtube-ios-player-helper'
     link_with 'victorious'
 
     target :test do

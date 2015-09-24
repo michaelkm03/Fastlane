@@ -17,7 +17,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VTabScaffoldViewController.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 

@@ -17,6 +17,7 @@
 #import "VFailureSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
 #import "VSequenceExpressionsObserver.h"
+#import "victorious-Swift.h"
 
 @interface VSequencePreviewView()
 
@@ -42,7 +43,11 @@
     }
     else if ([sequence isVideo])
     {
-        if ([sequence isGIFVideo])
+        if ( YES )
+        {
+            classType = [VRemoteVideoSequencePreviewView class];
+        }
+        else if ([sequence isGIFVideo])
         {
             classType = [VBaseVideoSequencePreviewView class];
         }
