@@ -21,7 +21,9 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
     private var blurredImageView = UIImageView()
-    private let colorCache = NSCache()
+    
+    // A cache to check for the dominant color in the preview image
+    var colorCache: NSCache?
     
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
@@ -116,18 +118,20 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         
         let colorCacheKey = url.absoluteString
         
-        if let cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
+        if let colorCache = colorCache, cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
             gradient.primaryColor = cachedColor
         }
         else if let color = image.dominantColors(accuracy: .Low).first {
             gradient.primaryColor = color
-            colorCache.setObject(color, forKey: colorCacheKey)
+            colorCache?.setObject(color, forKey: colorCacheKey)
         }
         
         let finish = { (blurredImage: UIImage) -> Void in
-            self.blurredImageView.image = blurredImage
-            self.blurredImageView.layer.mask = self.blurMask.layer
-            self.updateToReadyState(animated)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.blurredImageView.image = blurredImage
+                self.blurredImageView.layer.mask = self.blurMask.layer
+                self.updateToReadyState(animated)
+            }
         }
         
         let cacheIdentifier = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
