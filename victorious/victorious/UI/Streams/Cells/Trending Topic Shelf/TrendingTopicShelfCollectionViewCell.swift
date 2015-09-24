@@ -19,6 +19,8 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     // MARK: Properties
     
+    private let colorCache = NSCache()
+    
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .Horizontal
@@ -149,6 +151,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
         if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
+            cell.colorCache = colorCache
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager
             return cell
