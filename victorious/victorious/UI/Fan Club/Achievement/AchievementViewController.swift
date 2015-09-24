@@ -15,7 +15,7 @@ private struct AchievementConstants {
 class AchievementViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     struct AnimationConstants {
-        static let presentationDuration = 0.4
+        static let presentationDuration = 0.2
         static let dismissalDuration = 0.2
         static let containerWidth: CGFloat = 292
         static let badgeAnimationTotalDuration = 2.0
