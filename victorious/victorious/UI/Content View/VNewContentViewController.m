@@ -1296,7 +1296,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)experienceEnhancersDidUpdate
 {
-    // Do nothing, eventually a nice animation to reveal experience enhancers
+    NSInteger section = VContentViewSectionExperienceEnhancers;
+    if ( section < [self.contentCollectionView numberOfSections] )
+    {
+        [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
+    }
 }
 
 - (BOOL)isVideoContent
