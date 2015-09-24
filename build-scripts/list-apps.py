@@ -93,7 +93,7 @@ def showProperUsage():
         print ''
         print 'examples:'
         print my_name + '      <-- will use PRODUCTION'
-        print my_name + '      <-- will use QA'
+        print my_name + ' qa   <-- will use QA'
         print my_name + ' h    <-- Displays this help screen'
         print my_name + ' help <-- Displays this help screen'
         print ''
