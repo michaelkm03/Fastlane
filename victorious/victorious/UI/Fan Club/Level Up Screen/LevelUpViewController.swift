@@ -164,7 +164,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         super.viewDidAppear(animated)
         if !hasAppeared {
             animateIn({ (completed) in
-                self.badgeView.animateProgress(2, endValue: 1)
+                self.badgeView.animateProgress(2, endPercentage: 100)
                 dispatch_after(2) {
                     self.upgradeBadgeNumber()
                 }
@@ -174,14 +174,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     private func upgradeBadgeNumber() {
         
-        UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: [], animations: { () -> Void in
+        if let levelUpInterstitial = self.levelUpInterstitial {
+            self.badgeView.levelNumberString = levelUpInterstitial.level
+        }
+        UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: [], animations: {
             self.badgeView.transform = CGAffineTransformMakeScale(1.1, 1.1)
             }) { (completed) -> Void in
-                if let levelUpInterstitial = self.levelUpInterstitial {
-                    self.badgeView.levelNumberString = levelUpInterstitial.level
-                }
                 self.badgeView.resetProgress()
-                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
                     self.badgeView.transform = CGAffineTransformIdentity
                     }, completion: nil)
         }
