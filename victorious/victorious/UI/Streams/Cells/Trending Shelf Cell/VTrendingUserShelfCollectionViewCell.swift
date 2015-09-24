@@ -10,7 +10,7 @@ import UIKit
 
 /// Classes that conform to this protocol will receive messages when
 /// a user is selected from this shelf.
-@objc protocol VTrendingUserShelfResponder {
+protocol VTrendingUserShelfResponder {
     
     /// Sent when a user is selected from this shelf.
     ///
