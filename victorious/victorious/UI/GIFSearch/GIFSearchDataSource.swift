@@ -220,9 +220,13 @@ class GIFSearchDataSource: NSObject {
             self.sections = []
         }
         let prevSectionCount = self.sections.count
-        for var i = 0; i < results.count-1; i+=2 {
-            let results = [results[i], results[i+1]]
-            let section = Section( results:results, isFullSize: false )
+        for var i = 0; i < results.count; i+=2 {
+            var resultsForSection = [results[i]];
+            if i + 1 < results.count {
+                resultsForSection.append(results[i+1])
+            }
+            
+            let section = Section( results:resultsForSection, isFullSize: false )
             self.sections.append( section )
         }
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
