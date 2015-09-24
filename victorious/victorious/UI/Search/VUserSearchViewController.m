@@ -250,7 +250,7 @@ static const NSInteger kSearchResultLimit = 100;
             [self.activityIndicatorView stopAnimating];
         });
     };
-    
+
     if ([self.searchField.text length] > 0)
     {
         [self.activityIndicatorView startAnimating];
