@@ -178,6 +178,8 @@
 	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
+	<key>animated.badgeView</key>
+	<string>victorious.AnimatedBadgeView</string>
 	<key>achievement.interstitial</key>
 	<string>victorious.AchievementViewController</string>
 </dict>
