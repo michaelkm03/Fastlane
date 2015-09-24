@@ -16,12 +16,13 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         static let containerWidth: CGFloat = 292
     }
     
-    let achievementAnimator = AchievementAnimator()
-    let containerView = UIView()
-    let dismissButton = UIButton()
-    let iconImageView = UIImageView()
-    let titleLabel = UILabel()
-    let descriptionLabel = UILabel()
+    private let achievementAnimator = AchievementAnimator()
+    private let containerView = UIView()
+    private let dismissButton = UIButton()
+    private let iconImageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private let animatedBadge = AnimatedBadgeView()
     
     private var hasAppeared = false
     
@@ -109,6 +110,9 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[label]-10-|", options: [], metrics: nil, views: ["label" : titleLabel]))
         
+        containerView.addSubview(animatedBadge)
+        
+        
         containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[title]-20-[description][icon(135)][button(40)]|", options: [], metrics: nil, views: ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]))
     }
     
@@ -134,7 +138,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     }
     
     private func animateOut(completion: ((Bool) -> Void)?) {
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animateWithDuration(0.2, animations: { () in
             self.setToInitialState()
             }, completion: completion)
     }
