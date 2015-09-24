@@ -7,7 +7,7 @@
 //
 
 #import "TWAPIManager.h"
-#import "VFacebookManager.h"
+#import "victorious-swift.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -16,12 +16,15 @@
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
 
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
+
 typedef NS_ENUM(NSInteger, VLastLoginType)
 {
-    kVLastLoginTypeNone,
-    kVLastLoginTypeEmail,
-    kVLastLoginTypeFacebook,
-    kVLastLoginTypeTwitter
+    VLastLoginTypeNone,
+    VLastLoginTypeEmail,
+    VLastLoginTypeFacebook,
+    VLastLoginTypeTwitter
 };
 
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
@@ -29,205 +32,127 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
 static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
-static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
-
 @implementation VUserManager
-
-+ (VUserManager *)sharedInstance
-{
-    static VUserManager *sharedInstance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
-    {
-        sharedInstance = [[self alloc] init];
-    });
-                  
-    return sharedInstance;
-}
 
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
     NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-    switch ( loginType )
+    
+    if ( loginType == VLastLoginTypeFacebook && [FBSDKAccessToken currentAccessToken] != nil )
     {
-        case kVLastLoginTypeFacebook:
-        {
-            [self loginViaFacebookWithStoredToken:YES isModern:NO onCompletion:completion onError:errorBlock];
-            break;
-        }
-            
-        case kVLastLoginTypeTwitter:
-        {
-            [self loginViaTwitterAccountWithIdentifier:identifier isModern:NO onCompletion:completion onError:errorBlock];
-            break;
-        }
-        
-        case kVLastLoginTypeEmail:
-        {
-            NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-            NSString *password = [self passwordForEmail:email];
-            [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
-            break;
-        }
-            
-        case kVLastLoginTypeNone:
-        default:
-        {
-            if ( errorBlock != nil )
-            {
-                errorBlock( nil, NO );
-            }
-            break;
-        }
+        [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
     }
-}
-
-- (void)loginViaFacebookModern:(BOOL)isModern
-                  OnCompletion:(VUserManagerLoginCompletionBlock)completion
-                       onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    [self loginViaFacebookWithStoredToken:NO
-                                 isModern:isModern
-                             onCompletion:completion
-                                  onError:errorBlock];
+    else if ( loginType == VLastLoginTypeTwitter )
+    {
+        [self loginViaTwitterAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
+    }
+    else if ( loginType == VLastLoginTypeEmail )
+    {
+        NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
+        NSString *password = [self passwordForEmail:email];
+        [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
+    }
+    else if ( errorBlock != nil )
+    {
+        errorBlock( nil, NO );
+    }
 }
 
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaFacebookWithStoredToken:NO
-                                 isModern:NO
-                             onCompletion:completion
-                                  onError:errorBlock];
-}
-
-- (void)loginViaFacebookWithStoredToken:(BOOL)stored
-                               isModern:(BOOL)isModern
-                           onCompletion:(VUserManagerLoginCompletionBlock)completion
-                                onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    void (^successBlock)() = ^(void)
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    loginManager.forceNative = self.forceNativeFacebookLogin;
+    [loginManager logOut];
+    [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
+                        fromViewController:nil
+                                   handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
     {
-        __block BOOL isNewUser = YES;
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        if ( [FBSDKAccessToken currentAccessToken] != nil )
         {
-            NSDictionary *payload = ((NSDictionary *)fullResponse)[ @"payload" ];
-            isNewUser = ((NSNumber *)payload[ @"new_user" ]).boolValue;
-            
-            if ( isNewUser )
-            {
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                                   parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                                 VTrackingKeyPermissionName : VTrackingValueAuthorized }];
-            }
-            
-            VUser *user = [resultObjects firstObject];
-            if ([user isKindOfClass:[VUser class]])
-            {
-                NSString *eventName = isNewUser ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
-                [[VTrackingManager sharedInstance] trackEvent:eventName];
-                
-                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
-                                                           forKey:kLastLoginTypeUserDefaultsKey];
-                if (completion)
-                {
-                    completion(user, isNewUser);
-                }
-            }
-            else if (errorBlock)
-            {
-                errorBlock(nil, NO);
-            }
-        };
-        VFailBlock failed = ^(NSOperation *operation, NSError *error)
-        {
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                isNewUser = NO;
-                [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                            SuccessBlock:success
-                                                               failBlock:^(NSOperation *operation, NSError *error)
-                 {
-                     if (errorBlock)
-                     {
-                         errorBlock(error, NO);
-                     }
-                 }];
-            }
-            else if (errorBlock)
-            {
-                errorBlock(error, NO);
-            }
-            
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-        };
-        if (isModern)
-        {
-            [[VObjectManager sharedManager] modernCreateFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                             SuccessBlock:success
-                                                                failBlock:failed];
+            [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
         }
         else
         {
-            [[VObjectManager sharedManager]  createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
-            
+            if ( result.isCancelled )
+            {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                   parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                 VTrackingKeyPermissionName : VTrackingValueDenied }];
+            }
+            if (errorBlock)
+            {
+                errorBlock(error, NO);
+            }
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
         }
-    };
-    
-    void (^failureBlock)() = ^(NSError *error)
+    }];
+}
+
+- (void)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                                            onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    __block BOOL isNewUser = YES;
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        BOOL systemLoginDidFail = error.code == kFacebookSystemLoginCancelledErrorCode;
-        BOOL webFallbackLoginDidFail = error == nil;
-        if ( systemLoginDidFail || webFallbackLoginDidFail )
+        NSDictionary *payload = ((NSDictionary *)fullResponse)[ @"payload" ];
+        isNewUser = ((NSNumber *)payload[ @"new_user" ]).boolValue;
+        
+        if ( isNewUser )
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
                                                parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                             VTrackingKeyPermissionName : VTrackingValueDenied }];
+                                                             VTrackingKeyPermissionName : VTrackingValueAuthorized }];
         }
         
-        if (errorBlock)
+        VUser *user = [resultObjects firstObject];
+        if ([user isKindOfClass:[VUser class]])
         {
-            errorBlock(error, YES);
+            NSString *eventName = isNewUser ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
+            [[VTrackingManager sharedInstance] trackEvent:eventName];
+            
+            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeFacebook
+                                                       forKey:kLastLoginTypeUserDefaultsKey];
+            if (completion)
+            {
+                completion(user, isNewUser);
+            }
+        }
+        else if (errorBlock)
+        {
+            errorBlock(nil, NO);
         }
     };
-
-    if (stored)
+    VFailBlock failed = ^(NSOperation *operation, NSError *error)
     {
-        [[VFacebookManager sharedFacebookManager] loginWithStoredTokenOnSuccess:successBlock onFailure:failureBlock];
-    }
-    else
-    {
-        [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
-                                                          onSuccess:successBlock
-                                                          onFailure:failureBlock];
-    }
+        if ( errorBlock != nil )
+        {
+            errorBlock(error, NO);
+        }
+    };
+    [[VObjectManager sharedManager] createFacebookWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
+                                               successBlock:success
+                                                  failBlock:failed];
 }
 
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
-                            isModern:(BOOL)isModern
-                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                        onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:twitterID
-                                      isModern:isModern
                                   onCompletion:completion
                                        onError:errorBlock];
 }
 
-- (void)loginViaTwitterModern:(BOOL)isModern
-                 onCompletion:(VUserManagerLoginCompletionBlock)completion
-                      onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                            onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:nil
-                                      isModern:isModern
                                   onCompletion:completion
                                        onError:errorBlock];
 }
 
 - (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier
-                                    isModern:(BOOL)isModern
                                 onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
@@ -288,7 +213,7 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
             {
                 BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
                 
-                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeTwitter   forKey:kLastLoginTypeUserDefaultsKey];
+                [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter forKey:kLastLoginTypeUserDefaultsKey];
                 [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
                 
                 if (completion)
@@ -301,46 +226,17 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            VFailBlock blockFail = ^(NSOperation *operation, NSError *error)
+            if (errorBlock)
             {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
-            };
-             
-            if (error.code == kVAccountAlreadyExistsError)
-            {
-                [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
-                                                           accessSecret:tokenSecret
-                                                              twitterId:twitterId
-                                                           SuccessBlock:success failBlock:blockFail];
-            }
-            else
-            {
-                if (errorBlock)
-                {
-                    errorBlock(error, NO);
-                }
+                errorBlock(error, NO);
             }
         };
         
-        if (isModern)
-        {
-            [[VObjectManager sharedManager] modernCreateTwitterWithToken:oauthToken
-                                                            accessSecret:tokenSecret
-                                                               twitterId:twitterId
-                                                            SuccessBlock:success
-                                                               failBlock:failed];
-        }
-        else
-        {
-            [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                      accessSecret:tokenSecret
-                                                         twitterId:twitterId
-                                                      SuccessBlock:success
-                                                         failBlock:failed];
-        }
+        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                  accessSecret:tokenSecret
+                                                     twitterId:twitterId
+                                                  successBlock:success
+                                                     failBlock:failed];
     }];
 }
 
@@ -368,7 +264,7 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
             [self savePassword:password forEmail:email];
             
@@ -413,7 +309,7 @@ static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
             [self savePassword:password forEmail:email];
             

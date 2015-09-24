@@ -42,6 +42,7 @@
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowResponder.h"
+#import <KVOController/FBKVOController.h>
 
 @import KVOController;
 @import MBProgressHUD;
@@ -559,6 +560,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
     self.currentStream = [VStream streamForUser:self.user];
     
@@ -818,7 +820,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (context == VUserProfileAttributesContext)
     {
-        [self.collectionView reloadData];
+        [self reloadUserFollowingRelationship];
+        [self reloadUserFollowCounts];
         return;
     }
     

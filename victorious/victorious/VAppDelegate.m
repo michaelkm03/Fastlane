@@ -9,7 +9,6 @@
 #import "VAppDelegate.h"
 #import "VReachability.h"
 
-#import "VFacebookManager.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -25,11 +24,12 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "VFlurryTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "victorious-swift.h"
 
 @import AVFoundation;
+@import FBSDKCoreKit;
 @import MediaPlayer;
 @import CoreLocation;
 
@@ -58,11 +58,6 @@
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
-    VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
-    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
-    [flurryTracking enable];
-    [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
-
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
@@ -74,7 +69,7 @@
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
-    return YES;
+    return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
@@ -108,10 +103,12 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ([[VFacebookManager sharedFacebookManager] canOpenURL:url])
+    if ( [VFacebookHelper canOpenURL:url] )
     {
-        [[VFacebookManager sharedFacebookManager] openUrl:url];
-        return YES;
+        return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                              openURL:url
+                                                    sourceApplication:sourceApplication
+                                                           annotation:annotation];
     }
     
     [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];

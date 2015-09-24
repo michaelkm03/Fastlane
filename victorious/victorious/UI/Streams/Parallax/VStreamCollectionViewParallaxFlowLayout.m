@@ -24,7 +24,9 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *superAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *attributes = [[NSArray alloc] initWithArray:superAttributes copyItems:YES];
+    
     for (UICollectionViewLayoutAttributes *layoutAttributes in attributes)
     {
         if ( layoutAttributes.indexPath.row != 0 )
@@ -61,11 +63,6 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
     }
     
     return attributes;
-}
-
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [super layoutAttributesForItemAtIndexPath:indexPath];
 }
 
 @end

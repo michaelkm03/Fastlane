@@ -29,6 +29,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let streamATFThresholdKey = "streamAtfViewThreshold"
         static let userHashtagSearchKey = "userHashtagSearch"
         static let searchIconImageName = "D_search_small_icon"
+        static let searchClearImageName = "search_clear_icon"
         
         static let interItemSpace: CGFloat = 1
         static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(3, 0, 3, 0)
@@ -278,42 +279,63 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     /// MARK: Search bar management
     
     private func configureSearchBar() {
-        if let dependencyManager = self.dependencyManager,
-            searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
-            searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) {
-                
-            searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
-            searchResultsViewController?.navigationDelegate = self
-            searchController = UISearchController(searchResultsController: searchResultsViewController)
+        // Initialize searchResultsViewController and searchController
+        guard let dependencyManager = self.dependencyManager,
+              let searchConfiguration = dependencyManager.templateValueOfType(NSDictionary.self, forKey: Constants.userHashtagSearchKey) as? [NSObject : AnyObject],
+              let searchDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(searchConfiguration) else {
+                return
         }
         
+        searchResultsViewController = VExploreSearchResultsViewController.newWithDependencyManager(searchDependencyManager)
+        searchResultsViewController?.navigationDelegate = self
+        searchController = UISearchController(searchResultsController: searchResultsViewController)
+
+        // Configure searchController properties
         guard let searchController = searchController else {
             return
         }
+        
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         
+        // Configure searchBar properties
         let searchBar = searchController.searchBar
         searchBar.sizeToFit()
         searchBar.delegate = searchResultsViewController
+        searchBar.tintColor = dependencyManager.textColor
         navigationItem.titleView = searchBar
         
-        if let searchTextField = searchBar.v_textField,
-            let dependencyManager = self.dependencyManager {
-                searchTextField.font = dependencyManager.textFont
-                searchTextField.textColor = dependencyManager.textColor
-                searchTextField.backgroundColor = dependencyManager.backgroundColor
-                searchTextField.attributedPlaceholder = NSAttributedString(
-                    string: NSLocalizedString("Search people and hashtags", comment: ""),
-                    attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
-                )
-                
-                searchBar.tintColor = dependencyManager.textColor
-                if var image = UIImage(named: Constants.searchIconImageName) {
-                    image = image.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
-                    searchBar.setImage(image, forSearchBarIcon: .Search, state: .Normal)
-                }
+        // Configure appearance of search text field
+        guard let searchTextField = searchBar.v_textField else {
+            return
         }
+        
+        searchTextField.font = dependencyManager.textFont
+        searchTextField.textColor = dependencyManager.textColor
+        searchTextField.backgroundColor = dependencyManager.backgroundColor
+        searchTextField.attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString("Search people and hashtags", comment: ""),
+            attributes: [NSForegroundColorAttributeName: dependencyManager.placeHolderColor]
+        )
+        
+        // Set tinted image for magnifying glass icon and clear button
+        
+        // Made 2 UIImage instances with the same image asset because we cannot
+        // set the same instance for .Highlight and .Normal
+        guard var searchIconImage = UIImage(named: Constants.searchIconImageName),
+              var searchClearImageHighlighted = UIImage(named: Constants.searchClearImageName),
+              var searchClearImageNormal = UIImage(named: Constants.searchClearImageName) else {
+                return
+        }
+
+        searchIconImage = searchIconImage.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+        searchBar.setImage(searchIconImage, forSearchBarIcon: .Search, state: .Normal)
+        
+        searchClearImageHighlighted = searchClearImageHighlighted.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+        searchBar.setImage(searchClearImageHighlighted, forSearchBarIcon: .Clear, state: .Highlighted)
+        
+        searchClearImageNormal = searchClearImageNormal.v_tintedTemplateImageWithColor(dependencyManager.placeHolderColor)
+        searchBar.setImage(searchClearImageNormal, forSearchBarIcon: .Clear, state: .Normal)
     }
 }
 

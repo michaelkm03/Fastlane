@@ -14,6 +14,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 // Pods
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -88,9 +89,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
              return;
          }
          
-         [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                            isModern:YES
-                                                        OnCompletion:^(VUser *user, BOOL isNewUser)
+         [[[VUserManager alloc] init] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                      onCompletion:^(VUser *user, BOOL isNewUser)
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
@@ -121,8 +121,10 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaFacebookModern:YES
-                                             OnCompletion:^(VUser *user, BOOL isNewUser)
+    
+    VUserManager *userManager = [[VUserManager alloc] init];
+    userManager.forceNativeFacebookLogin = [self.dependencyManager shouldForceNativeFacebookLogin];
+    [userManager loginViaFacebookOnCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
@@ -152,9 +154,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaEmail:email
-                                        password:password
-                                    onCompletion:^(VUser *user, BOOL isNewUser)
+    [[[VUserManager alloc] init] loginViaEmail:email
+                                      password:password
+                                  onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
@@ -182,10 +184,10 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VUserManager sharedInstance] createEmailAccount:email
-                                             password:password
-                                             userName:nil
-                                         onCompletion:^(VUser *user, BOOL isNewUser)
+    [[[VUserManager alloc] init] createEmailAccount:email
+                                           password:password
+                                           userName:nil
+                                       onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {

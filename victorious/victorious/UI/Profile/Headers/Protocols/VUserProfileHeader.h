@@ -62,6 +62,9 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 @protocol VUserProfileHeader <NSObject>
 
+/**
+ Redownloads the profile image of the current user.
+ */
 - (void)reloadProfileImage;
 
 /**
@@ -92,6 +95,9 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 @property (nonatomic, assign) VUserProfileHeaderState state;
 
-- (UIView *)floatingProfileImage;
+/**
+ Returns the view that should move up into the navigation bar. Defaults to nil.
+ */
+@property (nonatomic, readonly) UIView *floatingProfileImage;
 
 @end

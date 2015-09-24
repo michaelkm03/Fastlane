@@ -369,9 +369,10 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         return self.showResetCoachmarks ? self.tableView.rowHeight : 0.0;
     }
-    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert && [VObjectManager sharedManager].mainUserLoggedIn)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        return self.showTestAlertCell ? self.tableView.rowHeight : 0.0;
+        BOOL shouldShow = self.showTestAlertCell && [VObjectManager sharedManager].mainUserLoggedIn;
+        return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
     {

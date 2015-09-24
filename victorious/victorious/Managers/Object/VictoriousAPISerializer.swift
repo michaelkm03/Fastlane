@@ -10,7 +10,7 @@ import Foundation
 
 /// An enum describing each type of supported interstitials
 private enum InterstitialType : String {
-    case LevelUp = "level"
+    case LevelUp = "levelUp"
     case Achievement = "achievement"
 }
 
