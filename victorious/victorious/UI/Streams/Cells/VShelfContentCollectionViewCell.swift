@@ -36,8 +36,10 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             previewView.removeFromSuperview()
             
             previewView = VStreamItemPreviewView(streamItem: streamItem)
-            previewView.dependencyManager = dependencyManager
-            updatePreviewView(streamItem)
+            if let dependencyManager = dependencyManager {
+                previewView.dependencyManager = dependencyManager
+                updatePreviewView(streamItem)
+            }
         }
     }
     
@@ -51,12 +53,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             
             if ( previewView.streamItem != streamItem )
             {
-                if let previewView = previewView as? VSequencePreviewView, sequence = streamItem as? VSequence {
-                    previewView.setSequence(sequence)
-                }
-                else {
-                    previewView.streamItem = streamItem
-                }
+                previewView.updateToStreamItem(streamItem)
             }
             
             if previewView.superview == nil {

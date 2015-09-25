@@ -10,4 +10,6 @@
 
 @interface VTextSequencePreviewView : VSequencePreviewView
 
+- (void)renderTextPostPreviewImageWithCompletion:(void(^)(UIImage *image))completion;
+
 @end

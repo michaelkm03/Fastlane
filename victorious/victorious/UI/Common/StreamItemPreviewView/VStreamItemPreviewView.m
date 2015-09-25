@@ -37,6 +37,18 @@
     return classType;
 }
 
+- (void)updateToStreamItem:(VStreamItem *)streamItem
+{
+    if ( [self isKindOfClass:[VSequencePreviewView class]] && [streamItem isKindOfClass:[VSequence class]] )
+    {
+        [(VSequencePreviewView *)self setSequence:(VSequence *)streamItem];
+    }
+    else
+    {
+        self.streamItem = streamItem;
+    }
+}
+
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;

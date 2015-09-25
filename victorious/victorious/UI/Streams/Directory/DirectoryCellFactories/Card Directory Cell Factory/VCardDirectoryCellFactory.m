@@ -64,7 +64,9 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     for ( VStreamItem *streamItem in streamItems )
     {
-        [collectionView registerNib:[VCardDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCardDirectoryCell reuseIdentifierForStreamItem:streamItem baseIdentifier:nil dependencyManager:self.dependencyManager]];
+        NSString *identifier = [VCardDirectoryCell reuseIdentifierForStreamItem:streamItem baseIdentifier:nil dependencyManager:self.dependencyManager];
+        [collectionView registerNib:[VCardDirectoryCell nibForCell] forCellWithReuseIdentifier:identifier];
+        NSLog(@"registering %@ for stream item %@", identifier, streamItem.remoteId);
     }
     [collectionView registerNib:[VCardSeeMoreDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCardSeeMoreDirectoryCell suggestedReuseIdentifier]];
 }
@@ -81,6 +83,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     }
     
     NSString *identifier = [VCardDirectoryCell reuseIdentifierForStreamItem:streamItem baseIdentifier:nil dependencyManager:self.dependencyManager];
+    NSLog(@"dequeueing %@ for stream item %@", identifier, streamItem.remoteId);
     VCardDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     [self.cellDecorator populateCell:cell withStreamItem:streamItem];
     [self.cellDecorator applyStyleToCell:cell withDependencyManager:self.dependencyManager];

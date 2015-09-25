@@ -56,7 +56,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.userStreamContainerView v_addFitToParentConstraintsToSubview:self.thumbnailsViewController.view];
     self.userStreamContainerView.backgroundColor = [UIColor clearColor];
     
-    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] init];
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithCollectionView:self.thumbnailsViewController.collectionView];
     self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
     [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
 }
@@ -72,6 +72,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     _dependencyManager = dependencyManager;
     self.followButton.dependencyManager = dependencyManager;
     [self applyStyle];
+    self.thumbnailsDataSource.dependencyManager = dependencyManager;
 }
 
 - (void)setUser:(VUser *)user

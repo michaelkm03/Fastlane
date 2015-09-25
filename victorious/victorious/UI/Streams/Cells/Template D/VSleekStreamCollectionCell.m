@@ -380,10 +380,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.previewView setDependencyManager:self.dependencyManager];
-    }
+    [self.previewView setDependencyManager:self.dependencyManager];
     if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
     {
         [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];

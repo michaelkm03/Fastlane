@@ -15,7 +15,7 @@
     dispatch_async(dispatch_get_main_queue(), ^
                    {
                        UIImage *image;
-                       UIGraphicsBeginImageContext(self.bounds.size);
+                       UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, [UIScreen mainScreen].scale);
                        [self.layer renderInContext:UIGraphicsGetCurrentContext()];
                        image = UIGraphicsGetImageFromCurrentImageContext();
                        UIGraphicsEndImageContext();

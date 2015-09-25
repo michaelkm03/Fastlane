@@ -40,6 +40,11 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 /**
  *  Use to update a streamItem preview view for a new streamItem.
  */
+- (void)updateToStreamItem:(VStreamItem *)streamItem;
+
+/**
+ *  For use by subclasses to maintain the currently displayed stream item.
+ */
 @property (nonatomic, strong, nullable) VStreamItem *streamItem;
 
 /**

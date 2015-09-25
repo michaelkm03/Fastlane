@@ -16,6 +16,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         static let blurCacheString = "_blurred"
     }
     
+    //Warning: NOT DONE HERE
     private var imageView = UIImageView()
     private var screenView = UIView()
     private var gradient = TrendingTopicGradientView()
@@ -39,11 +40,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
                 updateImageView(url: url)
             }
             else if let stream = streamItem as? VStream,
-                item = stream.streamItems.array.first as? VStreamItem,
-                previewUrlString = item.previewImagesObject as? String,
-                url = NSURL(string: previewUrlString) {
-                    
-                updateImageView(url: url)
+                     let item = stream.streamItems.array.first as? VStreamItem {
+                        if let previewUrlString = item.previewImagesObject as? String,
+                            let url = NSURL(string: previewUrlString) {
+                                
+                                updateImageView(url: url)
+                        } else if item.itemSubType == VStreamItemSubTypeText {
+
+                        }
             }
         }
     }
@@ -135,26 +139,20 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func updateToInitialState() {
-        imageView.alpha = 0
         screenView.alpha = 0
         blurredImageView.alpha = 0
         gradient.alpha = 0
         blurMask.alpha = 0
-        imageView.image = nil
     }
     
     private func updateToReadyState(animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.3 : 0, animations: { () -> Void in
-            self.imageView.alpha = 1
-            self.screenView.alpha = 1
-            self.blurredImageView.alpha = 1
-            self.gradient.alpha = 1
-            self.blurMask.alpha = 1
-        })
+        self.screenView.alpha = 1
+        self.blurredImageView.alpha = 1
+        self.gradient.alpha = 1
+        self.blurMask.alpha = 1
     }
     
     override func prepareForReuse() {
-        imageView.cancelImageRequestOperation()
         updateToInitialState()
     }
     
