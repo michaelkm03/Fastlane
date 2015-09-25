@@ -71,6 +71,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
+@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
@@ -369,6 +370,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ( self.previewView == nil && self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
@@ -384,7 +390,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [self.previewView setDependencyManager:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
-    self.previewContainer.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
@@ -595,6 +600,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 #pragma mark - VContentPreviewViewProvider
 
+- (void)relinquishPreviewView
+{
+    self.hasRelinquishedPreviewView = YES;
+}
+
 - (UIView *)getPreviewView
 {
     return self.previewView;
@@ -605,8 +615,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return self.previewView;
 }
 
-- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
+    self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }

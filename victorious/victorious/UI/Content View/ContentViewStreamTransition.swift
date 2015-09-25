@@ -12,11 +12,12 @@ import UIKit
 class ContentViewStreamTransition : NSObject, VAnimatedTransition {
     
     private let handoffController = ContentViewHandoffController()
+    private var initialPreviewViewFocusType: VFocusType?
     
     func canPerformCustomTransitionFrom(fromViewController: UIViewController?, to toViewController: UIViewController) -> Bool {
         for vc in [ fromViewController, Optional(toViewController) ] {
             if let contentViewController = (vc as? VNavigationController)?.innerNavigationController?.topViewController as? VNewContentViewController {
-                return contentViewController.viewModel.context.contentPreviewProvider?.getPreviewView() != nil
+                return contentViewController.viewModel.context.contentPreviewProvider != nil
             }
         }
         return false
@@ -40,7 +41,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 self.handoffController.tabbarHeight = scaffold.tabBarController?.tabBar.frame.height ?? 0.0
         }
         
-        // Mediate the handoff of views and setup of constraints
+        // Mediate the handoff of views and setup of constraints using the handoff controller
         self.handoffController.addPreviewView(
             fromProvider: previewProvider,
             toReceiver: previewReceiver,
@@ -49,6 +50,10 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         for layout in self.handoffController.sliceLayouts {
             layout.parent.layoutIfNeeded()
         }
+        
+        let previewView = previewProvider.getPreviewView()
+        self.initialPreviewViewFocusType = previewView.focusType
+        previewView.focusType = .Detail
     }
     
     func prepareForTransitionOut(model: VTransitionModel) {
@@ -59,6 +64,14 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         
         for view in self.handoffController.transitionSliceViews {
             view.hidden = false
+        }
+        
+        // Restore the focus type
+        if let navController = model.fromViewController as? VNavigationController,
+            let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
+            let initialPreviewViewFocusType = self.initialPreviewViewFocusType,
+            let previewView = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() {
+                previewView.focusType = initialPreviewViewFocusType
         }
     }
     
@@ -94,10 +107,10 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         
         guard let navController = model.fromViewController as? VNavigationController,
             let contentView = navController.innerNavigationController?.topViewController as? VNewContentViewController,
-            let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider,
-            let view = contentView.viewModel.context.contentPreviewProvider?.getPreviewView() else {
+            let contentPreviewProvider = contentView.viewModel.context.contentPreviewProvider else {
                 fatalError( "Missing references required for transition animation" )
         }
+        let previewView = contentPreviewProvider.getPreviewView()
         
         UIView.animateWithDuration( model.animationDuration,
             delay: 0.0,
@@ -119,7 +132,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 }
             },
             completion: { finished in
-                contentPreviewProvider.restorePreviewView( view )
+                contentPreviewProvider.restorePreviewView( previewView )
                 completion?(finished)
             }
         )

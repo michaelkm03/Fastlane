@@ -96,12 +96,13 @@
      }
                                  completion:^(UIImage *image)
      {
-         if ( self.focusType != VFocusTypeDetail )
+         if ( !self.hasDeterminedPreferredBackgroundColor )
          {
              CGFloat imageAspect = image.size.width / image.size.height;
              CGFloat containerAspect = CGRectGetWidth(self.previewImageView.frame) / CGRectGetHeight(self.previewImageView.frame);
-             self.useLightBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
+             self.usePreferredBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
              [self updateBackgroundColorAnimated:NO];
+             self.hasDeterminedPreferredBackgroundColor = YES;
          }
          self.readyForDisplay = YES;
      }];

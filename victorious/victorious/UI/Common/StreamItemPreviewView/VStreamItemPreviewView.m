@@ -42,6 +42,16 @@
     return classType;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if ( self != nil )
+    {
+        _streamBackgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+    }
+    return self;
+}
+
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
@@ -105,7 +115,7 @@
 - (void)setIsLoading:(BOOL)isLoading
 {
     _isLoading = isLoading;
-    _backgroundContainerView.alpha = isLoading;
+    _backgroundContainerView.alpha = 0.0f; //isLoading ? 1.0f : 0.0f;
 }
 
 - (UIView *)backgroundContainerView

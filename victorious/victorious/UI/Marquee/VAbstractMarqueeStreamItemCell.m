@@ -19,6 +19,8 @@
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking, VContentPreviewViewProvider>
 
+@property (nonatomic, assign) BOOL hasReliquishedPreviewView;
+
 @end
 
 @implementation VAbstractMarqueeStreamItemCell
@@ -73,7 +75,7 @@
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
-    if ( streamItem == nil )
+    if ( streamItem == nil || self.hasReliquishedPreviewView )
     {
         return;
     }
@@ -89,6 +91,7 @@
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    self.previewView.streamBackgroundColor = [UIColor blackColor];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
@@ -164,6 +167,11 @@
 
 #pragma mark - VContentPreviewViewProvider
 
+- (void)relinquishPreviewView
+{
+    self.hasReliquishedPreviewView = YES;
+}
+
 - (UIView *)getPreviewView
 {
     return self.previewView;
@@ -174,8 +182,9 @@
     return self.contentView;
 }
 
-- (void)restorePreviewView:(UIView *)previewView
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
+    self.hasReliquishedPreviewView = NO;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }

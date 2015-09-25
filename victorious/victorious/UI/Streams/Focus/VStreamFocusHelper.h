@@ -32,7 +32,11 @@
  */
 @property (nonatomic, assign) UIEdgeInsets focusAreaInsets;
 
-#warning Use an index path instead to fix asset swapping bug
+/**
+ Used to record a reference to a cell once it's been selected
+ so that subsequent logic can hand the selected cell uniquely
+ from all other cells.
+ */
 @property (nonatomic, weak) UICollectionViewCell *selectedCell;
 
 /**

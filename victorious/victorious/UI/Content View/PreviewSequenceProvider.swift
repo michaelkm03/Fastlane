@@ -17,11 +17,17 @@ import Foundation
     /// and seamlessly added into content view
     func getPreviewView() -> VSequencePreviewView
     
-    /// Replaces a preview view into the stream or marquee cell from which it came
+    /// Replaces a preview view into the stream or marquee cell from which it came.
+    /// Informs the receiver that the sequence preview view is no longer active in
+    /// another context and can now be modified freely.  See `relinquishPreviewView()`.
     func restorePreviewView( previewView: VSequencePreviewView )
     
     /// Provides a view whose bounds represent the total contained area in a stream or marquee.
     func getContainerView() -> UIView
+    
+    /// Informs the receiver that the sequence preview view is active in another context
+    /// and should not be modified
+    func relinquishPreviewView()
 }
 
 /// Defines an object that can display a VSeqencePreviewView

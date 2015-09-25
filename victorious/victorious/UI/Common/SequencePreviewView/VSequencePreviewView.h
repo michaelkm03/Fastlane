@@ -43,12 +43,6 @@
 
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
-@property (nonatomic, assign) BOOL useLightBackgroundColor;
-
-@property (nonatomic, strong, readonly) UIColor *defaultLightBackgroundColor;
-
-@property (nonatomic, strong, readonly) UIColor *defaultDetailBackgroundColor;
-
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */

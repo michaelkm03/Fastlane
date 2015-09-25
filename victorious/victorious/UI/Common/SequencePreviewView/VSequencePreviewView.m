@@ -118,6 +118,11 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    if ( sequence != self.sequence )
+    {
+        self.hasDeterminedPreferredBackgroundColor = NO;
+    }
+    
     [super setStreamItem:sequence];
     
     [self configureLikeButtonForSequence:sequence];
@@ -144,12 +149,7 @@
     return [self reuseIdentifierForStreamItem:sequence baseIdentifier:baseIdentifier dependencyManager:dependencyManager];
 }
 
-- (UIColor *)defaultLightBackgroundColor
-{
-    return [UIColor colorWithWhite:0.97 alpha:1.0];
-}
-
-- (UIColor *)defaultDetailBackgroundColor
+- (UIColor *)defaultBackgroundColor
 {
     return [UIColor blackColor];
 }
@@ -158,8 +158,8 @@
 {
     void (^animations)() = ^
     {
-        UIColor *nonDetailBackgroundColor = self.useLightBackgroundColor ? self.defaultLightBackgroundColor : self.defaultDetailBackgroundColor;
-        self.backgroundColor = self.focusType == VFocusTypeDetail ? self.defaultDetailBackgroundColor : nonDetailBackgroundColor;
+        UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
+        self.backgroundColor = self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
     };
     if ( animated )
     {

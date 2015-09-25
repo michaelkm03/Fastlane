@@ -223,6 +223,8 @@ typedef NS_ENUM(NSUInteger, VVideoState)
         [self.videoPlayer play];
     }
     
+    self.videoPlayer.useAspectFit = YES;
+    
     [self updateUIState];
 }
 

@@ -82,7 +82,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 @property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) BOOL isTransitionComplete;
-@property (nonatomic, assign) VFocusType initialPreviewViewFocusType;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
@@ -517,10 +516,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView resignFirstResponder];
     
     [self.commentHighlighter stopAnimations];
-    
-    // The the preview view focus back to whatever it was when content view was presented
-    VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
-    previewView.focusType = self.initialPreviewViewFocusType;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -783,13 +778,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 [previewView setDependencyManager:self.dependencyManager];
                 [previewView setStreamItem:self.viewModel.sequence];
                 UIView *superview = [receiver getTargetSuperview];
+                previewView.focusType = VFocusTypeDetail;
                 previewView.frame = superview.bounds;
                 [superview addSubview:previewView];
                 [superview v_addFitToParentConstraintsToSubview:previewView];
             }
             
-            self.initialPreviewViewFocusType = previewView.focusType;
-            previewView.focusType = VFocusTypeDetail;
             previewView.detailDelegate = self;
             
             // Setup relationships for polls

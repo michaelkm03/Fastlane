@@ -118,28 +118,42 @@
      {
          if (image != nil)
          {
+             [weakSelf determinedPreferredBackgroundColorWithImage:image];
              completionBlock();
          }
          else
          {
-             __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
              // that URL failed, lets gracefully fall back
              UIScreen *mainScreen = [UIScreen mainScreen];
              CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
-             [strongSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)]
+             [weakSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)]
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
+                  [weakSelf determinedPreferredBackgroundColorWithImage:image];
                   completionBlock();
               }];
          }
      }];
 }
 
+- (void)determinedPreferredBackgroundColorWithImage:(UIImage *)image
+{
+    if ( !self.hasDeterminedPreferredBackgroundColor )
+    {
+        CGFloat imageAspect = image.size.width / image.size.height;
+        CGFloat containerAspect = CGRectGetWidth(self.previewImageView.frame) / CGRectGetHeight(self.previewImageView.frame);
+        self.usePreferredBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
+        [self updateBackgroundColorAnimated:NO];
+        self.hasDeterminedPreferredBackgroundColor = YES;
+    }
+}
+
 - (void)loadVideoAsset
 {
     self.videoAsset = [self.sequence.firstNode mp4Asset];
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
+    item.useAspectFit = YES;
     item.loop = YES;
     item.muted = YES;
     [self.videoPlayer setItem:item];
@@ -150,9 +164,6 @@
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
     self.isLoading = YES;
-    CGFloat containerAspectRatio = CGRectGetWidth(self.bounds) / CGRectGetHeight(self.bounds);
-    self.useLightBackgroundColor = ABS(containerAspectRatio - videoPlayer.aspectRatio) > 0.01;
-    [self updateBackgroundColorAnimated:NO];
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
@@ -196,7 +207,6 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            self.videoPlayer.useAspectFit = YES;
             [self.likeButton hide];
             [self.videoPlayer pause];
             self.videoPlayer.muted = YES;
@@ -209,7 +219,6 @@
             
         case VFocusTypeStream:
             self.isLoading = YES;
-            self.videoPlayer.useAspectFit = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
@@ -230,7 +239,6 @@
                 [self loadVideoAsset];
             }
             self.isLoading = YES;
-            self.videoPlayer.useAspectFit = YES;
             [self.likeButton show];
             [self.videoPlayer play];
             self.videoPlayer.muted = NO;
