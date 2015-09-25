@@ -13,7 +13,7 @@ NSInteger const VSignupErrorCodeInvalidEmailAddress  = 5102;
 
 // Stoelen shamelessly from: http://emailregex.com
 static NSString * const kVEmailValidateRegEx =
-@"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}";
+@"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}";
 
 @implementation VEmailValidator
 
