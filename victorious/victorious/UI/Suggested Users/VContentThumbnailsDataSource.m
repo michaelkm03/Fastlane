@@ -194,6 +194,4 @@ typedef UIImage* (^ImageLoading)();
     }
 }
 
-
-
 @end
