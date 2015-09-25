@@ -12,6 +12,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VDependencyManager+VHighlightContainer.h"
+#import "victorious-Swift.h"
 
 @interface VSleekStreamCellFactory ()
 
