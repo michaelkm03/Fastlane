@@ -165,9 +165,8 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     /// MARK: Actions
     
     func pressedDismiss() {
-        animateOut { (completed) in
-            self.interstitialDelegate?.dismissInterstitial(self)
-        }
+        animateOut(nil)
+        self.interstitialDelegate?.dismissInterstitial(self)
     }
     
     /// MARK: Helpers
