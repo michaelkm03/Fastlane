@@ -87,11 +87,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.promptTextView.textAlignment = NSTextAlignmentCenter;
     
     NSDictionary *textFieldAttributes = @{
-                                          NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                          NSFontAttributeName: [UIFont systemFontOfSize:17],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
                                           };
     NSDictionary *placeholderTextFieldAttributes = @{
-                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSFontAttributeName: [UIFont systemFontOfSize:17],
                                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
                                                      };
     UIColor *normalColor = textFieldAttributes[NSForegroundColorAttributeName];
@@ -215,17 +215,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if (textField == self.emailField)
     {
-        //TODO: TRACKING User pressed enter on email
         [self.passwordField becomeFirstResponder];
-
     }
     else if (textField == self.passwordField)
     {
-        //TODO: TRACKING User pressed enter on password
         [self onContinue:nil];
     }
     
-    return YES;
+    return [self shouldSignUp];
 }
 
 #pragma mark - Private Methods
