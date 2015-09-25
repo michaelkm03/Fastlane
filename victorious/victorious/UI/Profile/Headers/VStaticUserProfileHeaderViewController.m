@@ -13,7 +13,7 @@
 #import "UIImage+ImageCreation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 

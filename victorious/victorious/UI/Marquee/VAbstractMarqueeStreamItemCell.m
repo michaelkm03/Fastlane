@@ -15,7 +15,7 @@
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
 #import "UIResponder+VResponderChain.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking>
 

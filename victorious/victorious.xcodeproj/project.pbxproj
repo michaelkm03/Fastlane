@@ -368,6 +368,7 @@
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; settings = {ASSET_TAGS = (); }; };
+		676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */; settings = {ASSET_TAGS = (); }; };
 		676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */; };
 		676372E51B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */; };
 		676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */; };
@@ -1194,7 +1195,6 @@
 		F06B41AB1B7C3D8F008709E8 /* HashtagShelf+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41A81B7C3D8F008709E8 /* HashtagShelf+RestKit.swift */; };
 		F06B41AD1B7C3D8F008709E8 /* UserShelf+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41AA1B7C3D8F008709E8 /* UserShelf+RestKit.swift */; };
 		F06B41B21B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */; };
-		F06B41B51B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */; };
 		F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B61B7E6C95008709E8 /* VFollowResponder.m */; };
 		F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */; };
 		F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */; };
@@ -1991,6 +1991,7 @@
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
+		676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+TrendingShelfResponder.swift"; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
 		676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeStreamItemCell.swift; sourceTree = "<group>"; };
@@ -3477,8 +3478,6 @@
 		F06B41AA1B7C3D8F008709E8 /* UserShelf+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserShelf+RestKit.swift"; sourceTree = "<group>"; };
 		F06B41B01B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamCollectionViewController+FollowResponder.h"; sourceTree = "<group>"; };
 		F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamCollectionViewController+FollowResponder.m"; sourceTree = "<group>"; };
-		F06B41B31B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamCollectionViewController+TrendingShelfResponder.h"; sourceTree = "<group>"; };
-		F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamCollectionViewController+TrendingShelfResponder.m"; sourceTree = "<group>"; };
 		F06B41B61B7E6C95008709E8 /* VFollowResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowResponder.m; sourceTree = "<group>"; };
 		F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfCellFactory.swift; sourceTree = "<group>"; };
 		F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+typedResponder.swift"; sourceTree = "<group>"; };
@@ -4354,12 +4353,11 @@
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
 				F06B41B01B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.h */,
 				F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */,
-				F06B41B31B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.h */,
-				F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */,
 				F0FC97D01B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.h */,
 				F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
+				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -9099,6 +9097,7 @@
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
+				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
@@ -9573,7 +9572,6 @@
 				A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */,
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
-				F06B41B51B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m in Sources */,
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
