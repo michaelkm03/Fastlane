@@ -88,9 +88,7 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
-#if !TARGET_IPHONE_SIMULATOR
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
-#endif
 }
 
 - (void)sendAPNStokenToServer
