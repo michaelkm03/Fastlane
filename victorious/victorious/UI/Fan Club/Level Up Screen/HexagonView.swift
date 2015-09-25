@@ -66,6 +66,8 @@ class HexagonView: UIView {
     /// Whether or not the stroke is being animated
     private(set) var isAnimating = false
     
+    private var animationCompletion: (() -> Void)?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         configureShapeLayer()
@@ -136,7 +138,8 @@ class HexagonView: UIView {
     }
     
     // Animated the stroke of the hexagon's shape layer
-    func animateBorder(endValue: CGFloat, duration: NSTimeInterval) {
+    func animateBorder(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
+        animationCompletion = completion
         isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.fromValue = 0
@@ -156,6 +159,9 @@ class HexagonView: UIView {
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         isAnimating = false
+        if let animationCompletion = animationCompletion {
+            animationCompletion()
+        }
     }
 }
 

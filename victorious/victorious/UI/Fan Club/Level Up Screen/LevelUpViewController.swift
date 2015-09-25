@@ -20,6 +20,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     struct AnimationConstants {
         static let presentationDuration = 0.4
         static let dismissalDuration = 0.2
+        static let progressAnimation = 2.0
     }
     
     @IBOutlet weak var dismissButton: UIButton! {
@@ -155,8 +156,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         super.viewDidAppear(animated)
         if !hasAppeared {
             animateIn({ (completed) in
-                self.badgeView?.animateProgress(2, endPercentage: 100)
-                dispatch_after(2) {
+                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
                     self.upgradeBadgeNumber()
                 }
             })

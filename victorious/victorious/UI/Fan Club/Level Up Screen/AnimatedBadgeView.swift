@@ -171,9 +171,10 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     ///
     /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
     /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
-    func animateProgress(duration: NSTimeInterval, endPercentage: Int) {
+    /// - parameter completion: A closure to be called after the animation completes
+    func animateProgress(duration: NSTimeInterval, endPercentage: Int, completion: (() -> Void)?) {
         currentProgressPercentage = endPercentage
-        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration)
+        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
     }
     
     /// Resets progress bar back to zero
