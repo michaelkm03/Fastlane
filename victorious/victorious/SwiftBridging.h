@@ -148,3 +148,4 @@
 #import "VNoContentCollectionViewCellFactory.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "VFooterActivityIndicatorView.h"
+#import "VLinearGradientView.h"

@@ -19,6 +19,15 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     private let container = UIView()
     private var numberHeightConstraint: NSLayoutConstraint!
     
+    private lazy var linearGradientView: VLinearGradientView = {
+        let linearGradientView = VLinearGradientView()
+        linearGradientView.setColors([UIColor.clearColor(), UIColor.blackColor(), UIColor.blackColor(), UIColor.clearColor()])
+        linearGradientView.locations = [0.0, 0.2, 0.8, 1.0]
+        linearGradientView.startPoint = CGPoint(x: 0, y: 0.5)
+        linearGradientView.endPoint = CGPoint(x: 1, y: 0.5)
+        return linearGradientView
+        }()
+    
     let levelStringLabel = UILabel()
     let levelNumberLabel = UILabel()
     
@@ -165,6 +174,11 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         v_addCenterToParentContraintsToSubview(container)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        linearGradientView.frame = container.bounds
+    }
+    
     /// MARK: Public Functions
     
     /// Starts the radial animation of the inner hexagon
@@ -178,9 +192,49 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// Resets progress bar back to zero
-    func resetProgress() {
-        currentProgressPercentage = 0
-        animatingHexagonView.reset()
+    func resetProgress(animated: Bool = false) {
+        UIView.animateWithDuration(0.8, animations: { () in
+            self.animatingHexagonView.alpha = 0
+            }) { (completed) in
+                self.currentProgressPercentage = 0
+                self.animatingHexagonView.reset()
+                self.animatingHexagonView.alpha = 1
+        }
+    }
+    
+    /// Updates the level number label with a carousal animation
+    ///
+    /// - parameter newLevel: A string with which to update the level number label
+    func levelUp(newLevel: String) {
+        
+        // Sets the gradient mask
+        container.maskView = linearGradientView
+        
+        UIView.animateWithDuration(0.7,
+            delay: 0,
+            options: .CurveEaseIn,
+            animations: { () in
+                
+                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(-self.levelNumberLabel.bounds.width, 0)
+                
+            }) { (completed) in
+                
+                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(self.levelNumberLabel.bounds.width, 0)
+                self.levelNumberString = newLevel
+                
+                UIView.animateWithDuration(0.7,
+                    delay: 0,
+                    options: .CurveEaseOut,
+                    animations: { () in
+                        
+                        self.levelNumberLabel.transform = CGAffineTransformIdentity
+                        
+                    }) { (completed) in
+                        
+                        // Resets gradient mask
+                        self.container.maskView = nil
+                }
+        }
     }
     
     /// MARK: Helpers

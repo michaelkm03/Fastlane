@@ -168,8 +168,9 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func upgradeBadgeNumber() {
         
         if let levelUpInterstitial = self.levelUpInterstitial {
-            self.badgeView?.levelNumberString = levelUpInterstitial.level
+            badgeView?.levelUp(levelUpInterstitial.level)
         }
+        
         UIView.animateWithDuration(0.1,
             delay: 0,
             usingSpringWithDamping: 0.8,
@@ -177,8 +178,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             options: [],
             animations: {
                 self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) -> Void in
-                self.badgeView?.resetProgress()
+            }) { (completed) in
+                self.badgeView?.resetProgress(true)
                 UIView.animateWithDuration(0.1,
                     delay: 0,
                     options: .CurveLinear,
@@ -382,7 +383,7 @@ private extension VDependencyManager {
         
         badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
         badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
-        badgeView.animatedBorderWidth = 4
+        badgeView.animatedBorderWidth = 5
         badgeView.progressBarInset = 4
         return badgeView
     }
