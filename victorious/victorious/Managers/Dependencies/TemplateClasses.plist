@@ -178,5 +178,7 @@
 	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
+	<key>animated.badgeView</key>
+	<string>victorious.AnimatedBadgeView</string>
 </dict>
 </plist>
