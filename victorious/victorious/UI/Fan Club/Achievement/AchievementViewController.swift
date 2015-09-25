@@ -28,6 +28,12 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private var animatedBadge: AnimatedBadgeView?
+    private let iconImageViewHeightConstant: CGFloat = 135.0
+    
+    private lazy var iconImageViewHeightConstraint: NSLayoutConstraint = {
+        let iconImageViewHeightConstraint = NSLayoutConstraint(item: self.iconImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: self.iconImageViewHeightConstant)
+        return iconImageViewHeightConstraint
+        }()
     
     private var hasAppeared = false
     
@@ -38,9 +44,16 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
             if let achievementInterstitial = achievementInterstitial {
                 descriptionLabel.text = achievementInterstitial.description
                 titleLabel.text = achievementInterstitial.title
-                iconImageView.setImageWithURL(achievementInterstitial.icon)
-                
                 animatedBadge?.levelNumberString = String(achievementInterstitial.level)
+                
+                guard let iconURL = achievementInterstitial.icon else {
+                    // In order to add space between the description label and the dismiss button
+                    iconImageViewHeightConstraint.constant = 23
+                    return
+                }
+                
+                iconImageView.setImageWithURL(iconURL)
+                iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
             }
         }
     }
@@ -127,18 +140,22 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         if let animatedBadge = animatedBadge {
             animatedBadge.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(animatedBadge)
-            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description][icon(135)][button(40)]|"
+            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description][icon][button(40)]|"
             views = ["badgeView" : animatedBadge, "button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
             
             animatedBadge.v_addWidthConstraint(60)
             containerView.v_addCenterHorizontallyConstraintsToSubview(animatedBadge)
         }
         else {
-            verticalConstraintString = "V:|-23-[title]-20-[description][icon(135)][button(40)]|"
+            verticalConstraintString = "V:|-23-[title]-20-[description][icon][button(40)]|"
             views = ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
         }
         
+        // Add vertical constraints
         containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(verticalConstraintString, options: [], metrics: nil, views: views))
+        
+        // Add a constraint that will hide and show the image view depending on if there's an icon
+        iconImageView.addConstraint(iconImageViewHeightConstraint)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

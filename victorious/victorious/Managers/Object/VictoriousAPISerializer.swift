@@ -87,10 +87,17 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
             let levelNumber = levelInfo["level"] as? Int,
             let progressPercentage = levelInfo["progress"] as? Int,
             let title = paramsDict["title"] as? String,
-            let description = paramsDict["description"] as? String,
-            let iconString = paramsDict["icon"] as? String,
-            let iconURL = NSURL(string: iconString){
-                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icon: iconURL)
+            let description = paramsDict["description"] as? String {
+                
+                // Icon URL is optional
+                var parsedIconURL: NSURL?
+            
+                if let iconURLString = paramsDict["icon"] as? String,
+                    let iconURL = NSURL(string: iconURLString) {
+                        parsedIconURL = iconURL
+                }
+                
+                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icon: parsedIconURL)
         }
         return nil
     }

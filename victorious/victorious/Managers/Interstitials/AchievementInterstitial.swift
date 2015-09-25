@@ -16,9 +16,9 @@ struct AchievementInterstitial: Interstitial {
     let progressPercentage: Int
     let title: String
     let description: String
-    let icon: NSURL
+    let icon: NSURL?
     
-    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icon: NSURL) {
+    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icon: NSURL?) {
         self.remoteID = remoteID
         self.level = level
         self.progressPercentage = progressPercentage
