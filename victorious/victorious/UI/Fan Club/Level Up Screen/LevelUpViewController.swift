@@ -36,7 +36,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
-    private let badgeView = LevelBadgeView()
+    private let badgeView = AnimatedBadgeView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let videoBackground = VVideoView()
@@ -90,7 +90,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
-                badgeView.levelNumber = levelUpInterstitial.level
+                badgeView.levelNumberString = levelUpInterstitial.level
                 badgeView.title = NSLocalizedString("LEVEL", comment: "")
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
@@ -115,7 +115,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 descriptionLabel.textColor = dependencyManager.textColor
                 badgeView.levelStringLabel.textColor = dependencyManager.badgeTextColor
                 badgeView.levelNumberLabel.textColor = dependencyManager.badgeTextColor
-                badgeView.color = dependencyManager.badgeColor
+                badgeView.badgeBackgroundColor = dependencyManager.badgeColor
             }
         }
     }

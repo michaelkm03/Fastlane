@@ -13,14 +13,22 @@
 #import "UIImage+ImageCreation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
+static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 @interface VStaticUserProfileHeaderViewController ()
 
+@property (nonatomic, assign) BOOL hasAppeared;
+
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
+
+@property (weak, nonatomic) IBOutlet UIView *badgeContainerView;
+@property (nonatomic, strong) AnimatedBadgeView *badgeView;
 
 @end
 
@@ -40,6 +48,100 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     {
         self.state = self.state; // Trigger a state refresh
     }
+    
+    // Setup badge view
+    [self updateBadgeView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (!self.hasAppeared)
+    {
+        self.hasAppeared = YES;
+        [self animateBadge];
+    }
+}
+
+#pragma mark - Helpers
+
+- (void)updateBadgeView
+{
+    // Remove all subviews from badge container view
+    for (UIView *view in self.badgeContainerView.subviews)
+    {
+        [view removeFromSuperview];
+    }
+    
+    UIView *viewToContain = [self configuredBadgeView];
+    if (viewToContain != nil)
+    {
+        [self.badgeContainerView addSubview:viewToContain];
+        [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
+    }
+}
+
+- (UIView *)configuredBadgeView
+{
+    AnimatedBadgeView *animatedBadgeView = [self.dependencyManager templateValueOfType:[AnimatedBadgeView class] forKey:kLevelBadgeKey];
+    // Make sure we have a badge component and that this user is a high enough level to show it
+    if (animatedBadgeView != nil && self.user.level.integerValue >= animatedBadgeView.minLevel && self.user != nil)
+    {
+        if (self.user.isCreator.boolValue)
+        {
+            return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"level_badge_creator_large"]];
+        }
+        else
+        {
+            self.badgeView = animatedBadgeView;
+            self.badgeView.cornerRadius = 4;
+            self.badgeView.animatedBorderWidth = 2;
+            self.badgeView.progressBarInset = 3;
+            self.badgeView.title = NSLocalizedString(@"LEVEL", "");
+            self.badgeView.levelNumberLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:18];
+            self.badgeView.levelStringLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:8];
+            self.badgeView.levelNumberString = self.user.level.stringValue;
+            return self.badgeView;
+        }
+    }
+        
+    return nil;
+}
+
+- (void)animateBadge
+{
+    if (self.badgeView != nil && self.state == VUserProfileHeaderStateCurrentUser && !self.badgeView.isAnimating)
+    {
+        // Animate progress towards next level for current user's profile
+        NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
+        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage];
+    }
+}
+
+- (void)updateLevelViews
+{
+    if ([self badgeNeedsToBeUpdated])
+    {
+        // Update the badge to reflect changes
+        [self updateBadgeView];
+        
+        // Small delay before animation begins
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            // Animated progress if needed
+            [self animateBadge];
+        });
+    }
+}
+
+- (BOOL)badgeNeedsToBeUpdated
+{
+    BOOL progressDiffers = self.user.levelProgressPercentage.integerValue != self.badgeView.currentProgressPercentage;
+    BOOL levelDiffers = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue];
+    return (progressDiffers || levelDiffers) && !self.badgeView.isAnimating;
+    
+    return NO;
 }
 
 #pragma mark - VUserProfileHeader

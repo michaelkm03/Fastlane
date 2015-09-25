@@ -31,6 +31,7 @@
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "UIResponder+VResponderChain.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
