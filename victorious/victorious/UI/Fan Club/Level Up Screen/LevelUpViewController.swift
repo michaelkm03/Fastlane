@@ -91,9 +91,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
+                var currentLevel = 1
                 if let levelNumber = Int(levelUpInterstitial.level)  {
-                    badgeView?.levelNumberString = String(levelNumber - 1)
+                    currentLevel = levelNumber
                 }
+                badgeView?.levelNumberString = String(currentLevel - 1)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
@@ -155,11 +157,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn({ (completed) in
+            animateIn() { completed in
                 self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
                     self.upgradeBadgeNumber()
                 }
-            })
+            }
         }
     }
     
@@ -168,13 +170,22 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         if let levelUpInterstitial = self.levelUpInterstitial {
             self.badgeView?.levelNumberString = levelUpInterstitial.level
         }
-        UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: [], animations: {
-            self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
+        UIView.animateWithDuration(0.1,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: [],
+            animations: {
+                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
             }) { (completed) -> Void in
                 self.badgeView?.resetProgress()
-                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                    self.badgeView?.transform = CGAffineTransformIdentity
-                    }, completion: nil)
+                UIView.animateWithDuration(0.1,
+                    delay: 0,
+                    options: .CurveLinear,
+                    animations: {
+                        self.badgeView?.transform = CGAffineTransformIdentity
+                    },
+                    completion: nil)
         }
     }
     
@@ -193,21 +204,37 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
         
         // Title animation
-        UIView.animateWithDuration(0.6, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.titleLabel.transform = CGAffineTransformIdentity
-            self.descriptionLabel.transform = CGAffineTransformIdentity
-            self.iconCollectionView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.1,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.titleLabel.transform = CGAffineTransformIdentity
+                self.descriptionLabel.transform = CGAffineTransformIdentity
+                self.iconCollectionView.transform = CGAffineTransformIdentity
+            },
+            completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.badgeView?.transform = CGAffineTransformIdentity
-            }, completion: badgeAnimationCompletion)
+        UIView.animateWithDuration(0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.badgeView?.transform = CGAffineTransformIdentity
+            },
+            completion: badgeAnimationCompletion)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.dismissButton.alpha = 1
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.2,
+            options: .CurveEaseIn,
+            animations: {
+                self.dismissButton.alpha = 1
+            },
+            completion: nil)
     }
     
     private func setToInitialState() {
