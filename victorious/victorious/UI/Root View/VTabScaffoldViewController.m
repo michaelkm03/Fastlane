@@ -14,6 +14,7 @@
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 
 // Views + Helpers
 #import "UIView+AutoLayout.h"
@@ -43,6 +44,7 @@
 
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
+static NSString * const kStatusBarStyleKey = @"statusBarStyleKey";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
 
@@ -145,6 +147,11 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return [self.dependencyManager statusBarStyleForKey: kStatusBarStyleKey];
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden
