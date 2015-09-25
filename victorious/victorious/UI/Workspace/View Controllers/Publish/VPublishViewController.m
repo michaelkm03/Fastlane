@@ -29,7 +29,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
 #import "VAlongsidePresentationAnimator.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 @import AssetsLibrary;
 @import FBSDKCoreKit;
