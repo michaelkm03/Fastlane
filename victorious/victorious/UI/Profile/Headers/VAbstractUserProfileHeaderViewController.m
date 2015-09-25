@@ -274,4 +274,9 @@
     self.taglineLabel.text = self.user.tagline;
 }
 
+- (void)updateLevelViews
+{
+    // Implement in subclasses
+}
+
 @end

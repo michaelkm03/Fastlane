@@ -30,6 +30,19 @@
 	<string>900</string>
 	<key>CreatorSalutation</key>
 	<string>Debug Victorious</string>
+	<key>FacebookAppID</key>
+	<string>664946900317058</string>
+	<key>FacebookDisplayName</key>
+	<string>Victorious-dev</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -48,14 +61,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>FacebookAppID</key>
-	<string>664946900317058</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
-	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to serve you relevant info such as events in your area.</string>
 	<key>ProductPrefix</key>
@@ -89,8 +94,6 @@
 		<string>JosefinSans-SemiBold.ttf</string>
 		<string>JosefinSlab-Bold.ttf</string>
 		<string>JosefinSlab-SemiBold.ttf</string>
-		<string>Junction-bold.otf</string>
-		<string>Junction-regular.otf</string>
 		<string>Jura-DemiBold.ttf</string>
 		<string>Jura-Medium.ttf</string>
 		<string>Kreon-Bold.ttf</string>
