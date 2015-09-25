@@ -49,18 +49,16 @@
     [self textFieldShouldClear:nil];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(UISearchBar *)searchBar
+    textDidChange:(NSString *)searchText
 {
-    if (searchBar.text.length > 0)
+    if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
-        if ( self.segmentControl.selectedSegmentIndex == 0 )
-        {
-            [self userSearch:searchBar.text];
-        }
-        else if (self.segmentControl.selectedSegmentIndex == 1)
-        {
-            [self hashtagSearch:searchBar.text];
-        }
+        [self userSearch:searchBar.text];
+    }
+    else if (self.segmentControl.selectedSegmentIndex == 1)
+    {
+        [self hashtagSearch:searchBar.text];
     }
 }
 

@@ -42,6 +42,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate, VUserSearchResultsViewControllerDelegate, VTagsSearchResultsViewControllerDelegate>
 
+@property (nonatomic, strong) NSString *currentUserSearchQueryText;
+@property (nonatomic, strong) NSString *currentHashtagSearchQueryText;
+
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIView *searchBarView;
 @property (nonatomic, weak) IBOutlet UIView *headerView;
@@ -53,7 +56,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 @property (nonatomic, assign) CGFloat keyboardHeight;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *userSearchRequest;
 @property (nonatomic, strong) RKManagedObjectRequestOperation *tagSearchRequest;
@@ -82,6 +84,7 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)dealloc
 {
     _searchField.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View Lifecycle Methods
@@ -116,6 +119,14 @@ static NSInteger const kVMaxSearchResults = 1000;
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     self.searchField.delegate = self;
+    if (self.searchField != nil)
+    {
+        // We only want to register for our textField's notifications not all
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldTextDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:self.searchField];
+    }
     
     // Set highlighted state for close button
     [self.closeButton setImage:[UIImage imageNamed:@"CloseHighlighted"] forState:UIControlStateHighlighted];
@@ -196,7 +207,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     CGFloat bottomInsetHeight = self.keyboardHeight;
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
-    // Perform search
+    // Update UI
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
@@ -223,6 +234,9 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
         }
     }
+    
+    // Perform search
+    [self searchForCurrentStateWithText:self.searchField.text];
 }
 
 #pragma mark - Search Actions
@@ -235,8 +249,23 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (void)hashtagSearch:(NSString *)tagName
 {
+    if ([self.currentHashtagSearchQueryText isEqualToString:tagName])
+    {
+        return;
+    }
+    
+    self.currentHashtagSearchQueryText = tagName;
+    NSString *currentTagsentinel = [self.currentHashtagSearchQueryText copy];
+    __weak typeof(self) welf = self;
+    
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // If these aren't the same this is an earlier result and should be discarded
+        if (![welf.currentHashtagSearchQueryText isEqualToString:currentTagsentinel])
+        {
+            return;
+        }
+        
         NSMutableArray *searchResults = [[NSMutableArray alloc] init];
         NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
         
@@ -248,18 +277,20 @@ static NSInteger const kVMaxSearchResults = 1000;
             [searchResults addObject:newTag];
 
         }];
-        if ( searchResults.count > 0 )
-        {
-            [self.tagsSearchResultsVC setSearchResults:searchResults];
-        }
-        else
-        {
-            self.tagsSearchResultsVC.searchResults = nil;
-            [self showNoResultsReturnedForSearch];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
+        
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            if ( searchResults.count > 0 )
+            {
+                [self.tagsSearchResultsVC setSearchResults:searchResults];
+            }
+            else
+            {
+                self.tagsSearchResultsVC.searchResults = nil;
+                [self showNoResultsReturnedForSearch];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
+            
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
@@ -287,32 +318,46 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                                                      failBlock:searchFail];
         });
     }
-    else
-    {
-        NSArray *results = [[NSArray alloc] init];
-        self.tagsSearchResultsVC.searchResults = (NSMutableArray *)results;
-    }
+    
+    self.tagsSearchResultsVC.searchResults = @[];
 }
 
 - (void)userSearch:(NSString *)userName
 {
+    if ([self.currentUserSearchQueryText isEqualToString:userName])
+    {
+        return;
+    }
+    
+    self.currentUserSearchQueryText = userName;
+    NSString *userSearchSentinel = [self.currentUserSearchQueryText copy];
+    [self setSearchResults:@[]];
+    
+    __weak typeof(self) welf = self;
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // This is an outdated search result ignore.
+        if (![welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
+        {
+            return;
+        }
+        
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSArray *results = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        
-        if (results.count > 0)
-        {
-            [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
-        }
-        else
-        {
-            self.userSearchResultsVC.searchResults = nil;
-            [self showNoResultsReturnedForSearch];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
+
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            if (results.count > 0)
+            {
+                [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
+            }
+            else
+            {
+                self.userSearchResultsVC.searchResults = nil;
+                [self showNoResultsReturnedForSearch];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
+            
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
@@ -341,11 +386,8 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                                                    failBlock:searchFail];
         });
     }
-    else
-    {
-        NSArray *results = [[NSArray alloc] init];
-        self.userSearchResultsVC.searchResults = (NSMutableArray *)results;
-    }
+    
+    self.userSearchResultsVC.searchResults = @[];
 }
 
 - (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
@@ -364,6 +406,18 @@ static NSInteger const kVMaxSearchResults = 1000;
         {
             [self.tagSearchRequest cancel];
         }
+    }
+}
+
+- (void)searchForCurrentStateWithText:(NSString *)searchText
+{
+    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    {
+        [self userSearch:self.searchField.text];
+    }
+    else if (self.segmentControl.selectedSegmentIndex == 1)
+    {
+        [self hashtagSearch:self.searchField.text];
     }
 }
 
@@ -402,19 +456,15 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.searchField resignFirstResponder];
-    if (self.searchField.text.length > 0)
-    {
-        if ( self.segmentControl.selectedSegmentIndex == 0 )
-        {
-            [self userSearch:self.searchField.text];
-        }
-        else if (self.segmentControl.selectedSegmentIndex == 1)
-        {
-            [self hashtagSearch:self.searchField.text];
-        }
-    }
-    
+    [self searchForCurrentStateWithText:textField.text];
     return YES;
+}
+
+#pragma mark - UITextField Notifications
+
+- (void)textFieldTextDidChange:(NSNotification *)notification
+{
+    [self searchForCurrentStateWithText:self.searchField.text];
 }
 
 #pragma mark - VSearchResultsTableViewControllerDelegate
