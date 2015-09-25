@@ -7,14 +7,19 @@
 //
 
 #import "VStreamItemPreviewView.h"
-
 #import "VStreamItem.h"
 #import "VSequence.h"
 #import "VStream.h"
-
 #import "VSequencePreviewView.h"
 #import "VStreamPreviewView.h"
 #import "VFailureStreamItemPreviewView.h"
+#import "UIView+AutoLayout.h"
+
+@interface VStreamItemPreviewView ()
+
+@property (nonatomic, strong) UIView *backgroundContainerView;
+
+@end
 
 @implementation VStreamItemPreviewView
 
@@ -88,6 +93,35 @@
                          dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForStreamItem:streamItem])];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self sendSubviewToBack:_backgroundContainerView];
+}
+
+- (void)setIsLoading:(BOOL)isLoading
+{
+    _isLoading = isLoading;
+    _backgroundContainerView.alpha = isLoading;
+}
+
+- (UIView *)backgroundContainerView
+{
+    if ( _backgroundContainerView != nil )
+    {
+        return _backgroundContainerView;
+    }
+    
+    _backgroundContainerView = [[UIView alloc] init];
+    _backgroundContainerView.backgroundColor = [UIColor redColor];
+    _backgroundContainerView.alpha = 0.0f;
+    _backgroundContainerView.userInteractionEnabled = NO;
+    [self addSubview:_backgroundContainerView];
+    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
+    return _backgroundContainerView;
 }
 
 @end

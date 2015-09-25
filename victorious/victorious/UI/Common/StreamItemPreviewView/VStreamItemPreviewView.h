@@ -10,6 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VStreamCellSpecialization.h"
+#import "VBackgroundContainer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,7 +31,7 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
-@interface VStreamItemPreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>
+@interface VStreamItemPreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization, VBackgroundContainer>
 
 /**
  *  The factory method for the VStreamItemPreviewView, will provide a concrete subclass specialized to
@@ -66,6 +67,11 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL onlyShowPreview;
 
 /**
+ *  If YES, this preview view will only display the preview image for this content.
+ */
+@property (nonatomic, assign) BOOL isLoading;
+
+/**
  *  The dependency manager used, by some preview views, for styling
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
@@ -78,4 +84,5 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 - (NSDictionary *)trackingInfo;
 
 @end
+
 NS_ASSUME_NONNULL_END

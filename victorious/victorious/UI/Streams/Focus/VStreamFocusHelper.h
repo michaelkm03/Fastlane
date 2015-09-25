@@ -32,6 +32,7 @@
  */
 @property (nonatomic, assign) UIEdgeInsets focusAreaInsets;
 
+#warning Use an index path instead to fix asset swapping bug
 @property (nonatomic, weak) UICollectionViewCell *selectedCell;
 
 /**

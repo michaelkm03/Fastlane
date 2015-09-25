@@ -101,6 +101,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) UIView *view;
 
+/**
+ Aspect ratio of the playing video asset.  If no asset is loaded, will return 1.0f
+ */
+@property (nonatomic, assign, readonly) CGFloat aspectRatio;
+
 @end
 
 NS_ASSUME_NONNULL_END

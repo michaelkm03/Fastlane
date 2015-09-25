@@ -144,6 +144,33 @@
     return [self reuseIdentifierForStreamItem:sequence baseIdentifier:baseIdentifier dependencyManager:dependencyManager];
 }
 
+- (UIColor *)defaultLightBackgroundColor
+{
+    return [UIColor colorWithWhite:0.97 alpha:1.0];
+}
+
+- (UIColor *)defaultDetailBackgroundColor
+{
+    return [UIColor blackColor];
+}
+
+- (void)updateBackgroundColorAnimated:(BOOL)animated
+{
+    void (^animations)() = ^
+    {
+        UIColor *nonDetailBackgroundColor = self.useLightBackgroundColor ? self.defaultLightBackgroundColor : self.defaultDetailBackgroundColor;
+        self.backgroundColor = self.focusType == VFocusTypeDetail ? self.defaultDetailBackgroundColor : nonDetailBackgroundColor;
+    };
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.25f animations:animations];
+    }
+    else
+    {
+        animations();
+    }
+}
+
 #pragma mark - Gestures
 
 - (void)setGesturesEnabled:(BOOL)enabled

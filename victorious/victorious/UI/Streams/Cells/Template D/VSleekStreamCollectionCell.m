@@ -30,7 +30,6 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "UIResponder+VResponderChain.h"
 
 @import KVOController;
@@ -383,10 +382,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
-    }
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
     self.previewContainer.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed

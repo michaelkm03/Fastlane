@@ -647,8 +647,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource
- hasNewStreamItems:(NSArray *)streamItems
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource hasNewStreamItems:(NSArray *)streamItems
 {
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
