@@ -9,7 +9,7 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsTableView.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VObjectManager+Users.h"
 #import "VConstants.h"
 
