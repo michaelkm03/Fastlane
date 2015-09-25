@@ -138,6 +138,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         
         backgroundColor = UIColor.clearColor()
         
+        title = NSLocalizedString("LEVEL", comment: "")
+        
         backgroundHexagonView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(backgroundHexagonView)
         v_addFitToParentConstraintsToSubview(backgroundHexagonView)

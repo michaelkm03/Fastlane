@@ -93,7 +93,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 if let levelNumber = Int(levelUpInterstitial.level)  {
                     badgeView?.levelNumberString = String(levelNumber - 1)
                 }
-                badgeView?.title = NSLocalizedString("LEVEL", comment: "")
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
@@ -112,13 +111,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 titleLabel.textColor = dependencyManager.textColor
                 descriptionLabel.font = dependencyManager.descriptionFont
                 descriptionLabel.textColor = dependencyManager.textColor
-                
-                guard let badgeView = dependencyManager.templateValueOfType(AnimatedBadgeView.self, forKey: "animatedBadge") as? AnimatedBadgeView else {
-                    return
-                }
-                
-                // Set our animated badge property
-                self.badgeView = badgeView
+                badgeView = dependencyManager.animatedBadgeView
             }
         }
     }
@@ -149,11 +142,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
-        
-        badgeView?.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
-        badgeView?.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
-        badgeView?.animatedBorderWidth = 4
-        badgeView?.progressBarInset = 4
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -358,5 +346,17 @@ private extension VDependencyManager {
     
     var dismissButtonTitle: String {
         return self.stringForKey("button.title")
+    }
+    
+    var animatedBadgeView: AnimatedBadgeView? {
+        guard let badgeView = self.templateValueOfType(AnimatedBadgeView.self, forKey: "animatedBadge") as? AnimatedBadgeView else {
+            return nil
+        }
+        
+        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
+        badgeView.animatedBorderWidth = 4
+        badgeView.progressBarInset = 4
+        return badgeView
     }
 }
