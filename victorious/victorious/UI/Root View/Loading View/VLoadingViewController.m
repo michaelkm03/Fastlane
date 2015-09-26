@@ -201,7 +201,15 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
-
+#warning TESTING TEMPLATE
+        [templateDecorator setTemplateValue:@"dark" forKeyPath:@"scaffold/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/imageCreateFlow/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/gifCreateFlow/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/pollCreateFlow/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/textCreateFlow/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/videoCreateFlow/statusBarStyle"];
+        
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
