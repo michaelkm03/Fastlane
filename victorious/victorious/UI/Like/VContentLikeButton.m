@@ -61,6 +61,7 @@ static const CGFloat kCornerRadius = 4.0f;
     self.layer.cornerRadius = kCornerRadius;
     
     [self setActive:NO];
+    self.alpha = 0.0f;
 }
 
 - (void)didMoveToSuperview
@@ -115,6 +116,22 @@ static const CGFloat kCornerRadius = 4.0f;
 - (void)setCount:(NSUInteger)count
 {
     [self setTitle:[self.numberFormatter stringForInteger:count] forState:UIControlStateNormal];
+}
+
+- (void)show
+{
+    [UIView animateWithDuration:0.3f animations:^
+     {
+         self.alpha = 1.0f;
+    }];
+}
+
+- (void)hide
+{
+    [UIView animateWithDuration:0.1f animations:^
+    {
+        self.alpha = 0.0f;
+    }];
 }
 
 @end

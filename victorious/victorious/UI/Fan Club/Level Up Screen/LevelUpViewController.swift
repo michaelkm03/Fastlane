@@ -15,7 +15,7 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
+class LevelUpViewController: UIViewController, InterstitialViewController, VVideoPlayerDelegate {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
@@ -101,7 +101,10 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 icons = levelUpInterstitial.icons
                 
                 dispatch_after(AnimationConstants.presentationDuration) {
-                    self.videoBackground.setItemURL(levelUpInterstitial.videoURL, loop: true, audioMuted: true)
+                    let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
+                    videoPlayerItem.loop = true
+                    videoPlayerItem.muted = true
+                    self.videoBackground.setItem( videoPlayerItem )
                 }
             }
         }
@@ -122,7 +125,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     /// MARK: Factory method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> LevelUpViewController {
-        let levelUpViewController: LevelUpViewController = self.v_fromStoryboardInitialViewController()
+        let levelUpViewController: LevelUpViewController = self.v_initialViewControllerFromStoryboard()
         levelUpViewController.dependencyManager = dependencyManager
         return levelUpViewController
     }

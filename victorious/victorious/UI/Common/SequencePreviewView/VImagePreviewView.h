@@ -6,17 +6,12 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-//Describes a preview view that handles an image.
-@protocol VImagePreviewView <NSObject>
+@import UIKit;
 
 /**
- Hides or shows the background that holds the image view. Defaults to hidden.
- 
- @parameter visible If YES, the background container is made visible without animation.
+ Describes a preview view that handles an image.
  */
-- (void)setBackgroundContainerViewVisible:(BOOL)visible;
+@protocol VImagePreviewView <NSObject>
 
 /**
  The image view that displays the sequence preview image.

@@ -24,7 +24,6 @@
 #import "NSString+VParseHelp.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
-#import "VPreviewViewBackgroundHost.h"
 
 @import CCHLinkTextView;
 
@@ -352,11 +351,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     [self updateContentContainerHeightConstraint];
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
-    }
-    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
@@ -513,14 +507,26 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
+}
+
+- (VFocusType)focusType
+{
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
+    {
+        return [(id <VFocusable>)self.previewView focusType];
+    }
+    return _focusType;
 }
 
 - (CGRect)contentArea

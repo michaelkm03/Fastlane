@@ -15,8 +15,6 @@
 @interface VPollView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
-@property (nonatomic, strong) UIImageView *answerAImageView;
-@property (nonatomic, strong) UIImageView *answerBImageView;
 @property (nonatomic, strong) UIImageView *pollIconImageView;
 
 @end
@@ -77,7 +75,8 @@
     {
         [self v_addPinToTopBottomToSubview:self.answerAImageView];
         [self v_addPinToTopBottomToSubview:self.answerBImageView];
-        
+        [self.answerAImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.answerBImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                          attribute:NSLayoutAttributeLeft
                                                          relatedBy:NSLayoutRelationEqual
@@ -118,25 +117,6 @@
     }
 }
 
-#pragma mark - Public Methods
-
-- (void)setImageURL:(NSURL *)imageURL forPollAnswer:(VPollAnswer)pollAnswer completion:(void (^)(UIImage *))completionBlock
-{
-    switch (pollAnswer)
-    {
-        case VPollAnswerA:
-            [self.answerAImageView fadeInImageAtURL:imageURL
-                                   placeholderImage:nil
-                                         completion:completionBlock];
-            break;
-        case VPollAnswerB:
-            [self.answerBImageView fadeInImageAtURL:imageURL
-                                   placeholderImage:nil
-                                         completion:completionBlock];
-            break;
-    }
-}
-
 - (void)setPollIcon:(UIImage *)pollIcon
 {
     self.pollIconImageView.image = pollIcon;
@@ -145,6 +125,30 @@
 - (UIImage *)pollIcon
 {
     return self.pollIconImageView.image;
+}
+
+- (void)setPollIconHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    void (^animations)() = ^
+    {
+        self.pollIconImageView.alpha = hidden ? 0.0 : 1.0f;
+        CGAffineTransform smallScale = CGAffineTransformMakeScale( 0.1f, 0.1f );
+        self.pollIconImageView.transform = hidden ? smallScale : CGAffineTransformIdentity;
+    };
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.4f
+                              delay:hidden ? 0.0 : 0.2f
+             usingSpringWithDamping:0.6f
+              initialSpringVelocity:0.5f
+                            options:kNilOptions
+                         animations:animations
+                         completion:nil];
+    }
+    else
+    {
+        animations();
+    }
 }
 
 @end

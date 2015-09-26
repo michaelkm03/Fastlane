@@ -98,7 +98,7 @@
                 <outlet property="bLabel" destination="88j-ED-vL9" id="8sr-Fl-Hkt"/>
                 <outlet property="orImageView" destination="cJJ-Gf-HxN" id="6pd-RJ-JAN"/>
             </connections>
-            <point key="canvasLocation" x="-265" y="27"/>
+            <point key="canvasLocation" x="-185" y="375"/>
         </collectionViewCell>
     </objects>
     <resources>

@@ -71,11 +71,14 @@
     [self.marquee enableTimer];
 }
 
-#pragma mark - VisibilitySensitiveCell
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ( hasFocus )
+    _focusType = focusType;
+    if ( focusType != VFocusTypeNone )
     {
         [self.marquee enableTimer];
         [self.marquee updateFocus];

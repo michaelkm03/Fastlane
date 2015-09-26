@@ -96,14 +96,12 @@
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
                         <outlet property="leadingCollectionViewToContainer" destination="e8f-31-PHL" id="lgG-EN-y7q"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
-                        <outlet property="rotationHelper" destination="8SL-2O-WKa" id="pwD-gM-Em7"/>
                         <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="iJF-wU-hma"/>
                         <outlet property="sequenceActionController" destination="1Jx-SR-aWO" id="3CZ-67-vQ9"/>
                         <outlet property="trailingCollectionViewToContainer" destination="beS-6z-oSD" id="Nxc-Dh-5cG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="8SL-2O-WKa" customClass="VContentViewRotationHelper"/>
                 <customObject id="Fi1-i6-cwe" customClass="VScrollPaginator">
                     <connections>
                         <outlet property="delegate" destination="9O1-S6-jeB" id="oJq-zS-doN"/>

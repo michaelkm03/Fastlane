@@ -185,9 +185,14 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 #pragma mark - focus
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.messageTextAndMediaView.inFocus = hasFocus;
+    self.messageTextAndMediaView.focusType = focusType;
+}
+
+- (VFocusType)focusType
+{
+    return self.messageTextAndMediaView.focusType;
 }
 
 - (CGRect)contentArea
