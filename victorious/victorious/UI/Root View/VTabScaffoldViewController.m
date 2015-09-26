@@ -44,7 +44,7 @@
 
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
-static NSString * const kStatusBarStyleKey = @"statusBarStyleKey";
+static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
 
