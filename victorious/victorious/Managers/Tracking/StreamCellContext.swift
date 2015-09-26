@@ -14,6 +14,8 @@ class StreamCellContext : NSObject {
     let streamItem: VStreamItem
     let stream: VStream
     var fromShelf = false
+    var collectionView: UICollectionView?
+    var indexPath: NSIndexPath?
     
     init(streamItem: VStreamItem, stream: VStream, fromShelf: Bool) {
         self.streamItem = streamItem

@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-@property (nonatomic, strong) NSArray *validExperienceEnhancers;
+@property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -73,27 +73,36 @@
 - (void)setup
 {
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    NSArray *voteTypes = [self.dependencyManager templateValueOfType:[NSArray class] forKey:@"voteTypes"];
-    self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
-    self.validExperienceEnhancers = self.experienceEnhancers;
+    self.voteTypes = [self.dependencyManager templateValueOfType:[NSArray class] forKey:@"voteTypes"];
+    
+    __weak typeof(self) welf = self;
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                   {
+                       NSArray *experienceEnhancers = [welf createExperienceEnhancersFromVoteTypes:welf.voteTypes sequence:self.sequence];
+                       experienceEnhancers = [welf validExperienceEnhancers:experienceEnhancers];
+                       dispatch_async( dispatch_get_main_queue(), ^
+                                      {
+                                          welf.experienceEnhancers = experienceEnhancers;
+                                          [welf.enhancerBar reloadData];
+                                          [welf.delegate experienceEnhancersDidUpdate];
+                                      });
+                   });
     
     // Pre-load any purchaseable products that might not have already been cached
     // This is also called from VSettingsManager during app initialization, so ideally
     // most of the purchaseable products are already fetched from the App Store.
     // If not, we'll cache them now.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateData)
+                                             selector:@selector(purchaseManagedDidUpdate:)
                                                  name:VPurchaseManagerProductsDidUpdateNotification
                                                object:nil];
-    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
     if ( !self.purchaseManager.isPurchaseRequestActive )
     {
         [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
     }
-    
-    [self.enhancerBar reloadData];
     
     self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
 }
@@ -143,25 +152,30 @@
     return [NSArray arrayWithArray:experienceEnhanders];
 }
 
-- (void)updateData
+- (void)purchaseManagedDidUpdate:(NSNotification *)notification
 {
-    // The setter will re-filter accordingly
-    self.validExperienceEnhancers = self.experienceEnhancers;
-    
-    [self updateExperience:self.validExperienceEnhancers withSequence:self.sequence];
-    [self.enhancerBar reloadData];
+    __weak typeof(self) welf = self;
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                   {
+                       NSArray *experienceEnhancers = [welf validExperienceEnhancers:welf.experienceEnhancers];
+                       dispatch_async( dispatch_get_main_queue(), ^
+                                      {
+                                          welf.experienceEnhancers = experienceEnhancers;
+                                          [welf updateData];
+                                      });
+                   });
 }
 
-- (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence
+- (void)updateData
 {
-    if ( sequence.voteResults == nil || sequence.voteResults.count == 0 || experienceEnhancers.count == 0 )
+    if ( self.sequence.voteResults == nil || self.sequence.voteResults.count == 0 || self.experienceEnhancers.count == 0 )
     {
-        return NO;
+        return;
     }
     
-    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *sequenceLoopStop)
+    [self.sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *sequenceLoopStop)
      {
-         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *enhancerLoopStop)
+         [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *enhancerLoopStop)
           {
               if ( enhancer.voteType.voteTypeID.integerValue == result.remoteId.integerValue )
               {
@@ -170,8 +184,8 @@
               }
           }];
      }];
-    
-    return YES;
+    [self.enhancerBar reloadData];
+    [self.delegate experienceEnhancersDidUpdate];
 }
 
 - (VVoteResult *)resultForVoteType:(VVoteType *)voteType fromSequence:(VSequence *)sequence
@@ -188,13 +202,13 @@
     return outputResult;
 }
 
-- (void)setValidExperienceEnhancers:(NSArray *)validExperienceEnhancers
+- (NSArray *)validExperienceEnhancers:(NSArray *)experientEnhancers
 {
-    NSArray *newValue = validExperienceEnhancers;
+    NSArray *newValue = experientEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
     newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithPurchase:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
-    _validExperienceEnhancers = newValue;
+    return newValue;
 }
 
 - (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithPurchase:(NSArray *)experienceEnhancers
@@ -232,12 +246,12 @@
 
 - (NSInteger)numberOfExperienceEnhancers
 {
-    return (NSInteger) self.validExperienceEnhancers.count;
+    return (NSInteger) self.experienceEnhancers.count;
 }
 
 - (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index
 {
-    return [self.validExperienceEnhancers objectAtIndex:(NSUInteger)index];
+    return [self.experienceEnhancers objectAtIndex:(NSUInteger)index];
 }
 
 #pragma mark - VExperienceEnhancerBarDelegate
