@@ -15,7 +15,6 @@
 #import "VDependencyManager.h"
 #import "VSolidColorBackground.h"
 #import "VDependencyManager+VStatusBarStyle.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
 
 // Subclasses
 #import "VAbstractImageVideoCreationFlowController.h"
@@ -70,7 +69,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForColor];
+    return [self.dependencyManager statusBarStyleForKey:kStatusBaryStleKey];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
