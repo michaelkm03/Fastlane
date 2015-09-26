@@ -200,8 +200,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         if (self.templateConfigurationBlock != nil)
         {
             self.templateConfigurationBlock(templateDecorator);
-        }        
-        
+        }
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
