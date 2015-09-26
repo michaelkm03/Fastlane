@@ -120,7 +120,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
+    return [self.dependencyManager statusBarStyleForColor];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

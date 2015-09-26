@@ -7,6 +7,8 @@
 //
 
 #import "VDependencyManager+VStatusBarStyle.h"
+#import "UIColor+VBrightness.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString *kLightStatusBarStyle = @"light";
 static NSString *kDarkStatusBarStyle = @"dark";
@@ -23,6 +25,25 @@ static NSString *kDarkStatusBarStyle = @"dark";
     else
     {
         return UIStatusBarStyleDefault;
+    }
+}
+
+- (UIStatusBarStyle)statusBarStyleForColor
+{
+    
+    UIColor *navigationBarTextColor = [[self dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    
+
+    VColorLuminance luminance = [navigationBarTextColor v_colorLuminance];
+    switch (luminance)
+    {
+        case VColorLuminanceBright:
+            return UIStatusBarStyleLightContent;
+            break;
+            
+        case VColorLuminanceDark:
+            return UIStatusBarStyleDefault;
+            break;
     }
 }
 

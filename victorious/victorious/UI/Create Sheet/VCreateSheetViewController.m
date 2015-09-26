@@ -126,7 +126,7 @@ static const CGFloat kLineSpacing = 40.0f;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
+    return [self.dependencyManager statusBarStyleForColor];
 }
 
 #pragma mark - Properties

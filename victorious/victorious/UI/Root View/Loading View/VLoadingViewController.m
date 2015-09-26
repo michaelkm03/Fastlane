@@ -202,14 +202,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             self.templateConfigurationBlock(templateDecorator);
         }
 #warning These values will need to be either added/modified in the template
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/publishScreen/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/createSheet/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/imageCreateFlow/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/gifCreateFlow/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/pollCreateFlow/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/textCreateFlow/statusBarStyle"];
-        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/videoCreateFlow/statusBarStyle"];
+//        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/publishScreen/statusBarStyle"];
+//        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/createSheet/statusBarStyle"];
         
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
