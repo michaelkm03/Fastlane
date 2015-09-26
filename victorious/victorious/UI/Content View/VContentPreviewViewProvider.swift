@@ -1,5 +1,5 @@
 //
-//  PreviewSequenceProvider.swift
+//  VContentPreviewViewProvider.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 9/14/15.
@@ -28,17 +28,4 @@ import Foundation
     /// Informs the receiver that the sequence preview view is active in another context
     /// and should not be modified
     func relinquishPreviewView()
-}
-
-/// Defines an object that can display a VSeqencePreviewView
-@objc protocol VContentPreviewViewReceiver {
-    
-    /// Exposes a view that to which the preview view will be added as a subview during the transition
-    func getTargetSuperview() -> UIView
-    
-    /// Setter for the preview view, where additional setup occurs
-    func setPreviewView( previewView: VSequencePreviewView )
-    
-    /// Sets a reference to a video player (if there is one)
-    func setVideoPlayer( videoPlayer: VVideoPlayer )
 }

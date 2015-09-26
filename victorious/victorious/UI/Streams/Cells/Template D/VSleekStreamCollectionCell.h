@@ -13,8 +13,9 @@
 #import "VFocusable.h"
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
+#import "victorious-Swift.h"
 
-@class VSequence, VStream, StreamCellContext;
+@class VSequence, VStream, StreamCellContext, VSequencePreviewView;
 
 /**
  * VSleekStreamCollectionCell is a stream cell component more commonly known as 
