@@ -200,11 +200,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         if (self.templateConfigurationBlock != nil)
         {
             self.templateConfigurationBlock(templateDecorator);
-        }
-#warning These values will need to be either added/modified in the template
-//        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/publishScreen/statusBarStyle"];
-//        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/createSheet/statusBarStyle"];
-        
+        }        
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
