@@ -54,7 +54,7 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 @interface VSequenceActionController ()
 

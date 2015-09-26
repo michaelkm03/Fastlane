@@ -293,25 +293,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
         }
-        else
-        {
-            NSString *message = NSLocalizedString(@"FacebookLoginFailed", @"");
-            [self showErrorWithMessage:message];
-        }
     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
-}
-
-- (void)showErrorWithMessage:(NSString *)message
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)loginWithEmail:(NSString *)email
