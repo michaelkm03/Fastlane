@@ -150,7 +150,8 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForColor];
+    UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    return [self.dependencyManager statusBarStyleForColor:navigationBarTextColor];
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden

@@ -69,7 +69,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForKey:kStatusBaryStleKey];
+    return [self.dependencyManager statusBarStyleForColor:self.navigationBar.tintColor];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
