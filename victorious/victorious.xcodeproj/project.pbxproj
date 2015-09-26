@@ -1261,6 +1261,7 @@
 		F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */; };
 		F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */; };
 		F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */; };
+		F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */; settings = {ASSET_TAGS = (); }; };
 		F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
@@ -3591,6 +3592,8 @@
 		F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPreviewView.m; sourceTree = "<group>"; };
 		F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageStreamPreviewView.h; sourceTree = "<group>"; };
 		F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageStreamPreviewView.m; sourceTree = "<group>"; };
+		F0D2E94C1BB6442F001FD97F /* VTextStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextStreamPreviewView.h; sourceTree = "<group>"; };
+		F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextStreamPreviewView.m; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -7891,12 +7894,14 @@
 		F0C83A5D1B16214F00A6EC1A /* StreamPreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */,
+				F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */,
 				F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */,
 				F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */,
 				F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */,
 				F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */,
-				F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */,
-				F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */,
+				F0D2E94C1BB6442F001FD97F /* VTextStreamPreviewView.h */,
+				F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */,
 			);
 			name = StreamPreviewView;
 			path = SequencePreviewView;
@@ -9217,6 +9222,7 @@
 				797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */,
 				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
+				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,

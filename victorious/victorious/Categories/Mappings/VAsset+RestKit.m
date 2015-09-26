@@ -15,6 +15,24 @@
     return @"Asset";
 }
 
++ (RKEntityMapping *)textPostPreviewEntityMapping
+{
+    NSDictionary *propertyMap = @{
+                                  @"type" : VSelectorName(type),
+                                  @"data" : VSelectorName(data),
+                                  @"background_color" : VSelectorName(backgroundColor),
+                                  @"background_image" : VSelectorName(backgroundImageUrl)
+                                  };
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
@@ -35,10 +53,7 @@
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    // TODO: uncomment this after back-end fixes their shit or figure out another way to identify duplicate assets
-//    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
+
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;

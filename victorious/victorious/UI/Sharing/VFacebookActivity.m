@@ -71,7 +71,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
     FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
     link.contentURL = self.shareURL;
     
-    VImageAsset *thumbnail = [[[VImageAssetFinder alloc] init] largestAssetFromAssets:self.sequence.previewAssets];
+    VImageAsset *thumbnail = [[[VImageAssetFinder alloc] init] largestAssetFromAssets:self.sequence.previewImageAssets];
     if ( thumbnail.imageURL != nil )
     {
         link.imageURL = [NSURL URLWithString:thumbnail.imageURL];

@@ -123,7 +123,7 @@ typedef UIImage* (^ImageLoading)();
     }
     else
     {
-        VImageAsset *asset = [self.assetFinder assetWithPreferredMinimumSize:size fromAssets:sequence.previewAssets];
+        VImageAsset *asset = [self.assetFinder assetWithPreferredMinimumSize:size fromAssets:sequence.previewImageAssets];
         NSURL *imageURL = [NSURL URLWithString:asset.imageURL];
         NSString *cacheKey = imageURL.absoluteString;
         UIImage *cachedImage = [[self cache] objectForKey:cacheKey];

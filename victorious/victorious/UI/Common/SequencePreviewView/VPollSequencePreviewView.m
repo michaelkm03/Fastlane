@@ -90,8 +90,8 @@ static NSString *kOrIconKey = @"orIcon";
     
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
     
-    VAnswer *answerA = [assetFinder answerAFromAssets:sequence.previewAssets];
-    VAnswer *answerB = [assetFinder answerBFromAssets:sequence.previewAssets];
+    VAnswer *answerA = [assetFinder answerAFromAssets:sequence.previewImageAssets];
+    VAnswer *answerB = [assetFinder answerBFromAssets:sequence.previewImageAssets];
     
     if (answerA == nil)
     {

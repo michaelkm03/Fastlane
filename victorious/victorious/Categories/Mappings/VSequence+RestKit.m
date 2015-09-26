@@ -7,6 +7,7 @@
 //
 
 #import "VSequence+RestKit.h"
+#import "VAsset+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VNode+RestKit.h"
 #import "VVoteResult+RestKit.h"
@@ -78,11 +79,17 @@
 {
     RKEntityMapping *mapping = [VSequence mappingBase];
     
-    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
-                                                                                              toKeyPath:VSelectorName(previewAssets)
-                                                                                            withMapping:[VImageAsset entityMapping]];
+    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                 withMapping:[VImageAsset entityMapping]];
     
-    [mapping addPropertyMapping:previewAssetsMapping];
+    [mapping addPropertyMapping:previewImageAssetsMapping];
+    
+    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                              withMapping:[VAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewTextPostMapping];
     
     RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
                                                                                               toKeyPath:VSelectorName(recentComments)
@@ -101,11 +108,17 @@
 {
     RKEntityMapping *mapping = [VSequence mappingBase];
     
-    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
-                                                                                              toKeyPath:VSelectorName(previewAssets)
-                                                                                            withMapping:[VImageAsset entityMapping]];
+    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                 withMapping:[VImageAsset entityMapping]];
     
-    [mapping addPropertyMapping:previewAssetsMapping];
+    [mapping addPropertyMapping:previewImageAssetsMapping];
+    
+    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                              withMapping:[VAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewTextPostMapping];
     
     RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
                                                                                                toKeyPath:VSelectorName(recentComments)

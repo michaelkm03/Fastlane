@@ -47,6 +47,18 @@
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
+    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                 withMapping:[VImageAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewImageAssetsMapping];
+    
+    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                              withMapping:[VAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewTextPostMapping];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;

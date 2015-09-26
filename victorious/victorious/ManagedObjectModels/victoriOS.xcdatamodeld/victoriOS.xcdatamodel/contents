@@ -37,6 +37,7 @@
     <entity name="Asset" representedClassName="VAsset" syncable="YES">
         <attribute name="audioMuted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="backgroundColor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="backgroundImageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="data" attributeType="String" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -48,6 +49,7 @@
         <attribute name="streamAutoplay" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
+        <relationship name="streamItems" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="previewTextPostAsset" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetOrientation" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -134,7 +136,7 @@
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="previewAssets" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="previewImageAssets" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="previewAssets" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
@@ -258,7 +260,6 @@
         <relationship name="parentEndCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="nextSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
-        <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="sequences" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="recentComments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="inStreamSequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="recentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="recentSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
@@ -293,6 +294,8 @@
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="editorializations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EditorializationItem" inverseName="streamItem" inverseEntity="EditorializationItem" syncable="YES"/>
         <relationship name="marquees" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItems" inverseEntity="Stream" syncable="YES"/>
+        <relationship name="previewImageAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="streamItems" inverseEntity="ImageAsset" syncable="YES"/>
+        <relationship name="previewTextPostAsset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="streamItems" inverseEntity="Asset" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
@@ -361,7 +364,7 @@
         <element name="AdBreakFallback" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Asset" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="Asset" positionX="0" positionY="0" width="128" height="270"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="360"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
@@ -385,7 +388,7 @@
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
+        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="240"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="540"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>

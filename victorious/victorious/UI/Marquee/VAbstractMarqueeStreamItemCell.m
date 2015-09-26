@@ -17,6 +17,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "victorious-swift.h"
 #import "VTextSequencePreviewView.h"
+#import "VTextStreamPreviewView.h"
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking>
 
@@ -90,7 +91,7 @@
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     [self.previewView setDependencyManager:self.dependencyManager];
-    self.previewView.onlyShowPreview = [self.previewView isKindOfClass:[VTextSequencePreviewView class]];
+    self.previewView.onlyShowPreview = [self.previewView isKindOfClass:[VTextSequencePreviewView class]] || [self.previewView isKindOfClass:[VTextStreamPreviewView class]];
     
     // Turn off autoplay for explore marquee shelf
     if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])

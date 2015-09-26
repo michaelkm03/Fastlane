@@ -73,7 +73,7 @@
     [self makeBackgroundContainerViewVisible:NO];
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
-    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
+    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewImageAssets];
     
     __weak VBaseVideoSequencePreviewView *weakSelf = self;
     void (^completionBlock)(void) = ^void(void)

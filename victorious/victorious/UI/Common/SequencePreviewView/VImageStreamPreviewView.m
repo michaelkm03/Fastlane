@@ -50,9 +50,10 @@
     [super setStream:stream];
     
     [self setBackgroundContainerViewVisible:NO];
-    
-    __weak VImageStreamPreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
+    NSURL *previewURL = [stream inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
+    [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
                         alongsideAnimations:^
      {
@@ -60,7 +61,7 @@
      }
                                  completion:^(UIImage *image)
      {
-         weakSelf.readyForDisplay = YES;
+         self.readyForDisplay = YES;
      }];
 }
 
