@@ -201,8 +201,10 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
-#warning TESTING TEMPLATE
-        [templateDecorator setTemplateValue:@"dark" forKeyPath:@"scaffold/statusBarStyle"];
+#warning These values will need to be either added/modified in the template
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/publishScreen/statusBarStyle"];
+        [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/createSheet/statusBarStyle"];
         [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/imageCreateFlow/statusBarStyle"];
         [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/gifCreateFlow/statusBarStyle"];
         [templateDecorator setTemplateValue:@"light" forKeyPath:@"scaffold/pollCreateFlow/statusBarStyle"];

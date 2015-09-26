@@ -29,6 +29,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
 #import "VAlongsidePresentationAnimator.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 #import "victorious-Swift.h"
 
 @import AssetsLibrary;
@@ -49,6 +50,7 @@ static NSString * const kCaptionContainerBackgroundColor = @"color.captionContai
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
+static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer, VAlongsidePresentation>
 
@@ -118,7 +120,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
