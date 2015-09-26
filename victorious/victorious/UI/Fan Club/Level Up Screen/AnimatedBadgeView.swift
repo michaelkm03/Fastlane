@@ -210,9 +210,9 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         // Sets the gradient mask
         container.maskView = linearGradientView
         
-        UIView.animateWithDuration(0.7,
+        UIView.animateWithDuration(0.4,
             delay: 0,
-            options: .CurveEaseIn,
+            options: .CurveLinear,
             animations: { () in
                 
                 self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(-self.levelNumberLabel.bounds.width, 0)
@@ -222,18 +222,17 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
                 self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(self.levelNumberLabel.bounds.width, 0)
                 self.levelNumberString = newLevel
                 
-                UIView.animateWithDuration(0.7,
+                UIView.animateWithDuration(0.4,
                     delay: 0,
+                    usingSpringWithDamping: 0.7,
+                    initialSpringVelocity: 0.7,
                     options: .CurveEaseOut,
                     animations: { () in
-                        
                         self.levelNumberLabel.transform = CGAffineTransformIdentity
-                        
-                    }) { (completed) in
-                        
+                    }, completion: { (completed) in
                         // Resets gradient mask
                         self.container.maskView = nil
-                }
+                })
         }
     }
     
