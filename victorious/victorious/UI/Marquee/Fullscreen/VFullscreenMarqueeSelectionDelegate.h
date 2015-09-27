@@ -11,13 +11,11 @@
 @class VUser, VAbstractMarqueeController;
 
 /**
-    An extension, of sorts, of the VMarqueeSelectionDelegate protocol to allow delegates to respond to
-        selections of users from the marquee cells.
+ An extension, of sorts, of the VMarqueeSelectionDelegate protocol to allow delegates
+ to respond to selections of users from the marquee cells.
  */
 @protocol VFullscreenMarqueeSelectionDelegate <VMarqueeSelectionDelegate>
 
-@required
-
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
+- (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
 
 @end

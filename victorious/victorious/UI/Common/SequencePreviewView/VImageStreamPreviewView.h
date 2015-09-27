@@ -7,10 +7,9 @@
 //
 
 #import "VStreamPreviewView.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "VImagePreviewView.h"
 
-@interface VImageStreamPreviewView : VStreamPreviewView <VPreviewViewBackgroundHost, VImagePreviewView>
+@interface VImageStreamPreviewView : VStreamPreviewView <VImagePreviewView>
 
 /**
  The image view that displays the sequence preview image.

@@ -51,6 +51,8 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     private(set) var dependencyManager: VDependencyManager?
     private var trackingMinRequiredCellVisibilityRatio: CGFloat = 0
     
+    private let contentPresenter = ContentViewPresenter()
+    
     private struct SectionRange {
         let range: NSRange
         let isShelf: Bool
@@ -559,7 +561,10 @@ extension VExploreViewController: VHashtagSelectionResponder {
 
 extension VExploreViewController : VMarqueeSelectionDelegate {
     
-    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
+    
+    
+    func marqueeController(marquee: VAbstractMarqueeController, didSelectItem streamItem: VStreamItem, withPreviewImage image: UIImage?, fromCollectionView collectionView: UICollectionView, atIndexPath path: NSIndexPath) {
+        
         if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
             navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
         }
@@ -631,44 +636,32 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         }
     }
     
-    private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage, inCell cell: UICollectionViewCell) {
+    private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage?, inCell cell: UICollectionViewCell) {
+        
         /// Marquee item selection tracking
-        let params = [ VTrackingKeyName : streamItem.name ?? "",
-            VTrackingKeyRemoteId : streamItem.remoteId ?? ""]
+        let params = [
+            VTrackingKeyName : streamItem.name ?? "",
+            VTrackingKeyRemoteId : streamItem.remoteId ?? ""
+        ]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectItemFromMarquee, parameters: params)
         
+        let event = StreamCellContext(streamItem: streamItem, stream: stream, fromShelf: true)
+        
         // Navigating to a sequence
-        if streamItem is VSequence {
-            let event = StreamCellContext(streamItem: streamItem, stream: stream, fromShelf: true)
+        if let sequence = event.streamItem as? VSequence {
+            let isFromShelf = event.stream.hasShelfID() && event.fromShelf
+            let streamId = isFromShelf ? event.stream.shelfId : event.stream.streamId
             
-            let extraTrackingInfo: [String : AnyObject]
-            if let autoplayCell = cell as? AutoplayTracking {
-                extraTrackingInfo = autoplayCell.additionalInfo()
-            }
-            else {
-                extraTrackingInfo = [String : AnyObject]()
-            }
-            
-            showContentView(forCellEvent: event, trackingInfo: extraTrackingInfo, previewImage: image)
+            let context = ContentViewContext()
+            context.originDependencyManager = dependencyManager
+            context.sequence = sequence
+            context.streamId = streamId
+            context.placeholderImage = image
+            self.contentPresenter.presentContentView(context: context)
         }
-            // Navigating to a stream
+        // Navigating to a stream
         else if let stream = streamItem as? VStream {
             navigate(toStream: stream, atStreamItem: nil)
-        }
-    }
-    
-    private func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
-        
-        if event.streamItem is VSequence {
-            let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
-            
-            VContentViewPresenter.presentContentViewFromViewController(self,
-                withDependencyManager: dependencyManager,
-                forSequence: event.streamItem as? VSequence,
-                inStreamWithID: streamID,
-                commentID: nil,
-                withPreviewImage: image
-            )
         }
     }
 }

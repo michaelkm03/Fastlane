@@ -8,12 +8,6 @@
 
 import Foundation
 
-// Views can implement this protocol to respond to
-// a change in focus when scrolled in a table view
-protocol Focus {
-    var hasFocus: Bool { get set }
-}
-
 // Views can implement this protocol to properly prepare
 // themselves for cell reuse
 protocol Reuse {
@@ -22,11 +16,10 @@ protocol Reuse {
 
 // A class cluster used for returning a view configured to display media
 // attached to a comment or a message
-class MediaAttachmentView : UIView, Focus, Reuse {
+class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     var comment: VComment?
     var message: VMessage?
-    var hasFocus = false
     var dependencyManager: VDependencyManager?
     var respondToButton:((previewImage: UIImage?) -> Void)?
     
@@ -84,5 +77,13 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     
     func prepareForReuse() {
         // Subclasses can override
+    }
+    
+    // MARK: - VFocusable
+    
+    var focusType: VFocusType = .None
+    
+    func contentArea() -> CGRect {
+        return CGRect.zero
     }
 }
