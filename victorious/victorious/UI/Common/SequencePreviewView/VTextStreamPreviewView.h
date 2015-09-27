@@ -8,6 +8,9 @@
 
 #import "VStreamPreviewView.h"
 
+/**
+ A preview view for displaying a text asset on a stream.
+ */
 @interface VTextStreamPreviewView : VStreamPreviewView
 
 @end

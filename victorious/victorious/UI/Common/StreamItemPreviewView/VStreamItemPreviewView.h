@@ -77,10 +77,13 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL isLoading;
 
 /**
- *  The dependency manager used, by some preview views, for styling
+ *  The dependency manager used, by some preview views, for styling.
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
+/**
+ *  The size used, by some preview views, for rendering preview images.
+ */
 @property (nonatomic, assign) CGSize displaySize;
 
 /**

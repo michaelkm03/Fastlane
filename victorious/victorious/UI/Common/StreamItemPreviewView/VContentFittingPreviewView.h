@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 
 /**
-    Describes preview views that can update their content mode and add a background view that will
-        be animated alongside the content.
+    Describes preview views that can update their content mode.
  */
 @protocol VContentFittingPreviewView <NSObject>
 

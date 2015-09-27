@@ -60,6 +60,7 @@
     if ( self != nil )
     {
         _streamBackgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+        _displaySize = CGSizeZero;
     }
     return self;
 }
