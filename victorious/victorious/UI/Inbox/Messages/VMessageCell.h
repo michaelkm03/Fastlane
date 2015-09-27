@@ -7,13 +7,13 @@
 //
 
 #import "VMessageTextAndMediaView.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 
 @class VDefaultProfileImageView, VMessage;
 
 extern NSString * const kVMessageCellNibName;
 
-@interface VMessageCell : UITableViewCell <VCellFocus>
+@interface VMessageCell : UITableViewCell <VFocusable>
 
 @property (nonatomic, weak, readonly) IBOutlet VMessageTextAndMediaView  *messageTextAndMediaView;
 @property (nonatomic, weak, readonly) IBOutlet UILabel                   *timeLabel;

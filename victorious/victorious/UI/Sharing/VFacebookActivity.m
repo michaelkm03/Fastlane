@@ -7,7 +7,7 @@
 //
 
 #import "VFacebookActivity.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "VSequence+Fetcher.h"

@@ -26,7 +26,7 @@
 
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 @import AVFoundation;
 @import FBSDKCoreKit;

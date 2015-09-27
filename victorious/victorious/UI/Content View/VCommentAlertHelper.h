@@ -1,5 +1,5 @@
 //
-//  VContentViewAlertHelper.h
+//  VCommentAlertHelper.h
 //  victorious
 //
 //  Created by Patrick Lynch on 2/10/15.
@@ -17,11 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIAlertController *)alertForConfirmDiscardMediaWithDelete:(nullable void(^)())onDelete
                                                       cancel:(nullable void(^)())onCancel;
-
-/**
- A convenience factory for a load next sequence alert controller.
- */
-+ (UIAlertController *)alertForNextSequenceErrorWithDismiss:(nullable void(^)())onDismiss;
 
 @end
 

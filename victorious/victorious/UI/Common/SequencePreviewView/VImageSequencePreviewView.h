@@ -7,10 +7,11 @@
 //
 
 #import "VSequencePreviewView.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "VImagePreviewView.h"
+#import "VFocusable.h"
+#import "VContentFittingPreviewView.h"
 
-@interface VImageSequencePreviewView : VSequencePreviewView <VPreviewViewBackgroundHost, VImagePreviewView>
+@interface VImageSequencePreviewView : VSequencePreviewView <VImagePreviewView, VFocusable, VContentFittingPreviewView>
 
 /**
  The image view that displays the sequence preview image.

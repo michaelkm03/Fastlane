@@ -15,11 +15,13 @@
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
 #import "UIResponder+VResponderChain.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VTextSequencePreviewView.h"
 #import "VTextStreamPreviewView.h"
 
-@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking>
+@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking, VContentPreviewViewProvider>
+
+@property (nonatomic, assign) BOOL hasReliquishedPreviewView;
 
 @end
 
@@ -75,7 +77,7 @@
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
-    if ( streamItem == nil )
+    if ( streamItem == nil || self.hasReliquishedPreviewView )
     {
         return;
     }
@@ -88,6 +90,7 @@
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    self.previewView.streamBackgroundColor = [UIColor blackColor];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     [self.previewView setDependencyManager:self.dependencyManager];
@@ -164,6 +167,30 @@
 - (NSDictionary *__nonnull)additionalInfo
 {
     return [self.previewView trackingInfo] ?: @{};
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+- (void)relinquishPreviewView
+{
+    self.hasReliquishedPreviewView = YES;
+}
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (UIView *)getContainerView
+{
+    return self.contentView;
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    self.hasReliquishedPreviewView = NO;
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

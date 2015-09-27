@@ -8,12 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, VPollAnswer)
-{
-    VPollAnswerA,
-    VPollAnswerB,
-};
-
 /**
  *  VPollView show two images side by side to represent the 
  *  options of a poll. The pollIcon is centered above the image 
@@ -21,16 +15,10 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
  */
 @interface VPollView : UIView
 
-/**
- *  Sets the url to the appropriate internal imageView.
- */
-- (void)setImageURL:(NSURL *)imageURL
-      forPollAnswer:(VPollAnswer)pollAnswer
-         completion:(void (^)(UIImage *))completionBlock;
-
-/**
- *  The poll icon to use. Defaults to nil.
- */
 @property (nonatomic, strong) IBInspectable UIImage *pollIcon;
+@property (nonatomic, strong) UIImageView *answerAImageView;
+@property (nonatomic, strong) UIImageView *answerBImageView;
+
+- (void)setPollIconHidden:(BOOL)hidden animated:(BOOL)animated;
 
 @end

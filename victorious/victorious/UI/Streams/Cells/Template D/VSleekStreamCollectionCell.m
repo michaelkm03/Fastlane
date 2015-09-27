@@ -30,8 +30,9 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "UIResponder+VResponderChain.h"
+#import "victorious-Swift.h"
+#import "VContentFittingPreviewView.h"
 
 @import KVOController;
 
@@ -48,7 +49,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
-@property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
@@ -72,6 +73,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
+@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
@@ -370,6 +372,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ( self.previewView == nil && self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
@@ -380,10 +387,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    [self.previewView setDependencyManager:self.dependencyManager];
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    self.previewView.dependencyManager = self.dependencyManager;
+    if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
     {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
+        [(VSequencePreviewView <VContentFittingPreviewView> *)self.previewView updateToFitContent:YES];
     }
     [self.previewView setSequence:sequence];
 }
@@ -482,13 +489,16 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 
@@ -589,6 +599,31 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
     }
     return _inStreamCommentsController;
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+- (void)relinquishPreviewView
+{
+    self.hasRelinquishedPreviewView = YES;
+}
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (UIView *)getContainerView
+{
+    return self.previewView;
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

@@ -20,7 +20,7 @@
 // DependencyManager
 #import "VDependencyManager.h"
 
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;

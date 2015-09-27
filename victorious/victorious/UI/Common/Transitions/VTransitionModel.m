@@ -41,8 +41,7 @@
         {
             _snapshotOfOriginView = [_fromViewController.view snapshotViewAfterScreenUpdates:NO];
         }
-        
-        if ( [transition respondsToSelector:@selector(requiresImageViewFromWindow)] && [transition requiresImageViewFromWindow] )
+        else if ( [transition respondsToSelector:@selector(requiresImageViewFromWindow)] && [transition requiresImageViewFromWindow] )
         {
             _snapshotOfOriginView = [[[[UIApplication sharedApplication] windows] firstObject] snapshotViewAfterScreenUpdates:NO];
         }
