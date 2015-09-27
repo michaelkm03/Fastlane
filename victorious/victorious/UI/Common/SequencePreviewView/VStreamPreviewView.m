@@ -21,7 +21,7 @@
 + (Class)classTypeForStream:(VStream *)stream
 {
     Class classType = nil;
-    if ( [stream.previewTextPostAsset.type isEqualToString:@"text"] && stream.previewTextPostAsset != nil )
+    if ( stream.previewTextPostAsset != nil )
     {
         classType = [VTextStreamPreviewView class];
     }

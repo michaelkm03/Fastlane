@@ -128,6 +128,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         else {
             // Need to render the text post anew
             let textPostPreviewView = VTextSequencePreviewView()
+            textPostPreviewView.displaySize = TrendingTopicContentCollectionViewCell.desiredSize()
             textPostPreviewView.dependencyManager = dependencyManager
             textPostPreviewView.onlyShowPreview = true
             textPostPreviewView.updateToStreamItem(streamItem)
@@ -211,6 +212,11 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     class func reuseIdentifier() -> String {
         return NSStringFromClass(TrendingTopicContentCollectionViewCell.self)
+    }
+    
+    //The ideal size of this cell
+    class func desiredSize() -> CGSize {
+        return CGSizeMake(90, 90)
     }
 }
 

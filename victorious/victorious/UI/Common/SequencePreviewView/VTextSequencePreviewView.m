@@ -22,6 +22,7 @@
 #import "VDependencyManager.h"
 #import "UIView+VViewRendering.h"
 #import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+Resize.h"
 
 static const CGFloat kRenderedTextPostSide = 320.0f;
 static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, kRenderedTextPostSide} };
@@ -172,6 +173,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     {
         self.previewImageView = [[UIImageView alloc] init];
         self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.previewImageView.clipsToBounds = YES;
     }
     
     if ( self.previewImageView.superview == nil )
@@ -240,7 +242,15 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     [self updateTextViewFrame];
     [self setupTextViewSizeConstraints];
     [self.textPostViewController.view layoutIfNeeded];
-    [self.textPostViewController.view v_renderViewWithCompletion:completion];
+    ViewRenderingCompletion fullCompletion = completion;
+    if ( !CGSizeEqualToSize(CGSizeZero, self.displaySize) )
+    {
+        fullCompletion = ^(UIImage *image){
+            image = [image smoothResizedImageWithNewSize:self.displaySize];
+            completion(image);
+        };
+    }
+    [self.textPostViewController.view v_renderViewWithCompletion:fullCompletion];
 }
 
 - (void)renderTextPostPreviewImage

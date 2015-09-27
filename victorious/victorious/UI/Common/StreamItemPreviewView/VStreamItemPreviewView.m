@@ -87,6 +87,19 @@
     }
 }
 
+- (void)setDisplaySize:(CGSize)displaySize
+{
+    if ( displaySize.height > displaySize.width )
+    {
+        displaySize.width = displaySize.height;
+    }
+    else if ( displaySize.height < displaySize.width )
+    {
+        displaySize.height = displaySize.width;
+    }
+    _displaySize = displaySize;
+}
+
 - (NSDictionary *)trackingInfo
 {
     // Override in subclass

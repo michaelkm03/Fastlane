@@ -92,6 +92,8 @@
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     [self.previewView setDependencyManager:self.dependencyManager];
     self.previewView.onlyShowPreview = [self.previewView isKindOfClass:[VTextSequencePreviewView class]] || [self.previewView isKindOfClass:[VTextStreamPreviewView class]];
+    CGSize displaySize = self.bounds.size;
+    self.previewView.displaySize = displaySize;
     
     // Turn off autoplay for explore marquee shelf
     if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])

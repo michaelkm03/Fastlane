@@ -15,22 +15,33 @@
     return @"Asset";
 }
 
-+ (RKEntityMapping *)textPostPreviewEntityMapping
++ (RKDynamicMapping *)textPostPreviewEntityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"type" : VSelectorName(type),
-                                  @"data" : VSelectorName(data),
-                                  @"background_color" : VSelectorName(backgroundColor),
-                                  @"background_image" : VSelectorName(backgroundImageUrl)
-                                  };
+    RKDynamicMapping *dynamicMapping = [RKDynamicMapping new];
+    [dynamicMapping setObjectMappingForRepresentationBlock:^RKObjectMapping *(id representation)
+     {
+         NSString *type = [representation valueForKey:@"type"];
+         if ( [type isKindOfClass:[NSString class]] && [type isEqualToString:@"text"] )
+         {
+             NSDictionary *propertyMap = @{
+                                           @"type" : VSelectorName(type),
+                                           @"data" : VSelectorName(data),
+                                           @"background_color" : VSelectorName(backgroundColor),
+                                           @"background_image" : VSelectorName(backgroundImageUrl)
+                                           };
+             
+             RKEntityMapping *mapping = [RKEntityMapping
+                                         mappingForEntityForName:[self entityName]
+                                         inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+             
+             [mapping addAttributeMappingsFromDictionary:propertyMap];
+             
+             return mapping;
+         }
+         return nil;
+     }];
     
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    return mapping;
+    return dynamicMapping;
 }
 
 + (RKEntityMapping *)entityMapping

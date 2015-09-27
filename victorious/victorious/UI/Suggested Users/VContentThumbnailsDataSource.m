@@ -109,6 +109,7 @@ typedef UIImage* (^ImageLoading)();
             return;
         }
         VTextSequencePreviewView *textSequencePreviewView = [[VTextSequencePreviewView alloc] init];
+        textSequencePreviewView.displaySize = size;
         textSequencePreviewView.onlyShowPreview = YES;
         textSequencePreviewView.dependencyManager = self.dependencyManager;
         [textSequencePreviewView updateToStreamItem:sequence];

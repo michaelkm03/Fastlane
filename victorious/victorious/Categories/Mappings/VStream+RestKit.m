@@ -12,6 +12,8 @@
 
 #import "VEditorializationItem.h"
 
+#import "VAsset+RestKit.h"
+
 #import "victorious-Swift.h"
 
 @implementation VStream (RestKit)
@@ -55,7 +57,7 @@
     
     RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
                                                                                                 toKeyPath:VSelectorName(previewTextPostAsset)
-                                                                                              withMapping:[VAsset entityMapping]];
+                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
     
     [mapping addPropertyMapping:previewTextPostMapping];
     

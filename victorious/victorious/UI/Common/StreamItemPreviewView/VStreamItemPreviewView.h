@@ -74,6 +74,8 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
+@property (nonatomic, assign) CGSize displaySize;
+
 /**
  *  Returns tracking info specific to things happening inside this preview view. 
  *  Subclasses can override to provide necessary tracking info for when action is

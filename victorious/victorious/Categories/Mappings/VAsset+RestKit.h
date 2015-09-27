@@ -13,6 +13,6 @@
 
 + (RKEntityMapping *)entityMappingForVVoteType;
 
-+ (RKEntityMapping *)textPostPreviewEntityMapping;
++ (RKDynamicMapping *)textPostPreviewEntityMapping;
 
 @end

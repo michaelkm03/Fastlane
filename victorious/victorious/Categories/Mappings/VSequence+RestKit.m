@@ -87,7 +87,7 @@
     
     RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
                                                                                                 toKeyPath:VSelectorName(previewTextPostAsset)
-                                                                                              withMapping:[VAsset entityMapping]];
+                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
     
     [mapping addPropertyMapping:previewTextPostMapping];
     
@@ -116,7 +116,7 @@
     
     RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
                                                                                                 toKeyPath:VSelectorName(previewTextPostAsset)
-                                                                                              withMapping:[VAsset entityMapping]];
+                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
     
     [mapping addPropertyMapping:previewTextPostMapping];
     
