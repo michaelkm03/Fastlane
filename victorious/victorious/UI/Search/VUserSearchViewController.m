@@ -224,14 +224,14 @@ static const NSInteger kSearchResultLimit = 100;
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            [self.activityIndicatorView stopAnimating];
+            
             self.foundUsers = sortedUsers;
             [self setHaveSearchResults:self.foundUsers.count];
-            
             if ([validSearchSentinel isEqualToString:welf.validSearchText])
             {
                 self.tableView.hidden = NO;
                 [self.tableView reloadData];
-                [self.activityIndicatorView stopAnimating];
             }
         });
     };
@@ -240,14 +240,14 @@ static const NSInteger kSearchResultLimit = 100;
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            [self.activityIndicatorView stopAnimating];
+            
             [self setHaveSearchResults:NO];
             self.tableView.hidden = YES;
             if (error.code)
             {
                 self.foundUsers = [[NSArray alloc] init];
             }
-
-            [self.activityIndicatorView stopAnimating];
         });
     };
 
@@ -322,13 +322,6 @@ static const NSInteger kSearchResultLimit = 100;
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
     return YES;
-}
-
-#pragma mark - UITextField Notification Handlers
-
-- (void)textFieldDidChange:(NSNotification *)textDidChange
-{
-    [self runUserSearch:nil];
 }
 
 #pragma mark - VFollowResponder

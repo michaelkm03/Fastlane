@@ -84,7 +84,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)dealloc
 {
     _searchField.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View Lifecycle Methods
@@ -119,15 +118,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     self.searchField.delegate = self;
-    if (self.searchField != nil)
-    {
-        // We only want to register for our textField's notifications not all
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textFieldTextDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:self.searchField];
-    }
-    
+
     // Set highlighted state for close button
     [self.closeButton setImage:[UIImage imageNamed:@"CloseHighlighted"] forState:UIControlStateHighlighted];
     
@@ -256,30 +247,47 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     self.currentHashtagSearchQueryText = tagName;
     NSString *currentTagsentinel = [self.currentHashtagSearchQueryText copy];
-    __weak typeof(self) welf = self;
     
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
+    if (tagName.length == 0)
+    {
+        [hud hide:YES];
+        return;
+    }
+    
+    
+    if (hud == nil)
+    {
+        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    else
+    {
+        [hud show:YES];
+    }
+    hud.userInteractionEnabled = NO;
+    
+    __weak typeof(self) welf = self;
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // If these aren't the same this is an earlier result and should be discarded
-        if (![welf.currentHashtagSearchQueryText isEqualToString:currentTagsentinel])
-        {
-            return;
-        }
-        
-        NSMutableArray *searchResults = [[NSMutableArray alloc] init];
-        NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
-        
-        [tags enumerateObjectsUsingBlock:^(NSString *tag, NSUInteger idx, BOOL *stop)
-        {
-            VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
-                                                                           subclass:[VHashtag class]];
-            newTag.tag = tag;
-            [searchResults addObject:newTag];
-
-        }];
-        
+        // Jump back to main thread for comparison
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            // If these aren't the same this is an earlier result and should be discarded
+            if (![welf.currentHashtagSearchQueryText isEqualToString:currentTagsentinel])
+            {
+                return;
+            }
+            
+            NSMutableArray *searchResults = [[NSMutableArray alloc] init];
+            NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
+            [tags enumerateObjectsUsingBlock:^(NSString *tag, NSUInteger idx, BOOL *stop)
+            {
+                VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
+                                                                               subclass:[VHashtag class]];
+                newTag.tag = tag;
+                [searchResults addObject:newTag];
+            }];
+            
             if ( searchResults.count > 0 )
             {
                 [self.tagsSearchResultsVC setSearchResults:searchResults];
@@ -290,8 +298,7 @@ static NSInteger const kVMaxSearchResults = 1000;
                 [self showNoResultsReturnedForSearch];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
-            
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [hud hide:YES];
         });
     };
     
@@ -299,7 +306,11 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if ([welf.currentUserSearchQueryText isEqualToString:currentTagsentinel])
+            {
+                VLog(@"hiding hud failed curent search term");
+                [hud hide:YES];
+            }
         });
     };
 
@@ -307,9 +318,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     if (searchTerm.length > 0)
     {
         [self cancelUserSearch:NO andHashtagSearch:YES];
-        
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.userInteractionEnabled = NO;
         dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
             self.tagSearchRequest = [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
@@ -328,37 +336,59 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         return;
     }
-    
     self.currentUserSearchQueryText = userName;
     NSString *userSearchSentinel = [self.currentUserSearchQueryText copy];
-    [self setSearchResults:@[]];
+    
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
+    if (userName.length == 0)
+    {
+        [hud hide:YES];
+        return;
+    }
+    
+    if (hud == nil)
+    {
+        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    else
+    {
+        [hud show:YES];
+    }
+    hud.userInteractionEnabled = NO;
     
     __weak typeof(self) welf = self;
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // This is an outdated search result ignore.
-        if (![welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
-        {
-            return;
-        }
-        
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSArray *results = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-
+        // Jump back to main thread for comparison
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            if (results.count > 0)
+            // This is an outdated search result ignore.
+            if (![welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
             {
-                [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
+                return;
             }
-            else
-            {
-                self.userSearchResultsVC.searchResults = nil;
-                [self showNoResultsReturnedForSearch];
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
-            
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
+                           {
+                               NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+                               NSArray *results = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+                               
+                               dispatch_async(dispatch_get_main_queue(), ^
+                                              {
+                                                  if (results.count > 0)
+                                                  {
+                                                      [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
+                                                  }
+                                                  else
+                                                  {
+                                                      self.userSearchResultsVC.searchResults = nil;
+                                                      [self showNoResultsReturnedForSearch];
+                                                  }
+                                                  [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
+                                                  
+                                                  VLog(@"hiding hud success");
+                                                  [hud hide:YES];
+                                              });
+                           });
         });
     };
     
@@ -366,16 +396,18 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if ([welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
+            {
+                VLog(@"hiding hud failed curent search term");
+                [hud hide:YES];
+            }
         });
     };
     
+    [self clearSearchResults];
     if ( [userName length] > 0 )
     {
         [self cancelUserSearch:YES andHashtagSearch:NO];
-
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.userInteractionEnabled = NO;
         dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
             self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:userName
@@ -458,13 +490,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     [self.searchField resignFirstResponder];
     [self searchForCurrentStateWithText:textField.text];
     return YES;
-}
-
-#pragma mark - UITextField Notifications
-
-- (void)textFieldTextDidChange:(NSNotification *)notification
-{
-    [self searchForCurrentStateWithText:self.searchField.text];
 }
 
 #pragma mark - VSearchResultsTableViewControllerDelegate
