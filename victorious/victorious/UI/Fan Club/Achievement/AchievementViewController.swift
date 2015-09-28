@@ -92,7 +92,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         if !hasAppeared {
             animateIn() { completed in
                 let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
-                self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage)
+                self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage, completion: nil)
             }
         }
     }
@@ -134,7 +134,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[label]-10-|", options: [], metrics: nil, views: ["label" : titleLabel]))
         
-        var verticalConstraintString = ""
+        var verticalConstraintString: String
         var views: [String : UIView]
         
         if let animatedBadge = animatedBadge {
