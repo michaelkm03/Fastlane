@@ -30,7 +30,6 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, weak) IBOutlet VLinearGradientView *gradientMaskView;
-@property (nonatomic, strong) CAGradientLayer *maskLayer;
 
 @end
 
