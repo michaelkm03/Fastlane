@@ -15,7 +15,7 @@ private struct AchievementConstants {
 class AchievementViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     struct AnimationConstants {
-        static let presentationDuration = 0.2
+        static let presentationDuration = 0.3
         static let dismissalDuration = 0.2
         static let containerWidth: CGFloat = 292
         static let badgeAnimationTotalDuration = 2.0
@@ -106,7 +106,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: AnimationConstants.containerWidth))
         view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0))
-         view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: 0))
+         view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: -10))
         
         containerView.addSubview(dismissButton)
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
@@ -173,7 +173,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     private func animateIn(completion: ((Bool) -> Void)?) {
         
-        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: .CurveEaseInOut, animations: {
+        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.2, options: .CurveEaseInOut, animations: {
             self.containerView.transform = CGAffineTransformIdentity
             }, completion: completion)
     }
