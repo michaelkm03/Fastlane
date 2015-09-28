@@ -92,8 +92,8 @@
     [mapping addPropertyMapping:previewTextPostMapping];
     
     RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
-                                                                                              toKeyPath:VSelectorName(recentComments)
-                                                                                            withMapping:[VComment inStreamEntityMapping]];
+                                                                                               toKeyPath:VSelectorName(recentComments)
+                                                                                             withMapping:[VComment inStreamEntityMapping]];
     
     [mapping addPropertyMapping:recentCommentsMapping];
     

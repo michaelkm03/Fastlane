@@ -31,6 +31,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 @property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, assign) BOOL hasRenderedPreview;
 
 @property (nonatomic, strong) NSLayoutConstraint *textPostViewControllerHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *textPostViewControllerWidthConstraint;
@@ -47,6 +48,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     [super setSequence:sequence];
     if ( needsUpdate )
     {
+        self.hasRenderedPreview = NO;
         [self updateSequence];
     }
 }
@@ -239,14 +241,25 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)renderTextPostPreviewImageWithCompletion:(void(^)(UIImage *image))completion
 {
+    if ( self.hasRenderedPreview )
+    {
+        completion(self.previewImageView.image);
+        return;
+    }
+    
     [self updateTextViewFrame];
     [self setupTextViewSizeConstraints];
     [self.textPostViewController.view layoutIfNeeded];
     ViewRenderingCompletion fullCompletion = completion;
     if ( !CGSizeEqualToSize(CGSizeZero, self.displaySize) )
     {
+        __weak VTextSequencePreviewView *weakSelf = self;
         fullCompletion = ^(UIImage *image){
-            image = [image smoothResizedImageWithNewSize:self.displaySize];
+            VTextSequencePreviewView *strongSelf = weakSelf;
+            if ( strongSelf != nil )
+            {
+                image = [image smoothResizedImageWithNewSize:strongSelf.displaySize];
+            }
             completion(image);
         };
     }
@@ -255,8 +268,14 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)renderTextPostPreviewImage
 {
+    __weak VTextSequencePreviewView *weakSelf = self;
     [self renderTextPostPreviewImageWithCompletion:^(UIImage *image) {
-        [self.previewImageView fadeInImage:image];
+        VTextSequencePreviewView *strongSelf = weakSelf;
+        if ( strongSelf != nil )
+        {
+            [strongSelf.previewImageView fadeInImage:image];
+            strongSelf.hasRenderedPreview = YES;
+        }
     }];
 }
 

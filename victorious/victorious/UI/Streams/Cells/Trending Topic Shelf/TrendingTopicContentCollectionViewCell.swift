@@ -132,14 +132,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             textPostPreviewView.dependencyManager = dependencyManager
             textPostPreviewView.onlyShowPreview = true
             textPostPreviewView.updateToStreamItem(streamItem)
-            textPostPreviewView.renderTextPostPreviewImageWithCompletion({ [weak self] (image: UIImage!) -> Void in
-                if let strongSelf = self {
-                    let cacheKey = streamItem.remoteId
-                    strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
-                    strongSelf.imageView.image = image
-                    strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
-                }
+            textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
+                textPostPreviewView.renderTextPostPreviewImageWithCompletion({ [weak self] (image: UIImage!) -> Void in
+                    if let strongSelf = self {
+                        let cacheKey = streamItem.remoteId
+                        strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
+                        strongSelf.imageView.image = image
+                        strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
+                    }
                 })
+            };
         }
     }
     
