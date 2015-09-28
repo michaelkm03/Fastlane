@@ -21,6 +21,10 @@
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
 
+/**
+ Call during initialization to allow this class to register the
+ cells it intends to dequeue and vend back to the colleciton view.
+ */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 /**
