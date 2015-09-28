@@ -66,6 +66,8 @@ class HexagonView: UIView {
     /// Whether or not the stroke is being animated
     private(set) var isAnimating = false
     
+    private var animationCompletion: (() -> Void)?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         configureShapeLayer()
@@ -96,8 +98,8 @@ class HexagonView: UIView {
         let topRightLine = Line(start: topPoint, end: firstRightPoint)
         
         // Create two inset lines so we can find the intersect
-        let insetLeftLine = topLeftLine.offsetWithRadius(cornerRadius)
-        let insetRightLine = topRightLine.offsetWithRadius(cornerRadius)
+        let insetLeftLine = topLeftLine.offset(radius: cornerRadius)
+        let insetRightLine = topRightLine.offset(radius: cornerRadius)
         
         // Find the intersect point. This is the center of the corner radius circle
         let intersect = insetLeftLine.intersect(insetRightLine)
@@ -136,7 +138,8 @@ class HexagonView: UIView {
     }
     
     // Animated the stroke of the hexagon's shape layer
-    func animateBorder(endValue: CGFloat, duration: NSTimeInterval) {
+    func animateBorder(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
+        animationCompletion = completion
         isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.fromValue = 0
@@ -156,6 +159,7 @@ class HexagonView: UIView {
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         isAnimating = false
+        animationCompletion?()
     }
 }
 
@@ -167,12 +171,12 @@ struct Line {
         return atan2(end.y - start.y, end.x - start.x)
     }
     
-    // Returns a line with the same slope that is offset by a certain radius
-    func offsetWithRadius(radius: CGFloat) -> Line {
-        let offset = CGVectorMake(-sin(angle) * radius, cos(angle) * radius)
+    // Returns a new line with the same slope that is offset by a certain radius
+    func offset(radius radius: CGFloat) -> Line {
+        let offset = CGPointMake(-sin(angle) * radius, cos(angle) * radius)
         
-        let offsetStart = CGPointMake(start.x + offset.dx, start.y + offset.dy)
-        let offsetEnd = CGPointMake(end.x + offset.dx, end.y + offset.dy)
+        let offsetStart = start + offset
+        let offsetEnd = end + offset
         
         return Line(start: offsetStart, end: offsetEnd)
     }

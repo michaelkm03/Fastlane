@@ -133,7 +133,7 @@ class SoundBarView : UIView {
             let bar = barLayers[counter]
             bar.path = barPaths[counter].CGPath
             counter++
-            if counter == barLayers.count {
+            if counter >= barLayers.count || counter >= barPaths.count {
                 reset(false)
                 startAnimating()
             }

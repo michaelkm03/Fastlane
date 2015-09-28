@@ -180,10 +180,10 @@
     [self invalidateIntrinsicContentSize];
 }
 
-- (void)setInFocus:(BOOL)inFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    _inFocus = inFocus;
-    self.mediaAttachmentView.hasFocus = inFocus;
+    _focusType = focusType;
+    self.mediaAttachmentView.focusType = focusType;
 }
 
 #pragma mark - Actions

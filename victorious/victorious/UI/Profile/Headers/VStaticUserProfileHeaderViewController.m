@@ -13,7 +13,7 @@
 #import "UIImage+ImageCreation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -114,7 +114,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         // Animate progress towards next level for current user's profile
         NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
-        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage];
+        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage completion:nil];
     }
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "TWAPIManager.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"

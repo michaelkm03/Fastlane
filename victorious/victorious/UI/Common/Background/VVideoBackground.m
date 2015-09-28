@@ -19,7 +19,7 @@
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
-@interface VVideoBackground () <VVideoViewDelegate>
+@interface VVideoBackground () <VVideoPlayerDelegate>
 
 @property (nonatomic, strong) VVideoView *videoView;
 
@@ -46,7 +46,10 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
                  VAsset *asset = [node httpLiveStreamingAsset];
                  if (asset.dataURL != nil)
                  {
-                     [self.videoView setItemURL:asset.dataURL loop:YES audioMuted:YES];;
+                     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
+                     item.muted = YES;
+                     item.loop = YES;
+                     [self.videoView setItem:item];
                  }
              }
                                                     failBlock:^(NSOperation *operation, NSError *error)
@@ -65,11 +68,11 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     return self.videoView;
 }
 
-#pragma mark - VVideoViewDelegate
+#pragma mark - VVideoPlayerDelegate
 
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+- (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    [self.videoView play];
+    [self.videoView playFromStart];
 }
 
 @end

@@ -15,11 +15,12 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
+class LevelUpViewController: UIViewController, InterstitialViewController, VVideoPlayerDelegate {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
         static let dismissalDuration = 0.2
+        static let progressAnimation = 2.0
     }
     
     @IBOutlet weak var dismissButton: UIButton! {
@@ -90,15 +91,20 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
+                var currentLevel = 1
                 if let levelNumber = Int(levelUpInterstitial.level)  {
-                    badgeView?.levelNumberString = String(levelNumber - 1)
+                    currentLevel = levelNumber
                 }
+                badgeView?.levelNumberString = String(currentLevel - 1)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
                 
                 dispatch_after(AnimationConstants.presentationDuration) {
-                    self.videoBackground.setItemURL(levelUpInterstitial.videoURL, loop: true, audioMuted: true)
+                    let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
+                    videoPlayerItem.loop = true
+                    videoPlayerItem.muted = true
+                    self.videoBackground.setItem( videoPlayerItem )
                 }
             }
         }
@@ -111,13 +117,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 titleLabel.textColor = dependencyManager.textColor
                 descriptionLabel.font = dependencyManager.descriptionFont
                 descriptionLabel.textColor = dependencyManager.textColor
-                
-                guard let badgeView = dependencyManager.templateValueOfType(AnimatedBadgeView.self, forKey: "animatedBadge") as? AnimatedBadgeView else {
-                    return
-                }
-                
-                // Set our animated badge property
-                self.badgeView = badgeView
+                badgeView = dependencyManager.animatedBadgeView
             }
         }
     }
@@ -125,7 +125,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     /// MARK: Factory method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> LevelUpViewController {
-        let levelUpViewController: LevelUpViewController = self.v_fromStoryboardInitialViewController()
+        let levelUpViewController: LevelUpViewController = self.v_initialViewControllerFromStoryboard()
         levelUpViewController.dependencyManager = dependencyManager
         return levelUpViewController
     }
@@ -148,11 +148,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
-        
-        badgeView?.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
-        badgeView?.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
-        badgeView?.animatedBorderWidth = 4
-        badgeView?.progressBarInset = 4
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -165,27 +160,36 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn({ (completed) in
-                self.badgeView?.animateProgress(2, endPercentage: 100)
-                dispatch_after(2) {
+            animateIn() { completed in
+                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
                     self.upgradeBadgeNumber()
                 }
-            })
+            }
         }
     }
     
     private func upgradeBadgeNumber() {
         
         if let levelUpInterstitial = self.levelUpInterstitial {
-            self.badgeView?.levelNumberString = levelUpInterstitial.level
+            badgeView?.levelUp(levelUpInterstitial.level)
         }
-        UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: [], animations: {
-            self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) -> Void in
-                self.badgeView?.resetProgress()
-                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                    self.badgeView?.transform = CGAffineTransformIdentity
-                    }, completion: nil)
+        
+        UIView.animateWithDuration(0.1,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: [],
+            animations: {
+                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            }) { (completed) in
+                self.badgeView?.resetProgress(true)
+                UIView.animateWithDuration(0.1,
+                    delay: 0,
+                    options: .CurveLinear,
+                    animations: {
+                        self.badgeView?.transform = CGAffineTransformIdentity
+                    },
+                    completion: nil)
         }
     }
     
@@ -204,21 +208,37 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
         
         // Title animation
-        UIView.animateWithDuration(0.6, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.titleLabel.transform = CGAffineTransformIdentity
-            self.descriptionLabel.transform = CGAffineTransformIdentity
-            self.iconCollectionView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.1,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.titleLabel.transform = CGAffineTransformIdentity
+                self.descriptionLabel.transform = CGAffineTransformIdentity
+                self.iconCollectionView.transform = CGAffineTransformIdentity
+            },
+            completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.badgeView?.transform = CGAffineTransformIdentity
-            }, completion: badgeAnimationCompletion)
+        UIView.animateWithDuration(0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.badgeView?.transform = CGAffineTransformIdentity
+            },
+            completion: badgeAnimationCompletion)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.dismissButton.alpha = 1
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.2,
+            options: .CurveEaseIn,
+            animations: {
+                self.dismissButton.alpha = 1
+            },
+            completion: nil)
     }
     
     private func setToInitialState() {
@@ -357,5 +377,17 @@ private extension VDependencyManager {
     
     var dismissButtonTitle: String {
         return self.stringForKey("button.title")
+    }
+    
+    var animatedBadgeView: AnimatedBadgeView? {
+        guard let badgeView = self.templateValueOfType(AnimatedBadgeView.self, forKey: "animatedBadge") as? AnimatedBadgeView else {
+            return nil
+        }
+        
+        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
+        badgeView.animatedBorderWidth = 5
+        badgeView.progressBarInset = 4
+        return badgeView
     }
 }

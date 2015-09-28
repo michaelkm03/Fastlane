@@ -7,14 +7,9 @@
 //
 
 #import "VImageSequencePreviewView.h"
-
-// Models + Helpers
 #import "VSequence+Fetcher.h"
-
-// Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 
@@ -36,10 +31,43 @@
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         _previewImageView.clipsToBounds = YES;
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
     return _previewImageView;
+}
+
+- (void)setFocusType:(VFocusType)focusType
+{
+    if ( super.focusType == focusType)
+    {
+        return;
+    }
+    
+    super.focusType = focusType;
+    
+    [self focusDidUpdate];
+}
+
+- (void)focusDidUpdate
+{
+    [self updateBackgroundColorAnimated:YES];
+    
+    switch (self.focusType)
+    {
+        case VFocusTypeNone:
+            [self.likeButton hide];
+            break;
+            
+        case VFocusTypeStream:
+            [self.likeButton hide];
+            break;
+            
+        case VFocusTypeDetail:
+            [self.likeButton show];
+            break;
+    }
 }
 
 #pragma mark - VSequencePreviewView Overrides
@@ -47,7 +75,8 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    [self setBackgroundContainerViewVisible:NO];
+    
+    self.isLoading = NO;
     NSURL *previewURL = nil;
     if ( [sequence isImage] )
     {
@@ -63,41 +92,21 @@
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self setBackgroundContainerViewVisible:YES];
+         self.isLoading = NO;
      }
                                  completion:^(UIImage *image)
      {
+         if ( !self.hasDeterminedPreferredBackgroundColor )
+         {
+             CGFloat imageAspect = image.size.width / image.size.height;
+             CGFloat containerAspect = CGRectGetWidth(self.previewImageView.frame) / CGRectGetHeight(self.previewImageView.frame);
+             self.usePreferredBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
+             [self updateBackgroundColorAnimated:NO];
+             self.hasDeterminedPreferredBackgroundColor = YES;
+         }
          self.readyForDisplay = YES;
      }];
-}
-
-#pragma mark - VContentModeAdjustablePreviewView
-
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
-{
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
-}
-
-- (void)setBackgroundContainerViewVisible:(BOOL)visible
-{
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
+    [self focusDidUpdate];
 }
 
 @end

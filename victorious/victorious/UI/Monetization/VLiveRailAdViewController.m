@@ -11,6 +11,7 @@
 #import "VAdBreakFallback+RestKit.h"
 #import "VAdBreak.h"
 #import "VSequence.h"
+#import "UIView+AutoLayout.h"
 
 static NSString * const kLiveRailPublisherIDKey = @"LR_PUBLISHER_ID";
 static NSString * const kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
@@ -42,6 +43,7 @@ static NSString * const kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
         
         self.adManager.frame = self.view.bounds;
         [self.view addSubview:self.adManager];
+        [self.view v_addFitToParentConstraintsToSubview:self.adManager];
     }
     else
     {

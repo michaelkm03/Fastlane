@@ -7,7 +7,9 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VFocusable.h"
+#import "VPollResultReceiver.h"
 
-@interface VPollSequencePreviewView : VSequencePreviewView
+@interface VPollSequencePreviewView : VSequencePreviewView <VFocusable, VPollResultReceiver>
 
 @end

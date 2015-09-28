@@ -83,12 +83,22 @@
 /**
  Applies top to top constraint from the container to the passed in subview.
  */
+- (void)v_addPinToTopToSubview:(UIView *)subview topMargin:(CGFloat)margin;
+
+/**
+ Applies top to top constraint with no margin from the container to the passed in subview.
+ */
 - (void)v_addPinToTopToSubview:(UIView *)subview;
+
+/**
+ Applies bottom to bottom constraint with no margin from the container to the passed in subview.
+ */
+- (void)v_addPinToBottomToSubview:(UIView *)subview;
 
 /**
  Applies bottom to bottom constraint from the container to the passed in subview.
  */
-- (void)v_addPinToBottomToSubview:(UIView *)subview;
+- (void)v_addPinToBottomToSubview:(UIView *)subview bottomMargin:(CGFloat)margin;
 
 /**
  Applies internal width constraint to view. Returns the added constraint

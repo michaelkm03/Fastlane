@@ -75,7 +75,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
@@ -119,7 +119,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     
     VUserManager *userManager = [[VUserManager alloc] init];
@@ -152,7 +152,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[[VUserManager alloc] init] loginViaEmail:email
                                       password:password
@@ -182,7 +182,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[[VUserManager alloc] init] createEmailAccount:email
                                            password:password
@@ -211,7 +211,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
@@ -311,7 +311,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] requestPasswordResetForEmail:email
                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -364,7 +364,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     NSParameterAssert(completion != nil);
     
     self.userToken = resetToken;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
                                                    deviceToken:self.deviceToken
@@ -405,7 +405,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken

@@ -15,7 +15,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 

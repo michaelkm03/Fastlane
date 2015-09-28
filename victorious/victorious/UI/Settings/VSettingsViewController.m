@@ -34,7 +34,7 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "UIViewController+VAccessoryScreens.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
 
