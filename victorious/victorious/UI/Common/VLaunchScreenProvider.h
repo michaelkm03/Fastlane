@@ -8,16 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Provides images and views related to the launch screen.
+ */
 @interface VLaunchScreenProvider : NSObject
 
-/*
+/**
  Initializes the launch screen from the nib and returns the view inside
  
  @return The view from the launch screen
  */
 + (UIView *)launchScreen;
 
-/*
+/**
  Creates a screenshot of the launch screen with the provided size dimensions
  
  @param size The desired size of the launch screen image
@@ -25,5 +28,12 @@
  @return A screenshot of the launch image at the provided size
  */
 + (UIImage *)screenshotOfLaunchScreenAtSize:(CGSize)size;
+
+/**
+ A shared instance of the launch image.
+ 
+ @return The launch image.
+ */
++ (UIImage *)launchImage;
 
 @end

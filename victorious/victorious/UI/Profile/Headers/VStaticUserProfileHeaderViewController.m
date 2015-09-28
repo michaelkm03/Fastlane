@@ -14,6 +14,7 @@
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
 #import "victorious-Swift.h"
+#import "VLaunchScreenProvider.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -180,7 +181,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 - (void)clearBackgroundImage
 {
-    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
+    [self.backgroundImageView setBlurredImageWithClearImage:[VLaunchScreenProvider launchImage]
                                            placeholderImage:nil
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
 }
