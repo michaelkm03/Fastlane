@@ -18,23 +18,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bgF-ug-5AS">
-                                <rect key="frame" x="0.0" y="72" width="600" height="320"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgF-ug-5AS">
+                                <rect key="frame" x="0.0" y="72" width="600" height="319"/>
                                 <connections>
                                     <segue destination="7eN-Fq-kx7" kind="embed" identifier="VPromptCarouselViewController" id="skB-QV-sz1"/>
                                 </connections>
                             </containerView>
-                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DE0-cf-VF8" userLabel="Legal Button Container">
-                                <rect key="frame" x="195" y="392" width="210" height="49"/>
+                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE0-cf-VF8" userLabel="Legal Button Container">
+                                <rect key="frame" x="196" y="391" width="208" height="49"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="By signing up you agree to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lKN-X9-uiX">
-                                        <rect key="frame" x="0.0" y="0.0" width="210" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="By signing up you agree to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lKN-X9-uiX">
+                                        <rect key="frame" x="0.0" y="0.0" width="208" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cyi-4J-6yH" userLabel="termsOfServiceButton">
-                                        <rect key="frame" x="0.0" y="19" width="104" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cyi-4J-6yH" userLabel="termsOfServiceButton">
+                                        <rect key="frame" x="0.0" y="19" width="103" height="30"/>
                                         <state key="normal" title="Button">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -42,8 +42,8 @@
                                             <action selector="showTermsOfService:" destination="yjK-eD-rfp" eventType="touchUpInside" id="LDQ-aZ-79B"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnl-7M-et7" userLabel="privacyPolicyButton">
-                                        <rect key="frame" x="107" y="19" width="104" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnl-7M-et7" userLabel="privacyPolicyButton">
+                                        <rect key="frame" x="106" y="19" width="102" height="30"/>
                                         <state key="normal" title="Button">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -170,15 +170,15 @@
                         <viewControllerLayoutGuide type="bottom" id="aaE-Cd-i5Z"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dWL-2Y-LP6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kp6-JO-wGx" customClass="VLinearGradientView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E2O-F9-uLP">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="mJn-6r-rbT">
                                     <size key="itemSize" width="600" height="329"/>
@@ -221,7 +221,7 @@
                                     <outlet property="delegate" destination="7eN-Fq-kx7" id="jAX-rG-X6e"/>
                                 </connections>
                             </collectionView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="c88-pr-ZJo">
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="c88-pr-ZJo">
                                 <rect key="frame" x="281" y="282" width="39" height="37"/>
                                 <connections>
                                     <action selector="selectedPage:" destination="7eN-Fq-kx7" eventType="valueChanged" id="shZ-9A-WsQ"/>
