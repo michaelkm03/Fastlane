@@ -158,6 +158,24 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return [self.nodes.array firstObject];
 }
 
+- (BOOL)isRemoteVideo
+{
+    VNode *node = self.firstNode;
+    if ( node == nil )
+    {
+        return NO;
+    }
+    
+    for (VAsset *asset in node.assets)
+    {
+        if ( asset.remoteContentId != nil )
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType
 {
     VNode *node = self.firstNode;
@@ -166,17 +184,15 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         return nil;
     }
     
-    __block VAsset *primaryAsset = [node.assets firstObject];
-    
-    [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
-     {
-         if ([asset.mimeType isEqualToString:mimeType])
-         {
-             primaryAsset = asset;
-             *stop = YES;
-         }
-     }];
-    
+    VAsset *primaryAsset = [node.assets firstObject];
+    for (VAsset *asset in node.assets)
+    {
+        if ([asset.mimeType isEqualToString:mimeType])
+        {
+            primaryAsset = asset;
+            break;
+        }
+    }
     return primaryAsset;
 }
 

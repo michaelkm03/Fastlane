@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithURL:(NSURL *)url;
 
+@property (nonatomic, strong, nullable) NSString *remoteContentId;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, assign) BOOL loop;
 @property (nonatomic, assign) BOOL muted;

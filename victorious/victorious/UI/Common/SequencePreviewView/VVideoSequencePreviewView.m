@@ -155,6 +155,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.trackingItem = self.sequence.tracking;
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
+    item.remoteContentId = self.videoAsset.remoteContentId;
     [self.videoPlayer setItem:item];
     
     [self updateUIState];

@@ -26,10 +26,12 @@ class VideoToolbarView: UIView {
     
     weak var delegate: VideoToolbarDelegate?
     
+    private static let DefaultTimeLabelText = "--:--"
+    private static let PlayImageName = "player-play-icon"
+    private static let PauseImageName = "player-pause-icon"
+    
     private var autoVisbilityTimer = VTimerManager()
     
-    private let kPlayButtonPlayImageName = "player-play-icon"
-    private let kPlayButtonPauseImageName = "player-pause-icon"
     private let kVisibilityAnimationDuration = 0.2
     private let kMaxVisibilityTimerDuration = 4.0
     
@@ -46,15 +48,13 @@ class VideoToolbarView: UIView {
     private lazy var timeFormatter = VElapsedTimeFormatter()
     private var lastInteractionDate = NSDate()
     
-    func setCurrentTime( timeSeconds: Float64, duration: Float64 )
-    {
+    func setCurrentTime( timeSeconds: Float64, duration: Float64 ) {
         slider.value = clampRatio( Float(timeSeconds / duration) )
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
         remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - timeSeconds) )
     }
     
-    func setProgress( progress: Float, duration: Float64 )
-    {
+    func setProgress( progress: Float, duration: Float64 ) {
         slider.value = clampRatio( progress )
         let elapsedTime = Float64(progress) * duration
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
@@ -63,7 +63,7 @@ class VideoToolbarView: UIView {
     
     var paused: Bool = true {
         didSet {
-            let imageName = paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
+            let imageName = paused ? VideoToolbarView.PlayImageName : VideoToolbarView.PauseImageName
             let image = UIImage(named: imageName)!
             playButton.setImage( image, forState: .Normal )
         }
@@ -96,6 +96,8 @@ class VideoToolbarView: UIView {
         
         self.paused = true
         self.hide(animated: false)
+        self.elapsedTimeLabel.text = VideoToolbarView.DefaultTimeLabelText
+        self.remainingTimeLabel.text = VideoToolbarView.DefaultTimeLabelText
     }
     
     // MARK: - Visibility

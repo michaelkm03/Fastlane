@@ -62,7 +62,9 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         ]
         self.playerView.delegate = self
         
-        let videoId = "AqUO_GGMhgo"
+        guard let videoId = item.remoteContentId else {
+            fatalError( "Remote content ID is required for this video player." )
+        }
         
         if self.playerView.videoUrl() == nil {
             print( "Initializing video player" )
@@ -91,11 +93,13 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func pauseAtStart() {
+        self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
         self.playerView.hidden = false
         self.playerView.pauseVideo()
     }
     
     func playFromStart() {
+        self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
         self.playerView.hidden = false
         self.playerView.playVideo()
         self.delegate?.videoPlayerDidPlay?(self)

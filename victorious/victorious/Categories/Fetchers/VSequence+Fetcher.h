@@ -25,6 +25,7 @@
 - (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
+- (BOOL)isRemoteVideo;
 
 - (VNode *)firstNode;
 

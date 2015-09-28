@@ -20,6 +20,7 @@
 @interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) VAsset *asset;
+@property (nonatomic, strong, readwrite) UIView *videoContainer;
 
 @end
 
@@ -45,16 +46,26 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
+        _videoContainer = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:_videoContainer];
+        [self v_addFitToParentConstraintsToSubview:_videoContainer];
+        
         _videoPlayer = [self createVideoPlayerWithFrame:frame];
         _videoPlayer.view.frame = self.bounds;
         _videoPlayer.delegate = self;
-        [self addSubview:_videoPlayer.view];
-        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
         _videoPlayer.view.backgroundColor = [UIColor clearColor];
+        
+        [self addVideoPlayerView:_videoPlayer.view];
         
         _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
+}
+
+- (void)addVideoPlayerView:(UIView *)view
+{
+    [self.videoContainer addSubview:view];
+    [self.videoContainer v_addFitToParentConstraintsToSubview:view];
 }
 
 - (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame

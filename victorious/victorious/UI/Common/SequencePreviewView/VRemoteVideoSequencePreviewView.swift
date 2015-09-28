@@ -18,8 +18,7 @@ class VRemoteVideoSequencePreviewView : VVideoSequencePreviewView {
         didSet {
             if focusType != .None && self.videoPlayer.view.superview != self {
                 self.videoPlayer.delegate = self
-                self.addSubview( self.videoPlayer.view )
-                self.v_addFitToParentConstraintsToSubview( self.videoPlayer.view )
+                self.addVideoPlayerView( self.videoPlayer.view )
             }
         }
     }

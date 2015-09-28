@@ -25,5 +25,8 @@
 @dynamic duration;
 @dynamic type;
 @dynamic node;
+@dynamic remotePlayback;
+@dynamic remoteSource;
+@dynamic remoteContentId;
 
 @end
