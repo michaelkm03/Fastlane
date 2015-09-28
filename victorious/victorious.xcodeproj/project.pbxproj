@@ -942,6 +942,7 @@
 		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
 		C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */; };
 		C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = C3C7345A1B61CF3D00D6795D /* voteTypes.json */; };
+		C3CF52771BB5D78100411F40 /* CGPoint+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */; settings = {ASSET_TAGS = (); }; };
 		C3D6CCB21B7D175B008644DD /* AutoplayTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */; };
 		C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */; };
 		C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */; };
@@ -3000,6 +3001,7 @@
 		C3C734561B606BD500D6795D /* RadialAnimatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialAnimatingView.swift; sourceTree = "<group>"; };
 		C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerAnimatingIconView.swift; sourceTree = "<group>"; };
 		C3C7345A1B61CF3D00D6795D /* voteTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = voteTypes.json; sourceTree = "<group>"; };
+		C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Addition.swift"; sourceTree = "<group>"; };
 		C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoplayTracking.swift; sourceTree = "<group>"; };
 		C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicShelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicContentCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -5481,6 +5483,7 @@
 			children = (
 				A721E8611B572452000B7901 /* AVAsset+Orientation.h */,
 				A721E8621B572452000B7901 /* AVAsset+Orientation.m */,
+				C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */,
 				A721E8631B572452000B7901 /* CIImage+VImage.h */,
 				A721E8641B572452000B7901 /* CIImage+VImage.m */,
 				A721E8651B572452000B7901 /* Fetchers */,
@@ -9524,6 +9527,7 @@
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */,
 				A721E9521B572454000B7901 /* UIImage+Round.m in Sources */,
+				C3CF52771BB5D78100411F40 /* CGPoint+Addition.swift in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
