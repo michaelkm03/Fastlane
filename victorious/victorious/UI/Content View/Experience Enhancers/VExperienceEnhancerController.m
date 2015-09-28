@@ -23,7 +23,6 @@
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-@property (nonatomic, strong) NSArray *voteTypes;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -73,12 +72,12 @@
 - (void)setup
 {
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    self.voteTypes = [self.dependencyManager templateValueOfType:[NSArray class] forKey:@"voteTypes"];
+    NSArray *voteTypes = [self.dependencyManager voteTypes];
     
     __weak typeof(self) welf = self;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                    {
-                       NSArray *experienceEnhancers = [welf createExperienceEnhancersFromVoteTypes:welf.voteTypes sequence:self.sequence];
+                       NSArray *experienceEnhancers = [welf createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
                        experienceEnhancers = [welf validExperienceEnhancers:experienceEnhancers];
                        dispatch_async( dispatch_get_main_queue(), ^
                                       {
@@ -96,7 +95,7 @@
                                              selector:@selector(purchaseManagedDidUpdate:)
                                                  name:VPurchaseManagerProductsDidUpdateNotification
                                                object:nil];
-    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
+    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
     if ( !self.purchaseManager.isPurchaseRequestActive )
@@ -110,44 +109,44 @@
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
 {
     NSMutableArray *experienceEnhanders = [[NSMutableArray alloc] init];
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-     {
-         VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
-         NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
-         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
-         
-         NSArray *images = voteType.images;
-
-         if ( images == nil || images.count == 0 )
-         {
-             // This effectively marks it as invalid and it will not display
-             // until the required images are loaded
-             enhancer.iconImage = nil;
-         }
-         else
-         {
-             enhancer.animationSequence = images;
-             enhancer.flightImage = [images firstObject];
-         }
-         
-         // Get icon image synhronously (we need it right away)
-         NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
-         NSString *key = voteType.voteTypeID;
-         if ( [imageMemoryCache objectForKey:key] )
-         {
-             enhancer.iconImage = [imageMemoryCache objectForKey:key];
-         }
-         else
-         {
-             enhancer.iconImage = voteType.iconImage;
-             if ( enhancer.iconImage != nil )
-             {
-                 [imageMemoryCache setObject:enhancer.iconImage forKey:key];
-             }
-         }
-         
-         [experienceEnhanders addObject:enhancer];
-    }];
+    for ( VVoteType *voteType in voteTypes )
+    {
+        VVoteResult *result = [self resultForVoteType:voteType fromSequence:sequence];
+        NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
+        VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
+        
+        NSArray *images = voteType.images;
+        
+        if ( images == nil || images.count == 0 )
+        {
+            // This effectively marks it as invalid and it will not display
+            // until the required images are loaded
+            enhancer.iconImage = nil;
+        }
+        else
+        {
+            enhancer.animationSequence = images;
+            enhancer.flightImage = [images firstObject];
+        }
+        
+        // Get icon image synhronously (we need it right away)
+        NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
+        NSString *key = voteType.voteTypeID;
+        if ( [imageMemoryCache objectForKey:key] )
+        {
+            enhancer.iconImage = [imageMemoryCache objectForKey:key];
+        }
+        else
+        {
+            enhancer.iconImage = voteType.iconImage;
+            if ( enhancer.iconImage != nil )
+            {
+                [imageMemoryCache setObject:enhancer.iconImage forKey:key];
+            }
+        }
+        
+        [experienceEnhanders addObject:enhancer];
+    }
     
     return [NSArray arrayWithArray:experienceEnhanders];
 }
