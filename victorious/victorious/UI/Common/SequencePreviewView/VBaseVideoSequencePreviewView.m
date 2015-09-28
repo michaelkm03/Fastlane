@@ -19,7 +19,6 @@
 
 @interface VBaseVideoSequencePreviewView ()
 
-@property (nonatomic, strong) UIView *backgroundContainerView;
 @property (nonatomic, strong) VAsset *asset;
 
 @end
@@ -40,18 +39,20 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         _previewImageView.clipsToBounds = YES;
+        _previewImageView.backgroundColor = [UIColor clearColor];
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
         _videoPlayer = [self createVideoPlayerWithFrame:frame];
         _videoPlayer.view.frame = self.bounds;
         _videoPlayer.delegate = self;
+        [self addSubview:_videoPlayer.view];
+        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
+        _videoPlayer.view.backgroundColor = [UIColor clearColor];
         
         _videoSettings = [[VVideoSettings alloc] init];
-        
-        self.onlyShowPreview = YES;
     }
     return self;
 }
@@ -103,7 +104,7 @@
         [self loadVideoAsset];
     }
     
-    [self setBackgroundContainerViewVisible:NO];
+    self.isLoading = NO;
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
@@ -126,34 +127,48 @@
                         alongsideAnimations:^
      {
          __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         [strongSelf setBackgroundContainerViewVisible:YES];
+         strongSelf.isLoading = YES;
      }
                                  completion:^(UIImage *image)
      {
          if (image != nil)
          {
+             [weakSelf determinedPreferredBackgroundColorWithImage:image];
              completionBlock();
          }
          else
          {
-             __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
              // that URL failed, lets gracefully fall back
              UIScreen *mainScreen = [UIScreen mainScreen];
              CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
-             [strongSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)]
+             [weakSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)]
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
+                  [weakSelf determinedPreferredBackgroundColorWithImage:image];
                   completionBlock();
               }];
          }
      }];
 }
 
+- (void)determinedPreferredBackgroundColorWithImage:(UIImage *)image
+{
+    if ( !self.hasDeterminedPreferredBackgroundColor )
+    {
+        CGFloat imageAspect = image.size.width / image.size.height;
+        CGFloat containerAspect = CGRectGetWidth(self.previewImageView.frame) / CGRectGetHeight(self.previewImageView.frame);
+        self.usePreferredBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
+        [self updateBackgroundColorAnimated:NO];
+        self.hasDeterminedPreferredBackgroundColor = YES;
+    }
+}
+
 - (void)loadVideoAsset
 {
     self.videoAsset = [self.sequence.firstNode mp4Asset];
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
+    item.useAspectFit = YES;
     item.loop = YES;
     item.muted = YES;
     [self.videoPlayer setItem:item];
@@ -165,7 +180,7 @@
 {
     if ( self.focusType != VFocusTypeNone )
     {
-        [self setBackgroundContainerViewVisible:YES];
+        self.isLoading = YES;
     }
 }
 
@@ -205,11 +220,11 @@
     
     super.focusType = focusType;
     
+    [self updateBackgroundColorAnimated:YES];
+    
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            self.videoPlayer.view.backgroundColor = [UIColor clearColor];
-            self.videoPlayer.useAspectFit = NO;
             [self.likeButton hide];
             [self.videoPlayer pause];
             self.videoPlayer.muted = YES;
@@ -221,9 +236,7 @@
             break;
             
         case VFocusTypeStream:
-            [self setBackgroundContainerViewVisible:YES];
-            self.videoPlayer.view.backgroundColor = [UIColor clearColor];
-            self.videoPlayer.useAspectFit = NO;
+            self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
@@ -240,46 +253,16 @@
         case VFocusTypeDetail:
             if ( self.onlyShowPreview )
             {
+                // If we were previously only showing the preview, now we need to load the video asset
                 [self loadVideoAsset];
             }
-            [self setBackgroundContainerViewVisible:YES];
-            self.videoPlayer.view.backgroundColor = [UIColor blackColor];
-            self.videoPlayer.useAspectFit = YES;
+            self.isLoading = YES;
             [self.likeButton show];
             [self.videoPlayer play];
             self.videoPlayer.muted = NO;
             self.userInteractionEnabled = YES;
             break;
     }
-}
-
-#pragma mark - VContentModeAdjustablePreviewView
-
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
-{
-    self.videoPlayer.useAspectFit = fit;
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
-}
-
-- (void)setBackgroundContainerViewVisible:(BOOL)visible
-{
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end

@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @protocol VVideoPreviewView <NSObject>
 
-@property (nonatomic, strong) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, strong, readonly) id<VVideoPlayer> videoPlayer;
 @property (nonatomic, weak, nullable) id<VVideoPreviewViewDelegate> delegate;
 @property (nonatomic, assign) BOOL willShowEndCard;
 

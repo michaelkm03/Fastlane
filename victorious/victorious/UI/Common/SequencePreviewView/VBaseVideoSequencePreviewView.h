@@ -8,7 +8,6 @@
 
 #import "VSequencePreviewView.h"
 #import "VFocusable.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
 #import "VNode+Fetcher.h"
@@ -21,7 +20,7 @@
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VPreviewViewBackgroundHost, VVideoPlayerDelegate, VVideoPreviewView>
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VVideoPlayerDelegate, VVideoPreviewView>
 
 /**
  * Responsible for playing video in-line. Subclasses can hide this if
@@ -34,18 +33,14 @@
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
-/**
- *  Hides or shows the background that holds the image view. Defaults to hidden.
- *
- *  @parameter visible If YES, the background container is made visible without animation.
- */
-- (void)setBackgroundContainerViewVisible:(BOOL)visible;
+@property (nonatomic, strong) VVideoSettings *videoSettings;
+
+@property (nonatomic, strong) VAsset *videoAsset;
+
+@property (nonatomic, readonly) BOOL shouldAutoplay;
+
+@property (nonatomic, readonly) BOOL shouldLoop;
 
 - (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame;
-
-@property (nonatomic, strong) VVideoSettings *videoSettings;
-@property (nonatomic, strong) VAsset *videoAsset;
-@property (nonatomic, readonly) BOOL shouldAutoplay;
-@property (nonatomic, readonly) BOOL shouldLoop;
 
 @end

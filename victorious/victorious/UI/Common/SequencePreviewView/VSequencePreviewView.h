@@ -50,4 +50,6 @@
 
 - (void)setGesturesEnabled:(BOOL)enabled;
 
+- (void)updateBackgroundColorAnimated:(BOOL)animated;
+
 @end

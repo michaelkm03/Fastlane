@@ -40,11 +40,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if (self.player.currentItem != nil)
-    {
-        [self.player removeTimeObserver:self.timeObserver];
-        self.timeObserver = nil;
-    }
+    [self.player removeTimeObserver:self.timeObserver];
+    self.timeObserver = nil;
 }
 
 - (void)reset
@@ -109,19 +106,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                               block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
          {
              VVideoView *strongSelf = weakSelf;
-             if ( strongSelf == nil )
+             if ( strongSelf != nil )
              {
-                 return;
-             }
-             
-             AVPlayerItem *newestPlayerItem = strongSelf.newestPlayerItem;
-             if ([playerLayer.player.currentItem isEqual:newestPlayerItem] && playerLayer.isReadyForDisplay)
-             {
-                 playerLayer.opacity = 1.0f;
-                 if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
-                 {
-                     [self.delegate videoPlayerIsReadyForDisplay:self];
-                 }
+                 [strongSelf onReadyForDisplay];
              }
          }];
         
@@ -153,6 +140,19 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                              selector:@selector(enterBackground)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:nil];
+}
+
+- (void)onReadyForDisplay
+{
+    AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
+    if ([self.playerLayer.player.currentItem isEqual:newestPlayerItem] && self.playerLayer.isReadyForDisplay)
+    {
+        self.playerLayer.opacity = 1.0f;
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
+        {
+            [self.delegate videoPlayerIsReadyForDisplay:self];
+        }
+    }
 }
 
 - (UIView *)view
@@ -338,6 +338,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     return (NSUInteger)(self.currentTimeSeconds * 1000.0);
 }
 
-NS_ASSUME_NONNULL_END
-
 @end
+
+NS_ASSUME_NONNULL_END

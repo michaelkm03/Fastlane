@@ -20,7 +20,7 @@
 // DependencyManager
 #import "VDependencyManager.h"
 
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
@@ -111,8 +111,6 @@ static NSString * const kCommentBarKey = @"commentBar";
         self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
-    // so the placeholder and send labels are updated and positioned appropriately
-    [self layoutIfNeeded];
 }
 
 - (void)awakeFromNib

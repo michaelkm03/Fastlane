@@ -1,5 +1,5 @@
 //
-//  PreviewSequenceProvider.swift
+//  VContentPreviewViewProvider.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 9/14/15.
@@ -17,22 +17,15 @@ import Foundation
     /// and seamlessly added into content view
     func getPreviewView() -> VSequencePreviewView
     
-    /// Replaces a preview view into the stream or marquee cell from which it came
+    /// Replaces a preview view into the stream or marquee cell from which it came.
+    /// Informs the receiver that the sequence preview view is no longer active in
+    /// another context and can now be modified freely.  See `relinquishPreviewView()`.
     func restorePreviewView( previewView: VSequencePreviewView )
     
     /// Provides a view whose bounds represent the total contained area in a stream or marquee.
     func getContainerView() -> UIView
-}
-
-/// Defines an object that can display a VSeqencePreviewView
-@objc protocol VContentPreviewViewReceiver {
     
-    /// Exposes a view that to which the preview view will be added as a subview during the transition
-    func getTargetSuperview() -> UIView
-    
-    /// Setter for the preview view, where additional setup occurs
-    func setPreviewView( previewView: VSequencePreviewView )
-    
-    /// Sets a reference to a video player (if there is one)
-    func setVideoPlayer( videoPlayer: VVideoPlayer )
+    /// Informs the receiver that the sequence preview view is active in another context
+    /// and should not be modified
+    func relinquishPreviewView()
 }

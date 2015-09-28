@@ -47,13 +47,10 @@ class ContentViewHandoffController {
     private(set) var sliceLayouts = [SliceLayout]()
     private(set) var transitionSliceViews = [UIView]()
     
-    func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider,
-        toReceiver previewReceiver: VContentPreviewViewReceiver,
-        originSnapshotImage snapshotImage: UIImage ) {
+    func addPreviewView( fromProvider previewProvider: VContentPreviewViewProvider, toReceiver previewReceiver: VContentPreviewViewReceiver, originSnapshotImage snapshotImage: UIImage ) {
         
-        let previewView = previewProvider.getPreviewView()
         let containerView = previewProvider.getContainerView()
-        
+        let previewView = previewProvider.getPreviewView()
         let superview = previewReceiver.getTargetSuperview()
         
         // Calculate these frame values before adding to superview

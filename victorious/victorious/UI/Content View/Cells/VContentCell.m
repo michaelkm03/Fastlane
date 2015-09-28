@@ -174,7 +174,17 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.isPreparedForDismissal = YES;
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
+    [self cleanupAdPlayer];
+    self.sequencePreviewView.alpha = 1.0f;
+    self.sequencePreviewView.hidden = NO;
     [self hideEndCard:YES];
+}
+
+- (void)cleanupAdPlayer
+{
+    self.adVideoPlayerViewController.delegate = nil;
+    [self.adVideoPlayerViewController.view removeFromSuperview];
+    self.adVideoPlayerViewController = nil;
 }
 
 #pragma mark - Public Methods
@@ -253,11 +263,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
-        self.adVideoPlayerViewController.delegate = nil;
-        [self.adVideoPlayerViewController.view removeFromSuperview];
-        self.adVideoPlayerViewController = nil;
-        
-        [self.delegate contentCellDidEndPlayingAd:self];
+        [self cleanupAdPlayer];
     };
     
     if ( animated )

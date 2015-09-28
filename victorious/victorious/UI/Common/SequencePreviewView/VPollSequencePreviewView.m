@@ -312,6 +312,7 @@ static NSString *kOrIconKey = @"orIcon";
             [self.pollView setPollIconHidden:NO animated:YES];
             [self setGestureRecognizersEnabled:NO];
             [self setResultViewsHidden:YES animated:YES];
+            self.voterCountLabelContainer.alpha = 0.0f;
     }
 }
 

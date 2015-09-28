@@ -90,7 +90,8 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 {
     NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
     
-    [self.viewController updateExperience:experienceEnhancers withSequence:self.sequence];
+    self.viewController.experienceEnhancers = experienceEnhancers;
+    [self.viewController updateData];
     
     __block NSUInteger matches = 0;
     NSMutableArray *array = [NSMutableArray new];

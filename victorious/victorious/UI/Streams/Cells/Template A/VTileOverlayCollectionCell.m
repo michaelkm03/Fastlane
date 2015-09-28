@@ -24,7 +24,6 @@
 #import "NSString+VParseHelp.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
-#import "VPreviewViewBackgroundHost.h"
 
 @import CCHLinkTextView;
 
@@ -352,11 +351,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     [self updateContentContainerHeightConstraint];
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
-    }
-    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];

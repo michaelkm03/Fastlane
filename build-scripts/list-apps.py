@@ -13,6 +13,7 @@ This script assumes it is being run from the root of the code directory.
 This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousiOS
 """
+import os
 import requests
 import sys
 import subprocess
@@ -48,12 +49,13 @@ def fetchAppList(server):
 
     if error_code == 0:
         app_count = 0
-        print '\nVAMS Active Apps List\n----------------------'
+        print '\nVAMS Active Apps List\n---------------------------------------------------------------------------------------------'
+        print 'id   Build Name                              Name                                    Status\n---------------------------------------------------------------------------------------------'
         for app in json_obj['payload']:
             app_id = app['app_id']
-            app_state = app['app_state']
-            app_name = app['app_name']
-            build_name = app['build_name']
+            app_state = app['app_state'] or ""
+            app_name = app['app_name'] or ""
+            build_name = app['build_name'] or ""
 
             if app_state == vams._STATE_LOCKED:
                 state = ccodes.ColorCodes.FAIL + app_state.upper() + ccodes.ColorCodes.ENDC
@@ -61,11 +63,11 @@ def fetchAppList(server):
                 state = ccodes.ColorCodes.OKGREEN + app_state.upper() + ccodes.ColorCodes.ENDC
             else:
                 state = ccodes.ColorCodes.OKBLUE + app_state.upper() + ccodes.ColorCodes.ENDC
-            print 'Name: %s (%s)\nBuild Name: %s\nStatus: %s\n' % (app_name, ccodes.ColorCodes.HEADER + str(app_id) +
-                                                             ccodes.ColorCodes.ENDC, build_name, state)
+            print '%s%s%s%s' % (ccodes.ColorCodes.HEADER + str(app_id).ljust(5) + ccodes.ColorCodes.ENDC, build_name.ljust(40), app_name.ljust(40), state)
             app_count = app_count + 1
 
-        print '----------------\nTotal of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
+        print '---------------------------------------------------------------------------------------------'
+        print 'Total of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
 
     else:
         print 'No app data found. Uhh... obviously, something went wrong.'
@@ -78,9 +80,10 @@ def cleanUp():
 
 
 def showProperUsage():
+        my_name = os.path.basename(__file__)
         print ''
         print 'Displays a list of currently active apps in VAMS'
-        print 'Usage: ./app_list.py <environment>'
+        print 'Usage: ' + my_name + ' <environment>'
         print ''
         print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
         print '<environment> choices are: dev, qa, staging, production or localhost'
@@ -89,13 +92,13 @@ def showProperUsage():
         print 'If no <environment> parameter is provided, the script will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './app_list.py         <-- will use PRODUCTION'
-        print './app_list.py qa      <-- will use QA'
-        print './app_list.py h      <-- Displays this help screen'
-        print './app_list.py help   <-- Displays this help screen'
+        print my_name + '      <-- will use PRODUCTION'
+        print my_name + ' qa   <-- will use QA'
+        print my_name + ' h    <-- Displays this help screen'
+        print my_name + ' help <-- Displays this help screen'
         print ''
         print 'search:'
-        print './app_list.py dev | grep \'Ryan\'    <-- Simple case-sensitive search'
+        print my_name + ' dev | grep \'Ryan\'    <-- Simple case-sensitive search'
         sys.exit(1)
 
 

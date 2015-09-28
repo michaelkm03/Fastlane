@@ -123,6 +123,11 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    if ( sequence != self.sequence )
+    {
+        self.hasDeterminedPreferredBackgroundColor = NO;
+    }
+    
     [super setStreamItem:sequence];
     
     [self configureLikeButtonForSequence:sequence];
@@ -147,6 +152,28 @@
                        dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self reuseIdentifierForStreamItem:sequence baseIdentifier:baseIdentifier dependencyManager:dependencyManager];
+}
+
+- (UIColor *)defaultBackgroundColor
+{
+    return [UIColor blackColor];
+}
+
+- (void)updateBackgroundColorAnimated:(BOOL)animated
+{
+    void (^animations)() = ^
+    {
+        UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
+        self.backgroundColor = self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
+    };
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.25f animations:animations];
+    }
+    else
+    {
+        animations();
+    }
 }
 
 #pragma mark - Gestures

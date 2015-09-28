@@ -777,14 +777,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
                 [previewView setDependencyManager:self.dependencyManager];
                 [previewView setStreamItem:self.viewModel.sequence];
-                
                 UIView *superview = [receiver getTargetSuperview];
+                previewView.focusType = VFocusTypeDetail;
                 previewView.frame = superview.bounds;
                 [superview addSubview:previewView];
                 [superview v_addFitToParentConstraintsToSubview:previewView];
             }
             
-            previewView.focusType = VFocusTypeDetail;
             previewView.detailDelegate = self;
             
             // Setup relationships for polls

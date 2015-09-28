@@ -269,8 +269,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [super viewWillAppear:animated];
     
-    self.focusHelper.selectedCell = nil;
-    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self updateNavigationItems];
@@ -315,6 +313,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
     [self updateNavigationBarScrollOffset];
+    
+    // Clear reference to the selected cell after returning to this view from content view.
+    // Must be done on `viewDidAppear:` to play well with autoplay focus.
+    self.focusHelper.selectedCell = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -647,8 +649,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource
- hasNewStreamItems:(NSArray *)streamItems
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource hasNewStreamItems:(NSArray *)streamItems
 {
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
