@@ -116,15 +116,14 @@ class ContentViewHandoffController {
             topImageView.frame = topFrame
             topImageView.translatesAutoresizingMaskIntoConstraints = false
             
-            let views = [ "topImageView" : topImageView ]
-            
-            let constraintsV = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:[topImageView(height)]",
-                options: [],
-                metrics: [ "height" : topImageView.frame.height, ],
-                views: views
-            )
-            superview.addConstraints( constraintsV )
+            let heightConstraint = NSLayoutConstraint(item: topImageView,
+                attribute: .Height,
+                relatedBy: .Equal,
+                toItem: nil,
+                attribute: .NotAnAttribute,
+                multiplier: 1.0,
+                constant: topImageView.frame.height )
+            topImageView.addConstraint( heightConstraint )
             
             let topConstraint = NSLayoutConstraint(item: topImageView,
                 attribute: .Bottom,
@@ -132,13 +131,13 @@ class ContentViewHandoffController {
                 toItem: previewView,
                 attribute: .Top,
                 multiplier: 1.0,
-                constant: containerFrame.minY - previewFrame.minY )
+                constant: max( containerFrame.minY - previewFrame.minY, -statusBarHeight) )
             superview.addConstraint( topConstraint )
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
                 options: [],
                 metrics: nil,
-                views: views
+                views: [ "topImageView" : topImageView ]
             )
             superview.addConstraints( constraintsH )
             
