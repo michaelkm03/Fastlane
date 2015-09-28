@@ -19,6 +19,15 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     private let container = UIView()
     private var numberHeightConstraint: NSLayoutConstraint!
     
+    private lazy var linearGradientView: VLinearGradientView = {
+        let linearGradientView = VLinearGradientView()
+        linearGradientView.setColors([UIColor.clearColor(), UIColor.blackColor(), UIColor.blackColor(), UIColor.clearColor()])
+        linearGradientView.locations = [0.0, 0.2, 0.8, 1.0]
+        linearGradientView.startPoint = CGPoint(x: 0, y: 0.5)
+        linearGradientView.endPoint = CGPoint(x: 1, y: 0.5)
+        return linearGradientView
+        }()
+    
     let levelStringLabel = UILabel()
     let levelNumberLabel = UILabel()
     
@@ -138,6 +147,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         
         backgroundColor = UIColor.clearColor()
         
+        title = NSLocalizedString("LEVEL", comment: "")
+        
         backgroundHexagonView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(backgroundHexagonView)
         v_addFitToParentConstraintsToSubview(backgroundHexagonView)
@@ -163,15 +174,66 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         v_addCenterToParentContraintsToSubview(container)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        linearGradientView.frame = container.bounds
+    }
+    
     /// MARK: Public Functions
     
     /// Starts the radial animation of the inner hexagon
     ///
     /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
     /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
-    func animateProgress(duration: NSTimeInterval, endPercentage: Int) {
+    /// - parameter completion: A closure to be called after the animation completes
+    func animateProgress(duration: NSTimeInterval, endPercentage: Int, completion: (() -> Void)?) {
         currentProgressPercentage = endPercentage
-        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration)
+        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
+    }
+    
+    /// Resets progress bar back to zero
+    func resetProgress(animated: Bool = false) {
+        UIView.animateWithDuration(0.8, animations: { () in
+            self.animatingHexagonView.alpha = 0
+            }) { (completed) in
+                self.currentProgressPercentage = 0
+                self.animatingHexagonView.reset()
+                self.animatingHexagonView.alpha = 1
+        }
+    }
+    
+    /// Updates the level number label with a carousal animation
+    ///
+    /// - parameter newLevel: A string with which to update the level number label
+    func levelUp(newLevel: String) {
+        
+        // Sets the gradient mask
+        container.maskView = linearGradientView
+        
+        UIView.animateWithDuration(0.4,
+            delay: 0,
+            options: .CurveLinear,
+            animations: { () in
+                
+                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(-self.levelNumberLabel.bounds.width, 0)
+                
+            }) { (completed) in
+                
+                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(self.levelNumberLabel.bounds.width, 0)
+                self.levelNumberString = newLevel
+                
+                UIView.animateWithDuration(0.4,
+                    delay: 0,
+                    usingSpringWithDamping: 0.7,
+                    initialSpringVelocity: 0.7,
+                    options: .CurveEaseOut,
+                    animations: { () in
+                        self.levelNumberLabel.transform = CGAffineTransformIdentity
+                    }, completion: { (completed) in
+                        // Resets gradient mask
+                        self.container.maskView = nil
+                })
+        }
     }
     
     /// MARK: Helpers

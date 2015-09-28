@@ -12,6 +12,7 @@ import Foundation
 class HexagonView: UIView {
     
     private var shapeLayer = CAShapeLayer()
+    private let strokeAnimationKey = "strokeEndAnimation"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,6 +66,8 @@ class HexagonView: UIView {
     /// Whether or not the stroke is being animated
     private(set) var isAnimating = false
     
+    private var animationCompletion: (() -> Void)?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         configureShapeLayer()
@@ -74,39 +77,58 @@ class HexagonView: UIView {
         
         shapeLayer.removeFromSuperlayer()
         
-        let adjustedRect = bounds
+        let rect = bounds
         
-        let verticalSideLength: CGFloat = adjustedRect.height * verticalSideLengthRatio
+        if rect == CGRectZero {
+            return
+        }
         
-        let insetHeight = adjustedRect.height
-        let insetWidth = adjustedRect.width
-        let horizontalMidpoint = insetWidth / 2.0
-        let difference = insetHeight - verticalSideLength
-        let aLength: CGFloat = difference / 2.0
+        let sideLength: CGFloat = rect.height * verticalSideLengthRatio
+        let b: CGFloat = (rect.height - sideLength) / 2
         
-        let path = CGPathCreateMutable()
+        let topPoint = CGPointMake(rect.size.width / 2, 0)
+        let firstLeftPoint = CGPointMake(0, b)
+        let secondLeftPoint = CGPointMake(0, b + sideLength)
+        let firstRightPoint = CGPointMake(rect.size.width, b)
+        let secondRightPoint = CGPointMake(rect.size.width, b + sideLength)
+        let bottomPoint = CGPointMake(rect.size.width / 2, rect.size.height)
         
-        // Being at the top center
-        CGPathMoveToPoint(path, nil, horizontalMidpoint, adjustedRect.origin.y);
-        // Move to half way down the first edge
-        CGPathAddLineToPoint(path, nil, horizontalMidpoint + horizontalMidpoint / 2, aLength / 2)
-        // Begin drawing the arcs
-        CGPathAddArcToPoint(path, nil, insetWidth, aLength, insetWidth, aLength + verticalSideLength, cornerRadius);
-        CGPathAddArcToPoint(path, nil, insetWidth, aLength + verticalSideLength, horizontalMidpoint, insetHeight, cornerRadius);
-        CGPathAddArcToPoint(path, nil, horizontalMidpoint, insetHeight, adjustedRect.origin.x, aLength + verticalSideLength, cornerRadius);
-        CGPathAddArcToPoint(path, nil, adjustedRect.origin.x, aLength + verticalSideLength, adjustedRect.origin.x, aLength, cornerRadius);
-        CGPathAddArcToPoint(path, nil, adjustedRect.origin.x, aLength, horizontalMidpoint, adjustedRect.origin.y, cornerRadius);
-        CGPathAddArcToPoint(path, nil, horizontalMidpoint, adjustedRect.origin.y, insetWidth, aLength, cornerRadius);
+        // Create two lines representing the top two lines of the hexagon
+        let topLeftLine = Line(start: firstLeftPoint, end: topPoint)
+        let topRightLine = Line(start: topPoint, end: firstRightPoint)
         
-        let bezierPath = UIBezierPath(CGPath: path)
+        // Create two inset lines so we can find the intersect
+        let insetLeftLine = topLeftLine.offset(radius: cornerRadius)
+        let insetRightLine = topRightLine.offset(radius: cornerRadius)
+        
+        // Find the intersect point. This is the center of the corner radius circle
+        let intersect = insetLeftLine.intersect(insetRightLine)
+        
+        // Create a new path
+        let hexagonPath = CGPathCreateMutable();
+        
+        // Move to the top most point of the hexagon
+        CGPathMoveToPoint(hexagonPath, nil, rect.size.width / 2, intersect.y - cornerRadius)
+        
+        // Draw half the arc down to the angle of the top right line
+        CGPathAddArc(hexagonPath, nil, intersect.x, intersect.y, cornerRadius, -CGFloat(M_PI_2), -CGFloat(M_PI_2) + topRightLine.angle , false)
+        
+        // Continue drawing arcs
+        CGPathAddArcToPoint(hexagonPath, nil, firstRightPoint.x, firstRightPoint.y, secondRightPoint.x, secondRightPoint.y, cornerRadius)
+        CGPathAddArcToPoint(hexagonPath, nil, secondRightPoint.x, secondRightPoint.y, bottomPoint.x, bottomPoint.y, cornerRadius)
+        CGPathAddArcToPoint(hexagonPath, nil, bottomPoint.x, bottomPoint.y, secondLeftPoint.x, secondLeftPoint.y, cornerRadius)
+        CGPathAddArcToPoint(hexagonPath, nil, secondLeftPoint.x, secondLeftPoint.y, firstLeftPoint.x, firstLeftPoint.y, cornerRadius)
+        CGPathAddArcToPoint(hexagonPath, nil, firstLeftPoint.x, firstLeftPoint.y, topPoint.x, topPoint.y, cornerRadius)
+        
+        // Draw the last half of the first arc in order to complete the path
+        CGPathAddArc(hexagonPath, nil, intersect.x, intersect.y, cornerRadius, -CGFloat(M_PI_2) + topLeftLine.angle, -CGFloat(M_PI_2), false)
+        
+        let bezierPath = UIBezierPath(CGPath: hexagonPath)
         bezierPath.lineCapStyle = .Round
         
         shapeLayer = CAShapeLayer()
         shapeLayer.path = bezierPath.CGPath
-        // For animation purposes, offset the start of the stroke so that there's still a small
-        // gap between the beginning and the end of the stroke when the user si very close to
-        // the next level
-        shapeLayer.strokeStart = 0.015
+        shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0
         shapeLayer.lineWidth = borderWidth
         shapeLayer.strokeColor = strokeColor.CGColor
@@ -115,19 +137,66 @@ class HexagonView: UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
-    func animateBorder(endValue: CGFloat, duration: NSTimeInterval) {
+    // Animated the stroke of the hexagon's shape layer
+    func animateBorder(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
+        animationCompletion = completion
         isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.fromValue = 0.1
+        basicAnimation.fromValue = 0
         basicAnimation.toValue = endValue
         basicAnimation.duration = duration
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.removedOnCompletion = false
         basicAnimation.delegate = self
-        shapeLayer.addAnimation(basicAnimation, forKey: "strokeEndAnimation")
+        shapeLayer.addAnimation(basicAnimation, forKey: strokeAnimationKey)
+    }
+    
+    // Removes animation from hexagon's shape layer
+    func reset() {
+        shapeLayer.removeAnimationForKey(strokeAnimationKey)
+        isAnimating = false
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         isAnimating = false
+        animationCompletion?()
+    }
+}
+
+// Represents a line between two points
+struct Line {
+    var start: CGPoint
+    var end: CGPoint
+    var angle: CGFloat {
+        return atan2(end.y - start.y, end.x - start.x)
+    }
+    
+    // Returns a new line with the same slope that is offset by a certain radius
+    func offset(radius radius: CGFloat) -> Line {
+        let offset = CGPointMake(-sin(angle) * radius, cos(angle) * radius)
+        
+        let offsetStart = start + offset
+        let offsetEnd = end + offset
+        
+        return Line(start: offsetStart, end: offsetEnd)
+    }
+    
+    // Returns the intersect this line with another
+    func intersect(secondLine: Line) -> CGPoint {
+        
+        let x1 = self.start.x
+        let x2 = self.end.x
+        let x3 = secondLine.start.x
+        let x4 = secondLine.end.x
+        
+        let y1 = self.start.y
+        let y2 = self.end.y
+        let y3 = secondLine.start.y
+        let y4 = secondLine.end.y
+        
+        let intersectX = ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4))
+        let intersectY = ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4))
+        
+        return CGPointMake(intersectX, intersectY)
     }
 }
