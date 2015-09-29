@@ -30,7 +30,7 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
     for ( NSString *remoteId in remoteIds )
     {
         NSDate *expirationDate = [flaggedContents objectForKey:remoteId];
-        if ( expirationDate.timeIntervalSinceNow < kFlagHideTimeInterval )
+        if ( expirationDate.timeIntervalSinceNow < -kFlagHideTimeInterval )
         {
             needsUpdate = YES;
             [validFlaggedContents removeObjectForKey:remoteId];

@@ -171,5 +171,4 @@
 #import "VAsset+Fetcher.h"
 #import "VStream+RestKit.h"
 #import "VNoContentCollectionViewCellFactory.h"
-#import "VConversation.h"
 #import "VObjectManager+ContentModeration.h"
