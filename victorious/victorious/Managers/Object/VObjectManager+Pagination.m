@@ -589,6 +589,11 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if ( pageType == VPageTypeFirst )
+        {
+            [sequence removeLikers:sequence.likers];
+        }
+        
         [sequence addLikers:[NSSet setWithArray:resultObjects]];
         
         if ( success != nil )
