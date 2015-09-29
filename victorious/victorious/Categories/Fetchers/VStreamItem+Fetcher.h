@@ -91,10 +91,12 @@ extern NSString * const VStreamItemSubTypeStream;
 - (BOOL)hasEqualTitlesAsStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath inMarquee:(BOOL)inMarquee;
 
 /**
- Returns the largest asset from the preview assets array that fits within the provided size or, if
- there are no preview assets, falls back to the value returned from inStreamPreviewImageURL.
+ *  Returns the largest asset from the preview assets array that fits within the provided size or, if
+ *  there are no preview assets, falls back to the value returned from inStreamPreviewImageURL.
+ *
+ *  @param size The maximum display size for a preview image in PIXELS
  */
-- (NSURL *__nullable)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
+- (nullable NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
 
 @end
 
