@@ -27,10 +27,6 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
-                               withSuccessBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
-
 /**
  Fetches data for a user with the provided ID and creates an entry in the core data store.
  

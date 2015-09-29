@@ -15,7 +15,6 @@
 
 @dynamic isRead;
 @dynamic lastMessageText;
-@dynamic other_interlocutor_user_id;
 @dynamic postedAt;
 @dynamic remoteId;
 @dynamic lastMessageContentType;

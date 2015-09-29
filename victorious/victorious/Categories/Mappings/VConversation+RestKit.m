@@ -8,6 +8,7 @@
 
 #import "VConversation+RestKit.h"
 #import "VMessage+RestKit.h"
+#import "VUser+RestKit.h"
 
 @implementation VConversation (RestKit)
 
@@ -20,7 +21,6 @@
 {
     NSDictionary *propertyMap = @{
                                   @"conversation_id" : VSelectorName(remoteId),
-                                  @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id),
                                   @"text" : VSelectorName(lastMessageText),
                                   @"posted_at": VSelectorName(postedAt),
                                   @"is_read": VSelectorName(isRead),
@@ -31,9 +31,11 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
+    RKRelationshipMapping *userMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"other_interlocutor_user" toKeyPath:VSelectorName(user) withMapping:[VUser simpleMapping]];
+    [mapping addPropertyMapping:userMapping];
+    
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
     
     return mapping;
 }
