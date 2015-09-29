@@ -27,12 +27,10 @@ class StatusBarStyleTests: VictoriousTestCase {
     override func beforeAll() {
         super.beforeAll()
         logOutAndResetSession()
-        loginAndDismissWelcomeIfPresent()
     }
     
     func testStatusBarStyle() {
         loginAndDismissWelcomeIfPresent()
-        
         addStep("Checking status bar style on scaffold")
         checkStatusBarStyle()
         
