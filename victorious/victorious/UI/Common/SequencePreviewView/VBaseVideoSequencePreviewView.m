@@ -243,39 +243,52 @@
     {
         case VFocusTypeNone:
             [self.likeButton hide];
-            [self.videoPlayer pause];
             self.videoPlayer.muted = YES;
-            if ( self.onlyShowPreview )
-            {
-                [self.videoPlayer pauseAtStart];
-            }
             self.userInteractionEnabled = NO;
+            if ( !self.onlyShowPreview )
+            {
+                if ( self.shouldAutoplay )
+                {
+                    [self.videoPlayer pause];
+                }
+                else
+                {
+                    [self.videoPlayer pauseAtStart];
+                }
+            }
             break;
             
         case VFocusTypeStream:
             [self.likeButton hide];
-            if ( self.shouldAutoplay && !self.onlyShowPreview )
-            {
-                [self.videoPlayer play];
-                self.videoPlayer.muted = YES;
-            }
-            if ( self.onlyShowPreview )
-            {
-                [self.videoPlayer pauseAtStart];
-            }
+            self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
+            if ( !self.onlyShowPreview )
+            {
+                if ( self.shouldAutoplay )
+                {
+                    [self.videoPlayer play];
+                }
+                else
+                {
+                    [self.videoPlayer pause];
+                }
+            }
             break;
             
         case VFocusTypeDetail:
+            [self.likeButton show];
+            self.videoPlayer.muted = NO;
+            self.userInteractionEnabled = YES;  //< Activate video UI
             if ( self.onlyShowPreview )
             {
-                // If we were previously only showing the preview, now we need to load the video asset
+                // If we were previously only showing the preview,
+                // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            [self.likeButton show];
-            [self.videoPlayer play];
-            self.videoPlayer.muted = NO;
-            self.userInteractionEnabled = YES;
+            if ( !self.shouldAutoplay )
+            {
+                [self.videoPlayer playFromStart];
+            }
             break;
     }
 }

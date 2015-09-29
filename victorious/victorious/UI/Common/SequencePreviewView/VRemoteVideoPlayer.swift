@@ -35,30 +35,13 @@ private extension YTPlayerView {
 
 class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
-    private static var sharedPlayerView: YTPlayerView?
     private var currentItem: VVideoPlayerItem?
-    
-    /*lazy private var playerView: YTPlayerView = {
-        if let player = sharedPlayerView {
-            player.userInteractionEnabled = false
-            return player
-        } else {
-            let player = YTPlayerView()
-            player.backgroundColor = UIColor.clearColor()
-            sharedPlayerView = player
-            return player
-        }
-    }()*/
     
     let playerView = YTPlayerView()
     
     // MARK: - VVideoPlayer
     
-    var useAspectFit = false {
-        didSet {
-            
-        }
-    }
+    var useAspectFit = false
     
     var muted = false {
         didSet {
@@ -87,7 +70,9 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func setItem(item: VVideoPlayerItem) {
-        
+        if self.currentItem?.remoteContentId != item.remoteContentId {
+            self.playerView.clearVideo()
+        }
         self.currentItem = item
     }
     
@@ -97,12 +82,19 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
             return
         }
         
+        self.delegate?.videoPlayerDidStartBuffering?(self)
+        
+        // See https://developers.google.com/youtube/player_parameters for complete list
         let playerVars = [
             "controls" : NSNumber(integer: 1),
+            "rel" : NSNumber(integer: 0),
             "playsinline" : NSNumber(integer: 1),
             "autohide" : NSNumber(integer: 1),
             "showinfo" : NSNumber(integer: 0),
-            "modestbranding" : NSNumber(integer: 1)
+            "fs" : NSNumber(integer: 0),
+            "modestbranding" : NSNumber(integer: 1),
+            "enablejsapi" : NSNumber(integer: 1),
+            "iv_load_policy" : NSNumber(integer: 3), ///< Removes annotations
         ]
         self.playerView.delegate = self
         
@@ -154,10 +146,9 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
             if self.playerView.videoUrl() == nil {
                 self.loadCurrentItem()
             }
+            self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
             self.playerView.playVideo()
-            self.delegate?.videoPlayerDidPlay?(self)
         }
-        self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
     }
     
     // MARK: - YTPlayerViewDelegate
@@ -174,7 +165,6 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         switch state {
         case .Ended:
             self.isPlaying = false
-            self.playerView.hidden = true
             self.delegate?.videoPlayerDidReachEnd?(self)
         case .Paused:
             self.isPlaying = false
@@ -186,7 +176,8 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         case .Unstarted:()
         case .Playing:
             self.isPlaying = true
-            self.playerView.hidden = false
+            self.delegate?.videoPlayerDidStopBuffering?(self)
+            self.delegate?.videoPlayerDidPlay?(self)
         }
     }
     

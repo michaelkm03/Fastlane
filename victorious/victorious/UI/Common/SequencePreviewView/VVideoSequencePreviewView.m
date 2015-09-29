@@ -203,16 +203,34 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     if ( self.focusType == VFocusTypeDetail )
     {
         self.largePlayButton.userInteractionEnabled = YES;
-        BOOL shouldHide = !((self.state == VVideoStateEnded || self.state == VVideoStateNotStarted) && ![self shouldLoop]);
-        self.largePlayButton.hidden = shouldHide;
-        self.previewImageView.hidden = shouldHide;
+        if ( self.state != VVideoStateNotStarted )
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = NO;
+        }
+        else
+        {
+            self.largePlayButton.hidden = NO;
+            self.previewImageView.hidden = NO;
+            self.videoPlayer.view.hidden = YES;
+        }
     }
     else
     {
         self.largePlayButton.userInteractionEnabled = NO;
-        BOOL shouldHide = !(self.state == VVideoStateNotStarted && ![self shouldAutoplay]);
-        self.largePlayButton.hidden = shouldHide;
-        self.previewImageView.hidden = shouldHide;
+        if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = NO;
+        }
+        else
+        {
+            self.largePlayButton.hidden = NO;
+            self.previewImageView.hidden = NO;
+            self.videoPlayer.view.hidden = YES;
+        }
     }
     
     // Activity indicator
@@ -224,7 +242,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     {
         [self.soundIndicator startAnimating];
     }
-    
 }
 
 #pragma mark - Focus
@@ -232,16 +249,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)setFocusType:(VFocusType)focusType
 {
     super.focusType = focusType;
-    
-    if ( ![self shouldAutoplay] && focusType != VFocusTypeDetail)
-    {
-        [self.videoPlayer pauseAtStart];
-        self.state = VVideoStateNotStarted;
-    }
-    else if ( focusType == VFocusTypeDetail)
-    {
-        [self.videoPlayer play];
-    }
     
     [self updateUIState];
 }

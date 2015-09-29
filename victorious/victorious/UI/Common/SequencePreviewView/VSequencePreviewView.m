@@ -43,7 +43,7 @@
     }
     else if ([sequence isVideo])
     {
-        if ( YES || [sequence isRemoteVideo] )
+        if ( [sequence isRemoteVideo] )
         {
             classType = [VRemoteVideoSequencePreviewView class];
         }
@@ -53,7 +53,9 @@
         }
         else
         {
-            classType = [VVideoSequencePreviewView class];
+#warning Testing only:
+            classType = [VRemoteVideoSequencePreviewView class];
+            //classType = [VVideoSequencePreviewView class];
         }
     }
     else if ([sequence isImage] || [sequence isPreviewImageContent])
