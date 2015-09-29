@@ -23,26 +23,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.3</string>
+	<string>3.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb664946900317058</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>vapp1</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
@@ -50,11 +33,34 @@
 	<key>FacebookAppID</key>
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
-	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
+	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.getvictorious.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+			<key>staging.getvictorious.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to serve you relevant info such as events in your area.</string>
 	<key>ProductPrefix</key>
@@ -88,8 +94,6 @@
 		<string>JosefinSans-SemiBold.ttf</string>
 		<string>JosefinSlab-Bold.ttf</string>
 		<string>JosefinSlab-SemiBold.ttf</string>
-		<string>Junction-bold.otf</string>
-		<string>Junction-regular.otf</string>
 		<string>Jura-DemiBold.ttf</string>
 		<string>Jura-Medium.ttf</string>
 		<string>Kreon-Bold.ttf</string>

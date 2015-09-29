@@ -16,13 +16,14 @@
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
-#import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
-#import "VCellFocus.h"
+#import "VFocusable.h"
 #import "VStreamItemPreviewView.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -35,6 +36,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
+@property (nonatomic, strong) UICollectionViewCell *selectedCell;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
 
@@ -91,11 +93,18 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     if ( shelf == _shelf )
     {
+        if ( shelf.hasNewEditorializations )
+        {
+            //Need to refresh marquee items since editorializations have changed
+            shelf.hasNewEditorializations = NO;
+            [self marqueeItemsUpdated];
+        }
         return;
     }
     
     [self.KVOController unobserve:_shelf];
     _shelf = shelf;
+    shelf.hasNewEditorializations = NO;
     [self reset];
     [self.KVOController observe:_shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
@@ -103,14 +112,21 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                          action:@selector(marqueeItemsUpdated)];
 }
 
+- (VStream *)currentStream
+{
+    return self.shelf ?: self.stream;
+}
+
 - (NSArray *)marqueeItems
 {
-    NSArray *items = [self.stream.marqueeItems array];
-    if ( self.shelf != nil )
-    {
-        items = [self.shelf.streamItems array];
-    }
-    return items;
+    NSOrderedSet *marqueeItems = self.shelf.streamItems ?: self.stream.marqueeItems;
+    return [marqueeItems array];
+}
+
+- (CGFloat)pageWidth
+{    
+    Class<VSharedCollectionReusableViewMethods> itemCellClass = [self.class marqueeStreamItemCellClass];
+    return [itemCellClass desiredSizeWithCollectionViewBounds:self.collectionView.bounds].width;
 }
 
 - (void)reset
@@ -122,11 +138,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)marqueeItemsUpdated
 {
     NSArray *marqueeItems = self.marqueeItems;
-    [self.dataDelegate marquee:self reloadedStreamWithItems:marqueeItems];
+    [self.dataDelegate marqueeController:self reloadedStreamWithItems:marqueeItems];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:marqueeItems];
     [self.collectionView reloadData];
-    NSUInteger marqueeItemsCount = marqueeItems.count;
-    self.collectionView.scrollEnabled = marqueeItemsCount != 1;
     [self enableTimer];
     [self updateFocus];
 }
@@ -135,8 +149,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    NSUInteger currentPage = self.collectionView.contentOffset.x / self.pageWidth;
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;
@@ -154,8 +167,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)updateFocus
 {
     //Update the focus of preview views that conform to VCellFocus
-    CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
+    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + self.pageWidth / 2 ) / self.pageWidth;
     currentFocusPage = MIN( currentFocusPage, (NSInteger)self.marqueeItems.count - 1 );
     currentFocusPage = MAX( currentFocusPage, 0 );
 
@@ -165,10 +177,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         VStreamItem *focusedStreamItem = self.marqueeItems[currentFocusPage];
         for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
-            if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
+            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] && cell != self.selectedCell )
             {
                 BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
-                [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:hasFocus];
+                VFocusType focusType = hasFocus ? VFocusTypeStream : VFocusTypeNone;
+                [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:focusType];
             }
         }
     }
@@ -180,29 +193,31 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
     {
-        if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
+        if ( self.selectedCell == nil || cell != self.selectedCell )
         {
-            [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:NO];
+            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
+            {
+                [(VStreamItemPreviewView <VFocusable> *)cell.previewView setFocusType:VFocusTypeNone];
+            }
         }
     }
 }
 
 - (void)selectNextTab
 {
-    if ( !self.collectionView.isScrollEnabled )
+    if ( self.marqueeItems.count == 1 )
     {
         //We've locked the scrolling, meaning we shouldn't have it animate either
         return;
     }
     
-    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
-    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / self.pageWidth ) + 1;
     if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
     }
     
-    [self.collectionView setContentOffset:CGPointMake(currentPage * pageWidth, self.collectionView.contentOffset.y) animated:YES];
+    [self.collectionView setContentOffset:CGPointMake(currentPage * self.pageWidth, self.collectionView.contentOffset.y) animated:YES];
 }
 
 - (void)scrolledToPage:(NSInteger)currentPage
@@ -289,9 +304,14 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = self.marqueeItems[indexPath.row];
+    self.selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
     
-    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:nil];
+    [self.selectionDelegate marqueeController:self
+                                didSelectItem:self.marqueeItems[indexPath.row]
+                             withPreviewImage:nil
+                           fromCollectionView:collectionView
+                                  atIndexPath:indexPath];
+    
     [self.autoScrollTimerManager invalidate];
 }
 
@@ -311,12 +331,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
-    VStream *stream = self.shelf ?: self.stream;
-    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:stream fromShelf:YES];
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:self.currentStream fromShelf:YES];
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.context = context;
-    [cell setupWithStreamItem:item fromStreamWithApiPath:stream.apiPath];
+    [cell setupWithStreamItem:item fromStreamWithApiPath:self.currentStream.apiPath];
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];
@@ -332,7 +351,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:marqueeItems];
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    _collectionView.scrollEnabled = marqueeItems.count != 1;
     ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
     [self reset];
 }

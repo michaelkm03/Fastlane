@@ -41,7 +41,7 @@
         else
         {
             // Log in through server using saved password
-            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+            [[[VUserManager alloc] init] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
             {
                 dispatch_semaphore_signal(self.semaphore);
             }

@@ -17,9 +17,13 @@ NSString * const VStreamItemTypeShelf = @"shelf";
 NSString * const VStreamItemTypeFeed = @"feed";
 
 //Subtype values
+NSString * const VStreamItemSubTypeExplore = @"explore";
 NSString * const VStreamItemSubTypeMarquee = @"marquee";
 NSString * const VStreamItemSubTypeUser = @"user";
 NSString * const VStreamItemSubTypeHashtag = @"hashtag";
+NSString * const VStreamItemSubTypeTrendingTopic = @"trendingTopic";
+NSString * const VStreamItemSubTypePlaylist = @"playlist";
+NSString * const VStreamItemSubTypeRecent = @"recent";
 NSString * const VStreamItemSubTypeImage = @"image";
 NSString * const VStreamItemSubTypeVideo = @"video";
 NSString * const VStreamItemSubTypeGif = @"gif";
@@ -140,6 +144,18 @@ NSString * const VStreamItemSubTypeStream = @"stream";
     }
     
     return editorializationItem;
+}
+
+- (BOOL)hasEqualTitlesAsStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath inMarquee:(BOOL)inMarquee
+{
+    //Check marquees to see if we do after all
+    VEditorializationItem *oldItem = [self editorializationForStreamWithApiPath:apiPath];
+    NSString *oldHeadline = inMarquee ? oldItem.marqueeHeadline : oldItem.headline;
+    BOOL headlinesAreNil = oldItem.marqueeHeadline == nil && streamItem.headline == nil;
+    BOOL namesAreNil = self.name == nil && streamItem.name == nil;
+    BOOL headlinesAreSame = [oldHeadline isEqualToString:streamItem.headline];
+    BOOL namesAreSame = [self.name isEqualToString:streamItem.name];
+    return (headlinesAreNil || headlinesAreSame) && (namesAreNil || namesAreSame);
 }
 
 @end

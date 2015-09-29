@@ -14,13 +14,13 @@
 
 /**
  From the supplied set of VImageAssets, returns the smallest asset by area whose width
- and height are greater than or equal to the provided minimum size.
+ and height are greater than or equal to the provided minimum size. Does not take screen scale into account.
  */
 - (VImageAsset *)assetWithPreferredMinimumSize:(CGSize)minimumSize fromAssets:(NSSet *)imageAssets;
 
 /**
  From the supplied set of VImageAssets, returns the largest asset by area whose width
- and height are less than or equal to the provided maximum size.
+ and height are less than or equal to the provided maximum size. Does not take screen scale into account.
  */
 - (VImageAsset *)assetWithPreferredMaximumSize:(CGSize)maximumSize fromAssets:(NSSet *)imageAssets;
 
@@ -43,16 +43,6 @@
  From the provided set, returns a sorted array of image assets desscending by area.
  */
 - (NSArray *)arrayDescendingByAreaFromAssets:(NSSet *)imageAssets;
-
-/**
- From the provided set, returns the VAnswer corresponding to poll answer A
- */
-- (VAnswer *)answerAFromAssets:(NSSet *)assets;
-
-/**
- From the provided set, returns the VAnswer corresponding to poll answer B
- */
-- (VAnswer *)answerBFromAssets:(NSSet *)assets;
 
 /**
  From the provided set, returns the VAsset corresponding to a text post

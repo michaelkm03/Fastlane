@@ -22,7 +22,6 @@
 
 @property (nonatomic, weak) IBOutlet UIView *collectionContainer;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorMessageContainerHeight;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *salutationContainerHeight;
 
@@ -42,16 +41,20 @@
 
 @implementation VSuggestedUsersViewController
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *nib = NSStringFromClass([self class]);
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    self = [super initWithNibName:nib bundle:bundle];
-    if ( self != nil )
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
+    NSString *storyboardName = NSStringFromClass([self class]);
+    
+    VSuggestedUsersViewController *viewController = [[UIStoryboard storyboardWithName:storyboardName bundle:nil] instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager;
+    
+    return viewController;
+}
+
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+    _collectionView.dataSource = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated

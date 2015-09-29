@@ -2,7 +2,7 @@
 //  VCVideoPlayerViewController.m
 //
 
-#import "VCVideoPlayerToolbarView.h"
+#import "VVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
@@ -21,7 +21,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @interface VCVideoPlayerViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak) VCVideoPlayerToolbarView *toolbarView;
+@property (nonatomic, weak) VVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameTapGesture;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameDoubleTapGesture;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
@@ -120,6 +120,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:nil];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem))];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate))];
@@ -136,7 +137,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if (self.shouldShowToolbar)
     {
-        VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+        VVideoPlayerToolbarView *toolbarView = [VVideoPlayerToolbarView toolbarFromNibWithOwner:self];
         toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:toolbarView];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
@@ -172,6 +173,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -188,6 +191,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(returnFromBackground)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 - (void)addDoubleTapGestureRecognizer
@@ -202,6 +210,15 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     doubleTap.delegate = self;
     self.videoFrameDoubleTapGesture = doubleTap;
     [self.view addGestureRecognizer:doubleTap];
+}
+
+- (void)returnFromBackground
+{
+    // Indicates a GIF
+    if (!self.shouldShowToolbar)
+    {
+        [self.player play];
+    }
 }
 
 #pragma mark - Properties

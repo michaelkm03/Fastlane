@@ -36,6 +36,7 @@
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _previewImageView.clipsToBounds = YES;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
@@ -48,48 +49,19 @@
 {
     [super setStream:stream];
     
-    [self setBackgroundContainerViewVisible:NO];
+    self.isLoading = NO;
     
     __weak VImageStreamPreviewView *weakSelf = self;
     [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self setBackgroundContainerViewVisible:YES];
+         self.isLoading = YES;
      }
                                  completion:^(UIImage *image)
      {
          weakSelf.readyForDisplay = YES;
      }];
-}
-
-#pragma mark - VContentModeAdjustablePreviewView
-
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
-{
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
-}
-
-- (void)setBackgroundContainerViewVisible:(BOOL)visible
-{
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end

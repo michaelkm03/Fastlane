@@ -14,6 +14,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 // Pods
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -74,7 +75,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
@@ -88,9 +89,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
              return;
          }
          
-         [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                            isModern:YES
-                                                        OnCompletion:^(VUser *user, BOOL isNewUser)
+         [[[VUserManager alloc] init] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                      onCompletion:^(VUser *user, BOOL isNewUser)
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
@@ -119,10 +119,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaFacebookModern:YES
-                                             OnCompletion:^(VUser *user, BOOL isNewUser)
+    
+    VUserManager *userManager = [[VUserManager alloc] init];
+    userManager.forceNativeFacebookLogin = [self.dependencyManager shouldForceNativeFacebookLogin];
+    [userManager loginViaFacebookOnCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
@@ -150,11 +152,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaEmail:email
-                                        password:password
-                                    onCompletion:^(VUser *user, BOOL isNewUser)
+    [[[VUserManager alloc] init] loginViaEmail:email
+                                      password:password
+                                  onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
@@ -180,12 +182,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
-    [[VUserManager sharedInstance] createEmailAccount:email
-                                             password:password
-                                             userName:nil
-                                         onCompletion:^(VUser *user, BOOL isNewUser)
+    [[[VUserManager alloc] init] createEmailAccount:email
+                                           password:password
+                                           userName:nil
+                                       onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
@@ -209,7 +211,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
@@ -309,7 +311,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] requestPasswordResetForEmail:email
                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -362,7 +364,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     NSParameterAssert(completion != nil);
     
     self.userToken = resetToken;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
                                                    deviceToken:self.deviceToken
@@ -403,7 +405,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken

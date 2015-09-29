@@ -6,13 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIImageView+WebCache.h>
-#import <FBKVOController.h>
-#import <MBProgressHUD.h>
-
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
@@ -47,6 +42,11 @@
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowResponder.h"
+#import <KVOController/FBKVOController.h>
+
+@import KVOController;
+@import MBProgressHUD;
+@import SDWebImage;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -398,6 +398,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
+         [self.profileHeaderViewController updateLevelViews];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -560,6 +561,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
     self.currentStream = [VStream streamForUser:self.user];
     
@@ -706,12 +708,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    // Don't hide the title when we are back at top triggered by setContentOffset to CGPointZero
-    if ( self.collectionView.contentOffset.y == 0 )
-    {
-        NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-        self.navigationItem.title = title;
-    }
+    // Hide title if necessary
+    [self updateTitleVisibilityWithVerticalOffset:scrollView.contentOffset.y];
 }
 
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
@@ -819,7 +817,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (context == VUserProfileAttributesContext)
     {
-        [self.collectionView reloadData];
+        [self reloadUserFollowingRelationship];
+        [self reloadUserFollowCounts];
         return;
     }
     

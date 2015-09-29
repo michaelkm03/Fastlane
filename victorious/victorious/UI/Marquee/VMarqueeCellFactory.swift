@@ -15,6 +15,7 @@ class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
     /// The controller responsible for managing the display, reuse, and data updating for a marquee.
     let marqueeController: VMarqueeController?
+    let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
 
     required init(dependencyManager: VDependencyManager) {
         let templateValue: AnyObject? = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: VMarqueeCellFactory.kMarqueeCellKey)
@@ -32,6 +33,7 @@ extension VMarqueeCellFactory: VStreamCellFactory {
     
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         marqueeController?.registerCollectionViewCellWithCollectionView(collectionView)
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -42,16 +44,14 @@ extension VMarqueeCellFactory: VStreamCellFactory {
             return controller.marqueeCellForCollectionView(collectionView, atIndexPath:indexPath)
         }
         assertionFailure("A marquee cell was requested from a factory with a nil marquee controller. Check marqueeCell in template response.")
-        let marqueeFailureIdentifier = "marqueeFailure"
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: marqueeFailureIdentifier)
-        return collectionView.dequeueReusableCellWithReuseIdentifier(marqueeFailureIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
         if let marquee = marqueeController {
             return marquee.desiredSizeWithCollectionViewBounds(bounds)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

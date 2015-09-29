@@ -35,7 +35,7 @@ static NSString * const kTextAsset = @"text";
     return assetsByAscendingArea.lastObject;
 }
 
-- (VImageAsset *)assetWithPreferredMaximumSize:(CGSize)minimumSize fromAssets:(NSSet *)imageAssets
+- (VImageAsset *)assetWithPreferredMaximumSize:(CGSize)maximumSize fromAssets:(NSSet *)imageAssets
 {
     if ( imageAssets == nil || imageAssets.count == 0 )
     {
@@ -45,7 +45,7 @@ static NSString * const kTextAsset = @"text";
     NSArray *assetsByDescendingArea = [self arrayDescendingByAreaFromAssets:imageAssets];
     for ( VImageAsset *imageAsset in assetsByDescendingArea )
     {
-        if ( [imageAsset fitsWithinSize:minimumSize] )
+        if ( [imageAsset fitsWithinSize:maximumSize] )
         {
             return imageAsset;
         }
@@ -78,42 +78,6 @@ static NSString * const kTextAsset = @"text";
             {
                 return [@(asset2.area) compare:@(asset1.area)];
             }];
-}
-
-- (VAnswer *)answerAFromAssets:(NSSet *)assets
-{
-    VAnswer *answer = nil;
-    for (id object in assets)
-    {
-        if ([object isKindOfClass:[VAsset class]])
-        {
-            VAsset *asset = (VAsset *) object;
-            if (asset.node.interactions.array.count > 0)
-            {
-                answer = [asset.node.interactions.array firstObject];
-            }
-        }
-    }
-    
-    return answer;
-}
-
-- (VAnswer *)answerBFromAssets:(NSSet *)assets
-{
-    VAnswer *answer = nil;
-    for (id object in assets)
-    {
-        if ([object isKindOfClass:[VAsset class]])
-        {
-            VAsset *asset = (VAsset *) object;
-            if (asset.node.interactions.array.count > 1)
-            {
-                answer = asset.node.interactions.array[1];
-            }
-        }
-    }
-    
-    return answer;
 }
 
 - (VAsset *)textAssetFromAssets:(NSSet *)assets

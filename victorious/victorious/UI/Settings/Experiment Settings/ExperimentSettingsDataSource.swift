@@ -12,14 +12,14 @@ import VictoriousCommon
 /// Designed to provided an `ExperimentSettingsDataSource` instance with a reference to
 /// the table view it's feeding so that it can reload it or get access to individual cells
 /// that need updating based on changes in the data model
-protocol ExperimentSettingsDataSourceDelegate {
+protocol ExperimentSettingsDataSourceDelegate: class {
     var tableView: UITableView! { get }
     var dependencyManager: VDependencyManager? { get }
 }
 
 class ExperimentSettingsDataSource: NSObject {
     
-    var delegate:ExperimentSettingsDataSourceDelegate?
+    weak var delegate:ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
         static let unmodified = UIColor.grayColor()
@@ -83,9 +83,9 @@ class ExperimentSettingsDataSource: NSObject {
                 
                 self.updateTintColor()
                 
-                let layers = Set<String>( map( experiments, { $0.layerName }) )
+                let layers = Set<String>( experiments.map { $0.layerName } )
                 for layer in layers {
-                    let experimentsInLayer = filter( experiments, { $0.layerName == layer })
+                    let experimentsInLayer = experiments.filter { $0.layerName == layer }
                     self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
                 }
                 
@@ -105,12 +105,13 @@ class ExperimentSettingsDataSource: NSObject {
     
     private func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
-            for cell in tableView.visibleCells() {
+            for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {
                     switchCell.switchColor = self.tintColor.current
                     if let indexPath = tableView.indexPathForCell( switchCell ) {
                         let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                        switchCell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                        let nameWithID = "\(experiment.name) (\(experiment.id))"
+                        switchCell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                     }
                 }
             }
@@ -182,7 +183,8 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         if self.state == .Content,
             let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
                 let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-                cell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                let nameWithID = "\(experiment.name) (\(experiment.id))"
+                cell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                 cell.delegate = self
                 cell.switchColor = self.tintColor.current
                 return cell
@@ -221,6 +223,6 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
 
 private extension UITableView {
     func lastSection() -> Int {
-        return max( 0, self.numberOfSections() - 1)
+        return max( 0, self.numberOfSections - 1)
     }
 }

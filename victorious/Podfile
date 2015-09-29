@@ -3,16 +3,20 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.1'
 
 inhibit_all_warnings!
+use_frameworks!
 
 target :victorious do
     pod 'RestKit'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
-    pod 'FlurrySDK'
     pod 'KVOController'
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
     pod 'OAStackView'
+    pod 'FBSDKCoreKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKLoginKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKShareKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'CHTCollectionViewWaterfallLayout'
     link_with 'victorious'
 
     target :test do
@@ -21,17 +25,17 @@ target :victorious do
     end
 end
 
-target :VictoriousCommon do
-    pod 'IGDigest'
-    link_with 'VictoriousCommon'
-end
-
-target :VictoriousCommonOSX do
-    platform :osx, "10.10"
-    pod 'IGDigest'
-    link_with 'VictoriousCommonOSX'
-end
-
 target 'UIAutomationTests', :exclusive => true do
   pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+            if config.name == "QA" || config.name == "Staging" || config.name == "Stable" then
+                config.build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = 'iPhone Distribution'
+            end
+        end
+    end
 end

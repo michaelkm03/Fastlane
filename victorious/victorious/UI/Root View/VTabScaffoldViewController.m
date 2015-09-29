@@ -10,7 +10,6 @@
 
 // ViewControllers + Presenters
 #import "VRootViewController.h"
-#import "VContentViewPresenter.h"
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
@@ -44,7 +43,7 @@
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -57,6 +56,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 
 @end
 
@@ -77,8 +77,19 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _launchOperationQueue = [[NSOperationQueue alloc] init];
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
+        _contentViewPresenter = [[ContentViewPresenter alloc] init];
     }
     return self;
+}
+
+- (UITabBarController *)tabBarController
+{
+    return self.internalTabBarController;
+}
+
+- (void)dealloc
+{
+    _internalTabBarController.delegate = nil;
 }
 
 #pragma mark - View Lifecycle
@@ -111,6 +122,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
     
     self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:_internalTabBarController.tabBar];
+    
+    // Make sure we're listening for interstitial events
+    [[InterstitialManager sharedInstance] setInterstitialListener:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -119,12 +133,22 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self setupFirstLaunchOperations];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.presentedViewController == nil)
+    {
+        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+    }
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -157,12 +181,14 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self.rootNavigationController
-                                          withDependencyManager:self.dependencyManager
-                                                    ForSequence:sequence
-                                                 inStreamWithID:streamId
-                                                      commentID:commentID
-                                               withPreviewImage:placeholderImage];
+    ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.sequence = sequence;
+    context.streamId = streamId;
+    context.commentId = commentID;
+    context.placeholderImage = placeholderImage;
+    context.viewController = self.rootNavigationController;
+    context.originDependencyManager = self.dependencyManager;
+    [self.contentViewPresenter presentContentViewWithContext:context];
 }
 
 - (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated
@@ -359,7 +385,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            VLog(@"Enabling coachmarks");
             self.coachmarkManager.allowCoachmarks = YES;
         });
     }];
@@ -531,6 +556,16 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     else
     {
         [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
+}
+
+#pragma mark - Interstitial Listener
+
+- (void)newInterstitialHasBeenRegistered
+{
+    if (self.presentedViewController == nil)
+    {
+        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
     }
 }
 

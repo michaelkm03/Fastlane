@@ -15,6 +15,7 @@
 #import "VVoteType.h"
 #import "VExperienceEnhancerResponder.h"
 #import "UIResponder+VResponderChain.h"
+#import "VUser.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -77,6 +78,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [self reloadData];
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setDataSource:(id<VExperienceEnhancerBarDataSource>)dataSource
@@ -137,7 +144,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.voteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
-    experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
+    experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
+    
+    NSNumber *unlockLevel = enhancerForIndexPath.voteType.unlockLevel ?: [NSNumber numberWithInt:0];
+    NSInteger userLevel = [[VObjectManager sharedManager] mainUser].level.integerValue;
+    [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel.integerValue andUserLevel:userLevel];
+    
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
     
@@ -219,7 +231,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
+    if ( enhancerForIndexPath.requiresPurchase  ) // Check if the user must buy this experience enhancer first
     {
         id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
         NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
@@ -259,7 +271,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         return;
     }
     
-    if ( enhancerForIndexPath.isLocked || [enhancerForIndexPath isCoolingDown] )
+    if ( enhancerForIndexPath.requiresPurchase || [enhancerForIndexPath isCoolingDown] )
     {
         return;
     }
@@ -283,7 +295,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.isLocked  )
+    if ( enhancerForIndexPath.requiresPurchase )
     {
         return;
     }

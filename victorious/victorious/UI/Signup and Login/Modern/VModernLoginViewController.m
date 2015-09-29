@@ -92,7 +92,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                  name:UITextFieldTextDidChangeNotification
                                                object:self.passwordField];
     
-    NSString *prompt = NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], nil);
+    NSString *prompt = [self.dependencyManager stringForKey:kPromptKey] ?: @"";
     NSDictionary *promptAttributes = @{
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
@@ -101,11 +101,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                       attributes:promptAttributes];
     
     NSDictionary *textFieldAttributes = @{
-                                          NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                          NSFontAttributeName: [UIFont systemFontOfSize:17],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                           };
     NSDictionary *placeholderTextFieldAttributes = @{
-                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSFontAttributeName: [UIFont systemFontOfSize:17],
                                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
                                                      };
     UIColor *normalColor = textFieldAttributes[NSForegroundColorAttributeName];
@@ -234,7 +234,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self login:textField];
     }
     
-    return YES;
+    return [self shouldLogin];
 }
 
 #pragma mark - Private Methods

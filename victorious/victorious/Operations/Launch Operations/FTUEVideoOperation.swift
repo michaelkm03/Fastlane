@@ -45,10 +45,12 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         
         beganExecuting()
         
-        if let lightWeightContentVC = self.dependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController {
-            lightWeightContentVC.delegate = self;
-            self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
-                self.firstTimeInstallHelper.savePlaybackDefaults()
+        dispatch_async(dispatch_get_main_queue()) {
+            if let lightWeightContentVC = self.dependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController {
+                lightWeightContentVC.delegate = self;
+                self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
+                    self.firstTimeInstallHelper.savePlaybackDefaults()
+                }
             }
         }
     }

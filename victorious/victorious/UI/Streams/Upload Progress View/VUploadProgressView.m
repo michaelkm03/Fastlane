@@ -10,7 +10,8 @@
 #import "VUploadManager.h"
 #import "VUploadProgressView.h"
 #import "VUploadTaskInformation.h"
-#import <FBKVOController.h>
+
+@import KVOController;
 
 static const NSTimeInterval kAnimationDuration = 0.1;
 static const CGFloat kAccessoryButtonWidth = 44.0f;

@@ -31,11 +31,9 @@
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
-const CGFloat kVLoadNextPagePoint = .75f;
-
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
@@ -78,7 +76,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)commonInit
 {
     self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
-
+    
     self.scrollPaginator = [[VScrollPaginator alloc] init];
     self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -97,9 +95,14 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    self.collectionView.accessibilityIdentifier = VAutomationIDentifierStreamCollectionView;
+    
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -175,13 +178,21 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.currentStream.streamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            UICollectionViewLayoutAttributes *attributes = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath];
+            if ( !CGSizeEqualToSize(attributes.size, CGSizeZero) )
+            {
+                CGPoint offset = attributes.frame.origin;
+                offset.x = 0;
+                offset.y -= self.v_layoutInsets.top;
+                self.collectionView.contentOffset = offset;
+                self.targetStreamItem = nil;
+            }
         }
     }
-    self.targetStreamItem = nil;
 }
 
 - (void)addScrollDelegate
@@ -262,10 +273,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshWithCompletion:^
-    {
-        const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
-        self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
-    }];
+     {
+         [self updateRowCount];
+     }];
+}
+
+- (void)updateRowCount
+{
+    const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
+    self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
@@ -295,7 +311,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
              completionBlock();
          }
      }
-                                         failure:^(NSError *error)
+                            failure:^(NSError *error)
      {
          [self.refreshControl endRefreshing];
          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -321,7 +337,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
                       atIndexPath:(NSIndexPath *)indexPath
 {
     const NSUInteger currentCount = [self.collectionView numberOfItemsInSection:indexPath.section];
-    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection;
+    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection && self.previousNumberOfRowsInStreamSection > 0;
     const BOOL isFirstRowOfNewPage = indexPath.row == (NSInteger) self.previousNumberOfRowsInStreamSection;
     if ( newPageDidLoad && isFirstRowOfNewPage )
     {
@@ -346,8 +362,13 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
-    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
+}
+
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
+{
+    return [self.collectionView numberOfItemsInSection:section] > 1;
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
@@ -414,6 +435,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
+    [self updateRowCount];
     [self.streamDataSource loadPage:VPageTypeNext withSuccess:
      ^{
          __weak typeof(self) welf = self;
@@ -422,7 +444,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                                              failure:nil];
+                            failure:nil];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -431,7 +453,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
-
+    
     [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
 }
 

@@ -10,7 +10,6 @@
 
 #import "VMediaAttachmentPresenter.h"
 #import "VContentInputAccessoryView.h"
-#import "VLoginViewController.h"
 #import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
@@ -40,7 +39,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 - (void)dealloc
 {
-    [self.textView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
+    [_textView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
+    _textView.delegate = nil;
 }
 
 - (void)awakeFromNib

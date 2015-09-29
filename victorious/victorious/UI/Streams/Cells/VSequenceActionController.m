@@ -41,6 +41,7 @@
 #pragma mark - Dependency Manager
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 #pragma mark - Remixing
 #import "VRemixPresenter.h"
@@ -53,7 +54,7 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 @interface VSequenceActionController ()
 
@@ -357,6 +358,7 @@
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
+    fbActivity.shareMode = [self.dependencyManager shouldForceNativeFacebookLogin] ? FBSDKShareDialogModeNative : FBSDKShareDialogModeAutomatic;
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]

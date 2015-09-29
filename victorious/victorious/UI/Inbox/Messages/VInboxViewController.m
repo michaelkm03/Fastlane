@@ -11,32 +11,22 @@
 #import "VInboxViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUserSearchViewController.h"
-#import "VLoginViewController.h"
 #import "VConversation+RestKit.h"
-#import "VNotification+RestKit.h"
 #import "VMessageViewController.h"
 #import "VMessageContainerViewController.h"
 #import "VConversationCell.h"
-#import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
-#import "VPaginationManager.h"
 #import "VRootViewController.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
 #import "VObjectManager+Login.h"
-#import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "NSURL+VPathHelper.h"
 #import "VInboxDeeplinkHandler.h"
 #import "VNavigationController.h"
-#import "VAuthorizedAction.h"
-#import "VNavigationController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VProvidesNavigationMenuItemBadge.h"
-#import "UIResponder+VResponderChain.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "VBadgeResponder.h"
@@ -78,7 +68,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         viewController.dependencyManager = dependencyManager;
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
-        viewController.title = NSLocalizedString(@"Messages", @"");
+        [dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
@@ -117,8 +107,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self updateNavigationItem];
     

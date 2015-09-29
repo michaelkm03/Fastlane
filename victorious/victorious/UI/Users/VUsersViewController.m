@@ -14,7 +14,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
-#import "VNavigationController.h"
 #import "VDependencyManager+VTracking.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
@@ -38,6 +37,12 @@
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
 }
 
 #pragma mark - View contorller lifecycle
@@ -109,7 +114,7 @@
     
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

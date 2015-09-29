@@ -10,11 +10,11 @@ import UIKit
 
 /// Classes that conform to this protocol will receive messages about
 /// stream items being selected from trending shelves.
-@objc protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
+protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
     /// Sent when a stream item is selected from a trending shelf.
     ///
-    /// :param: streamItem The selected stream item.
-    /// :param: fromShelf The shelf that the stream item was selected from.
+    /// - parameter streamItem: The selected stream item.
+    /// - parameter fromShelf: The shelf that the stream item was selected from.
     func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf)
 }
 
@@ -26,6 +26,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private static let kTrendingShelfKey = "trendingShelf"
+    private static let kListShelfKey = "listShelf"
     
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
@@ -40,6 +41,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory: VTrendingShelfCellFactory?
     
+    private let listShelfFactory: VListShelfCellFactory?
     private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
     /// The dependency manager used to style all cells from this factory
@@ -54,6 +56,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         trendingShelfFactory = dependencyManager.templateValueOfType(VTrendingShelfCellFactory.self, forKey: VStreamContentCellFactory.kTrendingShelfKey) as? VTrendingShelfCellFactory
+        listShelfFactory = dependencyManager.templateValueOfType(VListShelfCellFactory.self, forKey: VStreamContentCellFactory.kListShelfKey) as? VListShelfCellFactory
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
@@ -63,6 +66,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
                 return marqueeCellFactory
             case VStreamItemSubTypeHashtag, VStreamItemSubTypeUser:
                 return trendingShelfFactory
+            case VStreamItemSubTypePlaylist, VStreamItemSubTypeRecent:
+                return listShelfFactory
             default: ()
             }
         }
@@ -76,6 +81,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
+        listShelfFactory?.registerCellsWithCollectionView(collectionView)
         failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
@@ -104,7 +110,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         if let factory = factoryForStreamItem(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

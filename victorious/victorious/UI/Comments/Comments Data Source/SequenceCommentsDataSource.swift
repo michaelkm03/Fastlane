@@ -22,7 +22,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func sortInternalComments() {
         if let comments = self.sequence.comments?.array as? [VComment],
             var validComments = VObjectManager.sharedManager().commentsAfterStrippingFlaggedItems(comments) as? [VComment] {
-            validComments.sort({ $0.postedAt > $1.postedAt })
+            validComments.sortInPlace({ $0.postedAt > $1.postedAt })
             self.sortedInternalComments = validComments
         }
     }
@@ -77,7 +77,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        if let commentIndex = find(sortedInternalComments, comment) {
+        if let commentIndex = sortedInternalComments.indexOf(comment) {
             return commentIndex
         }
         return 0

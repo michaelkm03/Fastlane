@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "VExperienceEnhancerBar.h"
-#import "VVideoCellViewModel.h"
 #import "VHasManagedDependencies.h"
 
 @protocol VExperienceEnhancerControllerDelegate <NSObject>
@@ -25,6 +24,7 @@
 
 @interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate, VHasManagedDependencies>
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 
 - (void)updateData;

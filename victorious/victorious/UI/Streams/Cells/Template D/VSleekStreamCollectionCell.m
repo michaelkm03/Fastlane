@@ -17,7 +17,7 @@
 #import "NSString+VParseHelp.h"
 #import "VSleekActionView.h"
 #import "VHashTagTextView.h"
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -26,13 +26,14 @@
 #import "VInStreamCommentCellContents.h"
 #import "VInStreamCommentsShowMoreAttributes.h"
 #import "VInStreamCommentsController.h"
-#import <FBKVOController.h>
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "UIResponder+VResponderChain.h"
+#import "victorious-Swift.h"
+
+@import KVOController;
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -47,12 +48,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
-@property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
-@property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
+@property (nonatomic, weak) IBOutlet VStreamCellHeader *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
@@ -71,6 +72,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
+@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
@@ -369,6 +371,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ( self.previewView == nil && self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
@@ -382,10 +389,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
-    }
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
 }
@@ -484,13 +487,16 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 
@@ -591,6 +597,31 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
     }
     return _inStreamCommentsController;
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+- (void)relinquishPreviewView
+{
+    self.hasRelinquishedPreviewView = YES;
+}
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (UIView *)getContainerView
+{
+    return self.previewView;
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

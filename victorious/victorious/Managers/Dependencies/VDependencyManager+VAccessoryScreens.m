@@ -41,6 +41,7 @@ NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Cr
 NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
 NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
 NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
+NSString * const VDependencyManagerAccessorySettings            = @"Accessory Menu Settings";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 static const char kAssociatedObjectBadgeableBarButtonsKey;
@@ -94,21 +95,22 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             [barButton setTintColor:menuItem.tintColor];
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
-            
             [badgeableBarButtons addObject:barButton];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
+            accessoryBarItem.accessibilityLabel = menuItem.identifier;
         }
         else if ( menuItem.title != nil )
         {
-            accessoryBarItem = [[VBarButtonItem alloc] initWithTitle:NSLocalizedString( menuItem.title, @"" )
+            accessoryBarItem = [[VBarButtonItem alloc] initWithTitle:menuItem.title
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(accessoryMenuItemSelected:)];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
+            accessoryBarItem.accessibilityLabel = menuItem.identifier;
         }
         
         if ( accessoryBarItem == nil )
@@ -261,40 +263,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         
     }
     while (( responder = [responder nextResponder] ));
-    return nil;
-}
-
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
-{
-    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
-    VBarButton *barButton = (VBarButton *)barButtonItem.customView;
-    if ( barButton != nil && [barButton isKindOfClass:[VBarButton class]] )
-    {
-        return barButton;
-    }
-    return nil;
-}
-
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
-{
-    VBarButtonItem *foundItem = nil;
-    NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
-                                    {
-                                        return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
-                                    }];
-    
-    foundItem = (VBarButtonItem *)[navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
-    if ( foundItem != nil )
-    {
-        return foundItem;
-    }
-    
-    foundItem = (VBarButtonItem *)[navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
-    if ( foundItem != nil )
-    {
-        return foundItem;
-    }
-    
     return nil;
 }
 

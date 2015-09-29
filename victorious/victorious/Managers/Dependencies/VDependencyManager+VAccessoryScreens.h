@@ -25,6 +25,7 @@ extern NSString * const VDependencyManagerAccessoryItemCreatePost;
 extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
 extern NSString * const VDependencyManagerAccessoryItemMore;
 extern NSString * const VDependencyManagerAccessoryNewMessage;
+extern NSString * const VDependencyManagerAccessorySettings;
 
 @interface VDependencyManager (VAccessoryScreens)
 
@@ -54,18 +55,6 @@ extern NSString * const VDependencyManagerAccessoryNewMessage;
  */
 - (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
                                     fromViewController:(UIViewController *)sourceViewController;
-
-/**
- Returns a UIBarButtonItem according that was created from the provided identifier, if it exists,
- for the provided navigation item.  Will return nil if no matching bar button item was found.
- */
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
-
-/**
- Returns a VBarButton (a custom view designed for navivation items) that was created based
- on a menu item that matches the provider identifier.  Will return nilif no matching bar button was found.
- */
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
 
 /**
  Returns a reference to the menu item that contains the provided identifier.

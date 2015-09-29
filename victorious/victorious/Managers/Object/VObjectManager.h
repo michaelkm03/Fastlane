@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "RKObjectManager.h"
 #import "VLoginType.h"
+
+@import RestKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

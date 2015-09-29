@@ -37,26 +37,44 @@
 - (NSArray *)dateSortedComments;
 
 /**
- Retrieves the aspect ratio of the highest resolution
- preview asset for this sequence as a width/height float value. 
- 1.0f is returned if no preview asset is found, or if the aspect 
- ratio is not within range (0.5-2.0).
- 
+ Provides the aspect ratio of the highest resolution preview asset.
+ If the sequence is a video type, the aspect ratio will be clamped within
+ to fit inside main screen size with a default margin.  Otherwise the aspect
+ ratio value will not be modified from that of the original preview asset.
  @note Will never be 0.
  */
 - (CGFloat)previewAssetAspectRatio;
+
+/**
+ Provides the aspect ratio of the highest resolution preview asset.
+ If the sequence is a video type, the aspect ratio will be clamped within
+ to fit within the CGRect value provided.  Otherwise the aspect
+ ratio value will not be modified from that of the original preview asset.
+ @note Will never be 0.
+ */
+- (CGFloat)previewAssetAspectRatioWithinRect:(CGRect)rect;
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
 @property (nonatomic, readonly) VSequencePermissions *permissions;
 
 /**
- *  displayOriginalPoster and displayParentUser can be used to show the creator and parent
- *  user with respect to reposted state.
+ displayOriginalPoster and displayParentUser can be used to show the creator and parent
+ user with respect to reposted state.
  */
 - (VUser *)displayOriginalPoster;
 - (VUser *)displayParentUser;
 
+/**
+ If an image sequence, this will return the url of the original asset. Otherwise, will return
+ the image specified in sequence->preview_image.
+ */
 - (NSURL *)inStreamPreviewImageURL;
+
+/**
+ Returns the largest asset from the preview assets array that fits within the provided size or, if
+ there are no preview assets, falls back to the value returned from inStreamPreviewImageURL.
+ */
+- (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
 
 @end

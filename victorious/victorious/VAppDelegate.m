@@ -9,7 +9,6 @@
 #import "VAppDelegate.h"
 #import "VReachability.h"
 
-#import "VFacebookManager.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -25,21 +24,20 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "VFlurryTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "victorious-Swift.h"
 
 @import AVFoundation;
+@import FBSDKCoreKit;
 @import MediaPlayer;
 @import CoreLocation;
-
-static BOOL shouldCompleteLaunch(void) __attribute__((const));
 
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ( !shouldCompleteLaunch() )
+    if ( ![self shouldCompleteLaunch] )
     {
         return YES;
     }
@@ -60,11 +58,6 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
-    VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
-    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
-    [flurryTracking enable];
-    [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
-
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
@@ -76,7 +69,7 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
-    return YES;
+    return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
@@ -87,7 +80,7 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
     }
 }
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -110,10 +103,12 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ([[VFacebookManager sharedFacebookManager] canOpenURL:url])
+    if ( [VFacebookHelper canOpenURL:url] )
     {
-        [[VFacebookManager sharedFacebookManager] openUrl:url];
-        return YES;
+        return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                              openURL:url
+                                                    sourceApplication:sourceApplication
+                                                           annotation:annotation];
     }
     
     [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
@@ -155,19 +150,37 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
-@end
+#pragma mark - Testing Helpers
 
-#pragma mark -
-
-static BOOL shouldCompleteLaunch(void)
+- (BOOL)shouldCompleteLaunch
 {
-    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-    NSString *injectBundle = environment[@"XCInjectBundle"];
-    if ( [[injectBundle pathExtension] isEqualToString:@"xctest"] )
+    NSBundle *testBundle = [self testBundle];
+    if ( testBundle != nil )
     {
-        NSBundle *testBundle = [NSBundle bundleWithPath:injectBundle];
         NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
         return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
     }
     return YES;
 }
+
+- (nullable NSBundle *)testBundle
+{
+    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+    NSString *injectBundlePath = environment[@"XCInjectBundle"];
+    
+    if ( [[injectBundlePath pathExtension] isEqualToString:@"xctest"] )
+    {
+        NSBundle *bundleInCorrectLocation = [NSBundle bundleWithPath:injectBundlePath];
+
+        if ( bundleInCorrectLocation != nil )
+        {
+            return bundleInCorrectLocation;
+        }
+        NSString *bundleName = [injectBundlePath lastPathComponent];
+        NSString *alternateBundlePath = [NSTemporaryDirectory() stringByAppendingPathComponent:bundleName];
+        return [NSBundle bundleWithPath:alternateBundlePath];
+    }
+    return nil;
+}
+
+@end

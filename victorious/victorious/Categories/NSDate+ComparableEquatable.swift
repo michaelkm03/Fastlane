@@ -8,7 +8,6 @@
 
 import Foundation
 
-extension NSDate: Equatable {}
 extension NSDate: Comparable {}
 
 public func ==(lhs: NSDate, rhs: NSDate) -> Bool {

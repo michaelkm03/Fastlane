@@ -7,9 +7,7 @@
 //
 
 #import "VFetchedResultsTableViewController.h"
-#import "NSString+VParseHelp.h"
 #import "VPaginationManager.h"
-#import "VAbstractFilter.h"
 
 @implementation VFetchedResultsTableViewController
 
@@ -29,6 +27,11 @@
     float yCenter = self.tableView.backgroundView.frame.size.height - self.bottomRefreshIndicator.frame.size.height;
     self.bottomRefreshIndicator.center = CGPointMake(self.tableView.backgroundView.center.x,
                                                      yCenter);
+}
+
+- (void)dealloc
+{
+    _fetchedResultsController.delegate = nil;
 }
 
 #pragma mark - Accessors

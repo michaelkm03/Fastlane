@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIImage+ImageCreation.h"
 #import "VMessageTextAndMediaView.h"
 #import "VMessageCell.h"
-#import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
 #import "victorious-Swift.h"
 
@@ -187,9 +185,14 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 #pragma mark - focus
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.messageTextAndMediaView.inFocus = hasFocus;
+    self.messageTextAndMediaView.focusType = focusType;
+}
+
+- (VFocusType)focusType
+{
+    return self.messageTextAndMediaView.focusType;
 }
 
 - (CGRect)contentArea

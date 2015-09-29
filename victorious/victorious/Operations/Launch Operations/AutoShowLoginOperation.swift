@@ -22,7 +22,6 @@ import Foundation
 /// An `Operation` subclass for auto-showing login on startup.
 class AutoShowLoginOperation: Operation {
     
-    private let autoShowLoginKey = "showLoginOnStartup"
     let loginAuthorizedAction: VAuthorizedAction
     private let dependencyManager: VDependencyManager
     private let viewControllerToPresentFrom: UIViewController
@@ -32,11 +31,11 @@ class AutoShowLoginOperation: Operation {
     
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
-    /// :param: objectManager The object manager to use when creating an internal VAuthorizedAction. Will be used to dervie current login status.
-    /// :param: dependencyManager The dependency manager to use for determinging whether or not to auto-show login based on `showLoginOnStartup` key. Also passed to the internal VAuthorizedAction.
-    /// :param: viewControllerToPresentFrom A `UIViewController` to provide to VAuthorizedAction.
+    /// - parameter objectManager: The object manager to use when creating an internal VAuthorizedAction. Will be used to dervie current login status.
+    /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
+    /// - parameter viewControllerToPresentFrom: A `UIViewController` to provide to VAuthorizedAction.
     ///
-    /// :returns: An AutoShowLoginOperation.
+    /// - returns: An AutoShowLoginOperation.
     init(objectManager: VObjectManager, dependencyManager: VDependencyManager, viewControllerToPresentFrom: UIViewController) {
         self.dependencyManager = dependencyManager
         self.viewControllerToPresentFrom = viewControllerToPresentFrom
@@ -59,28 +58,21 @@ class AutoShowLoginOperation: Operation {
         
         beganExecuting()
         
-        var shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
-        if shouldAutoShowLogin.boolValue {
-            dispatch_async(dispatch_get_main_queue(), {
-                var loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
-                    withCompletion: { (success: Bool) in
-                        self.delegate?.hideLoginViewController() {
-                            self.finishedExecuting()
-                        }
-                    })
-                if let loginVC = loginVC {
-                    self.delegate?.showLoginViewController(loginVC)
-                }
-                else {
-                    // If the loginVC is nil we should not show and just finish up
-                    self.finishedExecuting()
-                }
+        dispatch_async(dispatch_get_main_queue(), {
+            let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
+                withCompletion: { (success: Bool) in
+                    self.delegate?.hideLoginViewController() {
+                        self.finishedExecuting()
+                    }
             })
-        }
-        else
-        {
-            finishedExecuting()
-        }
+            if let loginVC = loginVC {
+                self.delegate?.showLoginViewController(loginVC)
+            }
+            else {
+                // If the loginVC is nil we should not show and just finish up
+                self.finishedExecuting()
+            }
+        })
     }
     
 }

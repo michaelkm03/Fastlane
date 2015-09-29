@@ -7,6 +7,7 @@
 //
 
 #import "VSequencePermissions.h"
+#import "NSNumber+VBitmask.h"
 
 /**
  Values corresponding to permissions bitmask returned by server.
@@ -24,7 +25,8 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     VSequencePermissionCanFlagSequence      = 1 << 7,
     VSequencePermissionCanGif               = 1 << 8,
     VSequencePermissionCanMeme              = 1 << 9,
-    VSequencePermissionCanQuote             = 1 << 10
+    VSequencePermissionCanQuote             = 1 << 10,
+    VSequencePermissionCanAddGifComments    = 1 << 11
 };
 
 @interface VSequencePermissions()
@@ -112,26 +114,14 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     return (self.value & VSequencePermissionCanQuote) != 0ul;
 }
 
+- (BOOL)canAddGifComments
+{
+    return (self.value & VSequencePermissionCanAddGifComments) != 0ul;
+}
+
 - (NSString *)description
 {
-    NSMutableString *stringBits = [[NSMutableString alloc] init];
-    NSUInteger spacing = pow( 2, 3 );
-    NSUInteger width = ( sizeof( self.value ) ) * spacing;
-    NSUInteger binaryDigit = 0;
-    NSUInteger integer = self.value;
-    
-    while ( binaryDigit < width )
-    {
-        binaryDigit++;
-        [stringBits insertString:( (integer & 1) ? @"1" : @"0" )atIndex:0];
-        if ( binaryDigit % spacing == 0 && binaryDigit != width )
-        {
-            [stringBits insertString:@" " atIndex:0];
-        }
-        integer = integer >> 1;
-    }
-    
-    return [NSString stringWithFormat:@"VSequencePermissions = %@", stringBits];
+    return [NSString stringWithFormat:@"VSequencePermissions = %@", [NSNumber v_bitmaskString:self.value]];
 }
 
 @end

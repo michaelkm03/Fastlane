@@ -8,9 +8,6 @@
 
 #import "VInsetActionView.h"
 
-// Frameworks
-#import <FBKVOController.h>
-
 // Dependencies
 #import "VDependencyManager.h"
 
@@ -26,6 +23,9 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
+
+// Frameworks
+@import KVOController;
 
 static const CGFloat kActionButtonWidth = 44.0f;
 

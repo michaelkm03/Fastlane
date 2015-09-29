@@ -20,8 +20,6 @@
 	<string>VModernLandingViewController</string>
 	<key>modernLoginAndRegistration.flow</key>
 	<string>VModernLoginAndRegistrationFlowViewController</string>
-	<key>standard.loginAndRegistrationView</key>
-	<string>VStandardLoginFlowViewController</string>
 	<key>image.creationFlow</key>
 	<string>VImageCreationFlowController</string>
 	<key>translucent.background</key>
@@ -146,12 +144,16 @@
 	<string>victorious.VSequenceContentCellFactory</string>
 	<key>trending.shelf</key>
 	<string>victorious.VTrendingShelfCellFactory</string>
+	<key>list.shelf</key>
+	<string>victorious.VListShelfCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>explore.marqueeCell</key>
+	<string>victorious.ExploreMarqueeController</string>
 	<key>webView.screen</key>
 	<string>VWebBrowserViewController</string>
 	<key>standard.coachmark</key>
@@ -168,5 +170,15 @@
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
 	<string>VUsersAndTagsSearchViewController</string>
+	<key>standard.badgeView</key>
+	<string>victorious.AvatarLevelBadgeView</string>
+	<key>explore.screen</key>
+	<string>victorious.VExploreViewController</string>
+	<key>trendingTopic.shelf</key>
+	<string>victorious.TrendingTopicShelfFactory</string>
+	<key>levelUp.interstitial</key>
+	<string>victorious.LevelUpViewController</string>
+	<key>animated.badgeView</key>
+	<string>victorious.AnimatedBadgeView</string>
 </dict>
 </plist>

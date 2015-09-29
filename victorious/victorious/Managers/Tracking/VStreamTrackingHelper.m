@@ -15,7 +15,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
@@ -103,7 +103,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         return;
     }
     
-    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,

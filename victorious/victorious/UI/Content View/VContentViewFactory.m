@@ -14,7 +14,9 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
+#import "victorious-Swift.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+@import SafariServices;
 
 static NSString * const kContentViewComponentKey = @"contentView";
 static NSString * const kSequenceIdKey = @"sequenceId";
@@ -43,22 +45,22 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     return nil;
 }
 
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
+- (UIViewController *)contentViewForContext:(ContentViewContext *)context
 {
-    if ( [sequence isWebContent] )
+    if ( [context.sequence isWebContent] )
     {
-        NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-        return [self webContentViewControllerWithURL:sequenceContentURL sequence:sequence];
+        NSURL *sequenceContentURL = [NSURL URLWithString:context.sequence.webContentUrl];
+        return [self webContentViewControllerWithURL:sequenceContentURL sequence:context.sequence];
     }
     
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence streamID:streamId depenencyManager:self.dependencyManager];
-    contentViewModel.deepLinkCommentId = commentID;
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
+    contentViewModel.deepLinkCommentId = context.commentId;
     
-    NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId};
+    NSDictionary *dict = @{ kSequenceIdKey : context.sequence.remoteId};
     
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dic];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dict];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
-    contentViewController.placeholderImage = placeholderImage;
+    contentViewController.placeholderImage = context.placeholderImage;
     
     if ( contentViewController == nil )
     {
@@ -124,6 +126,15 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     }
     else
     {
+        // Opens up the webview with SFSafariViewController in iOS9 and above
+        NSOperatingSystemVersion iOS9 = {9, 0, 0};
+        if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] && [[[NSProcessInfo alloc] init] isOperatingSystemAtLeastVersion:iOS9])
+        {
+            SFSafariViewController *webVC = (url != nil) ? [[SFSafariViewController alloc] initWithURL:url] : nil;
+            return webVC;
+        }
+        
+        // Opens up the webview with WKWebview in iOS 8
         VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
         VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
         viewController.isLandscapeOrientationSupported = YES;
@@ -147,6 +158,15 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 - (VContentViewFactory *)contentViewFactory
 {
     return [self templateValueOfType:[VContentViewFactory class] forKey:kContentViewComponentKey];
+}
+
+- (VDependencyManager *)contentViewDependencyManager
+{
+    NSDictionary *configuration = [self templateValueOfType:[NSDictionary class] forKey:kContentViewComponentKey];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:nil];
+    return dependencyManager;
 }
 
 @end

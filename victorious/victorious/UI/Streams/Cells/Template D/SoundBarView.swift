@@ -41,7 +41,7 @@ class SoundBarView : UIView {
         
         for index in 0..<numberOfBars {
             let bar = CAShapeLayer()
-            let path = barPath(index, endpoint: randomEndpoint()).CGPath
+            let path = pathForBarAtIndex(index, endpoint: randomEndpoint()).CGPath
             bar.path = path
             bar.fillColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8).CGColor
             self.layer.addSublayer(bar)
@@ -62,10 +62,12 @@ class SoundBarView : UIView {
         
         isAnimating = true
         
-        for (index, bar) in enumerate(barLayers) {
-            let barWidth = Double(self.bounds.height) / Double(numberOfBars)
+        for (index, bar) in barLayers.enumerate() {
             
-            let currentPath = UIBezierPath(CGPath: bar.path)
+            guard let barPath = bar.path else {
+                continue
+            }
+            let currentPath = UIBezierPath(CGPath: barPath)
             let currentEndpoint = Double(currentPath.bounds.height)
             
             var newRandomEndpoint = currentEndpoint
@@ -73,7 +75,7 @@ class SoundBarView : UIView {
                 newRandomEndpoint = randomEndpoint()
             }
             
-            let newPath = barPath(index, endpoint: newRandomEndpoint)
+            let newPath = pathForBarAtIndex(index, endpoint: newRandomEndpoint)
             barPaths += [newPath]
             
             let animation = CABasicAnimation(keyPath: "path")
@@ -90,7 +92,7 @@ class SoundBarView : UIView {
     
     /// Stop the animation
     func stopAnimating() {
-        for (index, bar) in enumerate(barLayers) {
+        for bar in barLayers {
             bar.removeAllAnimations()
         }
         isAnimating = false
@@ -112,7 +114,7 @@ class SoundBarView : UIView {
         }
     }
     
-    private func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
+    private func pathForBarAtIndex(barIndex: Int, endpoint: Double) -> UIBezierPath {
         let gapsWidth = distanceBetweenBars * Double(numberOfBars - 1)
         let totalBarWidth = Double(self.bounds.width) - gapsWidth
         let barWidth = totalBarWidth / Double(numberOfBars)
@@ -125,13 +127,13 @@ class SoundBarView : UIView {
     
     // MARK: Animation Delegate
     
-    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
 
         if flag {
             let bar = barLayers[counter]
             bar.path = barPaths[counter].CGPath
             counter++
-            if counter == barLayers.count {
+            if counter >= barLayers.count || counter >= barPaths.count {
                 reset(false)
                 startAnimating()
             }

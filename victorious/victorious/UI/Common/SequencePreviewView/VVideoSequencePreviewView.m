@@ -8,41 +8,40 @@
 
 #import "VVideoSequencePreviewView.h"
 #import "victorious-Swift.h"
-#import "VVideoSettings.h"
 #import "VTrackingManager.h"
 #import "UIResponder+VResponderChain.h"
+#import "VVideoPlayerToolbarView.h"
 
 /**
  Describes the state of the video preview view
  */
-typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
+typedef NS_ENUM(NSUInteger, VVideoState)
 {
-    VVideoPreviewViewStateBuffering,
-    VVideoPreviewViewStatePlaying,
-    VVideoPreviewViewStatePaused,
-    VVideoPreviewViewStateEnded
+    VVideoStateNotStarted,
+    VVideoStateEnded,
+    VVideoStateBuffering,
+    VVideoStatePlaying,
+    VVideoStatePaused,
 };
+@interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
-const CGFloat kMaximumLoopingTime = 30.0f;
-
-@interface VVideoSequencePreviewView ()
-
-@property (nonatomic, assign) VVideoPreviewViewState state;
-@property (nonatomic, strong) NSURL *assetURL;
-@property (nonatomic, strong) VVideoSettings *videoSettings;
-@property (nonatomic, strong) VAsset *HLSAsset;
-@property (nonatomic, strong) VTracking *trackingItem;
-@property (nonatomic, strong) id timeObserver;
-@property (nonatomic, assign) BOOL noReplay;
-@property (nonatomic, strong) UIView *playingVideoBackgroundView;
-
+@property (nonatomic, strong) UIView *videoUIContainer;
+@property (nonatomic, strong) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, assign) VVideoState state;
+@property (nonatomic, strong) NSURL *assetURL;
+@property (nonatomic, strong) VTracking *trackingItem;
+@property (nonatomic, strong) id timeObserver;
+@property (nonatomic, assign) BOOL wasPlayingBeforeScrubbingStarted;
 
 @property (nonatomic, assign) BOOL didPlay25;
 @property (nonatomic, assign) BOOL didPlay50;
 @property (nonatomic, assign) BOOL didPlay75;
 @property (nonatomic, assign) BOOL didPlay100;
+
+@property (nonatomic, strong) UIButton *largePlayButton;
 
 @end
 
@@ -53,224 +52,209 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     self = [super initWithFrame:frame];
     if (self != nil)
     {
-        _playingVideoBackgroundView = [[UIView alloc] init];
-        _playingVideoBackgroundView.backgroundColor = [UIColor blackColor];
-        [self insertSubview:_playingVideoBackgroundView belowSubview:self.videoView];
-        [self v_addFitToParentConstraintsToSubview:_playingVideoBackgroundView];
+        _videoUIContainer = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:_videoUIContainer];
+        [self v_addFitToParentConstraintsToSubview:_videoUIContainer];
         
-        _soundIndicator = [[SoundBarView alloc] init];
-        _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        _soundIndicator.hidden = YES;
-        [self addSubview:_soundIndicator];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(20)]"
-                                                                               options:0
-                                                                               metrics:nil
-                                                                                 views:NSDictionaryOfVariableBindings(_soundIndicator)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_soundIndicator(16)]-10-|"
-                                                                                options:0
-                                                                                metrics:nil
-                                                                                  views:NSDictionaryOfVariableBindings(_soundIndicator)]];
-        
-        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        _activityIndicator.hidesWhenStopped = YES;
-        _activityIndicator.hidden = YES;
-        [self addSubview:_activityIndicator];
-        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
-        
-        _videoSettings = [[VVideoSettings alloc] init];
+        [self setupVideoUI];
     }
     return self;
 }
 
-- (void)setSequence:(VSequence *)sequence
+- (void)setupVideoUI
 {
-    [super setSequence:sequence];
+    self.soundIndicator = [[SoundBarView alloc] init];
+    self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    self.soundIndicator.hidden = YES;
+    [self.videoUIContainer addSubview:self.soundIndicator];
+    NSDictionary *views = @{ @"soundIndicator" : self.soundIndicator };
+    NSDictionary *metrics = @{ @"left" : @(10.0),
+                               @"right" : @(10.0),
+                               @"width" : @(16.0),
+                               @"height" : @(20.0) };
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-left-[soundIndicator(height)]"
+                                                                                  options:0
+                                                                                  metrics:metrics
+                                                                                    views:views]];
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[soundIndicator(width)]-right-|"
+                                                                                  options:0
+                                                                                  metrics:metrics
+                                                                                    views:views]];
     
-    [self setState:VVideoPreviewViewStateEnded];
-    self.playingVideoBackgroundView.alpha = 0;
-    self.videoView.alpha = 0;
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicator.hidesWhenStopped = YES;
+    self.activityIndicator.hidden = YES;
+    [self.videoUIContainer addSubview:self.activityIndicator];
+    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
     
-    self.assetURL = nil;
     
-    self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
-    
-    // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( self.HLSAsset.streamAutoplay.boolValue )
+    UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
+    self.largePlayButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [self.largePlayButton setImage:playIcon forState:UIControlStateNormal];
+    [self.largePlayButton addTarget:self action:@selector(onPreviewPlayButtonTapped:)
+                   forControlEvents:UIControlEventTouchUpInside];
+    self.largePlayButton.backgroundColor = [UIColor clearColor];
+    [self.videoUIContainer addSubview:self.largePlayButton];
+    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
+    self.largePlayButton.userInteractionEnabled = NO;
+}
+
+- (void)onContentTap
+{
+    if ( !self.toolbar.isVisible )
     {
-        // Check if autoplay is enabled before loading asset URL
-        if ([self.videoSettings isAutoplayEnabled])
-        {
-            self.trackingItem = sequence.tracking;
-            [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
-        }
+        [self setToolbarHidden:NO animated:YES];
+    }
+    else if ( self.toolbar != nil )
+    {
+        [self setToolbarHidden:YES animated:YES];
     }
 }
 
-- (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
+- (void)onContentDoubleTap
 {
-    self.assetURL = url;
-    
-    [self reset];
-    
-    __weak VVideoSequencePreviewView *weakSelf = self;
-    [self.videoView setItemURL:url
-                          loop:loop
-                    audioMuted:YES
-            alongsideAnimation:^
-     {
-         [weakSelf makeBackgroundContainerViewVisible:YES];
-     }];
+    self.videoPlayer.useAspectFit = !self.videoPlayer.useAspectFit;
 }
 
-- (void)reset
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    self.noReplay = NO;
+    if ( !hidden )
+    {
+        if ( self.toolbar == nil )
+        {
+            self.toolbar = [VideoToolbarView viewFromNib];
+            self.toolbar.delegate = self;
+            [self addSubview:self.toolbar];
+            [self.toolbar v_addHeightConstraint:41.0f];
+            [self v_addPinToLeadingTrailingToSubview:self.toolbar];
+            [self v_addPinToBottomToSubview:self.toolbar];
+        }
+        [self.toolbar showWithAnimated:YES];
+    }
+    else if ( _toolbar != nil )
+    {
+        [self.toolbar hideWithAnimated:animated];
+    }
+}
+
+- (void)hideToolbar
+{
+    if ( _toolbar != nil )
+    {
+        self.toolbar.hidden = YES;
+    }
+}
+
+- (void)loadVideoAsset
+{
+    [self resetTracking];
+    self.state = VVideoStateNotStarted;
     
+    self.videoAsset = [self.sequence.firstNode httpLiveStreamingAsset];
+    self.trackingItem = self.sequence.tracking;
+    
+    VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
+    [self.videoPlayer setItem:item];
+    
+    [self updateUIState];
+}
+
+- (void)resetTracking
+{
     self.didPlay25 = NO;
     self.didPlay50 = NO;
     self.didPlay75 = NO;
     self.didPlay100 = NO;
 }
 
-- (void)setState:(VVideoPreviewViewState)state
+- (void)setState:(VVideoState)state
 {
     _state = state;
-    switch (state)
-    {
-        case VVideoPreviewViewStateBuffering:
-            [self.activityIndicator startAnimating];
-            self.activityIndicator.hidden = NO;
-            [self.soundIndicator stopAnimating];
-            self.soundIndicator.hidden = YES;
-            self.videoView.hidden = NO;
-            self.playIconContainerView.hidden = YES;
-            break;
-        case VVideoPreviewViewStatePlaying:
-            [self makeBackgroundContainerViewVisible:YES];
-            [self.activityIndicator stopAnimating];
-            self.soundIndicator.hidden = NO;
-            [self.soundIndicator startAnimating];
-            self.videoView.hidden = NO;
-            self.playIconContainerView.hidden = YES;
-            break;
-        case VVideoPreviewViewStatePaused:
-            [self makeBackgroundContainerViewVisible:YES];
-            [self.activityIndicator stopAnimating];
-            self.soundIndicator.hidden = YES;
-            [self.soundIndicator stopAnimating];
-            self.videoView.hidden = YES;
-            self.playIconContainerView.hidden = YES;
-            break;
-        case VVideoPreviewViewStateEnded:
-            [self.activityIndicator stopAnimating];
-            self.soundIndicator.hidden = YES;
-            [self.soundIndicator stopAnimating];
-            self.videoView.hidden = YES;
-            self.playIconContainerView.hidden = NO;
-            break;
-    }
+    
+    [self updateUIState];
 }
 
-- (void)setHasFocus:(BOOL)hasFocus
+- (void)updateUIState
 {
-    [super setHasFocus:hasFocus];
-    
-    // If we're not autoplaying, return right away
-    if (self.assetURL == nil)
+    if ( self.focusType == VFocusTypeDetail )
     {
-        return;
+        self.largePlayButton.userInteractionEnabled = YES;
+        self.largePlayButton.hidden = !((self.state == VVideoStateEnded || self.state == VVideoStateNotStarted) && ![self shouldLoop]);
+    }
+    else
+    {
+        self.largePlayButton.userInteractionEnabled = NO;
+        self.largePlayButton.hidden = !(self.state == VVideoStateNotStarted && ![self shouldAutoplay]);
     }
     
-    // Play or pause video depending on focus
-    if (self.inFocus)
+    self.activityIndicator.hidden = self.state != VVideoStateBuffering;
+    
+    self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
+    if ( !self.soundIndicator.hidden )
     {
-        [self playVideo];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
+        [self.soundIndicator startAnimating];
     }
-    else
+    
+    self.videoPlayer.view.hidden = self.state == VVideoStateNotStarted;
+    self.previewImageView.hidden = !self.videoPlayer.view.hidden;
+    
+    self.toolbar.paused = self.state != VVideoStatePlaying;
+    
+    [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
+}
+
+#pragma mark - Focus
+
+- (void)setFocusType:(VFocusType)focusType
+{
+    super.focusType = focusType;
+    
+    [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
+    [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
+    
+    if ( ![self shouldAutoplay] && focusType != VFocusTypeDetail)
     {
-        [self pauseVideo];
+        [self.videoPlayer pauseAtStart];
+        self.state = VVideoStateNotStarted;
+    }
+    else if (focusType == VFocusTypeDetail)
+    {
+        [self.videoPlayer play];
+    }
+    
+    self.videoPlayer.useAspectFit = YES;
+    
+    [self updateUIState];
+}
+
+- (void)onPreviewPlayButtonTapped:(UIButton *)button
+{
+    [self.videoPlayer playFromStart];
+}
+
+#pragma mark - Helpers
+
+- (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
+{
+    AutoplayTrackingEvent *trackingEvent = [[AutoplayTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
+    
+    // Walk responder chain to track autoplay events
+    id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
+    if (responder != nil)
+    {
+        [responder trackAutoplayEvent:trackingEvent];
     }
 }
 
-- (void)playVideo
+- (NSDictionary *)trackingInfo
 {
-    if (![self.videoView playbackLikelyToKeepUp])
-    {
-        [self setState:VVideoPreviewViewStateBuffering];
-        [self trackAutoplayEvent:VTrackingEventVideoDidStall urls:self.trackingItem.videoStall];
-    }
-    else
-    {
-        [self setState:VVideoPreviewViewStatePlaying];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
-    }
-    [self.videoView playWithoutSeekingToBeginning];
-    [UIView animateWithDuration:0.2 animations:^
-    {
-        self.playingVideoBackgroundView.alpha = 1;
-        self.videoView.alpha = 1;
-    }];
+    return @{VTrackingKeyTimeCurrent : @(self.videoPlayer.currentTimeMilliseconds) };
 }
 
-- (void)pauseVideo
+- (void)updateQuartileTracking
 {
-    [self setState:VVideoPreviewViewStateEnded];
-    [self.videoView pauseWithoutSeekingToBeginning];
-    [UIView animateWithDuration:0.2 animations:^
-     {
-         self.playingVideoBackgroundView.alpha = 0;
-         self.videoView.alpha = 0;
-     }];
-}
-
-#pragma mark - Video Player Delegate
-
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
-{
-    [super videoViewPlayerDidBecomeReady:videoView];
-    if (self.inFocus)
-    {
-        [self playVideo];
-    }
-}
-
-- (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
-{
-    // Loop if asset is under max looping time
-    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [self.videoView playFromStart];
-        });
-    }
-    else
-    {
-        self.noReplay = YES;
-        [self setState:VVideoPreviewViewStateEnded];
-    }
-}
-
-- (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
-{
-    if (self.inFocus && !self.noReplay)
-    {
-        [self setState:VVideoPreviewViewStateBuffering];
-    }
-}
-
-- (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
-{
-    if (self.inFocus && !self.noReplay)
-    {
-        [self setState:VVideoPreviewViewStatePlaying];
-    }
-}
-
-- (void)videoView:(VVideoView *__nonnull)videoView didProgressWithPercentComplete:(float)percent
-{
+    const float percent = (self.videoPlayer.currentTimeSeconds / self.videoPlayer.durationSeconds) * 100.0f;
     if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
     {
         self.didPlay25 = YES;
@@ -293,23 +277,114 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - VVideoPlayerDelegate
 
-- (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
+- (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    AutoplayTrackingEvent *trackingEvent = [[AutoplayTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
-    
-    // Walk responder chain to track autoplay events
-    id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
-    if (responder != nil)
+    [super videoPlayerDidBecomeReady:videoPlayer];
+}
+
+- (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
+{
+    if ( self.shouldLoop )
     {
-        [responder trackAutoplayEvent:trackingEvent];
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [self.videoPlayer playFromStart];
+                       });
+    }
+    else if ( !self.willShowEndCard )
+    {
+        [self.videoPlayer pause];
+        self.state = VVideoStateEnded;
+        [super videoPlayerDidReachEnd:videoPlayer];
+    }
+    else
+    {
+        [super videoPlayerDidReachEnd:videoPlayer];
     }
 }
 
-- (NSDictionary *)trackingInfo
+- (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
-    return @{VTrackingKeyTimeCurrent : [NSNumber numberWithUnsignedInteger:[self.videoView currentTimeMilliseconds]]};
+    [super videoPlayerDidStartBuffering:videoPlayer];
+}
+
+- (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
+{
+    [super videoPlayerDidStopBuffering:videoPlayer];
+}
+
+- (void)videoPlayer:(VVideoView *__nonnull)videoPlayer didPlayToTime:(Float64)time
+{
+    [super videoPlayer:videoPlayer didPlayToTime:time];
+    
+    if ( self.toolbar != nil )
+    {   
+        [self.toolbar setCurrentTime:videoPlayer.currentTimeSeconds duration:videoPlayer.durationSeconds];
+    }
+    
+    if ( self.focusType == VFocusTypeDetail )
+    {
+        [self updateQuartileTracking];
+    }
+}
+
+- (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    [super videoPlayerDidPlay:videoPlayer];
+    self.state = VVideoStatePlaying;
+}
+
+- (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
+{
+    [super videoPlayerDidPause:videoPlayer];
+    self.state = VVideoStatePaused;
+}
+
+#pragma mark - VideoToolbarDelegate
+
+- (void)videoToolbar:(VideoToolbarView *__nonnull)videoToolbar didStartScrubbingToLocation:(float)location
+{
+    self.wasPlayingBeforeScrubbingStarted = self.videoPlayer.isPlaying;
+}
+
+- (void)videoToolbar:(VideoToolbarView *__nonnull)videoToolbar didScrubToLocation:(float)location
+{
+    NSTimeInterval timeSeconds = location * self.videoPlayer.durationSeconds;
+    [self.videoPlayer pause];
+    [self.videoPlayer seekToTimeSeconds:timeSeconds];
+}
+
+- (void)videoToolbar:(VideoToolbarView *__nonnull)videoToolbar didEndScrubbingToLocation:(float)location
+{
+    if ( self.wasPlayingBeforeScrubbingStarted )
+    {
+        self.wasPlayingBeforeScrubbingStarted = NO;
+        [self.videoPlayer play];
+    }
+}
+
+- (void)videoToolbarDidPause:(VideoToolbarView *__nonnull)videoToolbar
+{
+    [self.videoPlayer pause];
+}
+
+- (void)videoToolbarDidPlay:(VideoToolbarView *__nonnull)videoToolbar
+{
+    [self.videoPlayer play];
+}
+
+- (void)animateAlongsideVideoToolbarWillAppear:(VideoToolbarView *__nonnull)videoToolbar
+{
+    [self.delegate animateAlongsideVideoToolbarWillAppear];
+    self.likeButton.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.likeButton.bounds));
+}
+
+- (void)animateAlongsideVideoToolbarWillDisappear:(VideoToolbarView *__nonnull)videoToolbar
+{
+    [self.delegate animateAlongsideVideoToolbarWillDisappear];
+    self.likeButton.transform = CGAffineTransformMakeTranslation(0, 0);
 }
 
 @end

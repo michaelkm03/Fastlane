@@ -129,7 +129,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     return YES;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }

@@ -4,20 +4,20 @@
 # an individual app configuration.
 ###########
 
-FOLDER=$1
+APP_NAME=$1
 A_FLAG=$2
 XCARCHIVE_PATH=$3
 CONFIGURATION=$4
 
 usage(){
-    echo "Usage: `basename $0` <folder> [-a <archive path>] <configuration>"
+    echo "Usage: `basename $0` <app name> [-a <archive path> <build configuration>]"
     echo ""
     echo "If -a is specified, this script will modify an .xcarchive."
     echo "Otherwise, the current source directory is modified."
     echo ""
 }
 
-if [ "$FOLDER" == "" ]; then
+if [ "$APP_NAME" == "" ]; then
     usage
     exit 1
 fi
@@ -29,8 +29,7 @@ if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
 fi
 
 # Grab the latest assets and configuration data from VAMS.
-# DO NOT put a trailing slash after the configurations directory.
-RESPONSE=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
+RESPONSE=$(python build-scripts/vams_prebuild.py $APP_NAME ios 2>&1)
 RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
 RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
 # If no working folder is returned then exit
@@ -60,21 +59,15 @@ fi
 
 ### Modify Info.plist
 
-APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "$CONFIGURATION" 2> /dev/null )
-if [ $? != 0 ]; then
-    echo "Could not read app ID from Info.plist"
-    exit 1
-fi
-
 if [ "$A_FLAG" == "-a" ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
     if [ $? != 0 ]; then
         echo "ProductPrefix key not found in info.plist."
         exit 1
     fi
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID -p "$PRODUCT_PREFIX"
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" -p "$PRODUCT_PREFIX"
 else
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist"
 fi
 
 
@@ -141,8 +134,6 @@ copyFile "LaunchImage@2x.png"
 copyFile "Icon-29@2x.png"
 copyFile "Icon-40@2x.png"
 copyFile "Icon-60@2x.png"
-copyFile "homeHeaderImage.png"
-copyFile "homeHeaderImage@2x.png"
 
 PROVISIONING_PROFILE_DESTINATION_PATH="./custom.mobileprovision"
 if [ -e "$PROVISIONING_PROFILE_DESTINATION_PATH" ]; then

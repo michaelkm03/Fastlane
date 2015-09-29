@@ -1,6 +1,6 @@
 #!/bin/bash
 ###########
-# Builds, archives, and exports all the apps in the 'configurations' folder.
+# Builds, archives, and exports Victorious apps.
 # IPA and DSYM files will be placed in the 'products' folder.
 ###########
 
@@ -13,9 +13,13 @@ MD5=$(git rev-parse HEAD 2> /dev/null)
 
 shift 2
 
-if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [--macros <macros>] [app name(s) (optional)]"
+usage(){
+    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] <app name(s)>"
     exit 1
+}
+
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
+    usage
 fi
 
 if [ "$1" == "--prefix" ]; then
@@ -36,6 +40,10 @@ if [ "$1" == "--macros" ]; then
 else
     MACROS=""
     MACROS_COMMAND=""
+fi
+
+if [ $# == 0 ]; then
+    usage
 fi
 
 
@@ -77,12 +85,10 @@ build(){
     # Build
     if [ "$MACROS_COMMAND" == "" ]; then
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND archive
     else
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
     fi
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then
@@ -143,6 +149,9 @@ applyConfiguration(){
         return 1
     fi
 
+    # Create URL schemes
+    ./build-scripts/create-url-schemes.sh victorious.xcarchive/Products/Applications/victorious.app
+
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
 
@@ -178,14 +187,7 @@ applyConfiguration(){
 
 ANY_APP_BUILT=0
 
-if [ $# == 0 ]; then
-    CONFIG_FOLDERS=`find configurations -type d -depth 1 -exec basename {} \;`
-    IFS=$'\n'
-else
-    CONFIG_FOLDERS=$*
-fi
-
-for FOLDER in $CONFIG_FOLDERS
+for FOLDER in $*
 do
     applyConfiguration $FOLDER
     if [ $? == 0 ]; then

@@ -30,7 +30,6 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, weak) IBOutlet VLinearGradientView *gradientMaskView;
-@property (nonatomic, strong) CAGradientLayer *maskLayer;
 
 @end
 
@@ -126,7 +125,7 @@ static NSString * const kPromptDurationKey = @"promptDuration";
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        };
-    NSAttributedString *attributedPrompt = [[NSAttributedString alloc] initWithString:NSLocalizedString(promptAtIndex, nil)
+    NSAttributedString *attributedPrompt = [[NSAttributedString alloc] initWithString:promptAtIndex
                                                                            attributes:promptAttributes];
     [cell setAttributedTitle:attributedPrompt];
     return cell;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <CCHLinkTextViewDelegate.h>
-
 #import "UIView+AutoLayout.h"
 #import "VTileOverlayCollectionCell.h"
 #import "VSequence+Fetcher.h"
@@ -17,7 +15,7 @@
 #import "VSequencePreviewView.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -26,7 +24,8 @@
 #import "NSString+VParseHelp.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
-#import "VPreviewViewBackgroundHost.h"
+
+@import CCHLinkTextView;
 
 static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
@@ -47,7 +46,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
 @property (nonatomic, strong) VLinearGradientView *topGradient;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
-@property (nonatomic, strong) VStreamHeaderTimeSince *header;
+@property (nonatomic, strong) VStreamCellHeader *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButton *likeButton;
@@ -125,7 +124,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor]]];
     
     // Add the header
-    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamCellHeader alloc] initWithFrame:CGRectZero];
     [_overlayContainer addSubview:_header];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
     [_overlayContainer v_addPinToTopToSubview:_header];
@@ -175,7 +174,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_likeButton v_addWidthConstraint:kButtonWidth];
     _likeButtonWidth = [_likeButton v_internalWidthConstraint];
     [_likeButton v_addHeightConstraint:kButtonHeight];
-    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
     
     [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -352,11 +351,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     [self updateContentContainerHeightConstraint];
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
-    }
-    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
@@ -513,14 +507,26 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
+}
+
+- (VFocusType)focusType
+{
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
+    {
+        return [(id <VFocusable>)self.previewView focusType];
+    }
+    return _focusType;
 }
 
 - (CGRect)contentArea

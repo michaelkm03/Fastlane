@@ -56,6 +56,12 @@ static const CGFloat kLineSpacing = 40.0f;
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -71,7 +77,7 @@ static const CGFloat kLineSpacing = 40.0f;
     self.collectionView.clipsToBounds = NO;
     
     // Setup dismiss button
-    [self.dismissButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kDismissButtonTitle], @"") forState:UIControlStateNormal];
+    [self.dismissButton setTitle:[self.dependencyManager stringForKey:kDismissButtonTitle] forState:UIControlStateNormal];
     [self.dismissButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
@@ -108,7 +114,7 @@ static const CGFloat kLineSpacing = 40.0f;
     [self.collectionView.backgroundView addGestureRecognizer:tapGesture];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

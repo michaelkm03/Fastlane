@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import UIKit;
 #import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
@@ -68,6 +69,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  Opens a deeplink URL
  */
 - (void)openURL:(NSURL *)url;
+
+/**
+ Restarts the session of the app, returning it to a state as if it had just been launched.
+ */
+- (void)startNewSession;
 
 - (void)presentForceUpgradeScreen;
 

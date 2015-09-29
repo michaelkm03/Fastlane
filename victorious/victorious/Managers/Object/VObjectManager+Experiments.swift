@@ -14,16 +14,20 @@ extension VObjectManager {
     
     /// Loads all available experiments from the backend as `Experiment`
     ///
-    /// :param: success Closure to be called if server does not return an error.
-    /// :param: failure Closure to be called if server returns an error.
-    func getDeviceExperiments( #success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
+    /// - parameter success: Closure to be called if server does not return an error.
+    /// - parameter failure: Closure to be called if server returns an error.
+    func getDeviceExperiments( success success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
         
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
-            let defaultExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
-            var experiments = resultObjects as? [Experiment] ?? [Experiment]()
-            
-            success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
+            if let result = result as? [String : AnyObject],
+               let testArray = result[ "experiment_ids" ] as? [Int] {
+                    
+                let defaultExperimentIds = Set<Int>( testArray ?? [Int]() )
+                let experiments = resultObjects as? [Experiment] ?? [Experiment]()
+                
+                success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
+            }
         }
         
         return self.GET( "/api/device/experiments",

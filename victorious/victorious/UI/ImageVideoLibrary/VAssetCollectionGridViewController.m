@@ -224,7 +224,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {   
     self.folderButton = [VLibraryFolderControl newFolderControl];
-    NSString *titleText = (self.mediaType == PHAssetMediaTypeImage) ? NSLocalizedString([self.dependencyManager stringForKey:kImageTitleKey], nil) : NSLocalizedString([self.dependencyManager stringForKey:kVideoTitleKey], nil);
+    NSString *titleText = (self.mediaType == PHAssetMediaTypeImage) ? [self.dependencyManager stringForKey:kImageTitleKey] : [self.dependencyManager stringForKey:kVideoTitleKey];
     self.folderButton.attributedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:nil];
     self.folderButton.attributedSubtitle = nil;
     [self.folderButton addTarget:self action:@selector(selectedFolderPicker:) forControlEvents:UIControlEventTouchUpInside];

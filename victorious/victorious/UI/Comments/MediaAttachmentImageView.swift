@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SDWebImage
 
 // A media attachment view used for showing image previews
 class MediaAttachmentImageView : MediaAttachmentView {
@@ -14,7 +15,7 @@ class MediaAttachmentImageView : MediaAttachmentView {
     let imageView = UIImageView()
     let mediaButton = UIButton()
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }

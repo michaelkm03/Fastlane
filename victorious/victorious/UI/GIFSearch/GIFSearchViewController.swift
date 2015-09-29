@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+import MBProgressHUD
 import UIKit
 
 /// Delegate that handles events that originate from within a `GIFSearchViewController`
@@ -13,9 +14,9 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// :param: `gifSearchResult` The GIFSearchResult model selected.
-    /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
-    /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    /// - parameter `gifSearchResult`: The GIFSearchResult model selected.
+    /// - parameter `previewImage`: A small, still image that is loaded into memory and ready to display
+    /// - parameter `capturedMediaURL`: The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
     func GIFSearchResultSelected( gifSearchResult: GIFSearchResult, previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
@@ -40,7 +41,7 @@ class GIFSearchViewController: UIViewController {
     let searchDataSource = GIFSearchDataSource()
     private lazy var mediaExporter = GIFSearchMediaExporter()
     
-    var delegate: GIFSearchViewControllerDelegate?
+    weak var delegate: GIFSearchViewControllerDelegate?
     
     static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
@@ -118,7 +119,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func loadDefaultContent( pageType: VPageType = .First ) {
+    func loadDefaultContent( pageType pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.loadDefaultContent( pageType ) { (result) in
                 self.updateViewWithResult( result )
@@ -153,7 +154,7 @@ class GIFSearchViewController: UIViewController {
         
         self.selectedIndexPath = nil
         self.previewSection = nil
-        self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
+        self.collectionView.setContentOffset( CGPoint.zero, animated: false )
         self.updateLayout()
     }
     
@@ -173,7 +174,7 @@ class GIFSearchViewController: UIViewController {
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
     ///
-    /// :param: indexPath The index path of the GIF search result for which to show the preview video
+    /// - parameter indexPath: The index path of the GIF search result for which to show the preview video
     func showPreviewForResult( indexPath: NSIndexPath ) {
         var sectionInserted: Int?
         
@@ -210,7 +211,7 @@ class GIFSearchViewController: UIViewController {
     
     /// Removes the section showing a GIF search result preview at the specified index path
     ///
-    /// :param: indexPath The index path of the GIF search result for which to hide the preview
+    /// - parameter indexPath: The index path of the GIF search result for which to hide the preview
     func hidePreviewForResult( indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
             let result = self.searchDataSource.removeHighlightSection()
@@ -233,7 +234,7 @@ private extension UICollectionView {
     
     /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
     ///
-    /// :param: result A `GIFSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
+    /// - parameter result: A `GIFSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
     func applyDataSourceChanges( result: GIFSearchDataSource.ChangeResult ) {
         
         if let insertedSections = result.insertedSections {

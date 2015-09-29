@@ -111,8 +111,8 @@ class GIFSearchDataSource: NSObject {
     
     /// Fetches data from the server and repopulates its backing model collection
     ///
-    /// :param: searchTerm A string to be used for the GIF search on the server
-    /// :param: completion A closure to be call when the operation is complete
+    /// - parameter searchTerm: A string to be used for the GIF search on the server
+    /// - parameter completion: A closure to be call when the operation is complete
     func performSearch( searchText:String, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
@@ -169,7 +169,7 @@ class GIFSearchDataSource: NSObject {
     
     /// Removes the current full size asset section, wherever it may be.
     ///
-    /// :returns: `ChangeResult` indicating whether or not the total section count was changed
+    /// - returns: `ChangeResult` indicating whether or not the total section count was changed
     func removeHighlightSection() -> ChangeResult {
         var result = ChangeResult()
         if let highlightedSection = self.highlightedSection {
@@ -185,7 +185,7 @@ class GIFSearchDataSource: NSObject {
     /// For the provided index path, adds a section beneath that shows the fullsize
     /// asset for the item at the index path.
     ///
-    /// :returns: whether or not the total section count was changed
+    /// - returns: whether or not the total section count was changed
     func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
         var result = self.removeHighlightSection()
         
@@ -220,9 +220,17 @@ class GIFSearchDataSource: NSObject {
             self.sections = []
         }
         let prevSectionCount = self.sections.count
-        for var i = 0; i < results.count-1; i+=2 {
-            let results = [results[i], results[i+1]]
-            let section = Section( results:results, isFullSize: false )
+        for var i = 0; i < results.count; i+=2 {
+            let resultsForSection: [GIFSearchResult] = {
+                if i + 1 < results.count {
+                    return [results[i], results[i+1]]
+                }
+                else {
+                    return [results[i]]
+                }
+            }()
+            
+            let section = Section( results:resultsForSection, isFullSize: false )
             self.sections.append( section )
         }
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )

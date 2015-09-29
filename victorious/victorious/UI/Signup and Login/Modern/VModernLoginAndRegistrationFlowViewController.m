@@ -32,7 +32,6 @@ static NSString * const kLoginScreens = @"loginScreens";
 static NSString * const kLandingScreen = @"landingScreen";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
-static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerDelegate, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -71,15 +70,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
                                                          forKey:kLandingScreen];
         [self setDelegateForScreensInArray:@[_landingScreen]];
         [self setViewControllers:@[_landingScreen]];
-        
-        NSNumber *shouldForce = [dependencyManager numberForKey:kForceRegistrationKey];
-        if (!shouldForce.boolValue)
-        {
-            UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelLoginAndRegistration)];
-            _landingScreen.navigationItem.leftBarButtonItem = cancelButton;
-        }
         
         // Login + Registration
         _registrationScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
@@ -150,7 +140,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -303,25 +293,10 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
         }
-        else
-        {
-            NSString *message = NSLocalizedString(@"FacebookLoginFailed", @"");
-            [self showErrorWithMessage:message];
-        }
     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
-}
-
-- (void)showErrorWithMessage:(NSString *)message
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)loginWithEmail:(NSString *)email

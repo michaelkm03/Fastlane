@@ -13,6 +13,6 @@ extension NSManagedObject {
     
     /// Returns the class name as a string, intended to match that which is configured in the MOM file.
     static var v_defaultEntityName: String {
-        return NSStringFromClass(self).pathExtension
+        return StringFromClass(self)
     }
 }

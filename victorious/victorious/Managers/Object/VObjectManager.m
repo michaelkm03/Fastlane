@@ -20,7 +20,6 @@
 #import "VRootViewController.h"
 #import "VLocationManager.h"
 #import "VConstants.h"
-#import "NSString+SHA1Digest.h"
 #import "NSString+VParseHelp.h"
 #import "VUser+RestKit.h"
 #import "VHashtag+RestKit.h"
@@ -69,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
     VObjectManager *manager = [self managerWithBaseURL:currentEnvironment.baseURL];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
+    [RKMIMETypeSerialization registerClass:[VictoriousAPISerializer class] forMIMEType:RKMIMETypeJSON];
     
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
@@ -195,16 +195,11 @@ NS_ASSUME_NONNULL_BEGIN
             }
         }
         
-        NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
-                                           {
-                                               return NSLocalizedString(message, @"");
-                                           }];
-        
         if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
             [self logoutLocally];
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                               userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
+                                               userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             if ( failBlock != nil )
             {
                 failBlock( operation, nsError );
@@ -226,7 +221,7 @@ NS_ASSUME_NONNULL_BEGIN
         else if (error.errorCode)
         {
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                               userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
+                                               userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
             if ( failBlock != nil )

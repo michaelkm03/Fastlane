@@ -9,20 +9,17 @@
 #import "VUserCell.h"
 #import "VFollowResponder.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
-#import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
-#import "VDefaultProfileImageView.h"
-#import "UIImageView+VLoadingAnimations.h"
+#import "VDefaultProfileButton.h"
 #import <KVOController/FBKVOController.h>
 
 static const CGFloat kUserCellHeight = 51.0f;
 
 @interface VUserCell ()
 
-@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *userImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *userButton;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
 @property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, strong) VUser *user;
@@ -44,10 +41,8 @@ static const CGFloat kUserCellHeight = 51.0f;
 {
     [super awakeFromNib];
     
-    self.userImageView.layer.cornerRadius = CGRectGetWidth(self.userImageView.bounds) / 2;
-    self.userImageView.clipsToBounds = YES;
-    self.userImageView.layer.borderWidth = 1.0;
-    self.userImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    [self.userButton addBorderWithWidth:1.0 andColor:[UIColor whiteColor]];
+    self.userButton.dependencyManager = self.dependencyManager;
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
@@ -74,7 +69,7 @@ static const CGFloat kUserCellHeight = 51.0f;
          [welf updateFollowingAnimated:YES];
      }];
     
-    [self.userImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+    self.userButton.user = user;
     self.userName.text = user.name;
     self.followControl.enabled = YES;
     
@@ -88,7 +83,8 @@ static const CGFloat kUserCellHeight = 51.0f;
     _dependencyManager = dependencyManager;
     
     self.userName.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.userImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.userButton.dependencyManager = dependencyManager;
+    self.userButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.followControl.dependencyManager = dependencyManager;
 }
 

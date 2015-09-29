@@ -27,7 +27,6 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
-#import "VLoginViewController.h"
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
 
@@ -112,6 +111,13 @@ static const NSInteger kSearchResultLimit = 100;
     _searchContext = VObjectManagerSearchContextDiscover;
 }
 
+- (void)dealloc
+{
+    _searchField.delegate = nil;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
@@ -165,7 +171,7 @@ static const NSInteger kSearchResultLimit = 100;
     [self.searchField resignFirstResponder];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

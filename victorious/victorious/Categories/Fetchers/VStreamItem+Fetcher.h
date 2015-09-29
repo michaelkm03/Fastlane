@@ -8,6 +8,8 @@
 
 #import "VStreamItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 //Type values
 extern NSString * const VStreamItemTypeSequence;
 extern NSString * const VStreamItemTypeStream;
@@ -15,9 +17,13 @@ extern NSString * const VStreamItemTypeShelf;
 extern NSString * const VStreamItemTypeFeed;
 
 //Subtype values
+extern NSString * const VStreamItemSubTypeExplore;
 extern NSString * const VStreamItemSubTypeMarquee;
 extern NSString * const VStreamItemSubTypeUser;
 extern NSString * const VStreamItemSubTypeHashtag;
+extern NSString * const VStreamItemSubTypeTrendingTopic;
+extern NSString * const VStreamItemSubTypePlaylist;
+extern NSString * const VStreamItemSubTypeRecent;
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
 extern NSString * const VStreamItemSubTypeGif;
@@ -65,8 +71,25 @@ extern NSString * const VStreamItemSubTypeStream;
 /**
  *  Returns the appropriate editorialization stream id
  *
+ *  @param apiPath The path of the url that was used to fetch the stream that this
+ *      stream item is shown in.
+ *
  *  @return The apporpriate editorialization item for the provided stream id.
  */
 - (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath;
 
+/**
+ *  Returns YES when the provided streamItem has the same name and headline as the streamItem this is called on.
+ *
+ *  @param streamItem The stream item that may have the same titles as the provided stream item.
+ *  @param apiPath The path of the url that was used to fetch the stream that this
+ *      stream item is shown in.
+ *  @param inMarquee Whether this stream item is being shown in the marquee or not.
+ *
+ *  @return YES when the provided streamItem has the same name and headline as the streamItem this is called on.
+ */
+- (BOOL)hasEqualTitlesAsStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath inMarquee:(BOOL)inMarquee;
+
 @end
+
+NS_ASSUME_NONNULL_END

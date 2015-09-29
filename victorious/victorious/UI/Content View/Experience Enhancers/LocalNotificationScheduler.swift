@@ -27,17 +27,19 @@ class LocalNotificationScheduler : NSObject {
     /// Registers settings for local notifications with system.  A permissions dialog will be
     /// presented to the user the first time this is called if permissions has been granted or denied once before.
     func register() {
-        let settings = UIUserNotificationSettings(forTypes: .Badge | .Alert | .Sound, categories: nil )
+        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Alert, .Sound], categories: nil )
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
     
     /// Unschedules notifications that were scheduled using this class's `scheduleNotification(_:identifier:deeplinkUrl:)` method.
     ///
-    /// :param: identifier The identifier used to schedule the notification.
-    func unscheduleNotification( #identifier: String ){
-        for obj in UIApplication.sharedApplication().scheduledLocalNotifications {
-            if let notification = obj as? UILocalNotification,
-                let identifier = notification.userInfo?[ LocalNotificationScheduler.identifierKey ] as? String {
+    /// - parameter identifier: The identifier used to schedule the notification.
+    func unscheduleNotification( identifier identifier: String ){
+        guard let scheduledLocalNotifications = UIApplication.sharedApplication().scheduledLocalNotifications else {
+            return
+        }
+        for notification in scheduledLocalNotifications {
+            if notification.userInfo?[ LocalNotificationScheduler.identifierKey ] != nil {
                     UIApplication.sharedApplication().cancelLocalNotification( notification )
             }
         }
@@ -46,9 +48,9 @@ class LocalNotificationScheduler : NSObject {
     /// Creates, configires and schedules a UILocalNotification.  If a template notification cannot be found
     /// for the identifier provided, nothing is executed.
     ///
-    /// :param: identifier The identifier of a notification from the template.
-    /// :param: fireDate The date at which the notification will be presented to the user
-    func scheduleNotification( #identifier: String, fireDate: NSDate ) {
+    /// - parameter identifier: The identifier of a notification from the template.
+    /// - parameter fireDate: The date at which the notification will be presented to the user
+    func scheduleNotification( identifier identifier: String, fireDate: NSDate ) {
         if let templateNotification = self.dependencyManager.getNotification( identifier: identifier ) {
             
             self.register() //< Configures settings and prompts for permission if required

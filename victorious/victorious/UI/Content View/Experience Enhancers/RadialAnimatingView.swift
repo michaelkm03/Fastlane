@@ -19,7 +19,9 @@ class RadialAnimatingView : UIView {
         return self.circleLayer.animationForKey(self.circleAnimationKey) != nil
     }
     
-    required init(coder aDecoder: NSCoder) {
+    var animationCurve: String = kCAMediaTimingFunctionLinear
+    
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
@@ -46,21 +48,27 @@ class RadialAnimatingView : UIView {
         self.layer.mask = self.circleLayer
     }
     
+    /// MARK: Public functions
+    
     /// Starts the radial animation
     ///
-    /// :param: startValue A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// :param: endValue A value between 0 and 1 determining how far around the circumference the animation will end
+    /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
+    /// - parameter endValue: A value between 0 and 1 determining how far around the circumference the animation will end
     func animate(duration: NSTimeInterval, startValue: CGFloat, endValue: CGFloat) {
         
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = duration
         animation.fromValue = startValue
         animation.toValue = endValue
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.timingFunction = CAMediaTimingFunction(name: animationCurve)
         
         // Set the circleLayer's strokeEnd property to the end value so it remains
         self.circleLayer.strokeEnd = endValue
         self.circleLayer.addAnimation(animation, forKey: self.circleAnimationKey)
+    }
+    
+    func adjustMask(endValue: CGFloat) {
+        self.circleLayer.strokeEnd = endValue
     }
     
     /// Removes all animations from this view's layer

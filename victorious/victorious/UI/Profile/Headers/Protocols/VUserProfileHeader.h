@@ -62,7 +62,16 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 @protocol VUserProfileHeader <NSObject>
 
+/**
+ Redownloads the profile image of the current user.
+ */
 - (void)reloadProfileImage;
+
+/**
+ Called when the profile is refreshed in order to update any views specific
+ to the user's level
+ */
+- (void)updateLevelViews;
 
 /**
  Delegate that will receive forwarded input from the user.
@@ -92,6 +101,9 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 @property (nonatomic, assign) VUserProfileHeaderState state;
 
-- (UIView *)floatingProfileImage;
+/**
+ Returns the view that should move up into the navigation bar. Defaults to nil.
+ */
+@property (nonatomic, readonly) UIView *floatingProfileImage;
 
 @end

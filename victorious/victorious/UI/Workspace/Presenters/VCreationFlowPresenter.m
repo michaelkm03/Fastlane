@@ -26,6 +26,7 @@
 
 // Tracking
 #import "VTrackingManager.h"
+#import "victorious-Swift.h"
 
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";

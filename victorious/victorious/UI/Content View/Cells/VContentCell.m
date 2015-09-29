@@ -8,13 +8,27 @@
 
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
+#import "VAdVideoPlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "VTimerManager.h"
+#import "victorious-Swift.h"
+#import "VSequencePreviewView.h"
 
-@interface VContentCell () <VEndCardViewControllerDelegate>
+static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
-@property (nonatomic, weak) UIImageView *animationImageView;
+@interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
+
+@property (nonatomic, assign) BOOL isPreparedForDismissal;
+@property (nonatomic, assign) BOOL shrinkingDisabled;
+@property (nonatomic, strong) UIView *adContainer;
+@property (nonatomic, strong) UIView *shrinkingContentView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
-@property (nonatomic, strong, readwrite) VContentLikeButton *likeButton;
+@property (nonatomic, strong) VTimerManager *adTimeoutTimer;
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
+@property (nonatomic, weak) UIImageView *animationImageView;
+@property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
+@property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, weak) id<VContentCellDelegate> delegate;
 
 @end
 
@@ -51,14 +65,11 @@
 
 - (void)setup
 {
-    if (!self.animationImageView)
-    {
-        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
-        animationImageView.backgroundColor = [UIColor clearColor];
-        animationImageView.userInteractionEnabled = NO;
-        self.animationImageView = animationImageView;
-        [self.contentView addSubview:animationImageView];
-    }
+    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
+    animationImageView.backgroundColor = [UIColor clearColor];
+    animationImageView.userInteractionEnabled = NO;
+    self.animationImageView = animationImageView;
+    [self.contentView addSubview:animationImageView];
     
     // Set some initial/default values
     self.maxSize = self.frame.size;
@@ -66,25 +77,39 @@
     
     self.repeatCount = 1;
     
-    [self setupLikeButton];
-}
-
-- (void)setupLikeButton
-{
-    VContentLikeButton *likeButton = [[VContentLikeButton alloc] init];
-    [self.contentView addSubview:likeButton];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
     
-    [self layoutIfNeeded];
-    
-    self.likeButton = likeButton;
+    self.shrinkingContentView = [[UIView alloc] initWithFrame:self.bounds];
+    self.shrinkingContentView.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.shrinkingContentView];
+    [self.shrinkingContentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.shrinkingContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                                          attribute:NSLayoutAttributeHeight
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:nil
+                                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                                         multiplier:1.0
+                                                                           constant:CGRectGetHeight(self.shrinkingContentView.frame)]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.shrinkingContentView
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.contentView
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                                                             options:kNilOptions
+                                                                             metrics:nil
+                                                                               views:@{ @"view" : self.shrinkingContentView }]];
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
+    self.isPreparedForDismissal = NO;
+    [self resumeContentPlaybackAnimated:NO];
     [self hideEndCard:YES];
 }
 
@@ -93,47 +118,19 @@
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     [super applyLayoutAttributes:layoutAttributes];
-    
-    [self updateContentToShrinkingLayout];
+    [self updateShrinkingView];
 }
 
-- (void)setShrinkingContentView:(UIView *)shrinkingContentView
+- (void)updateShrinkingView
 {
-    _shrinkingContentView = shrinkingContentView;
-    
-    [self updateContentToShrinkingLayout];
-}
-
-- (void)updateContentToShrinkingLayout
-{
-    if ( self.shrinkingContentView == nil )
-    {
-        return;
-    }
-    
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
+    if ( self.shrinkingDisabled )
     {
         self.shrinkingContentView.transform = CGAffineTransformIdentity;
-        const CGRect shrinkingFrame = self.shrinkingContentView.frame;
-        const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
-        
-        if ( CGRectEqualToRect( currentFrame, CGRectZero ) )
-        {
-            return;
-        }
-        
-        const CGFloat translateY = (CGRectGetHeight(shrinkingFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
-        const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(shrinkingFrame), 1.0f );
-        
-        CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
-        transform = CGAffineTransformScale( transform, scale, scale );
-        self.shrinkingContentView.transform = transform;
     }
     else
     {
-        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+        CGFloat scale = CGRectGetHeight(self.contentView.bounds) / CGRectGetWidth(self.contentView.bounds);
+        self.shrinkingContentView.transform = CGAffineTransformMakeScale( scale, scale );
     }
 }
 
@@ -142,25 +139,8 @@
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     [self.endCardViewController handleRotationToInterfaceOrientation:toInterfaceOrientation];
-    
-    self.shrinkingContentView.frame = self.bounds;
-    
-    // If we're in landscape, we need to add autolayout constraints to make sure the view set as
-    // the `shrinkingContentView` will size to fit the full screen.  Otherwise we remove all constraints
-    // so that transformations can be applied properly in `updateContentToShrinkingLayout` method.
-    if ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) )
-    {
-        self.shrinkingContentView.transform = CGAffineTransformIdentity;
-        self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
-        self.shrinkingContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [self.shrinkingContentView layoutIfNeeded];
-    }
-    else
-    {
-        self.shrinkingContentView.autoresizingMask = 0;
-        [self updateContentToShrinkingLayout];
-        [self.shrinkingContentView layoutIfNeeded];
-    }
+    self.shrinkingDisabled = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    [self.shrinkingContentView layoutIfNeeded];
 }
 
 #pragma mark - UIView
@@ -169,7 +149,42 @@
 {
     [super layoutSubviews];
     [self.contentView bringSubviewToFront:self.animationImageView];
-    [self updateContentToShrinkingLayout];
+    [self updateShrinkingView];
+}
+
+#pragma mark - VContentPreviewViewReceiver
+
+- (UIView *)getTargetSuperview
+{
+    return self.shrinkingContentView;
+}
+
+- (void)setPreviewView:(VSequencePreviewView *)previewView
+{
+    self.sequencePreviewView = previewView;
+}
+
+- (void)setVideoPlayer:(id<VVideoPlayer>)videoPlayer
+{
+    _videoPlayer = videoPlayer;
+}
+
+- (void)prepareForDismissal
+{
+    self.isPreparedForDismissal = YES;
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
+    [self cleanupAdPlayer];
+    self.sequencePreviewView.alpha = 1.0f;
+    self.sequencePreviewView.hidden = NO;
+    [self hideEndCard:YES];
+}
+
+- (void)cleanupAdPlayer
+{
+    self.adVideoPlayerViewController.delegate = nil;
+    [self.adVideoPlayerViewController.view removeFromSuperview];
+    self.adVideoPlayerViewController = nil;
 }
 
 #pragma mark - Public Methods
@@ -231,6 +246,44 @@
     }
 }
 
+- (void)resumeContentPlaybackAnimated:(BOOL)animated
+{
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
+    
+    [self.videoPlayer play];
+    self.sequencePreviewView.hidden = NO;
+    [self layoutIfNeeded];
+    
+    void (^animations)() = ^
+    {
+        self.sequencePreviewView.alpha = 1.0f;
+        self.adVideoPlayerViewController.view.alpha = 0.0f;
+        self.backgroundColor = [UIColor clearColor];
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        [self cleanupAdPlayer];
+    };
+    
+    if ( animated )
+    {
+        [self.sequencePreviewView.layer removeAllAnimations];
+        [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+        [UIView animateWithDuration:0.5f animations:animations completion:completion];
+    }
+    else
+    {
+        animations();
+        completion(YES);
+    }
+}
+
+- (BOOL)isPlayingAd
+{
+    return self.adVideoPlayerViewController != nil;
+}
+
 #pragma mark - VEndCardViewControllerDelegate
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
@@ -246,6 +299,77 @@
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
+}
+
+#pragma mark  Ad Video Player
+
+- (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+{
+    if ( self.isPreparedForDismissal && !self.isPlayingAd )
+    {
+        return;
+    }
+    
+    self.backgroundColor = [UIColor blackColor];
+    self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
+                                                                                                 details:details];
+    self.adVideoPlayerViewController.delegate = self;
+    self.adVideoPlayerViewController.view.frame = self.shrinkingContentView.bounds;
+    self.adVideoPlayerViewController.view.alpha = 0.0f;
+    [self.shrinkingContentView addSubview:self.adVideoPlayerViewController.view];
+    [self.shrinkingContentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
+    [self.adVideoPlayerViewController start];
+    
+    [self layoutIfNeeded];
+    [UIView animateWithDuration:0.5f animations:^
+     {
+         self.sequencePreviewView.alpha = 0.0f;
+         self.adVideoPlayerViewController.view.alpha = 1.0f;
+     } completion:^(BOOL finished)
+     {
+         [self.videoPlayer pause];
+         self.sequencePreviewView.hidden = YES;
+     }];
+    
+    // This timer is added as a workaround to kill the ad video if it has not started playing
+    self.adTimeoutTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval
+                                                                        target:self
+                                                                      selector:@selector(adTimerDidFire)
+                                                                      userInfo:nil
+                                                                       repeats:NO];
+}
+
+- (void)adTimerDidFire
+{
+    [self resumeContentPlaybackAnimated:YES];
+}
+
+#pragma mark  VAdVideoPlayerViewControllerDelegate
+
+- (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlaybackAnimated:YES];
+}
+
+- (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    // This is where we can preload the content video after the ad video has loaded
+}
+
+- (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self.delegate contentCellDidStartPlayingAd:self];
+    [self.adTimeoutTimer invalidate];
+    self.adTimeoutTimer = nil;
+}
+
+- (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+}
+
+- (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self resumeContentPlaybackAnimated:YES];
 }
 
 @end

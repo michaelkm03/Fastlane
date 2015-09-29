@@ -17,4 +17,10 @@ extern NSString * const VDisplayWithSocialRegistration;
 
 @interface VDependencyManager (VLoginAndRegistration)
 
+/**
+ If NO, Facebook's own server configuration should determine whether or not we use
+ Facebook native login. If YES, we should always use it if available.
+ */
+- (BOOL)shouldForceNativeFacebookLogin;
+
 @end
