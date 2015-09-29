@@ -67,7 +67,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         
         [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
         
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -109,7 +109,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         
         [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
         
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -181,7 +181,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         
         [context saveToPersistentStore:nil];
         
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
