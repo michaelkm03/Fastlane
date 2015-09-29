@@ -149,25 +149,36 @@
 
 - (void)v_addPinToTopToSubview:(UIView *)subview
 {
+    [self v_addPinToTopToSubview:subview topMargin:0.0f];
+}
+
+- (void)v_addPinToTopToSubview:(UIView *)subview topMargin:(CGFloat)margin
+{
     NSParameterAssert( [subview isDescendantOfView:self] );
     
     subview.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-margin-[subview]"
                                                                  options:kNilOptions
-                                                                 metrics:nil
+                                                                 metrics:@{ @"margin" : @(margin) }
                                                                    views:NSDictionaryOfVariableBindings(subview)]];
 }
 
 - (void)v_addPinToBottomToSubview:(UIView *)subview
 {
     NSParameterAssert( [subview isDescendantOfView:self] );
+    [self v_addPinToBottomToSubview:subview bottomMargin:0.0f];
+}
+
+- (void)v_addPinToBottomToSubview:(UIView *)subview bottomMargin:(CGFloat)margin
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
     
     subview.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview]-margin-|"
                                                                  options:kNilOptions
-                                                                 metrics:nil
+                                                                 metrics:@{ @"margin" : @(margin) }
                                                                    views:NSDictionaryOfVariableBindings(subview)]];
 }
 

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "VExperienceEnhancerBar.h"
-#import "VVideoCellViewModel.h"
 #import "VHasManagedDependencies.h"
 
 @protocol VExperienceEnhancerControllerDelegate <NSObject>

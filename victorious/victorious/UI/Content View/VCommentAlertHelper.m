@@ -1,5 +1,5 @@
 //
-//  VContentViewAlertHelper.m
+//  VCommentAlertHelper.m
 //  victorious
 //
 //  Created by Patrick Lynch on 2/10/15.
@@ -39,26 +39,6 @@
                                        if ( onCancel != nil )
                                        {
                                            onCancel();
-                                       }
-                                   }];
-    [alertController addAction:cancelAction];
-    return alertController;
-}
-
-+ (UIAlertController *)alertForNextSequenceErrorWithDismiss:(void(^)())onDismiss
-{
-    NSString *title = NSLocalizedString( @"Error Loading Next Video", @"" );
-    NSString *message = NSLocalizedString( @"TryAgain", @"" );
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil )
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       if ( onDismiss != nil )
-                                       {
-                                           onDismiss();
                                        }
                                    }];
     [alertController addAction:cancelAction];

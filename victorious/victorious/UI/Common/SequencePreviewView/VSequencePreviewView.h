@@ -7,6 +7,9 @@
 //
 
 #import "VStreamItemPreviewView.h"
+#import "VContentLikeButton.h"
+#import "VFocusable.h"
+#import "VSequencePreviewViewProtocols.h"
 
 @class VSequence;
 
@@ -16,7 +19,7 @@
  *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
-@interface VSequencePreviewView : VStreamItemPreviewView
+@interface VSequencePreviewView : VStreamItemPreviewView <VFocusable>
 
 /**
  *  Returns a sequence preview view class for the provided sequence.
@@ -34,14 +37,19 @@
  */
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
 
-/**
- *  Use to update a sequence preview view for a new sequence.
- */
-- (void)setSequence:(VSequence *)sequence;
+@property (nonatomic, strong) VSequence *sequence;
+
+@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
+
+@property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */
 - (BOOL)canHandleSequence:(VSequence *)sequence;
+
+- (void)setGesturesEnabled:(BOOL)enabled;
+
+- (void)updateBackgroundColorAnimated:(BOOL)animated;
 
 @end

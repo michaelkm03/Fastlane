@@ -16,7 +16,6 @@
 
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * lastMessageText;
-@property (nonatomic, retain) NSNumber * other_interlocutor_user_id;
 @property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * lastMessageContentType;

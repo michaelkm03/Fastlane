@@ -24,4 +24,8 @@
  */
 - (void)setCount:(NSUInteger)count;
 
+- (void)show;
+
+- (void)hide;
+
 @end

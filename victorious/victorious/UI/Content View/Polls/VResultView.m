@@ -7,7 +7,7 @@
 //
 
 #import "VResultView.h"
-
+#import "UIView+AutoLayout.h"
 #import "VThemeManager.h"
 
 @interface VResultView ()
@@ -15,6 +15,8 @@
 @property (nonatomic) CGFloat progress;
 @property (strong, nonatomic) UIImageView *resultArrow;
 @property (strong, nonatomic) UILabel *resultLabel;
+@property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -22,102 +24,78 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame orientation:YES progress:0];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical
-{
-    return [self initWithFrame:frame orientation:isVertical progress:0];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress
-{
     self = [super initWithFrame:frame];
     if (self)
     {
-        // Initialization code
-        self.isVertical = YES;
-        [self setProgress:progress animated:NO];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        _isVertical = YES;
-    }
-    return self;
-}
-
-- (void)setIsVertical:(BOOL)isVertical
-{
-    _isVertical = isVertical;
-    
-    [self.resultArrow removeFromSuperview];
-    self.resultArrow = nil;
-    
-    [self.resultLabel removeFromSuperview];
-    self.resultLabel = nil;
-}
-
-- (UIView *)resultArrow
-{
-    if (!_resultArrow)
-    {
-        UIImage *arrowImage;
-        if (self.isVertical)
-        {
-            arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
-            UIEdgeInsets edgeInsets;
-            edgeInsets.left = 01.0f;
-            edgeInsets.top = 10.0f;
-            edgeInsets.right = 01.0f;
-            edgeInsets.bottom = 10.0f;
-            arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets];
-        }
-        else
-        {
-            arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
-            UIEdgeInsets edgeInsets;
-            edgeInsets.left = 10.0f;
-            edgeInsets.top = 01.0f;
-            edgeInsets.right = 10.0f;
-            edgeInsets.bottom = 01.0f;
-            arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets];
-        }
-        
+        UIImage *arrowImage = [UIImage imageNamed:@"ResultArrowVertical"];
+        UIEdgeInsets edgeInsets;
+        edgeInsets.left = 0.0f;
+        edgeInsets.top = 10.0f;
+        edgeInsets.right = 0.0f;
+        edgeInsets.bottom = 0.0f;
+        arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets resizingMode:UIImageResizingModeTile];
         _resultArrow = [[UIImageView alloc] initWithImage:[arrowImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         [self addSubview:_resultArrow];
+        [self v_addPinToLeadingTrailingToSubview:_resultArrow];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_resultArrow
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0 constant:0.0f]];
+        self.heightConstraint = [NSLayoutConstraint constraintWithItem:_resultArrow
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0 constant:self.bounds.size.height];
+        [self addConstraint:self.heightConstraint];
         
         
-        [self setProgress:0 animated:NO];
-    }
-    
-    return _resultArrow;
-}
-
-- (UILabel *)resultLabel
-{
-    if (!_resultLabel)
-    {
-        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
-                                                                 self.frame.size.width,
-                                                                 self.frame.size.height *.1f)];
-        
+        _resultLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
-        _resultLabel.minimumScaleFactor = .5f;
+        _resultLabel.minimumScaleFactor = 0.5f;
         _resultLabel.adjustsFontSizeToFitWidth = YES;
-        _resultLabel.minimumScaleFactor = .75f;
+        _resultLabel.minimumScaleFactor = 0.75f;
+        [self addSubview:_resultLabel];
+        NSDictionary *views = @{ @"arrow" : _resultArrow, @"label" : _resultLabel };
+        NSDictionary *metrics = @{ @"vspace" : @(-40), @"height" : @(30.0f) };
+        _resultLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[label(height)]-vspace-[arrow]"
+                                                                     options:kNilOptions
+                                                                     metrics:metrics
+                                                                       views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|"
+                                                                     options:kNilOptions
+                                                                     metrics:metrics
+                                                                       views:views]];
         
-        [self insertSubview:_resultLabel aboveSubview:self.resultArrow];
+        _progress = -1.0f;
+        [self updateHeight];
+        
+        [self layoutSubviews];
     }
-    
-    return _resultLabel;
+    return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateHeight];
+}
+
+- (void)updateHeight
+{
+    if ( self.progress >= 0.0f )
+    {
+        self.heightConstraint.constant = 35.0 + self.bounds.size.height * self.progress;
+    }
+    else
+    {
+        self.heightConstraint.constant = 0.0f;
+    }
 }
 
 - (void)setColor:(UIColor *)color
@@ -128,52 +106,32 @@
 
 - (void)setProgress:(CGFloat)progress animated:(BOOL)animated
 {
-    if (animated)
+    void (^animations)() = ^
     {
-        NSTimeInterval randomDelay = (double) arc4random_uniform(100) / 1000;
+        self.progress = progress;
+    };
+    if ( animated )
+    {
         [UIView animateWithDuration:0.75f
-                              delay:randomDelay
+                              delay:0.0f
              usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
                             options:kNilOptions
-                         animations:^
-        {
-            self.progress = progress;
-        }
+                         animations:animations
                          completion:nil];
     }
     else
     {
-        self.progress = progress;
+        animations();
     }
 }
 
 - (void)setProgress:(CGFloat)progress
 {
-    //Sanity check that it is within 0 and 1
-    progress = MIN(progress, 1);
-    progress = MAX(progress, 0);
     _progress = progress;
     
-    CGFloat maxProgress = self.isVertical ? self.frame.size.height * .8 : self.frame.size.width * .8;
-    CGFloat minProgress = self.isVertical ? self.frame.size.height * .2 : self.frame.size.width * .2;
-    CGFloat currentProgress = maxProgress * progress;
-    
-    if (self.isVertical)
-    {
-        self.resultArrow.frame = CGRectMake(0, self.frame.size.height - minProgress - currentProgress,
-                                             self.frame.size.width, minProgress + currentProgress);
-        
-        CGRect frame = _resultLabel.frame;
-        frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
-        _resultLabel.frame = frame;
-        
-    }
-    else
-    {
-        self.resultArrow.frame = CGRectMake(0, self.frame.size.height,
-                                             minProgress + currentProgress, self.frame.size.height);
-    }
+    [self updateHeight];
+    [self layoutIfNeeded];
     
     static NSNumberFormatter *percentFormatter;
     static dispatch_once_t onceToken;
@@ -182,7 +140,6 @@
         percentFormatter = [[NSNumberFormatter alloc] init];
         [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
     });
-    
     self.resultLabel.text = [percentFormatter stringFromNumber:@(progress)];
 }
 
