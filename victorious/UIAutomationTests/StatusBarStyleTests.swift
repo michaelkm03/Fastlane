@@ -27,10 +27,12 @@ class StatusBarStyleTests: VictoriousTestCase {
     override func beforeAll() {
         super.beforeAll()
         logOutAndResetSession()
+        loginAndDismissWelcomeIfPresent()
     }
     
     func testStatusBarStyle() {
-        loginAndDismissWelcomeIfPresent()
+        
+        tester().waitForTimeInterval(2.0)
         addStep("Checking status bar style on scaffold")
         checkStatusBarStyle()
         
@@ -38,6 +40,7 @@ class StatusBarStyleTests: VictoriousTestCase {
         tester().tapViewWithAccessibilityLabel("Menu Create")
         tester().tapViewWithAccessibilityLabel("Create Image")
         
+        tester().waitForTimeInterval(2.0)
         addStep("Check status bar style for creation flow")
         checkStatusBarStyle()
     }
