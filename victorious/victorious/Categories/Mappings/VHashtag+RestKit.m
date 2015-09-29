@@ -48,18 +48,6 @@
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
-//              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-//                                                           method:RKRequestMethodAny
-//                                                      pathPattern:@"/api/hashtag/follow"
-//                                                          keyPath:@"payload"
-//                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-//              
-//              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-//                                                           method:RKRequestMethodAny
-//                                                      pathPattern:@"/api/hashtag/unfollow"
-//                                                          keyPath:@"payload"
-//                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodAny
                                                       pathPattern:@"/api/hashtag/search/:hashtag/:page/:perpage"
