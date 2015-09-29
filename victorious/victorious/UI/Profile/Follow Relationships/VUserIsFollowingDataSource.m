@@ -71,7 +71,7 @@
          {
              self.followedUsers = @[];
          }
-         self.followedUsers = resultObjects;
+         self.followedUsers = [self.followedUsers arrayByAddingObjectsFromArray:resultObjects];
          
          completion( YES, nil );
      }

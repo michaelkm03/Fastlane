@@ -90,9 +90,9 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
-        _dependencyManager = context.destinationDependencyManager;
+        _dependencyManager = context.originDependencyManager;
         
-        NSDictionary *configuration = @{ @"sequence" : _sequence, @"voteTypes" : [_dependencyManager voteTypes] };
+        NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
         
