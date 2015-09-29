@@ -72,6 +72,13 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view datasource
 
 - (void)setSearchResults:(NSMutableArray *)searchResults

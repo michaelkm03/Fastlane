@@ -19,7 +19,8 @@
 {
     NSDictionary *propertyMap = @{
                                   @"count"          : VSelectorName(count),
-                                  @"tag"            : VSelectorName(tag)
+                                  @"tag"            : VSelectorName(tag),
+                                  @"am_following"   : VSelectorName(amFollowing)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -44,18 +45,24 @@
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodAny
                                                       pathPattern:@"/api/hashtag/subscribed_to_list/:page/:perpage"
-                                                          keyPath:@"payload.tags"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodAny
-                                                      pathPattern:@"/api/hashtag/follow"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
+//              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+//                                                           method:RKRequestMethodAny
+//                                                      pathPattern:@"/api/hashtag/follow"
+//                                                          keyPath:@"payload"
+//                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+//              
+//              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+//                                                           method:RKRequestMethodAny
+//                                                      pathPattern:@"/api/hashtag/unfollow"
+//                                                          keyPath:@"payload"
+//                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodAny
-                                                      pathPattern:@"/api/hashtag/unfollow"
+                                                      pathPattern:@"/api/hashtag/search/:hashtag/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];

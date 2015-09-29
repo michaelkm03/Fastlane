@@ -555,6 +555,9 @@ static const NSInteger kUserSearchResultLimit = 20;
         stream.trackingIdentifier = streamId;
         stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
+        // For hashtag streams
+        stream.amFollowing = fullResponse[@"payload"][@"am_following"];
+        
         if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);

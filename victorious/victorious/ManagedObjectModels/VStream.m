@@ -21,5 +21,6 @@
 @dynamic shelfId;
 @dynamic marqueeItems;
 @dynamic streamItems;
+@dynamic amFollowing;
 
 @end

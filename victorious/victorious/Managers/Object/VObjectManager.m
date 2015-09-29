@@ -470,9 +470,10 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }];
     
+#warning TESTING - set buildNumber back to proper value
     [request v_setAuthenticationHeaderWithAppID:[[[VEnvironmentManager sharedInstance] currentEnvironment].appID integerValue]
                                        deviceID:[[UIDevice currentDevice].identifierForVendor UUIDString]
-                                    buildNumber:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"]
+                                    buildNumber:@"1"
                                          userID:userID
                             authenticationToken:token];
 

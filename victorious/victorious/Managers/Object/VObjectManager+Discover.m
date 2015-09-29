@@ -13,6 +13,7 @@
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
 #import "NSCharacterSet+VURLParts.h"
+#import "VUser+Fetcher.h"
 
 @implementation VObjectManager (Discover)
 
@@ -57,6 +58,13 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        if (resultObjects.count > 0)
+        {
+            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
+        }
+        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -82,19 +90,7 @@
         // Add hashtags to main user object
         if (resultObjects.count > 0)
         {
-            NSMutableOrderedSet *hashtagSet = [[NSMutableOrderedSet alloc] init];
-            if ( pageType != VPageTypeFirst )
-            {
-                hashtagSet = [mainUser.hashtags mutableCopy];
-            }
-            
-            [hashtagSet addObjectsFromArray:resultObjects];
-            
-            if ( [self shouldUpdateUserForHashtags:hashtagSet] )
-            {
-                mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
-                [mainUser.managedObjectContext saveToPersistentStore:nil];
-            }
+            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:NO];
         }
         else if ( pageType == VPageTypeFirst )
         {
@@ -256,6 +252,13 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        if (resultObjects.count > 0)
+        {
+            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
+        }
+        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -283,37 +286,6 @@
            parameters:nil
          successBlock:fullSuccess
             failBlock:fullFailure];
-}
-
-- (BOOL)shouldUpdateUserForHashtags:(NSOrderedSet *)hashtags
-{
-    NSOrderedSet *userHashtags = self.mainUser.hashtags;
-    if ( userHashtags.count == hashtags.count )
-    {
-        //We have the same count of hashtags, check each hashtag inside to make sure we have the same hashtags
-        __block BOOL needsUpdate = NO;
-        [userHashtags enumerateObjectsUsingBlock:^(VHashtag *followedHashtag, NSUInteger idx, BOOL *stop)
-        {
-            NSInteger foundIndex = [hashtags indexOfObjectPassingTest:^BOOL(VHashtag *hashtag, NSUInteger idx, BOOL *innerStop)
-            {
-                BOOL found = [hashtag.tag isEqualToString:followedHashtag.tag];
-                if ( found )
-                {
-                    *innerStop = YES;
-                }
-                return found;
-            }];
-            if ( foundIndex == NSNotFound )
-            {
-                //Found a discrepancy, need to update
-                needsUpdate = YES;
-                *stop = YES;
-            }
-        }];
-        return needsUpdate;
-    }
-    //Different count of hashtags, need to update
-    return YES;
 }
 
 - (BOOL)doesSet:(NSOrderedSet *)orderedSet containString:(NSString *)string

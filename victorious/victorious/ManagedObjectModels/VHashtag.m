@@ -12,6 +12,7 @@
 
 @implementation VHashtag
 
+@dynamic amFollowing;
 @dynamic count;
 @dynamic tag;
 @dynamic user;

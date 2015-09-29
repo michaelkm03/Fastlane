@@ -34,6 +34,7 @@
              @"count"               :   VSelectorName(count),
              @"type"                :   VSelectorName(itemType),
              @"subtype"             :   VSelectorName(itemSubType),
+             @"am_following"        :   VSelectorName(amFollowing)
              };
 }
 
