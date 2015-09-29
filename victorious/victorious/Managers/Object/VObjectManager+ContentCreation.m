@@ -14,7 +14,6 @@
 #import "VUploadTaskCreator.h"
 #import "VPublishParameters.h"
 
-#import "VFacebookManager.h"
 #import "VTwitterManager.h"
 
 //Probably can remove these after we manually create the sequences
@@ -32,6 +31,7 @@
 #import "UIColor+VHex.h"
 
 @import AVFoundation;
+@import FBSDKCoreKit;
 
 NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManagerContentWillBeCreatedNotification";
 NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
@@ -237,7 +237,7 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     
     if (publishParameters.shareToFacebook)
     {
-        NSString *fbAccessToken = [[VFacebookManager sharedFacebookManager] accessToken];
+        NSString *fbAccessToken = [[FBSDKAccessToken currentAccessToken] tokenString];
         if ( fbAccessToken != nil )
         {
             parameters[@"facebook_access_token"] = fbAccessToken;

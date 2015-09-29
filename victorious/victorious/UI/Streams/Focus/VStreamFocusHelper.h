@@ -11,7 +11,7 @@
 /**
  A helper class that handles setting focus on cells when
  a tableView or a collectionView is scrolled. Cells must
- conform to VCellFocus protocol in order to focus
+ conform to VFocusable protocol in order to focus
  properly.
  */
 @interface VStreamFocusHelper : NSObject
@@ -31,6 +31,13 @@
  Specify the amount in which to inset the focus area
  */
 @property (nonatomic, assign) UIEdgeInsets focusAreaInsets;
+
+/**
+ Used to record a reference to a cell once it's been selected
+ so that subsequent logic can hand the selected cell uniquely
+ from all other cells.
+ */
+@property (nonatomic, weak) UICollectionViewCell *selectedCell;
 
 /**
  Updates focus on all visible cells.

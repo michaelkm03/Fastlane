@@ -42,7 +42,7 @@
 /**
  *  The current time of the video.
  */
-@property (nonatomic, assign) CMTime currentTime;
+@property (nonatomic, assign) Float64 currentTime;
 
 /**
  *  The number of realtime comments for the video.

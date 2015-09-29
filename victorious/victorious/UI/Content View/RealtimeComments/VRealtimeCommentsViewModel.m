@@ -29,7 +29,7 @@
     self = [super init];
     if (self)
     {
-        _currentTime = kCMTimeZero;
+        _currentTime = 0.0;
         _totalTime = kCMTimeInvalid;
     }
     return self;
@@ -112,17 +112,15 @@
     return self.currentComment.text;
 }
 
-- (void)setCurrentTime:(CMTime)currentTime
+- (void)setCurrentTime:(Float64)currentTime
 {
     _currentTime = currentTime;
-    
-    Float64 seconds = CMTimeGetSeconds(currentTime);
     
     __block VComment *newCurrentComment = [self.realTimeComments firstObject];
     
     [self.realTimeComments enumerateObjectsUsingBlock:^(VComment *comment, NSUInteger idx, BOOL *stop)
     {
-        if (comment.realtime.doubleValue < seconds)
+        if (comment.realtime.doubleValue < currentTime)
         {
             newCurrentComment = comment;
         }

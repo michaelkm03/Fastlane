@@ -30,11 +30,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Log in here"           =   "ログインはこちら";
-"Already Registered?"   =   "すでに登録済みですか？";
 "Get Started"           =   "始め方";
-"Forgot Password?"      =   "パスワードをお忘れですか？";
-"Reset here"            =   "リセットはこちら";
 "SetupButton"           =   "初期設定";
 "EmailValidation"       =   "無効なメールアドレスです";
 "Minimum 8 characters"  =   "最小８文字";
@@ -54,7 +50,6 @@
 "ProfileRequiredPhoto"  =   "あなたのプロフィール画像";
 "ProfileNameSpaces"     =   "プロフィール名を空白にすることはできません。";
 "ProfileRequiredName"   =   "あなたのお名前";
-"ProfileRequiredToS"    =   "弊社利用規約に同意";
 "Profile load failed!"  =   "プロフィールの読み込みに失敗！";
 
 "User already exists"   =   "このユーザーはすでに存在します";
@@ -219,7 +214,6 @@
 
 "ResetPassword"         =   "パスワードのリセット";
 "ResetPasswordPrompt"   =   "あなたのメールアドレスを入力してください。";
-"ResetPasswordPlaceholder" = "メールアドレス";
 
 "PasswordError"         =   "パスワードエラー";
 
@@ -233,21 +227,10 @@
 "ResetPasswordNewEqualsCurrentTitle" = "新しいパスワードが無効";
 "ResetPasswordNewEqualsCurrentMessage" = "現在のパスワードとは異なるパスワードを新たに入力してください。";
 
-"ResetPasswordConfirmCancelTitle" = "確認";
-"ResetPasswordConfirmCancelMessage" = "パスワードリセットを取り消してよろしいですか？";
-"ResetPasswordYesCancelButton" = "はい、キャンセルします";
-"ResetPasswordNoContinueButton" = "いいえ、続行します";
-
-"Error Resetting Password" = "パスワードのリセットエラー";
-"Please check your network connection or try again later." = "お使いのネットワーク接続をご確認するか、もう一度お試しください。";
-
-"EnterResetCodeMessage" =   "こちらのアドレスにパスワードリセット手順の記載されたメールが送信されました。";
-"EnterCodeTitle"        =   "コード入力";
 "Resend Email"           =   "メールを再送信する";
 
 "EmailNotFound"         =   "入力されたメールアドレスが見つかりませんでした。このアカウント作成時に使用されたメールアドレスを入力してください。";
 "EmailNotValid"         =   "このアカウント作成時に使用されたメールアドレスを入力してください。";
-"Thanks"                =   "ありがとうございます！";
 "CannotVerify"          =   "アカウントの認証できません";
 "IncorrectCode"         =   "アカウントの認証に使用されたコードが間違っています";
 
@@ -294,7 +277,6 @@
 "Version"               =   "バージョン %@";
 
 "ToSText"               =   "利用規約";
-"ToSAgreement"          =   "私は13歳以上であり、利用規約の内容に同意します";
 
 "Privacy Policy"        =   "プライバシーポリシー";
 
@@ -355,6 +337,7 @@
 "NewPrivateMessage"     = "新着のプライベートメッセージ";
 "NewFollower"           = "あなたをフォロー中の人";
 "TagInComment"          = "あなたの事を話した人";
+"LikePost"              = "Someone likes my post";
 
 "NotificationSettingSectionFeeds" = "フィードバック";
 "NotificationSettingSectionPeople" = "人々";
@@ -386,19 +369,7 @@
 "PurchaseUnlockWithPrice"               = "%@でアンロック"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "購入を復元";
 "SettingsRestorePurchasesPrompt"        = "このデバイスで購入されたものはありません。\n別のデバイスで購入されている場合は、[購入を復元]ボタンをタップして復元してください。";
-
-"AuthorizationContextDefault"                   = "このコミュニティにご参加いただき、ありがとうございます！ アカウントを作成すると、なにかを作ったり、投稿したり、共有したりできます！";
-"AuthorizationContextCreatePost"                = "やりましたね！ 私達もあなたの初投稿が待ち遠しいです。さっそくアカウントを作成して、あなたの素晴らしい作品をコミュニティにシェアしてあげましょう！";
-"AuthorizationContextFollowHashtag"             = "ハッシュタグはとっても役立ちます。アカウントを作成してから、こちらで行われるアッと驚くような会話をフォローしてみましょう！";
-"AuthorizationContextFollowUser"                = "私達のコミュニティに参加していただくことで、他のファンたちのコンテンツをフォローできます。相手もフォローし返せるようにプロフィールを作成しましょう！";
-"AuthorizationContextVoteBallistic"             = "どうです、この絵文字。良いと思いません？ アカウントを作成して、愛する気持ちを拡散しちゃいましょう。";
-"AuthorizationContextVotePoll"                  = "あなたの清き一票を！ アカウントを作成して投票を始めましょう！";
-"AuthorizationContextRepost"                    = "今の投稿、なかなかでした。アカウント作成してさっそく再投稿しましょう！";
-"AuthorizationContextRemix"                     = "あなたのつくった作品をぜひ見てみたいと思います。あなたのプロフィールに関連付けられるように、アカウントを作成しましょう。";
-"AuthorizationContextViewProfile"               = "まだ閲覧できる内容がありません！ とりあえずは私達のコミュニティに参加していただき、ありがとうございます。アカウントを作成してあなたらしさを皆に見せてあげましょう。";
-"AuthorizationContextAddComment"                = "会話の輪に加わりましょう！ あなたの声を是非とも聞きたいと思います。アカウントを作成すればもうあと一歩です！";
-"AuthorizationContextInbox"                     = "私達のコミュニティに参加していただき、ファンの皆へメッセージを送れるようになったこと、本当にワクワクします。アカウントを作成すれば、メッセージを送ったり受け取ったりできるようになりますよ！";
-"AuthorizationContextNotification"              = "私達のコミュニティに参加し、ファンの皆さんと交流していただけることにワクワクしています。さっそくアカウントを作成して、重要な情報に関する通知を受け取りましょう！";
+"Reset Purchases"                       = "Reset Purchases";
 
 "This will discard any content added to your post" = "これによりあなたの投稿に追加された全コンテンツが破棄されます";
 
@@ -451,15 +422,17 @@
 "Watch GIF" = "GIFを観る";
 
 "See all" = "すべて見る";
-"Show Previous Comments" = "前のコメントを表示する";
+"View previous comments" = "View previous comments";
 "CommentsSingularFormat" = "%@件のコメント";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@件のコメント";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@件のいいね";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@件のいいね";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "いいねした人";
 
-"posts" = "投稿";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
 "HashtagPostsCountFormat" = "%@件の投稿中";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "バルセロナ";
 "London" = "ロンドン";
@@ -480,3 +453,6 @@
 "Use mobile data and Wi-Fi" = "携帯データとWi-Fiを使用";
 "Use Wi-Fi only" = "Wi-Fiのみを使用";
 "Never play videos automatically" = "動画を自動的に再生しない";
+
+"LevelFormat" = "LEVEL %@";
+"LEVEL" = "LEVEL";

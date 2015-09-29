@@ -73,8 +73,7 @@
              self.followersForUser = @[];
          }
          
-         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-         self.followersForUser = [[self.followersForUser arrayByAddingObjectsFromArray:resultObjects] sortedArrayUsingDescriptors:@[ sort ]];
+         self.followersForUser = [self.followersForUser arrayByAddingObjectsFromArray:resultObjects];
          
          completion( YES, nil );
      }

@@ -92,9 +92,11 @@
         {
             [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:NO];
         }
-        else if ( pageType == VPageTypeFirst )
+        else if ( pageType == VPageTypeFirst && mainUser.hashtags.count > 0 )
         {
+            //Only update hashtags when absolutely necessary to avoid triggering KVO events unnecessarily.
             mainUser.hashtags = nil;
+            [mainUser.managedObjectContext saveToPersistentStore:nil];
         }
 
         if (success != nil)

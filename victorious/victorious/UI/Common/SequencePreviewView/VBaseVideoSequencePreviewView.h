@@ -7,52 +7,38 @@
 //
 
 #import "VSequencePreviewView.h"
-#import "VCellFocus.h"
-#import "VPreviewViewBackgroundHost.h"
+#import "VFocusable.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 #import "VVideoView.h"
+#import "VFocusable.h"
+#import "VVideoPreviewView.h"
+#import "VVideoSettings.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost, VVideoViewDelegate>
-
-/**
- * Responsible for the play icon that appears on the preview view.
- * Subclasses can hide this if they are playing video in-line.
- */
-@property (nonatomic, strong, readonly) UIView *playIconContainerView;
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VVideoPlayerDelegate, VVideoPreviewView>
 
 /**
  * Responsible for playing video in-line. Subclasses can hide this if
  * there is no need to play video.
  */
-@property (nonatomic, strong, readonly) VVideoView *videoView;
+@property (nonatomic, strong, readonly) id<VVideoPlayer> videoPlayer;
 
 /**
  * The image view responsible for showing the video's preview image
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
+@property (nonatomic, strong) VVideoSettings *videoSettings;
 
-/**
- * Indicated whether or not this preview view is currently in focus.
- */
-@property (nonatomic, assign) BOOL inFocus;
+@property (nonatomic, strong) VAsset *videoAsset;
 
-/**
- *  If YES, this preview view will only display the preview image for this content.
- */
-@property (nonatomic, assign) BOOL onlyShowPreview;
+@property (nonatomic, readonly) BOOL shouldAutoplay;
 
-/**
- *  Hides or shows the background that holds the image view. Defaults to hidden.
- *
- *  @parameter visible If YES, the background container is made visible without animation.
- */
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible;
+@property (nonatomic, readonly) BOOL shouldLoop;
 
 @end

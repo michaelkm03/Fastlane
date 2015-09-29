@@ -2,7 +2,7 @@
 //  VCVideoPlayerViewController.m
 //
 
-#import "VCVideoPlayerToolbarView.h"
+#import "VVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
@@ -21,7 +21,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @interface VCVideoPlayerViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak) VCVideoPlayerToolbarView *toolbarView;
+@property (nonatomic, weak) VVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameTapGesture;
 @property (nonatomic, weak) UITapGestureRecognizer *videoFrameDoubleTapGesture;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
@@ -137,7 +137,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if (self.shouldShowToolbar)
     {
-        VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+        VVideoPlayerToolbarView *toolbarView = [VVideoPlayerToolbarView toolbarFromNibWithOwner:self];
         toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addSubview:toolbarView];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"

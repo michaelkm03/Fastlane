@@ -11,7 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+@class VSequence, ContentViewContext;
 
 /**
  Instantiates either a VNewContentViewController or a 
@@ -37,18 +37,9 @@
 - (BOOL)canDisplaySequence:(VSequence *)sequence localizedReason:(NSString **)reason;
 
 /**
- Instantiates and returns a content view primed to display the given
- sequence. If the sequence contains a deep link to another app, this
- method returns nil and -[UIApplication openURL:] will be called.
- 
- @param sequence          The sequence to display
- @param placeHolderImage  An image, typically the sequence's thumbnail, that can be displayed
-                          in the place of content while the real thing is being loaded
- @param comment           A comment ID to scroll to and highlight, typically used when content view
-                          is being presented when the app is launched with a deep link URL.  If there
-                          is no comment, simply pass `nil`.
+ Instantiates and returns a content view primed to display the given sequence in the provided context.
  */
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage;
+- (UIViewController *)contentViewForContext:(ContentViewContext *)context;
 
 /**
  Instantiates and returns a web browser content view to display the specified URL.
@@ -66,5 +57,7 @@
  Creates a new VContentViewFactory instance based on this dependency manager's configuration
  */
 - (VContentViewFactory *)contentViewFactory;
+
+- (VDependencyManager *)contentViewDependencyManager;
 
 @end

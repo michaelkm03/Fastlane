@@ -10,6 +10,8 @@
 
 @protocol VAnimatedTransition;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  An object that holds important information about the animation transition that
  is taking place, encapsulated here so that it can be pass to transition animation
@@ -48,7 +50,7 @@
 
 /**
  Useful for some animation effects.  If you want this to be populated for your transition,
- make sure to return YES on in `requiresImageViewFromWindow: method of
+ make sure to return YES on in `requiresImageViewFromWindow:` method of
  `VAnimatedTransition` protocol.
  */
 @property (nonatomic, readonly, strong) UIView *snapshotOfWindow;
@@ -59,3 +61,5 @@
 @property (nonatomic, readonly, assign) NSTimeInterval animationDuration;
 
 @end
+
+NS_ASSUME_NONNULL_END

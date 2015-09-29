@@ -546,6 +546,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         {
             stream.marqueeItems = marqueeItems;
         }
+        
         NSString *streamId = fullResponse[ @"stream_id" ];
         NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
@@ -591,6 +592,11 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if ( pageType == VPageTypeFirst )
+        {
+            [sequence removeLikers:sequence.likers];
+        }
+        
         [sequence addLikers:[NSSet setWithArray:resultObjects]];
         
         if ( success != nil )

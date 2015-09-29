@@ -9,11 +9,14 @@ target :victorious do
     pod 'RestKit'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
-    pod 'FlurrySDK', '~> 6.6.0'
     pod 'KVOController'
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
     pod 'OAStackView'
+    pod 'FBSDKCoreKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKLoginKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKShareKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'CHTCollectionViewWaterfallLayout'
     link_with 'victorious'
 
     target :test do

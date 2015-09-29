@@ -143,6 +143,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     if ( self.state == VEndCardAnimationStateDidTransitionIn )
     {
         self.replayButton.alpha = self.replayButtonMaxAlpha;
+        self.replayLabel.alpha = self.replayButtonMaxAlpha;
     }
     
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VEndCardActionCell *cell, NSUInteger idx, BOOL *stop)

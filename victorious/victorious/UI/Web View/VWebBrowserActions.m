@@ -6,11 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
 #import "VWebBrowserActions.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VFacebookActivity.h"
 #import "VSequence+Fetcher.h"
-#import "VFacebookManager.h"
 
 @import Social;
 @import MessageUI;
@@ -32,7 +31,9 @@
     
     [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
      {
-         [[VFacebookManager sharedFacebookManager] shareLink:url description:description name:title previewUrl:url];
+         FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
+         link.contentURL = url;
+         [[VFacebookHelper shareDialogWithContent:link mode:self.shareMode] show];
      }];
     
     if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
