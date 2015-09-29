@@ -26,6 +26,7 @@ class StatusBarStyleTests: VictoriousTestCase {
     
     override func beforeAll() {
         super.beforeAll()
+        logOutAndResetSession()
         loginAndDismissWelcomeIfPresent()
     }
     
