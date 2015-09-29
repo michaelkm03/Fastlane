@@ -100,9 +100,15 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     private class func getPostsCountText(shelf: HashtagShelf) -> String {
         let count = shelf.postsCount.integerValue
-        let hashtagCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
-        let format = count == 1 ? NSLocalizedString("HashtagPostsCountFormat", comment: "") : NSLocalizedString("HashtagPostsCountPluralFormat", comment: "")
-        return NSString(format: format, hashtagCount) as String
+        if (count > 0) {
+            let hashtagCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            let format = count == 1 ? NSLocalizedString("HashtagPostsCountFormat", comment: "") : NSLocalizedString("HashtagPostsCountPluralFormat", comment: "")
+            return NSString(format: format, hashtagCount) as String
+        }
+        else {
+            // Return a space here when we want to hide the counts table so it doesn't affect the vertical spacing constraints
+            return " "
+        }
     }
     
     //MARK: - View management
