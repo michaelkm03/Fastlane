@@ -790,11 +790,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
 }
 
-- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
-}
-
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking

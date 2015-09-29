@@ -40,6 +40,11 @@
         self.fetchedResultsController = [self makeFetchedResultsController];
         self.fetchedResultsController.delegate = self;
     }
+    NSPredicate *customPredicate = self.customPredicate;
+    if ( customPredicate != nil )
+    {
+        _fetchedResultsController.fetchRequest.predicate = self.customPredicate;
+    }
     
     return _fetchedResultsController;
 }

@@ -30,6 +30,7 @@
 #import "VEditorializationItem.h"
 
 #import "victorious-Swift.h"
+#import "VObjectManager+ContentModeration.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -442,14 +443,14 @@ static const NSInteger kUserSearchResultLimit = 20;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
-        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
+        NSMutableOrderedSet *marqueeItems = [NSMutableOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:stream.marqueeItems.array]];
         if ( pageType == VPageTypeFirst )
         {
             stream.streamItems = [[NSOrderedSet alloc] init];
             marqueeItems = [[NSMutableOrderedSet alloc] init];
         }
         
-        NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+        NSMutableOrderedSet *streamItems = [NSMutableOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:stream.streamItems.array]];
         
         VStream *fullStream = [resultObjects lastObject];
 

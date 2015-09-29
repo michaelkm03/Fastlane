@@ -254,7 +254,10 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action) {
+                     [[VObjectManager sharedManager] locallyRemoveSequence:self.viewModel.sequence];
+                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                 }];
              }];
         };
         [actionItems addObject:flagItem];

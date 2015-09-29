@@ -17,6 +17,7 @@
 #import "VConstants.h"
 #import "VSequence.h"
 #import "VSequencePermissions.h"
+#import "VObjectManager+ContentModeration.h"
 
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
@@ -94,6 +95,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
                            otherButtonTitles:nil] show];
          
+         [self.delegate commentRemoved:self.comment];
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagComment];
          
      }
@@ -108,6 +110,9 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          {
              errorTitle = NSLocalizedString(@"CommentAlreadyReported", @"");
              errorMessage = NSLocalizedString(@"ReportCommentMessage", @"");
+             [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
+             [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
+             [self.delegate commentRemoved:self.comment];
          }
          else
          {
