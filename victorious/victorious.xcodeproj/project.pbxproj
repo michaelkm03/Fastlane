@@ -367,6 +367,7 @@
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
+		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; settings = {ASSET_TAGS = (); }; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; settings = {ASSET_TAGS = (); }; };
 		676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */; settings = {ASSET_TAGS = (); }; };
 		676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */; };
@@ -1989,6 +1990,7 @@
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
+		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+TrendingShelfResponder.swift"; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
@@ -6391,6 +6393,7 @@
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
 				A76A069E1B87B13600D91214 /* Utils */,
 				79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */,
+				674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */,
 			);
 			path = UIAutomationTests;
 			sourceTree = "<group>";
@@ -8961,6 +8964,7 @@
 				79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
+				674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

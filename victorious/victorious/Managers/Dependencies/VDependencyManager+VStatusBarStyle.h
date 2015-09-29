@@ -15,8 +15,8 @@
  */
 - (UIStatusBarStyle)statusBarStyleForKey:(NSString *)key;
 /**
- * Returns an appropriate UIStatusBarStyle based on a navigation bar textColor
- * @param color the color of the navigation bar on screen
+ * Returns an appropriate UIStatusBarStyle based on the illuminance a color
+ * @param color the color used to determine status bar style
  */
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color;
 

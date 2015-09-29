@@ -22,7 +22,6 @@ static NSString * const kCreateMemeIdentifier = @"Create Text";
 static NSString * const kCreateGIFIdentifier = @"Create GIF";
 
 static NSString * const kStoryboardName = @"CreateSheet";
-static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kDismissButtonTitle = @"title.button1";
 
 static const CGFloat kLineSpacing = 40.0f;
