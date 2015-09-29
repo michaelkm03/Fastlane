@@ -349,6 +349,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if ( self.isCurrentUser )
     {
+        self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
         return;
     }
     
