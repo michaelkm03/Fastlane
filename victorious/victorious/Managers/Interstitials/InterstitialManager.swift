@@ -76,7 +76,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
                 presentedInterstitial = conformingViewController
                 conformingViewController.interstitialDelegate = self
                 viewController.transitioningDelegate = self
-                viewController.modalPresentationStyle = .Custom
+                viewController.modalPresentationStyle = conformingViewController.preferredModalPresentationStyle()
                 presentingViewController.presentViewController(viewController, animated: true, completion: nil)
                 shownInterstitials.append(interstitial)
                 isShowingInterstital = true
@@ -102,6 +102,10 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.dismissalAnimator()
+    }
+    
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+        return presentedInterstitial?.presentationController(presented, presentingViewController: presenting)
     }
 }
 

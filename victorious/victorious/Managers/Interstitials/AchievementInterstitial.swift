@@ -18,6 +18,15 @@ struct AchievementInterstitial: Interstitial {
     let description: String
     let icon: NSURL?
     
+    /// Creates a new achievement interstitial
+    ///
+    /// - parameter remoteID: Remote ID of the interstitial
+    /// - parameter level: The level of the current user
+    /// - parameter progressPercentage: The current user's progress towards the next level
+    /// - parameter title: Title of the achievement
+    /// - parameter description: Description of the achievement
+    /// - parameter icon: An optional icon URL that can be used in the achievement interstitial's view controller. 
+    /// If no URL is provided, no icon will be displayed
     init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icon: NSURL?) {
         self.remoteID = remoteID
         self.level = level

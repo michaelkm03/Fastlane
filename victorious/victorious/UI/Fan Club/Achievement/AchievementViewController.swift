@@ -15,8 +15,8 @@ private struct AchievementConstants {
 class AchievementViewController: UIViewController, InterstitialViewController, VBackgroundContainer {
     
     struct AnimationConstants {
-        static let presentationDuration = 0.3
-        static let dismissalDuration = 0.2
+        static let presentationDuration = 0.5
+        static let dismissalDuration = 0.3
         static let containerWidth: CGFloat = 292
         static let badgeAnimationTotalDuration = 2.0
     }
@@ -106,17 +106,17 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addConstraint(NSLayoutConstraint(item: containerView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: AnimationConstants.containerWidth))
         view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterX, relatedBy: .Equal, toItem: view, attribute: .CenterX, multiplier: 1, constant: 0))
-         view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: -10))
+        view.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: -10))
         
         containerView.addSubview(dismissButton)
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.addTarget(self, action: "pressedDismiss", forControlEvents: .TouchUpInside)
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[button]|", options: [], metrics: nil, views: ["button" : dismissButton]))
+        containerView.v_addPinToLeadingTrailingToSubview(dismissButton)
         
         containerView.addSubview(iconImageView)
         iconImageView.contentMode = .ScaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[icon]|", options: [], metrics: nil, views: ["icon" : iconImageView]))
+        containerView.v_addPinToLeadingTrailingToSubview(iconImageView)
         
         containerView.addSubview(descriptionLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +124,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         descriptionLabel.backgroundColor = UIColor.clearColor()
         descriptionLabel.textAlignment = NSTextAlignment.Center
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-60-[label]-60-|", options: [], metrics: nil, views: ["label" : descriptionLabel]))
+        containerView.v_addPinToLeadingTrailingToSubview(descriptionLabel, leading: 60, trailing: 60)
         
         containerView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +132,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         titleLabel.backgroundColor = UIColor.clearColor()
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[label]-10-|", options: [], metrics: nil, views: ["label" : titleLabel]))
+        containerView.v_addPinToLeadingTrailingToSubview(titleLabel, leading: 10, trailing: 10)
         
         var verticalConstraintString: String
         var views: [String : UIView]
@@ -185,7 +185,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     }
     
     private func setToInitialState() {
-        containerView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - containerView.bounds.origin.y)
+//        containerView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - containerView.bounds.origin.y)
     }
     
     /// MARK: Interstitial View Controller
@@ -199,6 +199,14 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     func dismissalAnimator() -> UIViewControllerAnimatedTransitioning {
         achievementAnimator.isDismissal = true
         return achievementAnimator
+    }
+    
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+        return AchievementPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    }
+    
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle {
+        return .Custom
     }
     
     /// MARK: Background

@@ -13,7 +13,6 @@ class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     private let overlayOpacity: CGFloat = 0.75
     
     var isDismissal = false
-    private let overlay = UIView()
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         if isDismissal {
@@ -28,38 +27,44 @@ class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
             let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
                 
-                toViewController.view.frame = containerView.bounds
-                fromViewController.view.frame = containerView.bounds
-                
-                overlay.backgroundColor = UIColor.blackColor()
+                let toView = toViewController.view
+                let fromView = fromViewController.view
+                toView.frame = containerView.bounds
+                fromView.frame = containerView.bounds
                 
                 if isDismissal {
                     
-                    containerView.addSubview(fromViewController.view)
                     toViewController.beginAppearanceTransition(true, animated: true)
-                    fromViewController.beginAppearanceTransition(false, animated: true)
-                    UIView.animateWithDuration(AchievementViewController.AnimationConstants.dismissalDuration, animations: {
-                        self.overlay.alpha = 0
-                        }, completion: { (completed) in
-                            transitionContext.completeTransition(true)
+                    UIView.animateWithDuration(transitionDuration(transitionContext),
+                        animations: { () in
+                            fromView.center.y += containerView.bounds.size.height
+                        },
+                        completion: { (completed) in
+                            transitionContext.completeTransition(completed)
                             toViewController.endAppearanceTransition()
-                            fromViewController.endAppearanceTransition()
                     })
                 }
                 else {
                     
-                    overlay.alpha = 0
-                    containerView.addSubview(overlay)
-                    containerView.v_addFitToParentConstraintsToSubview(overlay)
+                    containerView.addSubview(toView)
+                    containerView.v_addFitToParentConstraintsToSubview(toView)
                     
-                    toViewController.beginAppearanceTransition(true, animated: true)
+                    // Position the presented view off the top of the container view
+                    toView.frame = transitionContext.finalFrameForViewController(toViewController)
+                    toView.center.y += containerView.bounds.size.height
+                    
                     fromViewController.beginAppearanceTransition(false, animated: true)
-                    UIView.animateWithDuration(AchievementViewController.AnimationConstants.presentationDuration, animations: {
-                        self.overlay.alpha = self.overlayOpacity
-                        }, completion: { (completed) in
-                            containerView.addSubview(toViewController.view)
-                            transitionContext.completeTransition(true)
-                            toViewController.endAppearanceTransition()
+                    // Animate the presented view to it's final position
+                    UIView.animateWithDuration(transitionDuration(transitionContext) + 0.3,
+                        delay: 0.3,
+                        usingSpringWithDamping: 0.7,
+                        initialSpringVelocity: 0.2,
+                        options: .CurveEaseIn,
+                        animations: {
+                            toView.center.y -= containerView.bounds.size.height
+                        },
+                        completion: { (completed) in
+                            transitionContext.completeTransition(completed)
                             fromViewController.endAppearanceTransition()
                     })
                 }

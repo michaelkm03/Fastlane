@@ -86,6 +86,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         return levelUpAnimator
     }
     
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    }
+    
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle {
+        return .FullScreen
+    }
+    
     // MARK: - Public Properties
     
     var levelUpInterstitial: LevelUpInterstitial! {
