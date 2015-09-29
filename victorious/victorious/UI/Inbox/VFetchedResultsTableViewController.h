@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong)   NSFetchedResultsController     *fetchedResultsController;
 @property (nonatomic, strong)   UIActivityIndicatorView        *bottomRefreshIndicator;
-@property (nonatomic, readonly) NSPredicate *customPredicate;
 
 @property (nonatomic, weak) id<UITableViewDelegate>delegate;
 
