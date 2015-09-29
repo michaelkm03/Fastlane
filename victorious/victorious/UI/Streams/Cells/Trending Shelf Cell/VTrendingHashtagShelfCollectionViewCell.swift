@@ -61,6 +61,10 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
                 hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
                 titleLabel.text = shelf.title
                 postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf)
+                
+                // Check if we are following this hashtag and register it if so
+                VObjectManager.sharedManager().mainUser?.addFollowedHashtags([shelf.hashtagObject], checkFollowingFlag: true)
+                
                 updateFollowControlState()
             }
         }
