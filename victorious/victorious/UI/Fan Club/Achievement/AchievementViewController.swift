@@ -30,6 +30,13 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     private var animatedBadge: AnimatedBadgeView?
     private let iconImageViewHeightConstant: CGFloat = 135.0
     
+    private lazy var dismissalView: UIView = {
+        let view = UIView()
+        let tapGesture = UITapGestureRecognizer(target: self, action: "tappedBackground")
+        view.addGestureRecognizer(tapGesture)
+        return view
+    }()
+    
     private lazy var iconImageViewHeightConstraint: NSLayoutConstraint = {
         let iconImageViewHeightConstraint = NSLayoutConstraint(item: self.iconImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: self.iconImageViewHeightConstant)
         return iconImageViewHeightConstraint
@@ -78,6 +85,8 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         layoutContent()
     }
     
+    /// MARK: Actions
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
@@ -85,6 +94,9 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     }
     
     private func layoutContent() {
+        
+        view.addSubview(dismissalView)
+        view.v_addFitToParentConstraintsToSubview(dismissalView)
         
         containerView.backgroundColor = UIColor.whiteColor()
         containerView.layer.cornerRadius = 6
@@ -154,6 +166,10 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     /// MARK: Actions
     
     func pressedDismiss() {
+        self.interstitialDelegate?.dismissInterstitial(self)
+    }
+    
+    func tappedBackground() -> Void {
         self.interstitialDelegate?.dismissInterstitial(self)
     }
     
