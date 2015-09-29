@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KmP-8J-TJv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KmP-8J-TJv">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
         <!--Modern Enter Name View Controller-->
@@ -22,7 +23,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hlV-7k-DNE" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="20" y="145" width="560" height="50"/>
+                                <rect key="frame" x="40" y="145" width="520" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="MQ4-EM-nDU"/>
                                 </constraints>
@@ -33,7 +34,7 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRC-An-Psj" userLabel="Separators">
-                                <rect key="frame" x="20" y="195" width="560" height="1"/>
+                                <rect key="frame" x="40" y="195" width="520" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="TTr-55-6JQ"/>
@@ -46,9 +47,9 @@
                             <constraint firstItem="xRC-An-Psj" firstAttribute="leading" secondItem="hlV-7k-DNE" secondAttribute="leading" id="Ak8-Ea-zvM"/>
                             <constraint firstItem="MPh-zU-L8h" firstAttribute="leading" secondItem="iEx-1Q-d8Q" secondAttribute="leading" constant="20" id="KaJ-Mz-abS"/>
                             <constraint firstAttribute="trailing" secondItem="MPh-zU-L8h" secondAttribute="trailing" constant="20" id="SdY-4Y-aHm"/>
-                            <constraint firstAttribute="trailing" secondItem="hlV-7k-DNE" secondAttribute="trailing" constant="20" id="e9a-bZ-2Vf"/>
+                            <constraint firstAttribute="trailing" secondItem="hlV-7k-DNE" secondAttribute="trailing" constant="40" id="e9a-bZ-2Vf"/>
                             <constraint firstItem="xRC-An-Psj" firstAttribute="trailing" secondItem="hlV-7k-DNE" secondAttribute="trailing" id="eIz-D8-Cbm"/>
-                            <constraint firstItem="hlV-7k-DNE" firstAttribute="leading" secondItem="iEx-1Q-d8Q" secondAttribute="leading" constant="20" id="q9m-dq-YmB"/>
+                            <constraint firstItem="hlV-7k-DNE" firstAttribute="leading" secondItem="iEx-1Q-d8Q" secondAttribute="leading" constant="40" id="q9m-dq-YmB"/>
                             <constraint firstItem="xRC-An-Psj" firstAttribute="top" secondItem="hlV-7k-DNE" secondAttribute="bottom" id="tQy-pl-V6l"/>
                             <constraint firstItem="hlV-7k-DNE" firstAttribute="top" secondItem="MPh-zU-L8h" secondAttribute="bottom" constant="30" id="vun-OV-pHs"/>
                         </constraints>
