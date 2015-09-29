@@ -58,10 +58,9 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        
         if (resultObjects.count > 0)
         {
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
             [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
         }
         
@@ -254,10 +253,9 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        
         if (resultObjects.count > 0)
         {
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
             [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
         }
         

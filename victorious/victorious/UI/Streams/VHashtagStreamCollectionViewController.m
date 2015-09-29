@@ -145,7 +145,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     NSAssert( self.selectedHashtag != nil, @"To present this view controller, there must be a selected hashtag." );
     NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
-
+    
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
     VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
