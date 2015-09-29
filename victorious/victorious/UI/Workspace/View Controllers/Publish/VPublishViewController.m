@@ -9,6 +9,7 @@
 #import "VPublishViewController.h"
 #import "UIView+VDynamicsHelpers.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 #import "VPlaceholderTextView.h"
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+ContentCreation.h"
@@ -21,7 +22,6 @@
 #import "VShareItemCollectionViewCell.h"
 #import "VShareMenuItem.h"
 #import "VDependencyManager+VShareMenuItem.h"
-#import "VFacebookManager.h"
 #import "VTwitterManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VKeyboardStyle.h"
@@ -29,8 +29,11 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
 #import "VAlongsidePresentationAnimator.h"
+#import "victorious-Swift.h"
 
 @import AssetsLibrary;
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
 
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
@@ -45,6 +48,7 @@ static NSString * const kShareContainerBackgroundColor = @"color.shareContainer"
 static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
+static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer, VAlongsidePresentation>
 
@@ -694,18 +698,29 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     __weak VPublishViewController *weakSelf = self;
     if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook )
     {
-        if ( ![VFacebookManager sharedFacebookManager].authorizedToShare )
+        if ( ![[[FBSDKAccessToken currentAccessToken] permissions] containsObject:kFBPermissionPublishActionsKey] )
         {
             shareItemCell.state = VShareItemCellStateLoading;
-            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
-             {
-                 shareItemCell.state = VShareItemCellStateSelected;
-             }
-                                                                               onFailure:^(NSError *error)
-             {
-                 [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
-                 shareItemCell.state = VShareItemCellStateUnselected;
-             }];
+            
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+            loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
+            [loginManager logInWithPublishPermissions:@[kFBPermissionPublishActionsKey]
+                                   fromViewController:self
+                                              handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
+            {
+                if ( [result.grantedPermissions containsObject:kFBPermissionPublishActionsKey] )
+                {
+                    shareItemCell.state = VShareItemCellStateSelected;
+                }
+                else
+                {
+                    if ( !result.isCancelled && error != nil )
+                    {
+                        [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                    }
+                    shareItemCell.state = VShareItemCellStateUnselected;
+                }
+            }];
         }
         else
         {
@@ -737,37 +752,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
-    NSArray *actions;
-    NSString *alertMessage;
-    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
+    NSString *alertMessage = NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"");
+    __weak VPublishViewController *weakSelf = self;
+    void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
     {
-        //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
-        alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
-        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
-    }
-    else if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
-    {
-        if ( error.code == VTwitterManagerErrorCanceled )
-        {
-            return;
-        }
-        
-        alertMessage = NSLocalizedString(@"TwitterTroubleshooting", nil);
-        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
-    }
-    else
-    {
-        //We encountered a social network API error, allow the user to retry.
-        alertMessage = NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"");
-        __weak VPublishViewController *weakSelf = self;
-        void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
-        {
-            [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
-        };
-        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
-        actions = @[ cancelAction, retryAction ];
-    }
+        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+    };
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
+    NSArray *actions = @[ cancelAction, retryAction ];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];

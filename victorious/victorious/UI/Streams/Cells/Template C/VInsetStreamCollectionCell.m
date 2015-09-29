@@ -18,7 +18,7 @@
 #import "NSString+VParseHelp.h"
 #import "VInsetActionView.h"
 #import "VHashTagTextView.h"
-#import "VStreamHeaderTimeSince.h"
+#import "VStreamCellHeader.h"
 #import "VCompatibility.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
@@ -26,7 +26,6 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
-#import "VPreviewViewBackgroundHost.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
@@ -38,7 +37,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 @interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VStreamHeaderTimeSince *header;
+@property (nonatomic, strong) VStreamCellHeader *header;
 @property (nonatomic, strong) UIView *previewContainer;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
@@ -80,7 +79,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     _actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
     
     // Header at the top, left to right and kInsetCellHeaderHeight
-    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamCellHeader alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_header];
     [self.contentView v_addPinToLeadingTrailingToSubview:_header];
     [self.contentView v_addPinToTopToSubview:_header];
@@ -353,10 +352,6 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
-    }
     [self.previewView setSequence:sequence];
 }
 
@@ -450,13 +445,16 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
                               fromView:self];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 

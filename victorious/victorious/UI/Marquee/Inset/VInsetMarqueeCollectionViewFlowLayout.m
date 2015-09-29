@@ -35,11 +35,13 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
-    CGFloat screenWidth = CGRectGetWidth(self.collectionView.bounds);
-    CGFloat newOffset = self.collectionView.contentOffset.x / screenWidth;
-    CGFloat maxHorizontalOffset = screenWidth / kMaxHorizontalOffsetDivisor;
-    CGFloat maxZoom = screenWidth / kMaxZoomDivisor;
+    NSArray *superAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray *layoutAttributes = [[NSArray alloc] initWithArray:superAttributes copyItems:YES];
+    
+    CGFloat pageWidth = [self getPageWidth];
+    CGFloat newOffset = self.collectionView.contentOffset.x / pageWidth;
+    CGFloat maxHorizontalOffset = pageWidth / kMaxHorizontalOffsetDivisor;
+    CGFloat maxZoom = pageWidth / kMaxZoomDivisor;
     for ( UICollectionViewLayoutAttributes *attributes in layoutAttributes )
     {
         CGFloat difference = newOffset - attributes.indexPath.row;
@@ -54,6 +56,11 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
         attributes.transform3D = transform;
     }
     return layoutAttributes;
+}
+
+- (CGFloat)getPageWidth
+{
+    return CGRectGetWidth(self.collectionView.bounds);
 }
 
 @end

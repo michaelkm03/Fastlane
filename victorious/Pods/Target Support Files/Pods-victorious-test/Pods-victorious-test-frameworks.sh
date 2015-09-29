@@ -53,7 +53,12 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-victorious-test/AFNetworking.framework'
+  install_framework 'Pods-victorious-test/Bolts.framework'
   install_framework 'Pods-victorious-test/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious-test/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKShareKit.framework'
   install_framework 'Pods-victorious-test/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious-test/KVOController.framework'
   install_framework 'Pods-victorious-test/MBProgressHUD.framework'
@@ -68,7 +73,12 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework 'Pods-victorious-test/AFNetworking.framework'
+  install_framework 'Pods-victorious-test/Bolts.framework'
   install_framework 'Pods-victorious-test/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious-test/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKShareKit.framework'
   install_framework 'Pods-victorious-test/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious-test/KVOController.framework'
   install_framework 'Pods-victorious-test/MBProgressHUD.framework'
@@ -83,7 +93,12 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework 'Pods-victorious-test/AFNetworking.framework'
+  install_framework 'Pods-victorious-test/Bolts.framework'
   install_framework 'Pods-victorious-test/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious-test/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKShareKit.framework'
   install_framework 'Pods-victorious-test/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious-test/KVOController.framework'
   install_framework 'Pods-victorious-test/MBProgressHUD.framework'
@@ -98,7 +113,12 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework 'Pods-victorious-test/AFNetworking.framework'
+  install_framework 'Pods-victorious-test/Bolts.framework'
   install_framework 'Pods-victorious-test/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious-test/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKShareKit.framework'
   install_framework 'Pods-victorious-test/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious-test/KVOController.framework'
   install_framework 'Pods-victorious-test/MBProgressHUD.framework'
@@ -113,7 +133,12 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-victorious-test/AFNetworking.framework'
+  install_framework 'Pods-victorious-test/Bolts.framework'
   install_framework 'Pods-victorious-test/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious-test/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious-test/FBSDKShareKit.framework'
   install_framework 'Pods-victorious-test/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious-test/KVOController.framework'
   install_framework 'Pods-victorious-test/MBProgressHUD.framework'

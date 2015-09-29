@@ -15,7 +15,7 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     
     static let ReuseIdentifier = "GIFSearchPreviewCell"
     
-    var videoView: VVideoView?
+    var videoPlayer: VVideoPlayer?
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!
@@ -29,32 +29,21 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     /// Sets the video asset URL to play in this cell and automatically beings playing it.
     var assetUrl: NSURL? {
         didSet {
-            self.videoView?.removeFromSuperview()
-            self.videoView = nil
-            if let url = self.assetUrl {
-                let videoView = VVideoView(frame: self.bounds)
-                self.videoView = videoView
-                self.addSubview( videoView )
-                self.v_addFitToParentConstraintsToSubview(videoView)
-                videoView.useAspectFit = true
-                videoView.setItemURL(url, loop: true, audioMuted: true)
-                videoView.playFromStart()
+            self.videoPlayer?.view.removeFromSuperview()
+            self.videoPlayer = nil
+            self.videoPlayer = VVideoView(frame: self.bounds)
+            if let url = self.assetUrl, let videoPlayer = self.videoPlayer {
+                
+                self.addSubview( videoPlayer.view )
+                self.v_addFitToParentConstraintsToSubview( videoPlayer.view )
+                
+                let videoPlayerItem = VVideoPlayerItem(URL: url)
+                videoPlayerItem.loop = true
+                videoPlayerItem.muted = true
+                videoPlayerItem.useAspectFit = true
+                videoPlayer.setItem( videoPlayerItem )
+                videoPlayer.playFromStart()
             }
         }
-    }
-    
-    /// Animates in the asset and removes activity indicator
-    func transitionIn() {
-        UIView.animateWithDuration( 0.3, animations: {
-            self.activityIndicator.hidden = true
-            self.videoView?.hidden = false
-        }, completion: nil );
-    }
-}
-
-extension GIFSearchPreviewCell : VVideoViewDelegate {
-    
-    func videoViewPlayerDidBecomeReady(videoView: VVideoView) {
-        self.transitionIn()
     }
 }

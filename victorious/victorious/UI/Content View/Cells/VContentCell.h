@@ -10,6 +10,17 @@
 #import "VEndCardViewController.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
+#import "VMonetizationPartner.h"
+
+@class VSequencePreviewView, VContentCell;
+
+@protocol VContentCellDelegate
+
+- (void)contentCellDidEndPlayingAd:(VContentCell *)cell;
+
+- (void)contentCellDidStartPlayingAd:(VContentCell *)cell;
+
+@end
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -50,6 +61,10 @@
  */
 @property (nonatomic, assign, readonly) BOOL isEndCardShowing;
 
+@property (nonatomic, assign, readonly) BOOL isPlayingAd;
+
+@property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
+
 - (void)playAnimation;
 
 /**
@@ -74,11 +89,15 @@
  */
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
-@property (nonatomic, strong) UIView *shrinkingContentView;
+/**
+ Creates the appropraite ad video player and UI for the parameters provided.
+ */
+- (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details;
 
 /**
- The like button for the content being displayed.
+ Puts the cell into a state where dismissal of its parent view collection view and view controller
+ can continue.
  */
-@property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
+- (void)prepareForDismissal;
 
 @end

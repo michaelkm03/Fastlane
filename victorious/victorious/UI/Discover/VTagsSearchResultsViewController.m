@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
 #import "VTagsSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
 #import "VObjectManager+Discover.h"
@@ -55,6 +56,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     [self.view addSubview:self.dismissTapView];
     [self.view bringSubviewToFront:self.dismissTapView];
     [self.dismissTapView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchCompleted:)]];
+    [self.view v_addFitToParentConstraintsToSubview:self.dismissTapView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -107,7 +109,15 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.navigationDelegate != nil)
+    {
+        [self.navigationDelegate selectedHashtag:hashtag];
+    }
+    else
+    {
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+
 }
 
 #pragma mark - UI setup
@@ -195,7 +205,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         }
         
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:self.dependencyManager];
+                                                                          dependencyManager:self.dependencyManager];
         [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
          {
              if (!authorized)

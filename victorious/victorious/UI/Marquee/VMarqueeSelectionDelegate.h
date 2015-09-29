@@ -10,13 +10,19 @@
 
 @class VAbstractMarqueeController, VStreamItem, VUser;
 
-@protocol VMarqueeSelectionDelegate <NSObject>
+NS_ASSUME_NONNULL_BEGIN
 
 /**
-    This protocol allows delegates to respond to selections of marquee content
+ Allows delegates to respond to selection of marquee items.
  */
-@required
+@protocol VMarqueeSelectionDelegate <NSObject>
 
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image;
+- (void)marqueeController:(VAbstractMarqueeController *)marquee
+            didSelectItem:(VStreamItem *)streamItem
+         withPreviewImage:(nullable UIImage *)image
+       fromCollectionView:(UICollectionView *)collectionView
+              atIndexPath:(NSIndexPath *)path;
 
 @end
+
+NS_ASSUME_NONNULL_END

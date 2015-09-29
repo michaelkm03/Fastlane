@@ -53,7 +53,12 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-victorious/AFNetworking.framework'
+  install_framework 'Pods-victorious/Bolts.framework'
   install_framework 'Pods-victorious/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious/FBSDKShareKit.framework'
   install_framework 'Pods-victorious/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious/KVOController.framework'
   install_framework 'Pods-victorious/MBProgressHUD.framework'
@@ -67,7 +72,12 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework 'Pods-victorious/AFNetworking.framework'
+  install_framework 'Pods-victorious/Bolts.framework'
   install_framework 'Pods-victorious/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious/FBSDKShareKit.framework'
   install_framework 'Pods-victorious/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious/KVOController.framework'
   install_framework 'Pods-victorious/MBProgressHUD.framework'
@@ -81,7 +91,12 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework 'Pods-victorious/AFNetworking.framework'
+  install_framework 'Pods-victorious/Bolts.framework'
   install_framework 'Pods-victorious/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious/FBSDKShareKit.framework'
   install_framework 'Pods-victorious/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious/KVOController.framework'
   install_framework 'Pods-victorious/MBProgressHUD.framework'
@@ -95,7 +110,12 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework 'Pods-victorious/AFNetworking.framework'
+  install_framework 'Pods-victorious/Bolts.framework'
   install_framework 'Pods-victorious/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious/FBSDKShareKit.framework'
   install_framework 'Pods-victorious/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious/KVOController.framework'
   install_framework 'Pods-victorious/MBProgressHUD.framework'
@@ -109,7 +129,12 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-victorious/AFNetworking.framework'
+  install_framework 'Pods-victorious/Bolts.framework'
   install_framework 'Pods-victorious/CCHLinkTextView.framework'
+  install_framework 'Pods-victorious/CHTCollectionViewWaterfallLayout.framework'
+  install_framework 'Pods-victorious/FBSDKCoreKit.framework'
+  install_framework 'Pods-victorious/FBSDKLoginKit.framework'
+  install_framework 'Pods-victorious/FBSDKShareKit.framework'
   install_framework 'Pods-victorious/ISO8601DateFormatterValueTransformer.framework'
   install_framework 'Pods-victorious/KVOController.framework'
   install_framework 'Pods-victorious/MBProgressHUD.framework'

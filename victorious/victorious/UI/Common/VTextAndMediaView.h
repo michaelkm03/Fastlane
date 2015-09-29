@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VDependencyManager.h"
+#import "VFocusable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,7 +39,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, nullable) UIFont *textFont;
 @property (nonatomic, strong, nullable) VTagSensitiveTextView *textView;
 
-@property (nonatomic, assign) BOOL inFocus;
+@property (nonatomic, assign) VFocusType focusType;
 
 @property (nonatomic, strong, nullable) MediaAttachmentView *mediaAttachmentView;
 

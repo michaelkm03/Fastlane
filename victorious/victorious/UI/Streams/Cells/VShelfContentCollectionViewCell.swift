@@ -14,7 +14,12 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
     /// The view that will house the preview view.
     let previewViewContainer = UIView()
-    private var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
+    private(set) var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
+    
+    /// If set to true, text posts will be displayed as in full in these cells.
+    /// Otherwise an icon representing the text post will be displayed on
+    /// the standard text post background color.
+    var supportsTextPosts = false
     
     /// The stream item whose content will populate this cell.
     var streamItem: VStreamItem? {
@@ -22,26 +27,13 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             if streamItem == oldValue {
                 return
             }
-            
             if previewView.canHandleStreamItem(streamItem) {
                 updatePreviewView(streamItem)
                 return
             }
             
-            if streamItem?.itemSubType == VStreamItemSubTypeText {
-                //Dealing with a text post
-                if previewView.conformsToProtocol(VImagePreviewView.self) {
-                    updatePreviewView(streamItem)
-                    return
-                }
+            if let streamItem = streamItem {
                 
-                previewView.removeFromSuperview()
-                
-                previewView = VImageSequencePreviewView(frame: CGRect.zero)
-                previewView.dependencyManager = dependencyManager
-                updatePreviewView(streamItem)
-            }
-            else {
                 previewView.removeFromSuperview()
                 
                 previewView = VStreamItemPreviewView(streamItem: streamItem)
@@ -52,32 +44,27 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func updatePreviewView(streamItem: VStreamItem?) {
-        if let videoPreviewView = previewView as? VBaseVideoSequencePreviewView {
-            videoPreviewView.onlyShowPreview = true
-        }
-        
-        if let dependencyManager = previewView.dependencyManager {
-            if streamItem?.itemSubType != VStreamItemSubTypeText {
-                if let imagePreviewView = previewView as? VImagePreviewView {
-                    previewView.backgroundColor = UIColor.clearColor()
-                    imagePreviewView.previewImageView().contentMode = UIViewContentMode.ScaleAspectFill
+        if let streamItem = streamItem {
+            
+            if ( !previewView.onlyShowPreview )
+            {
+                previewView.onlyShowPreview = true
+            }
+            
+            if ( previewView.streamItem != streamItem )
+            {
+                if let previewView = previewView as? VSequencePreviewView, sequence = streamItem as? VSequence {
+                    previewView.sequence = sequence
                 }
-                previewView.streamItem = streamItem
+                else {
+                    previewView.streamItem = streamItem
+                }
             }
-            else if let imagePreviewView = previewView as? VImagePreviewView {
-                imagePreviewView.previewImageView().image = UIImage(named: "textPostThumbnail")
-                imagePreviewView.previewImageView().contentMode = UIViewContentMode.Center
-                imagePreviewView.setBackgroundContainerViewVisible(true)
-                previewView.backgroundColor = dependencyManager.textPostBackgroundColor
+            
+            if previewView.superview == nil {
+                previewViewContainer.addSubview(previewView)
+                v_addFitToParentConstraintsToSubview(previewView)
             }
-        }
-        else {
-            previewView.streamItem = streamItem
-        }
-        
-        if previewView.superview == nil {
-            previewViewContainer.addSubview(previewView)
-            v_addFitToParentConstraintsToSubview(previewView)
         }
     }
     
@@ -100,10 +87,11 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             updatePreviewView(streamItem)
             return
         }
-        previewView.removeFromSuperview()
-        
-        previewView = VStreamItemPreviewView(streamItem: streamItem)
-        updatePreviewView(streamItem)
+        if let streamItem = streamItem {
+            previewView.removeFromSuperview()
+            previewView = VStreamItemPreviewView(streamItem: streamItem)
+            updatePreviewView(streamItem)
+        }
     }
     
     required override init(frame: CGRect) {
@@ -120,7 +108,16 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         contentView.addSubview(previewViewContainer)
         contentView.v_addFitToParentConstraintsToSubview(previewViewContainer)
     }
+}
+
+extension VShelfContentCollectionViewCell: VStreamCellTracking {
     
+    func sequenceToTrack() -> VSequence? {
+        if let sequence = streamItem as? VSequence {
+            return sequence
+        }
+        return nil
+    }
 }
 
 extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
@@ -133,8 +130,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         }
         
         if let itemSubType = streamItem.itemSubType {
-            let subType = itemSubType == "text" ? "image" : itemSubType
-            updatedIdentifier += "." + subType
+            updatedIdentifier += "." + itemSubType
         }
         
         return updatedIdentifier
@@ -154,7 +150,6 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         updatedIdentifier += "."
         return updatedIdentifier
     }
-    
 }
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
@@ -162,13 +157,4 @@ extension VShelfContentCollectionViewCell: VBackgroundContainer {
     func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
     }
-    
-}
-
-private extension VDependencyManager {
-    
-    var textPostBackgroundColor: UIColor {
-        return colorForKey("color.standard.textPost")
-    }
-    
 }

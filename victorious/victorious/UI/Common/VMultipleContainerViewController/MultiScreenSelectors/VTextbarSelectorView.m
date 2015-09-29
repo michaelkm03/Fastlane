@@ -220,7 +220,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
                                                            attribute:NSLayoutAttributeLeading
                                                            relatedBy:NSLayoutRelationEqual
                                                               toItem:self
-                                                           attribute:NSLayoutAttributeLeft
+                                                           attribute:NSLayoutAttributeLeading
                                                           multiplier:1.0f
                                                             constant:0.0];
     [self addConstraint:self.lineLeftConstraint];

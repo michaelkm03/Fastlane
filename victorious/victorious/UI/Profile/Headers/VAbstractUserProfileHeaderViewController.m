@@ -21,6 +21,8 @@
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) NSNumber *followingCount;
+@property (nonatomic, strong) NSNumber *followersCount;
 
 @end
 
@@ -60,7 +62,7 @@
     self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
     
     self.followingLabel.userInteractionEnabled = YES;
-    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
+    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowing:)]];
     
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
@@ -163,38 +165,30 @@
     [self updateUser];
 }
 
-- (void)setFollowersCount:(NSNumber *)followerCount
+- (void)setFollowersCount:(NSNumber *)followersCount
 {
-    if ( followerCount != nil )
+    _followersCount = followersCount;
+    BOOL hasFollowersCount = followersCount != nil;
+    if ( hasFollowersCount )
     {
-        self.followersButton.hidden = NO;
-        self.followersHeader.hidden = NO;
-        self.followersLabel.hidden = NO;
-        self.followersLabel.text = [self.largeNumberFormatter stringForInteger:followerCount.integerValue];
+        self.followersLabel.text = [self.largeNumberFormatter stringForInteger:followersCount.integerValue];
     }
-    else
-    {
-        self.followersButton.hidden = YES;
-        self.followersHeader.hidden = YES;
-        self.followersLabel.hidden = YES;
-    }
+    self.followersButton.hidden = !hasFollowersCount;
+    self.followersHeader.hidden = !hasFollowersCount;
+    self.followersLabel.hidden = !hasFollowersCount;
 }
 
 - (void)setFollowingCount:(NSNumber *)followingCount
 {
-    if ( followingCount != nil )
+    _followingCount = followingCount;
+    BOOL hasFollowingCount = followingCount != nil;
+    if ( hasFollowingCount )
     {
-        self.followingButton.hidden = NO;
-        self.followingHeader.hidden = NO;
-        self.followingLabel.hidden = NO;
         self.followingLabel.text = [self.largeNumberFormatter stringForInteger:followingCount.integerValue];
     }
-    else
-    {
-        self.followingButton.hidden = YES;
-        self.followingHeader.hidden = YES;
-        self.followingLabel.hidden = YES;
-    }
+    self.followingButton.hidden = !hasFollowingCount;
+    self.followingHeader.hidden = !hasFollowingCount;
+    self.followingLabel.hidden = !hasFollowingCount;
 }
 
 - (void)applyStyle
@@ -222,7 +216,7 @@
     [self.delegate followerHandler];
 }
 
-- (IBAction)pressedFollowering:(id)sender
+- (IBAction)pressedFollowing:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowing];
     
@@ -278,6 +272,11 @@
     self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
     self.taglineLabel.text = self.user.tagline;
+}
+
+- (void)updateLevelViews
+{
+    // Implement in subclasses
 }
 
 @end

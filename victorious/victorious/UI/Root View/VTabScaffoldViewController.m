@@ -10,7 +10,6 @@
 
 // ViewControllers + Presenters
 #import "VRootViewController.h"
-#import "VContentViewPresenter.h"
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
@@ -57,6 +56,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 
 @end
 
@@ -77,8 +77,14 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _launchOperationQueue = [[NSOperationQueue alloc] init];
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
+        _contentViewPresenter = [[ContentViewPresenter alloc] init];
     }
     return self;
+}
+
+- (UITabBarController *)tabBarController
+{
+    return self.internalTabBarController;
 }
 
 - (void)dealloc
@@ -175,12 +181,14 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self.rootNavigationController
-                                          withDependencyManager:self.dependencyManager
-                                                    ForSequence:sequence
-                                                 inStreamWithID:streamId
-                                                      commentID:commentID
-                                               withPreviewImage:placeholderImage];
+    ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.sequence = sequence;
+    context.streamId = streamId;
+    context.commentId = commentID;
+    context.placeholderImage = placeholderImage;
+    context.viewController = self.rootNavigationController;
+    context.originDependencyManager = self.dependencyManager;
+    [self.contentViewPresenter presentContentViewWithContext:context];
 }
 
 - (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated

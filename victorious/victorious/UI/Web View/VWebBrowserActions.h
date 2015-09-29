@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+@import FBSDKShareKit;
 
 @interface VWebBrowserActions : NSObject
+
+/**
+ The mode to use when creating a Facebook share dialog.
+ Default is FBSDKShareDialogModeAutomatic
+ */
+@property (nonatomic) FBSDKShareDialogMode shareMode;
 
 - (void)showInViewController:(UIViewController *)viewController withCurrentUrl:(NSURL *)url titleText:(NSString *)title descriptionText:(NSString *)description;
 

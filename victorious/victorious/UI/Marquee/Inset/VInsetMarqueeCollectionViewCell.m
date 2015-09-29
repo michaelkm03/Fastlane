@@ -28,7 +28,7 @@
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super dependencyManager];
+    [super setDependencyManager:dependencyManager];
     if ( dependencyManager != nil )
     {
         self.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];

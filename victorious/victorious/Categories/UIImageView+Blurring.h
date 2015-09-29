@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(nullable void (^)(void))animations;
 
-- (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
+- (void)blurImage:(UIImage *)image withTintColor:(nullable UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
 
 /**
  Removes any cached URL (as well as all associated objects) added to the UIImageView instance by this category.

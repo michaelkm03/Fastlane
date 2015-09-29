@@ -13,41 +13,46 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 
 @interface VUserManager : NSObject
 
-+ (VUserManager *)sharedInstance;
+/**
+ if YES, native login will be used even if the powers that be try to disable
+ it. If NO, native login will follow the whims of the Facebook overlords.
+ */
+@property (nonatomic) BOOL forceNativeFacebookLogin;
 
 /**
- Make sure we have access to the user's Facebook accounts before calling this
+ Log in using Facebook credentials
  */
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Make sure we have access to the user's Facebook accounts before calling this
- 
- @param isModern Set to yes for the monder login flow. Will return a status of "complete" on users vs "incomplete".
+ Log in using Twitter credentials
  */
-- (void)loginViaFacebookModern:(BOOL)isModern
-                  OnCompletion:(VUserManagerLoginCompletionBlock)completion
-                       onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                            onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Make sure we have access to the user's Twitter accounts before calling this
+ Log in with a specific Twitter credential
  */
-- (void)loginViaTwitterModern:(BOOL)isModern
-                 onCompletion:(VUserManagerLoginCompletionBlock)completion
-                      onError:(VUserManagerLoginErrorBlock)errorBlock;
-
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
-                            isModern:(BOOL)isModern
-                        OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                        onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock;
 
+/**
+ Create a new account with the specified e-mail and password. 
+ If an account already exists on the server with the specified e-mail address
+ an error will occur, unless the specified password matches the password on
+ that account. In that case, the existing account will be logged in.
+ */
 - (void)createEmailAccount:(NSString *)email
                   password:(NSString *)password
                   userName:(NSString *)userName
               onCompletion:(VUserManagerLoginCompletionBlock)completion
                    onError:(VUserManagerLoginErrorBlock)errorBlock;
 
+/**
+ Log in using an e-mail address and password
+ */
 - (void)loginViaEmail:(NSString *)email
              password:(NSString *)password
          onCompletion:(VUserManagerLoginCompletionBlock)completion

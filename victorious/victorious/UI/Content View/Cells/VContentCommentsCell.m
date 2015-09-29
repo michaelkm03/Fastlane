@@ -11,7 +11,7 @@
 #import "VUser.h"
 
 // Subviews
-#import "VDefaultProfileImageView.h"
+#import "VDefaultProfileButton.h"
 #import "VCommentTextAndMediaView.h"
 
 // Dependency Manager
@@ -41,7 +41,7 @@ static NSCache *_sharedImageCache = nil;
 
 @interface VContentCommentsCell ()
 
-@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *commentersAvatarImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *commentersAvatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
@@ -49,7 +49,6 @@ static NSCache *_sharedImageCache = nil;
 @property (weak, nonatomic) IBOutlet UIImageView *clockIconImageView;
 
 @property (nonatomic, strong) NSNumber *mediaAssetOrientation;
-@property (nonatomic, copy) NSURL *URLForCommenterAvatar;
 @property (nonatomic, copy) NSString *commenterName;
 @property (nonatomic, copy) NSString *timestampText;
 @property (nonatomic, copy) NSString *realTimeCommentText;
@@ -107,17 +106,11 @@ static NSCache *_sharedImageCache = nil;
     self.seperatorImageView.image = [self.seperatorImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.seperatorImageView.tintColor = [UIColor colorWithRed:229/255.0f green:229/255.0f blue:229/255.0f alpha:1.0f];
     
-    self.commentersAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.commentersAvatarImageView.bounds) * 0.5f;
-    self.commentersAvatarImageView.layer.cornerRadius = CGRectGetHeight(self.commentersAvatarImageView.bounds) * 0.5f;
-    self.commentersAvatarImageView.layer.masksToBounds = YES;
-    self.commentersAvatarImageView.image = [self.commentersAvatarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.commentersAvatarImageView.tintColor = [UIColor lightGrayColor];
-    
     self.commentAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.commentAndMediaView.frame);
 
     [self prepareContentAndMediaView];
     
-    self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.commentersAvatarButton.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self setupSwipeView];
     [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
@@ -136,7 +129,6 @@ static NSCache *_sharedImageCache = nil;
     
     self.hasMedia = NO;
     self.onUserProfileTapped = nil;
-    self.commentersAvatarImageView.image = nil;
     
     [self prepareContentAndMediaView];
 }
@@ -163,6 +155,7 @@ static NSCache *_sharedImageCache = nil;
         self.timestampLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         self.realtimeCommentLocationLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         self.commentAndMediaView.textFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        self.commentersAvatarButton.dependencyManager = dependencyManager;
     }
 }
 
@@ -174,7 +167,7 @@ static NSCache *_sharedImageCache = nil;
     
     self.commentBody = comment.text;
     self.commenterName = comment.user.name;
-    self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
+    self.commentersAvatarButton.user = comment.user;
     self.timestampText = [comment.postedAt timeSince];
     self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     
@@ -214,12 +207,6 @@ static NSCache *_sharedImageCache = nil;
 {
     _commenterName = [commenterName copy];
     self.commentersUsernameLabel.text = commenterName;
-}
-
-- (void)setURLForCommenterAvatar:(NSURL *)URLForCommenterAvatar
-{
-    _URLForCommenterAvatar = [URLForCommenterAvatar copy];
-    [self.commentersAvatarImageView setProfileImageURL:_URLForCommenterAvatar];
 }
 
 - (void)setTimestampText:(NSString *)timestampText
@@ -267,9 +254,16 @@ static NSCache *_sharedImageCache = nil;
 
 #pragma mark - Focus
 
-- (void)setHasFocus:(BOOL)hasFocus
+@dynamic focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.commentAndMediaView.inFocus = hasFocus;
+    self.commentAndMediaView.focusType = focusType;
+}
+
+- (VFocusType)focusType
+{
+    return self.commentAndMediaView.focusType;
 }
 
 - (CGRect)contentArea

@@ -26,6 +26,7 @@
     return @{
              @"id"                  :   VSelectorName(remoteId),
              @"shelf_id"            :   VSelectorName(shelfId),
+             @"stream_id"           :   VSelectorName(streamId),
              @"entry_label"         :   VSelectorName(headline),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
@@ -46,7 +47,7 @@
                                 mappingForEntityForName:[VStream entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(streamId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
@@ -175,7 +176,7 @@
             {
                 if ( child )
                 {
-                    mapping = [self childStreamMapping];
+                    mapping = [self entityMapping];
                 }
                 else
                 {
@@ -294,7 +295,7 @@
                                                      pathPattern:@"/api/sequence/feed/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              ];
+             ];
 }
 
 @end
