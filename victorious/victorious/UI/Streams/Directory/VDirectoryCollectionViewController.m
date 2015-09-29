@@ -57,6 +57,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
  */
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeController;
 
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+
 @end
 
 @implementation VDirectoryCollectionViewController
@@ -139,6 +141,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)viewDidLoad
 {
+    self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    
     [super viewDidLoad];
     
     [self updateHeaderCellVisibility];
@@ -327,7 +331,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
         NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
+        ContentViewContext *context = [[ContentViewContext alloc] init];
+        context.sequence = (VSequence *)streamItem;
+        context.streamId = streamId;
+        context.viewController = [self.dependencyManager scaffoldViewController].rootNavigationController;
+        context.originDependencyManager = self.dependencyManager;
+        [self.contentViewPresenter presentContentViewWithContext:context];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )
     {

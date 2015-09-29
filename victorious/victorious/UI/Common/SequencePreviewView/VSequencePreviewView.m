@@ -43,7 +43,7 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isRemoteVideo] )
+        if ( YES || [sequence isRemoteVideo] )
         {
             classType = [VRemoteVideoSequencePreviewView class];
         }
@@ -121,6 +121,11 @@
     }
 }
 
+- (BOOL)likeButtonDisabled
+{
+    return NO;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     if ( sequence != self.sequence )
@@ -130,7 +135,10 @@
     
     [super setStreamItem:sequence];
     
-    [self configureLikeButtonForSequence:sequence];
+    if ( !self.likeButtonDisabled )
+    {
+        [self configureLikeButtonForSequence:sequence];
+    }
 }
 
 - (VSequence *)sequence

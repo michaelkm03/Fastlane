@@ -60,7 +60,8 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 {
     if ( [cell conformsToProtocol:@protocol(VFocusable)] && cell != self.selectedCell )
     {
-        [(id <VFocusable>)cell setFocusType:VFocusTypeNone];
+        id<VFocusable> focusCell = (id <VFocusable>)cell;
+        [focusCell setFocusType:VFocusTypeNone];
     }
 }
 
@@ -68,10 +69,7 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 {
     for (UIView *cell in [self visibleCells])
     {
-        if ( self.selectedCell == nil || cell != self.selectedCell )
-        {
-            [self endFocusOnCell:cell];
-        }
+        [self endFocusOnCell:cell];
     }
 }
 

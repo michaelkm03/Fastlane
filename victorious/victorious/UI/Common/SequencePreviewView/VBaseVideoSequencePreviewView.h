@@ -33,6 +33,8 @@
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
+@property (nonatomic, strong, readonly) UIView *videoContainer;
+
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 
 @property (nonatomic, strong) VAsset *videoAsset;

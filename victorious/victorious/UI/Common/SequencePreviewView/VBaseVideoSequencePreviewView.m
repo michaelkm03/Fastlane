@@ -16,6 +16,7 @@
 #import "VDependencyManager+VBackground.h"
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
+#import "UIImageView+WebCache.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -40,7 +41,6 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         _previewImageView.clipsToBounds = YES;
         _previewImageView.backgroundColor = [UIColor clearColor];
         [self addSubview:_previewImageView];
@@ -103,6 +103,8 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    BOOL wasNil = self.sequence == nil;
+    
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;
@@ -110,42 +112,41 @@
     
     [super setSequence:sequence];
     
-    if ( !self.onlyShowPreview )
+    if ( self.onlyShowPreview )
     {
+        self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    else
+    {
+        self.previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self loadVideoAsset];
     }
-    
-    self.isLoading = NO;
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
     
-    __weak VBaseVideoSequencePreviewView *weakSelf = self;
-    
-    void (^completionBlock)(void) = ^void(void)
+    __weak typeof(self) weakSelf = self;
+    void (^completionBlock)(UIImage *, NSError *, SDImageCacheType, NSURL *) = ^void(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
-        __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-        if ( strongSelf == nil )
+        __strong typeof(self) strongSelf = weakSelf;
+        if ( strongSelf != nil )
         {
-            return;
+            [strongSelf determinedPreferredBackgroundColorWithImage:image];
+            [strongSelf setIsLoading:NO animated:(cacheType == SDImageCacheTypeNone)];;
+            strongSelf.readyForDisplay = YES;
         }
-        
-        strongSelf.readyForDisplay = YES;
     };
     
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageAsset.imageURL]
-                           placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         strongSelf.isLoading = YES;
-     }
-                                 completion:^(UIImage *image)
+    [self setIsLoading:wasNil animated:NO];
+    
+    [self.previewImageView sd_setImageWithURL:[NSURL URLWithString:imageAsset.imageURL]
+                             placeholderImage:nil
+                                      options:SDWebImageRetryFailed
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
          if (image != nil)
          {
-             [weakSelf determinedPreferredBackgroundColorWithImage:image];
-             completionBlock();
+             completionBlock( image, error, cacheType, imageURL );
          }
          else
          {
@@ -156,8 +157,7 @@
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
-                  [weakSelf determinedPreferredBackgroundColorWithImage:image];
-                  completionBlock();
+                  completionBlock( image, error, cacheType, imageURL );
               }];
          }
      }];
@@ -191,12 +191,18 @@
 {
     if ( self.focusType != VFocusTypeNone )
     {
-        self.isLoading = YES;
+        self.isLoading = NO;
+    }
+    
+    if ( self.focusType == VFocusTypeDetail )
+    {
+        [self.videoPlayer playFromStart];
     }
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
+    [videoPlayer pause];
     [self.delegate videoPlaybackDidFinish];
 }
 
@@ -247,7 +253,6 @@
             break;
             
         case VFocusTypeStream:
-            self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
@@ -267,7 +272,6 @@
                 // If we were previously only showing the preview, now we need to load the video asset
                 [self loadVideoAsset];
             }
-            self.isLoading = YES;
             [self.likeButton show];
             [self.videoPlayer play];
             self.videoPlayer.muted = NO;

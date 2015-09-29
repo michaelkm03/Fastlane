@@ -7,17 +7,13 @@
 //
 
 #import "VCardDirectoryCell.h"
-
-// Views
 #import "VExtendedView.h"
-#import "VStreamItemPreviewView.h"
-
-// Categories
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream.h"
 #import "UIView+AutoLayout.h"
+#import "VStreamItemPreviewView.h"
 
 const CGFloat VDirectoryItemBaseHeight = 217.0f;
 const CGFloat VDirectoryItemStackHeight = 8.0f;
@@ -99,6 +95,7 @@ static const CGFloat kBorderWidth = 0.5f;
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    self.previewView.onlyShowPreview = YES;
     [self.previewViewContainer addSubview:self.previewView];
     [self.previewViewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     self.previewView.streamItem = streamItem;

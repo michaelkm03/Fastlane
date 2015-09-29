@@ -14,10 +14,9 @@
 #import "VStreamPreviewView.h"
 #import "VFailureStreamItemPreviewView.h"
 #import "UIView+AutoLayout.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 @interface VStreamItemPreviewView ()
-
-@property (nonatomic, strong) UIView *backgroundContainerView;
 
 @end
 
@@ -56,6 +55,12 @@
 {
     _streamItem = streamItem;
     self.readyForDisplay = NO;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 + (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *)streamItem
@@ -105,33 +110,29 @@
     return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForStreamItem:streamItem])];
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    [self sendSubviewToBack:_backgroundContainerView];
-}
-
 - (void)setIsLoading:(BOOL)isLoading
 {
-    _isLoading = isLoading;
-    _backgroundContainerView.alpha = 0.0f; //isLoading ? 1.0f : 0.0f;
+    [self setIsLoading:isLoading animated:YES];
 }
 
-- (UIView *)backgroundContainerView
+- (void)setIsLoading:(BOOL)isLoading animated:(BOOL)animated
 {
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
+    _isLoading = isLoading;
     
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor redColor];
-    _backgroundContainerView.alpha = 0.0f;
-    _backgroundContainerView.userInteractionEnabled = NO;
-    [self addSubview:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
+    void (^animations)() = ^void
+    {
+        // Allow the loading background in the cell superview to be seen if loading
+        self.alpha = _isLoading ? 0.0f : 1.0f;
+    };
+    
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.2f animations:animations];
+    }
+    else
+    {
+        animations();
+    }
 }
 
 @end

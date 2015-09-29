@@ -1530,6 +1530,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     // Put back our current sequence preview
     if ( self.viewModel.context.contentPreviewProvider != nil )
     {
+        self.contentCell.sequencePreviewView.focusType = VFocusTypeNone;
         [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
     }
 }

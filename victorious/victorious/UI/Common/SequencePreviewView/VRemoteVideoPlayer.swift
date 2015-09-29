@@ -9,11 +9,36 @@
 import UIKit
 import youtube_ios_player_helper
 
+private extension YTPlayerView {
+    
+    func setVolume( level: Int ) {
+        evaluate( "player.setVolume( \(level) );" )
+    }
+    
+    func mute() {
+        evaluate( "console.log( player )" )
+        evaluate( "player.mute();" )
+    }
+    
+    func unmute() {
+        evaluate( "player.unMute();" )
+    }
+    
+    func evaluate( javaScriptString: String ) -> String? {
+        if let webView = self.webView, let result = webView.stringByEvaluatingJavaScriptFromString( javaScriptString ) {
+            //print( "Evaluating javascript (\(javaScriptString)) -----> \(result)" )
+            return result
+        }
+        return nil
+    }
+}
+
 class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     private static var sharedPlayerView: YTPlayerView?
+    private var currentItem: VVideoPlayerItem?
     
-    lazy private var playerView: YTPlayerView = {
+    /*lazy private var playerView: YTPlayerView = {
         if let player = sharedPlayerView {
             player.userInteractionEnabled = false
             return player
@@ -23,16 +48,25 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
             sharedPlayerView = player
             return player
         }
-    }()
+    }()*/
+    
+    let playerView = YTPlayerView()
     
     // MARK: - VVideoPlayer
     
-    var useAspectFit = false
-    var muted = false
-    
-    var isPlaying: Bool {
-        return self.playerView.playbackRate() > 0.0
+    var useAspectFit = false {
+        didSet {
+            
+        }
     }
+    
+    var muted = false {
+        didSet {
+            self.updateMute()
+        }
+    }
+    
+    private(set) var isPlaying: Bool = false
     
     var currentTimeMilliseconds: UInt {
         return UInt( self.playerView.currentTime() * 1000.0 )
@@ -53,8 +87,18 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func setItem(item: VVideoPlayerItem) {
+        
+        self.currentItem = item
+    }
+    
+    func loadCurrentItem() {
+        guard let item = self.currentItem else {
+            print( "Cannot play video without setting a `VVideoPlayerItem`" )
+            return
+        }
+        
         let playerVars = [
-            "controls" : NSNumber(integer: 0),
+            "controls" : NSNumber(integer: 1),
             "playsinline" : NSNumber(integer: 1),
             "autohide" : NSNumber(integer: 1),
             "showinfo" : NSNumber(integer: 0),
@@ -62,19 +106,16 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         ]
         self.playerView.delegate = self
         
+        // WARNING: Testing only:
+        let videoIds = [ "Z9XCCDQOgyQ", "jYm0WQf_sNI", "sAmz-Evlmxk", "LsKFsF2zpFM", "ZIKzHAS1N_U" ]
+        item.remoteContentId = videoIds[ Int( arc4random() % UInt32(videoIds.count) )]
+        
         guard let videoId = item.remoteContentId else {
             fatalError( "Remote content ID is required for this video player." )
         }
         
-        if self.playerView.videoUrl() == nil {
-            print( "Initializing video player" )
-            self.playerView.loadWithVideoId( videoId, playerVars: playerVars )
-        }
-        else {
-            print( "Using existing video player" )
-            self.playerView.cueVideoById( videoId, startSeconds: 0.0, suggestedQuality: .Auto )
-        }
-        self.playerView.hidden = false
+        self.playerView.hidden = true
+        self.playerView.loadWithVideoId( videoId, playerVars: playerVars )
     }
     
     func seekToTimeSeconds(timeSeconds: NSTimeInterval) {
@@ -82,48 +123,70 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func play() {
-        self.playerView.hidden = false
-        self.playerView.playVideo()
-        self.delegate?.videoPlayerDidPlay?(self)
+        let wasPlaying = self.isPlaying
+        if !wasPlaying {
+            self.isPlaying = true
+            if self.playerView.videoUrl() == nil {
+                self.loadCurrentItem()
+            }
+            
+            self.playerView.playVideo()
+            self.delegate?.videoPlayerDidPlay?(self)
+        }
     }
     
     func pause() {
-        self.playerView.hidden = false
-        self.playerView.pauseVideo()
+        if self.isPlaying {
+            self.playerView.pauseVideo()
+        }
     }
     
     func pauseAtStart() {
-        self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
-        self.playerView.hidden = false
-        self.playerView.pauseVideo()
+        if self.isPlaying {
+            self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
+            self.playerView.pauseVideo()
+        }
     }
     
     func playFromStart() {
+        let wasPlaying = self.isPlaying
+        if !wasPlaying {
+            if self.playerView.videoUrl() == nil {
+                self.loadCurrentItem()
+            }
+            self.playerView.playVideo()
+            self.delegate?.videoPlayerDidPlay?(self)
+        }
         self.playerView.seekToSeconds( 0.0, allowSeekAhead: true)
-        self.playerView.hidden = false
-        self.playerView.playVideo()
-        self.delegate?.videoPlayerDidPlay?(self)
     }
     
     // MARK: - YTPlayerViewDelegate
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
+        self.playerView.stopVideo()
+        self.isPlaying = false
+        self.playerView.hidden = true
         self.delegate?.videoPlayerDidBecomeReady?(self)
-        self.play()
+        self.updateMute()
     }
     
     func playerView(playerView: YTPlayerView!, didChangeToState state: YTPlayerState) {
         switch state {
         case .Ended:
+            self.isPlaying = false
+            self.playerView.hidden = true
             self.delegate?.videoPlayerDidReachEnd?(self)
         case .Paused:
+            self.isPlaying = false
             self.delegate?.videoPlayerDidPause?(self)
         case .Buffering:
             self.delegate?.videoPlayerDidStartBuffering?(self)
         case .Queued:()
         case .Unknown:()
         case .Unstarted:()
-        case .Playing:()
+        case .Playing:
+            self.isPlaying = true
+            self.playerView.hidden = false
         }
     }
     
@@ -135,5 +198,14 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     func playerView(playerView: YTPlayerView!, didPlayTime playTime: Float) {
         self.delegate?.videoPlayer?(self, didPlayToTime: Float64(playTime) )
+    }
+    
+    private func updateMute() {
+        if muted {
+            playerView.mute()
+        }
+        else {
+            playerView.mute()
+        }
     }
 }

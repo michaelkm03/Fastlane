@@ -71,6 +71,8 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  */
 @property (nonatomic, assign) BOOL isLoading;
 
+- (void)setIsLoading:(BOOL)isLoading animated:(BOOL)animated;
+
 /**
  *  The dependency manager used, by some preview views, for styling
  */

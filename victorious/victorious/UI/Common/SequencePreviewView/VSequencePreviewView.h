@@ -43,6 +43,8 @@
 
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
+@property (nonatomic, assign, readonly) BOOL likeButtonDisabled;
+
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */

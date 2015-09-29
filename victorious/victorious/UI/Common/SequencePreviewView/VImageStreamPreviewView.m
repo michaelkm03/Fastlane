@@ -49,18 +49,20 @@
 {
     [super setStream:stream];
     
-    self.isLoading = NO;
+    self.isLoading = YES;
     
-    __weak VImageStreamPreviewView *weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
                            placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         self.isLoading = YES;
-     }
+                        alongsideAnimations:nil
                                  completion:^(UIImage *image)
      {
-         weakSelf.readyForDisplay = YES;
+         __strong typeof(self) strongSelf = weakSelf;
+         if ( strongSelf != nil )
+         {
+             strongSelf.isLoading = NO;
+             strongSelf.readyForDisplay = YES;
+         }
      }];
 }
 

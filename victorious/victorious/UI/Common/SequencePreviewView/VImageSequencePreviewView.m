@@ -12,6 +12,7 @@
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
+#import "UIImageView+WebCache.h"
 
 @interface VImageSequencePreviewView ()
 
@@ -76,7 +77,6 @@
 {
     [super setSequence:sequence];
     
-    self.isLoading = NO;
     NSURL *previewURL = nil;
     if ( [sequence isImage] )
     {
@@ -88,13 +88,14 @@
         CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
         previewURL = [sequence inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
     }
-    [self.previewImageView fadeInImageAtURL:previewURL
-                           placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         self.isLoading = NO;
-     }
-                                 completion:^(UIImage *image)
+    
+    [self setIsLoading:YES animated:NO];
+    
+    self.previewImageView.contentMode = self.onlyShowPreview ? UIViewContentModeScaleAspectFill : UIViewContentModeScaleAspectFit;
+    [self.previewImageView sd_setImageWithURL:previewURL
+                             placeholderImage:nil
+                                      options:SDWebImageRetryFailed
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
          if ( !self.hasDeterminedPreferredBackgroundColor )
          {
@@ -105,6 +106,7 @@
              self.hasDeterminedPreferredBackgroundColor = YES;
          }
          self.readyForDisplay = YES;
+         [self setIsLoading:NO animated:(cacheType == SDImageCacheTypeNone)];
      }];
     [self focusDidUpdate];
 }
