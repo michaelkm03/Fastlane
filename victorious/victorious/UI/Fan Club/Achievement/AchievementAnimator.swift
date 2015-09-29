@@ -34,6 +34,8 @@ class AchievementAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 
                 if isDismissal {
                     
+                    // Because this is a custom modal transition, this needs to be called so that 
+                    // viewWillDisappear gets called on the presenting view controller
                     toViewController.beginAppearanceTransition(true, animated: true)
                     UIView.animateWithDuration(transitionDuration(transitionContext),
                         animations: { () in
