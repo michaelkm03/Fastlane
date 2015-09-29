@@ -33,9 +33,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     private lazy var iconImageViewHeightConstraint: NSLayoutConstraint = {
         let iconImageViewHeightConstraint = NSLayoutConstraint(item: self.iconImageView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: self.iconImageViewHeightConstant)
         return iconImageViewHeightConstraint
-        }()
-    
-    private var hasAppeared = false
+    }()
     
     // MARK: - Public Properties
     
@@ -80,26 +78,17 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         layoutContent()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if !hasAppeared {
-            setToInitialState()
-        }
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if !hasAppeared {
-            animateIn() { completed in
-                let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
-                self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage, completion: nil)
-            }
-        }
+        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
+        self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage, completion: nil)
     }
     
     private func layoutContent() {
         
         containerView.backgroundColor = UIColor.whiteColor()
+        containerView.layer.cornerRadius = 6
+        containerView.layer.masksToBounds = true
         
         view.addSubview(containerView)
         containerView.backgroundColor = UIColor.whiteColor()
@@ -165,27 +154,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     /// MARK: Actions
     
     func pressedDismiss() {
-        animateOut(nil)
         self.interstitialDelegate?.dismissInterstitial(self)
-    }
-    
-    /// MARK: Helpers
-    
-    private func animateIn(completion: ((Bool) -> Void)?) {
-        
-        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.2, options: .CurveEaseInOut, animations: {
-            self.containerView.transform = CGAffineTransformIdentity
-            }, completion: completion)
-    }
-    
-    private func animateOut(completion: ((Bool) -> Void)?) {
-        UIView.animateWithDuration(0.2, animations: { () in
-            self.setToInitialState()
-            }, completion: completion)
-    }
-    
-    private func setToInitialState() {
-//        containerView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - containerView.bounds.origin.y)
     }
     
     /// MARK: Interstitial View Controller
