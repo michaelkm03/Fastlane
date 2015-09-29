@@ -95,7 +95,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     //MARK: - Getters
     
     private class func getHashtagText(shelf: HashtagShelf) -> String {
-        return "#" + shelf.hashtagTitle
+        return "#" + shelf.hashtagObject.tag
     }
     
     private class func getPostsCountText(shelf: HashtagShelf) -> String {
@@ -145,7 +145,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
         var controlState: VFollowControlState = .Unfollowed
         if let mainUser = VObjectManager.sharedManager().mainUser
-            where mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+            where mainUser.isFollowingHashtagString(shelf.hashtagObject.tag) {
             controlState = .Followed
         }
         followControl.setControlState(controlState, animated: true)
@@ -199,7 +199,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followingCallComplete = false
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.followHashtag(shelf.hashtagTitle,
+                target.followHashtag(shelf.hashtagObject.tag,
                     successBlock: { [weak self] ( _:[AnyObject] ) in
                         guard let strongSelf = self else {
                             return
@@ -222,7 +222,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followingCallComplete = false
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.unfollowHashtag(shelf.hashtagTitle,
+                target.unfollowHashtag(shelf.hashtagObject.tag,
                     successBlock: { [weak self] ( _:[AnyObject] ) in
                         guard let strongSelf = self else {
                             return
