@@ -31,8 +31,6 @@ class StatusBarStyleTests: VictoriousTestCase {
     }
     
     func testStatusBarStyle() {
-        
-        tester().waitForTimeInterval(2.0)
         addStep("Checking status bar style on scaffold")
         checkStatusBarStyle()
         
@@ -40,7 +38,6 @@ class StatusBarStyleTests: VictoriousTestCase {
         tester().tapViewWithAccessibilityLabel("Menu Create")
         tester().tapViewWithAccessibilityLabel("Create Image")
         
-        tester().waitForTimeInterval(2.0)
         addStep("Check status bar style for creation flow")
         checkStatusBarStyle()
     }
