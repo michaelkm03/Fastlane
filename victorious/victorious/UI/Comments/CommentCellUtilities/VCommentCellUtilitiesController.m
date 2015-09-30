@@ -1,12 +1,12 @@
 //
-//  VCommentCellUtilitesController.m
+//  VCommentCellUtilitiesController.m
 //  victorious
 //
 //  Created by Patrick Lynch on 12/20/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCommentCellUtilitesController.h"
+#import "VCommentCellUtilitiesController.h"
 #import "VContentCommentsCell.h"
 #import "VComment+Fetcher.h"
 #import "VCommentsUtilityButtonConfiguration.h"
@@ -21,7 +21,7 @@
 
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
-@interface VCommentCellUtilitesController()
+@interface VCommentCellUtilitiesController()
 
 @property (nonatomic, strong) NSArray *buttonConfigs;
 @property (nonatomic, strong) VComment *comment;
@@ -31,7 +31,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 @end
 
-@implementation VCommentCellUtilitesController
+@implementation VCommentCellUtilitiesController
 
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView
@@ -85,7 +85,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 #pragma mark - Server actions
 
 - (void)flagComment
-{   
+{
     [[VObjectManager sharedManager] flagComment:self.comment
                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
@@ -96,6 +96,14 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                            otherButtonTitles:nil] show];
          
          [self.delegate commentRemoved:self.comment];
+         [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                          message:NSLocalizedString(@"ReportCommentMessage", @"")
+                          handler:^(UIAlertAction *_Nonnull action)
+          {
+              [self.delegate commentRemoved:self.comment];
+              [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
+              [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
+          }];
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagComment];
          
      }
@@ -110,9 +118,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          {
              errorTitle = NSLocalizedString(@"CommentAlreadyReported", @"");
              errorMessage = NSLocalizedString(@"ReportCommentMessage", @"");
-             [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
-             [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
-             [self.delegate commentRemoved:self.comment];
          }
          else
          {
@@ -120,12 +125,27 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
              errorMessage = NSLocalizedString(@"ErrorOccured", @"");
          }
          
-         [[[UIAlertView alloc] initWithTitle:errorTitle
-                                    message:errorMessage
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil] show];
+         [self showAlertWithTitle:errorTitle
+                          message:errorMessage
+                          handler:^(UIAlertAction *_Nonnull action)
+          {
+              [self.delegate commentRemoved:self.comment];
+              [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
+              [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
+          }];
      }];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void (^)(UIAlertAction *))handler
+{
+    UIViewController *viewControllerForAlerts = [self.delegate viewControllerForAlerts];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                              style:UIAlertActionStyleDefault
+                                            handler:handler]];
+    [viewControllerForAlerts presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)deleteComment

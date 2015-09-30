@@ -33,6 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)replyToComment:(VComment *)comment;
 
+/**
+ Alerts regarding comment updates will be presented on the controller
+ returned from this method.
+ */
+- (UIViewController *)viewControllerForAlerts;
+
 @end
 
 NS_ASSUME_NONNULL_END

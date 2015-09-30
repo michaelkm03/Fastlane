@@ -678,7 +678,7 @@
 		A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
-		A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */; };
+		A7738B101A4B4A0D008EA973 /* VCommentCellUtilitiesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitiesController.m */; };
 		A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */; };
 		A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = A776E00D1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m */; };
 		A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */; };
@@ -2531,8 +2531,8 @@
 		A7738B061A4A36C9008EA973 /* VTransitionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTransitionModel.h; sourceTree = "<group>"; };
 		A7738B071A4A36C9008EA973 /* VTransitionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTransitionModel.m; sourceTree = "<group>"; };
 		A7738B091A4A3744008EA973 /* VAnimatedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimatedTransition.h; sourceTree = "<group>"; };
-		A7738B0B1A4B4A0D008EA973 /* VCommentCellUtilitesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitesController.h; sourceTree = "<group>"; };
-		A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentCellUtilitesController.m; sourceTree = "<group>"; };
+		A7738B0B1A4B4A0D008EA973 /* VCommentCellUtilitiesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitiesController.h; sourceTree = "<group>"; };
+		A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitiesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentCellUtilitiesController.m; sourceTree = "<group>"; };
 		A7738B0D1A4B4A0D008EA973 /* VCommentCellUtilitiesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitiesDelegate.h; sourceTree = "<group>"; };
 		A7738B0E1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsUtilityButtonConfiguration.h; sourceTree = "<group>"; };
 		A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsUtilityButtonConfiguration.m; sourceTree = "<group>"; };
@@ -6035,8 +6035,8 @@
 		A7738B0A1A4B4A0D008EA973 /* CommentCellUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				A7738B0B1A4B4A0D008EA973 /* VCommentCellUtilitesController.h */,
-				A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */,
+				A7738B0B1A4B4A0D008EA973 /* VCommentCellUtilitiesController.h */,
+				A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitiesController.m */,
 				A7738B0D1A4B4A0D008EA973 /* VCommentCellUtilitiesDelegate.h */,
 				A7738B0E1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.h */,
 				A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */,
@@ -9656,7 +9656,7 @@
 				B0D8BAAD1B545A3600087057 /* VListicleView.m in Sources */,
 				A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */,
 				A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */,
-				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */,
+				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitiesController.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
 				F06B418D1B7C30BB008709E8 /* UserShelf.swift in Sources */,

@@ -1363,6 +1363,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.textEntryView startEditing];
 }
 
+- (UIViewController *)viewControllerForAlerts
+{
+    return self;
+}
+
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment

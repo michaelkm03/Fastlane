@@ -141,16 +141,8 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    __block VComment *safeComment = comment;
-    __weak VObjectManager *weakSelf = self;
     VSuccessBlock fullSuccess = ^(NSOperation *__nullable operation, id __nullable result, NSArray *resultObjects)
     {
-        __strong VObjectManager *strongSelf = weakSelf;
-        if ( strongSelf != nil )
-        {
-            [strongSelf addRemoteId:safeComment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
-            [strongSelf locallyRemoveComment:safeComment];
-        }
         success(operation, result, resultObjects);
     };
     return [self POST:@"/api/comment/flag"
