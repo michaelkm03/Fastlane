@@ -391,6 +391,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.viewModel reloadData];
     
     self.view.backgroundColor = [UIColor blackColor];
+    
+    self.videoPlayerDidFinishPlayingOnce = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1183,7 +1185,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
              
              __strong typeof(welf) strongSelf = welf;
              strongSelf.enteringRealTimeComment = YES;
-             strongSelf.realtimeCommentBeganTime = strongSelf.videoPlayer.currentTimeSeconds > 0 ? strongSelf.videoPlayer.currentTimeSeconds : strongSelf.videoPlayer.durationSeconds;
+             strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
              [strongSelf.videoPlayer pause];
          }];
     }
@@ -1312,7 +1314,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (Float64)currentVideoTime
 {
-    return self.videoPlayer == nil ? 0.0 : self.videoPlayer.currentTimeSeconds;
+    if (self.videoPlayer != nil)
+    {
+        if (self.videoPlayer.currentTimeSeconds > 0.0f)
+        {
+            return self.videoPlayer.currentTimeSeconds;
+        }
+        else if (self.videoPlayerDidFinishPlayingOnce)
+        {
+            return self.videoPlayer.durationSeconds;
+        }
+    }
+    
+    return 0.0;
 }
 
 #pragma mark - VSwipeViewControllerDelegate
@@ -1709,6 +1723,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         }
         [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
+    self.videoPlayerDidFinishPlayingOnce = YES;
 }
 
 #pragma mark - VContentCellDelegate
