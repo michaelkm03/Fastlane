@@ -12,7 +12,7 @@
 #import "VHasManagedDependencies.h"
 #import "VVideoPlayerDelegate.h"
 #import "VPollResultReceiver.h"
-#import "VVideoPreviewView.h"
+#import "VPreviewView.h"
 
 @class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 

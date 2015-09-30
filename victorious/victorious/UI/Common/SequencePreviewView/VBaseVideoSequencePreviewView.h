@@ -14,7 +14,7 @@
 #import "VAsset.h"
 #import "VVideoView.h"
 #import "VFocusable.h"
-#import "VVideoPreviewView.h"
+#import "VPreviewView.h"
 #import "VVideoSettings.h"
 
 /**

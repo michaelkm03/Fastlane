@@ -25,6 +25,9 @@
 
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 @property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, strong) NSLayoutConstraint *contentWidthConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
+@property (nonatomic, strong) NSValue *previewRenderingSize;
 
 @end
 
@@ -95,6 +98,35 @@
     return nil;
 }
 
+#pragma mark - VPreviewView
+
+- (void)setRenderingSize:(CGSize)renderingSize
+{
+    self.previewRenderingSize = [NSValue valueWithCGSize:renderingSize];
+    self.contentHeightConstraint.constant = renderingSize.width;
+    self.contentWidthConstraint.constant = renderingSize.width;
+    
+    [self setNeedsLayout];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGFloat scale = (CGFloat)^
+    {
+        if ( self.previewRenderingSize != nil )
+        {
+            return self.bounds.size.width / self.previewRenderingSize.CGSizeValue.width;;
+        }
+        else
+        {
+            return 1.0;
+        }
+    }();
+    self.textPostViewController.view.transform = CGAffineTransformMakeScale( scale, scale );
+}
+
 #pragma mark - View updating
 
 - (void)updateSequence
@@ -121,9 +153,10 @@
     if ( self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        self.textPostViewController.view.frame = self.bounds;
         [self addSubview:self.textPostViewController.view];
-        [self v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+        [self v_addCenterToParentContraintsToSubview:self.textPostViewController.view];
+        self.contentWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:30];
+        self.contentHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:30];
     }
     
     self.textPostViewController.view.hidden = NO;

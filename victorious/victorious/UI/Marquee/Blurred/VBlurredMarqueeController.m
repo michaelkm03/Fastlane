@@ -21,7 +21,6 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import "VStreamItemPreviewView.h"
 #import "UIView+VViewRendering.h"
-
 #import "VDependencyManager+VBackgroundContainer.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
@@ -147,7 +146,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         
         //Populate visible subviews with the newly loaded image
         NSUInteger cellIndex = [[strongSelf.collectionView indexPathsForVisibleItems] indexOfObject:indexPath];
-        loadedPreviewView.frame = [VBlurredMarqueeStreamItemCell frameForPreviewViewInCellWithBounds:self.collectionView.bounds];
+        loadedPreviewView.frame = [VBlurredMarqueeStreamItemCell frameForPreviewViewInCellWithBounds:strongSelf.collectionView.bounds];
         if ( cellIndex != NSNotFound )
         {
             //The streamItemCell we need to update is already on screen, update it with animation (if it's a new image)
