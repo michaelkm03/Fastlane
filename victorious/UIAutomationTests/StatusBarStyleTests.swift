@@ -28,9 +28,11 @@ class StatusBarStyleTests: VictoriousTestCase {
         super.beforeAll()
         logOutAndResetSession()
         loginAndDismissWelcomeIfPresent()
+        tester().waitWithCountdownForInterval(10)
     }
     
     func testStatusBarStyle() {
+        tester().waitForTappableViewWithAccessibilityLabel("Menu Create")
         addStep("Checking status bar style on scaffold")
         checkStatusBarStyle()
         
