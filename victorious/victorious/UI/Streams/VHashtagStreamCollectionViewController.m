@@ -179,18 +179,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     else
     {
         self.collectionView.backgroundView = nil;
-        
-        // We're following this hashtag
-        if (self.streamDataSource.stream.amFollowing.boolValue)
-        {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            
-            // Create a new VHashtag object and assign it to the currently logged in user.
-            VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
-                                                                           subclass:[VHashtag class]];
-            newTag.tag = self.selectedHashtag;
-            [mainUser addFollowedHashtags:@[newTag] checkFollowingFlag:NO];
-        }
     }
 }
 

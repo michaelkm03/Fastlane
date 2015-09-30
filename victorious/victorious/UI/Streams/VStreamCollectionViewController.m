@@ -531,7 +531,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             if ( [stream isKindOfClass:[HashtagShelf class]] )
             {
                 HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
-                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagObject.tag];
+                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
             }
             else
             {

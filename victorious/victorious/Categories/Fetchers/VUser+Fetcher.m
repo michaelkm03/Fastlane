@@ -8,6 +8,8 @@
 
 #import "VUser+Fetcher.h"
 #import "VHashtag.h"
+#import "VHashtag+RestKit.h"
+#import "VObjectManager.h"
 
 @implementation VUser (Fetcher)
 
@@ -29,22 +31,20 @@
     return NO;
 }
 
-- (void)addFollowedHashtags:(NSArray *)hashtags checkFollowingFlag:(BOOL)checkFlag
+- (void)addFollowedHashtag:(NSString *)hashtag
 {
-    NSMutableOrderedSet *hashtagSet = [self.hashtags mutableCopy] ?: [[NSMutableOrderedSet alloc] init];
-    
-    for (VHashtag *tag in hashtags)
+    if ([self isFollowingHashtagString:hashtag])
     {
-        if (checkFlag && !tag.amFollowing.boolValue)
-        {
-            continue;
-        }
-        
-        if (![self isFollowingHashtagString:tag.tag])
-        {
-            [hashtagSet addObject:tag];
-        }
+        return;
     }
+    
+    // Create a new VHashtag object and assign it to the currently logged in user.
+    VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
+                                                                   subclass:[VHashtag class]];
+    newTag.tag = hashtag;
+    
+    NSMutableOrderedSet *hashtagSet = [self.hashtags mutableCopy] ?: [[NSMutableOrderedSet alloc] init];
+    [hashtagSet addObject:newTag];
     
     if ( [self shouldUpdateUserForHashtags:hashtagSet] )
     {

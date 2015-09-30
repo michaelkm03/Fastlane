@@ -23,9 +23,9 @@
 - (BOOL)isFollowingHashtagString:(NSString *)hashtag;
 
 /**
- * Adds a relationship between an array of hashtags and this user signifying that this
- * user is following those hashtags.
+ *  Creates a new hashtag object with the string and adds it to the
+ *  user's followed hashtags list.
  */
-- (void)addFollowedHashtags:(NSArray *)hashtags checkFollowingFlag:(BOOL)checkFlag;
+- (void)addFollowedHashtag:(NSString *)hashtag;
 
 @end

@@ -120,15 +120,14 @@
         <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
-        <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="hashtagShelf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HashtagShelf" inverseName="hashtagObject" inverseEntity="HashtagShelf" syncable="YES"/>
         <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="hashtags" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hashtagTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postsCount" attributeType="Integer 64" syncable="YES"/>
-        <relationship name="hashtagObject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="hashtagShelf" inverseEntity="Hashtag" syncable="YES"/>
     </entity>
     <entity name="ImageAsset" representedClassName="VImageAsset" syncable="YES">
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -273,7 +272,6 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
-        <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="count" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
@@ -370,8 +368,8 @@
         <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="Hashtag" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="90"/>
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
@@ -386,7 +384,7 @@
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="195"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="540"/>

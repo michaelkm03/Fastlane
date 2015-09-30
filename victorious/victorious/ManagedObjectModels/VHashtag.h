@@ -13,10 +13,10 @@
 
 @interface VHashtag : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * amFollowing;
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * tag;
 @property (nonatomic, retain) NSSet *user;
+
 @end
 
 @interface VHashtag (CoreDataGeneratedAccessors)

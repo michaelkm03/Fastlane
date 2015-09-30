@@ -590,7 +590,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
                 // Hashtag Shelf
                 if let tagShelf = stream as? HashtagShelf {
-                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagObject.tag)
+                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
                 }
                     // Other shelves
                 else {

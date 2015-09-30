@@ -60,8 +60,7 @@
     {
         if (resultObjects.count > 0)
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:YES];
         }
         
         if (success != nil)
@@ -84,18 +83,9 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        
-        // Add hashtags to main user object
         if (resultObjects.count > 0)
         {
-            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:NO];
-        }
-        else if ( pageType == VPageTypeFirst && mainUser.hashtags.count > 0 )
-        {
-            //Only update hashtags when absolutely necessary to avoid triggering KVO events unnecessarily.
-            mainUser.hashtags = nil;
-            [mainUser.managedObjectContext saveToPersistentStore:nil];
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:NO];
         }
 
         if (success != nil)
@@ -143,7 +133,7 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if ([self doesSet:mainUser.hashtags containString:hashtag])
+    if ([mainUser isFollowingHashtagString:hashtag])
     {
         success(nil, nil, @[]);
         return nil;
@@ -151,17 +141,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Create a new VHashtag object and assign it to the currently logged in user.
-        // Then save it to Core Data.
-        VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
-                                                                       subclass:[VHashtag class]];
-        newTag.tag = hashtag;
-        
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        
-        [hashtagSet addObject:newTag];
-        mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
-        [mainUser.managedObjectContext saveToPersistentStore:nil];
+        [mainUser addFollowedHashtag:hashtag];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
@@ -202,9 +182,9 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if (![self doesSet:mainUser.hashtags containString:hashtag])
+    if (![mainUser isFollowingHashtagString:hashtag])
     {
-        success( nil, nil, @[] );
+        success(nil, nil, @[]);
         return nil;
     }
     
@@ -255,8 +235,7 @@
     {
         if (resultObjects.count > 0)
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            [mainUser addFollowedHashtags:resultObjects checkFollowingFlag:YES];
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:YES];
         }
         
         if (success != nil)
@@ -288,16 +267,35 @@
             failBlock:fullFailure];
 }
 
-- (BOOL)doesSet:(NSOrderedSet *)orderedSet containString:(NSString *)string
+#pragma mark - Helpers
+
+// Check for hashtags that we're following
+- (void)parseResponseToCheckForFollowedHashtags:(NSDictionary *)response checkFollowingFlag:(BOOL)checkFlag
 {
-    for (VHashtag *tag in orderedSet)
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    if (![response[@"payload"] isKindOfClass:[NSDictionary class]])
     {
-        if ([tag.tag isEqualToString:string])
+        return;
+    }
+    
+    if (![response[@"payload"][@"objects"] isKindOfClass:[NSArray class]])
+    {
+        return;
+    }
+    
+    for (NSDictionary *hashtag in response[@"payload"][@"objects"])
+    {
+        if (checkFlag && ![hashtag[@"am_following"] boolValue])
         {
-            return  YES;
+            return;
+        }
+        
+        if (hashtag[@"tag"] != nil)
+        {
+            [mainUser addFollowedHashtag:hashtag[@"tag"]];
         }
     }
-    return NO;
 }
 
 @end

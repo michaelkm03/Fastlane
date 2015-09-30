@@ -19,8 +19,7 @@
 {
     NSDictionary *propertyMap = @{
                                   @"count"          : VSelectorName(count),
-                                  @"tag"            : VSelectorName(tag),
-                                  @"am_following"   : VSelectorName(amFollowing)
+                                  @"tag"            : VSelectorName(tag)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

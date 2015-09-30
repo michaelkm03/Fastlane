@@ -427,6 +427,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
                 shelf.trackingIdentifier = shelf.remoteId;
                 itemApiPath = shelf.apiPath;
+                [self checkShelfForFollowedHashtags:shelf];
             }
             
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
@@ -496,8 +497,8 @@ static const NSInteger kUserSearchResultLimit = 20;
         stream.trackingIdentifier = streamId;
         stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
-        // For hashtag streams
-        stream.amFollowing = fullResponse[@"payload"][@"am_following"];
+        // Check if we need to follow any hashtags
+        [self checkStreamForHashtags:stream fullResponse:fullResponse];
         
         if ( success != nil )
         {
@@ -518,6 +519,45 @@ static const NSInteger kUserSearchResultLimit = 20;
     else
     {
         editorializationItem.headline = headline;
+    }
+}
+
+- (void)checkShelfForFollowedHashtags:(Shelf *)shelf
+{
+    if ([shelf isKindOfClass:[HashtagShelf class]])
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        // Check if we're following the hashtag
+        HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
+        if (hashtagShelf.amFollowing.boolValue && hashtagShelf.hashtagTitle != nil)
+        {
+            [mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
+        }
+    }
+}
+
+- (void)checkStreamForHashtags:(VStreamItem *)streamItem fullResponse:(NSDictionary *)fullResponse
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+
+    // We're a stream, we need to check if we're a hashtag stream
+    if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        if (fullResponse[@"payload"] == nil && [fullResponse[@"payload"] isKindOfClass:[NSDictionary class]])
+        {
+            return;
+        }
+        
+        NSDictionary *payload = fullResponse[@"payload"];
+        
+        VStream *stream = (VStream *)streamItem;
+        // Check if this is a hashtag stream, and check if we're following the hashtag
+        if ([payload[@"am_following"] boolValue] && stream.hashtag != nil)
+        {
+            // Stream ID is the hashtag
+            [mainUser addFollowedHashtag:streamItem.streamId];
+        }
     }
 }
 
