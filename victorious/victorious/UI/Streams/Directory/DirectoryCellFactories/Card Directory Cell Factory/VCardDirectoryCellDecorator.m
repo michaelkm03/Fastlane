@@ -28,6 +28,7 @@
     if ( [streamItem isKindOfClass:[VStream class]] )
     {
         VStream *stream = (VStream *)streamItem;
+        cell.countLabel.hidden = (stream.count.integerValue == 0);
         if ( [VCardDirectoryCell wantsToShowStackedBackgroundForStreamItem:streamItem] )
         {
             cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NumStreams", @""), stream.count];

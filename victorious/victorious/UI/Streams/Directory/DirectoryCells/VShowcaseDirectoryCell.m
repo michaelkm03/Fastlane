@@ -199,11 +199,8 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (BOOL)shouldShowShowMore
 {
     VStream *stream = [self stream];
-    if ([stream.count integerValue] > (NSInteger)stream.streamItems.count)
-    {
-        return YES;
-    }
-    return NO;
+    
+    return (stream.count.integerValue > 0);
 }
 
 - (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath
