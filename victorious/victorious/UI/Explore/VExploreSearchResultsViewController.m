@@ -49,17 +49,9 @@
     [self textFieldShouldClear:nil];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar
-    textDidChange:(NSString *)searchText
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
-    {
-        [self userSearch:searchBar.text];
-    }
-    else if (self.segmentControl.selectedSegmentIndex == 1)
-    {
-        [self hashtagSearch:searchBar.text];
-    }
+    [self searchForCurrentStateWithText:searchBar.text];
 }
 
 @end

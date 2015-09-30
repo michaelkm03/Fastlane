@@ -445,11 +445,11 @@ static NSInteger const kVMaxSearchResults = 1000;
 {
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
-        [self userSearch:self.searchField.text];
+        [self userSearch:searchText];
     }
     else if (self.segmentControl.selectedSegmentIndex == 1)
     {
-        [self hashtagSearch:self.searchField.text];
+        [self hashtagSearch:searchText];
     }
 }
 

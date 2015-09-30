@@ -127,7 +127,6 @@ static const NSInteger kSearchResultLimit = 100;
     
     // SETUP SEARCH FIELD
     self.searchField.delegate = self;
-    [self.searchField addTarget:self action:@selector(runUserSearch:) forControlEvents:UIControlEventEditingChanged];
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[UIColor grayColor]];
     [self.searchField sizeToFit];
