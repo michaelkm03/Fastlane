@@ -232,12 +232,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 #pragma mark - Search Actions
 
-- (void)clearSearchResults
-{
-    [self.userSearchResultsVC setSearchResults:@[]];
-    [self.tagsSearchResultsVC setSearchResults:@[]];
-}
-
 - (void)hashtagSearch:(NSString *)tagName
 {
     if ([self.currentHashtagSearchQueryText isEqualToString:tagName])
@@ -399,7 +393,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         });
     };
     
-    [self clearSearchResults];
     if ( [userName length] > 0 )
     {
         [self cancelUserSearch:YES andHashtagSearch:NO];
@@ -413,6 +406,8 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                                                    failBlock:searchFail];
         });
     }
+    
+    self.userSearchResultsVC.searchResults = @[];
 }
 
 - (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
