@@ -94,7 +94,8 @@
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     [self.previewView setDependencyManager:self.dependencyManager];
-    self.previewView.onlyShowPreview = [self.previewView isKindOfClass:[VTextSequencePreviewView class]] || [self.previewView isKindOfClass:[VTextStreamPreviewView class]];
+    BOOL isTextContent = [self.previewView isKindOfClass:[VTextSequencePreviewView class]] || [self.previewView isKindOfClass:[VTextStreamPreviewView class]];
+    self.previewView.onlyShowPreview = isTextContent && self.onlyShowPreviewForTextPosts;
     self.previewView.displaySize = self.bounds.size;
     
     // Turn off autoplay for explore marquee shelf

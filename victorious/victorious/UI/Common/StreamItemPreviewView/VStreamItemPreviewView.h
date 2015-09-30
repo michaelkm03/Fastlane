@@ -41,6 +41,8 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 
 /**
  *  Use to update a streamItem preview view for a new streamItem.
+ *
+ *  @param streamItem The stream item that should populate the preview view.
  */
 - (void)updateToStreamItem:(VStreamItem *)streamItem;
 

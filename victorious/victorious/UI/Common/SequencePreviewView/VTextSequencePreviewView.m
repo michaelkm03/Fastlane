@@ -255,7 +255,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     {
         __weak VTextSequencePreviewView *weakSelf = self;
         fullCompletion = ^(UIImage *image){
-            VTextSequencePreviewView *strongSelf = weakSelf;
+            __strong VTextSequencePreviewView *strongSelf = weakSelf;
             if ( strongSelf != nil )
             {
                 image = [image smoothResizedImageWithNewSize:strongSelf.displaySize];
@@ -270,7 +270,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 {
     __weak VTextSequencePreviewView *weakSelf = self;
     [self renderTextPostPreviewImageWithCompletion:^(UIImage *image) {
-        VTextSequencePreviewView *strongSelf = weakSelf;
+        __strong VTextSequencePreviewView *strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
             [strongSelf.previewImageView fadeInImage:image];
