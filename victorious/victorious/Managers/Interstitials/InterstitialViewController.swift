@@ -19,6 +19,12 @@ protocol InterstitialViewController: class {
     
     /// Returns an animator object for animating the dismissal of the interstitial view controller
     func dismissalAnimator() -> UIViewControllerAnimatedTransitioning
+    
+    /// Returns a presentation controller for animating the presentation and dismissal of the view controller
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController
+    
+    /// Returns the modal presentation style preferred by this view controller
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle
 }
 
 protocol InterstitialViewControllerDelegate: class {

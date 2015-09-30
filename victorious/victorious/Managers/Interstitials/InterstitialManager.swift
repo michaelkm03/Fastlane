@@ -76,7 +76,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
                 presentedInterstitial = conformingViewController
                 conformingViewController.interstitialDelegate = self
                 viewController.transitioningDelegate = self
-                viewController.modalPresentationStyle = .Custom
+                viewController.modalPresentationStyle = conformingViewController.preferredModalPresentationStyle()
                 presentingViewController.presentViewController(viewController, animated: true, completion: nil)
                 shownInterstitials.append(interstitial)
                 isShowingInterstital = true
@@ -103,6 +103,10 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.dismissalAnimator()
     }
+    
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+        return presentedInterstitial?.presentationController(presented, presentingViewController: presenting)
+    }
 }
 
 extension InterstitialManager {
@@ -117,6 +121,19 @@ extension InterstitialManager {
             }) { (op, err) -> Void in
                 self.shouldRegisterInterstitials = true
         }
+        #endif
+    }
+    
+    /// Registers a test "achievement" alert for testing interstitials
+    func registerTestAchievementAlert() {
+        #if V_SHOW_TEST_ALERT_SETTINGS
+            self.shouldRegisterInterstitials = false
+            let params = ["type" : "achievement", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icon" : "http://i.imgur.com/4V0xxZC.png"]]
+            VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
+                self.shouldRegisterInterstitials = true
+                }) { (op, err) -> Void in
+                    self.shouldRegisterInterstitials = true
+            }
         #endif
     }
 }

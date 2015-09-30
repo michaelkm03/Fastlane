@@ -156,3 +156,4 @@
 #import "VVideoSequencePreviewView.h"
 #import "VVideoView.h"
 #import "VLinearGradientView.h"
+#import "VThemeManager.h"
