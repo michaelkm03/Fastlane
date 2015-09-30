@@ -615,7 +615,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         }
         // else Show the stream of streams
         else if stream.isStreamOfStreams {
-            if let directory = dependencyManager?.templateValueOfType(
+            if let directory = dependencyManager?.templateValueOfType (
                 VDirectoryCollectionViewController.self,
                 forKey: Constants.marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
                     directory.currentStream = stream

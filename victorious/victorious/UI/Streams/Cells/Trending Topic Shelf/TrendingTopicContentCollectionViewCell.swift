@@ -14,6 +14,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private struct Constants {
         static let labelInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         static let blurCacheString = "_blurred"
+        static let desiredSize = CGSizeMake(90, 90)
     }
     
     private var imageView = UIImageView()
@@ -24,6 +25,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     // A cache to check for the dominant color in the preview image
     var colorCache: NSCache?
+    var renderedTextPostCache: NSCache?
     
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
@@ -35,20 +37,31 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     var streamItem: VStreamItem? {
         didSet {
             self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
-            if let previewImageURL = (streamItem?.previewImagesObject as? String),
-                url = NSURL(string: previewImageURL)  {
-                    
-                // Download preview image
-                updateImageView(url: url)
+            guard let item = streamItemForDisplay else {
+                return
             }
-            else if let stream = streamItem as? VStream,
-                item = stream.streamItems.array.first as? VStreamItem,
-                previewUrlString = item.previewImagesObject as? String,
-                url = NSURL(string: previewUrlString) {
-                    
-                updateImageView(url: url)
+            if let previewImageURL = (item.previewImagesObject as? String),
+                let url = NSURL(string: previewImageURL)  {
+                    // Download preview image
+                    updateImageView(url: url)
+            }
+            else if item.itemSubType == VStreamItemSubTypeText {
+                updateTextPreviewView()
             }
         }
+    }
+    
+    private var streamItemForDisplay: VStreamItem? {
+        if let previewImageURL = (streamItem?.previewImagesObject as? String) {
+                if previewImageURL != "" {
+                    return streamItem
+                }
+        }
+        else if let stream = streamItem as? VStream,
+                 let item = stream.streamItems.array.first as? VStreamItem {
+                    return item
+        }
+        return nil
     }
     
     /// The dependency manager whose colors and fonts will be used to style this cell.
@@ -57,6 +70,9 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             if let dependencyManager = dependencyManager {
                 dependencyManager.addLoadingBackgroundToBackgroundHost(self)
                 label.font = dependencyManager.labelFont
+                if streamItemForDisplay?.itemSubType == VStreamItemSubTypeText {
+                    updateTextPreviewView()
+                }
             }
         }
     }
@@ -100,23 +116,56 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         updateToInitialState()
     }
     
-    private func updateImageView(url url: NSURL) {
-        imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] (image, error, cacheType, url) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if let strongSelf = self {
-                    strongSelf.updateWithImage(image, url: url, animated: cacheType != .Memory)
+    private func updateTextPreviewView()
+    {
+        guard let streamItem = streamItemForDisplay,
+            let dependencyManager = dependencyManager else {
+                return
+        }
+        
+        if let cachedImage = renderedTextPostCache?.objectForKey(streamItem.remoteId) as? UIImage {
+            imageView.image = cachedImage
+            updateWithImage(cachedImage, cacheKey: streamItem.remoteId, animated: false)
+        }
+        else {
+            // Need to render the text post anew
+            let textPostPreviewView = VTextSequencePreviewView()
+            textPostPreviewView.displaySize = TrendingTopicContentCollectionViewCell.desiredSize()
+            textPostPreviewView.dependencyManager = dependencyManager
+            textPostPreviewView.onlyShowPreview = true
+            textPostPreviewView.updateToStreamItem(streamItem)
+            textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
+                textPostPreviewView.renderTextPostPreviewImageWithCompletion { image in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    let cacheKey = streamItem.remoteId
+                    strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
+                    strongSelf.imageView.image = image
+                    strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
                 }
-            })
-        })
+            };
+        }
     }
     
-    private func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
+    private func updateImageView(url url: NSURL) {
+        imageView.sd_setImageWithURL(url, placeholderImage: nil) { [weak self] image, error, cacheType, url in
+            dispatch_async(dispatch_get_main_queue(), {
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.updateWithImage(image, cacheKey: url?.absoluteString, animated: cacheType != .Memory)
+            })
+        }
+    }
+    
+    private func updateWithImage(image: UIImage?, cacheKey: String?, animated: Bool) {
         
-        guard let image = image, url = url else {
+        guard let image = image, cacheKey = cacheKey else {
             return
         }
         
-        let colorCacheKey = url.absoluteString
+        let colorCacheKey = cacheKey
         
         if let colorCache = colorCache, cachedColor = colorCache.objectForKey(colorCacheKey) as? UIColor {
             gradient.primaryColor = cachedColor
@@ -134,7 +183,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             }
         }
         
-        let cacheIdentifier = url.absoluteString.stringByAppendingString(Constants.blurCacheString)
+        let cacheIdentifier = cacheKey.stringByAppendingString(Constants.blurCacheString)
         
         if let cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
             finish(cachedImage)
@@ -148,17 +197,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func updateToInitialState() {
-        imageView.alpha = 0
         screenView.alpha = 0
         blurredImageView.alpha = 0
         gradient.alpha = 0
         blurMask.alpha = 0
-        imageView.image = nil
     }
     
     private func updateToReadyState(animated: Bool) {
         UIView.animateWithDuration(animated ? 0.3 : 0, animations: { () -> Void in
-            self.imageView.alpha = 1
             self.screenView.alpha = 1
             self.blurredImageView.alpha = 1
             self.gradient.alpha = 1
@@ -167,12 +213,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     override func prepareForReuse() {
-        imageView.cancelImageRequestOperation()
         updateToInitialState()
     }
     
     class func reuseIdentifier() -> String {
         return NSStringFromClass(TrendingTopicContentCollectionViewCell.self)
+    }
+    
+    //The ideal size of this cell
+    class func desiredSize() -> CGSize {
+        return Constants.desiredSize
     }
 }
 

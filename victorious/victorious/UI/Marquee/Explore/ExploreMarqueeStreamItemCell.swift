@@ -19,4 +19,8 @@ class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     override var shouldSupportAutoplay: Bool {
         return false
     }
+    
+    override var onlyShowPreviewForTextPosts: Bool {
+        return true
+    }
 }

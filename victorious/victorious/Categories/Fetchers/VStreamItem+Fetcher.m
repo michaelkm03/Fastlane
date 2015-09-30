@@ -120,6 +120,27 @@ NSString * const VStreamItemSubTypeStream = @"stream";
     return [NSURL URLWithString:previewImageString];
 }
 
+- (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size
+{
+    if ( self.previewImageAssets.count > 0 )
+    {
+        //Use appropriate asset from preview assets if available
+        VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+        VImageAsset *previewAsset = [assetFinder assetWithPreferredMaximumSize:size fromAssets:self.previewImageAssets];
+        NSURL *imageUrl = [NSURL URLWithString:previewAsset.imageURL];
+        if ( imageUrl != nil )
+        {
+            return imageUrl;
+        }
+    }
+    if ( [self isKindOfClass:[VSequence class]] )
+    {
+        //Fallback to old logic if need be
+        return ((VSequence *)self).inStreamPreviewImageURL;
+    }
+    return [self previewImageUrl];
+}
+
 - (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath
 {
     NSManagedObjectContext *context = self.managedObjectContext;
