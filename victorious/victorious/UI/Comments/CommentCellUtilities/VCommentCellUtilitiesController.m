@@ -89,13 +89,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     [[VObjectManager sharedManager] flagComment:self.comment
                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                     message:NSLocalizedString(@"ReportCommentMessage", @"")
-                                    delegate:nil
-                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                           otherButtonTitles:nil] show];
-         
-         [self.delegate commentRemoved:self.comment];
          [self showAlertWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                           message:NSLocalizedString(@"ReportCommentMessage", @"")
                           handler:^(UIAlertAction *_Nonnull action)
@@ -162,11 +155,9 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventDeleteCommentDidFail parameters:params];
          
-         [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"WereSorry", @"")
-                                     message:NSLocalizedString(@"ErrorOccured", @"")
-                                    delegate:nil
-                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                           otherButtonTitles:nil] show];
+         [self showAlertWithTitle:NSLocalizedString(@"WereSorry", @"")
+                          message:NSLocalizedString(@"ErrorOccured", @"")
+                          handler:nil];
      }];
 }
 
