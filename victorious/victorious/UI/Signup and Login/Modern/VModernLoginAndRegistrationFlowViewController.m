@@ -61,7 +61,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, assign) BOOL isRegisteredAsNewUser;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
-@property (nonatomic, strong) MBProgressHUD *facebookLoginProgress;
+@property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
 @end
 
@@ -303,7 +303,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
     {
         self.actionsDisabled = YES;
-        self.facebookLoginProgress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
@@ -318,8 +318,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             else
             {
                 self.actionsDisabled = NO;
-                [self.facebookLoginProgress hide:YES];
-                self.facebookLoginProgress = nil;
+                [self.facebookLoginProgressHUD hide:YES];
+                self.facebookLoginProgressHUD = nil;
                 
                 if ( result.isCancelled )
                 {
@@ -343,17 +343,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)loginWithStoredFacebookToken
 {
-    if ( self.facebookLoginProgress == nil )
+    if ( self.facebookLoginProgressHUD == nil )
     {
-        self.facebookLoginProgress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     }
     self.actionsDisabled = YES;
     
     VUserManager *userManager = [[VUserManager alloc] init];
     [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
     {
-        [self.facebookLoginProgress hide:YES];
-        self.facebookLoginProgress = nil;
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
 
         self.isRegisteredAsNewUser = isNewUser;
@@ -361,8 +361,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
                                                      onError:^(NSError *error, BOOL thirdPartyAPIFailure)
     {
-        [self.facebookLoginProgress hide:YES];
-        self.facebookLoginProgress = nil;
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
         
         [self handleFacebookLoginFailure];
@@ -686,10 +686,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     // For Facebook only, when the app loses focus, remove the HUD and re-enable all the buttons.
     // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
-    if ( self.facebookLoginProgress != nil )
+    if ( self.facebookLoginProgressHUD != nil )
     {
-        [self.facebookLoginProgress hide:YES];
-        self.facebookLoginProgress = nil;
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
     }
 }
