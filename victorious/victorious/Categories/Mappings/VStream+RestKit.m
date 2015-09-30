@@ -12,6 +12,8 @@
 
 #import "VEditorializationItem.h"
 
+#import "VAsset+RestKit.h"
+
 #import "victorious-Swift.h"
 
 @implementation VStream (RestKit)
@@ -47,6 +49,18 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(streamId) ];
+    
+    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                 withMapping:[VImageAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewImageAssetsMapping];
+    
+    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
+    
+    [mapping addPropertyMapping:previewTextPostMapping];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

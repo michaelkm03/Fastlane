@@ -32,6 +32,7 @@
 #import "VStream.h"
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
+#import "VContentFittingPreviewView.h"
 
 @import KVOController;
 
@@ -386,9 +387,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
+    self.previewView.dependencyManager = self.dependencyManager;
+    if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
     {
-        [self.previewView setDependencyManager:self.dependencyManager];
+        [(VSequencePreviewView <VContentFittingPreviewView> *)self.previewView updateToFitContent:YES];
     }
     [self.previewView setSequence:sequence];
 }
