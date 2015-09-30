@@ -1,16 +1,16 @@
 //
-//  VTextSequencePreviewView.m
+//  VTextStreamPreviewView.m
 //  victorious
 //
-//  Created by Michael Sena on 5/6/15.
-//  Copyright (c) 2015 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 9/25/15.
+//  Copyright © 2015 Victorious. All rights reserved.
 //
 
-#import "VTextSequencePreviewView.h"
+#import "VTextStreamPreviewView.h"
 
 // Models + Helpers
 #import "VNode+Fetcher.h"
-#import "VSequence+Fetcher.h"
+#import "VStream+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
@@ -27,7 +27,7 @@
 static const CGFloat kRenderedTextPostSide = 320.0f;
 static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, kRenderedTextPostSide} };
 
-@interface VTextSequencePreviewView ()
+@interface VTextStreamPreviewView ()
 
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 @property (nonatomic, strong) UIImageView *previewImageView;
@@ -38,14 +38,14 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 @end
 
-@implementation VTextSequencePreviewView
+@implementation VTextStreamPreviewView
 
 #pragma mark - VSequencePreviewView Overrides
 
-- (void)setSequence:(VSequence *)sequence
+- (void)setStream:(VStream *)stream
 {
-    BOOL needsUpdate = sequence != self.streamItem;
-    [super setSequence:sequence];
+    BOOL needsUpdate = stream != self.streamItem;
+    [super setStream:stream];
     if ( needsUpdate )
     {
         self.hasRenderedPreview = NO;
@@ -98,34 +98,9 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 #pragma mark - Convenience accessors
 
-- (VSequence *)convertedSequence
-{
-    if ( [self.streamItem isKindOfClass:[VSequence class]] )
-    {
-        return (VSequence *)self.streamItem;
-    }
-    return nil;
-}
-
 - (VAsset *)textAsset
 {
-    VSequence *sequence = [self convertedSequence];
-    if ( sequence != nil )
-    {
-        VAsset *textAsset = [sequence previewTextPostAsset];
-        
-        if (textAsset == nil || ![textAsset.type isEqualToString:@"text"])
-        {
-            // fall back gracefully
-            textAsset = [sequence.firstNode textAsset];
-        }
-        
-        if ( textAsset.data != nil )
-        {
-            return  textAsset;
-        }
-    }
-    return nil;
+    return [self.streamItem previewTextPostAsset];
 }
 
 - (VTextPostViewController *)textPostViewController
@@ -148,12 +123,11 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     VAsset *textAsset = [self textAsset];
     if ( textAsset != nil )
     {
-        VSequence *sequence = [self convertedSequence];
         NSString *text = textAsset.data;
         UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
-        VAsset *imageAsset = [sequence.firstNode imageAsset];
-        NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
-        [self populateTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:sequence.remoteId];
+        NSURL *imageUrl = [NSURL URLWithString:textAsset.backgroundImageUrl];
+        NSString *cacheKey = [[textAsset.backgroundImageUrl stringByAppendingString:textAsset.data] stringByAppendingString:textAsset.backgroundColor];
+        [self populateTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:cacheKey];
     }
     [self updatePreviewBackgroundColor];
 }
@@ -162,7 +136,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 {
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;
-    __weak VTextSequencePreviewView *weakSelf = self;
+    __weak VTextStreamPreviewView *weakSelf = self;
     [self.textPostViewController setImageURL:backgroundImageURL animated:YES completion:^(UIImage *image)
      {
          weakSelf.readyForDisplay = YES;
@@ -174,8 +148,8 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     if ( self.previewImageView == nil )
     {
         self.previewImageView = [[UIImageView alloc] init];
-        self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.previewImageView.clipsToBounds = YES;
+        self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     
     if ( self.previewImageView.superview == nil )
@@ -197,7 +171,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
         [self addSubview:self.textPostViewController.view];
         [self v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
     }
-
+    
     if ( self.previewImageView.superview != nil )
     {
         [self.previewImageView removeFromSuperview];
@@ -253,9 +227,9 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     ViewRenderingCompletion fullCompletion = completion;
     if ( !CGSizeEqualToSize(CGSizeZero, self.displaySize) )
     {
-        __weak VTextSequencePreviewView *weakSelf = self;
+        __weak VTextStreamPreviewView *weakSelf = self;
         fullCompletion = ^(UIImage *image){
-            __strong VTextSequencePreviewView *strongSelf = weakSelf;
+            VTextStreamPreviewView *strongSelf = weakSelf;
             if ( strongSelf != nil )
             {
                 image = [image smoothResizedImageWithNewSize:strongSelf.displaySize];
@@ -268,9 +242,9 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)renderTextPostPreviewImage
 {
-    __weak VTextSequencePreviewView *weakSelf = self;
+    __weak VTextStreamPreviewView *weakSelf = self;
     [self renderTextPostPreviewImageWithCompletion:^(UIImage *image) {
-        __strong VTextSequencePreviewView *strongSelf = weakSelf;
+        VTextStreamPreviewView *strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
             [strongSelf.previewImageView fadeInImage:image];

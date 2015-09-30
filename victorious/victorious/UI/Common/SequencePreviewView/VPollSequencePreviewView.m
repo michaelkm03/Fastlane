@@ -106,12 +106,12 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (VAnswer *)answerA
 {
-    return [self.assetFinder answerAFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerA];
+    return [self.assetFinder answerAFromAssets:self.sequence.previewImageAssets] ?: [self.sequence.firstNode answerA];
 }
 
 - (VAnswer *)answerB
 {
-    return [self.assetFinder answerBFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerB];
+    return [self.assetFinder answerBFromAssets:self.sequence.previewImageAssets] ?: [self.sequence.firstNode answerB];
 }
 
 #pragma mark - Target/Action

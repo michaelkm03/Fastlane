@@ -108,14 +108,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (void)setDirectoryCellFactory:(NSObject<VDirectoryCellFactory> *)directoryCellFactory
 {
     _directoryCellFactory = directoryCellFactory;
-    if ( ![_directoryCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)] )
-    {
-        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView];
-    }
-    else if ( [self stream] != nil )
-    {
-        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:[self stream].streamItems.array];
-    }
+    [self registerCellsWithFactory];
 }
 
 #pragma mark - Property Accessors
@@ -123,14 +116,31 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
-    VStream *stream = [self stream];
-    if ( [_directoryCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)] )
-    {
-        [_directoryCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:stream.streamItems.array];
-    }
+    [self registerCellsWithFactory];
     
     self.nameLabel.text = [streamItem.name uppercaseString];
     [self.collectionView reloadData];
+}
+
+- (void)registerCellsWithFactory
+{
+    if ( ![self.directoryCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)] )
+    {
+        [self.directoryCellFactory registerCellsWithCollectionView:self.collectionView];
+    }
+    else
+    {
+        NSMutableArray *streamItems = [[NSMutableArray alloc] init];
+        for ( NSInteger row = 0; row < [self collectionView:self.collectionView numberOfItemsInSection:0]; row++ )
+        {
+            VStreamItem *streamItem = [self streamItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+            if ( streamItem != nil )
+            {
+                [streamItems addObject:streamItem];
+            }
+        }
+        [self.directoryCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:streamItems];
+    }
 }
 
 - (VStream *)stream
@@ -199,11 +209,8 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 - (BOOL)shouldShowShowMore
 {
     VStream *stream = [self stream];
-    if ([stream.count integerValue] > (NSInteger)stream.streamItems.count)
-    {
-        return YES;
-    }
-    return NO;
+    
+    return (stream.count.integerValue > 0);
 }
 
 - (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath

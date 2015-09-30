@@ -14,16 +14,10 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 @interface VUserManager : NSObject
 
 /**
- if YES, native login will be used even if the powers that be try to disable
- it. If NO, native login will follow the whims of the Facebook overlords.
+ Log in using the current Facebook session (make sure you use the Facebook SDK to establish a session before calling this)
  */
-@property (nonatomic) BOOL forceNativeFacebookLogin;
-
-/**
- Log in using Facebook credentials
- */
-- (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                             onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                                            onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Log in using Twitter credentials

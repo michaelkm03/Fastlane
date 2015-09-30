@@ -140,6 +140,8 @@
 #import "VTagStringFormatter.h"
 #import "VTextAndMediaView.h"
 #import "VTextPostTextView.h"
+#import "VTextSequencePreviewView.h"
+#import "VThemeManager.h"
 #import "VTimerManager.h"
 #import "VTracking.h"
 #import "VTrackingManager.h"

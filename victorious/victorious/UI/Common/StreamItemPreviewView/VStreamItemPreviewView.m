@@ -42,12 +42,25 @@
     return classType;
 }
 
+- (void)updateToStreamItem:(VStreamItem *)streamItem
+{
+    if ( [self isKindOfClass:[VSequencePreviewView class]] && [streamItem isKindOfClass:[VSequence class]] )
+    {
+        [(VSequencePreviewView *)self setSequence:(VSequence *)streamItem];
+    }
+    else
+    {
+        self.streamItem = streamItem;
+    }
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if ( self != nil )
     {
         _streamBackgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+        _displaySize = CGSizeZero;
     }
     return self;
 }
@@ -88,6 +101,12 @@
     {
         _displayReadyBlock(self);
     }
+}
+
+- (void)setDisplaySize:(CGSize)displaySize
+{
+    CGFloat greaterSide = MAX(displaySize.height, displaySize.width);
+    _displaySize = CGSizeMake(greaterSide, greaterSide);
 }
 
 - (NSDictionary *)trackingInfo

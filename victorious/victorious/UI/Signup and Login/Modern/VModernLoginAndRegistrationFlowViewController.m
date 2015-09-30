@@ -11,10 +11,12 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 #import "VDependencyManager+VStatusBarStyle.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 
 // Views + Helpers
+#import "UIAlertController+VSimpleAlert.h"
 #import "VBackgroundContainer.h"
 #import "VLoginFlowAPIHelper.h"
 #import "VModernResetTokenViewController.h"
@@ -24,8 +26,14 @@
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "VPermissionsTrackingHelper.h"
+#import "VUserManager.h"
+#import "victorious-Swift.h"
 
 #import "VForcedWorkspaceContainerViewController.h"
+
+@import FBSDKCoreKit;
+@import FBSDKLoginKit;
+@import MBProgressHUD;
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -53,6 +61,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, assign) BOOL isRegisteredAsNewUser;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
+@property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
 @end
 
@@ -86,8 +95,15 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _animator = [[VModernFlowControllerAnimationController alloc] init];
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -283,20 +299,82 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    self.actionsDisabled = YES;
-    
-    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
+    if ( [FBSDKAccessToken currentAccessToken] == nil ||
+         ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
     {
-        self.actionsDisabled = NO;
-        if ( success )
+        self.actionsDisabled = YES;
+        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
+        [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
+                            fromViewController:self
+                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
         {
-            self.isRegisteredAsNewUser = isNewUser;
-            [self continueRegistrationFlowAfterSocialRegistration];
-        }
-    }];
+            if ( [FBSDKAccessToken currentAccessToken] != nil )
+            {
+                [self loginWithStoredFacebookToken];
+            }
+            else
+            {
+                self.actionsDisabled = NO;
+                [self.facebookLoginProgressHUD hide:YES];
+                self.facebookLoginProgressHUD = nil;
+                
+                if ( result.isCancelled )
+                {
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                       parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                     VTrackingKeyPermissionName : VTrackingValueDenied }];
+                }
+                [self handleFacebookLoginFailure];
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
+            }
+        }];
+    }
+    else
+    {
+        [self loginWithStoredFacebookToken];
+    }
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
+}
+
+- (void)loginWithStoredFacebookToken
+{
+    if ( self.facebookLoginProgressHUD == nil )
+    {
+        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    self.actionsDisabled = YES;
+    
+    VUserManager *userManager = [[VUserManager alloc] init];
+    [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
+    {
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
+        self.actionsDisabled = NO;
+
+        self.isRegisteredAsNewUser = isNewUser;
+        [self continueRegistrationFlowAfterSocialRegistration];
+    }
+                                                     onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+    {
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
+        self.actionsDisabled = NO;
+        
+        [self handleFacebookLoginFailure];
+    }];
+}
+
+- (void)handleFacebookLoginFailure
+{
+    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                                   message:NSLocalizedString(@"FacebookLoginFailed", @"")
+                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -600,6 +678,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)applicationWillResignActive:(NSNotification *)notification
+{
+    // For Facebook only, when the app loses focus, remove the HUD and re-enable all the buttons.
+    // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
+    if ( self.facebookLoginProgressHUD != nil )
+    {
+        [self.facebookLoginProgressHUD hide:YES];
+        self.facebookLoginProgressHUD = nil;
+        self.actionsDisabled = NO;
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate

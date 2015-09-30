@@ -46,7 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) VEndCard * parentEndCard;
 @property (nonatomic, retain, nullable) VUser * parentUser;
 @property (nonatomic, retain, nullable) NSSet * pollResults;
-@property (nonatomic, retain, nullable) NSSet * previewAssets;
 @property (nonatomic, retain, nullable) VUser * recentUser;
 @property (nonatomic, retain, nullable) NSSet * reposters;
 @property (nonatomic, retain, nullable) VTracking * tracking;
@@ -98,11 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removePollResultsObject:(VPollResult *)value;
 - (void)addPollResults:(NSSet *)values;
 - (void)removePollResults:(NSSet *)values;
-
-- (void)addPreviewAssetsObject:(VImageAsset *)value;
-- (void)removePreviewAssetsObject:(VImageAsset *)value;
-- (void)addPreviewAssets:(NSSet *)values;
-- (void)removePreviewAssets:(NSSet *)values;
 
 - (void)addRepostersObject:(VUser *)value;
 - (void)removeRepostersObject:(VUser *)value;
