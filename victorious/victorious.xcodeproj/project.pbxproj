@@ -364,6 +364,7 @@
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
+		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; settings = {ASSET_TAGS = (); }; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; settings = {ASSET_TAGS = (); }; };
 		676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */; settings = {ASSET_TAGS = (); }; };
 		676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */; };
@@ -896,6 +897,9 @@
 		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
+		C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */; settings = {ASSET_TAGS = (); }; };
+		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; settings = {ASSET_TAGS = (); }; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
@@ -925,12 +929,14 @@
 		C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */; };
 		C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */; };
 		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
+		C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		C38211421B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38211411B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39452411B715CDA009367EB /* StreamCellContext.swift */; };
 		C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864B61B22358D00694AB3 /* VFadeButton.m */; };
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
+		C39AFE351BBA3374004050C3 /* AchievementPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39AFE341BBA3374004050C3 /* AchievementPresentationController.swift */; settings = {ASSET_TAGS = (); }; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
 		C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */; };
@@ -1263,6 +1269,7 @@
 		F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */; };
 		F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */; };
 		F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */; };
+		F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */; settings = {ASSET_TAGS = (); }; };
 		F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
@@ -1987,6 +1994,7 @@
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
+		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+TrendingShelfResponder.swift"; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
@@ -2933,6 +2941,9 @@
 		C30AA4F21B067C370010CEFE /* VPermissionCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionCamera.m; sourceTree = "<group>"; };
 		C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionPhotoLibrary.h; sourceTree = "<group>"; };
 		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
+		C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementInterstitial.swift; sourceTree = "<group>"; };
+		C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
+		C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementAnimator.swift; sourceTree = "<group>"; };
 		C3345F601B59ACB30091D889 /* VMenuItemControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuItemControl.h; sourceTree = "<group>"; };
 		C3345F611B59ACB30091D889 /* VMenuItemControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuItemControl.m; sourceTree = "<group>"; };
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
@@ -2972,6 +2983,7 @@
 		C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpInterstitial.swift; sourceTree = "<group>"; };
 		C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
 		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
+		C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAlertsViewController.swift; sourceTree = "<group>"; };
 		C38211411B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShelfVisibilityTrackingHelper.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
@@ -2985,6 +2997,7 @@
 		C39864BA1B26693F00694AB3 /* VHighlightContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHighlightContainer.h; sourceTree = "<group>"; };
 		C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VHighlightContainer.h"; sourceTree = "<group>"; };
 		C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VHighlightContainer.m"; sourceTree = "<group>"; };
+		C39AFE341BBA3374004050C3 /* AchievementPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementPresentationController.swift; sourceTree = "<group>"; };
 		C39B22091B0A58EF00D3DFE7 /* VPermissionMicrophone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionMicrophone.h; sourceTree = "<group>"; };
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionMicrophone.m; sourceTree = "<group>"; };
 		C39B220C1B0A693600D3DFE7 /* VPermissionProfilePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionProfilePicture.h; sourceTree = "<group>"; };
@@ -3594,6 +3607,9 @@
 		F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPreviewView.m; sourceTree = "<group>"; };
 		F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageStreamPreviewView.h; sourceTree = "<group>"; };
 		F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageStreamPreviewView.m; sourceTree = "<group>"; };
+		F0D2E94C1BB6442F001FD97F /* VTextStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextStreamPreviewView.h; sourceTree = "<group>"; };
+		F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextStreamPreviewView.m; sourceTree = "<group>"; };
+		F0D2E94F1BB86393001FD97F /* VContentFittingPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentFittingPreviewView.h; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -4284,6 +4300,7 @@
 				A7EECAD21A377FA000A8BAE1 /* Purchase Settings */,
 				A7B98A351A264D0900C58335 /* Push Notification Settings */,
 				DB2A494519DF44CF00CB687B /* settings.storyboard */,
+				C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */,
 				A769FE421ABCFCC700888ED8 /* Tracking Settings */,
 				A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */,
 				A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */,
@@ -6406,6 +6423,7 @@
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
 				A76A069E1B87B13600D91214 /* Utils */,
 				79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */,
+				674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */,
 			);
 			path = UIAutomationTests;
 			sourceTree = "<group>";
@@ -6955,6 +6973,16 @@
 			path = Permissions;
 			sourceTree = "<group>";
 		};
+		C3186DF71BACE84C00F4BCFF /* Achievement */ = {
+			isa = PBXGroup;
+			children = (
+				C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */,
+				C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */,
+				C39AFE341BBA3374004050C3 /* AchievementPresentationController.swift */,
+			);
+			path = Achievement;
+			sourceTree = "<group>";
+		};
 		C348D1FD1B8C03CA0040042C /* DominantColor */ = {
 			isa = PBXGroup;
 			children = (
@@ -6993,6 +7021,7 @@
 		C3623E561B9A779A002B121D /* Fan Club */ = {
 			isa = PBXGroup;
 			children = (
+				C3186DF71BACE84C00F4BCFF /* Achievement */,
 				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
 			);
@@ -7019,6 +7048,7 @@
 				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
 				C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */,
 				C3623F241BA3AE54002B121D /* LevelUpInterstitial.swift */,
+				C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */,
 			);
 			path = Interstitials;
 			sourceTree = "<group>";
@@ -7224,9 +7254,9 @@
 			children = (
 				C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */,
 				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
+				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
 				A7DD35E91BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.h */,
 				A7DD35EA1BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.m */,
-				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
 				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
 				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
@@ -7886,6 +7916,7 @@
 			children = (
 				F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */,
 				F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */,
+				F0D2E94F1BB86393001FD97F /* VContentFittingPreviewView.h */,
 				F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */,
 				F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */,
 			);
@@ -7895,12 +7926,14 @@
 		F0C83A5D1B16214F00A6EC1A /* StreamPreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */,
+				F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */,
 				F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */,
 				F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */,
 				F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */,
 				F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */,
-				F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */,
-				F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */,
+				F0D2E94C1BB6442F001FD97F /* VTextStreamPreviewView.h */,
+				F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */,
 			);
 			name = StreamPreviewView;
 			path = SequencePreviewView;
@@ -8964,6 +8997,7 @@
 				79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
+				674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9041,6 +9075,7 @@
 				A721E92B1B572454000B7901 /* VMessage+RestKit.m in Sources */,
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */,
+				C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */,
 				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
@@ -9182,6 +9217,7 @@
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
+				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
@@ -9217,6 +9253,7 @@
 				797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */,
 				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
+				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
@@ -9448,6 +9485,7 @@
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
+				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
 				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
@@ -9514,6 +9552,7 @@
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				A7A0617D1B4DB39900E8FFCF /* GIFSearchViewController.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
+				C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */,
 				F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,
@@ -9656,6 +9695,7 @@
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */,
 				F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */,
+				C39AFE351BBA3374004050C3 /* AchievementPresentationController.swift in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
@@ -11008,10 +11048,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -11037,10 +11074,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
@@ -11062,10 +11096,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
@@ -11087,10 +11118,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
@@ -11112,10 +11140,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
@@ -11264,10 +11289,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -11296,10 +11318,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -11321,10 +11340,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -11346,10 +11362,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -11371,10 +11384,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -35,6 +35,12 @@
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, readonly) BOOL shouldSupportAutoplay;
 
+/**
+ *  Determines whether or not text posts are rendered in preview form instead of
+ *  the usual, fully interactive form. Defaults to NO.
+ */
+@property (nonatomic, readonly) BOOL onlyShowPreviewForTextPosts;
+
 /*
  * A context object used for tracking purposes.
  */

@@ -11,6 +11,7 @@ import Foundation
 /// An enum describing each type of supported interstitials
 private enum InterstitialType : String {
     case LevelUp = "levelUp"
+    case Achievement = "achievement"
 }
 
 /// A RKSerialization subclass that handles registering
@@ -52,7 +53,10 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
                 {
                 case .LevelUp:
                     return levelUpInterstitial(remoteID: remoteID, params: params)
+                case .Achievement:
+                    return achievementInterstitial(remoteID: remoteID, params: params)
                 }
+                
             }
             return nil
         }
@@ -70,6 +74,30 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
            let videoURLString = paramsDict["backgroundVideo"] as? String,
            let videoURL = NSURL(string: videoURLString) {
             return LevelUpInterstitial(remoteID: remoteID, level: String(levelNumber), title: title, description: description, icons: icons, videoURL: videoURL)
+        }
+        return nil
+    }
+    
+    /// Returns a fully-configured achievement interstitial
+    ///
+    /// - parameter configuration: A JSON dictionary containing all the configuration info for an achievement interstitial. If this information is invalid, this method returns nil.
+    private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> AchievementInterstitial? {
+        if let userInfo = paramsDict["user"] as? [String : AnyObject],
+            let levelInfo = userInfo["fanloyalty"] as? [String : AnyObject],
+            let levelNumber = levelInfo["level"] as? Int,
+            let progressPercentage = levelInfo["progress"] as? Int,
+            let title = paramsDict["title"] as? String,
+            let description = paramsDict["description"] as? String {
+                
+                // Icon URL is optional
+                var parsedIconURL: NSURL?
+            
+                if let iconURLString = paramsDict["icon"] as? String,
+                    let iconURL = NSURL(string: iconURLString) {
+                        parsedIconURL = iconURL
+                }
+                
+                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icon: parsedIconURL)
         }
         return nil
     }

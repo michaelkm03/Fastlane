@@ -257,7 +257,13 @@ class ContentViewHandoffController {
     
     func imageFromImage( sourceImage: UIImage, rect: CGRect ) -> UIImage? {
         let sourceImageRef = sourceImage.CGImage
-        if let imageRef = CGImageCreateWithImageInRect( sourceImageRef, rect ) {
+        var newRect = rect
+        let scale = sourceImage.scale
+        newRect.origin.x *= scale
+        newRect.origin.y *= scale
+        newRect.size.width *= scale
+        newRect.size.height *= scale
+        if let imageRef = CGImageCreateWithImageInRect( sourceImageRef, newRect ) {
             return UIImage(CGImage: imageRef)
         }
         return nil

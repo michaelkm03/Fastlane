@@ -25,6 +25,7 @@
 #import "VImageAsset+Fetcher.h"
 
 @import CoreData;
+@import FBSDKLoginKit;
 
 @implementation VObjectManager (Login)
 
@@ -364,6 +365,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     self.loginType = VLoginTypeNone;
     
     [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
+    [[[FBSDKLoginManager alloc] init] logOut];
     [[[VUserManager alloc] init] userDidLogout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
