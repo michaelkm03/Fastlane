@@ -231,17 +231,8 @@ static NSInteger const kVMaxSearchResults = 1000;
 {
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSMutableArray *searchResults = [[NSMutableArray alloc] init];
-        NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
+        NSMutableArray *searchResults = [resultObjects mutableCopy];
         
-        [tags enumerateObjectsUsingBlock:^(NSString *tag, NSUInteger idx, BOOL *stop)
-        {
-            VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
-                                                                           subclass:[VHashtag class]];
-            newTag.tag = tag;
-            [searchResults addObject:newTag];
-
-        }];
         if ( searchResults.count > 0 )
         {
             [self.tagsSearchResultsVC setSearchResults:searchResults];

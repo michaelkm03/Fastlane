@@ -36,7 +36,7 @@
              @"ugc_post_allowed"    :   VSelectorName(isUserPostAllowed),
              @"count"               :   VSelectorName(count),
              @"type"                :   VSelectorName(itemType),
-             @"subtype"             :   VSelectorName(itemSubType),
+             @"subtype"             :   VSelectorName(itemSubType)
              };
 }
 

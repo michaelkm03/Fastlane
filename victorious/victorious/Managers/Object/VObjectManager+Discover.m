@@ -13,6 +13,7 @@
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
 #import "NSCharacterSet+VURLParts.h"
+#import "VUser+Fetcher.h"
 
 @implementation VObjectManager (Discover)
 
@@ -57,6 +58,11 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if (resultObjects.count > 0)
+        {
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:YES];
+        }
+        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -77,30 +83,9 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        
-        // Add hashtags to main user object
         if (resultObjects.count > 0)
         {
-            NSMutableOrderedSet *hashtagSet = [[NSMutableOrderedSet alloc] init];
-            if ( pageType != VPageTypeFirst )
-            {
-                hashtagSet = [mainUser.hashtags mutableCopy];
-            }
-            
-            [hashtagSet addObjectsFromArray:resultObjects];
-            
-            if ( [self shouldUpdateUserForHashtags:hashtagSet] )
-            {
-                mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
-                [mainUser.managedObjectContext saveToPersistentStore:nil];
-            }
-        }
-        else if ( pageType == VPageTypeFirst && mainUser.hashtags.count > 0 )
-        {
-            //Only update hashtags when absolutely necessary to avoid triggering KVO events unnecessarily.
-            mainUser.hashtags = nil;
-            [mainUser.managedObjectContext saveToPersistentStore:nil];
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:NO];
         }
 
         if (success != nil)
@@ -148,7 +133,7 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if ([self doesSet:mainUser.hashtags containString:hashtag])
+    if ([mainUser isFollowingHashtagString:hashtag])
     {
         success(nil, nil, @[]);
         return nil;
@@ -156,17 +141,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Create a new VHashtag object and assign it to the currently logged in user.
-        // Then save it to Core Data.
-        VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
-                                                                       subclass:[VHashtag class]];
-        newTag.tag = hashtag;
-        
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        
-        [hashtagSet addObject:newTag];
-        mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
-        [mainUser.managedObjectContext saveToPersistentStore:nil];
+        [mainUser addFollowedHashtag:hashtag];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
@@ -207,9 +182,9 @@
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    if (![self doesSet:mainUser.hashtags containString:hashtag])
+    if (![mainUser isFollowingHashtagString:hashtag])
     {
-        success( nil, nil, @[] );
+        success(nil, nil, @[]);
         return nil;
     }
     
@@ -258,6 +233,11 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if (resultObjects.count > 0)
+        {
+            [self parseResponseToCheckForFollowedHashtags:fullResponse checkFollowingFlag:YES];
+        }
+        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -287,47 +267,35 @@
             failBlock:fullFailure];
 }
 
-- (BOOL)shouldUpdateUserForHashtags:(NSOrderedSet *)hashtags
-{
-    NSOrderedSet *userHashtags = self.mainUser.hashtags;
-    if ( userHashtags.count == hashtags.count )
-    {
-        //We have the same count of hashtags, check each hashtag inside to make sure we have the same hashtags
-        __block BOOL needsUpdate = NO;
-        [userHashtags enumerateObjectsUsingBlock:^(VHashtag *followedHashtag, NSUInteger idx, BOOL *stop)
-        {
-            NSInteger foundIndex = [hashtags indexOfObjectPassingTest:^BOOL(VHashtag *hashtag, NSUInteger idx, BOOL *innerStop)
-            {
-                BOOL found = [hashtag.tag isEqualToString:followedHashtag.tag];
-                if ( found )
-                {
-                    *innerStop = YES;
-                }
-                return found;
-            }];
-            if ( foundIndex == NSNotFound )
-            {
-                //Found a discrepancy, need to update
-                needsUpdate = YES;
-                *stop = YES;
-            }
-        }];
-        return needsUpdate;
-    }
-    //Different count of hashtags, need to update
-    return YES;
-}
+#pragma mark - Helpers
 
-- (BOOL)doesSet:(NSOrderedSet *)orderedSet containString:(NSString *)string
+// Check for hashtags that we're following
+- (void)parseResponseToCheckForFollowedHashtags:(NSDictionary *)response checkFollowingFlag:(BOOL)checkFlag
 {
-    for (VHashtag *tag in orderedSet)
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    if (![response[@"payload"] isKindOfClass:[NSDictionary class]])
     {
-        if ([tag.tag isEqualToString:string])
+        return;
+    }
+    
+    if (![response[@"payload"][@"objects"] isKindOfClass:[NSArray class]])
+    {
+        return;
+    }
+    
+    for (NSDictionary *hashtag in response[@"payload"][@"objects"])
+    {
+        if (checkFlag && ![hashtag[@"am_following"] boolValue])
         {
-            return  YES;
+            return;
+        }
+        
+        if (hashtag[@"tag"] != nil)
+        {
+            [mainUser addFollowedHashtag:hashtag[@"tag"]];
         }
     }
-    return NO;
 }
 
 @end
