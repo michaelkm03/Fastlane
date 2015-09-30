@@ -240,7 +240,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
     
     self.currentHashtagSearchQueryText = tagName;
-    NSString *currentTagsentinel = [self.currentHashtagSearchQueryText copy];
+    NSString *currentTagSentinel = [self.currentHashtagSearchQueryText copy];
     
     MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
     if (tagName.length == 0)
@@ -266,7 +266,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         dispatch_async(dispatch_get_main_queue(), ^
         {
             // If these aren't the same this is an earlier result and should be discarded
-            if (![welf.currentHashtagSearchQueryText isEqualToString:currentTagsentinel])
+            if (![welf.currentHashtagSearchQueryText isEqualToString:currentTagSentinel])
             {
                 return;
             }
@@ -299,7 +299,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            if ([welf.currentUserSearchQueryText isEqualToString:currentTagsentinel])
+            if ([welf.currentUserSearchQueryText isEqualToString:currentTagSentinel])
             {
                 [hud hide:YES];
             }
