@@ -165,11 +165,12 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
+    __block NSString *remoteId = sequence.remoteId;
     __weak VObjectManager *weakSelf = self;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagPost];
-        [weakSelf addRemoteId:sequence.remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
+        [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
         if ( success != nil )
         {
             success( operation, fullResponse, resultObjects );

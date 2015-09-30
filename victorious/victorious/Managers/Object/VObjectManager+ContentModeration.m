@@ -73,6 +73,10 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
 
 - (void)addRemoteId:(NSString *)remoteId toFlaggedItemsWithType:(VFlaggedContentType)type
 {
+    if ( remoteId == nil )
+    {
+        return;
+    }
     NSMutableDictionary *contents = [[self flaggedContentDictionaryWithType:type] mutableCopy];
     [contents setObject:[NSDate date] forKey:remoteId];
     [[NSUserDefaults standardUserDefaults] setObject:contents forKey:[self flagArrayKeyForType:type]];
@@ -105,9 +109,6 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
             return @"flaggedComments";
         case VFlaggedContentTypeStreamItem:
             return @"flaggedStreamItems";
-        default:
-            NSAssert(NO, @"flagArrayKeyForType recieved unexpected type");
-            return nil;
     }
 }
 
