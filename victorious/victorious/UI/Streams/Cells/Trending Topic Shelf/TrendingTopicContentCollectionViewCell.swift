@@ -38,7 +38,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         didSet {
             self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
             guard let item = streamItemForDisplay else {
-                return;
+                return
             }
             if let previewImageURL = (item.previewImagesObject as? String),
                 let url = NSURL(string: previewImageURL)  {
@@ -135,7 +135,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             textPostPreviewView.onlyShowPreview = true
             textPostPreviewView.updateToStreamItem(streamItem)
             textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
-                textPostPreviewView.renderTextPostPreviewImageWithCompletion({ image in
+                textPostPreviewView.renderTextPostPreviewImageWithCompletion { image in
                     guard let strongSelf = self else {
                         return
                     }
@@ -143,20 +143,20 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
                     strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
                     strongSelf.imageView.image = image
                     strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
-                })
+                }
             };
         }
     }
     
     private func updateImageView(url url: NSURL) {
-        imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] image, error, cacheType, url in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        imageView.sd_setImageWithURL(url, placeholderImage: nil) { [weak self] image, error, cacheType, url in
+            dispatch_async(dispatch_get_main_queue(), {
                 guard let strongSelf = self else {
                     return
                 }
                 strongSelf.updateWithImage(image, cacheKey: url?.absoluteString, animated: cacheType != .Memory)
             })
-        })
+        }
     }
     
     private func updateWithImage(image: UIImage?, cacheKey: String?, animated: Bool) {
