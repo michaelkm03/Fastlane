@@ -17,7 +17,7 @@
 #import "VPermissionsTrackingHelper.h"
 
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
-static const CGFloat kTextViewCornerRadius = 24.0f;
+static const CGFloat kTextViewCornerRadius = 6.0f;
 
 static NSString * const kStoryboardName = @"PermissionAlert";
 static NSString * const kConfirmButtonTitleKey = @"title.button1";
