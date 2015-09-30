@@ -799,6 +799,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 id<VVideoPlayer> videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:videoPlayer];
+                self.videoPlayer = videoPlayer;
                 
                 // If the end card is going to show after the video finishes,
                 // set this to make a clean transition in for the end card
@@ -1181,7 +1182,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  return;
              }
              welf.enteringRealTimeComment = YES;
-             welf.realtimeCommentBeganTime = welf.videoPlayer.currentTimeSeconds;
+             welf.realtimeCommentBeganTime = welf.videoPlayer.isPlaying ? welf.videoPlayer.currentTimeSeconds : welf.videoPlayer.durationSeconds;
          }];
     }
 }
