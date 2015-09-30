@@ -192,7 +192,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     // If logged in, load any tags already being followed
     if ([VObjectManager sharedManager].authorized)
     {
-        [self retrieveHashtagsForLoggedInUser];
+        [self updatedFollowedTags];
     }
     else
     {
@@ -223,27 +223,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      {
          [self hashtagsDidFailToLoadWithError:error];
      }];
-}
-
-#pragma mark - Get / Format Logged In Users Tags
-
-- (void)retrieveHashtagsForLoggedInUser
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updatedFollowedTags];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
 }
 
 - (void)updatedFollowedTags

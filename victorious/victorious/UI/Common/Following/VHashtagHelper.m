@@ -17,76 +17,40 @@
 
 - (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
-    [self performFollowEvent:^
+    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
+                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         [[VObjectManager sharedManager] subscribeToHashtag:hashtag
-                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              if (success != nil)
-              {
-                  success(resultObjects);
-              }
-          }
-                                                  failBlock:^(NSOperation *operation, NSError *error)
-          {
-              if (failure != nil)
-              {
-                  failure(error);
-              }
-          }];
+         if (success != nil)
+         {
+             success(resultObjects);
+         }
      }
-                   failBlock:failure];
+                                             failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if (failure != nil)
+         {
+             failure(error);
+         }
+     }];
 }
 
 - (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
-    [self performFollowEvent:^
+    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
+                                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         
-         [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              if (success != nil)
-              {
-                  success(resultObjects);
-              }
-          }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-          {
-              if (failure != nil)
-              {
-                  failure(error);
-              }
-          }];
+         if (success != nil)
+         {
+             success(resultObjects);
+         }
      }
-                   failBlock:failure];
-}
-
-- (void)performFollowEvent:(void (^)(void))followEvent failBlock:(void (^)(NSError *error))failBlock
-{
-    NSParameterAssert(followEvent != nil);
-    
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
-    if (mainUser.hashtags.count == 0)
-    {
-        [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst perPageLimit:1000
-                                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                               failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if (failure != nil)
          {
-             followEvent();
-             
-         } failBlock:^(NSOperation *operation, NSError *error)
-         {
-             if ( failBlock != nil )
-             {
-                 failBlock(error);
-             }
-         }];
-    }
-    else
-    {
-        followEvent();
-    }
+             failure(error);
+         }
+     }];
 }
 
 @end

@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSSet * marquees;
 @property (nonatomic, retain, nullable) NSSet * previewImageAssets;
 @property (nonatomic, retain, nullable) NSSet * streams;
+
 @end
 
 @interface VStreamItem (CoreDataGeneratedAccessors)
