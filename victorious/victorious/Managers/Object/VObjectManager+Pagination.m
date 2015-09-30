@@ -544,7 +544,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     // We're a stream, we need to check if we're a hashtag stream
     if ( [streamItem isKindOfClass:[VStream class]] )
     {
-        if (fullResponse[@"payload"] == nil && [fullResponse[@"payload"] isKindOfClass:[NSDictionary class]])
+        if (fullResponse[@"payload"] == nil || ![fullResponse[@"payload"] isKindOfClass:[NSDictionary class]])
         {
             return;
         }
