@@ -255,7 +255,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         return;
     }
     
-    
     if (hud == nil)
     {
         hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -308,7 +307,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         {
             if ([welf.currentUserSearchQueryText isEqualToString:currentTagsentinel])
             {
-                VLog(@"hiding hud failed curent search term");
                 [hud hide:YES];
             }
         });
@@ -384,8 +382,6 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                       [self showNoResultsReturnedForSearch];
                                                   }
                                                   [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
-                                                  
-                                                  VLog(@"hiding hud success");
                                                   [hud hide:YES];
                                               });
                            });
@@ -398,7 +394,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         {
             if ([welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
             {
-                VLog(@"hiding hud failed curent search term");
                 [hud hide:YES];
             }
         });
