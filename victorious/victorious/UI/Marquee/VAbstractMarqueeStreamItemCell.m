@@ -84,7 +84,7 @@
     
     if ( [self.previewView canHandleStreamItem:streamItem] )
     {
-        [self updatePreviewViewWithStreamItem:streamItem];
+        [self.previewView updateToStreamItem:streamItem];
         return;
     }
     
@@ -104,11 +104,6 @@
         ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = !self.shouldSupportAutoplay;
     }
     
-    [self updatePreviewViewWithStreamItem:streamItem];
-}
-
-- (void)updatePreviewViewWithStreamItem:(VStreamItem *)streamItem
-{
     [self.previewView updateToStreamItem:streamItem];
 }
 
@@ -174,6 +169,15 @@
 - (void)relinquishPreviewView
 {
     self.hasReliquishedPreviewView = YES;
+}
+
+- (void)setHasReliquishedPreviewView:(BOOL)hasReliquishedPreviewView
+{
+    _hasReliquishedPreviewView = hasReliquishedPreviewView;
+    if ( !hasReliquishedPreviewView )
+    {
+        [self updatePreviewViewForStreamItem:self.streamItem];
+    }
 }
 
 - (UIView *)getPreviewView
