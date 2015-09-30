@@ -34,11 +34,6 @@
 - (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion;
 
 /**
- *  The user has selected facebook authorization.
- */
-- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion;
-
-/**
  *  The user has entered the passed email nad password and requested login.
  */
 - (void)loginWithEmail:(NSString *)email
