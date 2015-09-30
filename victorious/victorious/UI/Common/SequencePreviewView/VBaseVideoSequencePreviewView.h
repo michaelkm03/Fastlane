@@ -16,11 +16,12 @@
 #import "VFocusable.h"
 #import "VVideoPreviewView.h"
 #import "VVideoSettings.h"
+#import "VContentFittingPreviewView.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VVideoPlayerDelegate, VVideoPreviewView>
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VFocusable, VVideoPlayerDelegate, VVideoPreviewView, VContentFittingPreviewView>
 
 /**
  * Responsible for playing video in-line. Subclasses can hide this if

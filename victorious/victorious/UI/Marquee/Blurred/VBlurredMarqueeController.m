@@ -161,11 +161,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     };
     
     [self.loadingPreviewViews addObject:previewView];
-    if ( [previewView respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [previewView setDependencyManager:self.dependencyManager];
-    }
-    [previewView setStreamItem:streamItem];
+    [previewView setDependencyManager:self.dependencyManager];
+    [previewView updateToStreamItem:streamItem];
 }
 
 - (void)attemptToPerformInitialDisplayAnimation
