@@ -14,6 +14,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     private struct Constants {
         static let labelInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         static let blurCacheString = "_blurred"
+        static let desiredSize = CGSizeMake(90, 90)
     }
     
     private var imageView = UIImageView()
@@ -36,15 +37,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     var streamItem: VStreamItem? {
         didSet {
             self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
-            if let item = streamItemForDisplay {
-                if let previewImageURL = (item.previewImagesObject as? String),
-                    let url = NSURL(string: previewImageURL)  {
-                        // Download preview image
-                        updateImageView(url: url)
-                }
-                else if item.itemSubType == VStreamItemSubTypeText {
-                    updateTextPreviewView()
-                }
+            guard let item = streamItemForDisplay else {
+                return;
+            }
+            if let previewImageURL = (item.previewImagesObject as? String),
+                let url = NSURL(string: previewImageURL)  {
+                    // Download preview image
+                    updateImageView(url: url)
+            }
+            else if item.itemSubType == VStreamItemSubTypeText {
+                updateTextPreviewView()
             }
         }
     }
@@ -133,24 +135,26 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             textPostPreviewView.onlyShowPreview = true
             textPostPreviewView.updateToStreamItem(streamItem)
             textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
-                textPostPreviewView.renderTextPostPreviewImageWithCompletion({ [weak self] (image: UIImage!) -> Void in
-                    if let strongSelf = self {
-                        let cacheKey = streamItem.remoteId
-                        strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
-                        strongSelf.imageView.image = image
-                        strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
+                textPostPreviewView.renderTextPostPreviewImageWithCompletion({ image in
+                    guard let strongSelf = self else {
+                        return
                     }
+                    let cacheKey = streamItem.remoteId
+                    strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
+                    strongSelf.imageView.image = image
+                    strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
                 })
             };
         }
     }
     
     private func updateImageView(url url: NSURL) {
-        imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] (image, error, cacheType, url) -> Void in
+        imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { [weak self] image, error, cacheType, url in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if let strongSelf = self {
-                    strongSelf.updateWithImage(image, cacheKey: url?.absoluteString, animated: cacheType != .Memory)
+                guard let strongSelf = self else {
+                    return
                 }
+                strongSelf.updateWithImage(image, cacheKey: url?.absoluteString, animated: cacheType != .Memory)
             })
         })
     }
@@ -218,7 +222,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     //The ideal size of this cell
     class func desiredSize() -> CGSize {
-        return CGSizeMake(90, 90)
+        return Constants.desiredSize
     }
 }
 

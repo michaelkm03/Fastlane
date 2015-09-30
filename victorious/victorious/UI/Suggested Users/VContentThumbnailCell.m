@@ -10,9 +10,6 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+VLoadingAnimations.h"
-#import "VStreamItemPreviewView.h"
-#import "UIView+AutoLayout.h"
-#import "VStreamItem.h"
 
 @interface VContentThumbnailCell()
 

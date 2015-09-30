@@ -25,7 +25,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .Horizontal
         flowLayout.sectionInset = Constants.contentInsets
-        flowLayout.itemSize = CGSize(width: TrendingTopicContentCollectionViewCell.desiredSize().width, height: TrendingTopicContentCollectionViewCell.desiredSize().height)
+        flowLayout.itemSize = TrendingTopicContentCollectionViewCell.desiredSize()
         return flowLayout
     }()
     

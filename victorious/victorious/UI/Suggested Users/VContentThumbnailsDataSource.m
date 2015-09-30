@@ -116,9 +116,14 @@ typedef UIImage* (^ImageLoading)();
         __weak typeof(self) welf = self;
         [textSequencePreviewView renderTextPostPreviewImageWithCompletion:^(UIImage *image)
          {
-             [self performOnResizeQueue:^
+             __strong VContentThumbnailsDataSource *strongSelf = welf;
+             if ( strongSelf == nil )
+             {
+                 return;
+             }
+             [strongSelf performOnResizeQueue:^
               {
-                  [welf resizeAndCacheImage:image withCacheKey:cacheKey toSize:size atIndex:index withCompletion:completion];
+                  [strongSelf resizeAndCacheImage:image withCacheKey:cacheKey toSize:size atIndex:index withCompletion:completion];
               }];
          }];
     }

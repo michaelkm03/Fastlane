@@ -72,7 +72,7 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL onlyShowPreview;
 
 /**
- *  If YES, this preview view will only display the preview image for this content.
+ *  Determines whether or not the loading background is shown behind the preview view.
  */
 @property (nonatomic, assign) BOOL isLoading;
 

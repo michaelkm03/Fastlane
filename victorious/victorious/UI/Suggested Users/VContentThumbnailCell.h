@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "VBaseCollectionViewCell.h"
-#import "VStreamCellSpecialization.h"
-
-@class VStreamItem, VDependencyManager;
 
 /**
  A collection view cell that shows an image fitted to the bounds of the cell
