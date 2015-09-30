@@ -11,3 +11,4 @@
 #import "VRootViewController+UIAutomation.h"
 #import "VTabScaffoldViewController.h"
 #import "VStoredLogin.h"
+#import "VTemplateDecorator.h"
