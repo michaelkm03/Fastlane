@@ -12,6 +12,7 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "UIView+AutoLayout.h"
 #import "UIAlertController+VSimpleAlert.h"
+#import "victorious-Swift.h"
 
 // ViewControllers
 #import "VPromptCarouselViewController.h"
@@ -186,7 +187,15 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     self.twitterButton.hidden = YES;
     self.emailButton.hidden = YES;
     
-    NSArray *options = [self.dependencyManager arrayForKey:kSigninOptionsKey];
+    NSArray *options = [self.dependencyManager arrayOfValuesOfType:[NSString class] forKey:kSigninOptionsKey];
+    
+    if ( ![VFacebookHelper facebookAppIDPresent] )
+    {
+        options = [options filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings)
+        {
+            return ![evaluatedObject isEqualToString:kFacebookKey];
+        }]];
+    }
     
     UIButton *firstButton = [self buttonForLoginType:[options firstObject]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalButtonContainer
@@ -200,8 +209,8 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     for (NSUInteger idx = 0; idx < options.count; idx++)
     {
         NSString *currentLoginType = options[idx];
-        UIButton *currentBUtton = [self buttonForLoginType:currentLoginType];
-        currentBUtton.hidden = NO;
+        UIButton *currentButton = [self buttonForLoginType:currentLoginType];
+        currentButton.hidden = NO;
         if (idx > 0)
         {
             NSString *previousLoginType = options[idx - 1];
@@ -209,7 +218,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
             [self.view addConstraint:[NSLayoutConstraint constraintWithItem:previousButton
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
-                                                                     toItem:currentBUtton
+                                                                     toItem:currentButton
                                                                   attribute:NSLayoutAttributeTop
                                                                  multiplier:1.0f
                                                                    constant:0.0f]];

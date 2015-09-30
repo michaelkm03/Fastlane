@@ -26,6 +26,8 @@
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VUser+Fetcher.h"
+#import "VHashtag+RestKit.h"
 
 @import KVOController;
 
@@ -96,12 +98,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
-    
-    if ( [VObjectManager sharedManager].mainUser.hashtags.count == 0 )
-    {
-        //Only fetch hashtags for user to update the follow button status and visibility if they've never been loaded before
-        [self fetchHashtagsForLoggedInUser];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -135,33 +131,13 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
 }
 
-#pragma mark - Fetch Users Tags
-
-- (void)fetchHashtagsForLoggedInUser
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id result, NSArray *resultObjects)
-    {
-        [self updateUserFollowingStatus];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
-}
-
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
     [super refreshWithCompletion:^
      {
-         [self updateUserFollowingStatus];
          [self dataSourceDidRefresh];
          [self updateNavigationItems];
+         [self updateUserFollowingStatus];
      }];
 }
 

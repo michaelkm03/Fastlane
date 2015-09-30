@@ -22,4 +22,10 @@
  */
 - (BOOL)isFollowingHashtagString:(NSString *)hashtag;
 
+/**
+ *  Creates a new hashtag object with the string and adds it to the
+ *  user's followed hashtags list.
+ */
+- (void)addFollowedHashtag:(NSString *)hashtag;
+
 @end
