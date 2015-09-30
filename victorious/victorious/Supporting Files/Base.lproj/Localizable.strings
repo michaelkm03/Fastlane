@@ -183,10 +183,7 @@
 "ConversationSendError" =   "Your message could not be sent";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
-"We failed to retrieve publish permissions." = "We failed to retrieve publish permissions.";
 "Retry"                 =   "Retry";
-
-"VideoPlayFailed"       =   "Video loading failed.";
 
 "Now"                   =   "Now";
 "MinuteAgo"             =   "1m";
