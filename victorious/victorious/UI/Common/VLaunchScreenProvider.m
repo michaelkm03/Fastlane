@@ -32,4 +32,15 @@
     return [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
 }
 
++ (UIImage *)launchImage
+{
+    static UIImage *image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      image = [UIImage imageNamed:@"LaunchImage"];
+                  });
+    return image;
+}
+
 @end
