@@ -14,6 +14,7 @@
 #import "UIView+AutoLayout.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
+#import "VLaunchScreenProvider.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -135,7 +136,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:self.view.bounds.size];
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
-        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
+        [self.backgroundImageView setBlurredImageWithClearImage:[VLaunchScreenProvider launchImage]
                                                placeholderImage:nil
                                                       tintColor:[UIColor colorWithWhite:0.0 alpha:kBlurredWhiteAlpha]];
     }
