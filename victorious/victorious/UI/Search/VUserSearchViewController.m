@@ -243,10 +243,6 @@ static const NSInteger kSearchResultLimit = 100;
             
             [self setHaveSearchResults:NO];
             self.tableView.hidden = YES;
-            if (error.code)
-            {
-                self.foundUsers = [[NSArray alloc] init];
-            }
         });
     };
 
