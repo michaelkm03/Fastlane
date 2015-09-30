@@ -28,7 +28,8 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
-    if ([image isEqual:objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey)])
+    UIImage *storedImage = objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey);
+    if ([image isEqual:storedImage])
     {
         return;
     }
@@ -52,6 +53,8 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     NSParameterAssert(!CGRectEqualToRect(self.bounds, CGRectZero));
     __weak UIImageView *weakSelf = self;
+    //No longer displaying an image from the "blurredImageWithClearImage:" method, clear out that association
+    objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     objc_setAssociatedObject(self, &kAssociatedURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
     self.alpha = 0;
@@ -191,7 +194,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 - (void)clearDownloadCache
 {
-    objc_removeAssociatedObjects( self );
+    objc_setAssociatedObject(self, &kAssociatedURLKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)downloadImageWithURL:(NSURL *)url toCallbackBlock:(void (^)(UIImage *, NSError *))callbackBlock
@@ -207,7 +210,9 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
              UIImageView *strongSelf = weakSelf;
              if ( strongSelf != nil && image != nil )
              {
-                 objc_setAssociatedObject(strongSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
+                 //No longer displaying an image from the "blurredImageWithClearImage:" method, clear out that association
+                 objc_setAssociatedObject(strongSelf, &kAssociatedBlurredOriginalImageKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                 objc_setAssociatedObject(strongSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
              }
         }
          
