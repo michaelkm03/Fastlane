@@ -1183,7 +1183,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
              
              __strong typeof(welf) strongSelf = welf;
              strongSelf.enteringRealTimeComment = YES;
-             strongSelf.realtimeCommentBeganTime = strongSelf.videoPlayer.isPlaying ? strongSelf.videoPlayer.currentTimeSeconds : strongSelf.videoPlayer.durationSeconds;
+             strongSelf.realtimeCommentBeganTime = strongSelf.videoPlayer.currentTimeSeconds > 0 ? strongSelf.videoPlayer.currentTimeSeconds : strongSelf.videoPlayer.durationSeconds;
              [strongSelf.videoPlayer pause];
          }];
     }
