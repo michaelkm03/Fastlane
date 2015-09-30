@@ -1173,7 +1173,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     if ( self.viewModel.type == VContentViewTypeVideo )
     {
-        [self.videoPlayer pause];
         __weak typeof(self) welf = self;
         [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
          {
@@ -1181,8 +1180,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
              {
                  return;
              }
-             welf.enteringRealTimeComment = YES;
-             welf.realtimeCommentBeganTime = welf.videoPlayer.isPlaying ? welf.videoPlayer.currentTimeSeconds : welf.videoPlayer.durationSeconds;
+             
+             __strong typeof(welf) strongSelf = welf;
+             strongSelf.enteringRealTimeComment = YES;
+             strongSelf.realtimeCommentBeganTime = strongSelf.videoPlayer.isPlaying ? strongSelf.videoPlayer.currentTimeSeconds : strongSelf.videoPlayer.durationSeconds;
+             [strongSelf.videoPlayer pause];
          }];
     }
 }
