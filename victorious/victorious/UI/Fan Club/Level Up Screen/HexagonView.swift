@@ -160,6 +160,7 @@ class HexagonView: UIView {
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         isAnimating = false
         animationCompletion?()
+        animationCompletion = nil
     }
 }
 
