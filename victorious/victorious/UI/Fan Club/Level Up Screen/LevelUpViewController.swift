@@ -86,6 +86,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         return levelUpAnimator
     }
     
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    }
+    
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle {
+        return .FullScreen
+    }
+    
     // MARK: - Public Properties
     
     var levelUpInterstitial: LevelUpInterstitial! {
@@ -99,13 +107,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
-                
-                dispatch_after(AnimationConstants.presentationDuration) {
-                    let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
-                    videoPlayerItem.loop = true
-                    videoPlayerItem.muted = true
-                    self.videoBackground.setItem( videoPlayerItem )
-                }
             }
         }
     }
@@ -165,6 +166,11 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                     self.upgradeBadgeNumber()
                 }
             }
+            
+            let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
+            videoPlayerItem.loop = true
+            videoPlayerItem.muted = true
+            self.videoBackground.setItem( videoPlayerItem )
         }
     }
     
@@ -251,8 +257,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Video View Delegate
     
-    func videoViewPlayerDidBecomeReady(videoView: VVideoView) {
-        videoBackground.play()
+    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        videoPlayer.playFromStart()
     }
 }
 
