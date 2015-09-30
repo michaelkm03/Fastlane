@@ -53,9 +53,7 @@
         }
         else
         {
-#warning Testing only:
-            classType = [VRemoteVideoSequencePreviewView class];
-            //classType = [VVideoSequencePreviewView class];
+            classType = [VVideoSequencePreviewView class];
         }
     }
     else if ([sequence isImage] || [sequence isPreviewImageContent])

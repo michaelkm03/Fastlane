@@ -1690,7 +1690,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd )
+    if ( !self.contentCell.isPlayingAd && ![self.contentCell isEndCardShowing] )
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;

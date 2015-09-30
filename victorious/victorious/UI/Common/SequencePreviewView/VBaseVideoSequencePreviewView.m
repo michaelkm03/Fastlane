@@ -47,6 +47,7 @@
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
         _videoContainer = [[UIView alloc] initWithFrame:self.bounds];
+        _videoContainer.backgroundColor = [UIColor clearColor];
         [self addSubview:_videoContainer];
         [self v_addFitToParentConstraintsToSubview:_videoContainer];
         

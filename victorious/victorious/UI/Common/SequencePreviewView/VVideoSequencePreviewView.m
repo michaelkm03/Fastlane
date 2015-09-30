@@ -81,15 +81,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                                   options:0
                                                                                   metrics:metrics
                                                                                     views:views]];
-    
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.activityIndicator.hidesWhenStopped = YES;
-    self.activityIndicator.hidden = YES;
-    [self.videoUIContainer addSubview:self.activityIndicator];
-    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
-    
-    
     UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
     self.largePlayButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [self.largePlayButton setImage:playIcon forState:UIControlStateNormal];
@@ -99,6 +90,13 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicator.hidesWhenStopped = YES;
+    [self.activityIndicator stopAnimating];
+    [self.videoUIContainer addSubview:self.activityIndicator];
+    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
 }
 
 - (void)onContentTap
@@ -202,22 +200,32 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
+        if ( self.state == VVideoStateBuffering )
+        {
+            [self.activityIndicator startAnimating];
+        }
+        else
+        {
+            [self.activityIndicator stopAnimating];
+        }
+        
         self.largePlayButton.userInteractionEnabled = YES;
-        if ( self.state != VVideoStateNotStarted )
+        if ( self.state == VVideoStateNotStarted )
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = YES;
+        }
+        else
         {
             self.largePlayButton.hidden = YES;
             self.previewImageView.hidden = YES;
             self.videoPlayer.view.hidden = NO;
         }
-        else
-        {
-            self.largePlayButton.hidden = NO;
-            self.previewImageView.hidden = NO;
-            self.videoPlayer.view.hidden = YES;
-        }
     }
     else
     {
+        [self.activityIndicator stopAnimating];
         self.largePlayButton.userInteractionEnabled = NO;
         if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
         {
@@ -232,9 +240,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
             self.videoPlayer.view.hidden = YES;
         }
     }
-    
-    // Activity indicator
-    self.activityIndicator.hidden = self.state != VVideoStateBuffering;
     
     // Sound indicator
     self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
@@ -318,14 +323,10 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                            [self.videoPlayer playFromStart];
                        });
     }
-    else if ( !self.willShowEndCard )
-    {
-        [self.videoPlayer pause];
-        self.state = VVideoStateEnded;
-        [super videoPlayerDidReachEnd:videoPlayer];
-    }
     else
     {
+        self.state = VVideoStateEnded;
+        [self.videoPlayer pause];
         [super videoPlayerDidReachEnd:videoPlayer];
     }
 }
@@ -333,6 +334,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStartBuffering:videoPlayer];
+    self.state = VVideoStateBuffering;
 }
 
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
