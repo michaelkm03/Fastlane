@@ -413,8 +413,6 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                                                    failBlock:searchFail];
         });
     }
-    
-    self.userSearchResultsVC.searchResults = @[];
 }
 
 - (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
