@@ -7,11 +7,12 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VPreviewView.h"
 
 /**
  A preview view for displaying a text asset on a sequence.
  */
-@interface VTextSequencePreviewView : VSequencePreviewView
+@interface VTextSequencePreviewView : VSequencePreviewView <VPreviewView>
 
 /**
  Creates an image from this text sequence preview view. Will render at

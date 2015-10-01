@@ -1,5 +1,5 @@
 //
-//  VVideoPreviewView.h
+//  VPreviewView.h
 //  victorious
 //
 //  Created by Patrick Lynch on 9/10/15.
@@ -8,10 +8,22 @@
 
 @protocol VVideoPlayer;
 
+@protocol VPreviewView <NSObject>
+@optional
+
+/**
+ Allows a context to inform the receiver of a default at which asset should rendered.
+ This value is open to interpretation based on the type of class implementing the protocol,
+ but in general it is used to optimize display of content.
+ */
+- (void)setRenderingSize:(CGSize)renderingSize;
+
+@end
+
 /**
  Defines an object that will respond to events from a VVideoPreviewView.
  */
-@protocol VVideoPreviewViewDelegate
+@protocol VVideoPreviewViewDelegate <VPreviewView>
 
 - (void)animateAlongsideVideoToolbarWillAppear;
 - (void)animateAlongsideVideoToolbarWillDisappear;

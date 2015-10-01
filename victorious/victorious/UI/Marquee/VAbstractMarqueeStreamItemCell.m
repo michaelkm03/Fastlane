@@ -105,6 +105,15 @@
     }
     
     [self.previewView updateToStreamItem:streamItem];
+    
+    id<VPreviewView> previewView = (id<VPreviewView>)self.previewView;
+    if ( [previewView respondsToSelector:@selector(setRenderingSize:)] )
+    {
+        CGRect bounds = self.bounds;
+        [previewView setRenderingSize:CGSizeMake( bounds.size.width, bounds.size.width )];
+    }
+    
+    [self.previewView setStreamItem:streamItem];
 }
 
 #pragma mark - VStreamCellComponentSpecialization

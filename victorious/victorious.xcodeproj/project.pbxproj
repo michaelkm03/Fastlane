@@ -2704,7 +2704,7 @@
 		A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait_upsidedown.m4v; sourceTree = "<group>"; };
 		A7CFC1C819FEE17B00726772 /* front_portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait.m4v; sourceTree = "<group>"; };
-		A7D043211BA266E400FDBBCC /* VVideoPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPreviewView.h; sourceTree = "<group>"; };
+		A7D043211BA266E400FDBBCC /* VPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPreviewView.h; sourceTree = "<group>"; };
 		A7D047931B97AE140091F366 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
 		A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewStreamTransition.swift; sourceTree = "<group>"; };
 		A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewControllerTests.m; sourceTree = "<group>"; };
@@ -7272,7 +7272,7 @@
 				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
 				C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */,
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
-				A7D043211BA266E400FDBBCC /* VVideoPreviewView.h */,
+				A7D043211BA266E400FDBBCC /* VPreviewView.h */,
 				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
 				A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */,
 			);
