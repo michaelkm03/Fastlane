@@ -16,6 +16,7 @@
 #import "VDependencyManager+VBackground.h"
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
+#import "victorious-Swift.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -207,9 +208,10 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
+            self.videoPlayer.muted = YES;
+            [[VAudioManager sharedInstance] focusedPlaybackDidEndWithVideoPlayer:self.videoPlayer];
             [self.likeButton hide];
             [self.videoPlayer pause];
-            self.videoPlayer.muted = YES;
             if ( self.onlyShowPreview )
             {
                 [self.videoPlayer pauseAtStart];
@@ -218,12 +220,13 @@
             break;
             
         case VFocusTypeStream:
+            self.videoPlayer.muted = YES;
+            [[VAudioManager sharedInstance] focusedPlaybackDidEndWithVideoPlayer:self.videoPlayer];
             self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
                 [self.videoPlayer play];
-                self.videoPlayer.muted = YES;
             }
             if ( self.onlyShowPreview )
             {
@@ -233,6 +236,8 @@
             break;
             
         case VFocusTypeDetail:
+            self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
+            [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithVideoPlayer:self.videoPlayer];
             if ( self.onlyShowPreview )
             {
                 // If we were previously only showing the preview, now we need to load the video asset
@@ -241,7 +246,6 @@
             self.isLoading = YES;
             [self.likeButton show];
             [self.videoPlayer play];
-            self.videoPlayer.muted = NO;
             self.userInteractionEnabled = YES;
             break;
     }
