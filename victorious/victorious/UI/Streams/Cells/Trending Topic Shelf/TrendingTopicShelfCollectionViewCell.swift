@@ -148,7 +148,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.colorCache = colorCache

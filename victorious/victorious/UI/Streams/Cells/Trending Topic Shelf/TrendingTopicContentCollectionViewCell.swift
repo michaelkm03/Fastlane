@@ -34,34 +34,19 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         return blurMask
     }()
     
-    var streamItem: VStreamItem? {
+    var streamItem: VSequence? {
         didSet {
-            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
-            guard let item = streamItemForDisplay else {
+            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.trendingTopicName) ?? ""
+            guard let streamItem = streamItem else {
                 return
             }
-            if let previewImageURL = (item.previewImagesObject as? String),
-                let url = NSURL(string: previewImageURL)  {
-                    // Download preview image
-                    updateImageView(url: url)
+            if let previewImageURL = streamItem.inStreamPreviewImageURLWithMaximumSize(Constants.desiredSize) {
+                updateImageView(url: previewImageURL)
             }
-            else if item.itemSubType == VStreamItemSubTypeText {
+            else if streamItem.itemSubType == VStreamItemSubTypeText {
                 updateTextPreviewView()
             }
         }
-    }
-    
-    private var streamItemForDisplay: VStreamItem? {
-        if let previewImageURL = (streamItem?.previewImagesObject as? String) {
-                if previewImageURL != "" {
-                    return streamItem
-                }
-        }
-        else if let stream = streamItem as? VStream,
-                 let item = stream.streamItems.array.first as? VStreamItem {
-                    return item
-        }
-        return nil
     }
     
     /// The dependency manager whose colors and fonts will be used to style this cell.
@@ -70,7 +55,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             if let dependencyManager = dependencyManager {
                 dependencyManager.addLoadingBackgroundToBackgroundHost(self)
                 label.font = dependencyManager.labelFont
-                if streamItemForDisplay?.itemSubType == VStreamItemSubTypeText {
+                if streamItem?.itemSubType == VStreamItemSubTypeText {
                     updateTextPreviewView()
                 }
             }
@@ -118,7 +103,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     private func updateTextPreviewView()
     {
-        guard let streamItem = streamItemForDisplay,
+        guard let streamItem = streamItem,
             let dependencyManager = dependencyManager else {
                 return
         }
