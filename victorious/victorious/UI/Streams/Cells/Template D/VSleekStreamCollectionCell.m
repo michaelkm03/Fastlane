@@ -40,6 +40,7 @@
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
+static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 0.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, kCaptionToPreviewVerticalSpacing, 14.0f };
 static const NSUInteger kMaxNumberOfInStreamComments = 3;
@@ -344,9 +345,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     if ( [self shouldShowCaptionForSequence:self.sequence] )
     {
-        if ( self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
+        if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
         {
             self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
+            self.captionHeight.constant = kMaxCaptionTextViewHeight;
         }
     }
     else
