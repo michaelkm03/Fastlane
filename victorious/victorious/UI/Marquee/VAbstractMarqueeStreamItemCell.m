@@ -106,10 +106,10 @@
     
     [self.previewView updateToStreamItem:streamItem];
     
-    id<VRenderablePreviewView> previewView = (id<VRenderablePreviewView>)self.previewView;
-    if ( [previewView respondsToSelector:@selector(setRenderingSize:)] )
+    if ( [self.previewView conformsToProtocol:@protocol(VRenderablePreviewView)] )
     {
-        [previewView setRenderingSize:CGSizeMake( CGRectGetWidth(self.bounds), CGRectGetWidth(self.bounds) )];
+        id<VRenderablePreviewView> renderablePreviewView = (id<VRenderablePreviewView>)self.previewView;
+        [renderablePreviewView setRenderingSize:CGSizeMake( CGRectGetWidth(self.bounds), CGRectGetWidth(self.bounds) )];
     }
     
     [self.previewView setStreamItem:streamItem];

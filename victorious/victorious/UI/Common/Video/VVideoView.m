@@ -295,6 +295,15 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     if ( !self.isPlaying )
     {
+        if ( !self.muted )
+        {
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        }
+        else
+        {
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+        }
+        
         [self.player play];
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
         {
