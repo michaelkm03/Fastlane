@@ -1190,7 +1190,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
              {
                  strongSelf.enteringRealTimeComment = YES;
                  strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
-                 [strongSelf.videoPlayer pause];
              }
          }];
     }
