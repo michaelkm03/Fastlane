@@ -121,7 +121,7 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [[VObjectManager sharedManager] mainUser] != nil;
     if ( shouldRefresh )
     {
         [self refreshWithCompletion:nil];
