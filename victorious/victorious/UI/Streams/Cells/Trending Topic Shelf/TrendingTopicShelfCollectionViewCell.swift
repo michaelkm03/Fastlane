@@ -169,9 +169,9 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         let responder: VHashtagSelectionResponder = typedResponder()
-        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
-            let hashtag = streamItem.name ?? ""
+            let hashtag = streamItem.trendingTopicName ?? ""
             responder.hashtagSelected(hashtag)
             return
         }
