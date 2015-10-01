@@ -117,7 +117,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                  
                  // Add space for the text view inset if necessary
                  UIFont *captionFont = attributes[NSFontAttributeName];
-                 textHeight += [captionFont v_appropriateTextViewInsets].top;
+                 textHeight += [captionFont v_fontSpecificTextViewInsets].top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -408,7 +408,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
                                                                   attributes:attributes];
         UIFont *captionFont = attributes[NSFontAttributeName];
-        self.captionTextView.textContainerInset = [captionFont v_appropriateTextViewInsets];
+        self.captionTextView.textContainerInset = [captionFont v_fontSpecificTextViewInsets];
     }
     self.captionTextView.attributedText = captionAttributedString;
 }
@@ -478,7 +478,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         UIFont *captionFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineSpacing = [captionFont v_appropriateLineSpacing];
+        paragraphStyle.lineSpacing = [captionFont v_fontSpecificLineSpace];
         
         attributes[ NSFontAttributeName ] = captionFont;
         attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
