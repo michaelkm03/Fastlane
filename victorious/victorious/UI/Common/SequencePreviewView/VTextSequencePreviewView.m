@@ -143,6 +143,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     }
     
     _textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+    _textPostViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     return _textPostViewController;
 }
 
@@ -220,9 +221,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     if ( self.textPostViewController.view.superview == nil )
     {
         [self addSubview:self.textPostViewController.view];
-        [self v_addCenterToParentContraintsToSubview:self.textPostViewController.view];
-        self.previewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:CGRectGetWidth(self.bounds)];
-        self.previewHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:CGRectGetHeight(self.bounds)];
+        [self updateConstraints];
     }
 
     if ( self.previewImageView.superview != nil )
@@ -243,27 +242,39 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)setupTextViewSizeConstraints
 {
-    CGSize size = kRenderedTextPostFrame.size;
-    if ( self.offscreenPreviewWidthConstraint == nil )
+    const BOOL hasAddedConstraints = self.offscreenPreviewWidthConstraint != nil && self.offscreenPreviewHeightConstraint != nil;
+    if ( !hasAddedConstraints )
     {
+        CGSize size = kRenderedTextPostFrame.size;
         self.offscreenPreviewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:size.width];
-    }
-    if ( self.offscreenPreviewHeightConstraint == nil )
-    {
         self.offscreenPreviewHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:size.height];
     }
 }
 
 - (void)updateConstraints
 {
-    BOOL hasRenderingSize = !CGSizeEqualToSize( self.previewRenderingSize, CGSizeZero );
-    const CGSize size = hasRenderingSize ? self.previewRenderingSize : self.bounds.size;
-    
-    self.previewHeightConstraint.constant = size.width;
-    self.previewWidthConstraint.constant = size.width;
-    
     self.offscreenPreviewWidthConstraint.active = self.onlyShowPreview;
     self.offscreenPreviewHeightConstraint.active = self.onlyShowPreview;
+    
+    self.previewHeightConstraint.active = !self.onlyShowPreview;
+    self.previewWidthConstraint.active = !self.onlyShowPreview;
+    
+    if ( !self.onlyShowPreview )
+    {
+        BOOL hasRenderingSize = !CGSizeEqualToSize( self.previewRenderingSize, CGSizeZero );
+        const CGSize size = hasRenderingSize ? self.previewRenderingSize : self.bounds.size;
+        
+        const BOOL hasAddedConstraints = self.previewWidthConstraint != nil && self.previewWidthConstraint != nil;
+        if ( !hasAddedConstraints && !CGSizeEqualToSize(size, CGSizeZero) )
+        {
+            [self v_addCenterToParentContraintsToSubview:self.textPostViewController.view];
+            self.previewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:size.width];
+            self.previewHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:size.height];
+        }
+        
+        self.previewHeightConstraint.constant = size.width;
+        self.previewWidthConstraint.constant = size.width;
+    }
     
     [self layoutIfNeeded];
     
