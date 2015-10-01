@@ -13,14 +13,14 @@ enum FontFamily: String {
 }
 
 extension UIFont {
-    func appropriateLineSpacing() -> CGFloat {
+    func v_appropriateLineSpacing() -> CGFloat {
         if self.familyName == FontFamily.Josefin.rawValue {
             return 3.0
         }
         return 0
     }
     
-    func appropriateTextViewInsets() -> UIEdgeInsets {
+    func v_appropriateTextViewInsets() -> UIEdgeInsets {
         if self.familyName == FontFamily.Josefin.rawValue {
             return UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         }
