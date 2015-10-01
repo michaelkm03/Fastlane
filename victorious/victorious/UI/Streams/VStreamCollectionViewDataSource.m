@@ -24,7 +24,7 @@
 
 static char KVOContext;
 
-//NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
+NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
 
 @interface VStreamCollectionViewDataSource()
 
@@ -90,8 +90,8 @@ static char KVOContext;
                 hasNewStreamItems:self.visibleStreamItems];
     }
     [self.collectionView reloadData];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
-//                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
+                                                        object:self];
 }
 
 - (NSArray *)streamItemsWithoutShelves
