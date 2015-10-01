@@ -23,41 +23,38 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
         if let containerView = transitionContext.containerView(),
-            let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
-            let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
+            let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
+            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) {
             
-            toViewController.view.frame = containerView.bounds
-            fromViewController.view.frame = containerView.bounds
+            toView.frame = containerView.bounds
+            fromView.frame = containerView.bounds
             
             if isDismissal {
                 
-                containerView.addSubview(fromViewController.view)
+                containerView.addSubview(toView)
+                containerView.addSubview(fromView)
                 
-                fromViewController.beginAppearanceTransition(false, animated: true)
-                toViewController.beginAppearanceTransition(true, animated: true)
-                
-                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration, animations: {
-                    fromViewController.view.alpha = 0
-                    }, completion: { (completed) in
+                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.dismissalDuration,
+                    animations: {
+                        fromView.alpha = 0
+                    },
+                    completion: { (completed) in
+                        fromView.removeFromSuperview()
                         transitionContext.completeTransition(true)
-                        toViewController.endAppearanceTransition()
-                        fromViewController.endAppearanceTransition()
                 })
             }
             else {
                 
-                toViewController.view.alpha = 0
-                containerView.addSubview(toViewController.view)
+                containerView.addSubview(fromView)
+                containerView.addSubview(toView)
                 
-                fromViewController.beginAppearanceTransition(false, animated: true)
-                toViewController.beginAppearanceTransition(true, animated: true)
-                
-                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration, animations: {
-                    toViewController.view.alpha = 1
-                    }, completion: { (completed) in
+                UIView.animateWithDuration(LevelUpViewController.AnimationConstants.presentationDuration,
+                    animations: {
+                        toView.alpha = 1
+                    },
+                    completion: { (completed) in
+                        fromView.removeFromSuperview()
                         transitionContext.completeTransition(true)
-                        fromViewController.endAppearanceTransition()
-                        toViewController.endAppearanceTransition()
                 })
             }
         }

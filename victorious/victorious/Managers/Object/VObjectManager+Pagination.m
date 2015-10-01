@@ -54,27 +54,23 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        void(^paginationBlock)(void) = ^(void)
+        VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
+        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        [filter.managedObjectContext saveToPersistentStore:nil];
+        
+        VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+        
+        NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+        [comments addObjectsFromArray:sequence.comments.array];
+        sequenceInContext.comments = [comments copy];
+        
+        [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
+        
+        if (success != nil)
         {
-            VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
-            filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-            filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
-            [filter.managedObjectContext saveToPersistentStore:nil];
-            
-            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
-            
-            NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
-            [comments addObjectsFromArray:sequence.comments.array];
-            sequenceInContext.comments = [comments copy];
-            
-            [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
-            
-            if (success)
-            {
-                success(operation, fullResponse, resultObjects);
-            }
-        };
-        [self parseResultCommentsForMissingUsers:resultObjects withCompletion:paginationBlock];
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
     NSString *path = [NSString stringWithFormat:@"/api/comment/find/%@/%@/%@", sequence.remoteId, commentId, filter.perPageNumber];
@@ -92,36 +88,31 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        void(^paginationBlock)(void) = ^(void)
+        VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext
+                                                     objectWithID:sequence.objectID];
+        
+        if ( pageType == VPageTypeFirst )
         {
-            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext
-                                                         objectWithID:sequence.objectID];
-            
-            if ( pageType == VPageTypeFirst )
+            NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+            [comments addObjectsFromArray:sequence.comments.array];
+            if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
             {
-                NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
-                [comments addObjectsFromArray:sequence.comments.array];
-                if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
-                {
-                    sequenceInContext.comments = [comments copy];
-                }
-            }
-            else
-            {
-                NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
-                [comments addObjectsFromArray:resultObjects];
                 sequenceInContext.comments = [comments copy];
             }
-            
-            [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
-            
-            if (success)
-            {
-                success(operation, fullResponse, resultObjects);
-            }
-        };
-        [self parseResultCommentsForMissingUsers:resultObjects
-                                 withCompletion:paginationBlock];
+        }
+        else
+        {
+            NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
+            [comments addObjectsFromArray:resultObjects];
+            sequenceInContext.comments = [comments copy];
+        }
+        
+        [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
+        
+        if (success != nil)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
     NSString *apiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
@@ -132,44 +123,6 @@ static const NSInteger kUserSearchResultLimit = 20;
                                  withPageType:pageType
                                  successBlock:fullSuccessBlock
                                     failBlock:fail];
-}
-
-- (void)parseResultCommentsForMissingUsers:(NSArray *)resultObjects
-                           withCompletion:(void (^)(void))completion
-{
-    NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
-    for (VComment *comment in resultObjects)
-    {
-        if (!comment.user)
-        {
-            [nonExistantUsers addObject:comment.userId];
-        }
-    }
-    if ([nonExistantUsers count])
-    {
-        [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                  withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             if (completion)
-             {
-                 completion();
-             }
-         }
-                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             if (completion)
-             {
-                 completion();
-             }
-         }];
-    }
-    else
-    {
-        if (completion)
-        {
-            completion();
-        }
-    }
 }
 
 #pragma mark - Notifications
@@ -217,30 +170,18 @@ static const NSInteger kUserSearchResultLimit = 20;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSManagedObjectContext *context = nil;
-        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation *conversation in resultObjects)
         {
             if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
                 conversation.filterAPIPath = [self apiPathForConversationWithRemoteID:conversation.remoteId];
             }
-            
-            if (!conversation.user && conversation.other_interlocutor_user_id)
-            {
-                [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
-            }
             context = conversation.managedObjectContext;
         }
         
         [context saveToPersistentStore:nil];
         
-        if ([nonExistantUsers count])
-        {
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:success
-                                             failBlock:fail];
-        }
-        else if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -254,7 +195,6 @@ static const NSInteger kUserSearchResultLimit = 20;
         
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
     }];
-     
     return requestOperation;
 }
 
@@ -487,6 +427,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
                 shelf.trackingIdentifier = shelf.remoteId;
                 itemApiPath = shelf.apiPath;
+                [self checkShelfForFollowedHashtags:shelf];
             }
             
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
@@ -556,6 +497,9 @@ static const NSInteger kUserSearchResultLimit = 20;
         stream.trackingIdentifier = streamId;
         stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
+        // Check if we need to follow any hashtags
+        [self checkStreamForHashtags:stream fullResponse:fullResponse];
+        
         if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);
@@ -575,6 +519,45 @@ static const NSInteger kUserSearchResultLimit = 20;
     else
     {
         editorializationItem.headline = headline;
+    }
+}
+
+- (void)checkShelfForFollowedHashtags:(Shelf *)shelf
+{
+    if ([shelf isKindOfClass:[HashtagShelf class]])
+    {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        // Check if we're following the hashtag
+        HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
+        if (hashtagShelf.amFollowing.boolValue && hashtagShelf.hashtagTitle != nil)
+        {
+            [mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
+        }
+    }
+}
+
+- (void)checkStreamForHashtags:(VStreamItem *)streamItem fullResponse:(NSDictionary *)fullResponse
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+
+    // We're a stream, we need to check if we're a hashtag stream
+    if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        if (fullResponse[@"payload"] == nil || ![fullResponse[@"payload"] isKindOfClass:[NSDictionary class]])
+        {
+            return;
+        }
+        
+        NSDictionary *payload = fullResponse[@"payload"];
+        
+        VStream *stream = (VStream *)streamItem;
+        // Check if this is a hashtag stream, and check if we're following the hashtag
+        if ([payload[@"am_following"] boolValue] && stream.hashtag != nil)
+        {
+            // Stream ID is the hashtag
+            [mainUser addFollowedHashtag:streamItem.streamId];
+        }
     }
 }
 

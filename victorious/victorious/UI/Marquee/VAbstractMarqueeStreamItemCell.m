@@ -16,6 +16,8 @@
 #import "VStreamItemPreviewView.h"
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
+#import "VTextSequencePreviewView.h"
+#import "VTextStreamPreviewView.h"
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking, VContentPreviewViewProvider>
 
@@ -82,10 +84,7 @@
     
     if ( [self.previewView canHandleStreamItem:streamItem] )
     {
-        if ( ![streamItem isEqual:self.previewView.streamItem] )
-        {
-            [self.previewView setStreamItem:streamItem];
-        }
+        [self.previewView updateToStreamItem:streamItem];
         return;
     }
     
@@ -94,15 +93,23 @@
     self.previewView.streamBackgroundColor = [UIColor blackColor];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.previewView setDependencyManager:self.dependencyManager];
-    }
+    [self.previewView setDependencyManager:self.dependencyManager];
+    BOOL isTextContent = [self.previewView isKindOfClass:[VTextSequencePreviewView class]] || [self.previewView isKindOfClass:[VTextStreamPreviewView class]];
+    self.previewView.onlyShowPreview = isTextContent && self.onlyShowPreviewForTextPosts;
+    self.previewView.displaySize = self.bounds.size;
     
     // Turn off autoplay for explore marquee shelf
     if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])
     {
         ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = !self.shouldSupportAutoplay;
+    }
+    
+    [self.previewView updateToStreamItem:streamItem];
+    
+    if ( [self.previewView conformsToProtocol:@protocol(VRenderablePreviewView)] )
+    {
+        id<VRenderablePreviewView> renderablePreviewView = (id<VRenderablePreviewView>)self.previewView;
+        [renderablePreviewView setRenderingSize:CGSizeMake( CGRectGetWidth(self.bounds), CGRectGetWidth(self.bounds) )];
     }
     
     [self.previewView setStreamItem:streamItem];
@@ -170,6 +177,15 @@
 - (void)relinquishPreviewView
 {
     self.hasReliquishedPreviewView = YES;
+}
+
+- (void)setHasReliquishedPreviewView:(BOOL)hasReliquishedPreviewView
+{
+    _hasReliquishedPreviewView = hasReliquishedPreviewView;
+    if ( !hasReliquishedPreviewView )
+    {
+        [self updatePreviewViewForStreamItem:self.streamItem];
+    }
 }
 
 - (UIView *)getPreviewView

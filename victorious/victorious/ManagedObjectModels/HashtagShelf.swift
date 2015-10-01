@@ -12,6 +12,7 @@ import CoreData
 class HashtagShelf: Shelf {
 
     @NSManaged var hashtagTitle: String
+    @NSManaged var amFollowing: NSNumber
     @NSManaged var postsCount: NSNumber
 
 }

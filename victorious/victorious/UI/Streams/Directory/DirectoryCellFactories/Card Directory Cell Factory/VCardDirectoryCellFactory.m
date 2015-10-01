@@ -64,7 +64,8 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     for ( VStreamItem *streamItem in streamItems )
     {
-        [collectionView registerNib:[VCardDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCardDirectoryCell reuseIdentifierForStreamItem:streamItem baseIdentifier:nil dependencyManager:self.dependencyManager]];
+        NSString *identifier = [VCardDirectoryCell reuseIdentifierForStreamItem:streamItem baseIdentifier:nil dependencyManager:self.dependencyManager];
+        [collectionView registerNib:[VCardDirectoryCell nibForCell] forCellWithReuseIdentifier:identifier];
     }
     [collectionView registerNib:[VCardSeeMoreDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCardSeeMoreDirectoryCell suggestedReuseIdentifier]];
 }

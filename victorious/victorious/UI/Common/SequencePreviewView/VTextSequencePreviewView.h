@@ -7,7 +7,17 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VRenderablePreviewView.h"
 
-@interface VTextSequencePreviewView : VSequencePreviewView
+/**
+ A preview view for displaying a text asset on a sequence.
+ */
+@interface VTextSequencePreviewView : VSequencePreviewView <VRenderablePreviewView>
+
+/**
+ Creates an image from this text sequence preview view. Will render at
+ the displaySize if it's set.
+ */
+- (void)renderTextPostPreviewImageWithCompletion:(void(^)(UIImage *image))completion;
 
 @end

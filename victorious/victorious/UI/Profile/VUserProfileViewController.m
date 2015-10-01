@@ -457,7 +457,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             [self shrinkHeaderAnimated:YES];
-            [self.collectionView reloadData];
             [self reloadUserFollowingRelationship];
         }
     }

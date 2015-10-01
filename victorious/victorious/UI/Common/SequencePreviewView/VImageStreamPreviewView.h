@@ -8,8 +8,9 @@
 
 #import "VStreamPreviewView.h"
 #import "VImagePreviewView.h"
+#import "VContentFittingPreviewView.h"
 
-@interface VImageStreamPreviewView : VStreamPreviewView <VImagePreviewView>
+@interface VImageStreamPreviewView : VStreamPreviewView <VImagePreviewView, VContentFittingPreviewView>
 
 /**
  The image view that displays the sequence preview image.

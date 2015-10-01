@@ -769,17 +769,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.viewModel updateEndcard];
             
             id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
-            VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
+            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
+            [provider relinquishPreviewView];
+            VSequencePreviewView *previewView = [provider getPreviewView];
             
             if ( previewView == nil )
             {
                 // Create a new sequence preview if we haven't been given one from the context
                 previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
+                UIView *superview = [receiver getTargetSuperview];
+                previewView.frame = superview.bounds;
                 [previewView setDependencyManager:self.dependencyManager];
                 [previewView setStreamItem:self.viewModel.sequence];
-                UIView *superview = [receiver getTargetSuperview];
                 previewView.focusType = VFocusTypeDetail;
-                previewView.frame = superview.bounds;
                 [superview addSubview:previewView];
                 [superview v_addFitToParentConstraintsToSubview:previewView];
             }

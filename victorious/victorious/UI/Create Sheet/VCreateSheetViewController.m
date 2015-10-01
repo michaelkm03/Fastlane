@@ -13,6 +13,7 @@
 #import "VNavigationMenuItem.h"
 #import "VCreateSheetTransitionDelegate.h"
 #import "VDependencyManager+VStatusBarStyle.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString * const kCreateImageIdentifier = @"Create Image";
 static NSString * const kCreateVideoIdentifier = @"Create Video";
@@ -21,7 +22,6 @@ static NSString * const kCreateMemeIdentifier = @"Create Text";
 static NSString * const kCreateGIFIdentifier = @"Create GIF";
 
 static NSString * const kStoryboardName = @"CreateSheet";
-static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kDismissButtonTitle = @"title.button1";
 
 static const CGFloat kLineSpacing = 40.0f;
@@ -126,7 +126,8 @@ static const CGFloat kLineSpacing = 40.0f;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
+    UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    return [self.dependencyManager statusBarStyleForColor:navigationBarTextColor];
 }
 
 #pragma mark - Properties

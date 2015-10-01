@@ -12,8 +12,9 @@ extension HashtagShelf {
     
     static private var propertyMap : [String : String] {
         return [
-            "hashtag" : "hashtagTitle",
-            "postCount" : "postsCount"
+            "postCount" : "postsCount",
+            "hashtag.tag" : "hashtagTitle",
+            "hashtag.am_following" : "amFollowing"
         ]
     }
     
@@ -22,5 +23,4 @@ extension HashtagShelf {
         mapping.addAttributeMappingsFromDictionary(propertyMap)
         return mapping
     }
-    
 }

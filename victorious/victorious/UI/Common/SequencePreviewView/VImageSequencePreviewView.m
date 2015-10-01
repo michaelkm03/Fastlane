@@ -31,7 +31,6 @@
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         _previewImageView.clipsToBounds = YES;
-        _previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
@@ -107,6 +106,13 @@
          self.readyForDisplay = YES;
      }];
     [self focusDidUpdate];
+}
+
+#pragma mark - VContentFittingPreviewView
+
+- (void)updateToFitContent:(BOOL)fit
+{
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
 }
 
 @end
