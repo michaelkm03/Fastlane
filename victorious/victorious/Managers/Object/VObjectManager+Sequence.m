@@ -63,13 +63,15 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail
 {
-    NSManagedObjectID *sequenceObjectID = sequence.objectID;
+    sequence.streams = [NSSet set];
+    [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    
+    __block VSequence *safeSequence = sequence;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
     {
         NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
-        VSequence *sequence = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequenceObjectID];
-        [self locallyRemoveSequence:sequence];
+        [self locallyRemoveSequence:safeSequence];
         
         if (success != nil)
         {

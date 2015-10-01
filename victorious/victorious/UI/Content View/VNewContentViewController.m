@@ -769,7 +769,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.viewModel updateEndcard];
             
             id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
-            VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
+            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
+            [provider relinquishPreviewView];
+            VSequencePreviewView *previewView = [provider getPreviewView];
             
             if ( previewView == nil )
             {
