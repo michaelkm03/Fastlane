@@ -1186,9 +1186,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
              }
              
              __strong typeof(welf) strongSelf = welf;
-             strongSelf.enteringRealTimeComment = YES;
-             strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
-             [strongSelf.videoPlayer pause];
+             if (strongSelf != nil)
+             {
+                 strongSelf.enteringRealTimeComment = YES;
+                 strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
+                 [strongSelf.videoPlayer pause];
+             }
          }];
     }
 }
@@ -1316,19 +1319,21 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (Float64)currentVideoTime
 {
-    if (self.videoPlayer != nil)
+    id<VVideoPlayer> videoPlayer = self.videoPlayer;
+    
+    if (videoPlayer != nil)
     {
-        if (self.videoPlayer.currentTimeSeconds > 0.0f)
+        if (videoPlayer.currentTimeSeconds > 0.0f)
         {
-            return self.videoPlayer.currentTimeSeconds;
+            return videoPlayer.currentTimeSeconds;
         }
         else if (self.videoPlayerDidFinishPlayingOnce)
         {
-            return self.videoPlayer.durationSeconds;
+            return videoPlayer.durationSeconds;
         }
     }
     
-    return 0.0;
+    return 0.0f;
 }
 
 #pragma mark - VSwipeViewControllerDelegate
