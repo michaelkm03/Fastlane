@@ -162,11 +162,9 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 
 - (VDependencyManager *)contentViewDependencyManager
 {
+    
     NSDictionary *configuration = [self templateValueOfType:[NSDictionary class] forKey:kContentViewComponentKey];
-    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                configuration:configuration
-                                                            dictionaryOfClassesByTemplateName:nil];
-    return dependencyManager;
+    return [self childDependencyManagerWithAddedConfiguration:configuration];
 }
 
 @end

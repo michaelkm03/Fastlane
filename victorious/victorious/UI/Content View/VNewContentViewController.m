@@ -1,4 +1,4 @@
-//
+    //
 //  VNewContentViewController.m
 //  victorious
 //
@@ -1537,6 +1537,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
     context.originDependencyManager = self.dependencyManager;
+    context.destinationDependencyManager = self.dependencyManager;
     context.viewController = self;
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
