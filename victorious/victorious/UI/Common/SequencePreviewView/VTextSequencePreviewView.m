@@ -40,7 +40,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 @property (nonatomic, strong) NSLayoutConstraint *previewWidthConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *previewHeightConstraint;
 
-@property (nonatomic, strong) NSValue *previewRenderingSize;
+@property (nonatomic, assign) CGSize previewRenderingSize;
 
 @end
 
@@ -146,11 +146,11 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     return _textPostViewController;
 }
 
-#pragma mark - VPreviewView
+#pragma mark - VRenderablePreviewView
 
 - (void)setRenderingSize:(CGSize)renderingSize
 {
-    self.previewRenderingSize = [NSValue valueWithCGSize:renderingSize];
+    self.previewRenderingSize = renderingSize;
     [self updateConstraints];
     [self setNeedsLayout];
 }
@@ -159,8 +159,8 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 {
     [super layoutSubviews];
     
-    BOOL hasRenderingSize = self.previewRenderingSize != nil && self.previewRenderingSize.CGSizeValue.width > 0.0;
-    const CGFloat scale =  hasRenderingSize ? self.bounds.size.width / self.previewRenderingSize.CGSizeValue.width : 1.0;
+    BOOL hasRenderingSize = !CGSizeEqualToSize( self.previewRenderingSize, CGSizeZero );
+    const CGFloat scale = hasRenderingSize ? CGRectGetWidth(self.bounds) / self.previewRenderingSize.width : 1.0;
     self.textPostViewController.view.transform = CGAffineTransformMakeScale( scale, scale );
 }
 
@@ -221,8 +221,8 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     {
         [self addSubview:self.textPostViewController.view];
         [self v_addCenterToParentContraintsToSubview:self.textPostViewController.view];
-        self.previewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:self.bounds.size.width];
-        self.previewHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:self.bounds.size.height];
+        self.previewWidthConstraint = [self.textPostViewController.view v_addWidthConstraint:CGRectGetWidth(self.bounds)];
+        self.previewHeightConstraint = [self.textPostViewController.view v_addHeightConstraint:CGRectGetHeight(self.bounds)];
     }
 
     if ( self.previewImageView.superview != nil )
@@ -256,7 +256,8 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
 
 - (void)updateConstraints
 {
-    const CGSize size = self.previewRenderingSize != nil ? self.previewRenderingSize.CGSizeValue : self.bounds.size;
+    BOOL hasRenderingSize = !CGSizeEqualToSize( self.previewRenderingSize, CGSizeZero );
+    const CGSize size = hasRenderingSize ? self.previewRenderingSize : self.bounds.size;
     
     self.previewHeightConstraint.constant = size.width;
     self.previewWidthConstraint.constant = size.width;
