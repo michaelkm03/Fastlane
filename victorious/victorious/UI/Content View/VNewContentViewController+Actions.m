@@ -219,20 +219,15 @@
                                                                          destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
                                                                             onDestructiveButton:^
                                                             {
-                                                                MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:self.presentingViewController.view animated:YES];
                                                                 [self.presentingViewController dismissViewControllerAnimated:YES completion:^
                                                                 {
                                                                     [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
                                                                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                                      {
-                                                                         [progress hide:YES];
                                                                          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                                          
                                                                      }
-                                                                                                         failBlock:^(NSOperation *operation, NSError *error)
-                                                                     {
-                                                                         [progress hide:YES];
-                                                                     }];
+                                                                                                         failBlock:nil];
                                                                 }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
