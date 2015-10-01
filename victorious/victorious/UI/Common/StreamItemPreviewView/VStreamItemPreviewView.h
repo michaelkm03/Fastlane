@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param previewView The preview view that is now ready for display.
  */
-typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewView);
+typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewView);
 
 
 /**
@@ -60,7 +60,7 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  *  A block that should be called when the preview view becomes ready to display.
  *  This block is called automatically when readyForDisplay is set to YES.
  */
-@property (nonatomic, copy, nullable) VPreviewViewDisplayReadyBlock displayReadyBlock;
+@property (nonatomic, copy, nullable) VRenderablePreviewViewDisplayReadyBlock displayReadyBlock;
 
 /**
  *  Subclasses set this to YES when they have loaded all the content
