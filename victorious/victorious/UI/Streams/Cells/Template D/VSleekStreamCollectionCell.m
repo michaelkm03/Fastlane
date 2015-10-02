@@ -56,7 +56,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak) IBOutlet VStreamCellHeader *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
-@property (nonatomic, strong ) IBOutlet NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong ) IBOutlet NSLayoutConstraint *captionZeroingHeightConstraint;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
@@ -92,6 +92,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     self.countsTextView.textSelectionDelegate = self;
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
+    self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
@@ -348,8 +349,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     BOOL hasCaption = [self shouldShowCaptionForSequence:self.sequence];
     self.captiontoPreviewVerticalSpacing.constant = hasCaption ? kCaptionToPreviewVerticalSpacing : 0.0f;
-    self.captionHeight.active = !hasCaption;
-    self.captionHeight.constant = 0.0f;
+    self.captionZeroingHeightConstraint.active = !hasCaption;
     
     BOOL hasComments = [[self class] inStreamCommentsArrayForSequence:self.sequence].count > 0;
     self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
