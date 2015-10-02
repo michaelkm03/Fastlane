@@ -34,34 +34,19 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         return blurMask
     }()
     
-    var streamItem: VStreamItem? {
+    var sequence: VSequence? {
         didSet {
-            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
-            guard let item = streamItemForDisplay else {
+            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(sequence?.trendingTopicName) ?? ""
+            guard let sequence = sequence else {
                 return
             }
-            if let previewImageURL = (item.previewImagesObject as? String),
-                let url = NSURL(string: previewImageURL)  {
-                    // Download preview image
-                    updateImageView(url: url)
+            if let previewImageURL = sequence.inStreamPreviewImageURLWithMaximumSize(Constants.desiredSize) {
+                updateImageView(url: previewImageURL)
             }
-            else if item.itemSubType == VStreamItemSubTypeText {
+            else if sequence.itemSubType == VStreamItemSubTypeText {
                 updateTextPreviewView()
             }
         }
-    }
-    
-    private var streamItemForDisplay: VStreamItem? {
-        if let previewImageURL = (streamItem?.previewImagesObject as? String) {
-                if previewImageURL != "" {
-                    return streamItem
-                }
-        }
-        else if let stream = streamItem as? VStream,
-                 let item = stream.streamItems.array.first as? VStreamItem {
-                    return item
-        }
-        return nil
     }
     
     /// The dependency manager whose colors and fonts will be used to style this cell.
@@ -70,7 +55,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             if let dependencyManager = dependencyManager {
                 dependencyManager.addLoadingBackgroundToBackgroundHost(self)
                 label.font = dependencyManager.labelFont
-                if streamItemForDisplay?.itemSubType == VStreamItemSubTypeText {
+                if sequence?.itemSubType == VStreamItemSubTypeText {
                     updateTextPreviewView()
                 }
             }
@@ -118,14 +103,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     private func updateTextPreviewView()
     {
-        guard let streamItem = streamItemForDisplay,
+        guard let sequence = sequence,
             let dependencyManager = dependencyManager else {
                 return
         }
         
-        if let cachedImage = renderedTextPostCache?.objectForKey(streamItem.remoteId) as? UIImage {
+        if let cachedImage = renderedTextPostCache?.objectForKey(sequence.remoteId) as? UIImage {
             imageView.image = cachedImage
-            updateWithImage(cachedImage, cacheKey: streamItem.remoteId, animated: false)
+            updateWithImage(cachedImage, cacheKey: sequence.remoteId, animated: false)
         }
         else {
             // Need to render the text post anew
@@ -133,13 +118,13 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             textPostPreviewView.displaySize = TrendingTopicContentCollectionViewCell.desiredSize()
             textPostPreviewView.dependencyManager = dependencyManager
             textPostPreviewView.onlyShowPreview = true
-            textPostPreviewView.updateToStreamItem(streamItem)
+            textPostPreviewView.updateToStreamItem(sequence)
             textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
                 textPostPreviewView.renderTextPostPreviewImageWithCompletion { image in
                     guard let strongSelf = self else {
                         return
                     }
-                    let cacheKey = streamItem.remoteId
+                    let cacheKey = sequence.remoteId
                     strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
                     strongSelf.imageView.image = image
                     strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)
