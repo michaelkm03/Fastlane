@@ -43,7 +43,6 @@ extern NSString * const VDependencyManagerIDKey;
 
 // Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
 extern NSString * const VDependencyManagerProfileImageRequiredKey;
-extern NSString * const VDependencyManagerPauseVideoWhenCommentingKey;
 extern NSString * const VDependencyManagerLikeButtonEnabledKey;
 extern NSString * const VDependencyManagerExperimentKeyIDs;
 extern NSString * const VDependencyManagerAutoplaySettingsEnabled;
