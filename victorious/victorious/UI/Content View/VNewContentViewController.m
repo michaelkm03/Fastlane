@@ -160,7 +160,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self.contentCollectionView reloadData];
+                    [self refreshAllCommentsSection];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -185,8 +185,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
+            [self refreshAllCommentsSection];
         }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
@@ -712,6 +711,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [welf presentViewController:lightbox
                        animated:YES
                      completion:nil];
+}
+
+- (void)refreshAllCommentsSection
+{
+    NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+    [self.contentCollectionView reloadSections:commentsIndexSet];
 }
 
 #pragma mark - UICollectionViewDataSource
