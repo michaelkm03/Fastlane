@@ -114,6 +114,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
                  textHeight += kCaptionMargins.top;
+                 
+                 // Add space for the text view inset if necessary
+                 UIFont *captionFont = attributes[NSFontAttributeName];
+                 textHeight += [captionFont v_fontSpecificTextViewInsets].top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -342,7 +346,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [self.previewContainer addConstraint:heightToWidth];
         self.previewContainerHeightConstraint = heightToWidth;
     }
-    
+        
     if ( [self shouldShowCaptionForSequence:self.sequence] )
     {
         if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
@@ -400,8 +404,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSAttributedString *captionAttributedString = nil;
     if ( [self shouldShowCaptionForSequence:sequence] )
     {
+        NSDictionary *attributes = [VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager];
         captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                  attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+                                                                  attributes:attributes];
+        UIFont *captionFont = attributes[NSFontAttributeName];
+        self.captionTextView.textContainerInset = [captionFont v_fontSpecificTextViewInsets];
     }
     self.captionTextView.attributedText = captionAttributedString;
 }
@@ -468,10 +475,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     if ( dependencyManager != nil )
     {
-        attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        UIFont *captionFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = [captionFont v_fontSpecificLineSpace];
+        
+        attributes[ NSFontAttributeName ] = captionFont;
         attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     }
-    attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
