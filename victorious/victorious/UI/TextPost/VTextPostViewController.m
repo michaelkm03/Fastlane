@@ -34,6 +34,7 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 @property (nonatomic, strong) NSDictionary *attributes;
 
 @property (nonatomic, strong) VTextPostCalloutHelper *calloutHelper;
+@property (nonatomic, assign) CGRect lastFrame;
 
 @end
 
@@ -100,7 +101,11 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 {
     [super viewDidLayoutSubviews];
     
-    [self updateTextView];
+    if ( !CGRectEqualToRect( self.lastFrame, self.view.frame ) )
+    {
+        [self updateTextView];
+    }
+    self.lastFrame = self.view.frame;
 }
 
 #pragma mark - public
