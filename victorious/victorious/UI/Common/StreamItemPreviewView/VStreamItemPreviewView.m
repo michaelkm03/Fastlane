@@ -94,7 +94,7 @@
     }
 }
 
-- (void)setDisplayReadyBlock:(VPreviewViewDisplayReadyBlock)displayReadyBlock
+- (void)setDisplayReadyBlock:(VRenderablePreviewViewDisplayReadyBlock)displayReadyBlock
 {
     _displayReadyBlock = displayReadyBlock;
     if ( self.readyForDisplay && _displayReadyBlock != nil )

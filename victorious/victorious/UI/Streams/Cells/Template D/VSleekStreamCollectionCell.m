@@ -40,7 +40,6 @@
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
-static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 0.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, kCaptionToPreviewVerticalSpacing, 14.0f };
 static const NSUInteger kMaxNumberOfInStreamComments = 3;
@@ -57,7 +56,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak) IBOutlet VStreamCellHeader *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
-@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong ) IBOutlet NSLayoutConstraint *captionZeroingHeightConstraint;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
@@ -93,6 +92,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     self.countsTextView.textSelectionDelegate = self;
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
+    self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
@@ -114,6 +114,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
                  textHeight += kCaptionMargins.top;
+                 
+                 // Add space for the text view inset if necessary
+                 UIFont *captionFont = attributes[NSFontAttributeName];
+                 textHeight += [captionFont v_fontSpecificTextViewInsets].top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -343,22 +347,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         self.previewContainerHeightConstraint = heightToWidth;
     }
     
-    if ( [self shouldShowCaptionForSequence:self.sequence] )
-    {
-        if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
-        {
-            self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
-            self.captionHeight.constant = kMaxCaptionTextViewHeight;
-        }
-    }
-    else
-    {
-        if ( self.captionHeight.constant != 0.0f || self.captiontoPreviewVerticalSpacing.constant != 0.0f )
-        {
-            self.captiontoPreviewVerticalSpacing.constant = 0.0f;
-            self.captionHeight.constant = 0.0f;
-        }
-    }
+    BOOL hasCaption = [self shouldShowCaptionForSequence:self.sequence];
+    self.captiontoPreviewVerticalSpacing.constant = hasCaption ? kCaptionToPreviewVerticalSpacing : 0.0f;
+    self.captionZeroingHeightConstraint.active = !hasCaption;
     
     BOOL hasComments = [[self class] inStreamCommentsArrayForSequence:self.sequence].count > 0;
     self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
@@ -400,8 +391,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSAttributedString *captionAttributedString = nil;
     if ( [self shouldShowCaptionForSequence:sequence] )
     {
+        NSDictionary *attributes = [VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager];
         captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                  attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+                                                                  attributes:attributes];
+        UIFont *captionFont = attributes[NSFontAttributeName];
+        self.captionTextView.textContainerInset = [captionFont v_fontSpecificTextViewInsets];
     }
     self.captionTextView.attributedText = captionAttributedString;
 }
@@ -468,10 +462,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     if ( dependencyManager != nil )
     {
-        attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        UIFont *captionFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = [captionFont v_fontSpecificLineSpace];
+        
+        attributes[ NSFontAttributeName ] = captionFont;
         attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     }
-    attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
