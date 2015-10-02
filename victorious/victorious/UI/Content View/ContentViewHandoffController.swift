@@ -131,7 +131,7 @@ class ContentViewHandoffController {
                 toItem: previewView,
                 attribute: .Top,
                 multiplier: 1.0,
-                constant: max( containerFrame.minY - previewFrame.minY, -statusBarHeight) )
+                constant: containerFrame.minY - previewFrame.minY )
             superview.addConstraint( topConstraint )
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
