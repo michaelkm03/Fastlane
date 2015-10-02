@@ -24,8 +24,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 @interface VStaticUserProfileHeaderViewController ()
 
-@property (nonatomic, assign) BOOL hasAppeared;
-
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
 
 @property (weak, nonatomic) IBOutlet UIView *badgeContainerView;
@@ -58,9 +56,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     [super viewDidAppear:animated];
     
-    if (!self.hasAppeared)
+    if ([self badgeNeedsToBeUpdated])
     {
-        self.hasAppeared = YES;
         [self animateBadge];
     }
 }
@@ -125,13 +122,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     {
         // Update the badge to reflect changes
         [self updateBadgeView];
-        
-        // Small delay before animation begins
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            // Animated progress if needed
-            [self animateBadge];
-        });
     }
 }
 

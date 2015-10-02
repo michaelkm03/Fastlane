@@ -57,5 +57,6 @@
 @dynamic voteResults;
 @dynamic recentComments;
 @dynamic isGifStyle;
+@dynamic trendingTopicName;
 
 @end
