@@ -34,16 +34,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         return blurMask
     }()
     
-    var streamItem: VSequence? {
+    var sequence: VSequence? {
         didSet {
-            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.trendingTopicName) ?? ""
-            guard let streamItem = streamItem else {
+            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(sequence?.trendingTopicName) ?? ""
+            guard let sequence = sequence else {
                 return
             }
-            if let previewImageURL = streamItem.inStreamPreviewImageURLWithMaximumSize(Constants.desiredSize) {
+            if let previewImageURL = sequence.inStreamPreviewImageURLWithMaximumSize(Constants.desiredSize) {
                 updateImageView(url: previewImageURL)
             }
-            else if streamItem.itemSubType == VStreamItemSubTypeText {
+            else if sequence.itemSubType == VStreamItemSubTypeText {
                 updateTextPreviewView()
             }
         }
@@ -55,7 +55,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             if let dependencyManager = dependencyManager {
                 dependencyManager.addLoadingBackgroundToBackgroundHost(self)
                 label.font = dependencyManager.labelFont
-                if streamItem?.itemSubType == VStreamItemSubTypeText {
+                if sequence?.itemSubType == VStreamItemSubTypeText {
                     updateTextPreviewView()
                 }
             }
@@ -103,14 +103,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     private func updateTextPreviewView()
     {
-        guard let streamItem = streamItem,
+        guard let sequence = sequence,
             let dependencyManager = dependencyManager else {
                 return
         }
         
-        if let cachedImage = renderedTextPostCache?.objectForKey(streamItem.remoteId) as? UIImage {
+        if let cachedImage = renderedTextPostCache?.objectForKey(sequence.remoteId) as? UIImage {
             imageView.image = cachedImage
-            updateWithImage(cachedImage, cacheKey: streamItem.remoteId, animated: false)
+            updateWithImage(cachedImage, cacheKey: sequence.remoteId, animated: false)
         }
         else {
             // Need to render the text post anew
@@ -118,13 +118,13 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
             textPostPreviewView.displaySize = TrendingTopicContentCollectionViewCell.desiredSize()
             textPostPreviewView.dependencyManager = dependencyManager
             textPostPreviewView.onlyShowPreview = true
-            textPostPreviewView.updateToStreamItem(streamItem)
+            textPostPreviewView.updateToStreamItem(sequence)
             textPostPreviewView.displayReadyBlock = { [weak self] streamItemPreviewView in
                 textPostPreviewView.renderTextPostPreviewImageWithCompletion { image in
                     guard let strongSelf = self else {
                         return
                     }
-                    let cacheKey = streamItem.remoteId
+                    let cacheKey = sequence.remoteId
                     strongSelf.renderedTextPostCache?.setObject(image, forKey: cacheKey)
                     strongSelf.imageView.image = image
                     strongSelf.updateWithImage(image, cacheKey: cacheKey, animated: true)

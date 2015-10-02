@@ -153,7 +153,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.colorCache = colorCache
             cell.renderedTextPostCache = renderedTextPostCache
-            cell.streamItem = streamItem
+            cell.sequence = streamItem
             cell.dependencyManager = dependencyManager
             return cell
         }
