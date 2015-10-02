@@ -148,12 +148,12 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.colorCache = colorCache
             cell.renderedTextPostCache = renderedTextPostCache
-            cell.streamItem = streamItem
+            cell.sequence = streamItem
             cell.dependencyManager = dependencyManager
             return cell
         }
@@ -169,9 +169,9 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         let responder: VHashtagSelectionResponder = typedResponder()
-        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
-            let hashtag = streamItem.name ?? ""
+            let hashtag = streamItem.trendingTopicName ?? ""
             responder.hashtagSelected(hashtag)
             return
         }
