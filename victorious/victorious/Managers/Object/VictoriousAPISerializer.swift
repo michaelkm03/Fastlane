@@ -66,14 +66,15 @@ class VictoriousAPISerializer: NSObject, RKSerialization {
     ///
     /// - parameter configuration: A JSON dictionary containing all the configuration info for a level-up interstitial. If this information is invalid, this method returns nil.
     private static func levelUpInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> LevelUpInterstitial? {
-        if let levelInfo = paramsDict["level"] as? [String : AnyObject],
-           let levelNumber = levelInfo["number"] as? Int,
-           let title = paramsDict["title"] as? String,
-           let description = paramsDict["description"] as? String,
-           let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
-           let videoURLString = paramsDict["backgroundVideo"] as? String,
-           let videoURL = NSURL(string: videoURLString) {
-            return LevelUpInterstitial(remoteID: remoteID, level: String(levelNumber), title: title, description: description, icons: icons, videoURL: videoURL)
+        if let userInfo = paramsDict["user"] as? [String : AnyObject],
+            let levelInfo = userInfo["fanloyalty"] as? [String : AnyObject],
+            let levelNumber = levelInfo["level"] as? Int,
+            let title = paramsDict["title"] as? String,
+            let description = paramsDict["description"] as? String,
+            let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
+            let videoURLString = paramsDict["backgroundVideo"] as? String,
+            let videoURL = NSURL(string: videoURLString) {
+                return LevelUpInterstitial(remoteID: remoteID, level: String(levelNumber), title: title, description: description, icons: icons, videoURL: videoURL)
         }
         return nil
     }
