@@ -27,9 +27,9 @@ import AVFoundation
     }
     
     /// Updates the system audio settings for a video whose focuse playback has begun.
-    func focusedPlaybackDidBegin(videoPlayer videoPlayer: VVideoPlayer) {
+    func focusedPlaybackDidBegin( muted muted: Bool ) {
         
-        let category = videoPlayer.muted ? AVAudioSessionCategoryAmbient : AVAudioSessionCategoryPlayback
+        let category = muted ? AVAudioSessionCategoryAmbient : AVAudioSessionCategoryPlayback
         do {
             try AVAudioSession.sharedInstance().setCategory( category )
         }
@@ -39,7 +39,7 @@ import AVFoundation
     }
     
     /// Updates the system audio settings for a video whose focuse playback has ended.
-    func focusedPlaybackDidEnd(videoPlayer videoPlayer: VVideoPlayer) {
+    func focusedPlaybackDidEnd() {
         
         let category = AVAudioSessionCategoryAmbient
         do {

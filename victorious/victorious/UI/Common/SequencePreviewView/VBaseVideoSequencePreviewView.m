@@ -209,7 +209,7 @@
     {
         case VFocusTypeNone:
             self.videoPlayer.muted = YES;
-            [[VAudioManager sharedInstance] focusedPlaybackDidEndWithVideoPlayer:self.videoPlayer];
+            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
             [self.likeButton hide];
             [self.videoPlayer pause];
             if ( self.onlyShowPreview )
@@ -221,7 +221,7 @@
             
         case VFocusTypeStream:
             self.videoPlayer.muted = YES;
-            [[VAudioManager sharedInstance] focusedPlaybackDidEndWithVideoPlayer:self.videoPlayer];
+            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
             self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
@@ -237,7 +237,7 @@
             
         case VFocusTypeDetail:
             self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
-            [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithVideoPlayer:self.videoPlayer];
+            [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithMuted:self.videoPlayer.muted];
             if ( self.onlyShowPreview )
             {
                 // If we were previously only showing the preview, now we need to load the video asset
