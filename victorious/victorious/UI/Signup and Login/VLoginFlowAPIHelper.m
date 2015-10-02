@@ -75,7 +75,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
@@ -115,44 +115,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
-                                              animated:YES];
-    
-    VUserManager *userManager = [[VUserManager alloc] init];
-    userManager.forceNativeFacebookLogin = [self.dependencyManager shouldForceNativeFacebookLogin];
-    [userManager loginViaFacebookOnCompletion:^(VUser *user, BOOL isNewUser)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^(void)
-                        {
-                            [hud hide:YES];
-                            completion(YES, isNewUser);
-                        });
-     }
-                                                  onError:^(NSError *error, BOOL thirdPartyAPIFailed)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^(void)
-                        {
-                            UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                                           message:NSLocalizedString(@"FacebookLoginFailed", @"")
-                                                                                              andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-                            [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
-                            [hud hide:YES];
-                            completion(NO, NO);
-                        });
-     }];
-}
-
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
             completion:(void(^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[[VUserManager alloc] init] loginViaEmail:email
                                       password:password
@@ -182,7 +151,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[[VUserManager alloc] init] createEmailAccount:email
                                            password:password
@@ -211,7 +180,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
@@ -311,7 +280,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] requestPasswordResetForEmail:email
                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -364,7 +333,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     NSParameterAssert(completion != nil);
     
     self.userToken = resetToken;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
                                                    deviceToken:self.deviceToken
@@ -405,7 +374,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view.window
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken

@@ -13,6 +13,7 @@
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 
 // Views + Helpers
 #import "UIView+AutoLayout.h"
@@ -151,6 +152,12 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    return [self.dependencyManager statusBarStyleForColor:navigationBarTextColor];
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden

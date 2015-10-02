@@ -75,6 +75,8 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         ]
         playerView.delegate = self
         
+        item.remoteContentId = "oMyZwhzy5hE"
+        
         guard let videoId = item.remoteContentId else {
             fatalError( "Remote content ID is required for this video player." )
         }

@@ -43,7 +43,7 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isRemoteVideo] )
+        if ( YES || [sequence isRemoteVideo] )
         {
             classType = [VRemoteVideoSequencePreviewView class];
         }

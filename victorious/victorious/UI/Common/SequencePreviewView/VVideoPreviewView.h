@@ -2,8 +2,8 @@
 //  VVideoPreviewView.h
 //  victorious
 //
-//  Created by Patrick Lynch on 9/10/15.
-//  Copyright (c) 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 10/1/15.
+//  Copyright © 2015 Victorious. All rights reserved.
 //
 
 @protocol VVideoPlayer;
@@ -21,10 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@protocol VVideoPlayer;
+
 /**
  Defines an object that displays video, exposing a `videoPlayer` object that can
  be used to control playback and other video-based interactions.
-*/
+ */
 @protocol VVideoPreviewView <NSObject>
 
 @property (nonatomic, strong, readonly) id<VVideoPlayer> videoPlayer;

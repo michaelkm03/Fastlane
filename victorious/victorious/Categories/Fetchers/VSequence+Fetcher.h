@@ -72,10 +72,4 @@
  */
 - (NSURL *)inStreamPreviewImageURL;
 
-/**
- Returns the largest asset from the preview assets array that fits within the provided size or, if
- there are no preview assets, falls back to the value returned from inStreamPreviewImageURL.
- */
-- (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size;
-
 @end

@@ -89,7 +89,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (BOOL)isPreviewImageContent
 {
-    if ( self.previewAssets.count > 0 )
+    if ( self.previewImageAssets.count > 0 )
     {
         return YES;
     }
@@ -208,7 +208,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     CGFloat minAspectRatio = CGRectGetWidth(rect) / CGRectGetHeight(rect);
     
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
-    VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
+    VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewImageAssets];
     
     if (previewAsset != nil)
     {
@@ -325,23 +325,6 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         imageUrl = [self previewImageUrl];
     }
     return imageUrl;
-}
-
-- (NSURL *)inStreamPreviewImageURLWithMaximumSize:(CGSize)size
-{
-    if ( self.previewAssets.count > 0 )
-    {
-        //Use appropriate asset from preview assets if available
-        VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
-        VImageAsset *previewAsset = [assetFinder assetWithPreferredMaximumSize:size fromAssets:self.previewAssets];
-        NSURL *imageUrl = [NSURL URLWithString:previewAsset.imageURL];
-        if ( imageUrl != nil )
-        {
-            return imageUrl;
-        }
-    }
-    //Fallback to old logic if need be
-    return self.inStreamPreviewImageURL;
 }
 
 - (NSArray *)dateSortedComments

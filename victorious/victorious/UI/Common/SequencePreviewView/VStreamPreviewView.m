@@ -12,13 +12,20 @@
 
 #import "VImageStreamPreviewView.h"
 #import "VFailureStreamPreviewView.h"
+#import "VTextStreamPreviewView.h"
+#import "VStreamItem+Fetcher.h"
+#import "VAsset.h"
 
 @implementation VStreamPreviewView
 
 + (Class)classTypeForStream:(VStream *)stream
 {
     Class classType = nil;
-    if ( [stream previewImagesObject] )
+    if ( stream.previewTextPostAsset != nil )
+    {
+        classType = [VTextStreamPreviewView class];
+    }
+    else if ( [stream inStreamPreviewImageURLWithMaximumSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)] != nil )
     {
         classType = [VImageStreamPreviewView class];
     }

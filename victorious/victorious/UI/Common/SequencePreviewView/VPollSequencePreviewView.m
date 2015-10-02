@@ -17,6 +17,7 @@
 #import "VImageAssetFinder.h"
 #import "VResultView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "NSURL+MediaType.h"
 
 static NSString *kOrIconKey = @"orIcon";
 
@@ -106,12 +107,12 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (VAnswer *)answerA
 {
-    return [self.assetFinder answerAFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerA];
+    return [self.assetFinder answerAFromAssets:self.sequence.previewImageAssets] ?: [self.sequence.firstNode answerA];
 }
 
 - (VAnswer *)answerB
 {
-    return [self.assetFinder answerBFromAssets:self.sequence.previewAssets] ?: [self.sequence.firstNode answerB];
+    return [self.assetFinder answerBFromAssets:self.sequence.previewImageAssets] ?: [self.sequence.firstNode answerB];
 }
 
 #pragma mark - Target/Action
@@ -127,13 +128,13 @@ static NSString *kOrIconKey = @"orIcon";
     [self.detailDelegate previewView:self
                    didSelectMediaURL:mediaURL
                         previewImage:self.pollView.answerAImageView.image
-                             isVideo:NO
+                             isVideo:[mediaURL v_hasVideoExtension]
                           sourceView:self.pollView.answerAImageView];
 }
 
 - (void)answerBSelected:(id)sender
 {
-    NSURL *mediaURL = [NSURL URLWithString:self.answerA.mediaUrl];
+    NSURL *mediaURL = [NSURL URLWithString:self.answerB.mediaUrl];
     
     NSDictionary *params = @{ VTrackingKeyIndex : @1,
                               VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
@@ -142,7 +143,7 @@ static NSString *kOrIconKey = @"orIcon";
     [self.detailDelegate previewView:self
                    didSelectMediaURL:mediaURL
                         previewImage:self.pollView.answerBImageView.image
-                             isVideo:NO
+                             isVideo:[mediaURL v_hasVideoExtension]
                           sourceView:self.pollView.answerBImageView];
 }
 

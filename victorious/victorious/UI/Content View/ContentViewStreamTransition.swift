@@ -155,7 +155,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
     }
     
     private func imageOfView( view: UIView ) -> UIImage? {
-        UIGraphicsBeginImageContext( view.bounds.size )
+        UIGraphicsBeginImageContextWithOptions( view.bounds.size, true, 0.0 )
         view.drawViewHierarchyInRect( view.bounds, afterScreenUpdates: true)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

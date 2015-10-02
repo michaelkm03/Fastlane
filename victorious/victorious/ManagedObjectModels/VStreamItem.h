@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VEditorializationItem, VStream;
+@class VEditorializationItem, VStream, VImageAsset, VAsset;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * headline;
 @property (nonatomic, retain, nullable) NSString * name;
 @property (nonatomic, retain, nullable) id previewImagesObject;
+@property (nonatomic, retain, nullable) VAsset * previewTextPostAsset;
 @property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain, nullable) NSString * streamContentType;
 @property (nonatomic, retain, nullable) NSString * streamId;
@@ -25,7 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * itemSubType;
 @property (nonatomic, retain, nullable) NSSet * editorializations;
 @property (nonatomic, retain, nullable) NSSet * marquees;
+@property (nonatomic, retain, nullable) NSSet * previewImageAssets;
 @property (nonatomic, retain, nullable) NSSet * streams;
+
 @end
 
 @interface VStreamItem (CoreDataGeneratedAccessors)
@@ -39,6 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeMarqueesObject:(VStream *)value;
 - (void)addMarquees:(NSSet *)values;
 - (void)removeMarquees:(NSSet *)values;
+
+- (void)addPreviewImageAssetsObject:(VImageAsset *)value;
+- (void)removePreviewAssetsObject:(VImageAsset *)value;
+- (void)addPreviewAssets:(NSSet *)values;
+- (void)removePreviewAssets:(NSSet *)values;
 
 - (void)addStreamsObject:(VStream *)value;
 - (void)removeStreamsObject:(VStream *)value;

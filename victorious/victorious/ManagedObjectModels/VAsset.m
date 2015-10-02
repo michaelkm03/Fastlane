@@ -14,6 +14,7 @@
 
 @dynamic audioMuted;
 @dynamic backgroundColor;
+@dynamic backgroundImageUrl;
 @dynamic data;
 @dynamic loop;
 @dynamic mimeType;

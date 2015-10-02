@@ -49,12 +49,17 @@
 {
     [super setStream:stream];
     
-    self.isLoading = YES;
-    
-    __weak typeof(self) weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
+    self.isLoading = NO;
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
+    NSURL *previewURL = [stream inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
+    __weak VImageStreamPreviewView *weakSelf = self;
+    [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
-                        alongsideAnimations:nil
+                        alongsideAnimations:^
+     {
+         weakSelf.isLoading = YES;
+     }
                                  completion:^(UIImage *image)
      {
          __strong typeof(self) strongSelf = weakSelf;
@@ -64,6 +69,13 @@
              strongSelf.readyForDisplay = YES;
          }
      }];
+}
+
+#pragma mark - VContentFittingPreviewView
+
+- (void)updateToFitContent:(BOOL)fit
+{
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
 }
 
 @end

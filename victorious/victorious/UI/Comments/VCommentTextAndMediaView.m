@@ -30,6 +30,7 @@
     
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithComment:comment];
+    self.mediaAttachmentView.clipsToBounds = YES;
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width comment:(VComment *)comment

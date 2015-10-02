@@ -41,6 +41,7 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         _previewImageView.clipsToBounds = YES;
         _previewImageView.backgroundColor = [UIColor clearColor];
         [self addSubview:_previewImageView];
@@ -124,7 +125,7 @@
     }
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
-    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
+    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewImageAssets];
     
     __weak typeof(self) weakSelf = self;
     void (^completionBlock)(UIImage *, NSError *, SDImageCacheType, NSURL *) = ^void(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
@@ -292,6 +293,14 @@
             }
             break;
     }
+}
+
+#pragma mark - VContentFittingPreviewView
+
+- (void)updateToFitContent:(BOOL)fit
+{
+    self.videoPlayer.useAspectFit = fit;
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
 }
 
 @end

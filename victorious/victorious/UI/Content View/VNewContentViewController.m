@@ -391,6 +391,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.viewModel reloadData];
     
     self.view.backgroundColor = [UIColor blackColor];
+    
+    self.videoPlayerDidFinishPlayingOnce = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -769,17 +771,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.viewModel updateEndcard];
             
             id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
-            VSequencePreviewView *previewView = [self.viewModel.context.contentPreviewProvider getPreviewView];
+            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
+            [provider relinquishPreviewView];
+            VSequencePreviewView *previewView = [provider getPreviewView];
             
             if ( previewView == nil )
             {
                 // Create a new sequence preview if we haven't been given one from the context
                 previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
+                UIView *superview = [receiver getTargetSuperview];
+                previewView.frame = superview.bounds;
                 [previewView setDependencyManager:self.dependencyManager];
                 [previewView setStreamItem:self.viewModel.sequence];
-                UIView *superview = [receiver getTargetSuperview];
                 previewView.focusType = VFocusTypeDetail;
-                previewView.frame = superview.bounds;
                 [superview addSubview:previewView];
                 [superview v_addFitToParentConstraintsToSubview:previewView];
             }
@@ -799,6 +803,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 self.videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:self.videoPlayer];
+                self.videoPlayer = self.videoPlayer;
                 
                 // If the end card is going to show after the video finishes,
                 // set this to make a clean transition in for the end card
@@ -1172,7 +1177,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     if ( self.viewModel.type == VContentViewTypeVideo )
     {
-        [self.videoPlayer pause];
         __weak typeof(self) welf = self;
         [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
          {
@@ -1180,8 +1184,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
              {
                  return;
              }
-             welf.enteringRealTimeComment = YES;
-             welf.realtimeCommentBeganTime = welf.videoPlayer.currentTimeSeconds;
+             
+             __strong typeof(welf) strongSelf = welf;
+             if (strongSelf != nil)
+             {
+                 strongSelf.enteringRealTimeComment = YES;
+                 strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
+             }
          }];
     }
 }
@@ -1309,7 +1318,21 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (Float64)currentVideoTime
 {
-    return self.videoPlayer == nil ? 0.0 : self.videoPlayer.currentTimeSeconds;
+    id<VVideoPlayer> videoPlayer = self.videoPlayer;
+    
+    if (videoPlayer != nil)
+    {
+        if (videoPlayer.currentTimeSeconds > 0.0f)
+        {
+            return videoPlayer.currentTimeSeconds;
+        }
+        else if (self.videoPlayerDidFinishPlayingOnce)
+        {
+            return videoPlayer.durationSeconds;
+        }
+    }
+    
+    return 0.0f;
 }
 
 #pragma mark - VSwipeViewControllerDelegate
@@ -1518,6 +1541,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
     context.originDependencyManager = self.dependencyManager;
+    context.destinationDependencyManager = self.dependencyManager;
     context.viewController = self;
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
@@ -1690,7 +1714,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd && ![self.contentCell isEndCardShowing] )
+    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;
@@ -1707,6 +1731,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         }
         [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
+    self.videoPlayerDidFinishPlayingOnce = YES;
 }
 
 #pragma mark - VContentCellDelegate

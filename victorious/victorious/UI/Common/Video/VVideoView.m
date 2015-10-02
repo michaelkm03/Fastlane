@@ -248,7 +248,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
-    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self updateToTime:kCMTimeZero];
     
     if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachEnd:)])
     {
@@ -276,7 +276,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
 {
-    [self.player.currentItem seekToTime:CMTimeMake( timeSeconds, 1.0 )];
+    [self updateToTime:CMTimeMake( timeSeconds, 1.0 )];
 }
 
 - (void)pause
@@ -305,14 +305,22 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)pauseAtStart
 {
-    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self updateToTime:kCMTimeZero];
     [self pause];
 }
 
 - (void)playFromStart
 {
-    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self updateToTime:kCMTimeZero];
     [self play];
+}
+
+- (void)updateToTime:(CMTime)time
+{
+    if ( CMTIME_COMPARE_INLINE(self.player.currentItem.currentTime, !=, time) )
+    {
+        [self.player seekToTime:time];
+    }
 }
 
 - (void)didPlayToTime:(CMTime)time

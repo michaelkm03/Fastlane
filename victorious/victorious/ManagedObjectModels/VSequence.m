@@ -50,7 +50,6 @@
 @dynamic parentEndCard;
 @dynamic parentUser;
 @dynamic pollResults;
-@dynamic previewAssets;
 @dynamic recentUser;
 @dynamic reposters;
 @dynamic tracking;
@@ -58,5 +57,6 @@
 @dynamic voteResults;
 @dynamic recentComments;
 @dynamic isGifStyle;
+@dynamic trendingTopicName;
 
 @end

@@ -131,7 +131,7 @@ class ContentViewHandoffController {
                 toItem: previewView,
                 attribute: .Top,
                 multiplier: 1.0,
-                constant: max( containerFrame.minY - previewFrame.minY, -statusBarHeight) )
+                constant: containerFrame.minY - previewFrame.minY )
             superview.addConstraint( topConstraint )
             
             let constraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|[topImageView]|",
@@ -257,7 +257,13 @@ class ContentViewHandoffController {
     
     func imageFromImage( sourceImage: UIImage, rect: CGRect ) -> UIImage? {
         let sourceImageRef = sourceImage.CGImage
-        if let imageRef = CGImageCreateWithImageInRect( sourceImageRef, rect ) {
+        var newRect = rect
+        let scale = sourceImage.scale
+        newRect.origin.x *= scale
+        newRect.origin.y *= scale
+        newRect.size.width *= scale
+        newRect.size.height *= scale
+        if let imageRef = CGImageCreateWithImageInRect( sourceImageRef, newRect ) {
             return UIImage(CGImage: imageRef)
         }
         return nil

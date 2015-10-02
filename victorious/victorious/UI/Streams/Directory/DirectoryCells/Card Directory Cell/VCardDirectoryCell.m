@@ -14,6 +14,8 @@
 #import "VStream.h"
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
+#import "VSequencePreviewView.h"
+#import "VSequence.h"
 
 const CGFloat VDirectoryItemBaseHeight = 217.0f;
 const CGFloat VDirectoryItemStackHeight = 8.0f;
@@ -89,16 +91,17 @@ static const CGFloat kBorderWidth = 0.5f;
     _streamItem = streamItem;
     if ( [self.previewView canHandleStreamItem:streamItem] )
     {
-        self.previewView.streamItem = streamItem;
+        [self.previewView updateToStreamItem:streamItem];
         return;
     }
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    self.previewView.dependencyManager = self.dependencyManager;
     self.previewView.onlyShowPreview = YES;
     [self.previewViewContainer addSubview:self.previewView];
     [self.previewViewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    self.previewView.streamItem = streamItem;
+    [self.previewView updateToStreamItem:streamItem];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

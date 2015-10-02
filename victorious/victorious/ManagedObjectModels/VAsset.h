@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSNumber * audioMuted;
 @property (nonatomic, retain) NSString * backgroundColor;
+@property (nonatomic, retain) NSString * backgroundImageUrl;
 @property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * loop;
 @property (nonatomic, retain) NSString * mimeType;

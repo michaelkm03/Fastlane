@@ -275,11 +275,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
-    if ( self.streamDataSource.count == 0 )
-    {
-        [self refresh:nil];
-    }
-    else
+    if ( self.streamDataSource.count != 0 )
     {
         /*
          We already have marquee content so we need to restart the timer to make sure the marquee continues
