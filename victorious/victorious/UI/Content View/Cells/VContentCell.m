@@ -199,7 +199,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (BOOL)isEndCardShowing
 {
-    return self.endCardViewController != nil;
+    return self.endCardViewController != nil && [self.contentView.subviews containsObject:self.endCardViewController.view];
 }
 
 - (void)disableEndcardAutoplay
