@@ -170,19 +170,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)prepareForDismissal
 {
     self.isPreparedForDismissal = YES;
-    [self.adTimeoutTimer invalidate];
-    self.adTimeoutTimer = nil;
-    [self cleanupAdPlayer];
-    self.sequencePreviewView.alpha = 1.0f;
-    self.sequencePreviewView.hidden = NO;
+    [self resumeContentPlaybackAnimated:NO];
     [self hideEndCard:YES];
-}
-
-- (void)cleanupAdPlayer
-{
-    self.adVideoPlayerViewController.delegate = nil;
-    [self.adVideoPlayerViewController.view removeFromSuperview];
-    self.adVideoPlayerViewController = nil;
 }
 
 #pragma mark - Public Methods
@@ -261,7 +250,9 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
-        [self cleanupAdPlayer];
+        self.adVideoPlayerViewController.delegate = nil;
+        [self.adVideoPlayerViewController.view removeFromSuperview];
+        self.adVideoPlayerViewController = nil;
     };
     
     if ( animated )
@@ -303,7 +294,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)playAd:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    if ( self.isPreparedForDismissal && !self.isPlayingAd )
+    if ( self.isPreparedForDismissal || self.isPlayingAd )
     {
         return;
     }
@@ -321,12 +312,19 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [self layoutIfNeeded];
     [UIView animateWithDuration:0.5f animations:^
      {
-         self.sequencePreviewView.alpha = 0.0f;
-         self.adVideoPlayerViewController.view.alpha = 1.0f;
-     } completion:^(BOOL finished)
+         if ( !self.isPreparedForDismissal )
+         {
+             self.sequencePreviewView.alpha = 0.0f;
+             self.adVideoPlayerViewController.view.alpha = 1.0f;
+         }
+     }
+                     completion:^(BOOL finished)
      {
-         [self.videoPlayer pause];
-         self.sequencePreviewView.hidden = YES;
+         if ( !self.isPreparedForDismissal )
+         {
+             [self.videoPlayer pause];
+             self.sequencePreviewView.hidden = YES;
+         }
      }];
     
     // This timer is added as a workaround to kill the ad video if it has not started playing

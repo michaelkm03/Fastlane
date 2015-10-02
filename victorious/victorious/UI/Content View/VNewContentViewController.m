@@ -851,9 +851,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             [self updateInitialExperienceEnhancerState];
             
+            __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
-                [self showExperienceEnhancer:selectedEnhancer atPosition:selectionCenter];
+                [welf showExperienceEnhancer:selectedEnhancer atPosition:selectionCenter];
             };
             
             return self.experienceEnhancerCell;
