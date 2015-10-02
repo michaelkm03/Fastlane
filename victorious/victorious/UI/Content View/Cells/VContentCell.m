@@ -109,8 +109,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [super prepareForReuse];
     
     self.isPreparedForDismissal = NO;
-    [self resumeContentPlaybackAnimated:NO];
-    [self hideEndCard:YES];
 }
 
 #pragma mark - Shrinking Layout
@@ -201,7 +199,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (BOOL)isEndCardShowing
 {
-    return self.endCardViewController != nil;
+    return self.endCardViewController != nil && [self.contentView.subviews containsObject:self.endCardViewController.view];
 }
 
 - (void)disableEndcardAutoplay
