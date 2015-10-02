@@ -74,7 +74,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -480,8 +480,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     [layout calculateCatchAndLockPoints];
     
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-    
     self.isTransitionComplete = YES;
     [UIViewController attemptRotationToDeviceOrientation];
 }
@@ -614,15 +612,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
-}
-
-- (void)updateInitialExperienceEnhancerState
-{
-    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
-    if ( enhancerBar != nil )
-    {
-        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
-    }
 }
 
 - (NSIndexPath *)indexPathForContentView
@@ -767,6 +756,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                          forIndexPath:indexPath];
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
+            self.contentCell.delegate = self;
             
             [self.viewModel updateEndcard];
             
@@ -848,8 +838,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             self.experienceEnhancerCell.dependencyManager = self.dependencyManager;
-            
-            [self updateInitialExperienceEnhancerState];
             
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {

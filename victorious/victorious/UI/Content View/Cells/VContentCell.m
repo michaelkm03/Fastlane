@@ -28,7 +28,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
-@property (nonatomic, weak) id<VContentCellDelegate> delegate;
 
 @end
 
@@ -363,10 +362,13 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.delegate contentCellDidEndPlayingAd:self];
+    [self resumeContentPlaybackAnimated:YES];
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.delegate contentCellDidEndPlayingAd:self];
     [self resumeContentPlaybackAnimated:YES];
 }
 

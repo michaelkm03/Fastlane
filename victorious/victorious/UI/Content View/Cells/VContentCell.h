@@ -43,6 +43,8 @@
  */
 @property (nonatomic, weak) id<VEndCardViewControllerDelegate> endCardDelegate;
 
+@property (nonatomic, weak) id<VContentCellDelegate> delegate;
+
 /**
  Used to determine how to fade in or out with an interactive-style animation
  as the cell size is changed.
