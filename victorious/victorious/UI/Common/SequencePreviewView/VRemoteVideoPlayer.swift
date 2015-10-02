@@ -60,10 +60,11 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         
         playerView.alpha = 0.0
         delegate?.videoPlayerDidStartBuffering?(self)
+        playerView.userInteractionEnabled = false
         
         // See https://developers.google.com/youtube/player_parameters for complete list
         let playerVars = [
-            "controls" : NSNumber(integer: 1),
+            "controls" : NSNumber(integer: 0),
             "rel" : NSNumber(integer: 0),
             "playsinline" : NSNumber(integer: 1),
             "autohide" : NSNumber(integer: 1),
@@ -75,7 +76,7 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         ]
         playerView.delegate = self
         
-        item.remoteContentId = "oMyZwhzy5hE"
+        item.remoteContentId = "uDMFnaq3g1s"
         
         guard let videoId = item.remoteContentId else {
             fatalError( "Remote content ID is required for this video player." )

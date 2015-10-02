@@ -25,7 +25,7 @@ class VRemoteVideoSequencePreviewView : VVideoSequencePreviewView {
     override var toolbarDisabled: Bool {
         // To avoid covering the YouTube logo in the player, we have to disable to toolbar
         // and use the default web-based one inside the player
-        return true
+        return false
     }
     
     override func createVideoPlayerWithFrame(frame: CGRect) -> VVideoPlayer {
