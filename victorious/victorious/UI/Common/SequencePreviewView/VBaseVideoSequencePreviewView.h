@@ -14,9 +14,10 @@
 #import "VAsset.h"
 #import "VVideoView.h"
 #import "VFocusable.h"
-#import "VVideoPreviewView.h"
+#import "VRenderablePreviewView.h"
 #import "VVideoSettings.h"
 #import "VContentFittingPreviewView.h"
+#import "VVideoPreviewView.h"
 
 /**
  *  A Sequence preview view for video sequences.

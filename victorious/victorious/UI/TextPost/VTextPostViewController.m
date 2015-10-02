@@ -24,8 +24,6 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
-@property (nonatomic, assign) BOOL hasBeenDisplayed;
-
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
 @property (nonatomic, strong) VTextBackgroundFrameMaker *textBackgroundFrameMaker;
@@ -102,11 +100,7 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 {
     [super viewDidLayoutSubviews];
     
-    if ( !self.hasBeenDisplayed )
-    {
-        self.hasBeenDisplayed = YES;
-        [self updateTextView];
-    }
+    [self updateTextView];
 }
 
 #pragma mark - public
