@@ -1541,6 +1541,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     context.sequence = nextSequence;
     context.streamId = self.viewModel.streamId;
     context.originDependencyManager = self.dependencyManager;
+    context.destinationDependencyManager = self.dependencyManager;
     context.viewController = self;
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
@@ -1712,7 +1713,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd )
+    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;
