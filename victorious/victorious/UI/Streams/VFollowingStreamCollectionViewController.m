@@ -15,7 +15,6 @@
 @interface VFollowingStreamCollectionViewController ()
 
 @property (nonatomic, assign) BOOL shouldRefreshOnView;
-@property (nonatomic, assign) BOOL isVisible;
 
 @end
 
@@ -46,22 +45,15 @@
                                                   object:[VObjectManager sharedManager]];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    self.isVisible = YES;
+    [super viewDidAppear:animated];
     
     if ( self.shouldRefreshOnView )
     {
         [self refreshWithCompletion:nil];
         self.shouldRefreshOnView = NO;
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.isVisible = NO;
 }
 
 - (void)loginStatusDidChange:(NSNotification *)notification
@@ -73,7 +65,7 @@
 - (void)setShouldRefreshOnView:(BOOL)shouldRefreshOnView
 {
     _shouldRefreshOnView = shouldRefreshOnView;
-    if ( self.isVisible )
+    if ( shouldRefreshOnView )
     {
         [self refreshWithCompletion:nil];
     }
