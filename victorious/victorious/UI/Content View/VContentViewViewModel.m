@@ -90,7 +90,7 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
-        _dependencyManager = context.originDependencyManager;
+        _dependencyManager = context.destinationDependencyManager;
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
