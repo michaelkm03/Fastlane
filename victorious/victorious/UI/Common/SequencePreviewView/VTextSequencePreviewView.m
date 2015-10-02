@@ -276,8 +276,6 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
         self.previewWidthConstraint.constant = size.height;
     }
     
-    [self layoutIfNeeded];
-    
     [super updateConstraints];
 }
 
