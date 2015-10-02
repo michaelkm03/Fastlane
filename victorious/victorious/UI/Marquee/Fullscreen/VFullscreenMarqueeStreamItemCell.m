@@ -54,7 +54,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     if ( streamItem != nil )
     {
         [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithApiPath:apiPath];
-        [self layoutIfNeeded];
     }
     
     //Timer for marquee details auto-hiding
