@@ -323,10 +323,16 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 - (void)setButtonTitles
 {
-    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger viewControllerIndex, BOOL *stop)
      {
+         if ( viewControllerIndex >= self.buttons.count )
+         {
+             *stop = YES;
+             return;
+         }
+         
          NSString *title = [self titleForViewController:viewController];
-         UIButton *button = self.buttons[idx];
+         UIButton *button = self.buttons[viewControllerIndex];
          [button setTitle:title forState:UIControlStateNormal];
          [button setTitle:title forState:UIControlStateHighlighted];
          [button setTitleColor: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] forState:UIControlStateNormal];

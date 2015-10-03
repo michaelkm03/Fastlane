@@ -186,6 +186,11 @@ static NSString * const kInitialKey = @"initial";
     self.selector.viewControllers = _viewControllers;
     
     [self.collectionView reloadData];
+    
+    if ( self.didShowInitial )
+    {
+        [self updateBadge];
+    }
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
