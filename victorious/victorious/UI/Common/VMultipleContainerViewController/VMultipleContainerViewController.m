@@ -130,6 +130,7 @@ static NSString * const kInitialKey = @"initial";
     if ( !CGSizeEqualToSize(newItemSize, self.flowLayout.itemSize) )
     {
         self.flowLayout.itemSize = newItemSize;
+        [self updateBadge];
         [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO isDefaultSelection:YES];
     }
 }
@@ -186,13 +187,6 @@ static NSString * const kInitialKey = @"initial";
     self.selector.viewControllers = _viewControllers;
     
     [self.collectionView reloadData];
-    
-    if ( self.didShowInitial )
-    {
-        //We're setting the view controllers after we've been displayed.
-        //Update the selector so that it has the proper screen titles inside.
-        [self updateBadge];
-    }
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
