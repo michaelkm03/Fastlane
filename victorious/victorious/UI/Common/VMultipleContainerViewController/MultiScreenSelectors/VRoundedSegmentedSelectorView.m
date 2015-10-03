@@ -327,6 +327,8 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
      {
          if ( viewControllerIndex >= self.buttons.count )
          {
+             //We don't yet have the buttons that will hold the view controller titles.
+             //Get out and allow them to be populated correctly during the next load (hopefully).
              *stop = YES;
              return;
          }

@@ -189,6 +189,8 @@ static NSString * const kInitialKey = @"initial";
     
     if ( self.didShowInitial )
     {
+        //We're setting the view controllers after we've been displayed.
+        //Update the selector so that it has the proper screen titles inside.
         [self updateBadge];
     }
 }
