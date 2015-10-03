@@ -31,6 +31,7 @@
 #import "victorious-Swift.h"
 
 #import "victorious-Swift.h"
+#import "VObjectManager+ContentModeration.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -383,8 +384,10 @@ static const NSInteger kUserSearchResultLimit = 20;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
-        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
+        NSMutableOrderedSet *marqueeItems = [NSMutableOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:stream.marqueeItems.array]];
         NSMutableOrderedSet *oldStreamItems = nil;
+        stream.streamItems = [NSMutableOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:stream.streamItems.array]];
+
         if ( pageType == VPageTypeFirst )
         {
             oldStreamItems = [stream.streamItems copy];
@@ -395,6 +398,8 @@ static const NSInteger kUserSearchResultLimit = 20;
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
         
         VStream *fullStream = [resultObjects lastObject];
+        
+        fullStream.streamItems = [NSOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:fullStream.streamItems.array]];
 
         NSString *apiPath = stream.apiPath;
         
@@ -439,10 +444,11 @@ static const NSInteger kUserSearchResultLimit = 20;
                 }];
                 BOOL streamItemsNeedUpdate = NO;
                 BOOL isMarqueeShelf = [shelfInContext.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
-                NSOrderedSet *newStreamItems = shelfInContext.streamItems;
+                NSOrderedSet *newStreamItems = [NSOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:shelfInContext.streamItems.array]];
                 if ( index != NSNotFound )
                 {
                     Shelf *oldShelf = (Shelf *)oldStreamItems[index];
+                    oldShelf.streamItems = [NSOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:oldShelf.streamItems.array]];
                     if ( [oldShelf.streamItems isEqualToOrderedSet:newStreamItems] )
                     {
                         for ( NSUInteger index = 0; index < oldShelf.streamItems.count; index++ )

@@ -94,9 +94,13 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
                            node:(VNode *)node;
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController
-                           sequence:(VSequence *)sequence;
+                           sequence:(VSequence *)sequence
+                         completion:(void (^)(UIAlertAction *))completion;
 
-- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController;
+- (void)flagActionForSequence:(VSequence *)sequence
+           fromViewController:(UIViewController *)viewController
+                   completion:(void (^)(UIAlertAction *))completion;
+
 
 - (void)showLikersFromViewController:(UIViewController *)viewControlle
                             sequence:(VSequence *)sequence;

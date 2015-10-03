@@ -401,7 +401,7 @@
 
 #pragma mark - Flag
 
-- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence completion:(void (^)(UIAlertAction *))completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
@@ -412,17 +412,17 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
                                   {
-                                      [self flagActionForSequence:sequence fromViewController:viewController];
+                                      [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
                                   }, nil];
     [actionSheet showInView:viewController.view];
 }
 
-- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion
 {
     [[VObjectManager sharedManager] flagSequence:sequence
                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
+         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
          
          [viewController presentViewController:alert animated:YES completion:nil];
      }
@@ -432,7 +432,7 @@
          UIAlertController *alert;
          if ( error.code == kVCommentAlreadyFlaggedError )
          {
-             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
+             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
          }
          else
          {
@@ -444,11 +444,16 @@
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message
 {
+    return [self standardAlertControllerWithTitle:title message:message handler:nil];
+}
+
+- (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message handler:(void (^)(UIAlertAction *))handler
+{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction
                                actionWithTitle:NSLocalizedString(@"OK", @"OK action")
                                style:UIAlertActionStyleDefault
-                               handler:nil];
+                               handler:handler];
     [alert addAction:okAction];
     return alert;
 }

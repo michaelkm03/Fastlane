@@ -1,5 +1,5 @@
 //
-//  VCommentCellUtilitesController.h
+//  VCommentCellUtilitiesController.h
 //  victorious
 //
 //  Created by Patrick Lynch on 12/20/14.
@@ -19,7 +19,7 @@
  */
 @class VSequencePermissions;
 
-@interface VCommentCellUtilitesController : NSObject <VSwipeViewCellDelegate>
+@interface VCommentCellUtilitiesController : NSObject <VSwipeViewCellDelegate>
 
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView

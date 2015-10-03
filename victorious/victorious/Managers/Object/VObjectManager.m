@@ -34,6 +34,7 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
+#import "VObjectManager+ContentModeration.h"
 
 @import VictoriousCommon;
 
@@ -94,6 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Create an initial session ID
     [manager resetSessionID];
+    
+    [manager refreshFlaggedContents];
 }
 
 + (NSDateFormatter *)dateFormatter
