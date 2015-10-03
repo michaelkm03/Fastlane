@@ -29,6 +29,8 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
+- (void)locallyRemoveComment:(VComment *)commentToRemove;
+
 #pragma mark - Vote Methods
 - (RKManagedObjectRequestOperation *)likeComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success

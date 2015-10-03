@@ -185,10 +185,10 @@ static NSCache *_sharedImageCache = nil;
     [self.commentAndMediaView setComment:comment];
     [self.commentAndMediaView setDependencyManager:self.dependencyManager];
 
-    self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
-                                                                                         cellView:self
-                                                                                         delegate:self
-                                                                                          permissions:self.sequencePermissions];
+    self.commentCellUtilitiesController = [[VCommentCellUtilitiesController alloc] initWithComment:self.comment
+                                                                                          cellView:self
+                                                                                          delegate:self
+                                                                                       permissions:self.sequencePermissions];
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
