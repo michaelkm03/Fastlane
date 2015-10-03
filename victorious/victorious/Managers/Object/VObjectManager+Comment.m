@@ -13,6 +13,7 @@
 #import "VSequence.h"
 #import "VUser.h"
 #import "VComment+RestKit.h"
+#import "VObjectManager+ContentModeration.h"
 
 @implementation VObjectManager (Comment)
 
@@ -97,11 +98,7 @@
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //Since this is a POST not a DELETE we need to manually remove the comment.
-        VSequence *sequence = comment.sequence;
-        [commentToRemove.managedObjectContext deleteObject:commentToRemove];
-        sequence.commentCount = @(sequence.comments.count-1);
-        
-        [commentToRemove.managedObjectContext saveToPersistentStore:nil];
+        [self locallyRemoveComment:commentToRemove];
         
         if (success)
         {
@@ -116,6 +113,15 @@
                        }
          successBlock:fullSuccessBlock
             failBlock:fail];
+}
+
+- (void)locallyRemoveComment:(VComment *)commentToRemove
+{
+    VSequence *sequence = commentToRemove.sequence;
+    [commentToRemove.managedObjectContext deleteObject:commentToRemove];
+    sequence.commentCount = @(sequence.comments.count-1);
+    
+    [commentToRemove.managedObjectContext saveToPersistentStore:nil];
 }
 
 - (RKManagedObjectRequestOperation *)editComment:(VComment *)comment
@@ -135,10 +141,14 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
+    VSuccessBlock fullSuccess = ^(NSOperation *__nullable operation, id __nullable result, NSArray *resultObjects)
+    {
+        success(operation, result, resultObjects);
+    };
     return [self POST:@"/api/comment/flag"
                object:nil
            parameters:@{@"comment_id" : comment.remoteId.stringValue ?: [NSNull null]}
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail];
 }
 

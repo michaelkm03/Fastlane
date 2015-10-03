@@ -122,6 +122,7 @@
     
     [self applyStyle];
     [self setupKVOControllerWithUser:self.user];
+    [self updateLevelViews];
 }
 
 - (void)reloadProfileImage

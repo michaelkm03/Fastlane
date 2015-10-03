@@ -16,6 +16,7 @@
 
 #import "VConversation+RestKit.h"
 #import "VConversation+UnreadMessageCount.h"
+#import "VObjectManager+ContentModeration.h"
 
 static NSString * const kUnreadCountKey = @"unread_count";
 
@@ -195,10 +196,15 @@ static NSString * const kUnreadCountKey = @"unread_count";
         return nil;
     }
     
+    VSuccessBlock fullSuccess = ^(NSOperation *__nullable operation, id __nullable result, NSArray *resultObjects)
+    {
+        success(operation, result, resultObjects);
+    };
+    
     return [self POST:@"/api/message/flag"
                object:nil
            parameters:@{ @"message_id" : latestMessage.remoteId }
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail];
 }
 
