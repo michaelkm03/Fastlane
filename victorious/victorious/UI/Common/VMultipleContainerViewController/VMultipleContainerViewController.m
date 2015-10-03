@@ -145,10 +145,6 @@ static NSString * const kInitialKey = @"initial";
     
     if ( !self.didShowInitial )
     {
-        if ( !self.isInitialViewController )
-        {
-            [self.collectionView reloadData];
-        }
         self.didShowInitial = YES;
     }
     
