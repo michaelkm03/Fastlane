@@ -65,4 +65,9 @@
     [self.commentsUtilitiesDelegate editComment:comment];
 }
 
+- (UIViewController *)viewControllerForAlerts
+{
+    return [self.commentsUtilitiesDelegate viewControllerForAlerts];
+}
+
 @end

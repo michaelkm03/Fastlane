@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VBaseCollectionViewCell.h"
 #import "VCommentCellUtilitiesDelegate.h"
-#import "VCommentCellUtilitesController.h"
+#import "VCommentCellUtilitiesController.h"
 
 @class VSwipeViewController;
 
@@ -37,6 +37,6 @@
  A helper that handles responding to the edit, delete and flag utility
  buttons provided by VSipeViewController.
  */
-@property (nonatomic, strong) VCommentCellUtilitesController *commentCellUtilitiesController;
+@property (nonatomic, strong) VCommentCellUtilitiesController *commentCellUtilitiesController;
 
 @end

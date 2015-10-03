@@ -57,6 +57,7 @@
               @"is_gif_style"   :   VSelectorName(isGifStyle),
               @"type"                :   VSelectorName(itemType),
               @"subtype"             :   VSelectorName(itemSubType),
+              @"trending_topic_name" : VSelectorName(trendingTopicName)
     };
 }
 
