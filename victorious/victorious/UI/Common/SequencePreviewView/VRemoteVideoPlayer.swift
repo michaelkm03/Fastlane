@@ -128,7 +128,7 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     // MARK: - YTPlayerViewDelegate
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
-        playerView.webView?.backgroundColor = UIColor.redColor()
+        playerView.webView?.backgroundColor = UIColor.clearColor()
         playerView.stopVideo()
         isPlaying = false
         delegate?.videoPlayerDidBecomeReady?(self)
