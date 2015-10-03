@@ -105,8 +105,6 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    BOOL wasNil = self.sequence == nil;
-    
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;
@@ -134,12 +132,9 @@
         if ( strongSelf != nil )
         {
             [strongSelf determinedPreferredBackgroundColorWithImage:image];
-            [strongSelf setIsLoading:NO animated:(cacheType == SDImageCacheTypeNone)];;
             strongSelf.readyForDisplay = YES;
         }
     };
-    
-    [self setIsLoading:wasNil animated:NO];
     
     [self.previewImageView sd_setImageWithURL:[NSURL URLWithString:imageAsset.imageURL]
                              placeholderImage:nil
@@ -191,11 +186,6 @@
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    if ( self.focusType != VFocusTypeNone )
-    {
-        self.isLoading = NO;
-    }
-    
     if ( self.focusType == VFocusTypeDetail )
     {
         [self.videoPlayer playFromStart];

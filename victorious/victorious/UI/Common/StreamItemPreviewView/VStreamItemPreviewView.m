@@ -14,9 +14,10 @@
 #import "VStreamPreviewView.h"
 #import "VFailureStreamItemPreviewView.h"
 #import "UIView+AutoLayout.h"
-#import "VDependencyManager+VBackgroundContainer.h"
 
 @interface VStreamItemPreviewView ()
+
+@property (nonatomic, strong) UIView *backgroundContainerView;
 
 @end
 
@@ -68,12 +69,6 @@
 {
     _streamItem = streamItem;
     self.readyForDisplay = NO;
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    [dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 + (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *)streamItem
@@ -129,29 +124,27 @@
     return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForStreamItem:streamItem])];
 }
 
-- (void)setIsLoading:(BOOL)isLoading
+- (void)layoutSubviews
 {
-    [self setIsLoading:isLoading animated:YES];
+    [super layoutSubviews];
+    
+    [self sendSubviewToBack:_backgroundContainerView];
 }
 
-- (void)setIsLoading:(BOOL)isLoading animated:(BOOL)animated
+- (UIView *)backgroundContainerView
 {
-    _isLoading = isLoading;
-    
-    void (^animations)() = ^void
+    if ( _backgroundContainerView != nil )
     {
-        // Allow the loading background in the cell superview to be seen if loading
-        self.alpha = _isLoading ? 0.0f : 1.0f;
-    };
-    
-    if ( animated )
-    {
-        [UIView animateWithDuration:0.2f animations:animations];
+        return _backgroundContainerView;
     }
-    else
-    {
-        animations();
-    }
+    
+    _backgroundContainerView = [[UIView alloc] init];
+    _backgroundContainerView.backgroundColor = [UIColor redColor];
+    _backgroundContainerView.alpha = 0.0f;
+    _backgroundContainerView.userInteractionEnabled = NO;
+    [self addSubview:_backgroundContainerView];
+    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
+    return _backgroundContainerView;
 }
 
 @end

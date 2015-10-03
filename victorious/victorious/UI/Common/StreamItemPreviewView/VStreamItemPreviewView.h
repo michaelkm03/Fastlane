@@ -74,13 +74,6 @@ typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *
 @property (nonatomic, assign) BOOL onlyShowPreview;
 
 /**
- *  Determines whether or not the loading background is shown behind the preview view.
- */
-@property (nonatomic, assign) BOOL isLoading;
-
-- (void)setIsLoading:(BOOL)isLoading animated:(BOOL)animated;
-
-/**
  *  The dependency manager used, by some preview views, for styling.
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
