@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
+    if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] || filter.filterAPIPath == nil )
     {
         if ( fail != nil )
         {
