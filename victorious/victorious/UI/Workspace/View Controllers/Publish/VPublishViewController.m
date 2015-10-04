@@ -277,7 +277,6 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
 - (void)setPublishParameters:(VPublishParameters *)publishParameters
 {
     _publishParameters = publishParameters;
-    
     self.previewImageView.image = publishParameters.previewImage;
 }
 

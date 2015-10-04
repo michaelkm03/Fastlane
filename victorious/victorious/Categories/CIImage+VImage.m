@@ -10,16 +10,17 @@
 
 @implementation CIImage (VImage)
 
-+ (CIImage *)v_imageWithUImage:(UIImage *)image
++ (CIImage *)v_imageWithUIImage:(UIImage *)image
 {
-    if (image.CIImage)
+    if ( image.CIImage != nil )
     {
         return image.CIImage;
     }
-    else
+    else if ( image.CGImage != nil )
     {
         return [CIImage imageWithCGImage:image.CGImage];
     }
+    return nil;
 }
 
 @end

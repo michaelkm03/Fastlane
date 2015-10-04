@@ -10,6 +10,6 @@
 
 @interface CIImage (VImage)
 
-+ (CIImage *)v_imageWithUImage:(UIImage *)image;
++ (CIImage *)v_imageWithUIImage:(UIImage *)image;
 
 @end
