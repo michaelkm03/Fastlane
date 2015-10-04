@@ -56,7 +56,7 @@
  @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.
  @param groupId An ID to separate events into groups so that they can be dequeued in batches.
  */
-- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId;
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId;
 
 /**
  Removes events from queue and tracks thems using trackEvent:parameters

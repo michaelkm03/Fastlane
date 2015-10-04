@@ -16,7 +16,7 @@
 
 @implementation VTrackingEvent
 
-- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(id)eventId
+- (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(NSString *)eventId
 {
     self = [super init];
     if (self)
