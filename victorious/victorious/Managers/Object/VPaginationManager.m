@@ -114,6 +114,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)stopLoadingFilter:(VAbstractFilter *)filter
 {
+    if ( filter.filterAPIPath == nil )
+    {
+        NSAssert(NO, @"stopLoadingFilter: should never be given a filter with a nil filterAPIPath");
+        return;
+    }
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
                            {
                                [self.pathsBeingLoaded removeObject:filter.filterAPIPath];
@@ -122,6 +127,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startLoadingFilter:(VAbstractFilter *)filter
 {
+    if ( filter.filterAPIPath == nil )
+    {
+        NSAssert(NO, @"startLoadingFilter: should never be given a filter with a nil filterAPIPath");
+        return;
+    }
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
                            {
                                [self.pathsBeingLoaded addObject:filter.filterAPIPath];
