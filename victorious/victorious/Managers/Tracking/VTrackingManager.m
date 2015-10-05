@@ -33,8 +33,13 @@
         }
     }
  
-    queueKey is determined based on the eventId and streamId of the provided tracking event
-    by the queueKeyForEventWithParameters:eventId: function
+    Events are grouped by eventName for easy access and speedy removal via the eventsForName:
+    and clearQueuedEventsWithName: functions (common operations). Storing the innermost data
+    (VTrackingEvents) based on a key instead of in an array also carries a significant performance
+    boost over iterating an array of the events and doing a comparison on each item.
+ 
+    QueueKey is determined based on the eventId and streamId of the provided tracking event
+    by the queueKeyForEventWithParameters:eventId: function.
  */
 @property (nonatomic, readwrite) NSMutableDictionary *queuedEvents;
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
