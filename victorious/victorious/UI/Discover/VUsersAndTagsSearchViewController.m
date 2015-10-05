@@ -263,22 +263,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     __weak typeof(self) welf = self;
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-<<<<<<< HEAD
         // Jump back to main thread for comparison
-=======
-        NSMutableArray *searchResults = [resultObjects mutableCopy];
-        
-        if ( searchResults.count > 0 )
-        {
-            [self.tagsSearchResultsVC setSearchResults:searchResults];
-        }
-        else
-        {
-            self.tagsSearchResultsVC.searchResults = nil;
-            [self showNoResultsReturnedForSearch];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
->>>>>>> dev
         dispatch_async(dispatch_get_main_queue(), ^
         {
             // If these aren't the same this is an earlier result and should be discarded
