@@ -358,7 +358,8 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", search_string, (long)pageLimit];
+    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
     NSString *url;
     if ( context != nil )
     {
@@ -370,7 +371,7 @@ static NSString * const kVAPIParamContext = @"context";
         components.queryItems = @[sequenceQuery];
     }
 
-    components.path = path;
+    components.percentEncodedPath = path;
     url = components.URL.absoluteString;
     
     return [self GET:url
