@@ -28,7 +28,7 @@ class VideoToolbarView: UIView {
     
     private var autoVisbilityTimer = VTimerManager()
     
-    private let kPlaceholderText = "--:--"
+    private let kTimeLabelPlaceholderText = "--:--"
     private let kPlayButtonPlayImageName = "player-play-icon"
     private let kPlayButtonPauseImageName = "player-pause-icon"
     private let kVisibilityAnimationDuration = 0.2
@@ -97,8 +97,8 @@ class VideoToolbarView: UIView {
         
         self.paused = true
         self.hide(animated: false)
-        elapsedTimeLabel.text = kPlaceholderText
-        remainingTimeLabel.text = kPlaceholderText
+        elapsedTimeLabel.text = kTimeLabelPlaceholderText
+        remainingTimeLabel.text = kTimeLabelPlaceholderText
     }
     
     // MARK: - Visibility
