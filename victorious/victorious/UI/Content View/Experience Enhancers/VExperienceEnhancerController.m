@@ -74,18 +74,11 @@
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
     NSArray *voteTypes = [self.dependencyManager voteTypes];
     
-    __weak typeof(self) welf = self;
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                   {
-                       NSArray *experienceEnhancers = [welf createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
-                       experienceEnhancers = [welf validExperienceEnhancers:experienceEnhancers];
-                       dispatch_async( dispatch_get_main_queue(), ^
-                                      {
-                                          welf.experienceEnhancers = experienceEnhancers;
-                                          [welf.enhancerBar reloadData];
-                                          [welf.delegate experienceEnhancersDidUpdate];
-                                      });
-                   });
+    NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
+    experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
+    self.experienceEnhancers = experienceEnhancers;
+    [self.enhancerBar reloadData];
+    [self.delegate experienceEnhancersDidUpdate];
     
     // Pre-load any purchaseable products that might not have already been cached
     // This is also called from VSettingsManager during app initialization, so ideally
@@ -153,16 +146,8 @@
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
 {
-    __weak typeof(self) welf = self;
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                   {
-                       NSArray *experienceEnhancers = [welf validExperienceEnhancers:welf.experienceEnhancers];
-                       dispatch_async( dispatch_get_main_queue(), ^
-                                      {
-                                          welf.experienceEnhancers = experienceEnhancers;
-                                          [welf updateData];
-                                      });
-                   });
+    self.experienceEnhancers = [self validExperienceEnhancers:self.experienceEnhancers];
+    [self updateData];
 }
 
 - (void)updateData
@@ -183,6 +168,7 @@
               }
           }];
      }];
+    self.experienceEnhancers = [self validExperienceEnhancers:self.experienceEnhancers];
     [self.enhancerBar reloadData];
     [self.delegate experienceEnhancersDidUpdate];
 }
