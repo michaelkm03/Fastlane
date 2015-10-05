@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -19,13 +20,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eb_padlock" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-eq-Iwb">
-                        <rect key="frame" x="20" y="5" width="10" height="11"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="Uc4-eq-Iwb" secondAttribute="height" multiplier="10:11" id="PQV-sm-8xU"/>
-                            <constraint firstAttribute="width" constant="10" id="iPN-e9-dli"/>
-                        </constraints>
-                    </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="12" width="50" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -48,6 +42,13 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eb_padlock" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-eq-Iwb">
+                        <rect key="frame" x="20" y="5" width="10" height="11"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Uc4-eq-Iwb" secondAttribute="height" multiplier="10:11" id="PQV-sm-8xU"/>
+                            <constraint firstAttribute="width" constant="10" id="iPN-e9-dli"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -75,9 +76,4 @@
     <resources>
         <image name="eb_padlock" width="10" height="11"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

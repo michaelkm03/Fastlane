@@ -75,7 +75,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
     
     self.enabled = YES;
-    [self reloadData];
 }
 
 - (void)dealloc
