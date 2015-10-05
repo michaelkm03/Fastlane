@@ -23,6 +23,7 @@ private struct HTTPHeader {
     static let sessionID = "X-Client-Session-ID"
     static let experimentIDs = "X-Client-Experiment-IDs"
     static let geoLocation = "X-Geo-Location"
+    static let installDeviceID = "X-Client-Install-Device-ID"
 }
 
 extension NSMutableURLRequest {
@@ -60,6 +61,43 @@ extension NSMutableURLRequest {
     /// that has been defined in the Victorious API to identify iOS clients.
     public func v_setPlatformHeader() {
         setValue("iOS", forHTTPHeaderField: HTTPHeader.platform)
+    }
+    
+    /// Sets the value of the "X-Client-Install-Device-ID" header to the locally stored value
+    /// If a local value does not exist, we grab the current IDFV and set it
+    public func v_setIdentiferForVendorHeader() {
+        let fileManager = NSFileManager()
+        guard let documentsDirectory = fileManager.URLsForDirectory(.DocumentDirectory, inDomains:.UserDomainMask).first else {
+            return
+        }
+        let deviceIDFileURL = documentsDirectory.URLByAppendingPathComponent(HTTPHeader.installDeviceID)
+        guard let path = deviceIDFileURL.path else {
+            return
+        }
+        
+        if fileManager.fileExistsAtPath(path) {
+            do {
+                let retrivedDeviceID = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as String
+                setValue(retrivedDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
+            }
+            catch {
+                print("Could not read the existing file: \(HTTPHeader.installDeviceID)")
+                return
+            }
+        }
+        else {
+            guard let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
+                return
+            }
+            do {
+                try currentDeviceID.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+                try deviceIDFileURL.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
+            }
+            catch {
+                print("Could not write to file: \(HTTPHeader.installDeviceID)")
+                return
+            }
+        }
     }
     
 #if os(iOS)

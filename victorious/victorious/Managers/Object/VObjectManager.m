@@ -480,6 +480,7 @@ NS_ASSUME_NONNULL_BEGIN
                             authenticationToken:token];
 
     [request v_setPlatformHeader];
+    [request v_setIdentiferForVendorHeader];
     [request v_setOSVersionHeader];
     [request v_setAppVersionHeaderValue:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
