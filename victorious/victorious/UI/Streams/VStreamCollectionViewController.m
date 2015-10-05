@@ -106,7 +106,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, assign) BOOL viewIsAppearing;
 
 @end
 
@@ -270,12 +269,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [super viewWillAppear:animated];
     
-    if ( self.viewIsAppearing )
-    {
-        return;
-    }
-    self.viewIsAppearing = YES;
-    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self updateNavigationItems];
@@ -300,8 +293,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    self.viewIsAppearing = NO;
     
     [self addBadgingToNavigationItems];
     
