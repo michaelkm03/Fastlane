@@ -28,7 +28,7 @@
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
 #import "VAsset+Fetcher.h"
-#import "VAsset.h"
+#import "VAsset+RestKit.h"
 #import "VAuthorizationContext.h"
 #import "VAuthorizedAction.h"
 #import "VAutomation.h"
