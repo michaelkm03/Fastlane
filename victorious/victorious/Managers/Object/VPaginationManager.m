@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
+    if ( filter.filterAPIPath == nil || ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
     {
         if ( fail != nil )
         {
@@ -114,6 +114,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)stopLoadingFilter:(VAbstractFilter *)filter
 {
+    if ( filter.filterAPIPath == nil )
+    {
+        NSAssert(NO, @"stopLoadingFilter: should never be given a filter with a nil filterAPIPath");
+        return;
+    }
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
                            {
                                [self.pathsBeingLoaded removeObject:filter.filterAPIPath];
@@ -122,6 +127,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startLoadingFilter:(VAbstractFilter *)filter
 {
+    if ( filter.filterAPIPath == nil )
+    {
+        NSAssert(NO, @"startLoadingFilter: should never be given a filter with a nil filterAPIPath");
+        return;
+    }
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
                            {
                                [self.pathsBeingLoaded addObject:filter.filterAPIPath];
