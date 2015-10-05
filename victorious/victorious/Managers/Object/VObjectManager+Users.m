@@ -358,8 +358,7 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
+    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", search_string, (long)pageLimit];
     NSString *url;
     if ( context != nil )
     {
