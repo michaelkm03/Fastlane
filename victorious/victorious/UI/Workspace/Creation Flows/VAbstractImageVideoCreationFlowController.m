@@ -260,6 +260,17 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self.publishParameters.parentSequenceID = self.parentSequenceID;
     [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
+    if ( self.publishParameters != nil && self.publishParameters.previewImage == nil )
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                  style:UIAlertActionStyleDefault
+                                                handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
     self.publishPresenter.publishParameters = self.publishParameters;
     [self.publishPresenter presentOnViewController:self];
 }
