@@ -130,6 +130,7 @@ static NSString * const kInitialKey = @"initial";
     if ( !CGSizeEqualToSize(newItemSize, self.flowLayout.itemSize) )
     {
         self.flowLayout.itemSize = newItemSize;
+        [self updateBadge];
         [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO isDefaultSelection:YES];
     }
 }
