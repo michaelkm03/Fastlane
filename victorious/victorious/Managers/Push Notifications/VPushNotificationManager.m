@@ -49,8 +49,13 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
-    self.apnsToken = deviceToken;
-    [self sendAPNStokenToServer];
+
+    if ( ![self.apnsToken isEqualToData:deviceToken] )
+    {
+        self.apnsToken = deviceToken;
+        [self sendAPNStokenToServer];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
