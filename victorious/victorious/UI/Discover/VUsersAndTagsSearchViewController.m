@@ -37,6 +37,7 @@
 
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
+NSString *const kTagKey = @"tag";
 
 static NSInteger const kVMaxSearchResults = 1000;
 
@@ -273,11 +274,19 @@ static NSInteger const kVMaxSearchResults = 1000;
             
             NSMutableArray *searchResults = [[NSMutableArray alloc] init];
             NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
-            [tags enumerateObjectsUsingBlock:^(NSString *tag, NSUInteger idx, BOOL *stop)
+            [tags enumerateObjectsUsingBlock:^(id tag, NSUInteger idx, BOOL *stop)
             {
                 VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
                                                                                subclass:[VHashtag class]];
-                newTag.tag = tag;
+                if ([tag isKindOfClass:[NSString class]])
+                {
+                    newTag.tag = tag;
+                }
+                else if ([tag isKindOfClass:[NSDictionary class]])
+                {
+                    newTag.tag = tag[kTagKey];
+                }
+                
                 [searchResults addObject:newTag];
             }];
             
