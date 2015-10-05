@@ -287,16 +287,14 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
+    [self.videoPlayer pause];
+    
     if ( self.shouldLoop )
     {
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [self.videoPlayer playFromStart];
-                       });
+        [self.videoPlayer playFromStart];
     }
     else if ( !self.willShowEndCard )
     {
-        [self.videoPlayer pause];
         self.state = VVideoStateEnded;
         [super videoPlayerDidReachEnd:videoPlayer];
     }
