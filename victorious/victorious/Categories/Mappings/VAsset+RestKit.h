@@ -7,10 +7,21 @@
 //
 
 #import "VAsset.h"
-#import "NSManagedObject+RestKit.h"
+
+@class RKDynamicMapping, RKEntityMapping;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VAsset (RestKit)
 
 + (RKEntityMapping *)entityMappingForVVoteType;
 
+/**
+ Provides a mapping for a text post represented in a preview array of a
+ stream or sequence. Will return nil if there is no text asset to map to.
+ */
++ (nullable RKDynamicMapping *)textPostPreviewEntityMapping;
+
 @end
+
+NS_ASSUME_NONNULL_END

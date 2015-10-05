@@ -26,7 +26,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Factory Method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> CommentsViewController {
-        let vc: CommentsViewController = self.v_fromStoryboardInitialViewController()
+        let vc: CommentsViewController = self.v_initialViewControllerFromStoryboard()
         vc.dependencyManager = dependencyManager
         return vc
     }
@@ -247,6 +247,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: true)
         keyboardBar?.setReplyRecipient(comment.user)
         keyboardBar?.startEditing()
+    }
+    
+    func viewControllerForAlerts() -> UIViewController {
+        return self
     }
     
     // MARK: - VEditCommentViewControllerDelegate

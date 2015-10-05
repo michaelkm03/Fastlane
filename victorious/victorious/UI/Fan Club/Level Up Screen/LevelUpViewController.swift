@@ -15,11 +15,12 @@ private struct Constants {
     static let badgeWidth = 135
 }
 
-class LevelUpViewController: UIViewController, InterstitialViewController, VVideoViewDelegate {
+class LevelUpViewController: UIViewController, InterstitialViewController, VVideoPlayerDelegate {
     
     struct AnimationConstants {
         static let presentationDuration = 0.4
         static let dismissalDuration = 0.2
+        static let progressAnimation = 2.0
     }
     
     @IBOutlet weak var dismissButton: UIButton! {
@@ -36,7 +37,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
-    private let badgeView = LevelBadgeView()
+    private var badgeView: AnimatedBadgeView?
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let videoBackground = VVideoView()
@@ -85,20 +86,27 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         return levelUpAnimator
     }
     
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    }
+    
+    func preferredModalPresentationStyle() -> UIModalPresentationStyle {
+        return .FullScreen
+    }
+    
     // MARK: - Public Properties
     
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
-                badgeView.levelNumber = levelUpInterstitial.level
-                badgeView.title = NSLocalizedString("LEVEL", comment: "")
+                var currentLevel = 1
+                if let levelNumber = Int(levelUpInterstitial.level)  {
+                    currentLevel = levelNumber
+                }
+                badgeView?.levelNumberString = String(currentLevel - 1)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
-                
-                dispatch_after(AnimationConstants.presentationDuration) {
-                    self.videoBackground.setItemURL(levelUpInterstitial.videoURL, loop: true, audioMuted: true)
-                }
             }
         }
     }
@@ -110,9 +118,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 titleLabel.textColor = dependencyManager.textColor
                 descriptionLabel.font = dependencyManager.descriptionFont
                 descriptionLabel.textColor = dependencyManager.textColor
-                badgeView.levelStringLabel.textColor = dependencyManager.badgeTextColor
-                badgeView.levelNumberLabel.textColor = dependencyManager.badgeTextColor
-                badgeView.color = dependencyManager.badgeColor
+                badgeView = dependencyManager.animatedBadgeView
             }
         }
     }
@@ -120,7 +126,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     /// MARK: Factory method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> LevelUpViewController {
-        let levelUpViewController: LevelUpViewController = self.v_fromStoryboardInitialViewController()
+        let levelUpViewController: LevelUpViewController = self.v_initialViewControllerFromStoryboard()
         levelUpViewController.dependencyManager = dependencyManager
         return levelUpViewController
     }
@@ -143,9 +149,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         descriptionLabel.numberOfLines = 0;
         descriptionLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         descriptionLabel.textAlignment = NSTextAlignment.Center
-        
-        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
-        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -158,7 +161,41 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn()
+            animateIn() { completed in
+                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
+                    self.upgradeBadgeNumber()
+                }
+            }
+            
+            let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
+            videoPlayerItem.loop = true
+            videoPlayerItem.muted = true
+            self.videoBackground.setItem( videoPlayerItem )
+        }
+    }
+    
+    private func upgradeBadgeNumber() {
+        
+        if let levelUpInterstitial = self.levelUpInterstitial {
+            badgeView?.levelUp(levelUpInterstitial.level)
+        }
+        
+        UIView.animateWithDuration(0.1,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: [],
+            animations: {
+                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            }) { (completed) in
+                self.badgeView?.resetProgress(true)
+                UIView.animateWithDuration(0.1,
+                    delay: 0,
+                    options: .CurveLinear,
+                    animations: {
+                        self.badgeView?.transform = CGAffineTransformIdentity
+                    },
+                    completion: nil)
         }
     }
     
@@ -174,28 +211,44 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Helpers
     
-    private func animateIn() {
+    private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
         
         // Title animation
-        UIView.animateWithDuration(0.6, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.titleLabel.transform = CGAffineTransformIdentity
-            self.descriptionLabel.transform = CGAffineTransformIdentity
-            self.iconCollectionView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.1,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.titleLabel.transform = CGAffineTransformIdentity
+                self.descriptionLabel.transform = CGAffineTransformIdentity
+                self.iconCollectionView.transform = CGAffineTransformIdentity
+            },
+            completion: nil)
         
         // Badge animation
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.4, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.badgeView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+        UIView.animateWithDuration(0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.4,
+            options: .CurveEaseIn,
+            animations: {
+                self.badgeView?.transform = CGAffineTransformIdentity
+            },
+            completion: badgeAnimationCompletion)
         
         // Button animation
-        UIView.animateWithDuration(0.6, delay: 0.2, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.dismissButton.alpha = 1
-            }, completion: nil)
+        UIView.animateWithDuration(0.6,
+            delay: 0.2,
+            options: .CurveEaseIn,
+            animations: {
+                self.dismissButton.alpha = 1
+            },
+            completion: nil)
     }
     
     private func setToInitialState() {
-        badgeView.transform = CGAffineTransformMakeScale(0, 0)
+        badgeView?.transform = CGAffineTransformMakeScale(0, 0)
         titleLabel.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - titleLabel.bounds.origin.y)
         descriptionLabel.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - titleLabel.bounds.origin.y)
         iconCollectionView.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.height - titleLabel.bounds.origin.y)
@@ -204,8 +257,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Video View Delegate
     
-    func videoViewPlayerDidBecomeReady(videoView: VVideoView) {
-        videoBackground.play()
+    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        videoPlayer.playFromStart()
     }
 }
 
@@ -253,8 +306,6 @@ extension LevelUpViewController {
         
         view.v_addFitToParentConstraintsToSubview(videoBackground)
         
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
-        contentContainer.addSubview(badgeView)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(titleLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -262,15 +313,30 @@ extension LevelUpViewController {
         iconCollectionView.translatesAutoresizingMaskIntoConstraints = false
         contentContainer.addSubview(iconCollectionView)
         
-        let verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
-        let views = ["badgeView" : badgeView, "titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
-        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: [], metrics: ["bHeight" : Constants.badgeHeight], views: views)
+        var views: [String : UIView]
+        var verticalVisualString = ""
+        var metrics = [String : AnyObject]()
+        
+        if let badgeView = badgeView {
+            verticalVisualString = "V:|[badgeView(bHeight)]-55-[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
+            views = ["badgeView" : badgeView, "titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
+            metrics = ["bHeight" : Constants.badgeHeight]
+            badgeView.translatesAutoresizingMaskIntoConstraints = false
+            
+            // Add badge specific constraints
+            contentContainer.addSubview(badgeView)
+            badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: [], metrics: ["bWidth" : Constants.badgeWidth], views: views))
+                   contentContainer.addConstraint(NSLayoutConstraint(item: contentContainer, attribute: .CenterX, relatedBy: .Equal, toItem: badgeView, attribute: .CenterX, multiplier: 1, constant: 0))
+        } else {
+            verticalVisualString = "V:|[titleLabel]-5-[descriptionLabel]-30-[iconCollectionView]|"
+            views = ["titleLabel" : titleLabel, "descriptionLabel" : descriptionLabel, "iconCollectionView" : iconCollectionView]
+        }
+        
+        let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(verticalVisualString, options: [], metrics: metrics, views: views)
         contentContainer.addConstraints(verticalConstraints)
         
         iconCollectionView.addConstraint(collectionViewHeightConstraint)
         
-        contentContainer.addConstraint(NSLayoutConstraint(item: contentContainer, attribute: .CenterX, relatedBy: .Equal, toItem: badgeView, attribute: .CenterX, multiplier: 1, constant: 0))
-        badgeView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("[badgeView(bWidth)]", options: [], metrics: ["bWidth" : Constants.badgeWidth], views: views))
         contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[titleLabel]|", options: [], metrics: nil, views: views))
         contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[descriptionLabel]|", options: [], metrics: nil, views: views))
         contentContainer.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[iconCollectionView]|", options: [], metrics: nil, views: views))
@@ -317,5 +383,17 @@ private extension VDependencyManager {
     
     var dismissButtonTitle: String {
         return self.stringForKey("button.title")
+    }
+    
+    var animatedBadgeView: AnimatedBadgeView? {
+        guard let badgeView = self.templateValueOfType(AnimatedBadgeView.self, forKey: "animatedBadge") as? AnimatedBadgeView else {
+            return nil
+        }
+        
+        badgeView.levelStringLabel.font = UIFont(name: "OpenSans-Bold", size: 15)
+        badgeView.levelNumberLabel.font = UIFont(name: "OpenSans-Bold", size: 60)
+        badgeView.animatedBorderWidth = 5
+        badgeView.progressBarInset = 4
+        return badgeView
     }
 }

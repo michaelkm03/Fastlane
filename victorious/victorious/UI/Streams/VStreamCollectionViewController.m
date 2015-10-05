@@ -6,80 +6,65 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VTabScaffoldViewController.h"
-#import "VStreamCollectionViewController.h"
-#import "VStreamCollectionViewDataSource.h"
-#import "VStreamCellFactory.h"
-#import "VStreamCellTracking.h"
-#import "VStreamContentCellFactoryDelegate.h"
-#import "VAbstractMarqueeCollectionViewCell.h"
-#import "VStreamCollectionViewParallaxFlowLayout.h"
 
-//Controllers
-#import "VAlertController.h"
-#import "VCreatePollViewController.h"
-#import "VUploadProgressViewController.h"
-#import "VUserProfileViewController.h"
-#import "VSequenceActionController.h"
-#import "VNavigationController.h"
-#import "VNewContentViewController.h"
-#import "VMultipleContainerViewController.h"
-
-//Views
-#import "VNoContentView.h"
-#import "VCellFocus.h"
-#import "VSleekStreamCellFactory.h"
-
-//Data models
-#import "VStream+Fetcher.h"
-#import "VSequence+Fetcher.h"
-#import "VNode+Fetcher.h"
-#import "VUser.h"
-#import "VHashtag.h"
-
-//Managers
-#import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VDependencyManager+VNavigationMenuItem.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Discover.h"
-#import "VUploadManager.h"
-#import "VContentViewFactory.h"
-
-//Categories
 #import "NSArray+VMap.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VLayoutInsets.h"
-
-#import "VURLMacroReplacement.h"
-#import "VCreationFlowPresenter.h"
-#import "VConstants.h"
-#import "VTracking.h"
-#import "VHashtagStreamCollectionViewController.h"
-#import "VAuthorizedAction.h"
-#import "VContentViewPresenter.h"
-
-#import "VFullscreenMarqueeSelectionDelegate.h"
-#import "VAbstractMarqueeController.h"
-
-#import "VDirectoryCollectionViewController.h"
-#import "VDependencyManager+VUserProfile.h"
-#import "VHashtagSelectionResponder.h"
-#import "VNoContentCollectionViewCellFactory.h"
-#import "VDependencyManager+VNavigationItem.h"
-#import "VDependencyManager+VAccessoryScreens.h"
-#import "VDependencyManager+VNavigationItem.h"
-#import "VCoachmarkManager.h"
-#import "VCoachmarkDisplayer.h"
-#import "VDependencyManager+VCoachmarkManager.h"
-#import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
-
+#import "UIViewController+VLayoutInsets.h"
+#import "VAbstractMarqueeCollectionViewCell.h"
+#import "VAbstractMarqueeController.h"
+#import "VAlertController.h"
+#import "VAuthorizedAction.h"
+#import "VCoachmarkDisplayer.h"
+#import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
+#import "VConstants.h"
+#import "VContentViewFactory.h"
+#import "VCreatePollViewController.h"
+#import "VCreationFlowPresenter.h"
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
+#import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VTracking.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VDirectoryCollectionViewController.h"
+#import "VFocusable.h"
+#import "VFullscreenMarqueeSelectionDelegate.h"
+#import "VHashtag.h"
+#import "VHashtagSelectionResponder.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VMultipleContainerViewController.h"
+#import "VNavigationController.h"
+#import "VNewContentViewController.h"
+#import "VNoContentCollectionViewCellFactory.h"
+#import "VNoContentView.h"
+#import "VNode+Fetcher.h"
+#import "VObjectManager+Discover.h"
+#import "VObjectManager+Login.h"
+#import "VObjectManager+Sequence.h"
+#import "VSequence+Fetcher.h"
+#import "VSequenceActionController.h"
+#import "VSleekStreamCellFactory.h"
+#import "VStream+Fetcher.h"
+#import "VStreamCellFactory.h"
+#import "VStreamCellTracking.h"
+#import "VStreamCollectionViewController.h"
+#import "VStreamCollectionViewDataSource.h"
+#import "VStreamCollectionViewParallaxFlowLayout.h"
+#import "VStreamContentCellFactoryDelegate.h"
+#import "VTabScaffoldViewController.h"
+#import "VTracking.h"
+#import "VURLMacroReplacement.h"
+#import "VUploadManager.h"
+#import "VUploadProgressViewController.h"
+#import "VUser.h"
+#import "VUserProfileViewController.h"
 #import "victorious-Swift.h"
 
 @import KVOController;
@@ -120,6 +105,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 
 @end
 
@@ -200,6 +186,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)sharedInit
 {
     self.canShowMarquee = YES;
+    self.contentViewPresenter = [[ContentViewPresenter alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -288,11 +275,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
-    if ( self.streamDataSource.count == 0 )
-    {
-        [self refresh:nil];
-    }
-    else
+    if ( self.streamDataSource.count != 0 )
     {
         /*
          We already have marquee content so we need to restart the timer to make sure the marquee continues
@@ -326,6 +309,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
     [self updateNavigationBarScrollOffset];
+    
+    // Clear reference to the selected cell after returning to this view from content view.
+    // Must be done on `viewDidAppear:` to play well with autoplay focus.
+    self.focusHelper.selectedCell = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -392,7 +379,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [super setCurrentStream:currentStream];
 }
 
-- (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
+- (void)marqueeController:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
     if ( self.canShowMarquee )
     {
@@ -494,10 +481,35 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VMarqueeDataDelegate
 
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
+- (void)marqueeController:(VAbstractMarqueeController *)marquee didSelectItem:(VStreamItem *)streamItem withPreviewImage:(UIImage *)image fromCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)path
 {
     UICollectionViewCell *cell = [marquee.collectionView cellForItemAtIndexPath:path];
-    [self navigateToStreamItem:streamItem fromStream:marquee.stream previewImage:image cell:cell];
+    
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:marquee.stream
+                                                                       fromShelf:YES];
+        event.indexPath = path;
+        event.collectionView = collectionView;
+        
+        NSDictionary *extraTrackingInfo;
+        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+        {
+            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+        }
+        
+        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
+    }
+    else if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        VStream *stream = (VStream *)streamItem;
+        [self navigateToStream:stream atStreamItem:nil];
+    }
 }
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
@@ -559,34 +571,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
-- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image cell:(UICollectionViewCell *)cell
-{
-    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
-                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
-    
-    if ( [streamItem isKindOfClass:[VSequence class]] )
-    {
-        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:stream
-                                                                       fromShelf:YES];
-
-        NSDictionary *extraTrackingInfo;
-        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
-        {
-            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
-        }
-        
-        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
-    }
-    else if ( [streamItem isKindOfClass:[VStream class]] )
-    {
-        VStream *stream = (VStream *)streamItem;
-        [self navigateToStream:stream atStreamItem:nil];
-    }
-}
-
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+- (void)marqueeController:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
@@ -613,6 +598,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
                                                                       stream:self.currentStream
                                                                    fromShelf:NO];
+    event.collectionView = collectionView;
+    event.indexPath = indexPath;
     
     NSDictionary *extraTrackingInfo;
     if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
@@ -620,6 +607,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
     }
     
+    self.focusHelper.selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
     [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
 }
 
@@ -657,8 +645,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - VStreamCollectionDataDelegate
 
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource
- hasNewStreamItems:(NSArray *)streamItems
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource hasNewStreamItems:(NSArray *)streamItems
 {
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
@@ -791,11 +778,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
 }
 
-- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
-}
-
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking
@@ -837,14 +819,27 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     if ( [event.streamItem isKindOfClass:[VSequence class]] )
     {
+        ContentViewContext *context = [[ContentViewContext alloc] init];
+        
         NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
         
-        [VContentViewPresenter presentContentViewFromViewController:self
-                                              withDependencyManager:self.dependencyManager
-                                                        ForSequence:(VSequence *)event.streamItem
-                                                     inStreamWithID:streamID
-                                                          commentID:nil
-                                                   withPreviewImage:previewImage];
+        UICollectionView *collectionView = event.collectionView;
+        NSIndexPath *indexPath = event.indexPath;
+        if ( collectionView != nil && indexPath != nil )
+        {
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+            if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+            {
+                context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
+            }
+        }
+        
+        context.sequence = (VSequence *)event.streamItem;
+        context.placeholderImage = previewImage;
+        context.streamId = streamID;
+        context.viewController = self;
+        context.originDependencyManager = self.dependencyManager;
+        [self.contentViewPresenter presentContentViewWithContext:context];
     }
 }
 

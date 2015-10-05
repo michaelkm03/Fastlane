@@ -111,7 +111,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         return inputImage;
     }
     
-    CIImage *textImage = [CIImage v_imageWithUImage:self.canvasToolViewController.renderedImage];
+    CIImage *textImage = [CIImage v_imageWithUIImage:self.canvasToolViewController.renderedImage];
+    if ( textImage == nil )
+    {
+        return inputImage;
+    }
     
     // Apply scale
     CGFloat widthScaleFactor = textImage.extent.size.width / inputImage.extent.size.width;

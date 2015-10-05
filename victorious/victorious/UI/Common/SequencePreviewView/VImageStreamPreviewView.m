@@ -49,14 +49,16 @@
 {
     [super setStream:stream];
     
-    [self setBackgroundContainerViewVisible:NO];
-    
+    self.isLoading = NO;
+    UIScreen *mainScreen = [UIScreen mainScreen];
+    CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
+    NSURL *previewURL = [stream inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
     __weak VImageStreamPreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
+    [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self setBackgroundContainerViewVisible:YES];
+         weakSelf.isLoading = YES;
      }
                                  completion:^(UIImage *image)
      {
@@ -64,33 +66,11 @@
      }];
 }
 
-#pragma mark - VContentModeAdjustablePreviewView
+#pragma mark - VContentFittingPreviewView
 
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
+- (void)updateToFitContent:(BOOL)fit
 {
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
-}
-
-- (void)setBackgroundContainerViewVisible:(BOOL)visible
-{
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end

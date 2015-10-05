@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VWebBrowserActions.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VSequence+Fetcher.h"

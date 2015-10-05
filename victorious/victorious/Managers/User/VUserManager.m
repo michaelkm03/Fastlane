@@ -7,7 +7,7 @@
 //
 
 #import "TWAPIManager.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -57,36 +57,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         errorBlock( nil, NO );
     }
-}
-
-- (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-    loginManager.forceNative = self.forceNativeFacebookLogin;
-    [loginManager logOut];
-    [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
-                        fromViewController:nil
-                                   handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
-    {
-        if ( [FBSDKAccessToken currentAccessToken] != nil )
-        {
-            [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
-        }
-        else
-        {
-            if ( result.isCancelled )
-            {
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                                   parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                                 VTrackingKeyPermissionName : VTrackingValueDenied }];
-            }
-            if (errorBlock)
-            {
-                errorBlock(error, NO);
-            }
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-        }
-    }];
 }
 
 - (void)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion

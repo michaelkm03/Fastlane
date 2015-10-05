@@ -11,7 +11,6 @@ import Foundation
 class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private struct Constants {
-        static let collectionViewHeight: CGFloat = 90
         static let overLabelSpace: CGFloat = 12
         static let underLabelSpace: CGFloat = 12
         static let contentInsets = UIEdgeInsets(top: 0, left: 11, bottom: 0, right: 11)
@@ -20,12 +19,13 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     // MARK: Properties
     
     private let colorCache = NSCache()
+    private let renderedTextPostCache = NSCache()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .Horizontal
         flowLayout.sectionInset = Constants.contentInsets
-        flowLayout.itemSize = CGSize(width: Constants.collectionViewHeight, height: Constants.collectionViewHeight)
+        flowLayout.itemSize = TrendingTopicContentCollectionViewCell.desiredSize()
         return flowLayout
     }()
     
@@ -103,7 +103,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         contentView.addSubview(collectionView)
         
         // Setup constraints
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: [], metrics: ["height" : Constants.collectionViewHeight, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]", options: [], metrics: ["height" : TrendingTopicContentCollectionViewCell.desiredSize().height, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: [], metrics: nil, views: ["collectionView" : collectionView]))
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: [], metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
         
@@ -129,7 +129,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let totalTitleHeight = titleHeight + Constants.underLabelSpace + Constants.overLabelSpace
-        let totalHeight = totalTitleHeight + Constants.collectionViewHeight
+        let totalHeight = totalTitleHeight + TrendingTopicContentCollectionViewCell.desiredSize().height
         
         return CGSize(width: bounds.width, height: totalHeight)
     }
@@ -148,11 +148,12 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.colorCache = colorCache
-            cell.streamItem = streamItem
+            cell.renderedTextPostCache = renderedTextPostCache
+            cell.sequence = streamItem
             cell.dependencyManager = dependencyManager
             return cell
         }
@@ -168,9 +169,9 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
         let responder: VHashtagSelectionResponder = typedResponder()
-        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VSequence] {
             let streamItem = streamItems[indexPath.row]
-            let hashtag = streamItem.name ?? ""
+            let hashtag = streamItem.trendingTopicName ?? ""
             responder.hashtagSelected(hashtag)
             return
         }

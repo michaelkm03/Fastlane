@@ -6,176 +6,111 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VNewContentViewController.h"
-#import "VObjectManager+ContentCreation.h"
-
-// SubViews
-#import "VExperienceEnhancerBar.h"
-
-// Images
-#import "UIImage+ImageCreation.h"
-#import "UIImageView+Blurring.h"
-
-// Layout
-#import "VShrinkingContentLayout.h"
-#import "UIView+AutoLayout.h"
-
-// Cells
-#import "VContentCell.h"
-#import "VContentVideoCell.h"
-#import "VContentImageCell.h"
-#import "VContentPollCell.h"
-#import "VContentPollQuestionCell.h"
-#import "VContentPollBallotCell.h"
-#import "VContentCommentsCell.h"
-#import "VExperienceEnhancerBarCell.h"
-#import "VContentTextCell.h"
-
-// Supplementary Views
-#import "VSectionHandleReusableView.h"
-#import "VContentBackgroundSupplementaryView.h"
-
-// Input Accessory
-#import "VKeyboardInputAccessoryView.h"
-#import "UIActionSheet+VBlocks.h"
-
-// ViewControllers
-#import "VVideoLightboxViewController.h"
-#import "VImageLightboxViewController.h"
-#import "VUserProfileViewController.h"
-#import "VPurchaseViewController.h"
-
-// Media Attachments
-#import "VMediaAttachmentPresenter.h"
-
-// Transitioning
-#import "VLightboxTransitioningDelegate.h"
-
-// Logged in
-#import "VObjectManager+Login.h"
-
-// Formatters
-#import "VElapsedTimeFormatter.h"
-#import "VComment+Fetcher.h"
-
-// Simple Models
-#import "VExperienceEnhancer.h"
-
-// Experiments
-#import "VDependencyManager+VTabScaffoldViewController.h"
-
-// Swift
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
-#import "VSequence+Fetcher.h"
-
-#import "VTransitionDelegate.h"
-#import "VEditCommentViewController.h"
-#import "VSimpleModalTransition.h"
-
-#import "VTracking.h"
-#import "VCollectionViewCommentHighlighter.h"
-#import "VScrollPaginator.h"
-#import "VSequenceActionController.h"
-#import "VContentViewRotationHelper.h"
-#import "VEndCard.h"
-#import "VContentRepopulateTransition.h"
+#import "UIActionSheet+VBlocks.h"
+#import "NSNumber+VBitmask.h"
+#import "UIImage+ImageCreation.h"
+#import "UIImageView+Blurring.h"
+#import "UIView+AutoLayout.h"
 #import "VAbstractCommentHighlighter.h"
-#import "VEndCardActionModel.h"
-#import "VCommentAlertHelper.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
-
-#import "VInlineSearchTableViewController.h"
-#import "VTextAndMediaView.h"
-#import "VTagSensitiveTextView.h"
-#import "VTag.h"
-#import "VUserTag.h"
-#import "VHashtagStreamCollectionViewController.h"
-#import "VNavigationController.h"
 #import "VAuthorizedAction.h"
-#import "VNode+Fetcher.h"
-#import "VDependencyManager+VUserProfile.h"
-#import "VHashtagSelectionResponder.h"
-#import "VURLSelectionResponder.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VContentViewFactory.h"
 #import "VCoachmarkDisplayer.h"
-#import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
-#import "VSequenceExpressionsObserver.h"
-#import "VExperienceEnhancerResponder.h"
-#import "VDependencyManager+VTracking.h"
-#import "VCommentTextAndMediaView.h"
-
-// Cell focus
+#import "VCollectionViewCommentHighlighter.h"
 #import "VCollectionViewStreamFocusHelper.h"
+#import "VComment+Fetcher.h"
+#import "VCommentAlertHelper.h"
+#import "VCommentTextAndMediaView.h"
+#import "VContentAlertHelper.h"
+#import "VContentBackgroundSupplementaryView.h"
+#import "VContentCell.h"
+#import "VContentPollBallotCell.h"
+#import "VContentPollQuestionCell.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VTracking.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VEditCommentViewController.h"
+#import "VElapsedTimeFormatter.h"
+#import "VEndCard.h"
+#import "VEndCardActionModel.h"
+#import "VExperienceEnhancer.h"
+#import "VExperienceEnhancerBar.h"
+#import "VExperienceEnhancerBarCell.h"
+#import "VExperienceEnhancerResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VImageLightboxViewController.h"
+#import "VInlineSearchTableViewController.h"
+#import "VKeyboardInputAccessoryView.h"
+#import "VLightboxTransitioningDelegate.h"
+#import "VMediaAttachmentPresenter.h"
+#import "VNavigationController.h"
+#import "VNewContentViewController.h"
+#import "VNode+Fetcher.h"
+#import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Login.h"
+#import "VPurchaseViewController.h"
+#import "VScrollPaginator.h"
+#import "VSectionHandleReusableView.h"
+#import "VSequence+Fetcher.h"
+#import "VSequenceActionController.h"
+#import "VSequencePreviewViewProtocols.h"
+#import "VShrinkingContentLayout.h"
+#import "VSimpleModalTransition.h"
+#import "VTag.h"
+#import "VTagSensitiveTextView.h"
+#import "VTextAndMediaView.h"
+#import "VTracking.h"
+#import "VTransitionDelegate.h"
+#import "VURLSelectionResponder.h"
+#import "VUserProfileViewController.h"
+#import "VUserTag.h"
+#import "VVideoLightboxViewController.h"
 
 #define HANDOFFENABLED 0
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate>
 
-@property (nonatomic, strong) NSUserActivity *handoffObject;
-
-@property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
-@property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
-
-@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
-@property (nonatomic, weak) IBOutlet UIButton *closeButton;
-@property (nonatomic, weak) IBOutlet UIButton *moreButton;
-
-// Cells
-@property (nonatomic, weak) VContentCell *contentCell;
-@property (nonatomic, weak) VContentVideoCell *videoCell;
-@property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
-@property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VContentPollCell *pollCell;
-@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
-@property (nonatomic, weak) VContentTextCell *textCell;
-
-// Text input
-@property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
+@property (nonatomic, assign) BOOL hasBeenPresented;
+@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
+@property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
+@property (nonatomic, assign) BOOL isTransitionComplete;
+@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
+@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
+@property (nonatomic, assign) Float64 realtimeCommentBeganTime;
+@property (nonatomic, readwrite, weak) VContentCell *contentCell;
+@property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
+@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
+@property (nonatomic, strong) NSUserActivity *handoffObject;
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
-@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
-
-// Constraints
-@property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, strong) VTransitionDelegate *endcardNextTransitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
+@property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
-
-// RTC
-@property (nonatomic, assign) BOOL enteringRealTimeComment;
-@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
-
-@property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
-@property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
-
-@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
-@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
-@property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet UIButton *moreButton;
+@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
+@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
-@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
-
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
-
+@property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
-@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
-@property (nonatomic, strong) NSDate *videoLoadedDate;
-
-@property (nonatomic, assign) BOOL hasBeenPresented;
-
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
-
-@property (nonatomic, strong) VContentLikeButton *likeButton;
-
-@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
-
-@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
+@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
+@property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
+@property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -194,8 +129,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
-    VContentRepopulateTransition *repopulateTransition = [[VContentRepopulateTransition alloc] init];
-    contentViewController.repopulateTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:repopulateTransition];
+    ContentViewNextTransition *endcardNextTransition = [[ContentViewNextTransition alloc] init];
+    contentViewController.endcardNextTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:endcardNextTransition];
     
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
@@ -225,7 +160,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self.contentCollectionView reloadData];
+                    [self refreshAllCommentsSection];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -250,8 +185,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
+            [self refreshAllCommentsSection];
         }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
@@ -288,98 +222,103 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateContent
 {
-    self.videoLoadedDate = [NSDate date];
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
+    if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
+    {
+        [self.contentCell playAd:self.viewModel.monetizationPartner
+                         details:self.viewModel.monetizationDetails];
+    }
 }
 
 - (void)didUpdatePollsData
 {
-    if (!self.viewModel.votingEnabled)
+    if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
     {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
+        [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+        [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
         
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+        VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
+        [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
+        
+        [self.pollAnswerReceiver setAnswerAIsFavored:(self.viewModel.favoredAnswer == VPollAnswerA)];
+        [self.pollAnswerReceiver setAnswerBIsFavored:(self.viewModel.favoredAnswer == VPollAnswerB)];
+        
+        [self.pollAnswerReceiver showResults];
+        
+        if ( self.viewModel.sequence.permissions.canShowVoteCount )
+        {
+            [self.pollAnswerReceiver setVoterCountText:self.viewModel.numberOfVotersText];
+        }
     }
+}
+
+#pragma mark Accessory buttons
+
+- (BOOL)shouldShowAccessoryButtons
+{
+    return UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+}
+
+- (void)setAccessoryButtonsHidden:(BOOL)hidden
+{
+    [UIView animateWithDuration:0.25f animations:^
+     {
+         self.moreButton.alpha = hidden ? 0.0f : 1.0f;
+         self.closeButton.alpha = hidden ? 0.0f : 1.0f;
+     }];
 }
 
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotate
 {
-    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
-    BOOL shouldRotate = (hasVideoAsset && self.videoCell.status == AVPlayerStatusReadyToPlay && !self.presentedViewController && !self.videoCell.isPlayingAd);
-    return shouldRotate;
+    return self.isTransitionComplete;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
-    BOOL isVideoAndReadyToPlay = hasVideoAsset &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
-    return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+    BOOL isVideoContent = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
+    BOOL shouldShowLandscape = isVideoContent && !self.presentedViewController && [self shouldAutorotate];
+    return shouldShowLandscape ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     __weak typeof(self) welf = self;
-    void (^rotationUpdate)() = ^
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
-    };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         rotationUpdate();
-     }
-                                 completion:nil];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+     } completion:nil];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    // We need to update first responder status on the collection view for the comment bar
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         [self.textEntryView stopEditing];
         [self.contentCollectionView resignFirstResponder];
         self.offsetBeforeLandscape = self.contentCollectionView.contentOffset;
+        
+        CGSize cellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                           dependencyManager:self.dependencyManager];
+        CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
+        self.contentCollectionView.contentOffset = fixedLandscapeOffset;
+        self.contentCollectionView.scrollEnabled = NO;
+        
+        if ( !self.contentCell.isPlayingAd )
+        {
+            [self setAccessoryButtonsHidden:YES];
+        }
     }
     else
     {
         self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
         [self.contentCollectionView becomeFirstResponder];
-    }
-
-    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-    
-    if ( self.moreButton != nil )
-    {
-        [affectedViews addObject:self.moreButton];
+        [self setAccessoryButtonsHidden:NO];
+        self.contentCollectionView.scrollEnabled = YES;
     }
     
-    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
-                                                                                            dependencyManager:self.dependencyManager];
-    const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
-    
-    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
-                                          targetContentOffset:fixedLandscapeOffset
-                                               collectionView:self.contentCollectionView
-                                                affectedViews:[NSArray arrayWithArray:affectedViews]];
-    if ( self.videoCell != nil )
-    {
-        [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
-    }
-}
-
-- (void)updateOrientation
-{
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    [self handleRotationToInterfaceOrientation:currentOrientation];
+    [self.contentCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark View Lifecycle
@@ -429,19 +368,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
-    // Register nibs
-    [self.contentCollectionView registerNib:[VContentCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentTextCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
+    // Register cells
+    [self.contentCollectionView registerClass:[VContentCell class]
+                   forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
                  forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
@@ -457,6 +388,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.commentCellReuseIdentifiers = [NSMutableArray new];
     
     [self.viewModel reloadData];
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    self.videoPlayerDidFinishPlayingOnce = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -471,12 +406,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                              animated:YES];
     
     [self.contentCollectionView becomeFirstResponder];
-    self.videoCell.delegate = self;
-
-#ifdef V_ALLOW_VIDEO_DOWNLOADS
-    // We could probably move this here anyway, but not going to for now to avoid bugs.
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-#endif
     
     if (self.viewModel.sequence.isImage)
     {
@@ -507,12 +436,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
     }
-    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
-    // its catchPoint and lockPoint.
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
     
-    [self updateOrientation];
+    [self trackVideoViewStart];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -538,21 +463,24 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented && self.videoCell == nil )
+    if ( !self.hasBeenPresented && self.isVideoContent )
     {
         self.hasBeenPresented = YES;
-        
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+        [self trackNonVideoViewStart];
     }
     
     [self.contentCollectionView flashScrollIndicators];
     
     // Update cell focus
     [self.focusHelper updateFocus];
+    
+    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
+    // its catchPoint and lockPoint.
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
+    
+    self.isTransitionComplete = YES;
+    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -563,11 +491,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
+    if ( self.isVideoContent && self.videoPlayer != nil)
     {
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
+                                  VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
 
@@ -585,7 +513,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [self.contentCollectionView resignFirstResponder];
-    self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
 }
@@ -594,7 +521,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewDidDisappear:animated];
     
-    // Stop all video cells
+    // Stop all video comment cells
     [self.focusHelper endFocusOnAllCells];
 }
 
@@ -610,12 +537,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     @catch (NSException *exception) {
         NSLog( @"%@", exception.description );
-    }
-    
-    // Pause playback on presentation
-    if ( ![self.videoCell playerControlsDisabled] )
-    {
-        [self.videoCell pause];
     }
 }
 
@@ -646,21 +567,37 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
+#pragma mark - Tracking
+
+- (void)trackNonVideoViewStart
+{
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyStreamId : self.viewModel.streamId,
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+}
+
+- (void)trackVideoViewStart
+{
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyStreamId : self.viewModel.streamId,
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                              VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self removeCollectionViewFromContainer];
+    [self.contentCollectionView setContentOffset:CGPointZero animated:NO];
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+    [self.contentCell prepareForDismissal];
+    [self setAccessoryButtonsHidden:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)selectedLikeButton:(UIButton *)likeButton
-{
-    likeButton.enabled = NO;
-    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self withActionView:likeButton completion:^(BOOL success)
-     {
-         likeButton.enabled = YES;
-     }];
 }
 
 #pragma mark - Private Mehods
@@ -674,55 +611,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
-}
-
-- (void)removeCollectionViewFromContainer
-{
-    self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
-    [self.view addSubview:self.snapshotView];
-    self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
-    self.contentCollectionView.delegate = nil;
-    self.contentCollectionView.dataSource = nil;
-    [self.contentCollectionView resignFirstResponder];
-    [self.textEntryView stopEditing];
-    [self.videoCell prepareForRemoval];
-
-    [self.contentCollectionView removeFromSuperview];
-}
-
-- (void)restoreCollectionView
-{
-    [self.snapshotView removeFromSuperview];
-    self.contentCollectionView.delegate = self;
-    self.contentCollectionView.dataSource = self;
-    self.videoCell.delegate = self;
-    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentCollectionView.contentOffset = self.offsetBeforeRemoval;
-    [self.view addSubview:self.contentCollectionView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"collectionView":self.contentCollectionView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"collectionView":self.contentCollectionView}]];
-    [self.view bringSubviewToFront:self.closeButton];
-    [self.view bringSubviewToFront:self.moreButton];
-}
-
-- (void)updateInitialExperienceEnhancerState
-{
-   /**
-    When the enhancer bar is initialized and if a video cell is initialized (meaning the asset is a video),
-    set the initial enhancer bar state as disabled.  It will become enabled when the video asset starts playing.
-    This may happen right away if there is no ad, or after any ad is finished playing.
-    */
-    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
-    if ( enhancerBar != nil && self.videoCell != nil )
-    {
-        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
-    }
 }
 
 - (NSIndexPath *)indexPathForContentView
@@ -780,10 +668,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     __weak typeof(self) welf = self;
     VLightboxViewController *lightbox;
-    if (isVideo)
+    if ( isVideo )
     {
-        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage
-                                                                     videoURL:mediaURL];
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:previewImage videoURL:mediaURL];
         ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Realtime Comment";
     }
     else
@@ -795,11 +682,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         if (welf.presentedViewController == weakLightBox)
         {
-            // sometimes the content dissapears withour reloading due to rotation 😱
-            [welf.contentCollectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]]];
             [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-            [welf dismissViewControllerAnimated:YES
-                                     completion:^
+            [welf dismissViewControllerAnimated:YES completion:^
              {
                  [[welf class] attemptRotationToDeviceOrientation];
              }];
@@ -816,6 +700,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [welf presentViewController:lightbox
                        animated:YES
                      completion:nil];
+}
+
+- (void)refreshAllCommentsSection
+{
+    NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+    [self.contentCollectionView reloadSections:commentsIndexSet];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -860,26 +750,66 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     return VContentViewSectionCount;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
         case VContentViewSectionContent:
         {
-            UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
-            if ( [cell isKindOfClass:[VContentCell class]] )
+            self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
+                                                                         forIndexPath:indexPath];
+            self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
+            self.contentCell.endCardDelegate = self;
+            self.contentCell.delegate = self;
+            
+            [self.viewModel updateEndcard];
+            
+            id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
+            id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
+            [provider relinquishPreviewView];
+            VSequencePreviewView *previewView = [provider getPreviewView];
+            
+            if ( previewView == nil )
             {
-                [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
+                // Create a new sequence preview if we haven't been given one from the context
+                previewView = (VSequencePreviewView *)[VStreamItemPreviewView streamItemPreviewViewWithStreamItem:self.viewModel.sequence];
+                UIView *superview = [receiver getTargetSuperview];
+                previewView.frame = superview.bounds;
+                [previewView setDependencyManager:self.dependencyManager];
+                [previewView setStreamItem:self.viewModel.sequence];
+                previewView.focusType = VFocusTypeDetail;
+                [superview addSubview:previewView];
+                [superview v_addFitToParentConstraintsToSubview:previewView];
             }
-            return cell;
+            
+            previewView.detailDelegate = self;
+            
+            // Setup relationships for polls
+            if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
+            {
+                self.pollAnswerReceiver = (id<VPollResultReceiver>)previewView;
+            }
+            
+            // Setup relationships for video playback
+            if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
+            {
+                id<VVideoPreviewView> videoPreviewView = (id<VVideoPreviewView>)previewView;
+                id<VVideoPlayer> videoPlayer = videoPreviewView.videoPlayer;
+                videoPreviewView.delegate = self;
+                [receiver setVideoPlayer:videoPlayer];
+                self.videoPlayer = videoPlayer;
+                
+                // If the end card is going to show after the video finishes,
+                // set this to make a clean transition in for the end card
+                videoPreviewView.willShowEndCard = self.viewModel.endCardViewModel != nil;
+            }
+            
+            return self.contentCell;
         }
         case VContentViewSectionPollQuestion:
         {
-            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
-                                                                                               forIndexPath:indexPath];
+            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
             questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
                                                                     attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
             return questionCell;
@@ -894,45 +824,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                 forIndexPath:indexPath];
                 }
 
-                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
-                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.delegate = self;
                 self.ballotCell.orImageView.image = [self.dependencyManager imageForKey:kPollBallotIconKey];
-                
-                __weak typeof(self) welf = self;
-                self.ballotCell.answerASelectionHandler = ^(void)
-                {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
-                    {
-                        if (!authorized)
-                        {
-                            return;
-                        }
-                        
-                        [welf.viewModel answerPollWithAnswer:VPollAnswerA
-                                                  completion:^(BOOL succeeded, NSError *error)
-                         {
-                             [welf.pollCell setAnswerAPercentage:welf.viewModel.answerAPercentage
-                                                        animated:YES];
-                         }];
-                    }];
-                };
-                self.ballotCell.answerBSelectionHandler = ^(void)
-                {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
-                     {
-                         if (!authorized)
-                         {
-                             return;
-                         }
-                         
-                         [welf.viewModel answerPollWithAnswer:VPollAnswerB
-                                                   completion:^(BOOL succeeded, NSError *error)
-                          {
-                              [welf.pollCell setAnswerBPercentage:welf.viewModel.answerBPercentage
-                                                         animated:YES];
-                          }];
-                     }];
-                };
                 
                 return self.ballotCell;
             }
@@ -947,68 +844,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             self.experienceEnhancerCell.dependencyManager = self.dependencyManager;
             
-            [self updateInitialExperienceEnhancerState];
-            
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
-                if (selectedEnhancer.isBallistic)
-                {
-                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height);
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
-                    animationImageView.contentMode = UIViewContentModeScaleAspectFit;
-                    
-                    CGPoint convertedCenterForAnimation = [welf.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:welf.view];
-                    animationImageView.center = convertedCenterForAnimation;
-                    animationImageView.image = selectedEnhancer.flightImage;
-                    [welf.view addSubview:animationImageView];
-                    
-                    [UIView animateWithDuration:selectedEnhancer.flightDuration
-                                          delay:0.0f
-                                        options:UIViewAnimationOptionCurveLinear
-                                     animations:^
-                     {
-                         CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(welf.contentCell.frame));
-                         CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(welf.contentCell.frame));
-                         animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
-                     }
-                                     completion:^(BOOL finished)
-                     {
-                         animationImageView.animationDuration = selectedEnhancer.animationDuration;
-                         animationImageView.animationImages = selectedEnhancer.animationSequence;
-                         animationImageView.animationRepeatCount = 1;
-                         animationImageView.image = nil;
-                         [animationImageView startAnimating];
-                         
-                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                        {
-                                            [animationImageView removeFromSuperview];
-                                        });
-                     }];
-                }
-                else // full overlay
-                {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:welf.contentCell.bounds];
-                    animationImageView.animationDuration = selectedEnhancer.animationDuration;
-                    animationImageView.animationImages = selectedEnhancer.animationSequence;
-                    animationImageView.animationRepeatCount = 1;
-                    animationImageView.contentMode = selectedEnhancer.contentMode;
-                    
-                    [welf.contentCell.contentView addSubview:animationImageView];
-                    [animationImageView startAnimating];
-                    
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(selectedEnhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [animationImageView removeFromSuperview];
-                                   });
-                }
-                
-                // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                {
-                    __strong typeof(welf) strongSelf = welf;
-                    [strongSelf reloadComments];
-                });
+                [welf showExperienceEnhancer:selectedEnhancer atPosition:selectionCenter];
             };
             
             return self.experienceEnhancerCell;
@@ -1072,30 +911,87 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
+- (void)showExperienceEnhancer:(VExperienceEnhancer *)enhancer atPosition:(CGPoint)position
+{
+    if ( enhancer.isBallistic )
+    {
+        CGRect animationFrameSize = CGRectMake(0, 0, enhancer.flightImage.size.width, enhancer.flightImage.size.height);
+        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
+        animationImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
+        animationImageView.center = convertedCenterForAnimation;
+        animationImageView.image = enhancer.flightImage;
+        [self.view addSubview:animationImageView];
+        
+        [UIView animateWithDuration:enhancer.flightDuration
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^
+         {
+             CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(self.contentCell.frame));
+             CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(self.contentCell.frame));
+             animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
+         }
+                         completion:^(BOOL finished)
+         {
+             animationImageView.animationDuration = enhancer.animationDuration;
+             animationImageView.animationImages = enhancer.animationSequence;
+             animationImageView.animationRepeatCount = 1;
+             animationImageView.image = nil;
+             [animationImageView startAnimating];
+             
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                            {
+                                [animationImageView removeFromSuperview];
+                            });
+         }];
+    }
+    else
+    {
+        UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentCell.bounds];
+        animationImageView.animationDuration = enhancer.animationDuration;
+        animationImageView.animationImages = enhancer.animationSequence;
+        animationImageView.animationRepeatCount = 1;
+        animationImageView.contentMode = enhancer.contentMode;
+        
+        [self.contentCell.contentView addSubview:animationImageView];
+        [animationImageView startAnimating];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(enhancer.animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [animationImageView removeFromSuperview];
+                       });
+    }
+    
+    // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
+    __weak typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [welf reloadComments];
+                   });
+}
+
 #pragma mark - UICollectionViewDelegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout *)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    const BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     VContentViewSection vSection = indexPath.section;
+    
     switch (vSection)
     {
         case VContentViewSectionContent:
         {
-            switch (self.viewModel.type)
+            if ( isLandscape )
             {
-                case VContentViewTypeInvalid:
-                    return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
-                case VContentViewTypeImage:
-                    return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                case VContentViewTypeVideo:
-                case VContentViewTypeGIFVideo:
-                    return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                case VContentViewTypePoll:
-                    return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
-                case VContentViewTypeText:
-                    return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                // Match width and height for full screen
+                return self.view.bounds.size;
+            }
+            else
+            {
+                // Match width and keep 1:1 aspect
+                return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
             }
         }
         case VContentViewSectionPollQuestion:
@@ -1116,8 +1012,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
             }
-            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
-                                                                 dependencyManager:self.dependencyManager];
+            else
+            {
+                CGSize experienceEnhancerSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                                              dependencyManager:self.dependencyManager];
+                return experienceEnhancerSize;
+            }
         }
         case VContentViewSectionAllComments:
         {
@@ -1162,113 +1062,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     const BOOL isContentSection = [indexPath compare:[self indexPathForContentView]] == NSOrderedSame;
-    
-    if ( !self.rotationHelper.isLandscape && isContentSection )
+    const BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if ( !isLandscape && isContentSection )
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-    }
-}
-
-- (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
-{
-    switch (self.viewModel.type)
-    {
-        case VContentViewTypeInvalid:
-            return nil;
-        case VContentViewTypeImage:
-        {
-            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
-                                          placeholderImage:self.placeholderImage?:nil];
-            self.contentCell = imageCell;
-            self.contentCell.endCardDelegate = self;
-            return imageCell;
-        }
-        case VContentViewTypeGIFVideo:
-        case VContentViewTypeVideo:
-        {
-            if (self.videoCell)
-            {
-                return self.videoCell;
-            }
-            
-            VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            videoCell.tracking = self.viewModel.sequence.tracking;
-            videoCell.delegate = self;
-            videoCell.speed = self.viewModel.speed;
-            videoCell.loop = self.viewModel.loop;
-            videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
-            videoCell.audioMuted = self.viewModel.audioMuted;
-            self.videoCell = videoCell;
-            self.contentCell = videoCell;
-            __weak typeof(self) welf = self;
-            if ( !videoCell.playerControlsDisabled  )
-            {
-                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-                 {
-                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                     welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
-                 }];
-            }
-            videoCell.endCardDelegate = self;
-            videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-            return videoCell;
-        }
-        case VContentViewTypeText:
-        {
-            VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
-                                                                                   forIndexPath:indexPath];
-            textCell.dependencyManager = self.dependencyManager;
-            [textCell setTextContent:self.viewModel.textContent
-                     backgroundColor:self.viewModel.textBackgroundColor
-                  backgroundImageURL:self.viewModel.textBackgroundImageURL];
-            self.contentCell = textCell;
-            return textCell;
-        }
-        case VContentViewTypePoll:
-        {
-            VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
-                                                                                   forIndexPath:indexPath];
-            pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-            if (self.viewModel.answerAIsVideo)
-            {
-                [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
-            }
-            pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-            if (self.viewModel.answerBIsVideo)
-            {
-                [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
-            }
-            __weak typeof(pollCell) weakPollCell = pollCell;
-            __weak typeof(self) welf = self;
-            pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
-            {
-                NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                
-                [welf showLightBoxWithMediaURL:mediaURL
-                                  previewImage:weakPollCell.answerAPreviewImage
-                                       isVideo:isVideo
-                                    sourceView:weakPollCell.answerAContainer];
-            };
-            pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
-            {
-                NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                
-                [welf showLightBoxWithMediaURL:mediaURL
-                                  previewImage:weakPollCell.answerBPreviewImage
-                                       isVideo:isVideo
-                                    sourceView:weakPollCell.answerBContainer];
-            };
-            
-            self.pollCell = pollCell;
-            return pollCell;
-        }
     }
 }
 
@@ -1290,68 +1087,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
             [self.scrollPaginator scrollViewDidScroll:scrollView];
         }
     }
-
-    if ( self.viewModel.type == VContentViewTypeVideo && [self.contentCollectionView numberOfSections] > 0 )
-    {
-        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-        self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
-    }
     
     // Update focus on cells
     [self.focusHelper updateFocus];
-}
-
-#pragma mark - VContentVideoCellDelegate
-
-- (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
-{
-    self.viewModel.realTimeCommentsViewModel.currentTime = time;
-}
-
-- (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
-{
-    [UIViewController attemptRotationToDeviceOrientation];
-    if (!self.hasAutoPlayed)
-    {
-        [self.videoCell play];
-        self.hasAutoPlayed = YES;
-        
-        // The enhacer bar starts out disabled by default when a video asset is displayed.
-        // If the video asset is playing, any ad (if there was one) is now over, and the
-        // bar should be enabled.
-        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-        
-        NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime),
-                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }
-    [UIView animateWithDuration:0.5f
-                     animations:^
-     {
-         self.likeButton.alpha = 1.0f;
-     }];
-}
-
-- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
-{
-    if (self.viewModel.videoViewModel.endCardViewModel != nil)
-    {
-        [UIView animateWithDuration:0.5f
-                         animations:^
-         {
-             self.likeButton.alpha = 0.0f;
-         }];
-    }
-}
-
-- (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
-{
-    [self.videoCell play];
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
@@ -1371,15 +1109,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
          
          [inputAccessoryView clearTextAndResign];
          strongSelf.publishParameters.mediaToUploadURL = nil;
-         
-         NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
-         if (experimentValue != nil)
-         {
-             if ([experimentValue boolValue])
-             {
-                 [strongSelf.videoCell play];
-             }
-         }
      }];
 }
 
@@ -1440,29 +1169,24 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self updateInsetsForKeyboardBarState];
     
-    if ( self.viewModel.type != VContentViewTypeVideo )
+    if ( self.viewModel.type == VContentViewTypeVideo )
     {
-        return;
-    }
-    
-    NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
-    if (experimentValue != nil)
-    {
-        if ([experimentValue boolValue])
-        {
-            [self.videoCell pause];
-        }
-    }
-    __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
-     {
-         if (!authorized)
+        __weak typeof(self) welf = self;
+        [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
          {
-             return;
-         }
-         welf.enteringRealTimeComment = YES;
-         welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
-     }];
+             if (!authorized)
+             {
+                 return;
+             }
+             
+             __strong typeof(welf) strongSelf = welf;
+             if (strongSelf != nil)
+             {
+                 strongSelf.enteringRealTimeComment = YES;
+                 strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
+             }
+         }];
+    }
 }
 
 #pragma mark - VUserTaggingTextStorageDelegate
@@ -1494,20 +1218,33 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)clearEditingRealTimeComment
 {
     self.enteringRealTimeComment = NO;
-    self.realtimeCommentBeganTime = kCMTimeZero;
+    self.realtimeCommentBeganTime = 0.0f;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
 {
     __weak typeof(self) welf = self;
-    [self.viewModel addCommentWithText:commentText
-                              publishParameters:welf.publishParameters
-                              realTime:welf.realtimeCommentBeganTime
-                            completion:^(BOOL succeeded)
-     {
-         __strong typeof(welf) strongSelf = welf;
-         [strongSelf reloadComments];
-     }];
+    if ( self.enteringRealTimeComment )
+    {
+        [self.viewModel addCommentWithText:commentText
+                         publishParameters:self.publishParameters
+                               currentTime:self.realtimeCommentBeganTime
+                                completion:^(BOOL succeeded)
+         {
+             __strong typeof(welf) strongSelf = welf;
+             [strongSelf reloadComments];
+         }];
+    }
+    else
+    {
+        [self.viewModel addCommentWidhText:commentText
+                         publishParameters:self.publishParameters
+                                completion:^(BOOL succeeded)
+         {
+             __strong typeof(welf) strongSelf = welf;
+             [strongSelf reloadComments];
+         }];
+    }
 }
 
 - (void)reloadComments
@@ -1557,62 +1294,38 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
-{
-    if ( contentCell.likeButton == nil )
-    {
-        return;
-    }
-    
-    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
-    {
-        self.likeButton = contentCell.likeButton;
-        self.likeButton.hidden = NO;
-        
-        [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-        
-        __weak typeof(self) welf = self;
-        [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
-         {
-             __strong typeof(self) strongSelf = welf;
-             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
-         }];
-        if (self.viewModel.type == VContentViewTypeVideo)
-        {
-            self.likeButton.alpha = 0.0f;
-        }
-    }
-    else
-    {
-        contentCell.likeButton.hidden = YES;
-    }
-}
-
 #pragma mark - VExperienceEnhancerControllerDelegate
 
 - (void)experienceEnhancersDidUpdate
 {
-    // Do nothing, eventually a nice animation to reveal experience enhancers
+    NSInteger section = VContentViewSectionExperienceEnhancers;
+    if ( section < [self.contentCollectionView numberOfSections] )
+    {
+        [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
+    }
 }
 
 - (BOOL)isVideoContent
 {
-    return self.videoCell != nil;
+    return self.viewModel.type == VContentViewTypeGIFVideo || self.viewModel.type == VContentViewTypeVideo;
 }
 
 - (Float64)currentVideoTime
 {
-    if ( self.videoCell != nil )
+    id<VVideoPlayer> videoPlayer = self.videoPlayer;
+    
+    if (videoPlayer != nil)
     {
-        Float64 seconds = CMTimeGetSeconds( self.videoCell.currentTime );
-        if ( !isnan( seconds ) )
+        if (videoPlayer.currentTimeSeconds > 0.0f)
         {
-            return CMTimeGetSeconds( self.videoCell.currentTime );
+            return videoPlayer.currentTimeSeconds;
+        }
+        else if (self.videoPlayerDidFinishPlayingOnce)
+        {
+            return videoPlayer.durationSeconds;
         }
     }
+    
     return 0.0f;
 }
 
@@ -1667,13 +1380,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.textEntryView startEditing];
 }
 
+- (UIViewController *)viewControllerForAlerts
+{
+    return self;
+}
+
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
     [self dismissViewControllerAnimated:YES completion:^void
      {
-         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+         for ( VContentCommentsCell *cell in self.contentCollectionView.visibleCells)
          {
              if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
              {
@@ -1694,10 +1412,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  {
                      [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments] ];
                  }
-                 
-                 *stop = YES;
+                 break;
              }
-         }];
+         }
      }];
 }
 
@@ -1730,12 +1447,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    self.likeButton.alpha = 1.0f;
-    [self.videoCell seekToStart];
+    [self.videoPlayer seekToTimeSeconds:0.0f];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {
-         [self.videoCell hideEndCard];
-         [self.videoCell replay];
+         [self.contentCell hideEndCard];
+         [self.videoPlayer play];
     }];
 }
 
@@ -1750,9 +1466,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }
                                     failure:^(NSError *error)
      {
-         [self.videoCell hideEndCard];
+         [self.contentCell hideEndCard];
          
-         [self presentViewController:[VCommentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
+         [self presentViewController:[VContentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 
@@ -1818,15 +1534,27 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showNextSequence:(VSequence *)nextSequence
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
-                                                                                     streamID:self.viewModel.streamId
-                                                                             depenencyManager:self.dependencyManager];
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+    
+    ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.sequence = nextSequence;
+    context.streamId = self.viewModel.streamId;
+    context.originDependencyManager = self.dependencyManager;
+    context.destinationDependencyManager = self.dependencyManager;
+    context.viewController = self;
+    
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    
     self.navigationController.delegate = contentViewController;
-    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
+    contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
+    
+    // Put back our current sequence preview
+    if ( self.viewModel.context.contentPreviewProvider != nil )
+    {
+        [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
+    }
 }
 
 #pragma mark - VSequenceActionsDelegate
@@ -1851,7 +1579,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    return [self.repopulateTransitionDelegate navigationController:navigationController
+    return [self.endcardNextTransitionDelegate navigationController:navigationController
                                    animationControllerForOperation:operation
                                                 fromViewController:fromVC
                                                   toViewController:toVC];
@@ -1861,7 +1589,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)userActivityWasContinued:(NSUserActivity *)userActivity
 {
-    [self.videoCell pause];
+    if ( self.isVideoContent )
+    {
+        [self.videoPlayer pause];
+    }
 }
 
 #pragma mark - VHashtagSelectionResponder
@@ -1915,6 +1646,103 @@ referenceSizeForHeaderInSection:(NSInteger)section
              completion( authorized );
          }
      }];
+}
+
+#pragma mark - VSequencePreviewViewDetailDelegate
+
+- (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView
+{
+    [self showLightBoxWithMediaURL:mediaURL previewImage:previewImage isVideo:isVideo sourceView:sourceView];
+}
+
+- (void)previewView:(VSequencePreviewView *)previewView didLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+{
+    [self.sequenceActionController likeSequence:self.viewModel.sequence
+                             fromViewController:self
+                                 withActionView:previewView.likeButton
+                                     completion:^(BOOL success)
+     {
+         if ( completion != nil )
+         {
+             completion(success);
+         }
+     }];
+}
+
+#pragma mark - VContentPollBallotCellDelegate
+
+- (void)answerASelected
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+     {
+         if (authorized)
+         {
+             [self.viewModel answerPollWithAnswer:VPollAnswerA completion:^(BOOL succeeded, NSError *error)
+              {
+                  [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
+              }];
+         }
+     }];
+}
+
+- (void)answerBSelected
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+     {
+         if (authorized)
+         {
+             [self.viewModel answerPollWithAnswer:VPollAnswerB completion:^(BOOL succeeded, NSError *error)
+              {
+                  [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
+              }];
+         }
+     }];
+}
+
+#pragma mark - VVideoPreviewViewDelegate
+
+- (void)animateAlongsideVideoToolbarWillAppear
+{
+    if ( !self.contentCell.isEndCardShowing && [self shouldShowAccessoryButtons] )
+    {
+        self.closeButton.alpha = 1.0f;
+        self.moreButton.alpha = 1.0f;
+    }
+}
+
+- (void)animateAlongsideVideoToolbarWillDisappear
+{
+    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
+    {
+        self.closeButton.alpha = 0.0f;
+        self.moreButton.alpha = 0.0f;
+    }
+}
+
+- (void)videoPlaybackDidFinish
+{
+    if (self.viewModel.endCardViewModel != nil)
+    {
+        if ( [self shouldShowAccessoryButtons] )
+        {
+            [self setAccessoryButtonsHidden:NO];
+        }
+        [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
+    }
+    self.videoPlayerDidFinishPlayingOnce = YES;
+}
+
+#pragma mark - VContentCellDelegate
+
+- (void)contentCellDidEndPlayingAd:(VContentCell *)cell
+{
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+}
+
+- (void)contentCellDidStartPlayingAd:(VContentCell *)cell
+{
+    self.closeButton.alpha = 1.0f;
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
 }
 
 @end

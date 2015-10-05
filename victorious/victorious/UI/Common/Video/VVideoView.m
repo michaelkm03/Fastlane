@@ -22,49 +22,26 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayer *player;
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
-@property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
-@property (nonatomic, assign) BOOL wasPlayingVideo;
 @property (nonatomic, strong, nullable) id timeObserver;
+@property (nonatomic, assign) BOOL loop;
+@property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
+@property (nonatomic, strong, nullable) NSURL *itemURL;
 
 @end
 
 @implementation VVideoView
 
-- (nullable instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (void)setup
-{
-    self.backgroundColor = [UIColor clearColor];
-}
+@synthesize delegate;
+@synthesize useAspectFit = _useAspectFit;
+@synthesize muted = _muted;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if (self.player.currentItem != nil)
-    {
-        [self.player removeTimeObserver:self.timeObserver];
-        self.timeObserver = nil;
-    }
+    [self.player removeTimeObserver:self.timeObserver];
+    self.timeObserver = nil;
 }
 
 - (void)reset
@@ -74,11 +51,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     [self.player pause];
     self.player = nil;
     self.itemURL = nil;
-}
-
-- (void)setItemURL:(NSURL *__nullable)itemURL
-{
-    [self setItemURL:itemURL loop:NO audioMuted:NO];
 }
 
 - (void)setUseAspectFit:(BOOL)useAspectFit
@@ -102,21 +74,21 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     return self.useAspectFit ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
 }
 
-- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
+- (void)setItem:(VVideoPlayerItem *)playerItem
 {
-    [self setItemURL:itemURL loop:loop audioMuted:audioMuted alongsideAnimation:nil];
-}
-
-- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations
-{
-    if ( [_itemURL isEqual:itemURL] )
+    if ( self.itemURL != nil && [self.itemURL isEqual:playerItem.url] )
     {
-        if ( animations != nil )
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
         {
-            animations();
+            [self.delegate videoPlayerIsReadyForDisplay:self];
         }
         return;
     }
+    
+    self.itemURL = playerItem.url;
+    self.loop = playerItem.loop;
+    self.muted = playerItem.muted;
+    self.useAspectFit = playerItem.useAspectFit;
     
     if ( self.player == nil )
     {
@@ -134,33 +106,23 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                               block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
          {
              VVideoView *strongSelf = weakSelf;
-             if ( strongSelf == nil )
+             if ( strongSelf != nil )
              {
-                 return;
-             }
-             
-             AVPlayerItem *newestPlayerItem = strongSelf.newestPlayerItem;
-             if ([playerLayer.player.currentItem isEqual:newestPlayerItem] && playerLayer.isReadyForDisplay)
-             {
-                 playerLayer.opacity = 1.0f;
-                 if ( animations != nil )
-                 {
-                     animations();
-                 }
+                 [strongSelf onReadyForDisplay];
              }
          }];
         
         self.videoUtils = [[VVideoUtils alloc] init];
     }
     
-    self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
-    self.player.muted = audioMuted;
-    
-    _itemURL = itemURL;
+    self.player.actionAtItemEnd = self.loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+    self.player.muted = self.muted;
     
     self.newestPlayerItem = nil;
     self.playerLayer.opacity = 0.0f;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
+    [self.videoUtils createPlayerItemWithURL:self.itemURL
+                                        loop:self.loop
+                               readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
      {
          if ( [composedItemURL isEqual:_itemURL] )
          {
@@ -173,6 +135,35 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                              selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enterBackground)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+}
+
+- (void)onReadyForDisplay
+{
+    AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
+    if ([self.playerLayer.player.currentItem isEqual:newestPlayerItem] && self.playerLayer.isReadyForDisplay)
+    {
+        self.playerLayer.opacity = 1.0f;
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
+        {
+            [self.delegate videoPlayerIsReadyForDisplay:self];
+        }
+    }
+}
+
+- (UIView *)view
+{
+    return self;
+}
+
+- (void)setMuted:(BOOL)muted
+{
+    _muted = muted;
+    self.player.muted = muted;
 }
 
 - (void)setBounds:(CGRect)bounds
@@ -198,9 +189,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
          __strong VVideoView *strongSelf = weakSelf;
          if (strongSelf.player.currentItem.isPlaybackLikelyToKeepUp)
          {
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerDidStopBuffering:)])
              {
-                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+                 [strongSelf.delegate videoPlayerDidStopBuffering:strongSelf];
              }
          }
      }];
@@ -213,9 +204,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
          __strong VVideoView *strongSelf = weakSelf;
          if (strongSelf.player.currentItem.isPlaybackBufferEmpty)
          {
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             if ([strongSelf.delegate respondsToSelector:@selector(videoPlayerDidStartBuffering:)])
              {
-                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
+                 [strongSelf.delegate videoPlayerDidStartBuffering:strongSelf];
              }
          }
      }];
@@ -245,106 +236,124 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
     
-    if ( self.delegate != nil )
+    if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
-        [self.delegate videoViewPlayerDidBecomeReady:self];
+        [self.delegate videoPlayerDidBecomeReady:self];
     }
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
-    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self updateToTime:kCMTimeZero];
     
-    if ([self.delegate respondsToSelector:@selector(videoDidReachEnd:)])
+    if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachEnd:)])
     {
-        [self.delegate videoDidReachEnd:self];
+        [self.delegate videoPlayerDidReachEnd:self];
     }
 }
 
-- (BOOL)isPlayingVideo
+- (BOOL)isPlaying
 {
     return self.player.rate > 0;
 }
 
 - (void)returnFromBackground
 {
-    if ( self.wasPlayingVideo )
+    if ( self.wasPlayingBeforeEnteringBackground )
     {
         [self play];
     }
 }
 
-- (void)play
+- (void)enterBackground
 {
-    [self playAndSeekToBeginning:YES];
+    self.wasPlayingBeforeEnteringBackground = self.isPlaying;
 }
 
-- (void)playWithoutSeekingToBeginning
+- (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
 {
-    [self playAndSeekToBeginning:NO];
-}
-
-- (void)playAndSeekToBeginning:(BOOL)shouldSeek
-{
-    if ( !self.isPlayingVideo )
-    {
-        if (shouldSeek)
-        {
-            [self.player.currentItem seekToTime:kCMTimeZero];
-        }
-        
-        [self.player play];
-    }
-    self.wasPlayingVideo = YES;
+    [self updateToTime:CMTimeMake( timeSeconds, 1.0 )];
 }
 
 - (void)pause
 {
-    [self pauseAndSeekToBeginning:YES];
-}
-
-- (void)pauseWithoutSeekingToBeginning
-{
-    [self pauseAndSeekToBeginning:NO];
-}
-
-- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
-{
-    if ( self.isPlayingVideo )
+    if ( self.isPlaying )
     {
-        if (shouldSeek)
-        {
-            [self.player.currentItem seekToTime:kCMTimeZero];
-        }
         [self.player pause];
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        {
+            [self.delegate videoPlayerDidPause:self];
+        }
     }
-    self.wasPlayingVideo = NO;
+}
+
+- (void)play
+{
+    if ( !self.isPlaying )
+    {
+        [self.player play];
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        {
+            [self.delegate videoPlayerDidPlay:self];
+        }
+    }
+}
+
+- (void)pauseAtStart
+{
+    [self updateToTime:kCMTimeZero];
+    [self pause];
 }
 
 - (void)playFromStart
 {
-    [self.player pause];
-    [self.player.currentItem seekToTime:kCMTimeZero];
-    [self.player play];
+    [self updateToTime:kCMTimeZero];
+    [self play];
+}
+
+- (void)updateToTime:(CMTime)time
+{
+    if ( CMTIME_COMPARE_INLINE(self.player.currentItem.currentTime, !=, time) )
+    {
+        [self.player seekToTime:time];
+    }
 }
 
 - (void)didPlayToTime:(CMTime)time
 {
-    Float64 durationInSeconds = CMTimeGetSeconds( self.player.currentItem.duration );
-    Float64 timeInSeconds     = CMTimeGetSeconds(time);
-    float percentElapsed      = timeInSeconds / durationInSeconds * 100.0f;
-    
-    if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
+    if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
-        [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
+        [self.delegate videoPlayer:self didPlayToTime:self.currentTimeSeconds];
     }
+}
+
+- (Float64)durationSeconds
+{
+    return CMTimeGetSeconds( self.player.currentItem.duration );
+}
+
+- (Float64)currentTimeSeconds
+{
+    return CMTimeGetSeconds( self.player.currentItem.currentTime );
 }
 
 - (NSUInteger)currentTimeMilliseconds
 {
-    return (NSUInteger)(CMTimeGetSeconds( self.player.currentTime ) * 1000.0);
+    return (NSUInteger)(self.currentTimeSeconds * 1000.0);
 }
 
-NS_ASSUME_NONNULL_END
+- (CGFloat)aspectRatio
+{
+    NSArray *tracks = [self.player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo];
+    if ( tracks.count > 0 )
+    {
+        AVAssetTrack *track = tracks[0];
+        CGSize size = [track naturalSize];
+        return size.width / size.height;
+    }
+    return 1.0f;
+}
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -219,16 +219,16 @@
                                                                          destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
                                                                             onDestructiveButton:^
                                                             {
-                                                                [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
-                                                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                                                                 {
-                                                                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                 }
-                                                                                                     failBlock:^(NSOperation *operation, NSError *error)
-                                                                 {
-                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                 }];
+                                                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^
+                                                                {
+                                                                    [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
+                                                                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                                     {
+                                                                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+                                                                         
+                                                                     }
+                                                                                                         failBlock:nil];
+                                                                }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
                  [confirmDeleteActionSheet showInView:self.view];
@@ -250,7 +250,10 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action) {
+                     [[VObjectManager sharedManager] locallyRemoveSequence:self.viewModel.sequence];
+                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                 }];
              }];
         };
         [actionItems addObject:flagItem];

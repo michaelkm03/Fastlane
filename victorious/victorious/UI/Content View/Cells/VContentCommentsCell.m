@@ -34,8 +34,7 @@
 #import "VSequencePermissions.h"
 #import "VComment+Fetcher.h"
 
-
-static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 11.0f, 55.0f };
+static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 20.0f, 55.0f };
 
 static NSCache *_sharedImageCache = nil;
 
@@ -186,10 +185,10 @@ static NSCache *_sharedImageCache = nil;
     [self.commentAndMediaView setComment:comment];
     [self.commentAndMediaView setDependencyManager:self.dependencyManager];
 
-    self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
-                                                                                         cellView:self
-                                                                                         delegate:self
-                                                                                          permissions:self.sequencePermissions];
+    self.commentCellUtilitiesController = [[VCommentCellUtilitiesController alloc] initWithComment:self.comment
+                                                                                          cellView:self
+                                                                                          delegate:self
+                                                                                       permissions:self.sequencePermissions];
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
@@ -254,9 +253,16 @@ static NSCache *_sharedImageCache = nil;
 
 #pragma mark - Focus
 
-- (void)setHasFocus:(BOOL)hasFocus
+@dynamic focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    self.commentAndMediaView.inFocus = hasFocus;
+    self.commentAndMediaView.focusType = focusType;
+}
+
+- (VFocusType)focusType
+{
+    return self.commentAndMediaView.focusType;
 }
 
 - (CGRect)contentArea

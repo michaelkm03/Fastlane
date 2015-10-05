@@ -17,6 +17,7 @@
 #import "VPageType.h"
 
 #import "NSCharacterSet+VURLParts.h"
+#import "VObjectManager+ContentModeration.h"
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
@@ -62,14 +63,15 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail
 {
-    NSManagedObjectID *sequenceObjectID = sequence.objectID;
+    sequence.streams = [NSSet set];
+    [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    
+    __block VSequence *safeSequence = sequence;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
     {
         NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
-        VSequence *sequence = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequenceObjectID];
-        sequence.streams = [NSSet set];
-        [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+        [self locallyRemoveSequence:safeSequence];
         
         if (success != nil)
         {
@@ -81,6 +83,13 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
            parameters:@{@"sequence_id":sequence.remoteId}
          successBlock:fullSuccess
             failBlock:fail];
+}
+
+- (void)locallyRemoveSequence:(VSequence *)sequence
+{
+    NSAssert([NSThread isMainThread], @"Call locallyRemoveSequence on the main thread");
+    sequence.streams = [NSSet set];
+    [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
@@ -158,11 +167,12 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    
+    __block NSString *remoteId = sequence.remoteId;
+    __weak VObjectManager *weakSelf = self;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagPost];
-        
+        [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
         if ( success != nil )
         {
             success( operation, fullResponse, resultObjects );

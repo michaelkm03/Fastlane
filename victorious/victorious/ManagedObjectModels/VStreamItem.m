@@ -16,6 +16,7 @@
 @dynamic headline;
 @dynamic name;
 @dynamic previewImagesObject;
+@dynamic previewTextPostAsset;
 @dynamic remoteId;
 @dynamic streamContentType;
 @dynamic streamId;
@@ -23,6 +24,7 @@
 @dynamic itemSubType;
 @dynamic editorializations;
 @dynamic marquees;
+@dynamic previewImageAssets;
 @dynamic streams;
 
 @end

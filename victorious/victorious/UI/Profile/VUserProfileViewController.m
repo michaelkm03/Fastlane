@@ -349,6 +349,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if ( self.isCurrentUser )
     {
+        self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
         return;
     }
     
@@ -398,6 +399,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
+         [self.profileHeaderViewController updateLevelViews];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -455,7 +457,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             [self shrinkHeaderAnimated:YES];
-            [self.collectionView reloadData];
             [self reloadUserFollowingRelationship];
         }
     }

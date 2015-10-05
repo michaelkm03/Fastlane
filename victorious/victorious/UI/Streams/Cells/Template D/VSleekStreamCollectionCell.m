@@ -30,8 +30,9 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
-#import "VPreviewViewBackgroundHost.h"
 #import "UIResponder+VResponderChain.h"
+#import "victorious-Swift.h"
+#import "VContentFittingPreviewView.h"
 
 @import KVOController;
 
@@ -39,7 +40,6 @@
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
-static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 0.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, kCaptionToPreviewVerticalSpacing, 14.0f };
 static const NSUInteger kMaxNumberOfInStreamComments = 3;
@@ -48,7 +48,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
-@property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
@@ -56,7 +56,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak) IBOutlet VStreamCellHeader *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
-@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong ) IBOutlet NSLayoutConstraint *captionZeroingHeightConstraint;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
@@ -72,6 +72,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
+@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
@@ -91,6 +92,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     self.countsTextView.textSelectionDelegate = self;
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
+    self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
@@ -112,6 +114,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
                  textHeight += kCaptionMargins.top;
+                 
+                 // Add space for the text view inset if necessary
+                 UIFont *captionFont = attributes[NSFontAttributeName];
+                 textHeight += [captionFont v_fontSpecificTextViewInsets].top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -341,22 +347,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         self.previewContainerHeightConstraint = heightToWidth;
     }
     
-    if ( [self shouldShowCaptionForSequence:self.sequence] )
-    {
-        if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
-        {
-            self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
-            self.captionHeight.constant = kMaxCaptionTextViewHeight;
-        }
-    }
-    else
-    {
-        if ( self.captionHeight.constant != 0.0f || self.captiontoPreviewVerticalSpacing.constant != 0.0f )
-        {
-            self.captiontoPreviewVerticalSpacing.constant = 0.0f;
-            self.captionHeight.constant = 0.0f;
-        }
-    }
+    BOOL hasCaption = [self shouldShowCaptionForSequence:self.sequence];
+    self.captiontoPreviewVerticalSpacing.constant = hasCaption ? kCaptionToPreviewVerticalSpacing : 0.0f;
+    self.captionZeroingHeightConstraint.active = !hasCaption;
     
     BOOL hasComments = [[self class] inStreamCommentsArrayForSequence:self.sequence].count > 0;
     self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
@@ -370,6 +363,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ( self.previewView == nil && self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
@@ -380,13 +378,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
+    self.previewView.dependencyManager = self.dependencyManager;
+    if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
     {
-        [self.previewView setDependencyManager:self.dependencyManager];
-    }
-    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
-    {
-        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
+        [(VSequencePreviewView <VContentFittingPreviewView> *)self.previewView updateToFitContent:YES];
     }
     [self.previewView setSequence:sequence];
 }
@@ -396,8 +391,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSAttributedString *captionAttributedString = nil;
     if ( [self shouldShowCaptionForSequence:sequence] )
     {
+        NSDictionary *attributes = [VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager];
         captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                  attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+                                                                  attributes:attributes];
+        UIFont *captionFont = attributes[NSFontAttributeName];
+        self.captionTextView.textContainerInset = [captionFont v_fontSpecificTextViewInsets];
     }
     self.captionTextView.attributedText = captionAttributedString;
 }
@@ -464,10 +462,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     if ( dependencyManager != nil )
     {
-        attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        UIFont *captionFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = [captionFont v_fontSpecificLineSpace];
+        
+        attributes[ NSFontAttributeName ] = captionFont;
         attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     }
-    attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
@@ -485,13 +488,16 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
-#pragma mark - VCellFocus
+#pragma mark - VFocusable
 
-- (void)setHasFocus:(BOOL)hasFocus
+@synthesize focusType = _focusType;
+
+- (void)setFocusType:(VFocusType)focusType
 {
-    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
+    _focusType = focusType;
+    if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
-        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VFocusable>)self.previewView setFocusType:focusType];
     }
 }
 
@@ -592,6 +598,31 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
     }
     return _inStreamCommentsController;
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+- (void)relinquishPreviewView
+{
+    self.hasRelinquishedPreviewView = YES;
+}
+
+- (UIView *)getPreviewView
+{
+    return self.previewView;
+}
+
+- (UIView *)getContainerView
+{
+    return self.previewView;
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end

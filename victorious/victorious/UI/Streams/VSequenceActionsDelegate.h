@@ -32,8 +32,6 @@
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view;
-
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view;

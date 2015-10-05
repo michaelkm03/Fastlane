@@ -76,7 +76,11 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
 {
     CIContext *renderingContext = [CIContext contextWithOptions:@{}];
     
-    __block CIImage *filteredImage = [CIImage v_imageWithUImage:sourceImage];
+    __block CIImage *filteredImage = [CIImage v_imageWithUIImage:sourceImage];
+    if ( filteredImage == nil )
+    {
+        return nil;
+    }
     
     NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
                                  {

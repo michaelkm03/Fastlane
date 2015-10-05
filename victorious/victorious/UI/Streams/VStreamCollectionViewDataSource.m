@@ -139,6 +139,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (void)unloadStream
 {
     self.stream.streamItems = [[NSOrderedSet alloc] init];
+    self.stream.marqueeItems = [[NSOrderedSet alloc] init];
 }
 
 - (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock

@@ -84,71 +84,6 @@ static NSString * const kVAPIParamContext = @"context";
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray *)userIds
-                               withSuccessBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
-{
-    NSMutableArray *loadedUsers = [[NSMutableArray alloc] init];
-    NSMutableArray *unloadedUserIDs = [[NSMutableArray alloc] init];
-    
-    //this removes duplicates
-    for (NSNumber *userID in [[NSSet setWithArray:userIds] allObjects])
-    {
-        __block VUser *user = nil;
-        NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
-        [context performBlockAndWait:^(void)
-         {
-             user = (VUser *)[self objectForID:userID
-                                         idKey:kRemoteIdKey
-                                    entityName:[VUser entityName]
-                          managedObjectContext:context];
-         }];
-        if (user)
-        {
-            [loadedUsers addObject:user];
-        }
-        else
-        {
-            [unloadedUserIDs addObject:userID.stringValue];
-        }
-    }
-    
-    if (![unloadedUserIDs count])
-    {
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-                       {
-                           success(nil, nil, loadedUsers);
-                       });
-        return nil;
-    }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        for (VUser *user in resultObjects)
-        {
-            [loadedUsers addObject:user];
-        }
-        
-        if (success)
-        {
-            success(operation, fullResponse, loadedUsers);
-        }
-    };
-    
-    NSString *path = [@"/api/userinfo/fetch/" stringByAppendingString:unloadedUserIDs[0]];
-    for (NSUInteger i = 1; i < [unloadedUserIDs count]; i++)
-    {
-        path = [path stringByAppendingString:@","];
-        path = [path stringByAppendingString:unloadedUserIDs[i]];
-    }
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:fail];
-}
-
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
@@ -436,7 +371,7 @@ static NSString * const kVAPIParamContext = @"context";
         components.queryItems = @[sequenceQuery];
     }
 
-    components.path = path;
+    components.percentEncodedPath = path;
     url = components.URL.absoluteString;
     
     return [self GET:url

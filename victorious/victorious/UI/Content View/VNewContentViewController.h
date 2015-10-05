@@ -7,17 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "VContentViewViewModel.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VVideoPlayerDelegate.h"
+#import "VPollResultReceiver.h"
+#import "VRenderablePreviewView.h"
+#import "VVideoPreviewView.h"
 
-@class VDependencyManager, VSequenceActionController, VAuthorizedAction;
+@class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
 /**
  *  The content view controller.
  */
-@interface VNewContentViewController : UIViewController <VHasManagedDependencies>
+@interface VNewContentViewController : UIViewController <VHasManagedDependencies, VVideoPreviewViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -41,5 +44,18 @@
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+
+@property (nonatomic, weak, readonly) VContentCell *contentCell;
+
+/*
+ Provides playback controls and other interactions
+ with a visible video UI.
+ */
+@property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+
+/*
+ Object that responds to interaction with a poll view.
+ */
+@property (nonatomic, weak) id<VPollResultReceiver> pollAnswerReceiver;
 
 @end

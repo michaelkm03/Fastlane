@@ -12,6 +12,8 @@
 
 #import "VEditorializationItem.h"
 
+#import "VAsset+RestKit.h"
+
 #import "victorious-Swift.h"
 
 @implementation VStream (RestKit)
@@ -26,6 +28,7 @@
     return @{
              @"id"                  :   VSelectorName(remoteId),
              @"shelf_id"            :   VSelectorName(shelfId),
+             @"stream_id"           :   VSelectorName(streamId),
              @"entry_label"         :   VSelectorName(headline),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
@@ -33,7 +36,7 @@
              @"ugc_post_allowed"    :   VSelectorName(isUserPostAllowed),
              @"count"               :   VSelectorName(count),
              @"type"                :   VSelectorName(itemType),
-             @"subtype"             :   VSelectorName(itemSubType),
+             @"subtype"             :   VSelectorName(itemSubType)
              };
 }
 
@@ -45,7 +48,19 @@
                                 mappingForEntityForName:[VStream entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(streamId) ];
+    
+    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                 withMapping:[VImageAsset entityMapping]];
+    
+    [mapping addPropertyMapping:previewImageAssetsMapping];
+    
+    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
+    
+    [mapping addPropertyMapping:previewTextPostMapping];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

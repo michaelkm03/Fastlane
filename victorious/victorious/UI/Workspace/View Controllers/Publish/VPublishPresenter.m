@@ -66,7 +66,10 @@
     {
         __strong typeof(welf) strongSelf = welf;
         strongSelf.publishViewController.completion = nil;
-        strongSelf.publishActionHandler(success);
+        if (strongSelf.publishActionHandler != nil)
+        {
+            strongSelf.publishActionHandler(success);
+        }
     };
 }
 

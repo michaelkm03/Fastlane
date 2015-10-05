@@ -10,8 +10,10 @@
 
 #import "VHasManagedDependencies.h"
 #import "VStreamCellSpecialization.h"
+#import "VBackgroundContainer.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
 @class VStreamItem, VStreamItemPreviewView;
 
 /**
@@ -20,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param previewView The preview view that is now ready for display.
  */
-typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewView);
+typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewView);
 
 
 /**
@@ -29,7 +31,7 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
-@interface VStreamItemPreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>
+@interface VStreamItemPreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization, VBackgroundContainer>
 
 /**
  *  The factory method for the VStreamItemPreviewView, will provide a concrete subclass specialized to
@@ -39,6 +41,13 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 
 /**
  *  Use to update a streamItem preview view for a new streamItem.
+ *
+ *  @param streamItem The stream item that should populate the preview view.
+ */
+- (void)updateToStreamItem:(VStreamItem *)streamItem;
+
+/**
+ *  For use by subclasses to maintain the currently displayed stream item.
  */
 @property (nonatomic, strong, nullable) VStreamItem *streamItem;
 
@@ -51,7 +60,7 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  *  A block that should be called when the preview view becomes ready to display.
  *  This block is called automatically when readyForDisplay is set to YES.
  */
-@property (nonatomic, copy, nullable) VPreviewViewDisplayReadyBlock displayReadyBlock;
+@property (nonatomic, copy, nullable) VRenderablePreviewViewDisplayReadyBlock displayReadyBlock;
 
 /**
  *  Subclasses set this to YES when they have loaded all the content
@@ -65,9 +74,19 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL onlyShowPreview;
 
 /**
- *  The dependency manager used, by some preview views, for styling
+ *  Determines whether or not the loading background is shown behind the preview view.
+ */
+@property (nonatomic, assign) BOOL isLoading;
+
+/**
+ *  The dependency manager used, by some preview views, for styling.
  */
 @property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
+
+/**
+ *  The size used, by some preview views, for rendering preview images.
+ */
+@property (nonatomic, assign) CGSize displaySize;
 
 /**
  *  Returns tracking info specific to things happening inside this preview view. 
@@ -76,5 +95,15 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  */
 - (NSDictionary *)trackingInfo;
 
+/**
+ A color to be shown in the background if the aspect ratio of the preview asset
+ doesn't match the size in which it's being displayed. (i.e. letterboxing)
+ */
+@property (nonatomic, assign) BOOL usePreferredBackgroundColor;
+@property (nonatomic, assign) BOOL hasDeterminedPreferredBackgroundColor;
+@property (nonatomic, strong) UIColor *streamBackgroundColor;
+@property (nonatomic, strong, readonly) UIColor *defaultBackgroundColor;
+
 @end
+
 NS_ASSUME_NONNULL_END

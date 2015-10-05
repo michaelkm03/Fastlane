@@ -80,42 +80,6 @@ static NSString * const kTextAsset = @"text";
             }];
 }
 
-- (VAnswer *)answerAFromAssets:(NSSet *)assets
-{
-    VAnswer *answer = nil;
-    for (id object in assets)
-    {
-        if ([object isKindOfClass:[VAsset class]])
-        {
-            VAsset *asset = (VAsset *) object;
-            if (asset.node.interactions.array.count > 0)
-            {
-                answer = [asset.node.interactions.array firstObject];
-            }
-        }
-    }
-    
-    return answer;
-}
-
-- (VAnswer *)answerBFromAssets:(NSSet *)assets
-{
-    VAnswer *answer = nil;
-    for (id object in assets)
-    {
-        if ([object isKindOfClass:[VAsset class]])
-        {
-            VAsset *asset = (VAsset *) object;
-            if (asset.node.interactions.array.count > 1)
-            {
-                answer = asset.node.interactions.array[1];
-            }
-        }
-    }
-    
-    return answer;
-}
-
 - (VAsset *)textAssetFromAssets:(NSSet *)assets
 {
     VAsset *textAsset = nil;

@@ -30,14 +30,16 @@ extension Shelf {
         }
         mapping.addAttributeMappingsFromDictionary(attributesMapping)
         VStream.addFeedChildMappingToMapping(mapping)
+        let imageAssetRelationship = RKRelationshipMapping(fromKeyPath: "preview.assets", toKeyPath: "previewImageAssets", withMapping: VImageAsset.entityMapping())
+        mapping.addPropertyMapping(imageAssetRelationship)
+        let textAssetRelationship = RKRelationshipMapping(fromKeyPath: "preview", toKeyPath: "previewTextPostAsset", withMapping: VAsset.textPostPreviewEntityMapping())
+        mapping.addPropertyMapping(textAssetRelationship)
         return mapping
     }
     
     class func mapping(itemSubType: String) -> RKObjectMapping? {
         switch itemSubType {
-        case VStreamItemSubTypeTrendingTopic:
-            return mappingBaseForEntity(named: "Shelf")
-        case VStreamItemSubTypeMarquee:
+        case VStreamItemSubTypeTrendingTopic, VStreamItemSubTypeMarquee:
             return mappingBaseForEntity(named: entityName())
         case VStreamItemSubTypeUser:
             return UserShelf.entityMapping()

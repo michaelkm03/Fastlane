@@ -34,7 +34,7 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "UIViewController+VAccessoryScreens.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
 
@@ -297,11 +297,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             //Reset coachmarks
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
-        }
-        else if ( indexPath.row == VSettingsActionRegisterTestAlert )
-        {
-            // Register a test alert that will show up in the next network response
-            [[InterstitialManager sharedInstance] registerTestLevelUpAlert];
         }
     }
     

@@ -122,6 +122,7 @@
     
     [self applyStyle];
     [self setupKVOControllerWithUser:self.user];
+    [self updateLevelViews];
 }
 
 - (void)reloadProfileImage
@@ -272,6 +273,11 @@
     self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
     self.taglineLabel.text = self.user.tagline;
+}
+
+- (void)updateLevelViews
+{
+    // Implement in subclasses
 }
 
 @end

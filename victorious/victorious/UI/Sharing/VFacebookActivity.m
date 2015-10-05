@@ -7,7 +7,7 @@
 //
 
 #import "VFacebookActivity.h"
-#import "victorious-swift.h"
+#import "victorious-Swift.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
 #import "VSequence+Fetcher.h"
@@ -71,7 +71,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
     FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
     link.contentURL = self.shareURL;
     
-    VImageAsset *thumbnail = [[[VImageAssetFinder alloc] init] largestAssetFromAssets:self.sequence.previewAssets];
+    VImageAsset *thumbnail = [[[VImageAssetFinder alloc] init] largestAssetFromAssets:self.sequence.previewImageAssets];
     if ( thumbnail.imageURL != nil )
     {
         link.imageURL = [NSURL URLWithString:thumbnail.imageURL];

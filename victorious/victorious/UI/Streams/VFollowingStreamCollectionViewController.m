@@ -45,9 +45,9 @@
                                                   object:[VObjectManager sharedManager]];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     if ( self.shouldRefreshOnView )
     {
@@ -59,7 +59,16 @@
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.streamDataSource unloadStream];
-    self.shouldRefreshOnView = YES;
+    self.shouldRefreshOnView = [[VObjectManager sharedManager] mainUser] != nil;
+}
+
+- (void)setShouldRefreshOnView:(BOOL)shouldRefreshOnView
+{
+    _shouldRefreshOnView = shouldRefreshOnView;
+    if ( shouldRefreshOnView )
+    {
+        [self refreshWithCompletion:nil];
+    }
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
