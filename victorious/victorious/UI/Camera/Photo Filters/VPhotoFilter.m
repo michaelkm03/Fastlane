@@ -45,7 +45,12 @@
 
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context
 {
-    CIImage *filteredImage = [self filteredImageWithInputImage:[CIImage v_imageWithUImage:sourceImage]];
+    CIImage *imageFromUIImage = [CIImage v_imageWithUIImage:sourceImage];
+    if ( imageFromUIImage == nil )
+    {
+        return nil;
+    }
+    CIImage *filteredImage = [self filteredImageWithInputImage:imageFromUIImage];
     
     CGImageRef finishedImage = [context createCGImage:filteredImage fromRect:[filteredImage extent]];
     UIImage *retVal = [UIImage imageWithCGImage:finishedImage scale:sourceImage.scale orientation:sourceImage.imageOrientation];
