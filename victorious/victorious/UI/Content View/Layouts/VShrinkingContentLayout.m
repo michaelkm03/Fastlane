@@ -270,10 +270,11 @@ static const NSInteger kAllCommentsZIndex = 6666;
 
 - (CGPoint)calculateCatchPoint
 {
-    UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                    atIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionAllComments]];
-    
-    return CGPointMake(CGRectGetMinX(self.collectionView.bounds), CGRectGetMinY(handleLayoutAttributes.frame) - self.mediaContentSize.height);
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:VContentViewSectionAllComments];
+    UICollectionViewLayoutAttributes *handleLayoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+    CGFloat x = CGRectGetMinX(self.collectionView.bounds);
+    CGFloat y = CGRectGetMinY(handleLayoutAttributes.frame) - self.mediaContentSize.height;
+    return CGPointMake( x, y );
 }
 
 - (CGPoint)calculateLockPoint
