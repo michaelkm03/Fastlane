@@ -39,10 +39,12 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 
-@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
-
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
+/**
+ Designed to be overridden by subclasses for any content types for which the like button shouldn't be enabled.
+ Returns no by default, i.e. the like button is enabled by default.
+ */
 @property (nonatomic, assign, readonly) BOOL likeButtonDisabled;
 
 /**
