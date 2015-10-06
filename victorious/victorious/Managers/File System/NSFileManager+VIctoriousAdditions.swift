@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// An extension to NSFileManager for Victorious Apps' additional functionalities
 extension NSFileManager {
