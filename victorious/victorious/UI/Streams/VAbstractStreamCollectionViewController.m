@@ -44,6 +44,7 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
+@property (nonatomic, assign) BOOL isRefreshingFirstPage;
 
 @end
 
@@ -288,13 +289,21 @@
 {
     if (self.streamDataSource.isFilterLoading)
     {
+        if ( !self.isRefreshingFirstPage )
+        {
+            [self safelyMakeRefreshControlRefresh:NO];
+        }
         return;
     }
+    
+    self.isRefreshingFirstPage = YES;
+    [self safelyMakeRefreshControlRefresh:YES];
     
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
-         [self.refreshControl endRefreshing];
+         self.isRefreshingFirstPage = NO;
+         [self safelyMakeRefreshControlRefresh:NO];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
          BOOL viewIsVisible = self.parentViewController != nil;
@@ -313,13 +322,26 @@
      }
                             failure:^(NSError *error)
      {
-         [self.refreshControl endRefreshing];
+         self.isRefreshingFirstPage = NO;
+         [self safelyMakeRefreshControlRefresh:NO];
          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
          hud.mode = MBProgressHUDModeText;
          hud.labelText = NSLocalizedString(@"RefreshError", @"");
          hud.userInteractionEnabled = NO;
          [hud hide:YES afterDelay:3.0];
      }];
+}
+
+- (void)safelyMakeRefreshControlRefresh:(BOOL)refresh
+{
+    if ( refresh && !self.refreshControl.isRefreshing )
+    {
+        [self.refreshControl beginRefreshing];
+    }
+    else if ( !refresh && self.refreshControl.isRefreshing )
+    {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 - (void)positionRefreshControl
