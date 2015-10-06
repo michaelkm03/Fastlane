@@ -14,15 +14,14 @@ class FirstInstallDeviceIDManager {
     // MARK: - Properties
     private let fileManager = NSFileManager()
     
-    /// returns the Document directory of in user domain
     private var documentDirectory: NSURL? {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
     }
     
     // MARK: - Public API
     
-    /// First try to read device id from local file. If the file does not exists,
-    /// acquire the current device ID and save it to a local file.
+    /// First try to read device id from a local file. If the file does not exists,
+    /// acquire the current device ID and save it to the local file.
     /// - parameter forHeaderKey: the HTTP header key to extract info for
     /// - returns: the device ID read from local file or generated from current device ID
     func generateFirstInstallDeviceID(forHeaderKey key: String) -> String? {
@@ -46,13 +45,14 @@ class FirstInstallDeviceIDManager {
     
     // MARK: - Private methods
     
-    /// Retrive a string from provided path to file
+    /// Retrive the device ID from provided path to file, if the file exists
     /// - parameter path: The string representation of path to target file
-    /// - returns: The string representation of content of the file
+    /// - returns: The string representation of content of the file, or nil if reading failed
     private func readDeviceIDFromFile(path: String) -> String? {
         if !fileManager.fileExistsAtPath(path) {
             return nil
         }
+        
         do {
             let retrivedDeviceID = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as String
             return retrivedDeviceID
@@ -63,8 +63,8 @@ class FirstInstallDeviceIDManager {
         }
     }
     
-    /// Writes a string to provided path to file
-    /// - parameter path: The string representation of path to target file
+    /// Writes the device ID to provided file
+    /// - parameter path: The string representation of path to the device ID file
     /// - parameter deviceID: the device ID to be written to file
     /// - returns: A Bool for whether the write was successful
     private func writeDeviceIDToFile(path: String, deviceID id: String) -> Bool {
