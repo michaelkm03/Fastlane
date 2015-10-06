@@ -165,6 +165,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.operationQueue addOperation:self.loginOperation];
     
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
+    self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
     [self.templateDownloadOperation addDependency:self.loginOperation];
     [self.operationQueue addOperation:self.templateDownloadOperation];

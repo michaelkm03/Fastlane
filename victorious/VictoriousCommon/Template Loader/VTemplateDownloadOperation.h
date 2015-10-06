@@ -126,6 +126,13 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @property (nonatomic, readonly, nullable) NSDictionary *templateConfiguration;
 
 /**
+ The current build number of the application. This is used to determine the
+ validity of the template retrieved from the cache (if one exists). must be set
+ BEFORE the download operation starts.
+ */
+@property (nonatomic, strong) NSString *buildNumber;
+
+/**
  Initializes a new template download manager with a downloader and a delegate
  */
 - (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate> __nullable)delegate NS_DESIGNATED_INITIALIZER;
