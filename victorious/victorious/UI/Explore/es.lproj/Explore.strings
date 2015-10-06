@@ -1,9 +1,6 @@
-
-/* Class = "UILabel"; text = "Cell"; ObjectID = "ZnW-w0-kan"; */
-"ZnW-w0-kan.text" = "Cell";
-
 /* Class = "UISegmentedControl"; t0U-oN-RR6.segmentTitles[0] = "People"; ObjectID = "t0U-oN-RR6"; */
-"t0U-oN-RR6.segmentTitles[0]" = "People";
+"t0U-oN-RR6.segmentTitles[0]" = "Personas";
 
 /* Class = "UISegmentedControl"; t0U-oN-RR6.segmentTitles[1] = "Hashtags"; ObjectID = "t0U-oN-RR6"; */
 "t0U-oN-RR6.segmentTitles[1]" = "Hashtags";
+

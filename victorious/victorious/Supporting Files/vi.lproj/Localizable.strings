@@ -183,10 +183,7 @@
 "ConversationSendError" =   "Tin nhắn không thể gửi được";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Rất tiếc, chúng tôi gặp một vài vấn đề ở phía chúng tôi. Vui lòng thử lại.";
-"We failed to retrieve publish permissions." = "Chúng tôi không nhận được quyền công bố.";
 "Retry"                 =   "Thử lại";
-
-"VideoPlayFailed"       =   "Tải video lên không thành công.";
 
 "Now"                   =   "Ngay";
 "MinuteAgo"             =   "1m";
@@ -337,7 +334,7 @@
 "NewPrivateMessage"     = "Tin nhắn cá nhân mới";
 "NewFollower"           = "Ai đó theo dõi tôi";
 "TagInComment"          = "Ai đó nhắc đến tôi";
-"LikePost"              = "Someone likes my post";
+"LikePost"              = "Ai đó thích bài đăng của tôi";
 
 "NotificationSettingSectionFeeds" = "Dòng tin";
 "NotificationSettingSectionPeople" = "Người";
@@ -369,7 +366,7 @@
 "PurchaseUnlockWithPrice"               = "Mở cho %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Khôi phục lại Thanh toán";
 "SettingsRestorePurchasesPrompt"        = "Bạn chưa thanh toán bất kỳ thứ gì trên thiết bị này.\nNếu bạn đã thực hiện thanh toán trên một thiết bị khác, hãy chạm vào Khôi phục lại Thanh toán để khôi phục chúng.";
-"Reset Purchases"                       = "Reset Purchases";
+"Reset Purchases"                       = "Đặt lại Thanh toán";
 
 "This will discard any content added to your post" = "Điều này sẽ loại bỏ bất kỳ nội dung nào được thêm vào bài đăng của bạn";
 
@@ -422,17 +419,17 @@
 "Watch GIF" = "Xem ảnh động GIF";
 
 "See all" = "Xem tất cả";
-"View previous comments" = "View previous comments";
+"View previous comments" = "Xem các bình luận trước";
 "CommentsSingularFormat" = "%@ Bình luận";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Bình luận";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Thích";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ Thích";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Người thích";
 
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
+"postsFormat" = "%@ Bài đăng";
+"postsPluralFormat" = "%@ Bài đăng";
 "HashtagPostsCountFormat" = "Trong %@ Bài đăng";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
+"HashtagPostsCountPluralFormat" = "Trong %@ Bài đăng";
 
 "Barcelona" = "Barcelona";
 "London" = "London";
@@ -454,5 +451,5 @@
 "Use Wi-Fi only" = "Chỉ sử dụng Wi-Fi";
 "Never play videos automatically" = "Chưa bao giờ bật video tự động";
 
-"LevelFormat" = "LEVEL %@";
-"LEVEL" = "LEVEL";
+"LevelFormat" = "MỨC %@";
+"LEVEL" = "MỨC";

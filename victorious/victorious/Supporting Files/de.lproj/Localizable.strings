@@ -183,10 +183,7 @@
 "ConversationSendError" =   "Deine Nachricht konnte nicht gesendet werden";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Sorry, auf unserer Seite gab es einige Problem. Bitte nochmal versuchen.";
-"We failed to retrieve publish permissions." = "Wir konnten die Genehmigungen zur Veröffentlichung nicht abrufen.";
 "Retry"                 =   "Nochmal versuchen";
-
-"VideoPlayFailed"       =   "Video konnte nicht wiedergegeben werden";
 
 "Now"                   =   "Jetzt";
 "MinuteAgo"             =   "1 Min.";
@@ -337,7 +334,7 @@
 "NewPrivateMessage"     = "Neue private Nachricht";
 "NewFollower"           = "Jemand folgt mir";
 "TagInComment"          = "Jemand hat mich erwähnt";
-"LikePost"              = "Someone likes my post";
+"LikePost"              = "Jemandem gefällt mein Beitrag";
 
 "NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "Leute";
@@ -369,7 +366,7 @@
 "PurchaseUnlockWithPrice"               = "Freischalten für %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Käufe wiederherstellen";
 "SettingsRestorePurchasesPrompt"        = "Du hast nichts auf diesem Gerät gekauft.\nWenn du Käufe auf einem anderen Gerät getätigt hast, tippe auf Käufe wiederherstellen, um sie wiederherzustellen.";
-"Reset Purchases"                       = "Reset Purchases";
+"Reset Purchases"                       = "Käufe zurücksetzen";
 
 "This will discard any content added to your post" = "Dies löscht jeden Inhalt zu Ihrem Beitrag";
 
@@ -422,17 +419,17 @@
 "Watch GIF" = "GIF anschauen";
 
 "See all" = "Alle anzeigen";
-"View previous comments" = "View previous comments";
+"View previous comments" = "Vorherige Kommentare anzeigen";
 "CommentsSingularFormat" = "%@ Kommentar";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Kommentare";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Liker";
 
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
-"HashtagPostsCountFormat" = "In %@ Beiträgen";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
+"postsFormat" = "%@ Beitrag";
+"postsPluralFormat" = "%@ Beiträge";
+"HashtagPostsCountFormat" = "In %@ Beitrag";
+"HashtagPostsCountPluralFormat" = "In %@ Beiträge";
 
 "Barcelona" = "Barcelona";
 "London" = "London";

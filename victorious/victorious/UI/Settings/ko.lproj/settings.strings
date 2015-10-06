@@ -76,6 +76,9 @@
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "T6U-i1-p3F"; */
 "T6U-i1-p3F.placeholder" = "이름";
 
+/* Class = "UITableViewController"; title = "Test Alerts"; ObjectID = "THc-ec-WSZ"; */
+"THc-ec-WSZ.title" = "문자 알림";
+
 /* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
 "Tch-Qc-dzd.title" = "비밀번호 변경";
 
@@ -109,11 +112,17 @@
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "실험";
 
+/* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
+"gY1-3u-QH1.text" = "테스트 레벨 업 알림 등록";
+
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "항상";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "저장";
+
+/* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
+"jfn-8g-oUa.text" = "테스트 알림 등록";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "서버 환경";
@@ -126,6 +135,9 @@
 
 /* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
 "lSu-os-HMa.title" = "개인정보 보호 정책";
+
+/* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
+"lcI-nH-BVd.text" = "테스트 성취 알림 등록";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "서비스 약관";
