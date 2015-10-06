@@ -76,6 +76,9 @@
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "T6U-i1-p3F"; */
 "T6U-i1-p3F.placeholder" = "Tên";
 
+/* Class = "UITableViewController"; title = "Test Alerts"; ObjectID = "THc-ec-WSZ"; */
+"THc-ec-WSZ.title" = "Cảnh báo Kiểm tra";
+
 /* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
 "Tch-Qc-dzd.title" = "Thay Mật khẩu";
 
@@ -109,11 +112,17 @@
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "Thí nghiệm";
 
+/* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
+"gY1-3u-QH1.text" = "Đăng ký Cảnh báo Tăng Mức Kiểm tra";
+
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Luôn luôn";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "Lưu";
+
+/* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
+"jfn-8g-oUa.text" = "Đăng ký Cảnh báo Kiểm tra";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "Môi trường Máy chủ";
@@ -126,6 +135,9 @@
 
 /* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
 "lSu-os-HMa.title" = "Chính sách Bảo mật";
+
+/* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
+"lcI-nH-BVd.text" = "Đăng ký Cảnh báo Kết quả Kiểm tra";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Điều khoản Dịch vụ";
