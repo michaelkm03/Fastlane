@@ -150,6 +150,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
+    
     if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
     {
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
@@ -1060,7 +1063,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
-            return (self.viewModel.comments.count > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
+            CGSize sizeWithComments = [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            return self.viewModel.comments.count > 0 ? sizeWithComments : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;
