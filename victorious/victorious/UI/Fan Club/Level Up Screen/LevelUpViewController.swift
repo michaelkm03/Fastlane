@@ -131,6 +131,12 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         return levelUpViewController
     }
     
+    // MARK: UIViewController
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
