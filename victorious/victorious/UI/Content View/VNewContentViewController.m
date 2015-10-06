@@ -308,10 +308,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         self.contentCollectionView.scrollEnabled = NO;
         
-        if ( !self.contentCell.isPlayingAd )
-        {
-            [self setAccessoryButtonsHidden:YES];
-        }
+        [self setAccessoryButtonsHidden:YES];
     }
     else
     {
@@ -813,10 +810,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             if ( [previewView conformsToProtocol:@protocol(VVideoPreviewView)] )
             {
                 id<VVideoPreviewView> videoPreviewView = (id<VVideoPreviewView>)previewView;
-                id<VVideoPlayer> videoPlayer = videoPreviewView.videoPlayer;
+                self.videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
-                [receiver setVideoPlayer:videoPlayer];
-                self.videoPlayer = videoPlayer;
+                [receiver setVideoPlayer:self.videoPlayer];
+                self.videoPlayer = self.videoPlayer;
                 
                 // If the end card is going to show after the video finishes,
                 // set this to make a clean transition in for the end card
@@ -1565,6 +1562,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     // Put back our current sequence preview
     if ( self.viewModel.context.contentPreviewProvider != nil )
     {
+        self.contentCell.sequencePreviewView.focusType = VFocusTypeNone;
         [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
     }
 }
@@ -1724,7 +1722,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
+    if ( !self.contentCell.isEndCardShowing)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;

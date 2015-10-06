@@ -41,17 +41,6 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- Presents a content view for the specified VSequence object.
- 
- @param placeHolderImage An image, typically the sequence's thumbnail, that can be displayed
- in the place of content while the real thing is being loaded
- @param comment A comment ID to scroll to and highlight, typically used when content view
- is being presented when the app is launched with a deep link URL.  If there
- is no comment, simply pass `nil`.
- */
-- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage;
-
-/**
  Attempt to navigate to a destination (the destination will
  be given a chance to cancel the navigation before it
  actually happens)

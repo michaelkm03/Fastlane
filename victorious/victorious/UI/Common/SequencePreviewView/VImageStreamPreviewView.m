@@ -49,17 +49,13 @@
 {
     [super setStream:stream];
     
-    self.isLoading = NO;
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat maxWidth = CGRectGetWidth(mainScreen.bounds) * mainScreen.scale;
     NSURL *previewURL = [stream inStreamPreviewImageURLWithMaximumSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
     __weak VImageStreamPreviewView *weakSelf = self;
     [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         weakSelf.isLoading = YES;
-     }
+                        alongsideAnimations:nil
                                  completion:^(UIImage *image)
      {
          weakSelf.readyForDisplay = YES;

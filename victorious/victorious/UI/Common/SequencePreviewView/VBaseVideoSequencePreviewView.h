@@ -35,6 +35,8 @@
  */
 @property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
+@property (nonatomic, strong, readonly) UIView *videoContainer;
+
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 
 @property (nonatomic, strong) VAsset *videoAsset;
@@ -42,5 +44,17 @@
 @property (nonatomic, readonly) BOOL shouldAutoplay;
 
 @property (nonatomic, readonly) BOOL shouldLoop;
+
+/**
+ Creates a video player using the provided frame.  This class provides a default implementation,
+ but allows subclasses to override this method to provide a different implementation of `VVideoView`.
+ */
+- (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame;
+
+/**
+ Places a view that displays video playback into the view hiearchy in its proper place among
+ other elements, such as UI controls and preview images.
+ */
+- (void)addVideoPlayerView:(UIView *)view;
 
 @end

@@ -217,7 +217,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 - (NSArray *)initialImageURLs
 {
     NSMutableArray *urls = [[NSMutableArray alloc] initWithCapacity:10];
-
+    
     if ([self isPoll])
     {
         for (VAnswer *answer in [[self firstNode] firstAnswers])

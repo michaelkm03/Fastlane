@@ -342,18 +342,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     return (NSUInteger)(self.currentTimeSeconds * 1000.0);
 }
 
-- (CGFloat)aspectRatio
-{
-    NSArray *tracks = [self.player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo];
-    if ( tracks.count > 0 )
-    {
-        AVAssetTrack *track = tracks[0];
-        CGSize size = [track naturalSize];
-        return size.width / size.height;
-    }
-    return 1.0f;
-}
-
 @end
 
 NS_ASSUME_NONNULL_END

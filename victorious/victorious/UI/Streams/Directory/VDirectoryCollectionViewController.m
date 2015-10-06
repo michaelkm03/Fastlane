@@ -57,6 +57,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
  */
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeController;
 
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+
 @end
 
 @implementation VDirectoryCollectionViewController
@@ -139,6 +141,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)viewDidLoad
 {
+    self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    
     [super viewDidLoad];
     
     [self updateHeaderCellVisibility];
@@ -220,7 +224,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 #pragma mark - VMarqueeControllerSelectionDelegate
 
-- (void)marqueeController:(VAbstractMarqueeController *)marquee didSelectItem:(VStreamItem *)streamItem withPreviewImage:(UIImage *)image fromCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)path
+- (void)marqueeController:(VAbstractMarqueeController *)marquee didSelectItem:(VStreamItem *)streamItem withPreviewImage:(UIImage *)image fromCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
@@ -229,6 +233,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
                                                                       stream:self.currentStream
                                                                    fromShelf:YES];
+    event.indexPath = indexPath;
+    event.collectionView = collectionView;
     
     [self navigateToDisplayStreamItemWithEvent:event];
 }
@@ -327,7 +333,17 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
         NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
+        ContentViewContext *context = [[ContentViewContext alloc] init];
+        context.sequence = (VSequence *)streamItem;
+        context.streamId = streamId;
+        context.viewController = [self.dependencyManager scaffoldViewController].rootNavigationController;
+        context.originDependencyManager = self.dependencyManager;
+        UICollectionViewCell *cell = [event.collectionView cellForItemAtIndexPath:event.indexPath];
+        if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+        {
+            context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
+        }
+        [self.contentViewPresenter presentContentViewWithContext:context];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )
     {

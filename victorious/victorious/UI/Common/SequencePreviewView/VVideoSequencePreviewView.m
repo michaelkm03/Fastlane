@@ -11,6 +11,7 @@
 #import "VTrackingManager.h"
 #import "UIResponder+VResponderChain.h"
 #import "VVideoPlayerToolbarView.h"
+#import "VPassthroughContainerView.h"
 
 /**
  Describes the state of the video preview view
@@ -25,7 +26,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 };
 @interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
-@property (nonatomic, strong) UIView *videoUIContainer;
+@property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
 @property (nonatomic, strong) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -52,7 +53,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self = [super initWithFrame:frame];
     if (self != nil)
     {
-        _videoUIContainer = [[UIView alloc] initWithFrame:self.bounds];
+        _videoUIContainer = [[VPassthroughContainerView alloc] initWithFrame:self.bounds];
         [self addSubview:_videoUIContainer];
         [self v_addFitToParentConstraintsToSubview:_videoUIContainer];
         
@@ -80,15 +81,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                                   options:0
                                                                                   metrics:metrics
                                                                                     views:views]];
-    
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.activityIndicator.hidesWhenStopped = YES;
-    self.activityIndicator.hidden = YES;
-    [self.videoUIContainer addSubview:self.activityIndicator];
-    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
-    
-    
     UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
     self.largePlayButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [self.largePlayButton setImage:playIcon forState:UIControlStateNormal];
@@ -98,6 +90,13 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicator.hidesWhenStopped = YES;
+    [self.activityIndicator stopAnimating];
+    [self.videoUIContainer addSubview:self.activityIndicator];
+    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
 }
 
 - (void)onContentTap
@@ -117,8 +116,18 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.videoPlayer.useAspectFit = !self.videoPlayer.useAspectFit;
 }
 
+- (BOOL)toolbarDisabled
+{
+    return NO;
+}
+
 - (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
+    if ( self.toolbarDisabled )
+    {
+        return;
+    }
+    
     if ( !hidden )
     {
         if ( self.toolbar == nil )
@@ -178,31 +187,66 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)updateUIState
 {
+    // Toolbar
+    [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
+    self.toolbar.paused = self.state != VVideoStatePlaying;
+    
+    // Tap/Double Tap gestures
+    [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
+    
+    // Aspect ratio
+    self.videoPlayer.useAspectFit = YES;
+    
+    // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
+        if ( self.state == VVideoStateBuffering )
+        {
+            [self.activityIndicator startAnimating];
+        }
+        else
+        {
+            [self.activityIndicator stopAnimating];
+        }
+        
         self.largePlayButton.userInteractionEnabled = YES;
-        self.largePlayButton.hidden = !((self.state == VVideoStateEnded || self.state == VVideoStateNotStarted) && ![self shouldLoop]);
+        if ( self.state == VVideoStateNotStarted )
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = YES;
+        }
+        else
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = NO;
+        }
     }
     else
     {
+        [self.activityIndicator stopAnimating];
         self.largePlayButton.userInteractionEnabled = NO;
-        self.largePlayButton.hidden = !(self.state == VVideoStateNotStarted && ![self shouldAutoplay]);
+        if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
+        {
+            self.largePlayButton.hidden = YES;
+            self.previewImageView.hidden = YES;
+            self.videoPlayer.view.hidden = NO;
+        }
+        else
+        {
+            self.largePlayButton.hidden = NO;
+            self.previewImageView.hidden = NO;
+            self.videoPlayer.view.hidden = YES;
+        }
     }
     
-    self.activityIndicator.hidden = self.state != VVideoStateBuffering;
-    
+    // Sound indicator
     self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
     if ( !self.soundIndicator.hidden )
     {
         [self.soundIndicator startAnimating];
     }
-    
-    self.videoPlayer.view.hidden = self.state == VVideoStateNotStarted;
-    self.previewImageView.hidden = !self.videoPlayer.view.hidden;
-    
-    self.toolbar.paused = self.state != VVideoStatePlaying;
-    
-    [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
 }
 
 #pragma mark - Focus
@@ -210,21 +254,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)setFocusType:(VFocusType)focusType
 {
     super.focusType = focusType;
-    
-    [self setToolbarHidden:self.focusType != VFocusTypeDetail animated:self.focusType != VFocusTypeNone];
-    [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
-    
-    if ( ![self shouldAutoplay] && focusType != VFocusTypeDetail)
-    {
-        [self.videoPlayer pauseAtStart];
-        self.state = VVideoStateNotStarted;
-    }
-    else if (focusType == VFocusTypeDetail)
-    {
-        [self.videoPlayer play];
-    }
-    
-    self.videoPlayer.useAspectFit = YES;
     
     [self updateUIState];
 }
@@ -300,6 +329,8 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     else
     {
+        self.state = VVideoStateEnded;
+        [self.videoPlayer pause];
         [super videoPlayerDidReachEnd:videoPlayer];
     }
 }
@@ -307,6 +338,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStartBuffering:videoPlayer];
+    self.state = VVideoStateBuffering;
 }
 
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
@@ -338,7 +370,10 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
 {
     [super videoPlayerDidPause:videoPlayer];
-    self.state = VVideoStatePaused;
+    if ( self.state != VVideoStateNotStarted )
+    {
+        self.state = VVideoStatePaused;
+    }
 }
 
 #pragma mark - VideoToolbarDelegate
