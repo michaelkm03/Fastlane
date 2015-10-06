@@ -53,10 +53,12 @@
 
 /**
  Captures an event to be sent later or prevent another event from being sent.
+ @param eventName An ID to separate events into groups so that they can be dequeued in batches.
+ @param parameters Additional fields describing the tracking event. Keys from VTrackingConstants
+                    are used to utilize fields from this dictionary.
  @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.
- @param groupId An ID to separate events into groups so that they can be dequeued in batches.
  */
-- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId;
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId;
 
 /**
  Removes events from queue and tracks thems using trackEvent:parameters

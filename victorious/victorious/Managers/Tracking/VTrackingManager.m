@@ -23,7 +23,25 @@
 
 @interface VTrackingManager ()
 
-@property (nonatomic, readwrite) NSMutableArray *queuedEvents;
+/**
+    A dictionary a dictionaries of VTrackingEvents in the following format:
+ 
+    {
+        <eventName> :
+        {
+            <queueKey> : VTrackingEvent
+        }
+    }
+ 
+    Events are grouped by eventName for easy access and speedy removal via the eventsForName:
+    and clearQueuedEventsWithName: functions (common operations). Storing the innermost data
+    (VTrackingEvents) based on a key instead of in an array also carries a significant performance
+    boost over iterating an array of the events and doing a comparison on each item.
+ 
+    QueueKey is determined based on the eventId and streamId of the provided tracking event
+    by the queueKeyForEventWithParameters:eventId: function.
+ */
+@property (nonatomic, readwrite) NSMutableDictionary *queuedEventGroups;
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
@@ -51,7 +69,7 @@
     if (self)
     {
         _delegates = [[NSMutableArray alloc] init];
-        _queuedEvents = [[NSMutableArray alloc] init];
+        _queuedEventGroups = [[NSMutableDictionary alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
         
@@ -179,44 +197,30 @@
     [self trackEvent:eventName parameters:@{}];
 }
 
-- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId
 {
     NSParameterAssert( eventName != nil );
     
-    __block BOOL doesEventExistForKey = NO;
-    [self.queuedEvents enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
-     {
-         BOOL matchesEventId = eventId == nil;
-         if ( !matchesEventId && [eventId isKindOfClass:[event.eventId class]] )
-         {
-             matchesEventId = [eventId isEqual:event.eventId];
-         }
-         BOOL matchesEventName = [event.name isEqualToString:eventName];
-         BOOL matchesStream = parameters == nil;
-         if ( !matchesStream && [parameters[VTrackingKeyStreamId] isKindOfClass:[event.parameters[VTrackingKeyStreamId] class]] )
-         {
-             matchesStream = [parameters[VTrackingKeyStreamId] isEqual:event.parameters[VTrackingKeyStreamId]];
-         }
-         if ( matchesEventId && matchesEventName && matchesStream )
-         {
-             
-#if TRACKING_QUEUE_LOGGING_ENABLED
-             NSLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
-#endif
-             doesEventExistForKey = YES;
-             *stop = YES;
-         }
-     }];
-    
-    if ( doesEventExistForKey )
+    NSString *queueKey = [self queueKeyForEventWithParameters:parameters andEventId:eventId];
+    NSMutableDictionary *existingQueuedEvents = self.queuedEventGroups[eventName];
+    if ( existingQueuedEvents == nil )
     {
+        existingQueuedEvents = [[NSMutableDictionary alloc] init];
+        self.queuedEventGroups[eventName] = existingQueuedEvents;
+    }
+    
+    if ( existingQueuedEvents[queueKey] != nil )
+    {
+#if TRACKING_QUEUE_LOGGING_ENABLED
+        NSLog( @"Event with duplicate key rejected. Queued: %lu", (unsigned long)self.queuedEvents.count);
+#endif
         return;
     }
     else
     {
         NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
-        [self.queuedEvents addObject:event];
+        [existingQueuedEvents setObject:event forKey:queueKey];
         [self trackEvent:event.name parameters:event.parameters];
         
 #if TRACKING_QUEUE_LOGGING_ENABLED
@@ -225,13 +229,21 @@
     }
 }
 
+- (NSString *)queueKeyForEventWithParameters:(NSDictionary *)parameters andEventId:(NSString *)eventId
+{
+    NSString *queueKey = eventId != nil ? eventId : @"";
+    queueKey = [queueKey stringByAppendingString:@"."];
+    NSString *streamId = parameters[VTrackingKeyStreamId];
+    if ( streamId != nil )
+    {
+        queueKey = [queueKey stringByAppendingString:streamId];
+    }
+    return queueKey;
+}
+
 - (void)clearQueuedEventsWithName:(NSString *)eventName
 {
-    NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
-    [eventsForName enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
-     {
-         [self.queuedEvents removeObject:event];
-     }];
+    [self.queuedEventGroups removeObjectForKey:eventName];
     
 #if TRACKING_QUEUE_LOGGING_ENABLED
     NSLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
@@ -337,15 +349,14 @@
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
-- (NSArray *)eventsForName:(NSString *)eventName fromQueue:(NSArray *)queue
+- (NSArray *)eventsForName:(NSString *)eventName
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@", eventName];
-    return [queue filteredArrayUsingPredicate:predicate];
+    return [(NSDictionary *)self.queuedEventGroups[eventName] allValues];
 }
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName
 {
-    NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
+    NSArray *eventsForName = [self eventsForName:eventName];
     return eventsForName.count;
 }
 
@@ -359,7 +370,12 @@
 
 - (NSUInteger)numberOfQueuedEvents
 {
-    return self.queuedEvents.count;
+    NSUInteger queuedEventsCount = 0;
+    for ( NSDictionary *eventDictionary in self.queuedEventGroups.allValues )
+    {
+        queuedEventsCount += eventDictionary.count;
+    }
+    return queuedEventsCount;
 }
 
 #pragma mark - Delegate Management
