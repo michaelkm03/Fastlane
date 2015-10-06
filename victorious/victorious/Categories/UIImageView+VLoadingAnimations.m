@@ -7,7 +7,6 @@
 //
 
 #import "UIImageView+VLoadingAnimations.h"
-
 #import "UIImageView+WebCache.h"
 
 @implementation UIImageView (VLoadingAnimations)
@@ -76,8 +75,7 @@
     [self fadeInImage:image alongsideAnimations:nil];
 }
 
-- (void)fadeInImage:(UIImage *)image
-alongsideAnimations:(void (^)(void))animations
+- (void)fadeInImage:(UIImage *)image alongsideAnimations:(void (^)(void))animations
 {
     self.alpha = 0;
     self.image = image;

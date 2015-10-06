@@ -2355,8 +2355,8 @@
 		A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchPreviewCell.swift; sourceTree = "<group>"; };
 		A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultCell.swift; sourceTree = "<group>"; };
 		A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
-		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
 		A728AC1D1BBD9FDF00386641 /* VVideoPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPreviewView.h; sourceTree = "<group>"; };
+		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
 		A7299E8A1AA5331000B6BC1F /* VCardDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCell.m; sourceTree = "<group>"; };
 		A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardDirectoryCell.xib; sourceTree = "<group>"; };
@@ -7267,8 +7267,6 @@
 				C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */,
 				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
 				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
-				A7DD35E91BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.h */,
-				A7DD35EA1BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.m */,
 				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
 				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
@@ -7276,18 +7274,20 @@
 				F059A0061B86B98F00037BC8 /* VImagePreviewView.h */,
 				D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */,
 				D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */,
+				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
 				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
+				A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
+				A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */,
+				A7DD35E91BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.h */,
+				A7DD35EA1BACF44D00C4DBC5 /* VStaticVideoSequencePreviewView.m */,
 				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
 				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
+				A728AC1D1BBD9FDF00386641 /* VVideoPreviewView.h */,
 				C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */,
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
-				A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */,
-				A728AC1D1BBD9FDF00386641 /* VVideoPreviewView.h */,
-				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
-				A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";

@@ -186,18 +186,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 #pragma mark - Public API
 
-- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
-{
-    ContentViewContext *context = [[ContentViewContext alloc] init];
-    context.sequence = sequence;
-    context.streamId = streamId;
-    context.commentId = commentID;
-    context.placeholderImage = placeholderImage;
-    context.viewController = self.rootNavigationController;
-    context.originDependencyManager = self.dependencyManager;
-    [self.contentViewPresenter presentContentViewWithContext:context];
-}
-
 - (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated
 {
     [self navigateToDestination:navigationDestination

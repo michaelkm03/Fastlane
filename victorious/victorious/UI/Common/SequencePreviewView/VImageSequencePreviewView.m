@@ -75,7 +75,6 @@
 {
     [super setSequence:sequence];
     
-    self.isLoading = NO;
     NSURL *previewURL = nil;
     if ( [sequence isImage] )
     {
@@ -89,10 +88,7 @@
     }
     [self.previewImageView fadeInImageAtURL:previewURL
                            placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         self.isLoading = NO;
-     }
+                        alongsideAnimations:nil
                                  completion:^(UIImage *image)
      {
          if ( !self.hasDeterminedPreferredBackgroundColor )

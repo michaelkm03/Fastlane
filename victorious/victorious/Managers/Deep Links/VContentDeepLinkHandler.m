@@ -12,6 +12,7 @@
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -22,6 +23,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @property (nonatomic, weak) VTabScaffoldViewController *scaffoldViewController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 
 @end
 
@@ -38,6 +40,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                               
         _scaffoldViewController = [dependencyManager scaffoldViewController];
         NSParameterAssert( _scaffoldViewController != nil );
+        
+        _contentViewPresenter = [[ContentViewPresenter alloc] init];
     }
     return self;
 }
@@ -87,7 +91,15 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
      {
          [hud hide:YES];
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         [self.scaffoldViewController showContentViewWithSequence:sequence streamID:streamId commentId:commentId placeHolderImage:nil];
+         
+         ContentViewContext *context = [[ContentViewContext alloc] init];
+         context.sequence = sequence;
+         context.streamId = streamId;
+         context.commentId = commentId;
+         context.viewController = self.scaffoldViewController.rootNavigationController;
+         context.originDependencyManager = self.dependencyManager;
+         [self.contentViewPresenter presentContentViewWithContext:context];
+         
          completion( YES, nil );
      }
                                                     failBlock:^(NSOperation *operation, NSError *error)

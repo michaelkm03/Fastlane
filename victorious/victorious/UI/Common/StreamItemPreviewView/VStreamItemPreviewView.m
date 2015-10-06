@@ -131,12 +131,6 @@
     [self sendSubviewToBack:_backgroundContainerView];
 }
 
-- (void)setIsLoading:(BOOL)isLoading
-{
-    _isLoading = isLoading;
-    _backgroundContainerView.alpha = 0.0f; //isLoading ? 1.0f : 0.0f;
-}
-
 - (UIView *)backgroundContainerView
 {
     if ( _backgroundContainerView != nil )

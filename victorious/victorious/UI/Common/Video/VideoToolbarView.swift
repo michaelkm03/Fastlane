@@ -31,6 +31,7 @@ class VideoToolbarView: UIView {
     private let kTimeLabelPlaceholderText = "--:--"
     private let kPlayButtonPlayImageName = "player-play-icon"
     private let kPlayButtonPauseImageName = "player-pause-icon"
+    
     private let kVisibilityAnimationDuration = 0.2
     private let kMaxVisibilityTimerDuration = 4.0
     
@@ -47,15 +48,13 @@ class VideoToolbarView: UIView {
     private lazy var timeFormatter = VElapsedTimeFormatter()
     private var lastInteractionDate = NSDate()
     
-    func setCurrentTime( timeSeconds: Float64, duration: Float64 )
-    {
+    func setCurrentTime( timeSeconds: Float64, duration: Float64 ) {
         slider.value = clampRatio( Float(timeSeconds / duration) )
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
         remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - timeSeconds) )
     }
     
-    func setProgress( progress: Float, duration: Float64 )
-    {
+    func setProgress( progress: Float, duration: Float64 ) {
         slider.value = clampRatio( progress )
         let elapsedTime = Float64(progress) * duration
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
@@ -97,8 +96,9 @@ class VideoToolbarView: UIView {
         
         self.paused = true
         self.hide(animated: false)
-        elapsedTimeLabel.text = kTimeLabelPlaceholderText
-        remainingTimeLabel.text = kTimeLabelPlaceholderText
+        
+        self.elapsedTimeLabel.text = kTimeLabelPlaceholderText
+        self.remainingTimeLabel.text = kTimeLabelPlaceholderText
     }
     
     // MARK: - Visibility

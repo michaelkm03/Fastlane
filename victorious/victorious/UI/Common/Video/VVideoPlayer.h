@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithURL:(NSURL *)url;
 
+@property (nonatomic, strong, nullable) NSString *remoteContentId;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, assign) BOOL loop;
 @property (nonatomic, assign) BOOL muted;
@@ -100,11 +101,6 @@ NS_ASSUME_NONNULL_BEGIN
  Returns a view that contains the visible video player output.
  */
 @property (nonatomic, readonly) UIView *view;
-
-/**
- Aspect ratio of the playing video asset.  If no asset is loaded, will return 1.0f
- */
-@property (nonatomic, assign, readonly) CGFloat aspectRatio;
 
 @end
 

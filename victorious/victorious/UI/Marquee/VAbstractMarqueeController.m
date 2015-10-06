@@ -36,7 +36,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
-@property (nonatomic, strong) UICollectionViewCell *selectedCell;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
 
@@ -177,7 +177,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         VStreamItem *focusedStreamItem = self.marqueeItems[currentFocusPage];
         for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
-            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] && cell != self.selectedCell )
+            const BOOL isSelectedCell = self.selectedIndexPath != nil && [self.collectionView indexPathForCell:cell] == self.selectedIndexPath;
+            if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] && !isSelectedCell )
             {
                 BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
                 VFocusType focusType = hasFocus ? VFocusTypeStream : VFocusTypeNone;
@@ -193,7 +194,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
     {
-        if ( self.selectedCell == nil || cell != self.selectedCell )
+        const BOOL isSelectedCell = self.selectedIndexPath != nil && [self.collectionView indexPathForCell:cell] == self.selectedIndexPath;
+        if ( !isSelectedCell )
         {
             if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
             {
@@ -304,8 +306,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
-    
+    self.selectedIndexPath = indexPath;
     [self.selectionDelegate marqueeController:self
                                 didSelectItem:self.marqueeItems[indexPath.row]
                              withPreviewImage:nil

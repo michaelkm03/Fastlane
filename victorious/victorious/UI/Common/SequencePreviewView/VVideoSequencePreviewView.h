@@ -10,4 +10,6 @@
 
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
 
+@property (nonatomic, assign, readonly) BOOL toolbarDisabled;
+
 @end

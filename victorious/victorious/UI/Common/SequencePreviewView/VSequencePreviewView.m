@@ -17,6 +17,7 @@
 #import "VFailureSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
 #import "VSequenceExpressionsObserver.h"
+#import "victorious-Swift.h"
 
 @interface VSequencePreviewView()
 
@@ -42,7 +43,7 @@
     }
     else if ([sequence isVideo])
     {
-        if ([sequence isGIFVideo])
+        if ( [sequence isGIFVideo] )
         {
             classType = [VBaseVideoSequencePreviewView class];
         }
@@ -116,6 +117,11 @@
     }
 }
 
+- (BOOL)likeButtonDisabled
+{
+    return NO;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     if ( sequence != self.sequence )
@@ -125,7 +131,10 @@
     
     [super setStreamItem:sequence];
     
-    [self configureLikeButtonForSequence:sequence];
+    if ( !self.likeButtonDisabled )
+    {
+        [self configureLikeButtonForSequence:sequence];
+    }
 }
 
 - (VSequence *)sequence

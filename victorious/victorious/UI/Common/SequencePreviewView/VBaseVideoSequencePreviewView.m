@@ -17,10 +17,12 @@
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
 #import "victorious-Swift.h"
+#import "UIImageView+WebCache.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) VAsset *asset;
+@property (nonatomic, strong, readwrite) UIView *videoContainer;
 
 @end
 
@@ -46,15 +48,41 @@
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
-        _videoPlayer = [[VVideoView alloc] initWithFrame:self.bounds];
+        _videoContainer = [[UIView alloc] initWithFrame:self.bounds];
+        _videoContainer.backgroundColor = [UIColor clearColor];
+        [self addSubview:_videoContainer];
+        [self v_addFitToParentConstraintsToSubview:_videoContainer];
+        
+        _videoPlayer = [self createVideoPlayerWithFrame:frame];
+        _videoPlayer.view.frame = self.bounds;
         _videoPlayer.delegate = self;
-        [self addSubview:_videoPlayer.view];
-        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
         _videoPlayer.view.backgroundColor = [UIColor clearColor];
+        
+        [self addVideoPlayerView:_videoPlayer.view];
         
         _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
+}
+
+- (void)addVideoPlayerView:(UIView *)view
+{
+    [self.videoContainer addSubview:view];
+    [self.videoContainer v_addFitToParentConstraintsToSubview:view];
+}
+
+- (id<VVideoPlayer>)createVideoPlayerWithFrame:(CGRect)frame
+{
+    return [[VVideoView alloc] initWithFrame:self.bounds];
+}
+
+- (void)updateVideoPlayerView
+{
+    if ( [_videoPlayer.view.superview isEqual:self] )
+    {
+        [self addSubview:_videoPlayer.view];
+        [self v_addFitToParentConstraintsToSubview:_videoPlayer.view];
+    }
 }
 
 - (BOOL)shouldAutoplay
@@ -85,42 +113,38 @@
     
     [super setSequence:sequence];
     
-    if ( !self.onlyShowPreview )
+    if ( self.onlyShowPreview )
     {
+        self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    else
+    {
+        self.previewImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self loadVideoAsset];
     }
-    
-    self.isLoading = NO;
     
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewImageAssets];
     
-    __weak VBaseVideoSequencePreviewView *weakSelf = self;
-    
-    void (^completionBlock)(void) = ^void(void)
+    __weak typeof(self) weakSelf = self;
+    void (^completionBlock)(UIImage *, NSError *, SDImageCacheType, NSURL *) = ^void(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
-        __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-        if ( strongSelf == nil )
+        __strong typeof(self) strongSelf = weakSelf;
+        if ( strongSelf != nil )
         {
-            return;
+            [strongSelf determinedPreferredBackgroundColorWithImage:image];
+            strongSelf.readyForDisplay = YES;
         }
-        
-        strongSelf.readyForDisplay = YES;
     };
     
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageAsset.imageURL]
-                           placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         strongSelf.isLoading = YES;
-     }
-                                 completion:^(UIImage *image)
+    [self.previewImageView sd_setImageWithURL:[NSURL URLWithString:imageAsset.imageURL]
+                             placeholderImage:nil
+                                      options:SDWebImageRetryFailed
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
          if (image != nil)
          {
-             [weakSelf determinedPreferredBackgroundColorWithImage:image];
-             completionBlock();
+             completionBlock( image, error, cacheType, imageURL );
          }
          else
          {
@@ -131,8 +155,7 @@
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
-                  [weakSelf determinedPreferredBackgroundColorWithImage:image];
-                  completionBlock();
+                  completionBlock( image, error, cacheType, imageURL );
               }];
          }
      }];
@@ -164,11 +187,15 @@
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
-    self.isLoading = YES;
+    if ( self.focusType == VFocusTypeDetail )
+    {
+        [self.videoPlayer playFromStart];
+    }
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
+    [videoPlayer pause];
     [self.delegate videoPlaybackDidFinish];
 }
 
@@ -209,44 +236,63 @@
     {
         case VFocusTypeNone:
             self.videoPlayer.muted = YES;
+            self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
             [self.likeButton hide];
             [self.videoPlayer pause];
             if ( self.onlyShowPreview )
             {
-                [self.videoPlayer pauseAtStart];
+                if ( self.shouldAutoplay )
+                {
+                    [self.videoPlayer pause];
+                }
+                else
+                {
+                    [self.videoPlayer pauseAtStart];
+                }
             }
-            self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeStream:
             self.videoPlayer.muted = YES;
+            self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
-            self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
                 [self.videoPlayer play];
             }
-            if ( self.onlyShowPreview )
+            if ( !self.onlyShowPreview )
             {
-                [self.videoPlayer pauseAtStart];
+                if ( self.shouldAutoplay )
+                {
+                    [self.videoPlayer play];
+                }
+                else
+                {
+                    [self.videoPlayer pause];
+                }
             }
-            self.userInteractionEnabled = NO;
             break;
             
         case VFocusTypeDetail:
+            [self.likeButton show];
             self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
+            self.userInteractionEnabled = YES;  //< Activate video UI
             [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithMuted:self.videoPlayer.muted];
             if ( self.onlyShowPreview )
             {
-                // If we were previously only showing the preview, now we need to load the video asset
+                // If we were previously only showing the preview,
+                // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            self.isLoading = YES;
             [self.likeButton show];
             [self.videoPlayer play];
             self.userInteractionEnabled = YES;
+            if ( !self.shouldAutoplay )
+            {
+                [self.videoPlayer playFromStart];
+            }
             break;
     }
 }
