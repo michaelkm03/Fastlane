@@ -269,7 +269,7 @@ static char kPrivateQueueSpecific;
         return;
     }
     
-    [self updateCachedTemplate];
+    [self removeExpiredTemplateCache];
     
     NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
     if ( templateData == nil )
@@ -294,7 +294,7 @@ static char kPrivateQueueSpecific;
     }
 }
 
-- (void)updateCachedTemplate
+- (void)removeExpiredTemplateCache
 {
     NSAssert(self.buildNumber != nil, @"VTemplateDownloadOperation should have build number set before loading the template");
     if ( self.buildNumber == nil )
@@ -307,7 +307,7 @@ static char kPrivateQueueSpecific;
     {
         [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.dataCache removeCachedDataForId:self.templateConfigurationCacheID error:nil];
+        [self.dataCache removeCachedDataForID:self.templateConfigurationCacheID error:nil];
     }
 }
 

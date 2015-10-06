@@ -204,7 +204,7 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     
     [self.dataCache1 cacheData:data forID:identifier error:nil];
     
-    XCTAssert( [self.dataCache1 removeCachedDataForId:identifier error:nil] );
+    XCTAssert( [self.dataCache1 removeCachedDataForID:identifier error:nil] );
     XCTAssertNil( [self.dataCache1 cachedDataForID:identifier] );
 }
 
