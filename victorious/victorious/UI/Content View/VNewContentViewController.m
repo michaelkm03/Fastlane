@@ -160,7 +160,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self refreshAllCommentsSection];
+                    [self refreshAllCommentsSection:pageType];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -185,7 +185,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            [self refreshAllCommentsSection];
+            [self refreshAllCommentsSection:pageType];
         }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
@@ -702,10 +702,25 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                      completion:nil];
 }
 
-- (void)refreshAllCommentsSection
+- (void)refreshAllCommentsSection:(VPageType)pageType
 {
-    NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-    [self.contentCollectionView reloadSections:commentsIndexSet];
+    void (^batchUpdates)() = ^
+    {
+        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+        [self.contentCollectionView reloadSections:commentsIndexSet];
+    };
+    
+    if ( pageType == VPageTypeFirst )
+    {
+        batchUpdates();
+    }
+    else
+    {
+        [UIView performWithoutAnimation:^
+         {
+             [self.contentCollectionView performBatchUpdates:batchUpdates completion:nil];
+         }];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
