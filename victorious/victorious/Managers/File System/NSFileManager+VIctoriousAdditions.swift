@@ -11,10 +11,14 @@ import Foundation
 /// An extension to NSFileManager for Victorious Apps' additional functionalities
 extension NSFileManager {
     
+    // MARK: - Properties
+    
     /// returns the Document directory of in user domain
     var documentDirectory: NSURL? {
         return URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
     }
+    
+    // MARK: - General Utilities
     
     /// Retrive a string from provided path to file
     /// - parameter path: The string representation of path to target file
@@ -58,6 +62,29 @@ extension NSFileManager {
         catch {
             print ("Could not set resource value for key \(NSURLIsExcludedFromBackupKey)")
             return false
+        }
+    }
+    
+    // MARK: - URL request helpers
+    
+    /// Try to read device id from local file. If the file does not exists,
+    /// acquire the current device ID and save it to a local file.
+    /// - parameter forHeaderKey: the HTTP header key to extract info for
+    /// - returns: the device ID read from local file
+    func readDeviceIDFromLocalFile(forHeaderKey key: String) -> String? {
+        guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(key),
+            let path = deviceIDFileURL.path,
+            let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
+                return nil
+        }
+        
+        if let retrivedDeviceID = readStringFromFile(path) {
+            return retrivedDeviceID
+        }
+        else {
+            writeStringToFile(path, valueToWrite: currentDeviceID)
+            excludeBackupForFile(deviceIDFileURL, shouldExcludeFromBack: true)
+            return currentDeviceID
         }
     }
 }

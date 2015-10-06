@@ -66,20 +66,8 @@ extension NSMutableURLRequest {
     /// Sets the value of the "X-Client-Install-Device-ID" header to the locally stored value
     /// If a local value does not exist, we grab the current IDFV and set it
     public func v_setIdentiferForVendorHeader() {
-        let fileManager = NSFileManager()
-        guard let deviceIDFileURL = fileManager.documentDirectory?.URLByAppendingPathComponent(HTTPHeader.installDeviceID),
-            let path = deviceIDFileURL.path,
-            let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
-                return
-        }
-        
-        if let retrivedDeviceID = NSFileManager().readStringFromFile(path) {
-            setValue(retrivedDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
-        }
-        else {
-            setValue(currentDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
-            fileManager.writeStringToFile(path, valueToWrite: currentDeviceID)
-            fileManager.excludeBackupForFile(deviceIDFileURL, shouldExcludeFromBack: true)
+        if let deviceID = NSFileManager().readDeviceIDFromLocalFile(forHeaderKey: HTTPHeader.installDeviceID) {
+            setValue(deviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
         }
     }
     
