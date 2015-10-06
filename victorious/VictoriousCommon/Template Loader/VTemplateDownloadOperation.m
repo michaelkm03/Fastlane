@@ -303,7 +303,7 @@ static char kPrivateQueueSpecific;
     }
     
     NSString *oldBuildNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kTemplateBuildNumberKey];
-    if ( oldBuildNumber == nil || ![self.buildNumber isEqualToString:oldBuildNumber] )
+    if ( ![self.buildNumber isEqualToString:oldBuildNumber] )
     {
         [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
