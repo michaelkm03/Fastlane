@@ -48,7 +48,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             return
         }
         
-        for interstitial in interstitials where !registeredInterstitials.contains({ $0 == interstitial }) && !shownInterstitials.contains({ $0 == interstitial }) {
+        for interstitial in interstitials where !registeredInterstitials.contains({ $0 == interstitial }) && !shownInterstitials.contains({ $0 == interstitial }) && VObjectManager.sharedManager().mainUserLoggedIn == true {
             registeredInterstitials.append(interstitial)
             if let interstitialListener = interstitialListener {
                 interstitialListener.newInterstitialHasBeenRegistered()
@@ -61,6 +61,11 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         if registeredInterstitials.count > 0 {
             show(registeredInterstitials.removeAtIndex(0), presentingViewController: viewController)
         }
+    }
+    
+    /// Removes all registered interstitials
+    func clearAllRegisteredInterstitials() {
+        registeredInterstitials.removeAll()
     }
     
     private func show(interstitial: Interstitial?, presentingViewController: UIViewController) {
