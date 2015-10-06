@@ -41,7 +41,7 @@
     QueueKey is determined based on the eventId and streamId of the provided tracking event
     by the queueKeyForEventWithParameters:eventId: function.
  */
-@property (nonatomic, readwrite) NSMutableDictionary *queuedEvents;
+@property (nonatomic, readwrite) NSMutableDictionary *queuedEventGroups;
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
@@ -69,7 +69,7 @@
     if (self)
     {
         _delegates = [[NSMutableArray alloc] init];
-        _queuedEvents = [[NSMutableDictionary alloc] init];
+        _queuedEventGroups = [[NSMutableDictionary alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
         
@@ -202,11 +202,11 @@
     NSParameterAssert( eventName != nil );
     
     NSString *queueKey = [self queueKeyForEventWithParameters:parameters andEventId:eventId];
-    NSMutableDictionary *existingQueuedEvents = self.queuedEvents[eventName];
+    NSMutableDictionary *existingQueuedEvents = self.queuedEventGroups[eventName];
     if ( existingQueuedEvents == nil )
     {
         existingQueuedEvents = [[NSMutableDictionary alloc] init];
-        self.queuedEvents[eventName] = existingQueuedEvents;
+        self.queuedEventGroups[eventName] = existingQueuedEvents;
     }
     
     if ( existingQueuedEvents[queueKey] != nil )
@@ -243,7 +243,7 @@
 
 - (void)clearQueuedEventsWithName:(NSString *)eventName
 {
-    [self.queuedEvents removeObjectForKey:eventName];
+    [self.queuedEventGroups removeObjectForKey:eventName];
     
 #if TRACKING_QUEUE_LOGGING_ENABLED
     NSLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
@@ -351,7 +351,7 @@
 
 - (NSArray *)eventsForName:(NSString *)eventName
 {
-    return [(NSDictionary *)self.queuedEvents[eventName] allValues];
+    return [(NSDictionary *)self.queuedEventGroups[eventName] allValues];
 }
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName
@@ -371,7 +371,7 @@
 - (NSUInteger)numberOfQueuedEvents
 {
     NSUInteger queuedEventsCount = 0;
-    for ( NSDictionary *eventDictionary in self.queuedEvents.allValues )
+    for ( NSDictionary *eventDictionary in self.queuedEventGroups.allValues )
     {
         queuedEventsCount += eventDictionary.count;
     }

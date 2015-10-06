@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
-@property (nonatomic, readwrite) NSMutableArray *queuedEvents;
+@property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName;
 - (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary;
@@ -250,18 +250,18 @@
     [delegate resetTrackedEventCount];
     for ( NSUInteger i = 0; i < numEvents1; i++ )
     {
-        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:@(i)];
+        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:[NSString stringWithFormat:@"%lu", i]];
     }
     XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents1, @"Events should be tracked when queued." );
     
     [delegate resetTrackedEventCount];
     for ( NSUInteger i = 0; i < numEvents2; i++ )
     {
-        [self.trackingMgr queueEvent:eventName2 parameters:nil eventId:@(i)];
+        [self.trackingMgr queueEvent:eventName2 parameters:nil eventId:[NSString stringWithFormat:@"%lu", i]];
     }
     XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents2, @"Events should be tracked when queued." );
     
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents );
+    XCTAssertEqual( self.trackingMgr.numberOfQueuedEvents, totalEvents );
     NSUInteger eventsCount1 = [self.trackingMgr numberOfQueuedEventsForEventName:eventName1];
     XCTAssertEqual( eventsCount1, numEvents1 );
     NSUInteger eventsCount2 = [self.trackingMgr numberOfQueuedEventsForEventName:eventName2];
@@ -269,24 +269,24 @@
     
     [delegate resetTrackedEventCount];
     [self.trackingMgr clearQueuedEventsWithName:eventName1];
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents - numEvents1 );
+    XCTAssertEqual( self.trackingMgr.numberOfQueuedEvents, totalEvents - numEvents1 );
     XCTAssertEqual( delegate.trackedEventCount, 0u, @"No events should be tracked whened queue is cleared." );
     
     delegate.trackedEventCount = 0;
     [self.trackingMgr clearQueuedEventsWithName:eventName2];
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, 0u );
+    XCTAssertEqual( self.trackingMgr.numberOfQueuedEvents, 0u );
     XCTAssertEqual( delegate.trackedEventCount, 0u, @"No events should be tracked whened queue is cleared." );
     
     
     for ( NSUInteger i = 0; i < numEvents1; i++ )
     {
-        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:@(i)];
+        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:[NSString stringWithFormat:@"%lu", i]];
     }
     for ( NSUInteger i = 0; i < numEvents1; i++ )
     {
-        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:@(i)];
+        [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:[NSString stringWithFormat:@"%lu", i]];
     }
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, numEvents1, @"Should not allow duplicates with same eventId" );
+    XCTAssertEqual( self.trackingMgr.numberOfQueuedEvents, numEvents1, @"Should not allow duplicates with same eventId" );
 }
 
 @end
