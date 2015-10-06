@@ -366,8 +366,8 @@
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; settings = {ASSET_TAGS = (); }; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; settings = {ASSET_TAGS = (); }; };
-		675A9AF71BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AF61BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift */; settings = {ASSET_TAGS = (); }; };
-		675A9AF81BC35A98009CE633 /* NSFileManager+VictoriousAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AF61BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift */; settings = {ASSET_TAGS = (); }; };
+		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; settings = {ASSET_TAGS = (); }; };
+		675A9AFD1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; settings = {ASSET_TAGS = (); }; };
 		676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */; settings = {ASSET_TAGS = (); }; };
 		676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */; };
 		676372E51B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */; };
@@ -2001,7 +2001,7 @@
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
-		675A9AF61BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFileManager+VictoriousAdditions.swift"; path = "File System/NSFileManager+VictoriousAdditions.swift"; sourceTree = "<group>"; };
+		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
 		676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+TrendingShelfResponder.swift"; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
 		676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
@@ -5296,7 +5296,6 @@
 		675A9AF01BC34BD2009CE633 /* File system */ = {
 			isa = PBXGroup;
 			children = (
-				675A9AF61BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift */,
 			);
 			name = "File system";
 			sourceTree = "<group>";
@@ -5950,6 +5949,7 @@
 			children = (
 				A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */,
 				A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */,
+				675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */,
 			);
 			path = "First Install";
 			sourceTree = "<group>";
@@ -8977,7 +8977,6 @@
 				0370FBE71B71B3C4009047B6 /* VTemplateImageMacro.m in Sources */,
 				0370FBE01B71B3C4009047B6 /* NSString+VCrypto.m in Sources */,
 				0370FBE21B71B3C4009047B6 /* NSURL+VDataCacheID.m in Sources */,
-				675A9AF81BC35A98009CE633 /* NSFileManager+VictoriousAdditions.swift in Sources */,
 				0370FBE41B71B3C4009047B6 /* VDataCache.m in Sources */,
 				0370FBF01B71B3C4009047B6 /* VTemplateSerialization.m in Sources */,
 				0370FBEC1B71B3C4009047B6 /* VBulkDownloadOperation.m in Sources */,
@@ -8985,6 +8984,7 @@
 				0370FBE11B71B3C4009047B6 /* NSString+VDataCacheID.m in Sources */,
 				0370FBE51B71B3C4009047B6 /* VEnvironment+VDataCacheID.m in Sources */,
 				0370FBEB1B71B3C4009047B6 /* VJSONHelper.m in Sources */,
+				675A9AFD1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */,
 				0370FBEA1B71B3C4009047B6 /* VEnvironment.m in Sources */,
 				0370FBE31B71B3C4009047B6 /* VBundleWriterDataCache.m in Sources */,
 				0370FBED1B71B3C4009047B6 /* VDownloadOperation.m in Sources */,
@@ -9146,7 +9146,6 @@
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
 				A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */,
-				675A9AF71BC35A3A009CE633 /* NSFileManager+VictoriousAdditions.swift in Sources */,
 				A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */,
 				A75ED0901AB77E3300C35063 /* VFilterPickerDataSource.m in Sources */,
 				A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */,
@@ -9673,6 +9672,7 @@
 				C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */,
 				F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */,
 				A721E9471B572454000B7901 /* NSURL+VPathHelper.m in Sources */,
+				675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,

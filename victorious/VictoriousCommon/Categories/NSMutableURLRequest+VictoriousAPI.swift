@@ -23,7 +23,7 @@ private struct HTTPHeader {
     static let sessionID = "X-Client-Session-ID"
     static let experimentIDs = "X-Client-Experiment-IDs"
     static let geoLocation = "X-Geo-Location"
-    static let installDeviceID = "X-Client-Install-Device-ID"
+    static let firstInstallDeviceID = "X-Client-Install-Device-ID"
 }
 
 extension NSMutableURLRequest {
@@ -66,8 +66,8 @@ extension NSMutableURLRequest {
     /// Sets the value of the "X-Client-Install-Device-ID" header to the locally stored value
     /// If a local value does not exist, we grab the current IDFV and set it
     public func v_setIdentiferForVendorHeader() {
-        if let deviceID = NSFileManager().readDeviceIDFromLocalFile(forHeaderKey: HTTPHeader.installDeviceID) {
-            setValue(deviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
+        if let deviceID = FirstInstallDeviceIDManager().generateFirstInstallDeviceID(forHeaderKey: HTTPHeader.firstInstallDeviceID) {
+            setValue(deviceID, forHTTPHeaderField: HTTPHeader.firstInstallDeviceID)
         }
     }
     
