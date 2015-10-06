@@ -90,8 +90,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.captionTextView.accessibilityIdentifier = VAutomationIdentifierStreamCellCaption;
     [self setupDimmingContainer];
     
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    
     self.countsTextView.textSelectionDelegate = self;
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.captionZeroingHeightConstraint.constant = 0.0f;
