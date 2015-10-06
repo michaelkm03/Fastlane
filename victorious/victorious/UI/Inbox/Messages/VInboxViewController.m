@@ -369,22 +369,23 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
     
     if ( self.navigationController == nil )
     {
         self.userWithQueuedConversation = user;
     }
-    else if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
     {
-        if ( self.navigationController.topViewController != detailVC )
+        if ( rootInnerNavigationController.topViewController != detailVC )
         {
-            [self.navigationController popToViewController:detailVC animated:animated];
+            [rootInnerNavigationController popToViewController:detailVC animated:animated];
         }
     }
     else
     {
         detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [[self rootNavigationController].innerNavigationController pushViewController:detailVC animated:YES];
+        [rootInnerNavigationController pushViewController:detailVC animated:YES];
     }
 }
 
