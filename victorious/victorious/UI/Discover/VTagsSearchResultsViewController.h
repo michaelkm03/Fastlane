@@ -42,7 +42,7 @@
 /**
  Array to hold search results returned from backend
  */
-@property (nonatomic, strong) NSMutableArray *searchResults;
+@property (nonatomic, strong) NSArray *searchResults;
 
 /**
  Delegate object to report on hashtag searching

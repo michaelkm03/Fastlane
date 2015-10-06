@@ -371,7 +371,7 @@ static NSString * const kVAPIParamContext = @"context";
         components.queryItems = @[sequenceQuery];
     }
 
-    components.path = path;
+    components.percentEncodedPath = path;
     url = components.URL.absoluteString;
     
     return [self GET:url

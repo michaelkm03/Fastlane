@@ -24,6 +24,8 @@ extern NSString * const kPollResultsLoaded;
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail;
 
+- (void)locallyRemoveSequence:(VSequence *)sequence;
+
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;

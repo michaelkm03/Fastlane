@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VSwipeViewController.h"
 #import "VCommentCellUtilitiesDelegate.h"
-#import "VCommentCellUtilitesController.h"
+#import "VCommentCellUtilitiesController.h"
 
 /**
  A table view cell subclass that provides integration with a VSwipeViewController
@@ -35,6 +35,6 @@
  A helper that handles responding to the edit, delete and flag utility
  buttons provided by VSipeViewController.
  */
-@property (nonatomic, strong) VCommentCellUtilitesController *commentCellUtilitiesController;
+@property (nonatomic, strong) VCommentCellUtilitiesController *commentCellUtilitiesController;
 
 @end

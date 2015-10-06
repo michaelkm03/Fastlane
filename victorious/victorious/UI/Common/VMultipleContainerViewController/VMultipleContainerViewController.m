@@ -130,6 +130,7 @@ static NSString * const kInitialKey = @"initial";
     if ( !CGSizeEqualToSize(newItemSize, self.flowLayout.itemSize) )
     {
         self.flowLayout.itemSize = newItemSize;
+        [self updateBadge];
         [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO isDefaultSelection:YES];
     }
 }
@@ -147,7 +148,10 @@ static NSString * const kInitialKey = @"initial";
     {
         if ( !self.isInitialViewController )
         {
-            [self.collectionView reloadData];
+            if ([self.viewControllers.firstObject isKindOfClass:[UITableViewController class]])
+            {
+                [self.collectionView reloadData];
+            }
         }
         self.didShowInitial = YES;
     }

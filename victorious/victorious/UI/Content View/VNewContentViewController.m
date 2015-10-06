@@ -74,7 +74,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate>
 
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -160,7 +160,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    [self.contentCollectionView reloadData];
+                    [self refreshAllCommentsSection:pageType];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -185,8 +185,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
+            [self refreshAllCommentsSection:pageType];
         }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
@@ -480,8 +479,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     [layout calculateCatchAndLockPoints];
     
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-    
     self.isTransitionComplete = YES;
     [UIViewController attemptRotationToDeviceOrientation];
 }
@@ -616,15 +613,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
 }
 
-- (void)updateInitialExperienceEnhancerState
-{
-    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
-    if ( enhancerBar != nil )
-    {
-        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
-    }
-}
-
 - (NSIndexPath *)indexPathForContentView
 {
     return [NSIndexPath indexPathForRow:0
@@ -714,6 +702,27 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                      completion:nil];
 }
 
+- (void)refreshAllCommentsSection:(VPageType)pageType
+{
+    void (^batchUpdates)() = ^
+    {
+        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+        [self.contentCollectionView reloadSections:commentsIndexSet];
+    };
+    
+    if ( pageType == VPageTypeFirst )
+    {
+        batchUpdates();
+    }
+    else
+    {
+        [UIView performWithoutAnimation:^
+         {
+             [self.contentCollectionView performBatchUpdates:batchUpdates completion:nil];
+         }];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
@@ -767,6 +776,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                          forIndexPath:indexPath];
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             self.contentCell.endCardDelegate = self;
+            self.contentCell.delegate = self;
             
             [self.viewModel updateEndcard];
             
@@ -848,8 +858,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             self.experienceEnhancerCell.dependencyManager = self.dependencyManager;
-            
-            [self updateInitialExperienceEnhancerState];
             
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
@@ -1385,6 +1393,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     [self.textEntryView setReplyRecipient:comment.user];
     [self.textEntryView startEditing];
+}
+
+- (UIViewController *)viewControllerForAlerts
+{
+    return self;
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

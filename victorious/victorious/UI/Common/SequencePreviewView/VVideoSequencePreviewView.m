@@ -164,7 +164,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     self.trackingItem = self.sequence.tracking;
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
-    item.remoteContentId = self.videoAsset.remoteContentId;
+    item.muted = self.videoAsset.audioMuted.boolValue;
     [self.videoPlayer setItem:item];
     
     [self updateUIState];
@@ -316,12 +316,16 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
+    [self.videoPlayer pause];
+    
     if ( self.shouldLoop )
     {
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [self.videoPlayer playFromStart];
-                       });
+        [self.videoPlayer playFromStart];
+    }
+    else if ( !self.willShowEndCard )
+    {
+        self.state = VVideoStateEnded;
+        [super videoPlayerDidReachEnd:videoPlayer];
     }
     else
     {

@@ -9,6 +9,12 @@
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
 
+@interface VExploreSearchResultsViewController ()
+
+@property (nonatomic, strong) NSString *lastSearchText;
+
+@end
+
 @implementation VExploreSearchResultsViewController
 
 #pragma mark - Factory Methods
@@ -43,19 +49,9 @@
     [self textFieldShouldClear:nil];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    if (searchBar.text.length > 0)
-    {
-        if ( self.segmentControl.selectedSegmentIndex == 0 )
-        {
-            [self userSearch:searchBar.text];
-        }
-        else if (self.segmentControl.selectedSegmentIndex == 1)
-        {
-            [self hashtagSearch:searchBar.text];
-        }
-    }
+    [self searchForCurrentStateWithText:searchBar.text];
 }
 
 @end

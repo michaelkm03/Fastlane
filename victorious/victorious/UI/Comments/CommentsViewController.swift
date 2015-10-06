@@ -249,6 +249,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         keyboardBar?.startEditing()
     }
     
+    func viewControllerForAlerts() -> UIViewController {
+        return self
+    }
+    
     // MARK: - VEditCommentViewControllerDelegate
     
     func didFinishEditingComment(comment: VComment) {

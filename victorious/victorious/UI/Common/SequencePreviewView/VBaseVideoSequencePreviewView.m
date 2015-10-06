@@ -16,7 +16,7 @@
 #import "VDependencyManager+VBackground.h"
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
-#import "UIImageView+WebCache.h"
+#import "victorious-Swift.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -234,10 +234,11 @@
     switch (self.focusType)
     {
         case VFocusTypeNone:
-            [self.likeButton hide];
             self.videoPlayer.muted = YES;
-            self.userInteractionEnabled = NO;
-            if ( !self.onlyShowPreview )
+            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            [self.likeButton hide];
+            [self.videoPlayer pause];
+            if ( self.onlyShowPreview )
             {
                 if ( self.shouldAutoplay )
                 {
@@ -251,10 +252,15 @@
             break;
             
         case VFocusTypeStream:
-            [self.likeButton hide];
             self.videoPlayer.muted = YES;
-            self.userInteractionEnabled = NO;
-            if ( !self.onlyShowPreview )
+            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            self.isLoading = YES;
+            [self.likeButton hide];
+            if ( self.shouldAutoplay && !self.onlyShowPreview )
+            {
+                [self.videoPlayer play];
+            }
+            if ( self.onlyShowPreview )
             {
                 if ( self.shouldAutoplay )
                 {
@@ -268,19 +274,18 @@
             break;
             
         case VFocusTypeDetail:
-            [self.likeButton show];
-            self.videoPlayer.muted = NO;
-            self.userInteractionEnabled = YES;  //< Activate video UI
+            self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
+            [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithMuted:self.videoPlayer.muted];
             if ( self.onlyShowPreview )
             {
                 // If we were previously only showing the preview,
                 // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            if ( !self.shouldAutoplay )
-            {
-                [self.videoPlayer playFromStart];
-            }
+            self.isLoading = YES;
+            [self.likeButton show];
+            [self.videoPlayer play];
+            self.userInteractionEnabled = YES;
             break;
     }
 }

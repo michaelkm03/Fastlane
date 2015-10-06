@@ -34,7 +34,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 @synthesize delegate;
 @synthesize useAspectFit = _useAspectFit;
-@dynamic muted;
+@synthesize muted = _muted;
 
 - (void)dealloc
 {
@@ -162,12 +162,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)setMuted:(BOOL)muted
 {
+    _muted = muted;
     self.player.muted = muted;
-}
-
-- (BOOL)muted
-{
-    return self.player.muted;
 }
 
 - (void)setBounds:(CGRect)bounds

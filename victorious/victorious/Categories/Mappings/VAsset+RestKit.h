@@ -7,7 +7,8 @@
 //
 
 #import "VAsset.h"
-#import "NSManagedObject+RestKit.h"
+
+@class RKDynamicMapping, RKEntityMapping;
 
 NS_ASSUME_NONNULL_BEGIN
 

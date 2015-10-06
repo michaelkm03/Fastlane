@@ -246,12 +246,18 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                    {
                        // Render
                        UIImage *filteredImage = [filter imageByFilteringImage:self.scaledImage withCIContext:self.context];
+                       if ( filteredImage == nil )
+                       {
+                           //If filtering fails, don't update the image view.
+                           return;
+                       }
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
                                           // Cache
                                           [self.renderedImageCache setObject:filteredImage forKey:filter.description];
                                           if (_filter.name == filter.name)
                                           {
+                                              //Fallback to original image if filtering fails
                                               self.imageView.image = filteredImage;
                                           }
                                       });

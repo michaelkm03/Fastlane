@@ -116,7 +116,10 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
-    self.contentView.alpha = _enabled ? 1.0f : 0.5f;
+    [UIView animateWithDuration:0.3f animations:^
+     {
+         self.contentView.alpha = _enabled ? 1.0f : 0.5f;
+     }];
 }
 
 - (void)setRequiresPurchase:(BOOL)requiresPurchase

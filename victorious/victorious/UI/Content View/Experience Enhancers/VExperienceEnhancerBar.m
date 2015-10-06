@@ -75,7 +75,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
     
     self.enabled = YES;
-    [self reloadData];
 }
 
 - (void)dealloc
@@ -96,11 +95,11 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VExperienceEnhancerCell *cell, NSUInteger idx, BOOL *stop)
+    for ( VExperienceEnhancerCell *cell in self.collectionView.visibleCells)
     {
         cell.enabled = _enabled;
         [cell startCooldown];
-    }];
+    }
 }
 
 #pragma mark - Public Methods

@@ -39,7 +39,7 @@
 - (CIImage *)imageByFilteringImage:(CIImage *)inputImage size:(CGSize)size orientation:(UIImageOrientation)orientation
 {
     UIImage *backgroundSourceImage = [UIImage imageNamed:self.backgroundImageName];
-    CIImage *backgroundImage = [CIImage v_imageWithUImage:backgroundSourceImage];
+    CIImage *backgroundImage = [CIImage v_imageWithUIImage:backgroundSourceImage];
     if (!backgroundImage)
     {
         return nil;
