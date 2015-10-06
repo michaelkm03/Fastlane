@@ -168,7 +168,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     
     for (VAsset *asset in node.assets)
     {
-        if ( asset.remotePlayback && asset.remoteContentId != nil )
+        if ( asset.remotePlayback.boolValue && asset.remoteContentId != nil )
         {
             return YES;
         }

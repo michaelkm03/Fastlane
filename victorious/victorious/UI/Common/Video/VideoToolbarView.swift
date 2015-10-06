@@ -26,10 +26,6 @@ class VideoToolbarView: UIView {
     
     weak var delegate: VideoToolbarDelegate?
     
-    private static let DefaultTimeLabelText = "--:--"
-    private static let PlayImageName = "player-play-icon"
-    private static let PauseImageName = "player-pause-icon"
-    
     private var autoVisbilityTimer = VTimerManager()
     
     private let kTimeLabelPlaceholderText = "--:--"
@@ -73,7 +69,7 @@ class VideoToolbarView: UIView {
     
     var paused: Bool = true {
         didSet {
-            let imageName = paused ? VideoToolbarView.PlayImageName : VideoToolbarView.PauseImageName
+            let imageName = paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
             let image = UIImage(named: imageName)!
             playButton.setImage( image, forState: .Normal )
         }
