@@ -107,7 +107,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              CGFloat textHeight = 0.0f;
-             if ( sequence.name.length > 0 )
+             if ( sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText] )
              {
                  VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
