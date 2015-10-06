@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-class FirstInstallDeviceIDManager {
+@objc class FirstInstallDeviceIDManager : NSObject {
     
+    static let defaultDeviceIDFileName = "FirstInstallDeviceID.txt"
     private let fileManager = NSFileManager()
-    
     private var documentDirectory: NSURL? {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
     }
@@ -21,8 +21,8 @@ class FirstInstallDeviceIDManager {
     /// acquire the current device ID and save it to the local file.
     /// - parameter forHeaderKey: the HTTP header key to extract info for
     /// - returns: the device ID read from local file or generated from current device ID
-    func generateFirstInstallDeviceID(forHeaderKey key: String) -> String? {
-        guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(key),
+    func generateFirstInstallDeviceID(withFileName filename: String = defaultDeviceIDFileName) -> String? {
+        guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(filename),
             let path = deviceIDFileURL.path,
             let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
                 return nil

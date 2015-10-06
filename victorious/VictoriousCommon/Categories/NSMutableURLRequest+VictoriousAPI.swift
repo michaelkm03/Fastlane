@@ -65,10 +65,8 @@ extension NSMutableURLRequest {
     
     /// Sets the value of the "X-Client-Install-Device-ID" header to the locally stored value
     /// If a local value does not exist, we grab the current IDFV and set it
-    public func v_setIdentiferForVendorHeader() {
-        if let deviceID = FirstInstallDeviceIDManager().generateFirstInstallDeviceID(forHeaderKey: HTTPHeader.firstInstallDeviceID) {
-            setValue(deviceID, forHTTPHeaderField: HTTPHeader.firstInstallDeviceID)
-        }
+    public func v_setIdentiferForVendorHeader(firstInstallDeviceID deviceID: String) {
+        setValue(deviceID, forHTTPHeaderField: HTTPHeader.firstInstallDeviceID)
     }
     
 #if os(iOS)

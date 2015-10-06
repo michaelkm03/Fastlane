@@ -8,11 +8,12 @@
 
 import UIKit
 import XCTest
+@testable import victorious
 
 class FirstInstallDeviceIDManagerTests: XCTestCase {
     let deviceIDManager = FirstInstallDeviceIDManager()
-    let deviceIDHeaderKey = "X-Client-Install-Device-ID"
-    let tempKey = "TemporaryKey"
+    let deviceIDHeaderKey = "FirstInstallDeviceID.txt"
+    let tempFileName = "TemporaryKey"
     let fileManager = NSFileManager()
     var docDir: NSURL? {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
@@ -24,7 +25,7 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
         
         do {
             let retrievedDeviceID = try NSString(contentsOfFile: deviceIDPath!, encoding: NSUTF8StringEncoding) as String
-            let generatedDeviceID = deviceIDManager.generateFirstInstallDeviceID(forHeaderKey: deviceIDHeaderKey)
+            let generatedDeviceID = deviceIDManager.generateFirstInstallDeviceID()
             XCTAssertEqual(retrievedDeviceID, generatedDeviceID)
         }
         catch {
@@ -33,11 +34,11 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
     }
     
     func testGenerationWithoutFile() {
-        let tempURL = docDir?.URLByAppendingPathComponent(tempKey)
+        let tempURL = docDir?.URLByAppendingPathComponent(tempFileName)
         let tempPath = tempURL?.path
         
         // Create a temp file with current device ID in it
-        deviceIDManager.generateFirstInstallDeviceID(forHeaderKey: tempKey)
+        deviceIDManager.generateFirstInstallDeviceID(withFileName: tempFileName)
         
         do {
             let retrivedDeviceID = try NSString(contentsOfFile:tempPath!, encoding: NSUTF8StringEncoding) as String
