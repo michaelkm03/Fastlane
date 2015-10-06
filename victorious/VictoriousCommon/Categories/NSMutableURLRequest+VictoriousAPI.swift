@@ -67,36 +67,19 @@ extension NSMutableURLRequest {
     /// If a local value does not exist, we grab the current IDFV and set it
     public func v_setIdentiferForVendorHeader() {
         let fileManager = NSFileManager()
-        guard let documentsDirectory = fileManager.URLsForDirectory(.DocumentDirectory, inDomains:.UserDomainMask).first else {
-            return
-        }
-        let deviceIDFileURL = documentsDirectory.URLByAppendingPathComponent(HTTPHeader.installDeviceID)
-        guard let path = deviceIDFileURL.path else {
-            return
+        guard let deviceIDFileURL = fileManager.documentDirectory?.URLByAppendingPathComponent(HTTPHeader.installDeviceID),
+            let path = deviceIDFileURL.path,
+            let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
+                return
         }
         
-        if fileManager.fileExistsAtPath(path) {
-            do {
-                let retrivedDeviceID = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as String
-                setValue(retrivedDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
-            }
-            catch {
-                print("Could not read the existing file: \(HTTPHeader.installDeviceID)")
-                return
-            }
+        if let retrivedDeviceID = NSFileManager().readStringFromFile(path) {
+            setValue(retrivedDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
         }
         else {
-            guard let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString else {
-                return
-            }
-            do {
-                try currentDeviceID.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
-                try deviceIDFileURL.setResourceValue(NSNumber(bool: true), forKey: NSURLIsExcludedFromBackupKey)
-            }
-            catch {
-                print("Could not write to file: \(HTTPHeader.installDeviceID)")
-                return
-            }
+            setValue(currentDeviceID, forHTTPHeaderField: HTTPHeader.installDeviceID)
+            fileManager.writeStringToFile(path, valueToWrite: currentDeviceID)
+            fileManager.excludeBackupForFile(deviceIDFileURL, shouldExcludeFromBack: true)
         }
     }
     
