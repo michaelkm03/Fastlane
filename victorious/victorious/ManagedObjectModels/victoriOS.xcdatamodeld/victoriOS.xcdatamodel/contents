@@ -44,10 +44,7 @@
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="playerControlsDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="remoteContentId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="remotePlayback" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="remoteSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="streamAutoplay" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>

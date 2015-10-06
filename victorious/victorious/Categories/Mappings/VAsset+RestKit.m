@@ -58,10 +58,7 @@
                                   @"player_controls_disabled" : VSelectorName(playerControlsDisabled),
                                   @"audio_muted" : VSelectorName(audioMuted),
                                   @"background_color" : VSelectorName(backgroundColor),
-                                  @"duration" : VSelectorName(duration),
-                                  @"remote_playback": VSelectorName(remotePlayback),
-                                  @"remote_source": VSelectorName(remoteSource),
-                                  @"remote_content_id": VSelectorName(remoteContentId)
+                                  @"duration" : VSelectorName(duration)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

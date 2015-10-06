@@ -165,7 +165,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.muted = self.videoAsset.audioMuted.boolValue;
-    item.remoteContentId = self.videoAsset.remoteContentId;
     [self.videoPlayer setItem:item];
     
     [self updateUIState];
