@@ -49,6 +49,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
                      VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
                      item.muted = YES;
                      item.loop = YES;
+                     item.remoteContentId = asset.remoteContentId;
                      [self.videoView setItem:item];
                  }
              }

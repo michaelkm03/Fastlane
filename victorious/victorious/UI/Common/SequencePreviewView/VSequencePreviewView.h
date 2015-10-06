@@ -43,8 +43,6 @@
 
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
-@property (nonatomic, assign, readonly) BOOL likeButtonDisabled;
-
 /**
  Designed to be overridden by subclasses for any content types for which the like button shouldn't be enabled.
  Returns no by default, i.e. the like button is enabled by default.

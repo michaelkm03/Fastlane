@@ -102,16 +102,12 @@ class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func pause() {
-        if isPlaying {
-            playerView.pauseVideo()
-        }
+        playerView.pauseVideo()
     }
     
     func pauseAtStart() {
-        if isPlaying {
-            playerView.seekToSeconds( 0.0, allowSeekAhead: true)
-            playerView.pauseVideo()
-        }
+        playerView.seekToSeconds( 0.0, allowSeekAhead: true)
+        playerView.pauseVideo()
     }
     
     func playFromStart() {

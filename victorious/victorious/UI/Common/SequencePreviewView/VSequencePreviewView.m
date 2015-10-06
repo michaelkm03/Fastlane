@@ -43,7 +43,11 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isGIFVideo] )
+        if ( [sequence isRemoteVideo] )
+        {
+            classType = [VRemoteVideoSequencePreviewView class];
+        }
+        else if ( [sequence isGIFVideo] )
         {
             classType = [VBaseVideoSequencePreviewView class];
         }

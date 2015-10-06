@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
 
 @property (nonatomic, assign, readonly) BOOL toolbarDisabled;
+@property (nonatomic, strong, readonly, nullable) VideoToolbarView *toolbar;
 
 @end
 
