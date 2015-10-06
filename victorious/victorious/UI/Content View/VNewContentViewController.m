@@ -305,10 +305,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         self.contentCollectionView.scrollEnabled = NO;
         
-        if ( !self.contentCell.isPlayingAd )
-        {
-            [self setAccessoryButtonsHidden:YES];
-        }
+        [self setAccessoryButtonsHidden:YES];
     }
     else
     {
@@ -1728,7 +1725,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
+    if ( !self.contentCell.isEndCardShowing)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;

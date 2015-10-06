@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 
+@property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
+
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
 /**
