@@ -119,7 +119,7 @@
 
 - (BOOL)likeButtonDisabled
 {
-    return NO;
+    return NO; //< By default, but can be overriden in subclasses
 }
 
 - (void)setSequence:(VSequence *)sequence
