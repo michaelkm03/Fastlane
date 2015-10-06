@@ -183,10 +183,7 @@
 "ConversationSendError" =   "Votre message n'a pas pu être envoyé";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Nous sommes désolés, nous rencontrons des difficultés. Veuillez réessayer ultérieurement.";
-"We failed to retrieve publish permissions." = "Nous n'avons pas pu récupérer les autorisations nécessaires à la publication.";
 "Retry"                 =   "Réessayer";
-
-"VideoPlayFailed"       =   "La lecture de la vidéo a échoué";
 
 "Now"                   =   "0s";
 "MinuteAgo"             =   "1min";
@@ -337,7 +334,7 @@
 "NewPrivateMessage"     = "Vous avez un nouveau message privé";
 "NewFollower"           = "Vous avez un nouvel abonné";
 "TagInComment"          = "Vous avez été mentionné(e)";
-"LikePost"              = "Someone likes my post";
+"LikePost"              = "Quelqu'un aime votre publication";
 
 "NotificationSettingSectionFeeds" = "Flux";
 "NotificationSettingSectionPeople" = "Personnes";
@@ -369,7 +366,7 @@
 "PurchaseUnlockWithPrice"               = "Débloquer pour %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restaurer les achats";
 "SettingsRestorePurchasesPrompt"        = "Vous n'avez effectué aucun achat sur cet appareil.\nSi vous avez effectué des achats sur un autre appareil, cliquez sur « Restaurer les achats » pour les restaurer.";
-"Reset Purchases"                       = "Reset Purchases";
+"Reset Purchases"                       = "Réinitialiser les achats";
 
 "This will discard any content added to your post" = "Cette action va supprimer le contenu que vous avez ajouté à votre publication";
 
@@ -422,17 +419,17 @@
 "Watch GIF" = "Regarder le GIF";
 
 "See all" = "Voir tout";
-"View previous comments" = "View previous comments";
+"View previous comments" = "Voir les commentaires précédents";
 "CommentsSingularFormat" = "%@ commentaire";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ commentaires";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ mention J'aime";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ mentions J'aime";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Personnes qui aiment";
 
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
-"HashtagPostsCountFormat" = "Dans %@ publications";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
+"postsFormat" = "%@ publication";
+"postsPluralFormat" = "%@ publications";
+"HashtagPostsCountFormat" = "Dans %@ publication";
+"HashtagPostsCountPluralFormat" = "Dans %@ publications";
 
 "Barcelona" = "Barcelone";
 "London" = "Londres";
@@ -454,5 +451,5 @@
 "Use Wi-Fi only" = "Utiliser seulement le Wi-Fi";
 "Never play videos automatically" = "Ne jamais lire de vidéos automatiquement";
 
-"LevelFormat" = "LEVEL %@";
-"LEVEL" = "LEVEL";
+"LevelFormat" = "NIVEAU %@";
+"LEVEL" = "NIVEAU";
