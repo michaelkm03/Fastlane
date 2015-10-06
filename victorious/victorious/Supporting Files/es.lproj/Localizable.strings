@@ -37,7 +37,7 @@
 "PasswordValidation"    =   "La contraseña tiene menos de 8 caracteres";
 "PasswordNotMatching"   =   "La contraseña no coincide";
 "LoginFail"             =   "Error al ingresar";
-"GenericFailMessage"    =   "¡Ups! Algo salió mal.";
+"GenericFailMessage"    =   "¡Oops! Algo salió mal.";
 "FacebookLoginFailed"   =   "¡Vaya! Hubo un error en el inicio de sesión en Facebook. Por favor vuelve a intentarlo.";
 "SignupFail"            =   "Error al crear la cuenta";
 "You're not logged in!" =   "¡No has ingresado!";
