@@ -148,7 +148,10 @@ static NSString * const kInitialKey = @"initial";
     {
         if ( !self.isInitialViewController )
         {
-            [self.collectionView reloadData];
+            if ([self.viewControllers.firstObject isKindOfClass:[UITableViewController class]])
+            {
+                [self.collectionView reloadData];
+            }
         }
         self.didShowInitial = YES;
     }
