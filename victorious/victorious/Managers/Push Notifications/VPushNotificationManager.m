@@ -12,6 +12,7 @@
 #import "VConstants.h"
 
 NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
+NSString *const VPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNotificationTokenDefaultsKey";
 
 @interface VPushNotificationManager ()
 
@@ -50,19 +51,16 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
 
-    if ( ![self.apnsToken isEqualToData:deviceToken] )
-    {
-        self.apnsToken = deviceToken;
-        [self sendAPNStokenToServer];
-    }
+    self.apnsToken = deviceToken;
+    [self sendTokenWithSuccessBlock:nil failBlock:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
 - (void)sendTokenWithSuccessBlock:(void(^)())success failBlock:(void(^)(NSError *error))failure
 {
-    // If, for whatever reason, we still do not have the token, the user is unforunately out of luck:
-    if ( self.apnsToken == nil )
+    // If, for whatever reason, we still do not have the token or if it's empty, the user is unforunately out of luck:
+    if ( self.apnsToken.length == 0 )
     {
         NSString *domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
         
@@ -72,10 +70,24 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
         }
         return;
     }
+
+    // Comparing the stored token with the new one, if no token is stored or if it has changes, the compare will fail and new token will be stored locally and on the server instead.
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *storedToken = [userDefaults dataForKey:VPushNotificationTokenDefaultsKey];
     
-    // If we've got the token, send it to the server:
+    if ( [storedToken isEqualToData:self.apnsToken] )
+    {
+        // Silently exit scope, since token is already stored locally and on server.
+        return;
+    }
+    
+    // If we've got a new token, send it to the server and if we succeed we store it locally:
     [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+         [userDefaults setObject:self.apnsToken forKey:VPushNotificationTokenDefaultsKey];
+         [userDefaults synchronize];
+         
          if ( success != nil )
          {
              success();
@@ -96,16 +108,11 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
 }
 
-- (void)sendAPNStokenToServer
-{
-    [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:nil failBlock:nil];
-}
-
 - (void)loggedInChanged:(NSNotification *)notification
 {
     if ([[VObjectManager sharedManager] mainUserLoggedIn])
     {
-        [self sendAPNStokenToServer];
+        [self sendTokenWithSuccessBlock:nil failBlock:nil];
     }
 }
 
