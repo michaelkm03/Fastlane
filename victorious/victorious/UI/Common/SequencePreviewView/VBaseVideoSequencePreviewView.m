@@ -17,6 +17,7 @@
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
 #import "victorious-Swift.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -254,7 +255,6 @@
         case VFocusTypeStream:
             self.videoPlayer.muted = YES;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
-            self.isLoading = YES;
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
@@ -282,7 +282,6 @@
                 // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            self.isLoading = YES;
             [self.likeButton show];
             [self.videoPlayer play];
             self.userInteractionEnabled = YES;
