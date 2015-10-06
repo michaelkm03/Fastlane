@@ -185,17 +185,17 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
     {
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-                       {
-                           __strong typeof(weakSelf) strongSelf = weakSelf;
-                           if ( strongSelf != nil )
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if ( strongSelf != nil )
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
                            {
                                strongSelf.isLoading = NO;
                                strongSelf.progressHUD.taskInProgress = NO;
                                [strongSelf.progressHUD hide:YES];
                                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
-                           }
-                       });
+                           });
+        }
     }];
     [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
@@ -237,20 +237,20 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 - (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
-                   {
-                       // If the template download failed and we're using a user environment, then we should switch back to the default
-                       VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
-                       if ( currentEnvironment.isUserEnvironment )
-                       {
-                           [self.finishLoadingOperation cancel];
-                           [downloadOperation cancel];
-                           [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
-                           NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
-                           [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
-                                                                               object:self
-                                                                             userInfo:userInfo];
-                       }
-                   });
+    {
+        // If the template download failed and we're using a user environment, then we should switch back to the default
+        VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+        if ( currentEnvironment.isUserEnvironment )
+        {
+            [self.finishLoadingOperation cancel];
+            [downloadOperation cancel];
+            [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
+            NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
+            [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
+                                                                object:self
+                                                              userInfo:userInfo];
+        }
+    });
 }
 
 @end

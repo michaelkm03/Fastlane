@@ -173,8 +173,15 @@
     [[LSNocilla sharedInstance] start];
     
     self.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
-
-    [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:@"com.victorious.currentBuildNumber"];
+    
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"previous": @"template" };
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
+    downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
 }
 
 - (void)tearDown

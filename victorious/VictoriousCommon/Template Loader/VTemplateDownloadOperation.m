@@ -171,6 +171,8 @@ static char kPrivateQueueSpecific;
                     id<VDataCacheID> templateConfigurationCacheID = strongSelf.templateConfigurationCacheID;
                     if ( templateConfigurationCacheID != nil && !strongSelf.isCancelled )
                     {
+                        [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                         [strongSelf.dataCache cacheData:data forID:templateConfigurationCacheID error:nil];
                         self.completedSuccessfully = YES;
                     }
@@ -305,8 +307,6 @@ static char kPrivateQueueSpecific;
     NSString *oldBuildNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kTemplateBuildNumberKey];
     if ( ![self.buildNumber isEqualToString:oldBuildNumber] )
     {
-        [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         [self.dataCache removeCachedDataForID:self.templateConfigurationCacheID error:nil];
     }
 }
