@@ -183,10 +183,7 @@
 "ConversationSendError" =   "Não foi possível enviar sua mensagem";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Desculpe, nós estamos tendo alguns problemas. Tente novamente.";
-"We failed to retrieve publish permissions." = "Nós não conseguimos recuperar as permissões de publicação.";
 "Retry"                 =   "Tentar novamente";
-
-"VideoPlayFailed"       =   "Falha ao carregar o vídeo.";
 
 "Now"                   =   "Agora";
 "MinuteAgo"             =   "1m";
@@ -269,7 +266,7 @@
 "Connect to Instagram"  =   "Conectar-se ao Instagram";
 
 "Logout"                =   "Fazer Logout";
-"Login"                 =   "Fazer Login";
+"Login"                 =   "Fazer login";
 
 "UserBannedTitle"       =   "Oh-oh!";
 "UserBannedMessage"     =   "Infelizmente, sua conta foi desativada. Você ainda poderá ver conteúdo, mas não poderá postar ou interagir com outros membros.";
@@ -337,7 +334,7 @@
 "NewPrivateMessage"     = "Nova Mensagem Privada";
 "NewFollower"           = "Alguém me segue";
 "TagInComment"          = "Alguém me menciona";
-"LikePost"              = "Someone likes my post";
+"LikePost"              = "Alguém curtiu minha publicação";
 
 "NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "Pessoas";
@@ -369,7 +366,7 @@
 "PurchaseUnlockWithPrice"               = "Desbloquear para %@"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restaurar Compras";
 "SettingsRestorePurchasesPrompt"        = "Você ainda não comprou nada neste dispositivo.\nSe você já fez compras em outro dispositivo, toque em Restaurar Compras para restaurá-las.";
-"Reset Purchases"                       = "Reset Purchases";
+"Reset Purchases"                       = "Reiniciar compras";
 
 "This will discard any content added to your post" = "Isto descartará qualquer conteúdo adicionado à sua postagem";
 
@@ -422,17 +419,17 @@
 "Watch GIF" = "Assistir GIF";
 
 "See all" = "Ver todos";
-"View previous comments" = "View previous comments";
+"View previous comments" = "Ver comentários anteriores";
 "CommentsSingularFormat" = "%@ comentário";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ comentários";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ curtida";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@ curtidas";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Curtidores";
 
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
-"HashtagPostsCountFormat" = "Em %@ postagens";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
+"postsFormat" = "%@ postagem";
+"postsPluralFormat" = "%@ postagens";
+"HashtagPostsCountFormat" = "Em %@ postagem";
+"HashtagPostsCountPluralFormat" = "Em %@ postagens";
 
 "Barcelona" = "Barcelona";
 "London" = "Londres";
@@ -454,5 +451,5 @@
 "Use Wi-Fi only" = "Utilizar apenas wi-fi";
 "Never play videos automatically" = "Nunca reproduzir vídeos automaticamente";
 
-"LevelFormat" = "LEVEL %@";
-"LEVEL" = "LEVEL";
+"LevelFormat" = "NÍVEL %@";
+"LEVEL" = "NÍVEL";

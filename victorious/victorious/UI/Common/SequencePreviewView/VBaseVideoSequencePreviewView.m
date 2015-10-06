@@ -17,7 +17,7 @@
 #import "VImageAssetFinder.h"
 #import "VImageAsset.h"
 #import "victorious-Swift.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+WebCache.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -236,6 +236,7 @@
     {
         case VFocusTypeNone:
             self.videoPlayer.muted = YES;
+            self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
             [self.likeButton hide];
             [self.videoPlayer pause];
@@ -254,13 +255,14 @@
             
         case VFocusTypeStream:
             self.videoPlayer.muted = YES;
+            self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
             [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
                 [self.videoPlayer play];
             }
-            if ( self.onlyShowPreview )
+            if ( !self.onlyShowPreview )
             {
                 if ( self.shouldAutoplay )
                 {
@@ -274,7 +276,9 @@
             break;
             
         case VFocusTypeDetail:
+            [self.likeButton show];
             self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
+            self.userInteractionEnabled = YES;  //< Activate video UI
             [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithMuted:self.videoPlayer.muted];
             if ( self.onlyShowPreview )
             {
@@ -285,6 +289,10 @@
             [self.likeButton show];
             [self.videoPlayer play];
             self.userInteractionEnabled = YES;
+            if ( !self.shouldAutoplay )
+            {
+                [self.videoPlayer playFromStart];
+            }
             break;
     }
 }

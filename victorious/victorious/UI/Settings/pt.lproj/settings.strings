@@ -56,7 +56,7 @@
 "J9J-EQ-egU.placeholder" = "ID do App";
 
 /* Class = "UINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
-"LKP-Bv-quY.title" = "Alterar Senha";
+"LKP-Bv-quY.title" = "Alterar senha";
 
 /* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
 "LM5-sK-eej.normalTitle" = "Fazer Logout";
@@ -76,8 +76,11 @@
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "T6U-i1-p3F"; */
 "T6U-i1-p3F.placeholder" = "Nome";
 
+/* Class = "UITableViewController"; title = "Test Alerts"; ObjectID = "THc-ec-WSZ"; */
+"THc-ec-WSZ.title" = "Alertas de teste";
+
 /* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
-"Tch-Qc-dzd.title" = "Alterar Senha";
+"Tch-Qc-dzd.title" = "Alterar senha";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "Subtítulo";
@@ -109,11 +112,17 @@
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "Experiências";
 
+/* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
+"gY1-3u-QH1.text" = "Registrar alerta de teste de novo nível";
+
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Sempre";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "Salvar";
+
+/* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
+"jfn-8g-oUa.text" = "Registrar alertas de teste";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "Ambiente de Servidor";
@@ -126,6 +135,9 @@
 
 /* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
 "lSu-os-HMa.title" = "Política de Privacidade";
+
+/* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
+"lcI-nH-BVd.text" = "Registrar alerta de teste de conquista";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Termos do Serviço";
@@ -149,7 +161,7 @@
 "vRt-M4-9nW.text" = "Política de Privacidade";
 
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
-"xmy-by-M88.text" = "Alterar Senha";
+"xmy-by-M88.text" = "Alterar senha";
 
 /* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
 "yLq-Ze-kTh.text" = "Reproduzir vídeos automaticamente";

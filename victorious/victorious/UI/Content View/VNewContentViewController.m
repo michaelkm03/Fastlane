@@ -150,6 +150,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    [layout calculateCatchAndLockPoints];
+    
     if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
     {
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
@@ -305,10 +308,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.contentCollectionView.contentOffset = fixedLandscapeOffset;
         self.contentCollectionView.scrollEnabled = NO;
         
-        if ( !self.contentCell.isPlayingAd )
-        {
-            [self setAccessoryButtonsHidden:YES];
-        }
+        [self setAccessoryButtonsHidden:YES];
     }
     else
     {
@@ -978,13 +978,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                            [animationImageView removeFromSuperview];
                        });
     }
-    
-    // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
-    __weak typeof(self) welf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [welf reloadComments];
-                   });
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -1067,7 +1060,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
             return CGSizeZero;
         case VContentViewSectionAllComments:
         {
-            return (self.viewModel.comments.count > 0) ? [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds] : CGSizeZero;
+            CGSize sizeWithComments = [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+            return self.viewModel.comments.count > 0 ? sizeWithComments : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;
@@ -1728,7 +1722,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isPlayingAd && !self.contentCell.isEndCardShowing)
+    if ( !self.contentCell.isEndCardShowing)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;

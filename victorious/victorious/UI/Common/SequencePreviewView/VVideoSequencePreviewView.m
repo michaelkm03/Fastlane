@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
-@property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
+@property (nonatomic, strong) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 

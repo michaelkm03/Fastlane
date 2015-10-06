@@ -123,7 +123,6 @@
 		0349126F1B7EA5D400EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		034912711B7EA5E700EA8A07 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
-		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0352FC691B729B0300DB6EAB /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
@@ -1408,8 +1407,6 @@
 		0308B0FD1AB20B3000144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/settings.strings; sourceTree = "<group>"; };
 		0308B1001AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		0308B1011AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
-		0308B1021AB20B3200144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0308B1111AB23A2B00144E53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0308B1121AB2A80900144E53 /* VStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellFactory.h; sourceTree = "<group>"; };
 		0308B1171AB2B00100144E53 /* VInsetStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCell.h; sourceTree = "<group>"; };
 		0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCollectionCell.m; sourceTree = "<group>"; };
@@ -1571,7 +1568,6 @@
 		034D1A641AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
-		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+VictoriousAPI.swift"; sourceTree = "<group>"; };
 		0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1978,6 +1974,29 @@
 		03F6E26A1AB79E100017826E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Workspace.strings; sourceTree = "<group>"; };
 		03F6E26B1AB79E130017826E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Workspace.strings; sourceTree = "<group>"; };
 		03F6E26C1AB79E150017826E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Workspace.strings; sourceTree = "<group>"; };
+		03FAC6031BC3798C0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/ActionSheet.strings"; sourceTree = "<group>"; };
+		03FAC6041BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VKeyboardInputAccessoryView.strings"; sourceTree = "<group>"; };
+		03FAC6051BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VNoContentView.strings"; sourceTree = "<group>"; };
+		03FAC6061BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VCreatePollViewController.strings"; sourceTree = "<group>"; };
+		03FAC6071BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Discover.strings"; sourceTree = "<group>"; };
+		03FAC6081BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/EndCard.strings"; sourceTree = "<group>"; };
+		03FAC6091BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Explore.strings"; sourceTree = "<group>"; };
+		03FAC60A1BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/FindFriendsTableView.strings"; sourceTree = "<group>"; };
+		03FAC60B1BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VFindFriendsViewController.strings"; sourceTree = "<group>"; };
+		03FAC60C1BC3798D0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VForceUpgradeViewController.strings"; sourceTree = "<group>"; };
+		03FAC60D1BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VAssetCollectionListViewController.strings"; sourceTree = "<group>"; };
+		03FAC60E1BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Main.strings"; sourceTree = "<group>"; };
+		03FAC60F1BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Profile.strings"; sourceTree = "<group>"; };
+		03FAC6101BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Purchases.strings"; sourceTree = "<group>"; };
+		03FAC6111BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/settings.strings"; sourceTree = "<group>"; };
+		03FAC6121BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VModernEnterNameViewController.strings"; sourceTree = "<group>"; };
+		03FAC6131BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VModernLandingViewController.strings"; sourceTree = "<group>"; };
+		03FAC6141BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VModernResetTokenViewController.strings"; sourceTree = "<group>"; };
+		03FAC6151BC3798E0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VProfileCreateViewController.strings"; sourceTree = "<group>"; };
+		03FAC6161BC3798F0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/VPublishViewController.strings"; sourceTree = "<group>"; };
+		03FAC6171BC3798F0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Workspace.strings"; sourceTree = "<group>"; };
+		03FAC6181BC3798F0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		03FAC6191BC3798F0098BDAE /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNoContentTableViewCell.xib; sourceTree = "<group>"; };
 		03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverSuggestedPersonCell.xib; sourceTree = "<group>"; };
 		03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLightboxViewController.xib; sourceTree = "<group>"; };
@@ -2357,8 +2376,8 @@
 		A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchPreviewCell.swift; sourceTree = "<group>"; };
 		A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultCell.swift; sourceTree = "<group>"; };
 		A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
-		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
 		A728AC1D1BBD9FDF00386641 /* VVideoPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPreviewView.h; sourceTree = "<group>"; };
+		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
 		A7299E8A1AA5331000B6BC1F /* VCardDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCell.m; sourceTree = "<group>"; };
 		A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardDirectoryCell.xib; sourceTree = "<group>"; };
@@ -6760,7 +6779,6 @@
 		BE171D9F1868BE64004E5202 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */,
 				BE171DA01868BE64004E5202 /* victoriousTests-Info.plist */,
 			);
 			name = "Supporting Files";
@@ -7281,8 +7299,6 @@
 				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
 				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
-				A7B0E0641BBF3E0300593B21 /* VRemoteVideoPlayer.swift */,
-				A7B0E0651BBF3E0300593B21 /* VRemoteVideoSequencePreviewView.swift */,
 				A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
@@ -8319,6 +8335,7 @@
 				ja,
 				ko,
 				vi,
+				"zh-Hant-TW",
 			);
 			mainGroup = BE171D6D1868BE64004E5202;
 			productRefGroup = BE171D771868BE64004E5202 /* Products */;
@@ -8595,7 +8612,6 @@
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
 				A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */,
-				034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */,
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
@@ -10024,16 +10040,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				034D1A6B1AAF5A8B00EB7B2D /* fr */,
-				0308B1021AB20B3200144E53 /* de */,
-				0308B1111AB23A2B00144E53 /* es */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		035CD7891BA222DE008A01EB /* Explore.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -10045,6 +10051,7 @@
 				035CD7951BA222EA008A01EB /* ja */,
 				035CD7971BA222EB008A01EB /* ko */,
 				035CD7991BA222ED008A01EB /* vi */,
+				03FAC6091BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = Explore.storyboard;
 			sourceTree = "<group>";
@@ -10060,6 +10067,7 @@
 				0366EAF11B67E8AD0073A233 /* ja */,
 				0366EAF31B67E8AF0073A233 /* ko */,
 				0366EAF51B67E8B00073A233 /* vi */,
+				03FAC6081BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = EndCard.storyboard;
 			sourceTree = "<group>";
@@ -10075,6 +10083,7 @@
 				0366EB051B6871550073A233 /* ja */,
 				0366EB071B6871560073A233 /* ko */,
 				0366EB091B6871570073A233 /* vi */,
+				03FAC60D1BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = VAssetCollectionListViewController.storyboard;
 			sourceTree = "<group>";
@@ -10090,6 +10099,7 @@
 				03F2F75A1B55828E00F2EF16 /* ja */,
 				03669B6C1B632D52003C2D8F /* ko */,
 				03669B8E1B6332D8003C2D8F /* vi */,
+				03FAC6101BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = Purchases.storyboard;
 			sourceTree = "<group>";
@@ -10105,6 +10115,7 @@
 				03F2F7601B55829000F2EF16 /* ja */,
 				03669B721B632D55003C2D8F /* ko */,
 				03669B931B6332D9003C2D8F /* vi */,
+				03FAC6181BC3798F0098BDAE /* zh-Hant-TW */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -10120,6 +10131,7 @@
 				03F2F75E1B55828F00F2EF16 /* ja */,
 				03669B701B632D53003C2D8F /* ko */,
 				03669B911B6332D9003C2D8F /* vi */,
+				03FAC6031BC3798C0098BDAE /* zh-Hant-TW */,
 			);
 			name = ActionSheet.storyboard;
 			sourceTree = "<group>";
@@ -10135,6 +10147,7 @@
 				03F2F7581B55828D00F2EF16 /* ja */,
 				03669B6A1B632D52003C2D8F /* ko */,
 				03669B8B1B6332D7003C2D8F /* vi */,
+				03FAC6041BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = VKeyboardInputAccessoryView.xib;
 			sourceTree = "<group>";
@@ -10150,6 +10163,7 @@
 				03F2F7691B55829200F2EF16 /* ja */,
 				03669B7E1B632D57003C2D8F /* ko */,
 				03669B9F1B6332DC003C2D8F /* vi */,
+				03FAC6071BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = Discover.storyboard;
 			sourceTree = "<group>";
@@ -10165,6 +10179,7 @@
 				039269BB1B5F355500FCD0AA /* ja */,
 				03669B741B632D55003C2D8F /* ko */,
 				03669B951B6332DA003C2D8F /* vi */,
+				03FAC6061BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = VCreatePollViewController.storyboard;
 			sourceTree = "<group>";
@@ -10180,6 +10195,7 @@
 				039269D51B5F371B00FCD0AA /* ja */,
 				03669B781B632D56003C2D8F /* ko */,
 				03669B991B6332DB003C2D8F /* vi */,
+				03FAC6161BC3798F0098BDAE /* zh-Hant-TW */,
 			);
 			name = VPublishViewController.xib;
 			sourceTree = "<group>";
@@ -10195,6 +10211,7 @@
 				03F2F75C1B55828E00F2EF16 /* ja */,
 				03669B681B632D51003C2D8F /* ko */,
 				03669B891B6332D6003C2D8F /* vi */,
+				03FAC6171BC3798F0098BDAE /* zh-Hant-TW */,
 			);
 			name = Workspace.storyboard;
 			sourceTree = "<group>";
@@ -10210,6 +10227,7 @@
 				03F2F7561B55828C00F2EF16 /* ja */,
 				03669B6B1B632D52003C2D8F /* ko */,
 				03669B8A1B6332D6003C2D8F /* vi */,
+				03FAC6141BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = VModernResetTokenViewController.storyboard;
 			sourceTree = "<group>";
@@ -10225,6 +10243,7 @@
 				03F2F7571B55828D00F2EF16 /* ja */,
 				03669B691B632D52003C2D8F /* ko */,
 				03669B8C1B6332D7003C2D8F /* vi */,
+				03FAC6131BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = VModernLandingViewController.storyboard;
 			sourceTree = "<group>";
@@ -10240,6 +10259,7 @@
 				03F2F7511B55828B00F2EF16 /* ja */,
 				03669B641B632D50003C2D8F /* ko */,
 				03669B851B6332D5003C2D8F /* vi */,
+				03FAC6121BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = VModernEnterNameViewController.storyboard;
 			sourceTree = "<group>";
@@ -10255,6 +10275,7 @@
 				F0FDB3621BAB2D95002DFE5B /* es */,
 				F0FDB3631BAB2D99002DFE5B /* fr */,
 				F0FDB3641BAB2D9D002DFE5B /* de */,
+				03FAC6151BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = VProfileCreateViewController.storyboard;
 			sourceTree = "<group>";
@@ -10270,6 +10291,7 @@
 				03858EA21BAE9C87008EC656 /* es */,
 				03858EA31BAE9C8A008EC656 /* fr */,
 				03858EA41BAE9C8E008EC656 /* de */,
+				03FAC60A1BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = FindFriendsTableView.xib;
 			sourceTree = "<group>";
@@ -10285,6 +10307,7 @@
 				03F2F7631B55829100F2EF16 /* ja */,
 				03669B771B632D56003C2D8F /* ko */,
 				03669B981B6332DB003C2D8F /* vi */,
+				03FAC6191BC3798F0098BDAE /* zh-Hant-TW */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -10300,6 +10323,7 @@
 				03F2F7521B55828B00F2EF16 /* ja */,
 				03669B651B632D50003C2D8F /* ko */,
 				03669B861B6332D5003C2D8F /* vi */,
+				03FAC60E1BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -10315,6 +10339,7 @@
 				03F2F7541B55828C00F2EF16 /* ja */,
 				03669B661B632D51003C2D8F /* ko */,
 				03669B871B6332D6003C2D8F /* vi */,
+				03FAC6051BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -10330,6 +10355,7 @@
 				03F2F75B1B55828E00F2EF16 /* ja */,
 				03669B6D1B632D53003C2D8F /* ko */,
 				03669B8D1B6332D7003C2D8F /* vi */,
+				03FAC60C1BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = VForceUpgradeViewController.xib;
 			sourceTree = "<group>";
@@ -10345,6 +10371,7 @@
 				03F2F7621B55829100F2EF16 /* ja */,
 				03669B761B632D56003C2D8F /* ko */,
 				03669B971B6332DA003C2D8F /* vi */,
+				03FAC60F1BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -10360,6 +10387,7 @@
 				03F2F75F1B55829000F2EF16 /* ja */,
 				03669B711B632D54003C2D8F /* ko */,
 				03669B921B6332D9003C2D8F /* vi */,
+				03FAC6111BC3798E0098BDAE /* zh-Hant-TW */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";
@@ -10375,6 +10403,7 @@
 				F0FDB3711BAB2DDB002DFE5B /* ja */,
 				F0FDB3731BAB2DDC002DFE5B /* ko */,
 				F0FDB3751BAB2DDD002DFE5B /* vi */,
+				03FAC60B1BC3798D0098BDAE /* zh-Hant-TW */,
 			);
 			name = VFindFriendsViewController.storyboard;
 			sourceTree = "<group>";

@@ -16,8 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL toolbarDisabled;
 
-@property (nonatomic, strong, readonly, nullable) VideoToolbarView *toolbar;
-
 @end
 
 NS_ASSUME_NONNULL_END

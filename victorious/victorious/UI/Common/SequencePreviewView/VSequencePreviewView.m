@@ -43,11 +43,7 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isRemoteVideo] )
-        {
-            classType = [VRemoteVideoSequencePreviewView class];
-        }
-        else if ( [sequence isGIFVideo] )
+        if ( [sequence isGIFVideo] )
         {
             classType = [VBaseVideoSequencePreviewView class];
         }
@@ -123,7 +119,7 @@
 
 - (BOOL)likeButtonDisabled
 {
-    return NO;
+    return NO; //< By default, but can be overriden in subclasses
 }
 
 - (void)setSequence:(VSequence *)sequence

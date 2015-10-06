@@ -183,10 +183,7 @@
 "ConversationSendError" =   "メッセージを送信できませんでした";
 
 "Sorry, we were having some trouble on our end. Please retry." = "申し訳ありません。こちら側で問題があったようです。もう一度お試しください。";
-"We failed to retrieve publish permissions." = "公開の許可を取得するのに失敗しました。";
 "Retry"                 =   "再試行";
-
-"VideoPlayFailed"       =   "動画の読み込みに失敗しました。";
 
 "Now"                   =   "今";
 "MinuteAgo"             =   "1分間";
@@ -337,7 +334,7 @@
 "NewPrivateMessage"     = "新着のプライベートメッセージ";
 "NewFollower"           = "あなたをフォロー中の人";
 "TagInComment"          = "あなたの事を話した人";
-"LikePost"              = "Someone likes my post";
+"LikePost"              = "だれかが私の投稿を「いいね」しました";
 
 "NotificationSettingSectionFeeds" = "フィードバック";
 "NotificationSettingSectionPeople" = "人々";
@@ -369,7 +366,7 @@
 "PurchaseUnlockWithPrice"               = "%@でアンロック"; // e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "購入を復元";
 "SettingsRestorePurchasesPrompt"        = "このデバイスで購入されたものはありません。\n別のデバイスで購入されている場合は、[購入を復元]ボタンをタップして復元してください。";
-"Reset Purchases"                       = "Reset Purchases";
+"Reset Purchases"                       = "購入をリセットする";
 
 "This will discard any content added to your post" = "これによりあなたの投稿に追加された全コンテンツが破棄されます";
 
@@ -422,17 +419,17 @@
 "Watch GIF" = "GIFを観る";
 
 "See all" = "すべて見る";
-"View previous comments" = "View previous comments";
+"View previous comments" = "前のコメントを見る";
 "CommentsSingularFormat" = "%@件のコメント";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@件のコメント";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@件のいいね";  // e.g. "1 Like", where "Like" is a noun
 "LikesPluralFormat" = "%@件のいいね";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "いいねした人";
 
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
-"HashtagPostsCountFormat" = "%@件の投稿中";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
+"postsFormat" = "%@件の投稿";
+"postsPluralFormat" = "%@件の投稿";
+"HashtagPostsCountFormat" = "%@件の投稿に入っています";
+"HashtagPostsCountPluralFormat" = "%@件の投稿に入っています";
 
 "Barcelona" = "バルセロナ";
 "London" = "ロンドン";
@@ -454,5 +451,5 @@
 "Use Wi-Fi only" = "Wi-Fiのみを使用";
 "Never play videos automatically" = "動画を自動的に再生しない";
 
-"LevelFormat" = "LEVEL %@";
-"LEVEL" = "LEVEL";
+"LevelFormat" = "レベル%@";
+"LEVEL" = "レベル";
