@@ -350,13 +350,19 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         return nil;
     }
     
-    [self logoutLocally];
-    
+    [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:NO];
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
                                                     object:nil
                                                 parameters:nil
-                                              successBlock:nil
-                                                 failBlock:nil];
+                                              successBlock:^(NSOperation *_Nullable operation, id  _Nullable result, NSArray *_Nonnull resultObjects)
+                                                  {
+                                                      [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:YES];
+                                                  } failBlock:^(NSOperation *_Nullable operation, NSError *_Nullable error)
+                                                  {
+                                                      [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:YES];
+                                                  }];
+    
+    [self logoutLocally];
     
     return operation;
 }
