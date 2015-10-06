@@ -79,6 +79,9 @@
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "T6U-i1-p3F"; */
 "T6U-i1-p3F.placeholder" = "Nombre";
 
+/* Class = "UITableViewController"; title = "Test Alerts"; ObjectID = "THc-ec-WSZ"; */
+"THc-ec-WSZ.title" = "Alertas de prueba";
+
 /* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
 "Tch-Qc-dzd.title" = "Cambiar contraseña";
 
@@ -112,11 +115,17 @@
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "Experimentos";
 
+/* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
+"gY1-3u-QH1.text" = "Registrar alerta de prueba de nivel superior";
+
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Siempre";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
 "jLQ-YW-sES.normalTitle" = "Guardar";
+
+/* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
+"jfn-8g-oUa.text" = "Registrar alertas de prueba";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "Entorno de servidor";
@@ -129,6 +138,9 @@
 
 /* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
 "lSu-os-HMa.title" = "Política de privacidad";
+
+/* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
+"lcI-nH-BVd.text" = "Registrar alerta de logro de prueba";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Términos del servicio";
