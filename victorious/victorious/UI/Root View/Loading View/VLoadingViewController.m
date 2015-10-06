@@ -42,6 +42,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, strong) VLoginOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) VNetworkStatus priorNetworkStatus;
 
 @end
 
@@ -80,7 +82,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 {
     [super viewDidAppear:animated];
 
-    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] == VNetworkStatusNotReachable)
+    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
     }
@@ -88,6 +91,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         [self startLoading];
     }
+    self.priorNetworkStatus = currentNetworkStatus;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -144,21 +148,29 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] == VNetworkStatusNotReachable)
+    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
     }
-    else
+    else if (self.priorNetworkStatus == VNetworkStatusNotReachable)
     {
         [self hideReachabilityNotice];
         [self startLoading];
     }
+    self.priorNetworkStatus = currentNetworkStatus;
 }
 
 #pragma mark - Loading
 
 - (void)startLoading
 {
+    if ( self.isLoading )
+    {
+        return;
+    }
+    self.isLoading = YES;
+    
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
     self.loginOperation = [[VLoginOperation alloc] init];
@@ -173,16 +185,17 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
     {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if ( strongSelf != nil )
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                self.progressHUD.taskInProgress = NO;
-                [self.progressHUD hide:YES];
-                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
-            });
-        }
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+                       {
+                           __strong typeof(weakSelf) strongSelf = weakSelf;
+                           if ( strongSelf != nil )
+                           {
+                               strongSelf.isLoading = NO;
+                               strongSelf.progressHUD.taskInProgress = NO;
+                               [strongSelf.progressHUD hide:YES];
+                               [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
+                           }
+                       });
     }];
     [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
@@ -224,21 +237,20 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 - (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
-    {
-        //Template download failed, we should try to download again
-        [self.finishLoadingOperation cancel];
-        [downloadOperation cancel];
-        VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
-        if ( currentEnvironment.isUserEnvironment )
-        {
-            // If the template download failed and we're using a user environment, then we should switch back to the default
-            [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
-        }
-        NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
-                                                            object:self
-                                                          userInfo:userInfo];
-    });
+                   {
+                       // If the template download failed and we're using a user environment, then we should switch back to the default
+                       VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+                       if ( currentEnvironment.isUserEnvironment )
+                       {
+                           [self.finishLoadingOperation cancel];
+                           [downloadOperation cancel];
+                           [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
+                           NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
+                           [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
+                                                                               object:self
+                                                                             userInfo:userInfo];
+                       }
+                   });
 }
 
 @end
