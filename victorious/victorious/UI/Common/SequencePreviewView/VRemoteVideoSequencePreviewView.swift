@@ -31,4 +31,13 @@ class VRemoteVideoSequencePreviewView : VVideoSequencePreviewView {
     override func createVideoPlayerWithFrame(frame: CGRect) -> VVideoPlayer {
         return VRemoteVideoPlayer()
     }
+    
+    override var focusType: VFocusType {
+        didSet {
+            if focusType != .Detail {
+                self.videoPlayer.pauseAtStart()
+                self.toolbar?.resetTime()
+            }
+        }
+    }
 }

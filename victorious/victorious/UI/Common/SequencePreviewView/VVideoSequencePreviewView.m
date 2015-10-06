@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
-@property (nonatomic, strong) VideoToolbarView *toolbar;
+@property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
@@ -165,6 +165,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.muted = self.videoAsset.audioMuted.boolValue;
+    item.remoteContentId = self.videoAsset.remoteContentId;
     [self.videoPlayer setItem:item];
     
     [self updateUIState];
