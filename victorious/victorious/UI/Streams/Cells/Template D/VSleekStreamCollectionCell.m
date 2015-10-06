@@ -107,7 +107,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              CGFloat textHeight = 0.0f;
-             if ( sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText] )
+             if ( [self shouldShowCaptionForSequence:sequence] )
              {
                  VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
@@ -124,7 +124,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-            return CGSizeMake( 0.0f, sequence.name.length > 0 ? kCaptionToPreviewVerticalSpacing : 0.0f );
+            return CGSizeMake( 0.0f, [self shouldShowCaptionForSequence:sequence] ? kCaptionToPreviewVerticalSpacing : 0.0f );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
@@ -402,7 +402,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
 {
-    return sequence.name.length > 0 && self.dependencyManager != nil;
+    return [[self class] shouldShowCaptionForSequence:sequence] && self.dependencyManager != nil;
+}
+
++ (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
+{
+    return sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText];
 }
 
 - (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
