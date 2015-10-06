@@ -5296,13 +5296,6 @@
 			path = Explore;
 			sourceTree = "<group>";
 		};
-		675A9AF01BC34BD2009CE633 /* File system */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "File system";
-			sourceTree = "<group>";
-		};
 		676372DF1B8CD83000A59705 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
@@ -6780,7 +6773,6 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				675A9AF01BC34BD2009CE633 /* File system */,
 				A7299E9C1AA699EE00B6BC1F /* Authorization */,
 				03A761471B322F6A0016B69D /* Data Cache */,
 				A79869DF1AD7124D00F2564A /* Deep Links */,
