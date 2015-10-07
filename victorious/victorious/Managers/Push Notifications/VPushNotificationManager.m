@@ -81,8 +81,6 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
     {
         [self sendTokenWithSuccessBlock:nil failBlock:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
 - (void)sendTokenWithSuccessBlock:(void(^)())success failBlock:(void(^)(NSError *error))failure
@@ -120,14 +118,6 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
-}
-
-- (void)loggedInChanged:(NSNotification *)notification
-{
-    if ([[VObjectManager sharedManager] mainUserLoggedIn])
-    {
-        [self sendTokenWithSuccessBlock:nil failBlock:nil];
-    }
 }
 
 - (BOOL)isRegisteredForPushNotifications
