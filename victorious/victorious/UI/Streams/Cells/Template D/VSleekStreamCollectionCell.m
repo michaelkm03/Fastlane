@@ -124,7 +124,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
             return CGSizeMake( 0.0f, [self shouldShowCaptionForSequence:sequence withDependencyManager:dependencyManager] ? kCaptionToPreviewVerticalSpacing : 0.0f );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
