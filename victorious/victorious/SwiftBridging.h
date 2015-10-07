@@ -105,7 +105,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+ContentModeration.h"
 #import "VObjectManager+Discover.h"
-#import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager.h"
