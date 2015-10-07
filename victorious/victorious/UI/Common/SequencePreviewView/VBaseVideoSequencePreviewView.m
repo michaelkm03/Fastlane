@@ -238,7 +238,6 @@
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
-            [self.likeButton hide];
             [self.videoPlayer pause];
             if ( self.onlyShowPreview )
             {
@@ -257,7 +256,6 @@
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
-            [self.likeButton hide];
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
                 [self.videoPlayer play];
@@ -276,7 +274,6 @@
             break;
             
         case VFocusTypeDetail:
-            [self.likeButton show];
             self.videoPlayer.muted = self.videoAsset.audioMuted.boolValue;
             self.userInteractionEnabled = YES;  //< Activate video UI
             [[VAudioManager sharedInstance] focusedPlaybackDidBeginWithMuted:self.videoPlayer.muted];
@@ -286,7 +283,6 @@
                 // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            [self.likeButton show];
             [self.videoPlayer play];
             self.userInteractionEnabled = YES;
             if ( !self.shouldAutoplay )

@@ -97,6 +97,24 @@
         
         self.backgroundColor = [UIColor clearColor];
         
+        _likeButton = [[VContentLikeButton alloc] init];
+        [self addSubview:_likeButton];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0
+                                                          constant:-12.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeBottomMargin
+                                                        multiplier:1.0
+                                                          constant:-3.0f]];
+        [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        
         [self setGesturesEnabled:NO];
     }
     return self;
@@ -117,7 +135,7 @@
     }
 }
 
-- (BOOL)likeButtonDisabled
+- (BOOL)shouldHideLikeButton
 {
     return NO; //< By default, but can be overriden in subclasses
 }
@@ -131,10 +149,7 @@
     
     [super setStreamItem:sequence];
     
-    if ( !self.likeButtonDisabled )
-    {
-        [self configureLikeButtonForSequence:sequence];
-    }
+    [self configureLikeButtonForSequence:sequence];
 }
 
 - (VSequence *)sequence
@@ -210,6 +225,19 @@
     }
     
     _focusType = focusType;
+    
+    switch (self.focusType)
+    {
+        case VFocusTypeNone:
+            [self.likeButton hide];
+            break;
+        case VFocusTypeStream:
+            [self.likeButton hide];
+            break;
+        case VFocusTypeDetail:
+            [self.likeButton show];
+            break;
+    }
 }
 
 - (CGRect)contentArea
@@ -221,46 +249,26 @@
 
 - (void)configureLikeButtonForSequence:(VSequence *)sequence
 {
-    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    if ( isLikeButtonTemplateEnabled && !self.shouldHideLikeButton )
     {
-        if ( self.likeButton == nil )
-        {
-            VContentLikeButton *likeButton = [[VContentLikeButton alloc] init];
-            [self addSubview:likeButton];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton
-                                                             attribute:NSLayoutAttributeTrailing
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1.0
-                                                              constant:-12.0f]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self
-                                                             attribute:NSLayoutAttributeBottomMargin
-                                                            multiplier:1.0
-                                                              constant:-3.0f]];
-            
-            [self layoutIfNeeded];
-            self.likeButton = likeButton;
-            
-            [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        
-        self.likeButton.hidden = NO;
-        
-        self.expressionsObserver = nil;
-        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-        
         __weak typeof(self) welf = self;
+        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {
-             __strong typeof(self) strongSelf = welf;
+             __strong typeof(welf) strongSelf = welf;
              [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
              [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];
+        self.likeButton.hidden = NO;
     }
+    else
+    {
+        self.expressionsObserver = nil;
+        self.likeButton.hidden = YES;
+    }
+    
+    [self layoutIfNeeded];
 }
 
 - (void)selectedLikeButton:(UIButton *)likeButton
