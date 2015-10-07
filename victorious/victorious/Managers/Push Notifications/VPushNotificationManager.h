@@ -9,9 +9,14 @@
 #import <Foundation/Foundation.h>
 
 /**
- Posted when the user repsonds to the remote notification prompt.
+ Posted when the user responds to the remote notification prompt.
  */
 extern NSString *const VPushNotificationManagerDidReceiveResponse;
+
+/**
+ The key to access the stored push notification token in NSUserDefaults.
+ */
+extern NSString *const VPushNotificationTokenDefaultsKey;
 
 /**
  This class registers for push notifications,
