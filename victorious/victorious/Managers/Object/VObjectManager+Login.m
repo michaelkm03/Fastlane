@@ -23,6 +23,7 @@
 #import "VStoredLogin.h"
 #import "VLoginType.h"
 #import "VImageAsset+Fetcher.h"
+#import "victorious-Swift.h"
 
 @import CoreData;
 @import FBSDKLoginKit;
@@ -348,12 +349,13 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         return nil;
     }
-
+    
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
                                                     object:nil
                                                 parameters:nil
                                               successBlock:nil
                                                  failBlock:nil];
+    
     [self logoutLocally];
     
     return operation;
@@ -367,6 +369,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
     [[[FBSDKLoginManager alloc] init] logOut];
     [[[VUserManager alloc] init] userDidLogout];
+    [[InterstitialManager sharedInstance] clearAllRegisteredInterstitials];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
