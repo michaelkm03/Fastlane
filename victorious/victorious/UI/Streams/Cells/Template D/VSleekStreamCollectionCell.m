@@ -46,7 +46,7 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
 static const CGFloat kInStreamCommentsTopSpace = 6.0f;
 static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, VideoTracking>
 
 @property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -523,16 +523,15 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 #pragma mark - Autoplay tracking
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+- (void)trackAutoplayEvent:(VideoTrackingEvent *__nonnull)event
 {
     // Set context and continue walking up responder chain
     event.context = self.context;
+    event.autoPlay = YES;
     
-    id<AutoplayTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(AutoplayTracking)];
-    if (responder != nil)
-    {
-        [responder trackAutoplayEvent:event];
-    }
+    id<VideoTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(VideoTracking)];
+    NSAssert( responder != nil, @"Unable to find a responder conforming to `VideoTracking`" );
+    [responder trackAutoplayEvent:event];
 }
 
 - (NSDictionary *__nonnull)additionalInfo
