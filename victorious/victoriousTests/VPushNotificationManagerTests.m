@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "VPushNotificationManager.h"
 
 #import "NSObject+VMethodSwizzling.h"
@@ -45,10 +46,13 @@ NSString *const VTestPushNotificationTokenString = @"AAAAAAAAAAAAAAAAABBBBBBBBBB
 
 - (void)testTokenStored
 {
-    // Send in a push notification token and confirm it gets stored in the class.
-    [self.notificationManager didRegisterForRemoteNotificationsWithDeviceToken:self.pushTokenData];
+    id notificationManagerMock = OCMPartialMock(self.notificationManager);
+    OCMStub([notificationManagerMock sendTokenWithSuccessBlock:nil failBlock:nil]);
     
-    NSData *storedToken = [self.notificationManager storedToken];
+    // Send in a push notification token and confirm it gets stored in the class.
+    [notificationManagerMock didRegisterForRemoteNotificationsWithDeviceToken:self.pushTokenData];
+    
+    NSData *storedToken = [notificationManagerMock storedToken];
     XCTAssertNotNil(storedToken);
     XCTAssertTrue([self.pushTokenData isEqualToData:storedToken]);
 }
