@@ -77,6 +77,7 @@ static NSString * const   kVPayloadKey         = @"payload";
 static NSString * const   kVObjectsKey         = @"objects";
 static NSString * const   kVErrorKey           = @"error";
 static NSString * const   kRemoteIdKey         = @"remoteId";
+static NSString * const   kVAlertsKey          = @"alerts";
 
 #pragma mark - Media Constants
 

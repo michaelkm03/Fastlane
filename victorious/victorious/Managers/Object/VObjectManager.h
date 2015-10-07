@@ -31,6 +31,8 @@ typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullab
 
 @property (nonatomic, strong, nullable) NSSet *experimentIDs; //<A set that stores all of the users experimental IDs
 
+@property (nonatomic, assign) BOOL shouldRegisterAlerts; //< Whether or not the object manager checks each response for alerts
+
 + (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;

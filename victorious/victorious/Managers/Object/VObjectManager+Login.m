@@ -324,9 +324,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         
         [[[VStoredLogin alloc] init] saveLoggedInUserToDisk:self.mainUser loginType:loginType];
         
-        // Start registering alerts
-        [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:YES];
-        
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
         [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
         
@@ -352,9 +349,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         return nil;
     }
-    
-    // Stop registering alerts
-    [[InterstitialManager sharedInstance] setShouldRegisterInterstitials:NO];
     
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
                                                     object:nil

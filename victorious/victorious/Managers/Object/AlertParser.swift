@@ -1,5 +1,5 @@
 //
-//  VictoriousAPISerializer.swift
+//  AlertParser.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/8/15.
@@ -14,30 +14,20 @@ private enum InterstitialType : String {
     case Achievement = "achievement"
 }
 
-/// A RKSerialization subclass that handles registering
-/// any interstitials that it finds in the response
-class VictoriousAPISerializer: NSObject, RKSerialization {
+/// An object that handles registering
+/// any interstitials that it finds in a response object
+class AlertParser: NSObject {
     
-    static func objectFromData(data: NSData!) throws -> AnyObject {
-        
-        let responseObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-        
+    func parseAlerts(payload payload: [[String : AnyObject]]?) {
         // Check if we have any interstitials to register
-        if let responseObject = responseObject as? [String : AnyObject],
-            interstitials = responseObject["alerts"] as? [[String : AnyObject]] {
-                let parsedInterstitials = VictoriousAPISerializer.parseInterstitials(interstitials)
+        if let interstitials = payload {
+                let parsedInterstitials = AlertParser.parseInterstitials(interstitials)
                 if parsedInterstitials.count > 0 {
                     dispatch_async(dispatch_get_main_queue()) {
                         InterstitialManager.sharedInstance.registerInterstitials(parsedInterstitials)
                     }
                 }
         }
-        
-        return responseObject
-    }
-    
-    static func dataFromObject(object: AnyObject!) throws -> NSData {
-        return try NSJSONSerialization.dataWithJSONObject(object, options: [])
     }
     
     // Class function for parsing interstitials
