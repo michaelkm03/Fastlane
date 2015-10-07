@@ -127,6 +127,10 @@
     {
         [self refreshWithCompletion:nil];
     }
+    else if ( self.isRefreshingFirstPage )
+    {
+        [self safelyMakeRefreshControlRefresh:YES];
+    }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
@@ -161,6 +165,7 @@
                                                   isBeingDismissed:self.isBeingDismissed];
     
     self.navigationControllerScrollDelegate = nil;
+    [self safelyMakeRefreshControlRefresh:NO];
 }
 
 - (void)viewDidLayoutSubviews
@@ -302,8 +307,6 @@
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
-         self.isRefreshingFirstPage = NO;
-         [self safelyMakeRefreshControlRefresh:NO];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
          BOOL viewIsVisible = self.parentViewController != nil;
@@ -319,6 +322,8 @@
          {
              completionBlock();
          }
+         self.isRefreshingFirstPage = NO;
+         [self safelyMakeRefreshControlRefresh:NO];
      }
                             failure:^(NSError *error)
      {
@@ -451,7 +456,7 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
+    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
     {
         return;
     }
