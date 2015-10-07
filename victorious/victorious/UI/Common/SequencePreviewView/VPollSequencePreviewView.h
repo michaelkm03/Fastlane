@@ -10,6 +10,7 @@
 #import "VFocusable.h"
 #import "VPollResultReceiver.h"
 
+// Will note send detail delegate until focusType is VFocusTypeDetail.
 @interface VPollSequencePreviewView : VSequencePreviewView <VFocusable, VPollResultReceiver>
 
 @end

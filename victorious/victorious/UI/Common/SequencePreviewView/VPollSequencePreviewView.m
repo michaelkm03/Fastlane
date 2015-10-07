@@ -57,10 +57,8 @@ static NSString *kOrIconKey = @"orIcon";
         
         // Add gesture recognizers to show full size asse when previews are tapped
         _gestureRecognizerA = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerASelected:)];
-        _pollView.answerAImageView.userInteractionEnabled = YES;
         [_pollView.answerAImageView addGestureRecognizer:_gestureRecognizerA];
         _gestureRecognizerB = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(answerBSelected:)];
-        _pollView.answerBImageView.userInteractionEnabled = YES;
         [_pollView.answerBImageView addGestureRecognizer:_gestureRecognizerB];
         
         _assetFinder = [[VImageAssetFinder alloc] init];
@@ -151,6 +149,8 @@ static NSString *kOrIconKey = @"orIcon";
 {
     _gestureRecognizerA.enabled = enabled;
     _gestureRecognizerB.enabled = enabled;
+    _pollView.answerAImageView.userInteractionEnabled = enabled;
+    _pollView.answerBImageView.userInteractionEnabled = enabled;
 }
 
 - (UIColor *)favoredColor
