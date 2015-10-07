@@ -11,46 +11,62 @@ import XCTest
 @testable import victorious
 
 class FirstInstallDeviceIDManagerTests: XCTestCase {
-    let deviceIDManager = FirstInstallDeviceIDManager()
-    let deviceIDFilename = "FirstInstallDeviceID.txt"
+    let testingDeviceID = "testingDeviceID"
     let testingFileName = "testingFile.txt"
+    let deviceIDManager = FirstInstallDeviceIDManager()
     let fileManager = NSFileManager()
-    var docDir: NSURL? {
-        return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+    
+    var testingFileURL: NSURL? {
+        let docDir = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+        return docDir?.URLByAppendingPathComponent(testingFileName)
+    }
+    
+    var testingFilePath: String? {
+        return testingFileURL?.path
     }
     
     func testGenerationFromExistingFile() {
-        let deviceIDURL = docDir?.URLByAppendingPathComponent(deviceIDFilename)
-        let deviceIDPath = deviceIDURL?.path
         
         do {
-            let retrievedDeviceID = try NSString(contentsOfFile: deviceIDPath!, encoding: NSUTF8StringEncoding) as String
-            let generatedDeviceID = deviceIDManager.generateFirstInstallDeviceID()
+            try testingFileName.writeToFile(testingFilePath!, atomically: true, encoding: NSUTF8StringEncoding)
+        }
+        catch {
+            XCTAssert(false, "failed to write to file \(testingFilePath)")
+        }
+        
+        do {
+            let retrievedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: NSUTF8StringEncoding) as String
+            let generatedDeviceID = deviceIDManager.generateFirstInstallDeviceID(withFileName: testingFileName)
             XCTAssertEqual(retrievedDeviceID, generatedDeviceID)
         }
         catch {
-            XCTAssert(false, "failed to read from file \(deviceIDPath)")
+            XCTAssert(false, "failed to read from file \(testingFilePath)")
+        }
+        
+        do {
+            try fileManager.removeItemAtURL(testingFileURL!)
+        }
+        catch {
+            XCTAssert(false, "failed to delete the temporary directory created")
         }
     }
     
     func testGenerationWithoutFile() {
-        let tempURL = docDir?.URLByAppendingPathComponent(testingFileName)
-        let tempPath = tempURL?.path
         
         // Create a temp file with current device ID in it
         deviceIDManager.generateFirstInstallDeviceID(withFileName: testingFileName)
         
         do {
-            let retrivedDeviceID = try NSString(contentsOfFile:tempPath!, encoding: NSUTF8StringEncoding) as String
+            let retrivedDeviceID = try NSString(contentsOfFile:testingFilePath!, encoding: NSUTF8StringEncoding) as String
             let currentDeviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString
             XCTAssertEqual(retrivedDeviceID, currentDeviceID)
         }
         catch {
-            XCTAssert(false, "failed to read from file \(tempPath)")
+            XCTAssert(false, "failed to read from file \(testingFilePath)")
         }
         
         do {
-            try fileManager.removeItemAtURL(tempURL!)
+            try fileManager.removeItemAtURL(testingFileURL!)
         }
         catch {
             XCTAssert(false, "failed to delete the temporary directory created")
