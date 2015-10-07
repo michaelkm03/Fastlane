@@ -32,9 +32,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     /// Whether or not the interstitial window is currently on screen
     private(set) var isShowingInterstital = false
     
-    /// Whether or not the interstitial manager should register new interstitials
-    var shouldRegisterInterstitials = true
-    
     private var registeredInterstitials = [Interstitial]()
     
     private var shownInterstitials = [Interstitial]()
@@ -43,10 +40,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     /// Register an array of interstitials.
     func registerInterstitials(interstitials: [Interstitial]) {
-        
-        if !shouldRegisterInterstitials {
-            return
-        }
         
         for interstitial in interstitials where !registeredInterstitials.contains({ $0 == interstitial }) && !shownInterstitials.contains({ $0 == interstitial }) {
             registeredInterstitials.append(interstitial)
@@ -61,6 +54,11 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         if registeredInterstitials.count > 0 {
             show(registeredInterstitials.removeAtIndex(0), presentingViewController: viewController)
         }
+    }
+    
+    /// Removes all registered interstitials
+    func clearAllRegisteredInterstitials() {
+        registeredInterstitials.removeAll()
     }
     
     private func show(interstitial: Interstitial?, presentingViewController: UIViewController) {
@@ -114,12 +112,12 @@ extension InterstitialManager {
     /// Registers a test "level" alert for testing interstitials
     func registerTestLevelUpAlert() {
         #if V_SHOW_TEST_ALERT_SETTINGS
-        self.shouldRegisterInterstitials = false
+        VObjectManager.sharedManager().shouldRegisterAlerts = false
         let params = ["type" : "levelUp", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "You won some new stuff", "icons" : ["http://i.imgur.com/ietHgk6.png"], "backgroundVideo" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8"]]
         VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
-            self.shouldRegisterInterstitials = true
+            VObjectManager.sharedManager().shouldRegisterAlerts = true
             }) { (op, err) -> Void in
-                self.shouldRegisterInterstitials = true
+                VObjectManager.sharedManager().shouldRegisterAlerts = true
         }
         #endif
     }
@@ -127,12 +125,12 @@ extension InterstitialManager {
     /// Registers a test "achievement" alert for testing interstitials
     func registerTestAchievementAlert() {
         #if V_SHOW_TEST_ALERT_SETTINGS
-            self.shouldRegisterInterstitials = false
+            VObjectManager.sharedManager().shouldRegisterAlerts = false
             let params = ["type" : "achievement", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icon" : "http://i.imgur.com/4V0xxZC.png"]]
             VObjectManager.sharedManager().registerTestAlert(params, success: { (op, obj, resp) -> Void in
-                self.shouldRegisterInterstitials = true
+                VObjectManager.sharedManager().shouldRegisterAlerts = true
                 }) { (op, err) -> Void in
-                    self.shouldRegisterInterstitials = true
+                    VObjectManager.sharedManager().shouldRegisterAlerts = true
             }
         #endif
     }

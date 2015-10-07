@@ -36,6 +36,8 @@
 #import "VEnvironmentManager.h"
 #import "VObjectManager+ContentModeration.h"
 
+static NSString * const kAlertsKey = @"alerts";
+
 @import VictoriousCommon;
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
@@ -48,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
 @property (nonatomic, strong) NSString *sessionID;
 @property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
+@property (nonatomic, strong) AlertParser *alertParser;
 
 @end
 
@@ -68,10 +71,12 @@ NS_ASSUME_NONNULL_BEGIN
     VObjectManager *manager = [self managerWithBaseURL:currentEnvironment.baseURL];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    [RKMIMETypeSerialization registerClass:[VictoriousAPISerializer class] forMIMEType:RKMIMETypeJSON];
     
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
+    
+    manager.alertParser = [[AlertParser alloc] init];
+    manager.shouldRegisterAlerts = YES;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -216,6 +221,14 @@ NS_ASSUME_NONNULL_BEGIN
             {
                 JSON[kVPayloadKey] = @{@"objects":payload};
             }
+            
+            // Parse alerts payload
+            id alerts = JSON[kAlertsKey];
+            if (alerts != nil && [alerts isKindOfClass:[NSArray class]] && self.shouldRegisterAlerts && self.mainUser != nil)
+            {
+                [self.alertParser parseAlertsWithPayload:alerts];
+            }
+            
             successBlock(operation, JSON, mappedObjects);
         }
         else if (error.errorCode)
