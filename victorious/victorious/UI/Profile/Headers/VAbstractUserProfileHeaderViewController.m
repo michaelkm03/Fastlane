@@ -266,6 +266,15 @@
      {
          [welf reloadObservedProfileProperties];
      }];
+    
+    [self.KVOController observe:user
+                       keyPaths:@[ NSStringFromSelector(@selector(level)),
+                                   NSStringFromSelector(@selector(levelProgressPercentage)) ]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateLevelViews];
+     }];
 }
 
 - (void)reloadObservedProfileProperties

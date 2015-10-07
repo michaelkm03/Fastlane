@@ -18,6 +18,8 @@
 // Views + Helpers
 #import "UIView+AutoLayout.h"
 #import "VTabScaffoldHidingHelper.h"
+#import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 
 // Deep Links
 #import "VDeeplinkHandler.h"
@@ -561,6 +563,8 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     if (self.presentedViewController == nil)
     {
         [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+        // Update info for current user so that we can update level info across app
+        [[VObjectManager sharedManager] fetchUser:[VObjectManager sharedManager].mainUser.remoteId forceReload:YES withSuccessBlock:nil failBlock:nil];
     }
 }
 
