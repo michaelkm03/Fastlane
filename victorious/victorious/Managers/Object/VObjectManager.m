@@ -36,6 +36,8 @@
 #import "VEnvironmentManager.h"
 #import "VObjectManager+ContentModeration.h"
 
+static NSString * const kVAlertsKey = @"alerts";
+
 @import VictoriousCommon;
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.

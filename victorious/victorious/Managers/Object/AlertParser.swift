@@ -20,13 +20,15 @@ class AlertParser: NSObject {
     
     func parseAlerts(payload payload: [[String : AnyObject]]?) {
         // Check if we have any interstitials to register
-        if let interstitials = payload {
-                let parsedInterstitials = AlertParser.parseInterstitials(interstitials)
-                if parsedInterstitials.count > 0 {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        InterstitialManager.sharedInstance.registerInterstitials(parsedInterstitials)
-                    }
-                }
+        guard let interstitials = payload else {
+            return
+        }
+        
+        let parsedInterstitials = AlertParser.parseInterstitials(interstitials)
+        if parsedInterstitials.count > 0 {
+            dispatch_async(dispatch_get_main_queue()) {
+                InterstitialManager.sharedInstance.registerInterstitials(parsedInterstitials)
+            }
         }
     }
     
