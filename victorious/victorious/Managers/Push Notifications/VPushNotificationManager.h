@@ -14,11 +14,6 @@
 extern NSString *const VPushNotificationManagerDidReceiveResponse;
 
 /**
- The key to access the stored push notification token in NSUserDefaults.
- */
-extern NSString *const VPushNotificationTokenDefaultsKey;
-
-/**
  This class registers for push notifications,
  notifies the server of the push token,
  keeps the server updated of login changes.

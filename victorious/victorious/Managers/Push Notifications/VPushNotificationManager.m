@@ -12,7 +12,8 @@
 #import "VConstants.h"
 
 NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
-NSString *const VPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNotificationTokenDefaultsKey";
+
+static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNotificationTokenDefaultsKey";
 
 @interface VPushNotificationManager ()
 
@@ -49,7 +50,7 @@ NSString *const VPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNoti
 - (NSData *)storedToken
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *storedToken = [userDefaults dataForKey:VPushNotificationTokenDefaultsKey];
+    NSData *storedToken = [userDefaults dataForKey:kPushNotificationTokenDefaultsKey];
     return storedToken;
 }
 
@@ -57,11 +58,11 @@ NSString *const VPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNoti
 - (BOOL)storeNewToken:(NSData *)token
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *storedToken = [userDefaults dataForKey:VPushNotificationTokenDefaultsKey];
+    NSData *storedToken = [userDefaults dataForKey:kPushNotificationTokenDefaultsKey];
     
     if ( ![storedToken isEqualToData:token] )
     {
-        [userDefaults setObject:token forKey:VPushNotificationTokenDefaultsKey];
+        [userDefaults setObject:token forKey:kPushNotificationTokenDefaultsKey];
         [userDefaults synchronize];
         
         return YES;
@@ -98,7 +99,8 @@ NSString *const VPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNoti
         return;
     }
 
-    [[VObjectManager sharedManager] registerAPNSToken:storedToken successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [[VObjectManager sharedManager] registerAPNSToken:storedToken
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          if ( success != nil )
          {

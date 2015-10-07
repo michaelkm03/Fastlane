@@ -57,15 +57,17 @@ NSString *const VTestPushNotificationTokenString = @"AAAAAAAAAAAAAAAAABBBBBBBBBB
 {
     // Send in the same push notification token twice and confirm it does not get sent to the server twice.
     __block NSInteger selectorCallCount = 0;
-    
-    [VPushNotificationManager v_swizzleMethod:@selector(sendTokenWithSuccessBlock:failBlock:) withBlock:^ void
+
+    [VPushNotificationManager v_swizzleMethod:@selector(sendTokenWithSuccessBlock:failBlock:)
+                                    withBlock:^void
      {
          selectorCallCount++;
-     } executeBlock:^{
+     }                           executeBlock:^
+     {
          NSData *duplicatedData = self.pushTokenData;
          [self.notificationManager didRegisterForRemoteNotificationsWithDeviceToken:duplicatedData];
          [self.notificationManager didRegisterForRemoteNotificationsWithDeviceToken:duplicatedData];
-         
+
          XCTAssertEqual(selectorCallCount, 1);
      }];
 }

@@ -355,6 +355,7 @@
 		03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */; };
 		03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */; };
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
+		0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */; settings = {ASSET_TAGS = (); }; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1980,6 +1981,7 @@
 		03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverSuggestedPersonCell.xib; sourceTree = "<group>"; };
 		03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLightboxViewController.xib; sourceTree = "<group>"; };
 		04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.release.xcconfig"; sourceTree = "<group>"; };
+		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
@@ -6749,6 +6751,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9935,6 +9938,7 @@
 				F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
+				0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
 				A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */,
