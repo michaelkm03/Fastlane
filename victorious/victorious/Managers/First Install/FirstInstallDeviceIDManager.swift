@@ -19,7 +19,7 @@ import UIKit
     
     /// First try to read device id from a local file. If the file does not exists,
     /// acquire the current device ID and save it to the local file.
-    /// - parameter forHeaderKey: the HTTP header key to extract info for
+    /// - parameter withFileName: the name of the file to store device ID
     /// - returns: the device ID read from local file or generated from current device ID
     func generateFirstInstallDeviceID(withFileName filename: String = defaultDeviceIDFileName) -> String? {
         guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(filename),
