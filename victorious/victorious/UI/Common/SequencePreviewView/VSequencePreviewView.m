@@ -135,7 +135,7 @@
     }
 }
 
-- (BOOL)shouldHideLIkeButton
+- (BOOL)shouldHideLikeButton
 {
     return NO; //< By default, but can be overriden in subclasses
 }
@@ -250,13 +250,13 @@
 - (void)configureLikeButtonForSequence:(VSequence *)sequence
 {
     const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
-    if ( isLikeButtonTemplateEnabled && !self.shouldHideLIkeButton )
+    if ( isLikeButtonTemplateEnabled && !self.shouldHideLikeButton )
     {
         __weak typeof(self) welf = self;
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {
-             __strong typeof(self) strongSelf = welf;
+             __strong typeof(welf) strongSelf = welf;
              [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
              [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];

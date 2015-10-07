@@ -47,7 +47,7 @@
  Designed to be overridden by subclasses for any content types for which the like button shouldn't be enabled.
  Returns no by default, i.e. the like button is enabled by default.
  */
-@property (nonatomic, assign, readonly) BOOL shouldHideLIkeButton;
+@property (nonatomic, assign, readonly) BOOL shouldHideLikeButton;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
