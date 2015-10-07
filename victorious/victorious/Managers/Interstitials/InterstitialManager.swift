@@ -48,7 +48,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             return
         }
         
-        for interstitial in interstitials where !registeredInterstitials.contains({ $0 == interstitial }) && !shownInterstitials.contains({ $0 == interstitial }) && VObjectManager.sharedManager().mainUserLoggedIn == true {
+        for interstitial in interstitials where !registeredInterstitials.contains({ $0 == interstitial }) && !shownInterstitials.contains({ $0 == interstitial }) {
             registeredInterstitials.append(interstitial)
             if let interstitialListener = interstitialListener {
                 interstitialListener.newInterstitialHasBeenRegistered()
