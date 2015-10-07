@@ -12,15 +12,15 @@ import XCTest
 
 class FirstInstallDeviceIDManagerTests: XCTestCase {
     let deviceIDManager = FirstInstallDeviceIDManager()
-    let deviceIDHeaderKey = "FirstInstallDeviceID.txt"
-    let tempFileName = "TemporaryKey"
+    let deviceIDFilename = "FirstInstallDeviceID.txt"
+    let testingFileName = "testingFile.txt"
     let fileManager = NSFileManager()
     var docDir: NSURL? {
         return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
     }
     
     func testGenerationFromExistingFile() {
-        let deviceIDURL = docDir?.URLByAppendingPathComponent(deviceIDHeaderKey)
+        let deviceIDURL = docDir?.URLByAppendingPathComponent(deviceIDFilename)
         let deviceIDPath = deviceIDURL?.path
         
         do {
@@ -34,11 +34,11 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
     }
     
     func testGenerationWithoutFile() {
-        let tempURL = docDir?.URLByAppendingPathComponent(tempFileName)
+        let tempURL = docDir?.URLByAppendingPathComponent(testingFileName)
         let tempPath = tempURL?.path
         
         // Create a temp file with current device ID in it
-        deviceIDManager.generateFirstInstallDeviceID(withFileName: tempFileName)
+        deviceIDManager.generateFirstInstallDeviceID(withFileName: testingFileName)
         
         do {
             let retrivedDeviceID = try NSString(contentsOfFile:tempPath!, encoding: NSUTF8StringEncoding) as String
