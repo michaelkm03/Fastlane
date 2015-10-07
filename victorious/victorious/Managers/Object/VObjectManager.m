@@ -489,6 +489,13 @@ NS_ASSUME_NONNULL_BEGIN
         [request v_setExperimentsHeaderValue:experimentSettings];
     }
     
+    FirstInstallDeviceIDManager *deviceIDManager = [[FirstInstallDeviceIDManager alloc] init];
+    NSString *deviceID = [deviceIDManager generateFirstInstallDeviceIDWithFileName:[FirstInstallDeviceIDManager defaultDeviceIDFileName]];
+    if ( deviceID != nil )
+    {
+        [request v_setIdentiferForVendorHeaderWithFirstInstallDeviceID:deviceID];
+    }
+
     // Add location data to request if we have permission to collect it
     if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread
     {

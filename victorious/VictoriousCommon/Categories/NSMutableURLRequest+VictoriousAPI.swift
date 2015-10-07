@@ -23,6 +23,7 @@ private struct HTTPHeader {
     static let sessionID = "X-Client-Session-ID"
     static let experimentIDs = "X-Client-Experiment-IDs"
     static let geoLocation = "X-Geo-Location"
+    static let firstInstallDeviceID = "X-Client-Install-Device-ID"
 }
 
 extension NSMutableURLRequest {
@@ -60,6 +61,13 @@ extension NSMutableURLRequest {
     /// that has been defined in the Victorious API to identify iOS clients.
     public func v_setPlatformHeader() {
         setValue("iOS", forHTTPHeaderField: HTTPHeader.platform)
+    }
+    
+    /// Sets the value of the "X-Client-Install-Device-ID" header to the locally stored value
+    /// If a local value does not exist, we grab the current IDFV and set it
+    /// - parameter firstInstallDeviceID: the device ID when the app is installed
+    public func v_setIdentiferForVendorHeader(firstInstallDeviceID deviceID: String) {
+        setValue(deviceID, forHTTPHeaderField: HTTPHeader.firstInstallDeviceID)
     }
     
 #if os(iOS)
