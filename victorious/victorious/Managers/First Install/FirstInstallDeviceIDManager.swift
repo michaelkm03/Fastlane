@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-@objc class FirstInstallDeviceIDManager : NSObject {
+@objc class FirstInstallDeviceIDManager: NSObject {
     
     static let defaultDeviceIDFileName = "FirstInstallDeviceID.txt"
     private let fileManager = NSFileManager()
