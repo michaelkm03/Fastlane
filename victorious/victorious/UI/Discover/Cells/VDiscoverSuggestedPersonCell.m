@@ -86,6 +86,11 @@
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated
 {
+    if (_user == user)
+    {
+        return;
+    }
+    
     if (!animated)
     {
         self.user = user;

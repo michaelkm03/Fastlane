@@ -97,6 +97,8 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (void)didLoadWithUsers:(NSArray *)users
 {
+    BOOL shouldReload = ![self.suggestedUsers isEqualToArray:users];
+    
     if ( users.count == 0 )
     {
         [self clearData];
@@ -112,8 +114,12 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     {
         [self.delegate suggestedPeopleDidFinishLoading];
     }
-    
-    [self.collectionView reloadData];
+
+    // Only reload if we have new content
+    if (shouldReload)
+    {
+        [self.collectionView reloadData];
+    }
 }
 
 - (void)didFailToLoadWithError:(NSError *)error
