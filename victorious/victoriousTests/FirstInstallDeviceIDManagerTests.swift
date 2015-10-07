@@ -15,12 +15,10 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
     let testingFileName = "testingFile.txt"
     let deviceIDManager = FirstInstallDeviceIDManager()
     let fileManager = NSFileManager()
-    
     var testingFileURL: NSURL? {
         let docDir = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
         return docDir?.URLByAppendingPathComponent(testingFileName)
     }
-    
     var testingFilePath: String? {
         return testingFileURL?.path
     }
