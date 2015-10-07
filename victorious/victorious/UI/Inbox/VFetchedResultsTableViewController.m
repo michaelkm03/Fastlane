@@ -143,7 +143,15 @@
         case NSFetchedResultsChangeUpdate:
             if (!newIndexPath)
             {
-                [self.tableView reloadData];
+                NSOperatingSystemVersion iOS8 = {8, 0, 0};
+                if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] && [[[NSProcessInfo alloc] init] isOperatingSystemAtLeastVersion:iOS8])
+                {
+                    [self.tableView reloadData];
+                }
+                else
+                {
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                }
             }
             else
             {
