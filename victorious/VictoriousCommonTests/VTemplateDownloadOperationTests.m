@@ -174,14 +174,8 @@
     
     self.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     
-    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
-    downloader.mockTemplateDictionary = @{ @"previous": @"template" };
-    
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
-    downloadOperation.buildNumber = self.buildNumber;
-    downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
-    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
+    //Ideally, this implementation detail would be taken care of by a different setup step sent to the template download operation.
+    [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:@"com.victorious.currentBuildNumber"];
 }
 
 - (void)tearDown
