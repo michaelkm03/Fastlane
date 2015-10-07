@@ -57,8 +57,9 @@ class ContentViewPresenter: NSObject {
                     if viewController.presentedViewController != nil {
                         viewController.dismissViewControllerAnimated( false, completion: nil )
                     }
-                    
-                    contentViewController.transitioningDelegate = transitionDelegate
+                    if (context.contentPreviewProvider != nil) {
+                        contentViewController.transitioningDelegate = transitionDelegate;
+                    }
                     viewController.presentViewController( contentViewController, animated: true, completion: nil )
                 }
         }
