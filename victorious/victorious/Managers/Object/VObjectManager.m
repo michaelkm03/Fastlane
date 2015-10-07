@@ -36,7 +36,7 @@
 #import "VEnvironmentManager.h"
 #import "VObjectManager+ContentModeration.h"
 
-static NSString * const kVAlertsKey = @"alerts";
+static NSString * const kAlertsKey = @"alerts";
 
 @import VictoriousCommon;
 
@@ -223,7 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
             }
             
             // Parse alerts payload
-            id alerts = JSON[kVAlertsKey];
+            id alerts = JSON[kAlertsKey];
             if (alerts != nil && [alerts isKindOfClass:[NSArray class]] && self.shouldRegisterAlerts && self.mainUser != nil)
             {
                 [self.alertParser parseAlertsWithPayload:alerts];
