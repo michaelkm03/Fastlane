@@ -26,7 +26,6 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
     }
     
     func testGenerationFromExistingFile() {
-        
         do {
             try testingFileName.writeToFile(testingFilePath!, atomically: true, encoding: NSUTF8StringEncoding)
         }
@@ -52,8 +51,7 @@ class FirstInstallDeviceIDManagerTests: XCTestCase {
     }
     
     func testGenerationWithoutFile() {
-        
-        // Create a temp file with current device ID in it
+        // Create a testing file with testing device ID in it
         deviceIDManager.generateFirstInstallDeviceID(withFileName: testingFileName)
         
         do {
