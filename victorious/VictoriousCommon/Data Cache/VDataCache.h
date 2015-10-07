@@ -57,6 +57,11 @@ extern NSString * const VDataCacheBundleResourceExtension;
 - (BOOL)cacheData:(NSData *)data forID:(id<VDataCacheID>)identifier error:(NSError **)error;
 
 /**
+ Deletes the data, if any is present, at the provided identifier.
+ */
+- (BOOL)removeCachedDataForID:(id<VDataCacheID>)identifier error:(NSError **)error;
+
+/**
  Copies the file at the given URL to the cache and associates it with the given ID.
  If other data has previously been cached with this ID, it will be overwritten.
  */

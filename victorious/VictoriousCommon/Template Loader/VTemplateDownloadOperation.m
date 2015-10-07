@@ -33,6 +33,7 @@
 
 static const NSTimeInterval kDefaultTemplateDownloadTimeout = 5.0;
 static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
+static NSString * const kTemplateBuildNumberKey = @"com.victorious.currentBuildNumber";
 
 static char kPrivateQueueSpecific;
 
@@ -170,6 +171,8 @@ static char kPrivateQueueSpecific;
                     id<VDataCacheID> templateConfigurationCacheID = strongSelf.templateConfigurationCacheID;
                     if ( templateConfigurationCacheID != nil && !strongSelf.isCancelled )
                     {
+                        [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:kTemplateBuildNumberKey];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                         [strongSelf.dataCache cacheData:data forID:templateConfigurationCacheID error:nil];
                         self.completedSuccessfully = YES;
                     }
@@ -268,6 +271,8 @@ static char kPrivateQueueSpecific;
         return;
     }
     
+    [self removeExpiredTemplateCache];
+    
     NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
     if ( templateData == nil )
     {
@@ -288,6 +293,21 @@ static char kPrivateQueueSpecific;
             [self.delegate templateDownloadOperationDidFallbackOnCache:self];
         }
         self.cacheUsed = YES;
+    }
+}
+
+- (void)removeExpiredTemplateCache
+{
+    NSAssert(self.buildNumber != nil, @"VTemplateDownloadOperation should have build number set before loading the template");
+    if ( self.buildNumber == nil )
+    {
+        return;
+    }
+    
+    NSString *oldBuildNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kTemplateBuildNumberKey];
+    if ( ![self.buildNumber isEqualToString:oldBuildNumber] )
+    {
+        [self.dataCache removeCachedDataForID:self.templateConfigurationCacheID error:nil];
     }
 }
 

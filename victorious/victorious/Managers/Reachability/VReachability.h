@@ -52,9 +52,10 @@
 
 typedef NS_ENUM(NSInteger, VNetworkStatus)
 {
-    VNetworkStatusNotReachable = 0,
+    VNetworkStatusUnknown = 0,
     VNetworkStatusReachableViaWiFi,
-    VNetworkStatusReachableViaWWAN
+    VNetworkStatusReachableViaWWAN,
+    VNetworkStatusNotReachable
 };
 
 

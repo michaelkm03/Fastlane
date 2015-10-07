@@ -42,6 +42,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, strong) VLoginOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) VNetworkStatus priorNetworkStatus;
 
 @end
 
@@ -80,7 +82,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 {
     [super viewDidAppear:animated];
 
-    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] == VNetworkStatusNotReachable)
+    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
     }
@@ -88,6 +91,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         [self startLoading];
     }
+    self.priorNetworkStatus = currentNetworkStatus;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -144,27 +148,36 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] == VNetworkStatusNotReachable)
+    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
     }
-    else
+    else if (self.priorNetworkStatus == VNetworkStatusNotReachable)
     {
         [self hideReachabilityNotice];
         [self startLoading];
     }
+    self.priorNetworkStatus = currentNetworkStatus;
 }
 
 #pragma mark - Loading
 
 - (void)startLoading
 {
+    if ( self.isLoading )
+    {
+        return;
+    }
+    self.isLoading = YES;
+    
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
     self.loginOperation = [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
+    self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
     [self.templateDownloadOperation addDependency:self.loginOperation];
     [self.operationQueue addOperation:self.templateDownloadOperation];
@@ -176,11 +189,12 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         if ( strongSelf != nil )
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                self.progressHUD.taskInProgress = NO;
-                [self.progressHUD hide:YES];
-                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
-            });
+                           {
+                               strongSelf.isLoading = NO;
+                               strongSelf.progressHUD.taskInProgress = NO;
+                               [strongSelf.progressHUD hide:YES];
+                               [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
+                           });
         }
     }];
     [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
