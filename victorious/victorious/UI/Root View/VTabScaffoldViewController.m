@@ -563,8 +563,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     if (self.presentedViewController == nil)
     {
         [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
-        // Update info for current user so that we can update level info across app
-        [[VObjectManager sharedManager] fetchUser:[VObjectManager sharedManager].mainUser.remoteId forceReload:YES withSuccessBlock:nil failBlock:nil];
     }
 }
 
