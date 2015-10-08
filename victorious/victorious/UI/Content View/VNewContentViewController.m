@@ -1238,21 +1238,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.viewModel addCommentWithText:commentText
                          publishParameters:self.publishParameters
                                currentTime:self.realtimeCommentBeganTime
-                                completion:^(BOOL succeeded)
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [strongSelf reloadComments];
-         }];
+                                completion:nil];
     }
     else
     {
         [self.viewModel addCommentWidhText:commentText
                          publishParameters:self.publishParameters
-                                completion:^(BOOL succeeded)
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [strongSelf reloadComments];
-         }];
+                                completion:nil];
     }
 }
 
