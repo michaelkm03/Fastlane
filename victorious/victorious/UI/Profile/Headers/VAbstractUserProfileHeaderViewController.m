@@ -17,6 +17,8 @@
 #import "VImageAssetFinder.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+@import KVOController;
+
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;

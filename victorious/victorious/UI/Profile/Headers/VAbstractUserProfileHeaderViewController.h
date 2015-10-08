@@ -11,8 +11,6 @@
 #import "VUserProfileHeader.h"
 #import "VButton.h"
 
-#import <KVOController/FBKVOController.h>
-
 @class VUser, VDefaultProfileImageView, VDependencyManager;
 
 @interface VAbstractUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>

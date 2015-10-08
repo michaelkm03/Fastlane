@@ -18,8 +18,6 @@
 // Views + Helpers
 #import "UIView+AutoLayout.h"
 #import "VTabScaffoldHidingHelper.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 
 // Deep Links
 #import "VDeeplinkHandler.h"

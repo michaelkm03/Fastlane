@@ -18,6 +18,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+@import KVOController;
+
 static const NSTimeInterval levelProgressAnimationTime = 2;
 static const CGFloat kMinimumBlurredImageSize = 50.0;
 static NSString * const kLevelBadgeKey = @"animatedBadge";
@@ -66,7 +68,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     if ([self badgeViewNeedsToBeUpdated])
     {
         // Remove all subviews from badge container view
-        for (UIView *view in self.badgeContainerView.subviews)
+        for (UIView *view in [self.badgeContainerView.subviews copy])
         {
             [view removeFromSuperview];
         }
@@ -76,6 +78,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         {
             [self.badgeContainerView addSubview:viewToContain];
             [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
+            // Otherwise the badge's shape layer won't always animate it's stroke
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
             {
                 [self animateProgress];
@@ -121,11 +124,9 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 - (BOOL)badgeViewNeedsToBeUpdated
 {
-    BOOL needToUpdate = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
+    return ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
     self.badgeView.progressPercentage != self.user.levelProgressPercentage.integerValue ||
     self.badgeView.superview == nil;
-    
-    return needToUpdate;
 }
 
 #pragma mark - VUserProfileHeader
