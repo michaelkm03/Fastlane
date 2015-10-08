@@ -314,15 +314,16 @@ static NSString * const kCreationFlowSourceSearch = @"search";
             [videoCamera clearCaptureState];
         }
     }
-    else if ([self validateMediaURL:mediaURL andPreviewImage:previewImage])
+    else if ( mediaURL == nil && previewImage == nil )
+    {
+        [self showAlertForBadMediaFileSelected];
+        return;
+    }
+    else
     {
         [self prepareWorkspaceWithMediaURL:mediaURL
                            andPreviewImage:previewImage];
         [self pushViewController:self.workspaceViewController animated:YES];
-    }
-    else
-    {
-        [self showAlertForBadMediaFileSelected];
     }
 }
 
