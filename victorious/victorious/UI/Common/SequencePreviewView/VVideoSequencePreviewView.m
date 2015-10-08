@@ -103,6 +103,13 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                                   options:kNilOptions
                                                                                   metrics:constraintMetrics
                                                                                     views:constraintViews]];
+    [self.largePlayButton addConstraint:[NSLayoutConstraint constraintWithItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
