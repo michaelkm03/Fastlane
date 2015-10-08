@@ -54,7 +54,6 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
         size.height += max(titleHeight, seeAllButtonHeight)
         
         size.height += NSString(string: shelf.caption).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.detailFont]).height
-        size.height += Constants.detailToCollectionViewVerticalSpace
         
         return size
     }
