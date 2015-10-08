@@ -13,6 +13,8 @@
 #import "VVideoPlayerToolbarView.h"
 #import "VPassthroughContainerView.h"
 
+static const CGFloat kMinimumPlayButtonInset = 24.0f;
+
 /**
  Describes the state of the video preview view
  */
@@ -90,6 +92,24 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    
+    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset) };
+    NSDictionary *constraintViews = @{ @"playButton" : self.largePlayButton };
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset)-[playButton]-(>=minInset)-|"
+                                                                                  options:kNilOptions
+                                                                                  metrics:constraintMetrics
+                                                                                    views:constraintViews]];
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset)-[playButton]-(>=minInset)-|"
+                                                                                  options:kNilOptions
+                                                                                  metrics:constraintMetrics
+                                                                                    views:constraintViews]];
+    [self.largePlayButton addConstraint:[NSLayoutConstraint constraintWithItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
