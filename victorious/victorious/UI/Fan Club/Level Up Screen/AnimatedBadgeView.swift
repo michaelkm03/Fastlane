@@ -197,7 +197,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         animatingHexagonView.reset()
         animatingHexagonView.animateStroke(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
     }
-        
+    
     /// Resets progress bar back to zero
     func resetProgress(animated: Bool = false) {
         UIView.animateWithDuration(0.8, animations: { () in
