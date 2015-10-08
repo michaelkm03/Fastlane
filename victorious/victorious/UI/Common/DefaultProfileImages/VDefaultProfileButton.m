@@ -72,7 +72,8 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
     _imageURL = url;
-    
+    self.imageView.layer.cornerRadius = self.bounds.size.width / 2;
+    self.imageView.layer.masksToBounds = YES;
     __weak typeof(self) weakSelf = self;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
@@ -86,15 +87,10 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
              [strongSelf setImage:[strongSelf placeholderImage] forState:controlState];
              return;
          }
-         
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
-                        {
-                            UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
-                            dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               [strongSelf setImage:roundedImage forState:controlState];
-                                           });
-                        });
+         else
+         {
+             [strongSelf setImage:image forState:UIControlStateNormal];
+         }
      }];
 }
 
