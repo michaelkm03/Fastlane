@@ -201,14 +201,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
-        
-        NSArray *keyPaths = [templateDecorator keyPathsForKey:@"marqueeCell"];
-        NSParameterAssert( keyPaths.count > 0 );
-        for ( NSString *keyPath in keyPaths )
-        {
-            NSString *likeButtonKeyPath = [keyPath stringByAppendingPathComponent:@"likeButtonEnabled"];
-            NSParameterAssert( [templateDecorator setTemplateValue:@YES forKeyPath:likeButtonKeyPath] );
-        }
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
