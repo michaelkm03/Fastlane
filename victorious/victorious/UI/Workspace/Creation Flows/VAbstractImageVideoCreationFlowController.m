@@ -314,12 +314,31 @@ static NSString * const kCreationFlowSourceSearch = @"search";
             [videoCamera clearCaptureState];
         }
     }
+    else if ( mediaURL == nil && previewImage == nil )
+    {
+        [self showAlertForBadMediaFileSelected];
+        return;
+    }
     else
     {
         [self prepareWorkspaceWithMediaURL:mediaURL
                            andPreviewImage:previewImage];
         [self pushViewController:self.workspaceViewController animated:YES];
     }
+}
+
+- (void)showAlertForBadMediaFileSelected
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction *_Nonnull action)
+                      {
+                          [[self navigationController] popViewControllerAnimated:YES];
+                      }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate
