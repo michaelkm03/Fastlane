@@ -267,9 +267,13 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         videoPlayer.playFromStart()
     }
     
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        UIView.animateWithDuration(0.2) {
-            self.videoBackground.alpha = 0
+    func videoPlayer(videoPlayer: VVideoPlayer, didPlayToTime time: Float64) {
+        let fadeOutTime = 1.0
+        let timeLeft = videoPlayer.durationSeconds - videoPlayer.currentTimeSeconds
+        if timeLeft <= fadeOutTime {
+            UIView.animateWithDuration(fadeOutTime) {
+                self.videoBackground.alpha = 0
+            }
         }
     }
 }
