@@ -1,5 +1,5 @@
 //
-//  VideoTrackingHelper.swift
+//  VideoTrackingEvent.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 8/13/15.
