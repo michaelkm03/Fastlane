@@ -143,7 +143,7 @@
         case NSFetchedResultsChangeUpdate:
             if (!newIndexPath)
             {
-                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView reloadData];
             }
             else
             {
