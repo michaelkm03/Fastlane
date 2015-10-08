@@ -327,11 +327,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     }
 }
 
-- (BOOL)validateMediaURL:(NSURL *)mediaURL andPreviewImage:(UIImage *)previewImage
-{
-    return ( mediaURL != nil && previewImage != nil );
-}
-
 - (void)showAlertForBadMediaFileSelected
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
