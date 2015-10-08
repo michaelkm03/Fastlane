@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4kM-qk-MIU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4kM-qk-MIU">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
         <!--Level Up View Controller-->
@@ -16,10 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFE-JS-uKA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9L-1p-Rsf">
                                 <rect key="frame" x="30" y="531" width="540" height="44"/>
                                 <constraints>
@@ -36,17 +33,12 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="s9L-1p-Rsf" firstAttribute="trailing" secondItem="iTk-eB-hlE" secondAttribute="trailing" constant="-30" id="AUl-Zi-eoP"/>
-                            <constraint firstItem="WFE-JS-uKA" firstAttribute="height" secondItem="iTk-eB-hlE" secondAttribute="height" id="PQg-08-C9M"/>
-                            <constraint firstItem="WFE-JS-uKA" firstAttribute="width" secondItem="iTk-eB-hlE" secondAttribute="width" id="R2z-pl-gOF"/>
                             <constraint firstItem="dWv-QT-3WT" firstAttribute="top" secondItem="s9L-1p-Rsf" secondAttribute="bottom" constant="25" id="VqN-c2-ut7"/>
-                            <constraint firstAttribute="centerY" secondItem="WFE-JS-uKA" secondAttribute="centerY" id="ZBo-K7-C5V"/>
                             <constraint firstItem="s9L-1p-Rsf" firstAttribute="leading" secondItem="iTk-eB-hlE" secondAttribute="leading" constant="30" id="dzQ-sg-spf"/>
-                            <constraint firstAttribute="centerX" secondItem="WFE-JS-uKA" secondAttribute="centerX" id="x5q-QB-BTr"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dismissButton" destination="s9L-1p-Rsf" id="sAs-SP-UsX"/>
-                        <outlet property="semiTransparentOverlay" destination="WFE-JS-uKA" id="5LO-1N-rwu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VPV-KF-A4E" sceneMemberID="firstResponder"/>

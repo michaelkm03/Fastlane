@@ -34,7 +34,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         }
     }
     
-    @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
     private var badgeView: AnimatedBadgeView?
@@ -143,7 +142,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         view.backgroundColor = UIColor.blackColor()
         
         videoBackground.delegate = self
-        view.insertSubview(videoBackground, belowSubview: semiTransparentOverlay)
+        view.addSubview(videoBackground)
+        view.sendSubviewToBack(videoBackground)
         
         layoutContent()
         
