@@ -29,6 +29,32 @@ static const NSInteger kAllCommentsZIndex = 6666;
 
 @implementation VShrinkingContentLayout
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    _catchPoint = CGPointZero;
+    _lockPoint = CGPointZero;
+}
+
 #pragma mark - UICollectionViewLayout
 
 - (void)prepareLayout
@@ -264,8 +290,14 @@ static const NSInteger kAllCommentsZIndex = 6666;
 
 - (void)calculateCatchAndLockPoints
 {
-    self.catchPoint = [self calculateCatchPoint];
-    self.lockPoint = [self calculateLockPoint];
+    if (CGPointEqualToPoint(self.catchPoint, CGPointZero))
+    {
+        self.catchPoint = [self calculateCatchPoint];
+    }
+    if (CGPointEqualToPoint(self.lockPoint, CGPointZero))
+    {
+        self.lockPoint = [self calculateLockPoint];
+    }
 }
 
 - (CGPoint)calculateCatchPoint
