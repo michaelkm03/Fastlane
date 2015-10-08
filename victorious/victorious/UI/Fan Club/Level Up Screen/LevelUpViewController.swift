@@ -174,7 +174,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             }
             
             let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
-            videoPlayerItem.loop = true
+            videoPlayerItem.loop = false
             videoPlayerItem.muted = true
             self.videoBackground.setItem( videoPlayerItem )
         }
@@ -265,6 +265,12 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
+    }
+    
+    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
+        UIView.animateWithDuration(0.2) {
+            self.videoBackground.alpha = 0
+        }
     }
 }
 
