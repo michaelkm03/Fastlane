@@ -15,7 +15,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
-#import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
@@ -122,7 +121,7 @@
     
     [self applyStyle];
     [self setupKVOControllerWithUser:self.user];
-    [self updateLevelViews];
+    [self userHasChanged];
 }
 
 - (void)reloadProfileImage
@@ -133,6 +132,11 @@
 - (void)updateProfileImage
 {
     NSAssert( NO, @"Must be overridden by subclasses." );
+}
+
+- (void)userHasChanged
+{
+    // Implement in sublass
 }
 
 - (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize
@@ -266,15 +270,6 @@
      {
          [welf reloadObservedProfileProperties];
      }];
-    
-    [self.KVOController observe:user
-                       keyPaths:@[ NSStringFromSelector(@selector(level)),
-                                   NSStringFromSelector(@selector(levelProgressPercentage)) ]
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         [welf updateLevelViews];
-     }];
 }
 
 - (void)reloadObservedProfileProperties
@@ -282,11 +277,6 @@
     self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
     self.taglineLabel.text = self.user.tagline;
-}
-
-- (void)updateLevelViews
-{
-    // Implement in subclasses
 }
 
 @end

@@ -68,10 +68,9 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
 - (void)reloadProfileImage;
 
 /**
- Called when the profile is refreshed in order to update any views specific
- to the user's level
+ Gets called after the user changes.
  */
-- (void)updateLevelViews;
+- (void)userHasChanged;
 
 /**
  Delegate that will receive forwarded input from the user.

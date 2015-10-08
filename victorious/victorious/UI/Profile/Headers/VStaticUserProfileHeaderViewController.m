@@ -56,27 +56,40 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     [super viewDidAppear:animated];
     
-    if ([self badgeNeedsToBeUpdated])
-    {
-        [self animateBadge];
-    }
+    [self updateBadgeView];
 }
 
 #pragma mark - Helpers
 
 - (void)updateBadgeView
 {
-    // Remove all subviews from badge container view
-    for (UIView *view in self.badgeContainerView.subviews)
+    if ([self badgeViewNeedsToBeUpdated])
     {
-        [view removeFromSuperview];
+        // Remove all subviews from badge container view
+        for (UIView *view in self.badgeContainerView.subviews)
+        {
+            [view removeFromSuperview];
+        }
+        
+        UIView *viewToContain = [self configuredBadgeView];
+        if (viewToContain != nil)
+        {
+            [self.badgeContainerView addSubview:viewToContain];
+            [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [self animateProgress];
+            });
+        }
     }
-    
-    UIView *viewToContain = [self configuredBadgeView];
-    if (viewToContain != nil)
+}
+
+- (void)animateProgress
+{
+    if (self.state == VUserProfileHeaderStateCurrentUser)
     {
-        [self.badgeContainerView addSubview:viewToContain];
-        [self.badgeContainerView v_addFitToParentConstraintsToSubview:viewToContain];
+        NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
+        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage completion:nil];
     }
 }
 
@@ -106,32 +119,13 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     return nil;
 }
 
-- (void)animateBadge
+- (BOOL)badgeViewNeedsToBeUpdated
 {
-    if (self.badgeView != nil && self.state == VUserProfileHeaderStateCurrentUser && !self.badgeView.isAnimating)
-    {
-        // Animate progress towards next level for current user's profile
-        NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
-        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage completion:nil];
-    }
-}
-
-- (void)updateLevelViews
-{
-    if ([self badgeNeedsToBeUpdated])
-    {
-        // Update the badge to reflect changes
-        [self updateBadgeView];
-    }
-}
-
-- (BOOL)badgeNeedsToBeUpdated
-{
-    BOOL progressDiffers = self.user.levelProgressPercentage.integerValue != self.badgeView.currentProgressPercentage;
-    BOOL levelDiffers = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue];
-    return (progressDiffers || levelDiffers) && !self.badgeView.isAnimating;
+    BOOL needToUpdate = ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
+    self.badgeView.progressPercentage != self.user.levelProgressPercentage.integerValue ||
+    self.badgeView.superview == nil;
     
-    return NO;
+    return needToUpdate;
 }
 
 #pragma mark - VUserProfileHeader
@@ -142,6 +136,24 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 }
 
 #pragma mark - VAbstractUserProfileHeaderViewController overrides
+
+- (void)userHasChanged
+{
+    // We have a new user, update badge view
+    [self updateBadgeView];
+
+    __weak typeof(self) welf = self;
+    
+    // If user level changes, make sure to update the badge
+    [self.KVOController observe:self.user
+                       keyPaths:@[ NSStringFromSelector(@selector(level)),
+                                   NSStringFromSelector(@selector(levelProgressPercentage)) ]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateBadgeView];
+     }];
+}
 
 - (VDefaultProfileImageView *)profileImageView
 {

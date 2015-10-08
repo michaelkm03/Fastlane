@@ -399,7 +399,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
-         [self.profileHeaderViewController updateLevelViews];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
