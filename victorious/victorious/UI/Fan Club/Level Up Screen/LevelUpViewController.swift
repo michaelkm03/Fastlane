@@ -272,7 +272,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     func videoPlayer(videoPlayer: VVideoPlayer, didPlayToTime time: Float64) {
         let fadeOutTime = 1.0
         let timeLeft = videoPlayer.durationSeconds - videoPlayer.currentTimeSeconds
-        if timeLeft <= fadeOutTime {
+        // Add a small 0.1s of padding in case we receive this callback late
+        if timeLeft <= fadeOutTime + 0.1 {
             UIView.animateWithDuration(fadeOutTime) {
                 self.videoBackground.alpha = 0
             }
