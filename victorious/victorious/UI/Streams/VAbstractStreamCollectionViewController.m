@@ -129,7 +129,7 @@
     }
     else if ( self.isRefreshingFirstPage )
     {
-        [self safelyMakeRefreshControlRefresh:YES];
+        [self.refreshControl beginRefreshing];
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -165,7 +165,7 @@
                                                   isBeingDismissed:self.isBeingDismissed];
     
     self.navigationControllerScrollDelegate = nil;
-    [self safelyMakeRefreshControlRefresh:NO];
+    [self.refreshControl endRefreshing];
 }
 
 - (void)viewDidLayoutSubviews
@@ -296,13 +296,13 @@
     {
         if ( !self.isRefreshingFirstPage )
         {
-            [self safelyMakeRefreshControlRefresh:NO];
+            [self.refreshControl endRefreshing];
         }
         return;
     }
     
     self.isRefreshingFirstPage = YES;
-    [self safelyMakeRefreshControlRefresh:YES];
+    [self.refreshControl beginRefreshing];
     
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
@@ -323,30 +323,18 @@
              completionBlock();
          }
          self.isRefreshingFirstPage = NO;
-         [self safelyMakeRefreshControlRefresh:NO];
+         [self.refreshControl endRefreshing];
      }
                             failure:^(NSError *error)
      {
          self.isRefreshingFirstPage = NO;
-         [self safelyMakeRefreshControlRefresh:NO];
+         [self.refreshControl endRefreshing];
          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
          hud.mode = MBProgressHUDModeText;
          hud.labelText = NSLocalizedString(@"RefreshError", @"");
          hud.userInteractionEnabled = NO;
          [hud hide:YES afterDelay:3.0];
      }];
-}
-
-- (void)safelyMakeRefreshControlRefresh:(BOOL)refresh
-{
-    if ( refresh && !self.refreshControl.isRefreshing )
-    {
-        [self.refreshControl beginRefreshing];
-    }
-    else if ( !refresh && self.refreshControl.isRefreshing )
-    {
-        [self.refreshControl endRefreshing];
-    }
 }
 
 - (void)positionRefreshControl
