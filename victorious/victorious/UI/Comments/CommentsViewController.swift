@@ -125,9 +125,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
         
         // Do this here so that the keyboard bar animates in with pushes
-        dispatch_after(0.1){
+        dispatch_after(0.1) {
             self.updateInsetForKeyboardBarState()
-            focusHelper?.updateFocus()
+            self.focusHelper?.updateFocus()
         }
     }
     
