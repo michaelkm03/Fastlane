@@ -1232,7 +1232,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)submitCommentWithText:(NSString *)commentText
 {
-    __weak typeof(self) welf = self;
     if ( self.enteringRealTimeComment )
     {
         [self.viewModel addCommentWithText:commentText

@@ -34,21 +34,6 @@
 {
     [super viewDidLoad];
     
-    if ( self.previewImage == nil && self.mediaURL == nil )
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                  style:UIAlertActionStyleDefault
-                                                handler:^(UIAlertAction *_Nonnull action)
-                          {
-                              [[self navigationController] popViewControllerAnimated:YES];
-                          }]];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
-    }
-    
     if (self.previewImage != nil)
     {
         [self.blurredBackgroundImageView blurAndAnimateImageToVisible:self.previewImage
