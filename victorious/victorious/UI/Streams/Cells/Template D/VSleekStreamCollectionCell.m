@@ -530,8 +530,14 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     event.autoPlay = YES;
     
     id<VideoTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(VideoTracking)];
-    NSAssert( responder != nil, @"Unable to find a responder conforming to `VideoTracking`" );
-    [responder trackAutoplayEvent:event];
+    if ( responder != nil )
+    {
+        [responder trackAutoplayEvent:event];
+    }
+    else
+    {
+        [event track];
+    }
 }
 
 - (NSDictionary *__nonnull)additionalInfo
