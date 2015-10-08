@@ -25,15 +25,13 @@
 - (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
-- (BOOL)isRemoteVideo;
+- (BOOL)isRemoteVideoWithSource:(NSString *)source;
 
 - (VNode *)firstNode;
 
 - (NSArray *)initialImageURLs;
 
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
-
-- (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType;
 
 - (NSArray *)dateSortedComments;
 

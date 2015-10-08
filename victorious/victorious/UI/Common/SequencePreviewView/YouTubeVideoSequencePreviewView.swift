@@ -1,5 +1,5 @@
 //
-//  VRemoteVideoSequencePreviewView.swift
+//  YouTubeVideoSequencePreviewView.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 9/24/15.
@@ -8,7 +8,9 @@
 
 import UIKit
 
-class VRemoteVideoSequencePreviewView : VVideoSequencePreviewView {
+class YouTubeVideoSequencePreviewView : VVideoSequencePreviewView {
+    
+    class func remoteSourceName() -> String { return "YouTube" }
     
     override var likeButtonDisabled: Bool {
         // The like button covers the YouTube logo in the player,
@@ -29,7 +31,7 @@ class VRemoteVideoSequencePreviewView : VVideoSequencePreviewView {
     }
     
     override func createVideoPlayerWithFrame(frame: CGRect) -> VVideoPlayer {
-        return VRemoteVideoPlayer()
+        return YouTubeVideoPlayer()
     }
     
     override var focusType: VFocusType {

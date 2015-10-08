@@ -158,42 +158,22 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return [self.nodes.array firstObject];
 }
 
-- (BOOL)isRemoteVideo
+- (BOOL)isRemoteVideoWithSource:(NSString *)source
 {
     VNode *node = self.firstNode;
-    if ( node == nil )
+    if ( node == nil || source.length == 0 )
     {
         return NO;
     }
     
     for (VAsset *asset in node.assets)
     {
-        if ( asset.remotePlayback.boolValue && asset.remoteContentId != nil )
+        if ( asset.remotePlayback.boolValue && asset.remoteContentId != nil && [asset.remoteSource isEqualToString:source] )
         {
             return YES;
         }
     }
     return NO;
-}
-
-- (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType
-{
-    VNode *node = self.firstNode;
-    if ( node == nil )
-    {
-        return nil;
-    }
-    
-    VAsset *primaryAsset = [node.assets firstObject];
-    for (VAsset *asset in node.assets)
-    {
-        if ([asset.mimeType isEqualToString:mimeType])
-        {
-            primaryAsset = asset;
-            break;
-        }
-    }
-    return primaryAsset;
 }
 
 - (CGFloat)previewAssetAspectRatio

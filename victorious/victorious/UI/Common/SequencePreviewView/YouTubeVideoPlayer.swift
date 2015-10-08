@@ -1,5 +1,5 @@
 //
-//  VRemoteVideoSequencePreviewView.swift
+//  YouTubeVideoPlayer.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 9/21/15.
@@ -9,11 +9,11 @@
 import UIKit
 import youtube_ios_player_helper
 
-class VRemoteVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
+class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     private var currentItem: VVideoPlayerItem?
 
-    let playerView = YTPlayerView()
+    private let playerView = YTPlayerView()
     
     // MARK: - VVideoPlayer
     

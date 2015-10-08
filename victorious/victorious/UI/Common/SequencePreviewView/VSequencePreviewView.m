@@ -43,9 +43,9 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isRemoteVideo] )
+        if ( [sequence isRemoteVideoWithSource:[YouTubeVideoSequencePreviewView remoteSourceName]] )
         {
-            classType = [VRemoteVideoSequencePreviewView class];
+            classType = [YouTubeVideoSequencePreviewView class];
         }
         else if ( [sequence isGIFVideo] )
         {

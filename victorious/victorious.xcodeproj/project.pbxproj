@@ -745,8 +745,8 @@
 		A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9C51A83F2AD00A3D3A0 /* VLargeNumberFormatter.m */; };
 		A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9CD1A83F2F500A3D3A0 /* VVideoUtils.m */; };
 		A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9CF1A83F2F500A3D3A0 /* VVideoView.m */; };
-		A7B0E0791BC4423500593B21 /* VRemoteVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0771BC4423500593B21 /* VRemoteVideoPlayer.swift */; settings = {ASSET_TAGS = (); }; };
-		A7B0E07A1BC4423500593B21 /* VRemoteVideoSequencePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0781BC4423500593B21 /* VRemoteVideoSequencePreviewView.swift */; settings = {ASSET_TAGS = (); }; };
+		A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */; settings = {ASSET_TAGS = (); }; };
+		A7B0E07A1BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */; settings = {ASSET_TAGS = (); }; };
 		A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */; };
 		A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */; };
 		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
@@ -2687,8 +2687,8 @@
 		A7AEF9CD1A83F2F500A3D3A0 /* VVideoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoUtils.m; sourceTree = "<group>"; };
 		A7AEF9CE1A83F2F500A3D3A0 /* VVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoView.h; sourceTree = "<group>"; };
 		A7AEF9CF1A83F2F500A3D3A0 /* VVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoView.m; sourceTree = "<group>"; };
-		A7B0E0771BC4423500593B21 /* VRemoteVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRemoteVideoPlayer.swift; sourceTree = "<group>"; };
-		A7B0E0781BC4423500593B21 /* VRemoteVideoSequencePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRemoteVideoSequencePreviewView.swift; sourceTree = "<group>"; };
+		A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayer.swift; sourceTree = "<group>"; };
+		A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeVideoSequencePreviewView.swift; sourceTree = "<group>"; };
 		A7B5144B1A4517A80074282F /* VSwipeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeCollectionViewCell.h; sourceTree = "<group>"; };
 		A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeCollectionViewCell.m; sourceTree = "<group>"; };
 		A7B5144D1A4517A80074282F /* VSwipeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeTableViewCell.h; sourceTree = "<group>"; };
@@ -7299,8 +7299,8 @@
 				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
 				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
-				A7B0E0771BC4423500593B21 /* VRemoteVideoPlayer.swift */,
-				A7B0E0781BC4423500593B21 /* VRemoteVideoSequencePreviewView.swift */,
+				A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */,
+				A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */,
 				A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
@@ -9306,7 +9306,7 @@
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
-				A7B0E07A1BC4423500593B21 /* VRemoteVideoSequencePreviewView.swift in Sources */,
+				A7B0E07A1BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift in Sources */,
 				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
@@ -9643,7 +9643,7 @@
 				F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */,
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				797226651B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift in Sources */,
-				A7B0E0791BC4423500593B21 /* VRemoteVideoPlayer.swift in Sources */,
+				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
