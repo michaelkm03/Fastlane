@@ -91,6 +91,23 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
     
+    CGFloat widthMultiplier = playIcon.size.width / CGRectGetWidth([UIScreen mainScreen].bounds);
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.largePlayButton
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:widthMultiplier
+                                                      constant:1.0]];
+    [self.largePlayButton addConstraint:[NSLayoutConstraint constraintWithItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1.0
+                                                                      constant:0.0f]];
+    
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     self.activityIndicator.hidesWhenStopped = YES;
