@@ -305,7 +305,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             cell.onUserProfileTapped = { [weak self] in
                 if let strongSelf = self {
                     let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
-                    strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
+                    strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
                 }
             }
             cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in

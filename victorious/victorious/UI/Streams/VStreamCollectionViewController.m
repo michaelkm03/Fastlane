@@ -88,7 +88,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, AutoplayTracking>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -498,9 +498,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         event.collectionView = collectionView;
         
         NSDictionary *extraTrackingInfo;
-        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+        if ([cell conformsToProtocol:@protocol(VideoTracking)])
         {
-            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+            extraTrackingInfo = [(id<VideoTracking>)cell additionalInfo];
         }
         
         [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
@@ -602,9 +602,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     event.indexPath = indexPath;
     
     NSDictionary *extraTrackingInfo;
-    if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+    if ([cell conformsToProtocol:@protocol(VideoTracking)])
     {
-        extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+        extraTrackingInfo = [(id<VideoTracking>)cell additionalInfo];
     }
     
     self.focusHelper.selectedCell = [collectionView cellForItemAtIndexPath:indexPath];
@@ -1128,7 +1128,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 #pragma mark - Autoplay Tracking
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+- (void)trackAutoplayEvent:(VideoTrackingEvent *__nonnull)event
 {
     [self.streamTrackingHelper trackAutoplayEvent:event];
 }
