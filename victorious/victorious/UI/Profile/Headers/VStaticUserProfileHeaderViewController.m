@@ -68,7 +68,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     if ([self badgeViewNeedsToBeUpdated])
     {
         // Remove all subviews from badge container view
-        for (UIView *view in [self.badgeContainerView.subviews copy])
+        NSArray *badgeContainerSubviews = [self.badgeContainerView.subviews copy];
+        for (UIView *view in badgeContainerSubviews)
         {
             [view removeFromSuperview];
         }
