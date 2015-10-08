@@ -34,7 +34,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         }
     }
     
-    @IBOutlet weak var semiTransparentOverlay: UIView!
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     private let contentContainer = UIView()
     private var badgeView: AnimatedBadgeView?
@@ -140,7 +139,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         view.backgroundColor = UIColor.blackColor()
         
         videoBackground.delegate = self
-        view.insertSubview(videoBackground, belowSubview: semiTransparentOverlay)
+        view.addSubview(videoBackground)
+        view.sendSubviewToBack(videoBackground)
         
         layoutContent()
         
@@ -171,7 +171,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             }
             
             let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
-            videoPlayerItem.loop = true
+            videoPlayerItem.loop = false
             videoPlayerItem.muted = true
             self.videoBackground.setItem( videoPlayerItem )
             
@@ -267,6 +267,17 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
+    }
+    
+    func videoPlayer(videoPlayer: VVideoPlayer, didPlayToTime time: Float64) {
+        let fadeOutTime = 1.0
+        let timeLeft = videoPlayer.durationSeconds - videoPlayer.currentTimeSeconds
+        // Add a small 0.1s of padding in case we receive this callback late
+        if timeLeft <= fadeOutTime + 0.1 {
+            UIView.animateWithDuration(fadeOutTime) {
+                self.videoBackground.alpha = 0
+            }
+        }
     }
 }
 
