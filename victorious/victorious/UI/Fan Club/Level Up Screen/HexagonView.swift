@@ -63,8 +63,23 @@ class HexagonView: UIView {
         }
     }
     
+    // A value between 0 and 1 representing the shape layer's stroke end
+    var strokeEnd: CGFloat {
+        get {
+            return shapeLayer.strokeEnd
+        }
+        set {
+            CATransaction.setDisableActions(true)
+            self.shapeLayer.strokeEnd = newValue
+        }
+    }
+    
     /// Whether or not the stroke is being animated
-    private(set) var isAnimating = false
+    var isAnimating: Bool {
+        get {
+            return shapeLayer.animationForKey(strokeAnimationKey) != nil
+        }
+    }
     
     private var animationCompletion: (() -> Void)?
     
@@ -137,28 +152,29 @@ class HexagonView: UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
-    // Animated the stroke of the hexagon's shape layer
-    func animateBorder(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
+    // Animate the stroke of the hexagon's shape layer
+    func animateStroke(endValue: CGFloat, duration: NSTimeInterval, completion:(() -> Void)?) {
         animationCompletion = completion
-        isAnimating = true
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.fromValue = 0
         basicAnimation.toValue = endValue
         basicAnimation.duration = duration
-        basicAnimation.fillMode = kCAFillModeForwards
-        basicAnimation.removedOnCompletion = false
         basicAnimation.delegate = self
+        
+        CATransaction.setDisableActions(true)
+        shapeLayer.strokeEnd = endValue
+        
         shapeLayer.addAnimation(basicAnimation, forKey: strokeAnimationKey)
     }
     
     // Removes animation from hexagon's shape layer
     func reset() {
         shapeLayer.removeAnimationForKey(strokeAnimationKey)
-        isAnimating = false
+        CATransaction.setDisableActions(true)
+        shapeLayer.strokeEnd = 0
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        isAnimating = false
         animationCompletion?()
         animationCompletion = nil
     }

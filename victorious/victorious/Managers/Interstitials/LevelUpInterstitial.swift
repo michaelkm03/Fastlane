@@ -12,15 +12,17 @@ import Foundation
 struct LevelUpInterstitial: Interstitial {
     
     let remoteID: Int
-    let level: String
+    let level: Int
+    let progressPercentage: Int
     let title: String
     let description: String
     let icons: [NSURL]
     let videoURL: NSURL
     
-    init(remoteID: Int, level: String, title: String, description: String, icons: [NSURL], videoURL: NSURL) {
+    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icons: [NSURL], videoURL: NSURL) {
         self.remoteID = remoteID
         self.level = level
+        self.progressPercentage = progressPercentage
         self.title = title
         self.description = description
         self.icons = icons

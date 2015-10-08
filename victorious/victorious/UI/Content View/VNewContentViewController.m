@@ -463,7 +463,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented && self.isVideoContent )
+    if ( !self.hasBeenPresented && !self.isVideoContent )
     {
         self.hasBeenPresented = YES;
         [self trackNonVideoViewStart];
@@ -1232,27 +1232,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)submitCommentWithText:(NSString *)commentText
 {
-    __weak typeof(self) welf = self;
     if ( self.enteringRealTimeComment )
     {
         [self.viewModel addCommentWithText:commentText
                          publishParameters:self.publishParameters
                                currentTime:self.realtimeCommentBeganTime
-                                completion:^(BOOL succeeded)
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [strongSelf reloadComments];
-         }];
+                                completion:nil];
     }
     else
     {
         [self.viewModel addCommentWidhText:commentText
                          publishParameters:self.publishParameters
-                                completion:^(BOOL succeeded)
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [strongSelf reloadComments];
-         }];
+                                completion:nil];
     }
 }
 

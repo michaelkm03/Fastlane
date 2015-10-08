@@ -12,6 +12,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
+#import "FBKVOController.h"
 #import "victorious-Swift.h"
 
 static NSString * const kMinUserLevelKey = @"minLevel";
@@ -72,7 +73,8 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
     _imageURL = url;
-    
+    self.imageView.layer.cornerRadius = self.bounds.size.width / 2;
+    self.imageView.layer.masksToBounds = YES;
     __weak typeof(self) weakSelf = self;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
@@ -86,15 +88,10 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
              [strongSelf setImage:[strongSelf placeholderImage] forState:controlState];
              return;
          }
-         
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
-                        {
-                            UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
-                            dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               [strongSelf setImage:roundedImage forState:controlState];
-                                           });
-                        });
+         else
+         {
+             [strongSelf setImage:image forState:UIControlStateNormal];
+         }
      }];
 }
 
@@ -152,9 +149,16 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 
 - (void)setUser:(VUser *__nullable)user
 {
+    [self.KVOController unobserve:_user];
+    
     _user = user;
+    
     [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
     [self updateBadgeViewContent];
+    [self.KVOController observe:_user
+                        keyPath:NSStringFromSelector(@selector(level))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(levelInfoUpdated)];
 }
 
 - (AvatarLevelBadgeView *)levelBadgeView
@@ -232,6 +236,13 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
         return self;
     }
     return view;
+}
+
+#pragma mark - KVO
+
+- (void)levelInfoUpdated
+{
+    [self updateBadgeViewContent];
 }
 
 @end
