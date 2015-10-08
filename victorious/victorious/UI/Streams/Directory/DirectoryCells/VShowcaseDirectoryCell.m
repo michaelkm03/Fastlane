@@ -175,7 +175,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     }
     
     VStream *stream = [self stream];
-    return stream.streamItems.count + ([self shouldShowShowMore] ? 1 : 0);
+    return stream.streamItems.count + 1; //Add one for the "show more" cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -204,13 +204,6 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     }
     
     return NO;
-}
-
-- (BOOL)shouldShowShowMore
-{
-    VStream *stream = [self stream];
-    
-    return (stream.count.integerValue > 0);
 }
 
 - (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath
