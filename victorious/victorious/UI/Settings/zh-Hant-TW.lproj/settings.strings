@@ -41,7 +41,7 @@
 "FC0-A4-y0n.placeholder" = "新密碼";
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
-"FNb-Ni-uJN.text" = "重設解說界面";
+"FNb-Ni-uJN.text" = "重設引導界面";
 
 /* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
 "HQs-Ej-k6O.title" = "實驗";
@@ -143,7 +143,7 @@
 "pML-Pk-7g5.headerTitle" = "關於";
 
 /* Class = "UILabel"; text = "Posts I've Liked"; ObjectID = "r0B-CY-cMb"; */
-"r0B-CY-cMb.text" = "我喜歡的貼文";
+"r0B-CY-cMb.text" = "我喜歡過的內容";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "sgT-oS-cdk"; */
 "sgT-oS-cdk.normalTitle" = "儲存";
