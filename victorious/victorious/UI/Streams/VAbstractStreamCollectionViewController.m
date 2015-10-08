@@ -44,6 +44,7 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
+@property (nonatomic, assign) BOOL isRefreshingFirstPage;
 
 @end
 
@@ -126,6 +127,10 @@
     {
         [self refreshWithCompletion:nil];
     }
+    else if ( self.isRefreshingFirstPage )
+    {
+        [self.refreshControl beginRefreshing];
+    }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
@@ -160,6 +165,7 @@
                                                   isBeingDismissed:self.isBeingDismissed];
     
     self.navigationControllerScrollDelegate = nil;
+    [self.refreshControl endRefreshing];
 }
 
 - (void)viewDidLayoutSubviews
@@ -288,13 +294,19 @@
 {
     if (self.streamDataSource.isFilterLoading)
     {
+        if ( !self.isRefreshingFirstPage )
+        {
+            [self.refreshControl endRefreshing];
+        }
         return;
     }
+    
+    self.isRefreshingFirstPage = YES;
+    [self.refreshControl beginRefreshing];
     
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
-         [self.refreshControl endRefreshing];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
          BOOL viewIsVisible = self.parentViewController != nil;
@@ -310,9 +322,12 @@
          {
              completionBlock();
          }
+         self.isRefreshingFirstPage = NO;
+         [self.refreshControl endRefreshing];
      }
                             failure:^(NSError *error)
      {
+         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
          MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
          hud.mode = MBProgressHUDModeText;
@@ -429,7 +444,7 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
+    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
     {
         return;
     }
