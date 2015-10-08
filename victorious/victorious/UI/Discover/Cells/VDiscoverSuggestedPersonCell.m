@@ -86,7 +86,7 @@
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated
 {
-    if (_user == user)
+    if ([_user isEqual:user])
     {
         return;
     }
