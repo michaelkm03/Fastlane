@@ -1,5 +1,5 @@
 /* Class = "UITextField"; placeholder = "Search people"; ObjectID = "5Iu-Sq-opf"; */
-"5Iu-Sq-opf.placeholder" = "搜尋使用者";
+"5Iu-Sq-opf.placeholder" = "搜尋用戶";
 
 /* Class = "UILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
 "5uI-FR-NGs.text" = "無相符結果";
