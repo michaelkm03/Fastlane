@@ -95,12 +95,19 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// The minimum level it takes to expose this badge view
     private(set) var minLevel = 0
     
-    /// A percentage between 0 and 100 representing where the progress indicator currently ends
-    private(set) var currentProgressPercentage: Int = 0
-    
-    /// Whether or not the progress bar is currently being animated
+    /// Whether or not the progress bar is currently animating
     var isAnimating: Bool {
         return animatingHexagonView.isAnimating
+    }
+    
+    /// How percentage representing how far the progress bar extends towards the end
+    var progressPercentage: Int {
+        get {
+            return Int(animatingHexagonView.strokeEnd * 100)
+        }
+        set {
+            animatingHexagonView.strokeEnd = CGFloat(newValue) / 100.0
+        }
     }
     
     /// Convenience initializer
@@ -187,8 +194,8 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     /// - parameter endValue: A percentage between 0 and 100 indicating how far the progress bar should animate
     /// - parameter completion: A closure to be called after the animation completes
     func animateProgress(duration: NSTimeInterval, endPercentage: Int, completion: (() -> Void)?) {
-        currentProgressPercentage = endPercentage
-        animatingHexagonView.animateBorder(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
+        animatingHexagonView.reset()
+        animatingHexagonView.animateStroke(CGFloat(endPercentage) / 100.0, duration: duration, completion: completion)
     }
     
     /// Resets progress bar back to zero
@@ -196,7 +203,6 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         UIView.animateWithDuration(0.8, animations: { () in
             self.animatingHexagonView.alpha = 0
             }) { (completed) in
-                self.currentProgressPercentage = 0
                 self.animatingHexagonView.reset()
                 self.animatingHexagonView.alpha = 1
         }

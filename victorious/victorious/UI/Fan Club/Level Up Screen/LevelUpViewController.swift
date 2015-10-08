@@ -99,10 +99,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
-                var currentLevel = 1
-                if let levelNumber = Int(levelUpInterstitial.level)  {
-                    currentLevel = levelNumber
-                }
+                let currentLevel = levelUpInterstitial.level
                 badgeView?.levelNumberString = String(currentLevel - 1)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
@@ -177,13 +174,18 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             videoPlayerItem.loop = true
             videoPlayerItem.muted = true
             self.videoBackground.setItem( videoPlayerItem )
+            
+            // Assuming this level up alert contains the most up-to-date fanloyalty info,
+            // we update the user's level and level progress when the interstitial appears
+            VObjectManager.sharedManager().mainUser?.level = levelUpInterstitial.level
+            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = levelUpInterstitial.progressPercentage
         }
     }
     
     private func upgradeBadgeNumber() {
         
         if let levelUpInterstitial = self.levelUpInterstitial {
-            badgeView?.levelUp(levelUpInterstitial.level)
+            badgeView?.levelUp(String(levelUpInterstitial.level))
         }
         
         UIView.animateWithDuration(0.1,

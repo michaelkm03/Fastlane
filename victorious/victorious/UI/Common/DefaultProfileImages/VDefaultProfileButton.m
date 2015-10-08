@@ -12,6 +12,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
+#import "FBKVOController.h"
 #import "victorious-Swift.h"
 
 static NSString * const kMinUserLevelKey = @"minLevel";
@@ -148,9 +149,16 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
 
 - (void)setUser:(VUser *__nullable)user
 {
+    [self.KVOController unobserve:_user];
+    
     _user = user;
+    
     [self setProfileImageURL:[NSURL URLWithString:user.pictureUrl] forState:UIControlStateNormal];
     [self updateBadgeViewContent];
+    [self.KVOController observe:_user
+                        keyPath:NSStringFromSelector(@selector(level))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(levelInfoUpdated)];
 }
 
 - (AvatarLevelBadgeView *)levelBadgeView
@@ -228,6 +236,13 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
         return self;
     }
     return view;
+}
+
+#pragma mark - KVO
+
+- (void)levelInfoUpdated
+{
+    [self updateBadgeViewContent];
 }
 
 @end
