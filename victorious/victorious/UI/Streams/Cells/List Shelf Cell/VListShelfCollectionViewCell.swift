@@ -94,9 +94,9 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     private let streamTrackingHelper = VStreamTrackingHelper()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func updateConstraints() {
         updateCollectionViewSize()
+        super.updateConstraints()
     }
     
     private func updateCollectionViewSize() {
@@ -118,7 +118,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private class func collectionViewHeight(cellSideLength length: CGFloat) -> CGFloat {
         let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
-        return length * 2 + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
+        return ceil(length * 2) + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
     }
     
     /// The optimal size for this cell.
