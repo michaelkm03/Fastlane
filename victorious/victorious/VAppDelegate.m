@@ -143,6 +143,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+#warning testing
+    [[VRootViewController rootViewController] openURL:[NSURL URLWithString:@"vthisapp://inbox/3533"]];
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
