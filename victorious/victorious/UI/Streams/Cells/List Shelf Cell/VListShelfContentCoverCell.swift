@@ -77,8 +77,9 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
     
     private func updateVisibility() {
         var hidden = true
-        if let text = overlayText {
-            hidden = streamItem?.previewImagesObject == nil || text.characters.count == 0
+        if let text = overlayText,
+            let previewImageAssets = streamItem?.previewImageAssets {
+            hidden = previewImageAssets.count == 0 || text.characters.count == 0
         }
         overlayView.hidden = hidden
     }

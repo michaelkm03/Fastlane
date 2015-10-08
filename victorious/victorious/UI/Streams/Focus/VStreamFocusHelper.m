@@ -50,8 +50,14 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
             // Determine if we see enough of the content to put it in focus
             const float mediaContentVisibleRatio = CGRectGetHeight(intersectWithScrollview) / CGRectGetHeight([focusCell contentArea]);
             
-            VFocusType focusType = mediaContentVisibleRatio >= self.visibilityRatio ? VFocusTypeStream : VFocusTypeNone;
-            [focusCell setFocusType:focusType];
+            if ( mediaContentVisibleRatio >= self.visibilityRatio )
+            {
+                [focusCell setFocusType:VFocusTypeStream];
+            }
+            else
+            {
+                [focusCell setFocusType:VFocusTypeNone];
+            }
         }
     }
 }
