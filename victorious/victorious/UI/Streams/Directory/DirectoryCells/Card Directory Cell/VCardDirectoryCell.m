@@ -126,7 +126,7 @@ static const CGFloat kBorderWidth = 0.5f;
 
 + (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem
 {
-    return [streamItem isKindOfClass:[VStream class]] && [streamItem isStreamOfStreams];
+    return [streamItem isKindOfClass:[VStream class]];
 }
 
 #pragma mark - UICollectionReusableView
