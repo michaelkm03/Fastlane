@@ -463,7 +463,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented && self.isVideoContent )
+    if ( !self.hasBeenPresented && !self.isVideoContent )
     {
         self.hasBeenPresented = YES;
         [self trackNonVideoViewStart];
