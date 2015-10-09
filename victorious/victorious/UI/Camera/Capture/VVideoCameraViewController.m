@@ -184,6 +184,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     {
         // Start Session
         [self startCaptureSession];
+        [self.captureController setVideoOrientation:[UIDevice currentDevice].orientation];
+        [self startListeningDeviceOrientationChange];
     }];
 }
 
@@ -209,6 +211,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.cameraControl restoreCameraControlToDefault];
     self.previewView.hidden = NO;
     [self clearRecordedVideoAndResetControl];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Target/Action
@@ -217,7 +220,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     if ([self setupEncoderIfNeeded])
     {
-        [self.captureController setVideoOrientation:[UIDevice currentDevice].orientation];
         self.captureController.videoEncoder.recording = YES;
     }
     self.switchCameraButton.enabled = NO;
@@ -345,6 +347,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     {
         [self.captureController setVideoOrientation:[[UIDevice currentDevice] orientation]];
     }
+}
+
+- (void)startListeningDeviceOrientationChange
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateOrientation) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
