@@ -62,6 +62,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setItem:(VVideoPlayerItem *)item;
 
 /**
+ Updates the appropriate view of the video player to the provided color.
+ */
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor;
+
+/**
  The time of the current position of the video in milliseconds.
  */
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;

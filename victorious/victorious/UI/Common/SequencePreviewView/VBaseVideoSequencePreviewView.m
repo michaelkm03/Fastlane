@@ -78,26 +78,18 @@
 - (void)updateBackgroundColorAnimated:(BOOL)animated
 {
     UIColor *backgroundColor = self.updatedBackgroundColor;
-    void (^animations)() = ^
+    void (^fadeAnimations)() = ^
     {
-        if ( [self.videoPlayer isKindOfClass:[VVideoView class]] )
-        {
-            //The player layer is faded in when ready, so it needs the have it's background color udpated
-            ((VVideoView *)self.videoPlayer).playerLayer.backgroundColor = backgroundColor.CGColor;
-        }
-        else
-        {
-            self.videoPlayer.view.backgroundColor = backgroundColor;
-        }
+        [self.videoPlayer updateToBackgroundColor:backgroundColor];
         self.backgroundColor = backgroundColor;
     };
     if ( animated )
     {
-        [UIView animateWithDuration:0.25f animations:animations];
+        [UIView animateWithDuration:0.25f animations:fadeAnimations];
     }
     else
     {
-        animations();
+        fadeAnimations();
     }
 }
 
@@ -180,7 +172,6 @@
      {
          if (image != nil)
          {
-             [weakSelf determinePreferredBackgroundColorWithImage:image];
              completionBlock( image, error, cacheType, imageURL );
          }
          else
@@ -192,7 +183,6 @@
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
-                  [weakSelf determinePreferredBackgroundColorWithImage:image];
                   completionBlock( image, error, cacheType, imageURL );
               }];
          }
@@ -240,13 +230,13 @@
 
 - (void)setBounds:(CGRect)bounds
 {
-        [super setBounds:bounds];
-        if ( self.hasDeterminedPreferredBackgroundColor )
-            {
-                    //We've determined our preferred background color based on a bounds that no longer represents the bounds of the container. Update it.
-                    self.hasDeterminedPreferredBackgroundColor = NO;
-                    [self determinePreferredBackgroundColorWithContentAspectRatio:self.videoPlayer.aspectRatio lockBackgroundColor:YES];
-        }
+    [super setBounds:bounds];
+    if ( self.hasDeterminedPreferredBackgroundColor )
+    {
+        //We've determined our preferred background color based on a bounds that no longer represents the bounds of the container. Update it.
+        self.hasDeterminedPreferredBackgroundColor = NO;
+        [self determinePreferredBackgroundColorWithContentAspectRatio:self.videoPlayer.aspectRatio lockBackgroundColor:YES];
+    }
 }
 
 #pragma mark - VVideoPlayerDelegate

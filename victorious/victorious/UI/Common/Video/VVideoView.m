@@ -142,6 +142,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                                object:nil];
 }
 
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor
+{
+    self.playerLayer.backgroundColor = backgroundColor.CGColor;
+}
+
 - (void)onReadyForDisplay
 {
     AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
