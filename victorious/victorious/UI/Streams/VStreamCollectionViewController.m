@@ -874,6 +874,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
             if ( [previewView.streamItem isEqual:sleekCell.sequence] || [sleekCell isEqual:self.cellPresentingContentView] )
             {
+                //Provide a preview view back to the stream cell that SHOULD have the preview view and
+                //the cell that provided the preview view (as it currently doesn't have a preview view)
                 [sleekCell restorePreviewView:previewView];
             }
         }
