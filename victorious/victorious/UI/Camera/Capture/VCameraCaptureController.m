@@ -349,10 +349,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         AVCaptureConnection *videoConnection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
         if (videoConnection)
         {
-            if (videoConnection.isVideoOrientationSupported)
-            {
-                [videoConnection setVideoOrientation:[self currentVideoOrientation]];
-            }
+            [videoConnection v_applyDeviceOrientation:[[UIDevice currentDevice] orientation]];
             
             [self.imageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error)
              {
@@ -557,31 +554,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 - (void)subjectAreaChanged
 {
     [self restoreContinuousFocusWithCompletion:nil];
-}
-
-- (AVCaptureVideoOrientation)currentVideoOrientation
-{
-    AVCaptureVideoOrientation orientation;
-    
-    switch ([UIDevice currentDevice].orientation)
-    {
-        case UIDeviceOrientationPortrait:
-        case UIDeviceOrientationFaceUp:
-        case UIDeviceOrientationFaceDown:
-            orientation = AVCaptureVideoOrientationPortrait;
-            break;
-        case UIDeviceOrientationLandscapeRight:
-            orientation = AVCaptureVideoOrientationLandscapeLeft;
-            break;
-        case UIDeviceOrientationPortraitUpsideDown:
-            orientation = AVCaptureVideoOrientationPortraitUpsideDown;
-            break;
-        default:
-            orientation = AVCaptureVideoOrientationLandscapeRight;
-            break;
-    }
-    
-    return orientation;
 }
 
 @end
