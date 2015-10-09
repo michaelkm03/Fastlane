@@ -65,6 +65,13 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 - (void)updateBadgeView
 {
+    if ( ![self isViewLoaded] )
+    {
+        //This prevents unnecessary badge updating and animation,
+        //which can stall animations elsehwere in the app, from occurring
+        return;
+    }
+    
     if ([self badgeViewNeedsToBeUpdated])
     {
         // Remove all subviews from badge container view
