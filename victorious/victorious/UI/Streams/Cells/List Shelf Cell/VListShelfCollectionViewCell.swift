@@ -22,7 +22,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         static let interCellSpace: CGFloat = 2
         static let collectionViewSectionEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 11, bottom: 11, right: 11)
         
-        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace
+        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace + detailToCollectionViewVerticalSpace
         
         static let maxItemsCount = 7
         
@@ -94,14 +94,20 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     private let streamTrackingHelper = VStreamTrackingHelper()
     
-    override func updateConstraints() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
         updateCollectionViewSize()
-        super.updateConstraints()
     }
     
     private func updateCollectionViewSize() {
         let totalWidths = VListShelfCollectionViewCell.totalCellWidths(collectionView.bounds.width)
         cellSideLength = VListShelfCollectionViewCell.cellSideLength(totalWidths)
+        let newCollectionViewHeight = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
+        if ( collectionViewHeightConstraint.constant > newCollectionViewHeight )
+        {
+            //The current cells we have are too big, reload before updating the constraint to avoid warnings
+            collectionView.reloadSections(NSIndexSet(index: 0))
+        }
         centeringInset = floor(totalWidths % cellSideLength) / 2
         collectionViewHeightConstraint.constant = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
         collectionView.collectionViewLayout.invalidateLayout()
