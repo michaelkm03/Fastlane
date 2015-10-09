@@ -65,6 +65,7 @@
 #import "VUploadProgressViewController.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
+#import "VSleekStreamCollectionCell.h"
 #import "victorious-Swift.h"
 
 @import KVOController;
@@ -88,7 +89,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -106,6 +107,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider>*cellPresentingContentView;
 
 @end
 
@@ -830,7 +832,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
             {
-                context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
+                self.cellPresentingContentView = (UICollectionViewCell <VContentPreviewViewProvider> *)cell;
+                context.contentPreviewProvider = self;
             }
         }
         
@@ -841,6 +844,41 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         context.originDependencyManager = self.dependencyManager;
         [self.contentViewPresenter presentContentViewWithContext:context];
     }
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+//This conformance to the VContentPreviewViewProvider is a stop gap for 3.4
+//until we can figure out a better way to take / give preview views to stream cells
+- (void)relinquishPreviewView
+{
+    [self.cellPresentingContentView relinquishPreviewView];
+}
+
+- (UIView *)getPreviewView
+{
+    return [self.cellPresentingContentView getPreviewView];
+}
+
+- (UIView *)getContainerView
+{
+    return [self.cellPresentingContentView getContainerView];
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
+            if ( [previewView.streamItem isEqual:sleekCell.sequence] || [sleekCell isEqual:self.cellPresentingContentView] )
+            {
+                [sleekCell restorePreviewView:previewView];
+            }
+        }
+    }
+    self.cellPresentingContentView = nil;
 }
 
 #pragma mark - Upload Progress View
