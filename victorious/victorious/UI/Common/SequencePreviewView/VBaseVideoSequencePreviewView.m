@@ -65,6 +65,42 @@
     return self;
 }
 
+- (UIColor *)streamBackgroundColor
+{
+    return [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed
+}
+
+- (UIView *)viewForBackgroundColor
+{
+    return self.shouldAutoplay ? self.videoPlayer.view : [super viewForBackgroundColor];
+}
+
+- (void)updateBackgroundColorAnimated:(BOOL)animated
+{
+    UIColor *backgroundColor = self.updatedBackgroundColor;
+    void (^animations)() = ^
+    {
+        if ( [self.videoPlayer isKindOfClass:[VVideoView class]] )
+        {
+            //The player layer is faded in when ready, so it needs the have it's background color udpated
+            ((VVideoView *)self.videoPlayer).playerLayer.backgroundColor = backgroundColor.CGColor;
+        }
+        else
+        {
+            self.videoPlayer.view.backgroundColor = backgroundColor;
+        }
+        self.backgroundColor = backgroundColor;
+    };
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.25f animations:animations];
+    }
+    else
+    {
+        animations();
+    }
+}
+
 - (void)addVideoPlayerView:(UIView *)view
 {
     [self.videoContainer addSubview:view];
@@ -132,7 +168,7 @@
         __strong typeof(self) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
-            [strongSelf determinedPreferredBackgroundColorWithImage:image];
+            [strongSelf determinePreferredBackgroundColorWithImage:image];
             strongSelf.readyForDisplay = YES;
         }
     };
@@ -144,6 +180,7 @@
      {
          if (image != nil)
          {
+             [weakSelf determinePreferredBackgroundColorWithImage:image];
              completionBlock( image, error, cacheType, imageURL );
          }
          else
@@ -155,21 +192,39 @@
                                     placeholderImage:nil
                                           completion:^(UIImage *image)
               {
+                  [weakSelf determinePreferredBackgroundColorWithImage:image];
                   completionBlock( image, error, cacheType, imageURL );
               }];
          }
      }];
 }
 
-- (void)determinedPreferredBackgroundColorWithImage:(UIImage *)image
+- (void)determinePreferredBackgroundColorWithImage:(UIImage *)image
 {
+    CGFloat imageAspect = image == nil ? 0 : image.size.width / image.size.height;
+    [self determinePreferredBackgroundColorWithContentAspectRatio:imageAspect lockBackgroundColor:NO];
+}
+
+- (void)determinePreferredBackgroundColorWithContentAspectRatio:(CGFloat)aspectRatio lockBackgroundColor:(BOOL)lockBackgroundColor
+{
+    if ( CGRectEqualToRect(self.bounds, CGRectZero) )
+    {
+        return;
+    }
+    
     if ( !self.hasDeterminedPreferredBackgroundColor )
     {
-        CGFloat imageAspect = image.size.width / image.size.height;
-        CGFloat containerAspect = CGRectGetWidth(self.previewImageView.frame) / CGRectGetHeight(self.previewImageView.frame);
-        self.usePreferredBackgroundColor = ABS(imageAspect - containerAspect) > 0.1;
+        CGFloat containerAspect = CGRectGetWidth(self.bounds) / CGRectGetHeight(self.bounds);
+        
+        //If we'll show ANY empty space around the content, use our preferred background color
+        self.usePreferredBackgroundColor = aspectRatio != containerAspect;
         [self updateBackgroundColorAnimated:NO];
-        self.hasDeterminedPreferredBackgroundColor = YES;
+        if ( lockBackgroundColor )
+        {
+            //We've determined the background color based on the aspect ratio of the video,
+            //we don't need to update it anymore.
+            self.hasDeterminedPreferredBackgroundColor = YES;
+        }
     }
 }
 
@@ -183,10 +238,22 @@
     [self.videoPlayer setItem:item];
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+        [super setBounds:bounds];
+        if ( self.hasDeterminedPreferredBackgroundColor )
+            {
+                    //We've determined our preferred background color based on a bounds that no longer represents the bounds of the container. Update it.
+                    self.hasDeterminedPreferredBackgroundColor = NO;
+                    [self determinePreferredBackgroundColorWithContentAspectRatio:self.videoPlayer.aspectRatio lockBackgroundColor:YES];
+        }
+}
+
 #pragma mark - VVideoPlayerDelegate
 
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
+    [self determinePreferredBackgroundColorWithContentAspectRatio:[self.videoPlayer aspectRatio] lockBackgroundColor:YES];
     if ( self.focusType == VFocusTypeDetail )
     {
         [self.videoPlayer playFromStart];
@@ -298,7 +365,7 @@
 - (void)updateToFitContent:(BOOL)fit
 {
     self.videoPlayer.useAspectFit = fit;
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
 @end

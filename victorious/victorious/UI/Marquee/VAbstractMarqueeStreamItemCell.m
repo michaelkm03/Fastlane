@@ -111,6 +111,10 @@
         id<VRenderablePreviewView> renderablePreviewView = (id<VRenderablePreviewView>)self.previewView;
         [renderablePreviewView setRenderingSize:CGSizeMake( CGRectGetWidth(self.bounds), CGRectGetWidth(self.bounds) )];
     }
+    if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
+    {
+        [(id<VContentFittingPreviewView>)self.previewView updateToFitContent:NO];
+    }
     
     [self.previewView setStreamItem:streamItem];
 }

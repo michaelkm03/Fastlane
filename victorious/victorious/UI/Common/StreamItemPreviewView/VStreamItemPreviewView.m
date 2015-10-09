@@ -109,6 +109,11 @@
     _displaySize = CGSizeMake(greaterSide, greaterSide);
 }
 
+- (UIView *)viewForBackgroundColor
+{
+    return self;
+}
+
 - (NSDictionary *)trackingInfo
 {
     // Override in subclass

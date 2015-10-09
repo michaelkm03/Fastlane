@@ -20,7 +20,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @interface VVideoView()
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
-@property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
+@property (nonatomic, readwrite, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
@@ -340,6 +340,18 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 - (NSUInteger)currentTimeMilliseconds
 {
     return (NSUInteger)(self.currentTimeSeconds * 1000.0);
+}
+
+- (CGFloat)aspectRatio
+{
+    NSArray *tracks = [self.player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo];
+    if ( tracks.count > 0 )
+    {
+        AVAssetTrack *track = tracks[0];
+        CGSize size = [track naturalSize];
+        return size.width / size.height;
+    }
+    return 1.0f;
 }
 
 @end
