@@ -106,6 +106,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             
             imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
         }
+        
+        self.edgesForExtendedLayout = .Bottom
+        self.self.extendedLayoutIncludesOpaqueBars = true
     }
     
     override func viewWillAppear(animated: Bool) {

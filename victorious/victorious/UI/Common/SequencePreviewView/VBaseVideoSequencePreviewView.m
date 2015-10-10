@@ -252,8 +252,15 @@
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
 {
-    [videoPlayer pause];
-    [self.delegate videoPlaybackDidFinish];
+    if ( [self shouldLoop] )
+    {
+        [videoPlayer playFromStart];
+    }
+    else
+    {
+        [videoPlayer pause];
+        [self.delegate videoPlaybackDidFinish];
+    }
 }
 
 - (void)videoPlayerDidStartBuffering:(id<VVideoPlayer>)videoPlayer

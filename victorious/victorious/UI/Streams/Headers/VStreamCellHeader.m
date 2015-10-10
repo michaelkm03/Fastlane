@@ -32,7 +32,8 @@
 // Frameworks
 @import KVOController;
 
-static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
+static const CGFloat kLeadingHeaderSpace = 11.0f;
+static const CGFloat kTrailingHeaderSpace = 18.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 7.0f;
 static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
@@ -117,13 +118,13 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 - (void)updateActionBarActionItems
 {
     UIView *rightMostWidget = self.shouldShowFollowControl ? self.followControl : self.timeSinceWidget;
-    self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
+    self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingHeaderSpace],
                                    self.profileButton,
                                    [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                    self.creationInfoContainer,
                                    [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
                                    rightMostWidget,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kTrailingHeaderSpace]];
 }
 
 - (BOOL)actionBarNeedsSetup

@@ -65,6 +65,13 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 
 - (void)updateBadgeView
 {
+    if ( ![self isViewLoaded] )
+    {
+        //This prevents unnecessary badge updating and animation,
+        //which can stall animations elsehwere in the app, from occurring
+        return;
+    }
+    
     if ([self badgeViewNeedsToBeUpdated])
     {
         // Remove all subviews from badge container view
@@ -100,8 +107,15 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 - (UIView *)configuredBadgeView
 {
     AnimatedBadgeView *animatedBadgeView = [self.dependencyManager templateValueOfType:[AnimatedBadgeView class] forKey:kLevelBadgeKey];
+    
+    // We have no badge component or user
+    if (animatedBadgeView == nil || self.user == nil)
+    {
+        return nil;
+    }
+    
     // Make sure we have a badge component and that this user is a high enough level to show it
-    if (animatedBadgeView != nil && self.user.level.integerValue >= animatedBadgeView.minLevel && self.user != nil)
+    if (self.user.level.integerValue > 0 && self.user.level.integerValue >= animatedBadgeView.minLevel)
     {
         if (self.user.isCreator.boolValue)
         {
