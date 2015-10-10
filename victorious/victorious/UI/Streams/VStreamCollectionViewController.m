@@ -107,7 +107,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider>*cellPresentingContentView;
+@property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
 
