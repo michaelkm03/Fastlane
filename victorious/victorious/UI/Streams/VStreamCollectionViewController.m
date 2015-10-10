@@ -666,7 +666,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     VSequence *sequence = (VSequence *)[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
-    if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
+    if ( [[[self.cellPresentingContentView getPreviewView] streamItem] isEqual:sequence] )
+    {
+        cell = self.cellPresentingContentView;
+    }
+    else if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {
         cell = [self.streamCellFactory collectionView:self.collectionView
                                     cellForStreamItem:sequence
@@ -679,7 +683,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                     cellForStreamItem:sequence
                                           atIndexPath:indexPath];
     }
-    
+
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -867,19 +871,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
-    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
-    {
-        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
-        {
-            VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
-            if ( [previewView.streamItem isEqual:sleekCell.sequence] || [sleekCell isEqual:self.cellPresentingContentView] )
-            {
-                //Provide a preview view back to the stream cell that SHOULD have the preview view and
-                //the cell that provided the preview view (as it currently doesn't have a preview view)
-                [sleekCell restorePreviewView:previewView];
-            }
-        }
-    }
+    [self.cellPresentingContentView restorePreviewView:previewView];
     self.cellPresentingContentView = nil;
 }
 

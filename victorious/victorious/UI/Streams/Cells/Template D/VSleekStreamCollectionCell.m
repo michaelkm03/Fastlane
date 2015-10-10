@@ -630,23 +630,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
     self.hasRelinquishedPreviewView = NO;
-    if ( self.previewView == nil )
-    {
-        self.previewView = previewView;
-        [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
-        [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    }
-    else if ( self.previewView.superview != self.previewContainer || ![self.previewView.sequence isEqual:self.sequence] )
-    {
-        //The system has tried to restore a preview view to the wrong cell, just update our current preview view with the
-        //sequence on the cell (which has not changed during our transition to the content view).
-        [self updatePreviewViewForSequence:self.sequence];
-    }
-    
-    if ( self.previewView.focusType != self.focusType )
-    {
-        self.previewView.focusType = self.focusType;
-    }
+    self.previewView = previewView;
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 @end
