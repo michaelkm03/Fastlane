@@ -70,6 +70,11 @@
 - (BOOL)v_prefersNavigationBarHidden;
 
 /**
+ @return YES if the you'd like to respect the preferredStatusBarStyle of this view controller
+ */
+- (BOOL)v_viewControllerControlsStatusBarColor;
+
+/**
  If this view controller has been pushed onto a navigation controller
  controlled by an instance of VNavigationController, return it.
  */

@@ -154,14 +154,24 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 }
 
-- (BOOL)prefersStatusBarHidden
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }
 
-- (BOOL)v_prefersNavigationBarHidden
+- (BOOL)v_viewControllerControlsStatusBarColor
 {
     return YES;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+- (UIColor *)statusBarBackgroundColor
+{
+    return [UIColor whiteColor];
 }
 
 - (BOOL)shouldAutorotate

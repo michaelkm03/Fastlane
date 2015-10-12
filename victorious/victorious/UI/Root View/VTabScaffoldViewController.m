@@ -168,7 +168,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     }
     else
     {
-        return [super childViewControllerForStatusBarHidden];
+        return self.rootNavigationController.innerNavigationController;
     }
 }
 
@@ -180,7 +180,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     }
     else
     {
-        return [super childViewControllerForStatusBarStyle];
+        return self.rootNavigationController.innerNavigationController;
     }
 }
 
