@@ -14,7 +14,7 @@
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
 #import "VTabScaffoldViewController.h"
-#import "VDependencyManager+VStatusBarStyle.h"
+#import "victorious-Swift.h"
 
 #import <objc/runtime.h>
 
@@ -74,7 +74,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
 - (UIStatusBarStyle)defaultStatusBarStyle
 {
     VDependencyManager *navBarDependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];
-    return [navBarDependencyManager statusBarStyleForColor:[navBarDependencyManager colorForKey:VDependencyManagerMainTextColorKey]];
+    return [StatusBarUtilities statusBarStyleWithColor:[navBarDependencyManager colorForKey:VDependencyManagerMainTextColorKey]];
 }
 
 #pragma mark - View Lifecycle

@@ -14,6 +14,7 @@
 #import "VCreateSheetTransitionDelegate.h"
 #import "VDependencyManager+VStatusBarStyle.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "victorious-Swift.h"
 
 static NSString * const kCreateImageIdentifier = @"Create Image";
 static NSString * const kCreateVideoIdentifier = @"Create Video";
@@ -127,7 +128,7 @@ static const CGFloat kLineSpacing = 40.0f;
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
-    return [self.dependencyManager statusBarStyleForColor:navigationBarTextColor];
+    return [StatusBarUtilities statusBarStyleWithColor:navigationBarTextColor];
 }
 
 #pragma mark - Properties

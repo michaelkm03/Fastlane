@@ -16,6 +16,7 @@
 #import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+VDataCacheID.h"
+#import "UIColor+VBrightness.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImage+VTint.h"
 #import "UIImageView+Blurring.h"

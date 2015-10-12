@@ -14,10 +14,5 @@
  *  Returns an appropriate UIStatusBarStyle for a given key. With an appropriate default.
  */
 - (UIStatusBarStyle)statusBarStyleForKey:(NSString *)key;
-/**
- * Returns an appropriate UIStatusBarStyle based on the illuminance a color
- * @param color the color used to determine status bar style
- */
-- (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color;
 
 @end
