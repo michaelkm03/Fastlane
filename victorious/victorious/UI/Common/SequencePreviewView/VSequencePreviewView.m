@@ -182,7 +182,7 @@
 {
     void (^animations)() = ^
     {
-        self.viewForBackgroundColor.backgroundColor = self.updatedBackgroundColor;
+        self.backgroundColor = self.updatedBackgroundColor;
     };
     if ( animated )
     {

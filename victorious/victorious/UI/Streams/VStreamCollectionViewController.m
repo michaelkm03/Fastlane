@@ -613,6 +613,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
 }
 
+- (void)prepareForScreenshot
+{
+    [self.focusHelper endFocusOnAllCells];
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -666,11 +671,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     VSequence *sequence = (VSequence *)[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
-    if ( [[[self.cellPresentingContentView getPreviewView] streamItem] isEqual:sequence] )
-    {
-        cell = self.cellPresentingContentView;
-    }
-    else if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
+    if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {
         cell = [self.streamCellFactory collectionView:self.collectionView
                                     cellForStreamItem:sequence
@@ -854,9 +855,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 //This conformance to the VContentPreviewViewProvider is a stop gap for 3.4
 //until we can figure out a better way to take / give preview views to stream cells
-- (void)relinquishPreviewView
+- (void)setHasRelinquishedPreviewView:(BOOL)hasRelinquishedPreviewView
 {
-    [self.cellPresentingContentView relinquishPreviewView];
+    self.cellPresentingContentView.hasRelinquishedPreviewView = hasRelinquishedPreviewView;
+}
+
+- (BOOL)hasRelinquishedPreviewView
+{
+    return self.cellPresentingContentView.hasRelinquishedPreviewView ?: NO;
 }
 
 - (UIView *)getPreviewView
@@ -871,7 +877,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
-    [self.cellPresentingContentView restorePreviewView:previewView];
+    NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:previewView.streamItem];
+    if ( indexPath.row != NSNotFound )
+    {
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+        if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+        {
+            [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
+            
+        }
+    }
     self.cellPresentingContentView = nil;
 }
 

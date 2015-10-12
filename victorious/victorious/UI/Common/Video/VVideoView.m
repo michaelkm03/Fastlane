@@ -285,7 +285,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( self.isPlaying )
     {
         [self.player pause];
-        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPause:)])
         {
             [self.delegate videoPlayerDidPause:self];
         }

@@ -3615,6 +3615,7 @@
 		F0B390C21A88502D00EE70C7 /* VTagDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionary.m; sourceTree = "<group>"; };
 		F0B390C41A8850CF00EE70C7 /* VTagStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagStringFormatter.h; sourceTree = "<group>"; };
 		F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatter.m; sourceTree = "<group>"; };
+		F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewOriginViewController.h; sourceTree = "<group>"; };
 		F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamContentCellFactory.swift; sourceTree = "<group>"; };
 		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
 		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
@@ -5330,6 +5331,7 @@
 				A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */,
 				A7D047931B97AE140091F366 /* ContentViewPresenter.swift */,
 				A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */,
+				F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */,
 				A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */,
 				A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */,
 			);

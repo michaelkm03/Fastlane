@@ -19,7 +19,7 @@
 - (instancetype)initWithTransition:(id<VAnimatedTransition>)transition
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _transition = transition;
     }

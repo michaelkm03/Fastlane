@@ -21,11 +21,11 @@
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, VideoTracking, VContentPreviewViewProvider>
 
-@property (nonatomic, assign) BOOL hasReliquishedPreviewView;
-
 @end
 
 @implementation VAbstractMarqueeStreamItemCell
+
+@synthesize hasRelinquishedPreviewView = _hasRelinquishedPreviewView;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
@@ -77,7 +77,7 @@
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
-    if ( streamItem == nil || self.hasReliquishedPreviewView )
+    if ( streamItem == nil || self.hasRelinquishedPreviewView )
     {
         return;
     }
@@ -185,12 +185,12 @@
 
 - (void)relinquishPreviewView
 {
-    self.hasReliquishedPreviewView = YES;
+    self.hasRelinquishedPreviewView = YES;
 }
 
-- (void)setHasReliquishedPreviewView:(BOOL)hasReliquishedPreviewView
+- (void)setHasRelinquishedPreviewView:(BOOL)hasReliquishedPreviewView
 {
-    _hasReliquishedPreviewView = hasReliquishedPreviewView;
+    _hasRelinquishedPreviewView = hasReliquishedPreviewView;
     if ( !hasReliquishedPreviewView )
     {
         [self updatePreviewViewForStreamItem:self.streamItem];
@@ -209,7 +209,7 @@
 
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
-    self.hasReliquishedPreviewView = NO;
+    self.hasRelinquishedPreviewView = NO;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }

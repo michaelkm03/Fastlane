@@ -72,11 +72,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
-@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
 @implementation VSleekStreamCollectionCell
+
+@synthesize hasRelinquishedPreviewView = _hasRelinquishedPreviewView;
 
 - (void)awakeFromNib
 {

@@ -70,11 +70,6 @@
     return [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed
 }
 
-- (UIView *)viewForBackgroundColor
-{
-    return self.shouldAutoplay ? self.videoPlayer.view : [super viewForBackgroundColor];
-}
-
 - (void)updateBackgroundColorAnimated:(BOOL)animated
 {
     UIColor *backgroundColor = self.updatedBackgroundColor;
@@ -293,16 +288,15 @@
     }
     
     super.focusType = focusType;
-    
     [self updateBackgroundColorAnimated:YES];
-    
+    self.videoPlayer.view.hidden = focusType == VFocusTypeNone;
+
     switch (self.focusType)
     {
         case VFocusTypeNone:
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
             [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
-            [self.videoPlayer pause];
             if ( self.onlyShowPreview )
             {
                 if ( self.shouldAutoplay )
@@ -313,6 +307,10 @@
                 {
                     [self.videoPlayer pauseAtStart];
                 }
+            }
+            else
+            {
+                [self.videoPlayer pause];
             }
             break;
             

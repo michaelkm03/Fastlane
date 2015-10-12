@@ -100,12 +100,6 @@ typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *
 @property (nonatomic, strong, readonly) UIColor *defaultBackgroundColor;
 @property (nonatomic, readonly) UIColor *updatedBackgroundColor;
 
-/**
- *  The view whose background color will be updated based on display state of the
- *  preview view. Defaults to self.
- */
-@property (nonatomic, strong, readonly) UIView *viewForBackgroundColor;
-
 @end
 
 NS_ASSUME_NONNULL_END
