@@ -72,9 +72,7 @@
                    withSelectedComment:(VComment *)selectedComment
 {
     CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
-    // If we are embedded in the root nav push on that, otherwise push on the nearest navigationcontroller
-    UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController.innerNavigationController ?: viewController.navigationController;
-    [navigationControllerToPushOn pushViewController:commentsViewController animated:YES];
+    [viewController.navigationController pushViewController:commentsViewController animated:YES];
 }
 
 #pragma mark - User
