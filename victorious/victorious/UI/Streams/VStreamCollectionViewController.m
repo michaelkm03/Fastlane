@@ -887,7 +887,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             
         }
     }
-    self.cellPresentingContentView.hasRelinquishedPreviewView = YES;
+    self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
     self.cellPresentingContentView = nil;
 }
 
