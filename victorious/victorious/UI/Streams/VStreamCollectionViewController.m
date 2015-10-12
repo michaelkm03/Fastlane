@@ -862,7 +862,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)hasRelinquishedPreviewView
 {
-    return self.cellPresentingContentView.hasRelinquishedPreviewView ?: NO;
+    return self.cellPresentingContentView.hasRelinquishedPreviewView;
 }
 
 - (UIView *)getPreviewView
