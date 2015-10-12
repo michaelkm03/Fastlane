@@ -159,11 +159,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     return YES;
 }
 
-- (BOOL)v_viewControllerControlsStatusBarColor
-{
-    return YES;
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;

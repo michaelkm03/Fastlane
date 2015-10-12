@@ -383,7 +383,9 @@ static const CGFloat kStatusBarHeight = 20.0f;
     [self updateSupplementaryHeaderViewForViewController:viewController];
     
     BOOL wantsStatusBarHidden = [viewController prefersStatusBarHidden];
-    UIStatusBarStyle preferredStatusBarStyle = [viewController v_viewControllerControlsStatusBarColor] ? [viewController preferredStatusBarStyle] : [self defaultStatusBarStyle];
+    
+    UIStatusBarStyle preferredStatusBarStyle = prefersNavigationBarHidden ? [viewController preferredStatusBarStyle] : [self defaultStatusBarStyle];
+    
     if ( wantsStatusBarHidden != self.wantsStatusBarHidden|| preferredStatusBarStyle != self.statusBarStyle )
     {
         if ( [viewController.transitionCoordinator isInteractive] )
@@ -525,11 +527,6 @@ static char kNavigationControllerKey;
 @implementation UIViewController (VNavigationController)
 
 - (BOOL)v_prefersNavigationBarHidden
-{
-    return NO;
-}
-
-- (BOOL)v_viewControllerControlsStatusBarColor
 {
     return NO;
 }
