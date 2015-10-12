@@ -684,7 +684,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                     cellForStreamItem:sequence
                                           atIndexPath:indexPath];
     }
-
+    
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
