@@ -32,7 +32,7 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
                 fatalError( "Missing references required for transition animation" )
         }
         
-        if let originViewController = model.fromViewController as? VContentViewOriginViewController {
+        if let originViewController = previewProvider as? VContentViewOriginViewController {
             originViewController.prepareForScreenshot()
         }
         
