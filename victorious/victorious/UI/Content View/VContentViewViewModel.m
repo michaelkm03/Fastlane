@@ -507,16 +507,20 @@
          publishParameters:(VPublishParameters *)publishParameters
                 completion:(void (^)(BOOL succeeded))completion
 {
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] addCommentWithText:text
                                      publishParameters:publishParameters
                                             toSequence:self.sequence
                                              andParent:nil
                                           successBlock:^(NSOperation *_Nullable operation, id  _Nullable result, NSArray *_Nonnull resultObjects)
      {
+         __strong typeof(weakSelf) strongSelf = weakSelf;
          if (completion)
          {
              completion(YES);
          }
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
      }
                                              failBlock:^(NSOperation *operation, NSError *error)
      {

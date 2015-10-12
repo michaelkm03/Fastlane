@@ -30,7 +30,6 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
         var size = super.desiredSize(collectionViewBounds, shelf: shelf, dependencyManager: dependencyManager)
         size.height += shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         size.height += NSString(string: shelf.caption).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.detailFont]).height
-        size.height += Constants.detailToCollectionViewVerticalSpace
         return size
     }
 

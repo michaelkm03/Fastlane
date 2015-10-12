@@ -22,7 +22,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         static let interCellSpace: CGFloat = 2
         static let collectionViewSectionEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 11, bottom: 11, right: 11)
         
-        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace
+        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace + detailToCollectionViewVerticalSpace
         
         static let maxItemsCount = 7
         
@@ -102,6 +102,12 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     private func updateCollectionViewSize() {
         let totalWidths = VListShelfCollectionViewCell.totalCellWidths(collectionView.bounds.width)
         cellSideLength = VListShelfCollectionViewCell.cellSideLength(totalWidths)
+        let newCollectionViewHeight = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
+        if ( collectionViewHeightConstraint.constant > newCollectionViewHeight )
+        {
+            //The current cells we have are too big, reload before updating the constraint to avoid warnings
+            collectionView.reloadSections(NSIndexSet(index: 0))
+        }
         centeringInset = floor(totalWidths % cellSideLength) / 2
         collectionViewHeightConstraint.constant = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
         collectionView.collectionViewLayout.invalidateLayout()
@@ -118,7 +124,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private class func collectionViewHeight(cellSideLength length: CGFloat) -> CGFloat {
         let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
-        return length * 2 + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
+        return ceil(length * 2) + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
     }
     
     /// The optimal size for this cell.

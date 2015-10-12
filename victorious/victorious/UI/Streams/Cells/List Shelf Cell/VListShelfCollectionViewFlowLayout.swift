@@ -18,11 +18,17 @@ class VListShelfCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if let attributes = super.layoutAttributesForElementsInRect(rect) {
-            attributes.first?.frame.origin.y = 0
-            return attributes
+        guard let attributes = super.layoutAttributesForElementsInRect(rect) else {
+            return nil
         }
-        return nil
+        
+        if let firstCellAttributes = attributes.first?.copy() as? UICollectionViewLayoutAttributes {
+            var updatedAttributes = attributes
+            firstCellAttributes.frame.origin.y = 0
+            updatedAttributes[0] = firstCellAttributes
+            return updatedAttributes
+        }
+        return attributes
     }
     
 }

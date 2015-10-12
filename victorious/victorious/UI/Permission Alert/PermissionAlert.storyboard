@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfg-Od-daB" userLabel="Dismiss">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <state key="normal" title="Button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -29,11 +29,11 @@
                                     <action selector="pressedBackground:" destination="LzK-NH-MgN" eventType="touchUpInside" id="Gl7-cW-anH"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M6g-YF-N4q" userLabel="Alert">
-                                <rect key="frame" x="20" y="50" width="560" height="500"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M6g-YF-N4q" userLabel="Alert">
+                                <rect key="frame" x="24" y="138" width="552" height="275"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lv4-pq-CPH">
-                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <rect key="frame" x="0.0" y="208" width="276" height="67"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="67" id="CLt-4m-Xrm"/>
@@ -41,11 +41,6 @@
                                         <state key="normal" title="Maybe Later">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="CLt-4m-Xrm"/>
-                                            </mask>
-                                        </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
                                                 <include reference="CLt-4m-Xrm"/>
@@ -56,7 +51,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zxv-Um-jbA" customClass="VButtonWithCircularEmphasis">
-                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <rect key="frame" x="276" y="208" width="276" height="67"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="67" id="4bm-Ku-J7M"/>
@@ -64,11 +59,6 @@
                                         <state key="normal" title="Okay!">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="4bm-Ku-J7M"/>
-                                            </mask>
-                                        </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
                                                 <include reference="4bm-Ku-J7M"/>
@@ -79,7 +69,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uqE-hA-Enb" customClass="VRoundedImageView">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                        <rect key="frame" x="236" y="28" width="80" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="uqE-hA-Enb" secondAttribute="height" multiplier="1:1" id="cWE-aX-dYa"/>
@@ -87,12 +77,6 @@
                                                 <variation key="heightClass=regular-widthClass=compact" constant="76"/>
                                             </constraint>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="cWE-aX-dYa"/>
-                                                <exclude reference="onG-Ck-C0b"/>
-                                            </mask>
-                                        </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
                                                 <include reference="cWE-aX-dYa"/>
@@ -101,17 +85,12 @@
                                         </variation>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Permissions Message" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cMw-dh-B3Z" userLabel="permission message" customClass="VPermissionAlertTextView">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                        <rect key="frame" x="30" y="128" width="492" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="IR4-Ag-oI2"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="IR4-Ag-oI2"/>
-                                            </mask>
-                                        </variation>
                                         <variation key="heightClass=regular-widthClass=compact">
                                             <mask key="constraints">
                                                 <include reference="IR4-Ag-oI2"/>
@@ -134,28 +113,6 @@
                                     <constraint firstAttribute="width" secondItem="Lv4-pq-CPH" secondAttribute="width" multiplier="2" id="wEz-Uu-4NA"/>
                                     <constraint firstAttribute="bottom" secondItem="Lv4-pq-CPH" secondAttribute="bottom" id="yTt-IE-aku"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="Lv4-pq-CPH"/>
-                                        <exclude reference="zxv-Um-jbA"/>
-                                        <exclude reference="uqE-hA-Enb"/>
-                                        <exclude reference="cMw-dh-B3Z"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <exclude reference="fhD-ZP-Ztz"/>
-                                        <exclude reference="wEz-Uu-4NA"/>
-                                        <exclude reference="yTt-IE-aku"/>
-                                        <exclude reference="8OP-sT-sPV"/>
-                                        <exclude reference="R6l-io-HO9"/>
-                                        <exclude reference="TTL-py-bHj"/>
-                                        <exclude reference="r0h-0R-1WW"/>
-                                        <exclude reference="Re7-mg-hli"/>
-                                        <exclude reference="Zz6-Ak-8Hb"/>
-                                        <exclude reference="uKY-QR-yEg"/>
-                                        <exclude reference="H1g-tP-0GB"/>
-                                        <exclude reference="W82-mT-5nY"/>
-                                    </mask>
-                                </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="Lv4-pq-CPH"/>
@@ -164,18 +121,18 @@
                                         <include reference="cMw-dh-B3Z"/>
                                     </mask>
                                     <mask key="constraints">
+                                        <include reference="Re7-mg-hli"/>
+                                        <include reference="Zz6-Ak-8Hb"/>
+                                        <include reference="uKY-QR-yEg"/>
                                         <include reference="fhD-ZP-Ztz"/>
                                         <include reference="wEz-Uu-4NA"/>
                                         <include reference="yTt-IE-aku"/>
+                                        <include reference="H1g-tP-0GB"/>
+                                        <include reference="W82-mT-5nY"/>
                                         <include reference="8OP-sT-sPV"/>
                                         <include reference="R6l-io-HO9"/>
                                         <include reference="TTL-py-bHj"/>
                                         <include reference="r0h-0R-1WW"/>
-                                        <include reference="Re7-mg-hli"/>
-                                        <include reference="Zz6-Ak-8Hb"/>
-                                        <include reference="uKY-QR-yEg"/>
-                                        <include reference="H1g-tP-0GB"/>
-                                        <include reference="W82-mT-5nY"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -192,22 +149,6 @@
                             <constraint firstItem="M6g-YF-N4q" firstAttribute="height" relation="lessThanOrEqual" secondItem="z7L-g3-1BX" secondAttribute="height" constant="-100" id="u5c-vQ-1QM"/>
                             <constraint firstAttribute="width" secondItem="lfg-Od-daB" secondAttribute="width" id="y1n-Q2-Q3B"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="lfg-Od-daB"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="Iov-dy-Qqj"/>
-                                <exclude reference="KYc-bh-yPf"/>
-                                <exclude reference="fwX-at-TQL"/>
-                                <exclude reference="y1n-Q2-Q3B"/>
-                                <exclude reference="6j4-Z1-icj"/>
-                                <exclude reference="C9D-y9-Nvi"/>
-                                <exclude reference="CzJ-6k-LBk"/>
-                                <exclude reference="hQk-Lx-BQx"/>
-                                <exclude reference="u5c-vQ-1QM"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="lfg-Od-daB"/>

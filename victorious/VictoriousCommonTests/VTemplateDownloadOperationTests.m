@@ -60,6 +60,7 @@
 @interface VTemplateDownloadOperationTestDelegate : NSObject <VTemplateDownloadOperationDelegate>
 
 @property (nonatomic, copy) void (^didFallbackOnCache)();
+@property (nonatomic, copy) void (^failedWithNoFallback)();
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
@@ -81,6 +82,14 @@
     if ( self.didFallbackOnCache != nil )
     {
         self.didFallbackOnCache();
+    }
+}
+
+- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
+{
+    if ( self.failedWithNoFallback != nil )
+    {
+        self.failedWithNoFallback();
     }
 }
 
@@ -144,6 +153,7 @@
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VDataCache *dataCache;
+@property (nonatomic, strong) NSString *buildNumber;
 
 @end
 
@@ -161,6 +171,11 @@
     self.dataCache.localCacheURL = temporaryDirectory;
     
     [[LSNocilla sharedInstance] start];
+    
+    self.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    
+    //Ideally, this implementation detail would be taken care of by a different setup step sent to the template download operation.
+    [[NSUserDefaults standardUserDefaults] setObject:self.buildNumber forKey:@"com.victorious.currentBuildNumber"];
 }
 
 - (void)tearDown
@@ -188,6 +203,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
     
@@ -209,6 +225,7 @@
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
                                                                                                andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.shouldRetry = NO;
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
@@ -240,6 +257,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     
@@ -265,6 +283,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
@@ -301,6 +320,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     downloadOperation.templateDownloadTimeout = 0.1;
@@ -324,6 +344,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
@@ -336,6 +357,7 @@
 {
     VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:nil];
+    downloadOperation.buildNumber = self.buildNumber;
     XCTAssertTrue(downloadOperation.shouldRetry);
 }
 
@@ -348,6 +370,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.shouldRetry = NO;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
@@ -369,6 +392,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
@@ -399,6 +423,7 @@
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.buildNumber = self.buildNumber;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     downloadOperation.shouldRetry = NO;
@@ -406,6 +431,39 @@
     delegate.didFallbackOnCache = ^(void)
     {
         XCTAssertEqualObjects(downloadOperation.templateConfiguration, expectedTemplateConfiguration);
+        [expectation fulfill];
+    };
+    
+    [self.operationQueue addOperation:downloadOperation];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testDownloaderEmptiesCacheAfterBuildChange
+{
+    NSString *templateCacheID = [[NSUUID UUID] UUIDString];
+    NSURL *templateFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"templateCache" withExtension:@"json"];
+    NSData *templateData = [NSData dataWithContentsOfURL:templateFileURL];
+    [self.dataCache cacheData:templateData forID:templateCacheID error:nil];
+    
+    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/testDownloaderFallsBackOnCacheAfterImageDownloadError"];
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"image": @{ @"imageURL": imageURL.absoluteString } };
+    
+    stubRequest(@"GET", imageURL.absoluteString).andFailWithError([NSError errorWithDomain:@"really bad" code:666 userInfo:nil]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    NSInteger newBuild = [self.buildNumber integerValue] + 1;
+    downloadOperation.buildNumber = [NSString stringWithFormat:@"%ld", newBuild];
+    downloadOperation.templateConfigurationCacheID = templateCacheID;
+    downloadOperation.dataCache = self.dataCache;
+    downloadOperation.shouldRetry = NO;
+    
+    delegate.failedWithNoFallback = ^(void)
+    {
         [expectation fulfill];
     };
     

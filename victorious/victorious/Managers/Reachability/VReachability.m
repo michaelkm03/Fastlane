@@ -296,8 +296,11 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         case VNetworkStatusReachableViaWWAN:
             return @"3g";
             break;
-        case VNetworkStatusNotReachable:
+        case VNetworkStatusUnknown:
             return @"unknown";
+            break;
+        case VNetworkStatusNotReachable:
+            return @"unreachable";
             break;
     }
 }

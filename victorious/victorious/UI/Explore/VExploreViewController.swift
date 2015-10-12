@@ -77,6 +77,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
         let urlPath = url.v_pathComponent()
         exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
+        exploreVC.currentStream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
         // Factory for marquee shelf
         exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         // Factory for trending topic shelf

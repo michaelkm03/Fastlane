@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-@class VStream, VSequence, StreamCellContext, AutoplayTrackingEvent;
+@class VStream, VSequence, StreamCellContext, VideoTrackingEvent;
 
 /**
  A helper class that handles the somewhat complex state management rules relates
@@ -73,6 +73,6 @@
 /**
  Call this to track autoplaying video inside a stream cell.
  */
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event;
+- (void)trackAutoplayEvent:(VideoTrackingEvent *)event;
 
 @end

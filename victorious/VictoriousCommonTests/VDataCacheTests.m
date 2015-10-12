@@ -195,4 +195,17 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testDeleteCachedData
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    
+    [self.dataCache1 cacheData:data forID:identifier error:nil];
+    
+    XCTAssert( [self.dataCache1 removeCachedDataForID:identifier error:nil] );
+    XCTAssertNil( [self.dataCache1 cachedDataForID:identifier] );
+}
+
 @end

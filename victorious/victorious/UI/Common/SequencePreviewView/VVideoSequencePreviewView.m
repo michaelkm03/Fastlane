@@ -13,6 +13,8 @@
 #import "VVideoPlayerToolbarView.h"
 #import "VPassthroughContainerView.h"
 
+static const CGFloat kMinimumPlayButtonInset = 24.0f;
+
 /**
  Describes the state of the video preview view
  */
@@ -90,6 +92,24 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    
+    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset) };
+    NSDictionary *constraintViews = @{ @"playButton" : self.largePlayButton };
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset)-[playButton]-(>=minInset)-|"
+                                                                                  options:kNilOptions
+                                                                                  metrics:constraintMetrics
+                                                                                    views:constraintViews]];
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset)-[playButton]-(>=minInset)-|"
+                                                                                  options:kNilOptions
+                                                                                  metrics:constraintMetrics
+                                                                                    views:constraintViews]];
+    [self.largePlayButton addConstraint:[NSLayoutConstraint constraintWithItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.largePlayButton
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f]];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
@@ -254,6 +274,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)setFocusType:(VFocusType)focusType
 {
+    if ( super.focusType != focusType && focusType == VFocusTypeDetail )
+    {
+        // When entering .Detail focus, tracking must be reset to account for non-autoplay views
+        [self resetTracking];
+    }
+    
     super.focusType = focusType;
     
     [self updateUIState];
@@ -268,13 +294,20 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
-    AutoplayTrackingEvent *trackingEvent = [[AutoplayTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
+    VideoTrackingEvent *trackingEvent = [[VideoTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
     
-    // Walk responder chain to track autoplay events
-    id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
-    if (responder != nil)
+    id<VideoTracking>responder = [self v_targetConformingToProtocol:@protocol(VideoTracking)];
+    if ( responder != nil )
     {
+        // If there's a responder to handle this, then use that.  This allows other parts
+        // of the responder chain to add context to the tracking event before the repsonder handles
+        // performing the tracking call
         [responder trackAutoplayEvent:trackingEvent];
+    }
+    else
+    {
+        // Otherwise, just do the tracking call with the current info we have
+        [trackingEvent track];
     }
 }
 
@@ -356,10 +389,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
         [self.toolbar setCurrentTime:videoPlayer.currentTimeSeconds duration:videoPlayer.durationSeconds];
     }
     
-    if ( self.focusType == VFocusTypeDetail )
-    {
-        [self updateQuartileTracking];
-    }
+    [self updateQuartileTracking];
 }
 
 - (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer

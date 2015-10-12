@@ -12,7 +12,6 @@
 #import "VSequence.h"
 #import "VTracking.h"
 #import "VVideoSettings.h"
-
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
 #import "victorious-Swift.h"
@@ -133,8 +132,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     {
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
-            AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
+            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
             event.context = context;
+            event.autoPlay = YES;
             event.watchTime = info[VTrackingKeyTimeCurrent];
             [self trackAutoplayEvent:event];
         }
@@ -180,28 +180,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Autoplay
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event
+- (void)trackAutoplayEvent:(VideoTrackingEvent *)event
 {
-    VReachability *reachability = [VReachability reachabilityForInternetConnection];
-    NSString *connectivityString = [reachability reachabilityStatusDescription:[reachability currentReachabilityStatus]];
-    NSInteger outputVolume = (NSInteger)([[AVAudioSession sharedInstance] outputVolume] * 100);
-    NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
-    
-    NSString *trackingID = @"";
-    StreamCellContext *context = event.context;
-    if (event.context != nil)
-    {
-        trackingID = context.fromShelf ? context.stream.shelfId : context.stream.trackingIdentifier;
-    }
-    
-    NSDictionary *parameters = @{VTrackingKeyAutoplay : @"true",
-                                 VTrackingKeyConnectivity : connectivityString,
-                                 VTrackingKeyVolumeLevel : volumeString,
-                                 VTrackingKeyUrls : event.urls,
-                                 VTrackingKeyStreamId : trackingID ?: @"",
-                                 VTrackingKeyTimeCurrent : [event.watchTime stringValue] ?: @""};
-    
-    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:context.streamItem.remoteId];
+    [event track];
 }
 
 #pragma mark - Private

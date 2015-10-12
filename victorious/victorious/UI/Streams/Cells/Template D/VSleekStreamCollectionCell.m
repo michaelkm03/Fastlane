@@ -46,7 +46,7 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
 static const CGFloat kInStreamCommentsTopSpace = 6.0f;
 static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, VideoTracking>
 
 @property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -106,10 +106,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              CGFloat textHeight = 0.0f;
-             if ( sequence.name.length > 0 )
+             if ( [self shouldShowCaptionForSequence:sequence withDependencyManager:dependencyManager] )
              {
-                 VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
@@ -124,7 +124,8 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-            return CGSizeMake( 0.0f, sequence.name.length > 0 ? kCaptionToPreviewVerticalSpacing : 0.0f );
+            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            return CGSizeMake( 0.0f, [self shouldShowCaptionForSequence:sequence withDependencyManager:dependencyManager] ? kCaptionToPreviewVerticalSpacing : 0.0f );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
@@ -347,7 +348,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         self.previewContainerHeightConstraint = heightToWidth;
     }
     
-    BOOL hasCaption = [self shouldShowCaptionForSequence:self.sequence];
+    BOOL hasCaption = [[self class] shouldShowCaptionForSequence:self.sequence withDependencyManager:self.dependencyManager];
     self.captiontoPreviewVerticalSpacing.constant = hasCaption ? kCaptionToPreviewVerticalSpacing : 0.0f;
     self.captionZeroingHeightConstraint.active = !hasCaption;
     
@@ -389,7 +390,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
     NSAttributedString *captionAttributedString = nil;
-    if ( [self shouldShowCaptionForSequence:sequence] )
+    if ( [[self class] shouldShowCaptionForSequence:sequence withDependencyManager:self.dependencyManager] )
     {
         NSDictionary *attributes = [VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager];
         captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
@@ -400,9 +401,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.captionTextView.attributedText = captionAttributedString;
 }
 
-- (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
++ (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return sequence.name.length > 0 && self.dependencyManager != nil;
+    return sequence.name.length > 0 && ![sequence.itemSubType isEqualToString:VStreamItemSubTypeText] && dependencyManager != nil;
 }
 
 - (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
@@ -523,15 +524,20 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 #pragma mark - Autoplay tracking
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+- (void)trackAutoplayEvent:(VideoTrackingEvent *__nonnull)event
 {
     // Set context and continue walking up responder chain
     event.context = self.context;
+    event.autoPlay = YES;
     
-    id<AutoplayTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(AutoplayTracking)];
-    if (responder != nil)
+    id<VideoTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(VideoTracking)];
+    if ( responder != nil )
     {
         [responder trackAutoplayEvent:event];
+    }
+    else
+    {
+        [event track];
     }
 }
 

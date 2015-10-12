@@ -86,6 +86,16 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
     return cachedData;
 }
 
+- (BOOL)removeCachedDataForID:(id<VDataCacheID>)identifier error:(NSError **)error
+{
+    NSURL *saveURL = [self URLForCachedDataWithID:identifier];
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:[saveURL path]] )
+    {
+        return [[NSFileManager defaultManager] removeItemAtURL:saveURL error:error];
+    }
+    return YES;
+}
+
 - (BOOL)hasCachedDataForID:(id<VDataCacheID>)identifier
 {
     NSParameterAssert( identifier != nil );
