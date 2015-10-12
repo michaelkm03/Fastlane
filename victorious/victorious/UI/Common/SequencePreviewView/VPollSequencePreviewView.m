@@ -170,7 +170,7 @@ static NSString *kOrIconKey = @"orIcon";
         return;
     }
     
-    NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f) };
+    NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f), @"priority" : @(UILayoutPriorityDefaultHigh) };
     
     self.answerAResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
     self.answerBResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
@@ -178,11 +178,11 @@ static NSString *kOrIconKey = @"orIcon";
     self.answerAResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerAResultView];
     self.answerAResultView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top@priority-[view]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsA]];
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(width)]"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(width@priority)]"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsA]];
@@ -192,11 +192,11 @@ static NSString *kOrIconKey = @"orIcon";
     self.answerBResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerBResultView];
     self.answerBResultView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top@priority-[view]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsB]];
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(width)]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(width@priority)]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsB]];
