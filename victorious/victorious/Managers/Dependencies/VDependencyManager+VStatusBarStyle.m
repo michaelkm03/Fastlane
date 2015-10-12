@@ -27,19 +27,4 @@ static NSString *kDarkStatusBarStyle = @"dark";
     }
 }
 
-- (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
-{
-    VColorLuminance luminance = [color v_colorLuminance];
-    switch (luminance)
-    {
-        case VColorLuminanceBright:
-            return UIStatusBarStyleLightContent;
-            break;
-            
-        case VColorLuminanceDark:
-            return UIStatusBarStyleDefault;
-            break;
-    }
-}
-
 @end
