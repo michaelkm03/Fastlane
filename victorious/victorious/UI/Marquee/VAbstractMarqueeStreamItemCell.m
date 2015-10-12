@@ -183,11 +183,6 @@
 
 #pragma mark - VContentPreviewViewProvider
 
-- (void)relinquishPreviewView
-{
-    self.hasRelinquishedPreviewView = YES;
-}
-
 - (void)setHasRelinquishedPreviewView:(BOOL)hasReliquishedPreviewView
 {
     _hasRelinquishedPreviewView = hasReliquishedPreviewView;

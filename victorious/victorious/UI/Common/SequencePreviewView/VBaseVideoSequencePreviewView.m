@@ -282,6 +282,7 @@
 
 - (void)setFocusType:(VFocusType)focusType
 {
+    self.videoPlayer.view.hidden = focusType == VFocusTypeNone;
     if ( super.focusType == focusType)
     {
         return;
@@ -289,7 +290,6 @@
     
     super.focusType = focusType;
     [self updateBackgroundColorAnimated:YES];
-    self.videoPlayer.view.hidden = focusType == VFocusTypeNone;
 
     switch (self.focusType)
     {

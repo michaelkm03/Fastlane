@@ -878,16 +878,23 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
     NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:previewView.streamItem];
+    BOOL presentingCellNeedsUpdate = YES;
     if ( indexPath.row != NSNotFound )
     {
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
         if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
         {
             [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
-            
+            presentingCellNeedsUpdate = ![cell isEqual:self.cellPresentingContentView];
         }
     }
+    
     self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
+    if ( presentingCellNeedsUpdate )
+    {
+        NSIndexPath *oldIndexPath = [self.collectionView indexPathForCell:self.cellPresentingContentView];
+        [self.collectionView reloadItemsAtIndexPaths:@[oldIndexPath]];
+    }
     self.cellPresentingContentView = nil;
 }
 
