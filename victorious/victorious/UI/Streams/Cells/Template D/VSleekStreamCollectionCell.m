@@ -390,6 +390,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [(VSequencePreviewView <VContentFittingPreviewView> *)self.previewView updateToFitContent:YES];
     }
     [self.previewView setSequence:sequence];
+    if ( !self.hasRelinquishedPreviewView && [self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]] )
+    {
+        ((VBaseVideoSequencePreviewView *)self.previewView).videoPlayer.view.hidden = NO;
+    }
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
@@ -501,6 +505,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)setFocusType:(VFocusType)focusType
 {
     _focusType = focusType;
+    if ( self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
         [(id <VFocusable>)self.previewView setFocusType:focusType];
@@ -634,6 +643,19 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = previewView;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    
+    if ( !self.hasRelinquishedPreviewView && [self.previewView conformsToProtocol:@protocol(VFocusable)] && self.previewView.focusType != self.focusType )
+    {
+        self.previewView.focusType = self.focusType;
+    }
+}
+
+- (void)makeVideoContentHidden:(BOOL)hidden
+{
+    if ( !self.hasRelinquishedPreviewView && [self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]] )
+    {
+        ((VBaseVideoSequencePreviewView *)self.previewView).videoPlayer.view.hidden = hidden;
+    }
 }
 
 @end

@@ -32,6 +32,8 @@
 
 - (void)purgeSizeCacheValue;
 
+- (void)makeVideoContentHidden:(BOOL)hidden;
+
 /**
  *  The sequence for this VSleekStreamCollectionCell to represent.
  */

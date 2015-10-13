@@ -615,7 +615,13 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)prepareForScreenshot
 {
-    [self.focusHelper endFocusOnAllCells];
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            [(VSleekStreamCollectionCell *)cell makeVideoContentHidden:YES];
+        }
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -877,25 +883,69 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
-    NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:previewView.streamItem];
-    BOOL presentingCellNeedsUpdate = YES;
+    VStreamItem *streamItem = previewView.streamItem;
+    NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:streamItem];
     if ( indexPath.row != NSNotFound )
     {
-        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+        //Returning content to a stream cell
+        [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
+    }
+    else
+    {
+        //Returning content to a marquee cell
+        for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
         {
-            [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
-            presentingCellNeedsUpdate = ![cell isEqual:self.cellPresentingContentView];
+            if ( [cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]] )
+            {
+                UICollectionView *marqueeCollectionView = [(VAbstractMarqueeCollectionViewCell *)cell marqueeCollectionView];
+                NSInteger marqueeItemRow = [[[(VAbstractMarqueeCollectionViewCell *)cell marquee] marqueeItems] indexOfObject:streamItem];
+                if ( marqueeItemRow != NSNotFound )
+                {
+                    NSIndexPath *marqueeItemIndexPath = [NSIndexPath indexPathForItem:marqueeItemRow inSection:0];
+                    if ( [self restorePreviewView:previewView toCellAtIndexPath:marqueeItemIndexPath inCollectionView:marqueeCollectionView] )
+                    {
+                        break;
+                    }
+                }
+            }
         }
+    }
+    
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            [(VSleekStreamCollectionCell *)cell makeVideoContentHidden:NO];
+        }
+    }
+}
+
+- (BOOL)restorePreviewView:(VSequencePreviewView *)previewView toCellAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
+{
+    BOOL presentingCellNeedsUpdate = YES;
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    if ( cell == nil )
+    {
+        return NO;
+    }
+    
+    if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+    {
+        [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
+        presentingCellNeedsUpdate = ![cell isEqual:self.cellPresentingContentView];
     }
     
     self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
     if ( presentingCellNeedsUpdate )
     {
-        NSIndexPath *oldIndexPath = [self.collectionView indexPathForCell:self.cellPresentingContentView];
-        [self.collectionView reloadItemsAtIndexPaths:@[oldIndexPath]];
+        NSIndexPath *oldIndexPath = [collectionView indexPathForCell:self.cellPresentingContentView];
+        if ( oldIndexPath != nil )
+        {
+            [collectionView reloadItemsAtIndexPaths:@[oldIndexPath]];
+        }
     }
     self.cellPresentingContentView = nil;
+    return YES;
 }
 
 #pragma mark - Upload Progress View
