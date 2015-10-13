@@ -64,7 +64,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
     self.characterCountMax = [self.dependencyManager numberForKey:kCharacterLimit].integerValue;
-    [self showPlaceholderText];
+    [self showPlaceholderTextIfNecessary];
     
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
@@ -144,14 +144,14 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)removeHashtagFromText:(NSString *)hashtag
 {
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    NSRange rangeOfHashtag = [self.text rangeOfString:hashtagTextWithHashMark];
+    NSRange rangeOfHashtag = [self.hashtagHelper rangeOfHashtag:hashtagTextWithHashMark inString:self.text];
     
     if ( rangeOfHashtag.location != NSNotFound )
     {
-        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
+        self.text = [self.text stringByReplacingCharactersInRange:rangeOfHashtag withString:@""];
     }
 
-    [self showPlaceholderText];
+    [self showPlaceholderTextIfNecessary];
     
     [self.delegate textDidUpdate:self.textOutput];
 }
@@ -161,11 +161,13 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self hidePlaceholderText];
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    if ( ![self.text containsString:hashtagTextWithHashMark] )
+    NSRange rangeOfHashtag = [self.hashtagHelper rangeOfHashtag:hashtagTextWithHashMark inString:self.text];
+    
+    if ( rangeOfHashtag.location == NSNotFound )
     {
         self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
-    
+        
     [self.delegate textDidUpdate:self.textOutput];
 }
 
@@ -201,7 +203,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     {
         [self.textView resignFirstResponder];
         
-        [self showPlaceholderText];
+        [self showPlaceholderTextIfNecessary];
     }
 }
 
@@ -212,7 +214,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 #pragma mark - Placeholder text
 
-- (void)showPlaceholderText
+- (void)showPlaceholderTextIfNecessary
 {
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
