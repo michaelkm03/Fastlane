@@ -108,9 +108,14 @@
     }
 }
 
+- (BOOL)shouldAutoplayAssetFromSequence:(VSequence *)sequence
+{
+    return sequence.firstNode.mp4Asset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+}
+
 - (BOOL)shouldAutoplay
 {
-    return self.videoAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+    return [self shouldAutoplayAssetFromSequence:self.sequence];
 }
 
 - (BOOL)shouldLoop
@@ -129,7 +134,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.videoPlayer.view.hidden = NO;
+    self.videoPlayer.view.hidden = ![self shouldAutoplayAssetFromSequence:sequence];
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;
