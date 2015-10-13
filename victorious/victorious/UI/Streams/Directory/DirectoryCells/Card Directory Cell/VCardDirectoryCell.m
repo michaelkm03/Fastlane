@@ -126,6 +126,18 @@ static const CGFloat kBorderWidth = 0.5f;
     self.topStackBottomConstraint.constant = showStackedBackground ? VDirectoryItemStackHeight : 0.0f;
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self updateDisplaySizeOfPreviewView];
+}
+
+- (void)updateDisplaySizeOfPreviewView
+{
+    CGFloat width = CGRectGetWidth(self.bounds);
+    self.previewView.displaySize = CGSizeMake(width, width);
+}
+
 + (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem
 {
     return [streamItem isKindOfClass:[VStream class]];
