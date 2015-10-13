@@ -10,27 +10,39 @@ import Foundation
 
 class SoundBarView : UIView {
     
-    private var barLayers = [CAShapeLayer]()
-    private var barPaths = [UIBezierPath]()
+    private var soundBars = [UIView]()
+    private var hasLaidOut = false
+    private var shouldRepeat = true
     private var isAnimating = false
-    private var counter = 0
     
     /// Total number of vertical bars
-    var numberOfBars = 4 {
-        didSet {
-            numberOfBars = max(numberOfBars, 1)
-            reset(true)
-            setNeedsLayout()
-        }
-    }
+    var numberOfBars: Int
+        
+//        {
+//        didSet {
+//            numberOfBars = max(numberOfBars, 1)
+//            setNeedsLayout()
+//        }
+//    }
     
     /// Distance in points between sound bars
-    var distanceBetweenBars = 1.0 {
-        didSet {
-            distanceBetweenBars = max(distanceBetweenBars, 0.0)
-            reset(true)
-            setNeedsLayout()
-        }
+    var distanceBetweenBars: CGFloat
+        
+//        {
+//        didSet {
+//            distanceBetweenBars = max(distanceBetweenBars, 0.0)
+//            setNeedsLayout()
+//        }
+//    }
+    
+    init(numberOfBars: Int, distanceBetweenBars: CGFloat) {
+        self.numberOfBars = numberOfBars
+        self.distanceBetweenBars = distanceBetweenBars
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        self.numberOfBars = 4
+        self.distanceBetweenBars = 1.0
     }
     
     // MARK: Layout
@@ -39,19 +51,25 @@ class SoundBarView : UIView {
         
         super.layoutSubviews()
         
-        for index in 0..<numberOfBars {
-            let bar = CAShapeLayer()
-            let path = pathForBarAtIndex(index, endpoint: randomEndpoint()).CGPath
-            bar.path = path
-            bar.fillColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8).CGColor
-            self.layer.addSublayer(bar)
-            barLayers.append(bar)
+        if !hasLaidOut {
+            hasLaidOut = true
+            
+            for index in 0..<numberOfBars {
+                let bar = UIView(frame: rectForBarAtIndex(index, endpoint: CGFloat(randomEndpoint())))
+                bar.backgroundColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8)
+                self.addSubview(bar)
+                soundBars.append(bar)
+            }
+            
+            startAnimating()
         }
-        
-        startAnimating()
     }
     
     // MARK: Functions
+    
+    func stopAnimating() {
+        shouldRepeat = false
+    }
     
     /// Start the animation
     func startAnimating() {
@@ -60,83 +78,38 @@ class SoundBarView : UIView {
             return
         }
         
+        shouldRepeat = true
         isAnimating = true
-        
-        for (index, bar) in barLayers.enumerate() {
-            
-            guard let barPath = bar.path else {
-                continue
-            }
-            let currentPath = UIBezierPath(CGPath: barPath)
-            let currentEndpoint = Double(currentPath.bounds.height)
-            
-            var newRandomEndpoint = currentEndpoint
-            while abs(currentEndpoint - newRandomEndpoint) < Double(self.bounds.height / 4.0) {
-                newRandomEndpoint = randomEndpoint()
-            }
-            
-            let newPath = pathForBarAtIndex(index, endpoint: newRandomEndpoint)
-            barPaths += [newPath]
-            
-            let animation = CABasicAnimation(keyPath: "path")
-            animation.toValue = newPath.CGPath
-            animation.duration = 0.3
-            animation.delegate = self
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.fillMode = kCAFillModeForwards
-            animation.removedOnCompletion = false
-            
-            bar.addAnimation(animation, forKey: animation.keyPath)
+        UIView.animateWithDuration(0.3,
+            delay: 0,
+            options: [.BeginFromCurrentState, .CurveEaseInOut],
+            animations: { () in
+                for index in 0..<self.numberOfBars {
+                    let view = self.soundBars[index]
+                    let currentEndpoint = view.frame.height
+                    var newRandomEndpoint = currentEndpoint
+                    while abs(currentEndpoint - newRandomEndpoint) < self.bounds.height / 4.0 {
+                        newRandomEndpoint = CGFloat(self.randomEndpoint())
+                    }
+                    
+                    view.frame = self.rectForBarAtIndex(index, endpoint: newRandomEndpoint)
+                }
+            }) { (completed) in
+                self.isAnimating = false
+                if self.shouldRepeat {
+                    self.startAnimating()
+                }
         }
     }
     
-    /// Stop the animation
-    func stopAnimating() {
-        for bar in barLayers {
-            bar.removeAllAnimations()
-        }
-        isAnimating = false
-    }
-    
-    // MARK: Helpers
-    
-    private func reset(clearBars: Bool) {
-        
-        barPaths = [UIBezierPath]()
-        counter = 0
-        isAnimating = false
-        
-        if clearBars {
-            for bar in barLayers {
-                bar.removeFromSuperlayer()
-            }
-            barLayers = [CAShapeLayer]()
-        }
-    }
-    
-    private func pathForBarAtIndex(barIndex: Int, endpoint: Double) -> UIBezierPath {
+    private func rectForBarAtIndex(barIndex: Int, endpoint: CGFloat) -> CGRect {
         let gapsWidth = distanceBetweenBars * Double(numberOfBars - 1)
         let totalBarWidth = Double(self.bounds.width) - gapsWidth
         let barWidth = totalBarWidth / Double(numberOfBars)
-        return UIBezierPath(rect: CGRect(x: (barWidth + distanceBetweenBars) * Double(barIndex), y:  Double(self.bounds.height), width: barWidth, height: -endpoint))
+        return CGRect(x: (barWidth + distanceBetweenBars) * Double(barIndex), y:  Double(self.bounds.height), width: barWidth, height: -Double(endpoint))
     }
     
     private func randomEndpoint() -> Double {
         return Double(arc4random_uniform(UInt32(self.bounds.height)))
-    }
-    
-    // MARK: Animation Delegate
-    
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-
-        if flag {
-            let bar = barLayers[counter]
-            bar.path = barPaths[counter].CGPath
-            counter++
-            if counter >= barLayers.count || counter >= barPaths.count {
-                reset(false)
-                startAnimating()
-            }
-        }
     }
 }
