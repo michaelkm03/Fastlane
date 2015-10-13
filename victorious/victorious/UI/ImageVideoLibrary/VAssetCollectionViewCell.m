@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *durationLabel;
 
 @property (strong, nonatomic) NSDateComponentsFormatter *dateFormatter;
+@property (nonatomic) PHImageRequestID imageRequestID;
 
 @end
 
@@ -31,6 +32,7 @@
         _dateFormatter.allowedUnits = (NSCalendarUnitMinute | NSCalendarUnitSecond);
         _dateFormatter.formattingContext = NSFormattingContextListItem;
         _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStylePositional;
+        _imageRequestID = 0;
     }
     return self;
 }
@@ -102,13 +104,13 @@
     requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
     requestOptions.networkAccessAllowed = YES;
     
-    if (self.tag)
+    if (self.imageRequestID != 0)
     {
-        [self.imageManager cancelImageRequest:(PHImageRequestID)self.tag];
+        [self.imageManager cancelImageRequest:self.imageRequestID];
     }
     
     __weak typeof(self) welf = self;
-    self.tag = [self.imageManager requestImageForAsset:asset
+    self.imageRequestID = [self.imageManager requestImageForAsset:asset
                                             targetSize:desiredSize
                                            contentMode:PHImageContentModeAspectFill
                                                options:requestOptions
