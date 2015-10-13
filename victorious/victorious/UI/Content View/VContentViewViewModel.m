@@ -493,7 +493,6 @@
          __strong typeof(weakSelf) strongSelf = weakSelf;
          strongSelf.comments = [strongSelf.sequence.comments array];
          [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-
          if (completion)
          {
              completion(YES);
