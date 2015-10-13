@@ -53,6 +53,7 @@ class SoundBarView : UIView {
     
     // MARK: Functions
     
+    /// Stops the animation
     func stopAnimating() {
         shouldRepeat = false
     }

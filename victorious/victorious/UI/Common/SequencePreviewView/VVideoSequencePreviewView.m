@@ -68,7 +68,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 {
     self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:4 distanceBetweenBars:1.0];
     self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.soundIndicator.hidden = YES;
+    self.soundIndicator.alpha = 0;
     [self.videoUIContainer addSubview:self.soundIndicator];
     NSDictionary *views = @{ @"soundIndicator" : self.soundIndicator };
     NSDictionary *metrics = @{ @"left" : @(10.0),
@@ -263,11 +263,18 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     
     // Sound indicator
-    self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
-    if ( !self.soundIndicator.hidden )
+    BOOL soundIdicatorHidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
+    soundIdicatorHidden ? [self.soundIndicator stopAnimating] : [self.soundIndicator startAnimating];
+    CGFloat newAlpha = soundIdicatorHidden ? 0 : 1;
+    if (self.soundIndicator.alpha == newAlpha)
     {
-        [self.soundIndicator startAnimating];
+        return;
     }
+    
+    [UIView animateWithDuration:0.2 animations:^
+    {
+        self.soundIndicator.alpha = soundIdicatorHidden ? 0 : 1;
+    }];
 }
 
 #pragma mark - Focus
