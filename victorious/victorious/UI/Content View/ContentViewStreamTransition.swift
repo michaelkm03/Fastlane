@@ -27,10 +27,17 @@ class ContentViewStreamTransition : NSObject, VAnimatedTransition {
         
         guard let navController = model.toViewController as? VNavigationController,
             let contentViewController = navController.innerNavigationController?.topViewController as? VNewContentViewController,
-            let snapshotImage = self.imageOfView( model.fromViewController.view ),
             let previewProvider = contentViewController.viewModel.context.contentPreviewProvider,
             let previewReceiver = contentViewController.contentCell as? VContentPreviewViewReceiver else {
                 fatalError( "Missing references required for transition animation" )
+        }
+        
+        if let originViewController = previewProvider as? VContentViewOriginViewController {
+            originViewController.prepareForScreenshot()
+        }
+        
+        guard let snapshotImage = self.imageOfView( model.fromViewController.view ) else {
+            fatalError( "Snapshot of view failed during transition animation" )
         }
         
         let navBarHeight = model.fromViewController.navigationController?.navigationBar.frame.height ?? 0.0

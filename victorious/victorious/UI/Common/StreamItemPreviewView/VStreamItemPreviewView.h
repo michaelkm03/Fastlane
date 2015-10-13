@@ -98,6 +98,7 @@ typedef void (^VRenderablePreviewViewDisplayReadyBlock)(VStreamItemPreviewView *
 @property (nonatomic, assign) BOOL hasDeterminedPreferredBackgroundColor;
 @property (nonatomic, strong) UIColor *streamBackgroundColor;
 @property (nonatomic, strong, readonly) UIColor *defaultBackgroundColor;
+@property (nonatomic, readonly) UIColor *updatedBackgroundColor;
 
 @end
 

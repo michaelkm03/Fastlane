@@ -62,6 +62,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setItem:(VVideoPlayerItem *)item;
 
 /**
+ Updates the appropriate view of the video player to the provided color.
+ */
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor;
+
+/**
  The time of the current position of the video in milliseconds.
  */
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
@@ -101,6 +106,11 @@ NS_ASSUME_NONNULL_BEGIN
  Returns a view that contains the visible video player output.
  */
 @property (nonatomic, readonly) UIView *view;
+
+/**
+ Aspect ratio of the playing video asset.  If no asset is loaded, will return 1.0f
+ */
+@property (nonatomic, assign, readonly) CGFloat aspectRatio;
 
 @end
 

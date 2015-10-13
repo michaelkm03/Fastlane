@@ -51,6 +51,7 @@
 #import "VContentCell.h"
 #import "VContentCommentsCell.h"
 #import "VContentViewFactory.h"
+#import "VContentViewOriginViewController.h"
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VAccessoryScreens.h"

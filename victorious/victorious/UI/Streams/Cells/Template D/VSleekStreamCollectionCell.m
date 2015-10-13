@@ -72,11 +72,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
-@property (nonatomic, assign) BOOL hasRelinquishedPreviewView;
 
 @end
 
 @implementation VSleekStreamCollectionCell
+
+@synthesize hasRelinquishedPreviewView = _hasRelinquishedPreviewView;
 
 - (void)awakeFromNib
 {
@@ -364,7 +365,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
-    if ( self.previewView == nil && self.hasRelinquishedPreviewView )
+    if ( self.hasRelinquishedPreviewView )
     {
         return;
     }
@@ -372,7 +373,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
-        return;
+        if ( self.previewView.superview == self.previewContainer )
+        {
+            //The preview view has the right sequence and is already present in our UI
+            return;
+        }
     }
     
     [self.previewView removeFromSuperview];
@@ -496,6 +501,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (void)setFocusType:(VFocusType)focusType
 {
     _focusType = focusType;
+    if ( self.hasRelinquishedPreviewView )
+    {
+        return;
+    }
+    
     if ([self.previewView conformsToProtocol:@protocol(VFocusable)])
     {
         [(id <VFocusable>)self.previewView setFocusType:focusType];
@@ -629,6 +639,29 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.previewView = previewView;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    
+    if ( !self.hasRelinquishedPreviewView && [self.previewView conformsToProtocol:@protocol(VFocusable)] && self.previewView.focusType != self.focusType )
+    {
+        self.previewView.focusType = self.focusType;
+    }
+}
+
+- (void)makeVideoContentHidden:(BOOL)hidden
+{
+    if ( !self.hasRelinquishedPreviewView && [self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]] )
+    {
+        VBaseVideoSequencePreviewView *videoPreviewView = (VBaseVideoSequencePreviewView *)self.previewView;
+        if ( hidden )
+        {
+            //Force to hide
+            videoPreviewView.videoPlayer.view.hidden = YES;
+        }
+        else
+        {
+            //Allow the preview view to adjust as it's sequence desires
+            [videoPreviewView updateStateOfVideoPlayerView];
+        }
+    }
 }
 
 @end
