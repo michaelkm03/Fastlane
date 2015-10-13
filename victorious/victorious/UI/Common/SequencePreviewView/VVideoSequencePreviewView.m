@@ -92,14 +92,15 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    self.largePlayButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset) };
+    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset), @"priority" : @(990) };
     NSDictionary *constraintViews = @{ @"playButton" : self.largePlayButton };
-    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset)-[playButton]-(>=minInset)-|"
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset@priority)-[playButton]-(>=minInset@priority)-|"
                                                                                   options:kNilOptions
                                                                                   metrics:constraintMetrics
                                                                                     views:constraintViews]];
-    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset)-[playButton]-(>=minInset)-|"
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset@priority)-[playButton]-(>=minInset@priority)-|"
                                                                                   options:kNilOptions
                                                                                   metrics:constraintMetrics
                                                                                     views:constraintViews]];
