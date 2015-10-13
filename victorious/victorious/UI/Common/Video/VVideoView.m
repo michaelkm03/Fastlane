@@ -142,6 +142,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                                                object:nil];
 }
 
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor
+{
+    self.playerLayer.backgroundColor = backgroundColor.CGColor;
+}
+
 - (void)onReadyForDisplay
 {
     AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
@@ -280,7 +285,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( self.isPlaying )
     {
         [self.player pause];
-        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidPause:)])
         {
             [self.delegate videoPlayerDidPause:self];
         }
@@ -340,6 +345,18 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 - (NSUInteger)currentTimeMilliseconds
 {
     return (NSUInteger)(self.currentTimeSeconds * 1000.0);
+}
+
+- (CGFloat)aspectRatio
+{
+    NSArray *tracks = [self.player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo];
+    if ( tracks.count > 0 )
+    {
+        AVAssetTrack *track = tracks[0];
+        CGSize size = [track naturalSize];
+        return size.width / size.height;
+    }
+    return 1.0f;
 }
 
 @end

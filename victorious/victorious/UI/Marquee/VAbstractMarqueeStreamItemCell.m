@@ -21,11 +21,11 @@
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, VideoTracking, VContentPreviewViewProvider>
 
-@property (nonatomic, assign) BOOL hasReliquishedPreviewView;
-
 @end
 
 @implementation VAbstractMarqueeStreamItemCell
+
+@synthesize hasRelinquishedPreviewView = _hasRelinquishedPreviewView;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
@@ -77,7 +77,7 @@
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
-    if ( streamItem == nil || self.hasReliquishedPreviewView )
+    if ( streamItem == nil || self.hasRelinquishedPreviewView )
     {
         return;
     }
@@ -110,6 +110,10 @@
     {
         id<VRenderablePreviewView> renderablePreviewView = (id<VRenderablePreviewView>)self.previewView;
         [renderablePreviewView setRenderingSize:CGSizeMake( CGRectGetWidth(self.bounds), CGRectGetWidth(self.bounds) )];
+    }
+    if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
+    {
+        [(id<VContentFittingPreviewView>)self.previewView updateToFitContent:NO];
     }
     
     [self.previewView setStreamItem:streamItem];
@@ -179,14 +183,9 @@
 
 #pragma mark - VContentPreviewViewProvider
 
-- (void)relinquishPreviewView
+- (void)setHasRelinquishedPreviewView:(BOOL)hasReliquishedPreviewView
 {
-    self.hasReliquishedPreviewView = YES;
-}
-
-- (void)setHasReliquishedPreviewView:(BOOL)hasReliquishedPreviewView
-{
-    _hasReliquishedPreviewView = hasReliquishedPreviewView;
+    _hasRelinquishedPreviewView = hasReliquishedPreviewView;
     if ( !hasReliquishedPreviewView )
     {
         [self updatePreviewViewForStreamItem:self.streamItem];
@@ -205,7 +204,7 @@
 
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
-    self.hasReliquishedPreviewView = NO;
+    self.hasRelinquishedPreviewView = NO;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
