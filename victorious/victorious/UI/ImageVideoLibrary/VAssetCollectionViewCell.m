@@ -85,25 +85,24 @@
     requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
     requestOptions.networkAccessAllowed = YES;
     
-    __weak typeof(self) welf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    if (self.tag)
     {
-        [welf.imageManager requestImageForAsset:asset
-                                     targetSize:desiredSize
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:requestOptions
-                                  resultHandler:^(UIImage *result, NSDictionary *info)
+        [self.imageManager cancelImageRequest:(PHImageRequestID)self.tag];
+    }
+    
+    __weak typeof(self) welf = self;
+    self.tag = [self.imageManager requestImageForAsset:asset
+                                 targetSize:desiredSize
+                                contentMode:PHImageContentModeAspectFill
+                                    options:requestOptions
+                              resultHandler:^(UIImage *result, NSDictionary *info)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
          {
-             dispatch_async(dispatch_get_main_queue(), ^
-             {
-                 __strong typeof(welf) strongSelf = welf;
-                 if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
-                 {
-                     strongSelf.imageView.image = result;
-                 }
-             });
-         }];
-    });
+             strongSelf.imageView.image = result;
+         }
+     }];
 }
 
 #pragma mark - Private Methods
