@@ -9,6 +9,7 @@
 #import "UIImage+VSolidColor.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
+#import "victorious-Swift.h"
 
 NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigationBarAppearance";
 
@@ -36,6 +37,7 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
 
+    navigationBar.shadowImage = [UIImage v_singlePixelImageWithColor:[UIColor v_navigationAndTabBarShadowColor]];
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self barItemTintColor];
     UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
