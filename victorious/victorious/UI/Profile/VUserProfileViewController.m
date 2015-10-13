@@ -812,7 +812,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if (context == VUserProfileAttributesContext && [keyPath isEqualToString:NSStringFromSelector(@selector(isFollowedByMainUser))])
+    if (context == VUserProfileAttributesContext && [keyPath isEqualToString:NSStringFromSelector(@selector(isFollowedByMainUser))] && !self.representsMainUser)
     {
         [self reloadUserFollowingRelationship];
         [self reloadUserFollowCounts];
