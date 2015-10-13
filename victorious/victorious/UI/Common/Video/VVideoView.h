@@ -13,7 +13,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class VVideoView;
-@class AVPlayerLayer;
 
 /**
  A simple video player that displays video content only, without any UI.
