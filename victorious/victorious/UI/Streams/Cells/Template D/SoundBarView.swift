@@ -16,31 +16,19 @@ class SoundBarView : UIView {
     private var isAnimating = false
     
     /// Total number of vertical bars
-    var numberOfBars: Int
-        
-//        {
-//        didSet {
-//            numberOfBars = max(numberOfBars, 1)
-//            setNeedsLayout()
-//        }
-//    }
+    private var numberOfBars: Int!
     
     /// Distance in points between sound bars
-    var distanceBetweenBars: CGFloat
-        
-//        {
-//        didSet {
-//            distanceBetweenBars = max(distanceBetweenBars, 0.0)
-//            setNeedsLayout()
-//        }
-//    }
+    private var distanceBetweenBars: Double!
     
-    init(numberOfBars: Int, distanceBetweenBars: CGFloat) {
+    init(numberOfBars: Int, distanceBetweenBars: Double) {
+        super.init(frame: CGRectZero)
         self.numberOfBars = numberOfBars
         self.distanceBetweenBars = distanceBetweenBars
     }
 
     required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         self.numberOfBars = 4
         self.distanceBetweenBars = 1.0
     }
@@ -60,8 +48,6 @@ class SoundBarView : UIView {
                 self.addSubview(bar)
                 soundBars.append(bar)
             }
-            
-            startAnimating()
         }
     }
     
