@@ -75,11 +75,28 @@
     _asset = asset;
     
     [self configureForMediaTypeWithAsset:asset];
+}
 
+#pragma mark - Private Methods
+
+- (void)configureForMediaTypeWithAsset:(PHAsset *)asset
+{
+    // Configure the duration label for video assets
+    if (asset.mediaType == PHAssetMediaTypeVideo)
+    {
+        self.durationContainer.hidden = NO;
+        self.durationLabel.text = [self.dateFormatter stringFromTimeInterval:asset.duration];
+    }
+    else
+    {
+        self.durationContainer.hidden = YES;
+    }
+    
+    // Request image thumbnail for asset
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize cellSize = self.imageView.bounds.size;
     CGSize desiredSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
-
+    
     PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
     requestOptions.version = PHImageRequestOptionsVersionCurrent;
     requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
@@ -92,32 +109,17 @@
     
     __weak typeof(self) welf = self;
     self.tag = [self.imageManager requestImageForAsset:asset
-                                 targetSize:desiredSize
-                                contentMode:PHImageContentModeAspectFill
-                                    options:requestOptions
-                              resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-         __strong typeof(welf) strongSelf = welf;
-         if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
-         {
-             strongSelf.imageView.image = result;
-         }
-     }];
-}
-
-#pragma mark - Private Methods
-
-- (void)configureForMediaTypeWithAsset:(PHAsset *)asset
-{
-    if (asset.mediaType == PHAssetMediaTypeVideo)
-    {
-        self.durationContainer.hidden = NO;
-        self.durationLabel.text = [self.dateFormatter stringFromTimeInterval:asset.duration];
-    }
-    else
-    {
-        self.durationContainer.hidden = YES;
-    }
+                                            targetSize:desiredSize
+                                           contentMode:PHImageContentModeAspectFill
+                                               options:requestOptions
+                                         resultHandler:^(UIImage *result, NSDictionary *info)
+                {
+                    __strong typeof(welf) strongSelf = welf;
+                    if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
+                    {
+                        strongSelf.imageView.image = result;
+                    }
+                }];
 }
 
 @end
