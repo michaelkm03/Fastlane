@@ -18,6 +18,8 @@
 @property (nonatomic, strong) IBInspectable UIImage *pollIcon;
 @property (nonatomic, strong) UIImageView *answerAImageView;
 @property (nonatomic, strong) UIImageView *answerBImageView;
+@property (nonatomic, strong) UIButton *playButtonA;
+@property (nonatomic, strong) UIButton *playButtonB;
 
 - (void)setPollIconHidden:(BOOL)hidden animated:(BOOL)animated;
 
