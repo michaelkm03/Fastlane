@@ -341,8 +341,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
     }
-    
-    [self reloadUserFollowCounts];
 }
 
 - (void)reloadUserFollowingRelationship
@@ -814,7 +812,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if (context == VUserProfileAttributesContext)
+    if (context == VUserProfileAttributesContext && [keyPath isEqualToString:NSStringFromSelector(@selector(isFollowedByMainUser))])
     {
         [self reloadUserFollowingRelationship];
         [self reloadUserFollowCounts];
