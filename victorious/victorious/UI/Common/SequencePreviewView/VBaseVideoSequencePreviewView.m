@@ -129,6 +129,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    self.videoPlayer.view.hidden = NO;
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;

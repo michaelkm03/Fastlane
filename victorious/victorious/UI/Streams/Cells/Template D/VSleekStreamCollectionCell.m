@@ -390,10 +390,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [(VSequencePreviewView <VContentFittingPreviewView> *)self.previewView updateToFitContent:YES];
     }
     [self.previewView setSequence:sequence];
-    if ( !self.hasRelinquishedPreviewView && [self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]] )
-    {
-        ((VBaseVideoSequencePreviewView *)self.previewView).videoPlayer.view.hidden = NO;
-    }
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
