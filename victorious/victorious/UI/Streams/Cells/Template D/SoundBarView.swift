@@ -70,7 +70,7 @@ class SoundBarView : UIView {
         UIView.animateWithDuration(0.3,
             delay: 0,
             options: [.BeginFromCurrentState, .CurveEaseInOut],
-            animations: { () in
+            animations: {
                 for index in 0..<self.numberOfBars {
                     let view = self.soundBars[index]
                     let currentEndpoint = view.frame.height
@@ -81,12 +81,13 @@ class SoundBarView : UIView {
                     
                     view.frame = self.rectForBarAtIndex(index, endpoint: newRandomEndpoint)
                 }
-            }) { (completed) in
+            },
+            completion: { completed in
                 self.isAnimating = false
                 if self.shouldRepeat {
                     self.startAnimating()
                 }
-        }
+            })
     }
     
     private func rectForBarAtIndex(barIndex: Int, endpoint: CGFloat) -> CGRect {

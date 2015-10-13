@@ -273,7 +273,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     
     [UIView animateWithDuration:0.2 animations:^
     {
-        self.soundIndicator.alpha = soundIdicatorHidden ? 0 : 1;
+        self.soundIndicator.alpha = newAlpha;
     }];
 }
 
