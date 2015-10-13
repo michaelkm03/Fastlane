@@ -32,7 +32,7 @@
         _dateFormatter.allowedUnits = (NSCalendarUnitMinute | NSCalendarUnitSecond);
         _dateFormatter.formattingContext = NSFormattingContextListItem;
         _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStylePositional;
-        _imageRequestID = 0;
+        _imageRequestID = PHInvalidImageRequestID;
     }
     return self;
 }
@@ -104,7 +104,7 @@
     requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
     requestOptions.networkAccessAllowed = YES;
     
-    if (self.imageRequestID != 0)
+    if (self.imageRequestID != PHInvalidImageRequestID)
     {
         [self.imageManager cancelImageRequest:self.imageRequestID];
     }
