@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *durationLabel;
 
 @property (strong, nonatomic) NSDateComponentsFormatter *dateFormatter;
+@property (nonatomic) PHImageRequestID imageRequestID;
 
 @end
 
@@ -31,6 +32,7 @@
         _dateFormatter.allowedUnits = (NSCalendarUnitMinute | NSCalendarUnitSecond);
         _dateFormatter.formattingContext = NSFormattingContextListItem;
         _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStylePositional;
+        _imageRequestID = PHInvalidImageRequestID;
     }
     return self;
 }
@@ -75,41 +77,13 @@
     _asset = asset;
     
     [self configureForMediaTypeWithAsset:asset];
-
-    CGFloat scale = [UIScreen mainScreen].scale;
-    CGSize cellSize = self.imageView.bounds.size;
-    CGSize desiredSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
-
-    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
-    requestOptions.version = PHImageRequestOptionsVersionCurrent;
-    requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
-    requestOptions.networkAccessAllowed = YES;
-    
-    __weak typeof(self) welf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-    {
-        [welf.imageManager requestImageForAsset:asset
-                                     targetSize:desiredSize
-                                    contentMode:PHImageContentModeAspectFill
-                                        options:requestOptions
-                                  resultHandler:^(UIImage *result, NSDictionary *info)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
-             {
-                 __strong typeof(welf) strongSelf = welf;
-                 if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
-                 {
-                     strongSelf.imageView.image = result;
-                 }
-             });
-         }];
-    });
 }
 
 #pragma mark - Private Methods
 
 - (void)configureForMediaTypeWithAsset:(PHAsset *)asset
 {
+    // Configure the duration label for video assets
     if (asset.mediaType == PHAssetMediaTypeVideo)
     {
         self.durationContainer.hidden = NO;
@@ -119,6 +93,35 @@
     {
         self.durationContainer.hidden = YES;
     }
+    
+    // Request image thumbnail for asset
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGSize cellSize = self.imageView.bounds.size;
+    CGSize desiredSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
+    
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.version = PHImageRequestOptionsVersionCurrent;
+    requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
+    requestOptions.networkAccessAllowed = YES;
+    
+    if (self.imageRequestID != PHInvalidImageRequestID)
+    {
+        [self.imageManager cancelImageRequest:self.imageRequestID];
+    }
+    
+    __weak typeof(self) welf = self;
+    self.imageRequestID = [self.imageManager requestImageForAsset:asset
+                                            targetSize:desiredSize
+                                           contentMode:PHImageContentModeAspectFill
+                                               options:requestOptions
+                                         resultHandler:^(UIImage *result, NSDictionary *info)
+                {
+                    __strong typeof(welf) strongSelf = welf;
+                    if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
+                    {
+                        strongSelf.imageView.image = result;
+                    }
+                }];
 }
 
 @end
