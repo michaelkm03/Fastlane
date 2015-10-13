@@ -24,7 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
-@property (nonatomic, readonly, nullable) AVPlayerLayer *playerLayer;
 
 NS_ASSUME_NONNULL_END
 

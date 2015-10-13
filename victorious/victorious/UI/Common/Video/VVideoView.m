@@ -20,7 +20,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @interface VVideoView()
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
-@property (nonatomic, readwrite, nullable) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
