@@ -130,11 +130,17 @@
     }
 }
 
+- (void)updateStateOfVideoPlayerView
+{
+    self.videoPlayer.view.hidden = ![self shouldAutoplay];
+}
+
 #pragma mark - VSequencePreviewView Overrides
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.videoPlayer.view.hidden = ![self shouldAutoplayAssetFromSequence:sequence];
+    BOOL hidden = ![self shouldAutoplayAssetFromSequence:sequence];
+    self.videoPlayer.view.hidden = hidden;
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;

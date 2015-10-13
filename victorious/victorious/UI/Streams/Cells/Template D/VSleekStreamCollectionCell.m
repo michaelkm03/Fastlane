@@ -650,7 +650,17 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 {
     if ( !self.hasRelinquishedPreviewView && [self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]] )
     {
-        ((VBaseVideoSequencePreviewView *)self.previewView).videoPlayer.view.hidden = hidden;
+        VBaseVideoSequencePreviewView *videoPreviewView = (VBaseVideoSequencePreviewView *)self.previewView;
+        if ( hidden )
+        {
+            //Force to hide
+            videoPreviewView.videoPlayer.view.hidden = YES;
+        }
+        else
+        {
+            //Allow the preview view to adjust as it's sequence desires
+            [videoPreviewView updateStateOfVideoPlayerView];
+        }
     }
 }
 
