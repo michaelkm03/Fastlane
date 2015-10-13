@@ -30,7 +30,15 @@
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager;
 
+/**
+ *  Removes the cached size value for the sequence represented by this cell.
+ */
 - (void)purgeSizeCacheValue;
+
+/**
+ *  Hides the player of this cell's preview view if currently displaying a video.
+ */
+- (void)makeVideoContentHidden:(BOOL)hidden;
 
 /**
  *  The sequence for this VSleekStreamCollectionCell to represent.
@@ -43,16 +51,19 @@
  */
 @property (nonatomic, readonly) BOOL needsRefresh;
 
-/*
+/**
  *  The stream that this VSleekStreamCollectionCell is in.
  */
 @property (nonatomic, strong) VStream *stream;
 
-/*
- * A context object used for tracking purposes.
+/**
+ *  A context object used for tracking purposes.
  */
 @property (nonatomic, strong) StreamCellContext *context;
 
+/**
+ *  The preview view currently displaying content in this cell.
+ */
 @property (nonatomic, readonly) VSequencePreviewView *previewView;
 
 @end

@@ -57,4 +57,9 @@
  */
 - (void)addVideoPlayerView:(UIView *)view;
 
+/**
+ Adjusts the hidden state of the video player layer as appropriate per the currently set sequence.
+ */
+- (void)updateStateOfVideoPlayerView;
+
 @end

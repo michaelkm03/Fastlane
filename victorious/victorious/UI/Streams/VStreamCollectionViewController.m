@@ -65,6 +65,7 @@
 #import "VUploadProgressViewController.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
+#import "VSleekStreamCollectionCell.h"
 #import "victorious-Swift.h"
 
 @import KVOController;
@@ -88,7 +89,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -106,6 +107,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
 
@@ -611,6 +613,17 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
 }
 
+- (void)prepareForScreenshot
+{
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            [(VSleekStreamCollectionCell *)cell makeVideoContentHidden:YES];
+        }
+    }
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -830,7 +843,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
             if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
             {
-                context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
+                self.cellPresentingContentView = (UICollectionViewCell <VContentPreviewViewProvider> *)cell;
+                context.contentPreviewProvider = self;
             }
         }
         
@@ -841,6 +855,97 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         context.originDependencyManager = self.dependencyManager;
         [self.contentViewPresenter presentContentViewWithContext:context];
     }
+}
+
+#pragma mark - VContentPreviewViewProvider
+
+//This conformance to the VContentPreviewViewProvider is a stop gap for 3.4
+//until we can figure out a better way to take / give preview views to stream cells
+- (void)setHasRelinquishedPreviewView:(BOOL)hasRelinquishedPreviewView
+{
+    self.cellPresentingContentView.hasRelinquishedPreviewView = hasRelinquishedPreviewView;
+}
+
+- (BOOL)hasRelinquishedPreviewView
+{
+    return self.cellPresentingContentView.hasRelinquishedPreviewView;
+}
+
+- (UIView *)getPreviewView
+{
+    return [self.cellPresentingContentView getPreviewView];
+}
+
+- (UIView *)getContainerView
+{
+    return [self.cellPresentingContentView getContainerView];
+}
+
+- (void)restorePreviewView:(VSequencePreviewView *)previewView
+{
+    VStreamItem *streamItem = previewView.streamItem;
+    NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:streamItem];
+    if ( indexPath.row != NSNotFound )
+    {
+        //Returning content to a stream cell
+        [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
+    }
+    else
+    {
+        //Returning content to a marquee cell
+        for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+        {
+            if ( [cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]] )
+            {
+                UICollectionView *marqueeCollectionView = [(VAbstractMarqueeCollectionViewCell *)cell marqueeCollectionView];
+                NSInteger marqueeItemRow = [[[(VAbstractMarqueeCollectionViewCell *)cell marquee] marqueeItems] indexOfObject:streamItem];
+                if ( marqueeItemRow != NSNotFound )
+                {
+                    NSIndexPath *marqueeItemIndexPath = [NSIndexPath indexPathForItem:marqueeItemRow inSection:0];
+                    if ( [self restorePreviewView:previewView toCellAtIndexPath:marqueeItemIndexPath inCollectionView:marqueeCollectionView] )
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            [(VSleekStreamCollectionCell *)cell makeVideoContentHidden:NO];
+        }
+    }
+}
+
+- (BOOL)restorePreviewView:(VSequencePreviewView *)previewView toCellAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
+{
+    BOOL presentingCellNeedsUpdate = YES;
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    if ( cell == nil )
+    {
+        return NO;
+    }
+    
+    if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+    {
+        [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
+        presentingCellNeedsUpdate = ![cell isEqual:self.cellPresentingContentView];
+    }
+    
+    self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
+    if ( presentingCellNeedsUpdate )
+    {
+        NSIndexPath *oldIndexPath = [collectionView indexPathForCell:self.cellPresentingContentView];
+        if ( oldIndexPath != nil )
+        {
+            [collectionView reloadItemsAtIndexPaths:@[oldIndexPath]];
+        }
+    }
+    self.cellPresentingContentView = nil;
+    return YES;
 }
 
 #pragma mark - Upload Progress View

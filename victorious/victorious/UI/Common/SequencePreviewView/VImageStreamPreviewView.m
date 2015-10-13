@@ -66,7 +66,7 @@
 
 - (void)updateToFitContent:(BOOL)fit
 {
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
 @end
