@@ -72,6 +72,20 @@ static const CGFloat kBorderWidth = 0.5f;
     return  ( VDirectoryItemBaseHeight / VDirectoryItemBaseWidth ) * width;
 }
 
+#pragma mark - View updating methods
+
+- (void)updateDisplaySizeOfPreviewView
+{
+    CGFloat width = CGRectGetWidth(self.bounds);
+    self.previewView.displaySize = CGSizeMake(width, width);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateDisplaySizeOfPreviewView];
+}
+
 #pragma mark - Property Accessors
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
@@ -125,21 +139,9 @@ static const CGFloat kBorderWidth = 0.5f;
     self.topStackBottomConstraint.constant = showStackedBackground ? VDirectoryItemStackHeight : 0.0f;
 }
 
-- (void)updateDisplaySizeOfPreviewView
-{
-    CGFloat width = CGRectGetWidth(self.bounds);
-    self.previewView.displaySize = CGSizeMake(width, width);
-}
-
 + (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem
 {
     return [streamItem isKindOfClass:[VStream class]];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self updateDisplaySizeOfPreviewView];
 }
 
 #pragma mark - UICollectionReusableView
