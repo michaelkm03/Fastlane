@@ -417,6 +417,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
 {
+    [self hidePlaceholderText];
     return YES;
 }
 
