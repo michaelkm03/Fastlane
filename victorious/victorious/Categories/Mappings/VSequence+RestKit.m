@@ -78,79 +78,87 @@
 
 + (RKEntityMapping *)simpleMapping
 {
-    RKEntityMapping *mapping = [VSequence mappingBase];
-    
-    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
-                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
-                                                                                                 withMapping:[VImageAsset entityMapping]];
-    
-    [mapping addPropertyMapping:previewImageAssetsMapping];
-    
-    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
-                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
-                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
-    
-    [mapping addPropertyMapping:previewTextPostMapping];
-    
-    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
-                                                                                               toKeyPath:VSelectorName(recentComments)
-                                                                                             withMapping:[VComment inStreamEntityMapping]];
-    
-    [mapping addPropertyMapping:recentCommentsMapping];
-    
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
+    static RKEntityMapping *mapping;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        mapping = [VSequence mappingBase];
         
+        RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                       toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                     withMapping:[VImageAsset entityMapping]];
+        
+        [mapping addPropertyMapping:previewImageAssetsMapping];
+        
+        RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                    toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                                  withMapping:[VAsset textPostPreviewEntityMapping]];
+        
+        [mapping addPropertyMapping:previewTextPostMapping];
+        
+        RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                                   toKeyPath:VSelectorName(recentComments)
+                                                                                                 withMapping:[VComment inStreamEntityMapping]];
+        
+        [mapping addPropertyMapping:recentCommentsMapping];
+        
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
+    });
     return mapping;
 }
 
 + (RKEntityMapping *)entityMapping
 {
-    RKEntityMapping *mapping = [VSequence mappingBase];
-    
-    RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
-                                                                                                   toKeyPath:VSelectorName(previewImageAssets)
-                                                                                                 withMapping:[VImageAsset entityMapping]];
-    
-    [mapping addPropertyMapping:previewImageAssetsMapping];
-    
-    RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
-                                                                                                toKeyPath:VSelectorName(previewTextPostAsset)
-                                                                                              withMapping:[VAsset textPostPreviewEntityMapping]];
-    
-    [mapping addPropertyMapping:previewTextPostMapping];
-    
-    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
-                                                                                               toKeyPath:VSelectorName(recentComments)
-                                                                                             withMapping:[VComment inStreamEntityMapping]];
-    
-    [mapping addPropertyMapping:recentCommentsMapping];
-    
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"parent_user"
-                                                                            toKeyPath:@"parentUser"
-                                                                          withMapping:[VUser entityMapping]]];
-    
-    RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
-                                                                                           toKeyPath:VSelectorName(voteResults)
-                                                                                         withMapping:[VVoteResult entityMapping]];
-    RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
-                                                                                           toKeyPath:VSelectorName(adBreaks)
-                                                                                       withMapping:[VAdBreak entityMapping]];
-    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
-                                                                                         toKeyPath:VSelectorName(tracking)
-                                                                                       withMapping:[VTracking entityMapping]];
-    RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"endcard"
-                                                                                         toKeyPath:VSelectorName(endCard)
-                                                                                       withMapping:[VEndCard entityMapping]];
-    [mapping addPropertyMapping:voteResultMapping];
-    [mapping addPropertyMapping:adBreaksMapping];
-    [mapping addPropertyMapping:trackingMapping];
-    [mapping addPropertyMapping:endCardMapping];
-    
+    static RKEntityMapping *mapping;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        mapping = [VSequence mappingBase];
+        
+        RKRelationshipMapping *previewImageAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                                       toKeyPath:VSelectorName(previewImageAssets)
+                                                                                                     withMapping:[VImageAsset entityMapping]];
+        
+        [mapping addPropertyMapping:previewImageAssetsMapping];
+        
+        RKRelationshipMapping *previewTextPostMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview"
+                                                                                                    toKeyPath:VSelectorName(previewTextPostAsset)
+                                                                                                  withMapping:[VAsset textPostPreviewEntityMapping]];
+        
+        [mapping addPropertyMapping:previewTextPostMapping];
+        
+        RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                                   toKeyPath:VSelectorName(recentComments)
+                                                                                                 withMapping:[VComment inStreamEntityMapping]];
+        
+        [mapping addPropertyMapping:recentCommentsMapping];
+        
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
+        [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
+        [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"parent_user"
+                                                                                toKeyPath:@"parentUser"
+                                                                              withMapping:[VUser entityMapping]]];
+        
+        RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
+                                                                                               toKeyPath:VSelectorName(voteResults)
+                                                                                             withMapping:[VVoteResult entityMapping]];
+        RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
+                                                                                             toKeyPath:VSelectorName(adBreaks)
+                                                                                           withMapping:[VAdBreak entityMapping]];
+        RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+                                                                                             toKeyPath:VSelectorName(tracking)
+                                                                                           withMapping:[VTracking entityMapping]];
+        RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"endcard"
+                                                                                            toKeyPath:VSelectorName(endCard)
+                                                                                          withMapping:[VEndCard entityMapping]];
+        [mapping addPropertyMapping:voteResultMapping];
+        [mapping addPropertyMapping:adBreaksMapping];
+        [mapping addPropertyMapping:trackingMapping];
+        [mapping addPropertyMapping:endCardMapping];
+    });
     return mapping;
 }
 
