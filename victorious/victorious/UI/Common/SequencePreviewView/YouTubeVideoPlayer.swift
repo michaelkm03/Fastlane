@@ -15,44 +15,18 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
     private let playerView = YTPlayerView()
     
-    // MARK: - VVideoPlayer
-    
-    var useAspectFit = false
-    
-    var muted = false {
-        didSet {
-            updateMute()
-        }
-    }
-    
     private(set) var isPlaying: Bool = false
     
-    var currentTimeMilliseconds: UInt {
-        return UInt( playerView.currentTime() * 1000.0 )
-    }
-    
-    var currentTimeSeconds: Float64 {
-        return Float64( playerView.currentTime() )
-    }
-    
-    var durationSeconds: Float64 {
-        return Float64( playerView.duration() )
-    }
-    
-    weak var delegate: VVideoPlayerDelegate?
-    
-    var view: UIView {
-        return playerView
-    }
-    
-    func setItem(item: VVideoPlayerItem) {
-        if currentItem?.remoteContentId != item.remoteContentId {
-            playerView.clearVideo()
+    private func updateMute() {
+        if muted {
+            playerView.mute()
         }
-        currentItem = item
+        else {
+            playerView.mute()
+        }
     }
     
-    func loadCurrentItem() {
+    private func loadCurrentItem() {
         guard let item = currentItem else {
             print( "Cannot play video without setting a `VVideoPlayerItem`" )
             return
@@ -82,6 +56,41 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         
         playerView.hidden = true
         playerView.loadWithVideoId( videoId, playerVars: playerVars )
+    }
+    
+    // MARK: - VVideoPlayer
+    
+    var useAspectFit = false
+    
+    var muted = false {
+        didSet {
+            updateMute()
+        }
+    }
+    
+    var currentTimeMilliseconds: UInt {
+        return UInt( playerView.currentTime() * 1000.0 )
+    }
+    
+    var currentTimeSeconds: Float64 {
+        return Float64( playerView.currentTime() )
+    }
+    
+    var durationSeconds: Float64 {
+        return Float64( playerView.duration() )
+    }
+    
+    weak var delegate: VVideoPlayerDelegate?
+    
+    var view: UIView {
+        return playerView
+    }
+    
+    func setItem(item: VVideoPlayerItem) {
+        if currentItem?.remoteContentId != item.remoteContentId {
+            playerView.clearVideo()
+        }
+        currentItem = item
     }
     
     func seekToTimeSeconds(timeSeconds: NSTimeInterval) {
@@ -172,15 +181,12 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         delegate?.videoPlayer?(self, didPlayToTime: Float64(playTime) )
     }
     
-    private func updateMute() {
-        if muted {
-            playerView.mute()
-        }
-        else {
-            playerView.mute()
-        }
-    }
+    func updateToBackgroundColor( backgroundColor: UIColor) {}
+    
+    var aspectRatio: CGFloat { return 1.0 }
 }
+
+// MARK: -
 
 private extension YTPlayerView {
     

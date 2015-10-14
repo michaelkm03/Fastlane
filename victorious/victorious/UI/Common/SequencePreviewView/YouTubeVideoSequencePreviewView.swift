@@ -10,9 +10,9 @@ import UIKit
 
 class YouTubeVideoSequencePreviewView : VVideoSequencePreviewView {
     
-    class func remoteSourceName() -> String { return "YouTube" }
+    class func remoteSourceName() -> String { return "youtube" }
     
-    override var likeButtonDisabled: Bool {
+    override var shouldHideLikeButton: Bool {
         // The like button covers the YouTube logo in the player,
         // so we have to disable it in this sequence preview view type
         return true
