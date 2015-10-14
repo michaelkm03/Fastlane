@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *sessionID;
 @property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
 @property (nonatomic, strong) AlertParser *alertParser;
+@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, RKEntityMapping*> *mappingCache;
 
 @end
 
@@ -71,6 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
     VObjectManager *manager = [self managerWithBaseURL:currentEnvironment.baseURL];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
+    manager.mappingCache = [[NSMutableDictionary alloc] init];
     
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
