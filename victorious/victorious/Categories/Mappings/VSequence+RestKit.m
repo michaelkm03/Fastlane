@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "VObjectManager.h"
 #import "VSequence+RestKit.h"
 #import "VAsset+RestKit.h"
 #import "VComment+RestKit.h"
@@ -78,9 +79,10 @@
 
 + (RKEntityMapping *)simpleMapping
 {
-    static RKEntityMapping *mapping;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
+    static NSString * const simpleMappingCacheKey = @"VSequence.simpleMappingCacheKey";
+    RKEntityMapping *mapping = [VObjectManager sharedManager].mappingCache[simpleMappingCacheKey];
+    
+    if ( mapping == nil )
     {
         mapping = [VSequence mappingBase];
         
@@ -105,15 +107,18 @@
         [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
         [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
         [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
-    });
+        
+        [VObjectManager sharedManager].mappingCache[simpleMappingCacheKey] = mapping;
+    }
     return mapping;
 }
 
 + (RKEntityMapping *)entityMapping
 {
-    static RKEntityMapping *mapping;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
+    static NSString * const entityMappingKey = @"VSequence.entityMappingKey";
+    RKEntityMapping *mapping = [VObjectManager sharedManager].mappingCache[entityMappingKey];
+    
+    if ( mapping == nil )
     {
         mapping = [VSequence mappingBase];
         
@@ -158,7 +163,9 @@
         [mapping addPropertyMapping:adBreaksMapping];
         [mapping addPropertyMapping:trackingMapping];
         [mapping addPropertyMapping:endCardMapping];
-    });
+        
+        [VObjectManager sharedManager].mappingCache[entityMappingKey] = mapping;
+    }
     return mapping;
 }
 
