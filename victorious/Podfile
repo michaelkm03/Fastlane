@@ -21,7 +21,7 @@ target :victorious do
     link_with 'victorious'
 
     target :test do
-        pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git', :branch => 'block-response'
+        pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
         link_with 'victoriousTests', 'VictoriousCommonTests'
     end
 end

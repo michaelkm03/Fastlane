@@ -14,7 +14,7 @@ class VideoTrackingEvent: NSObject {
     var urls: AnyObject
     var loadTime: NSNumber?
     var context: StreamCellContext?
-    var watchTime: NSNumber?
+    var currentTime: NSNumber?
     var autoPlay: Bool = false
     
     init(name: String, urls: AnyObject) {
@@ -41,7 +41,7 @@ class VideoTrackingEvent: NSObject {
             VTrackingKeyVolumeLevel : volumeString,
             VTrackingKeyUrls : self.urls,
             VTrackingKeyStreamId : trackingId,
-            VTrackingKeyTimeCurrent : String(watchTime?.floatValue ?? 0) ?? ""
+            VTrackingKeyTimeCurrent : String(currentTime?.floatValue ?? 0) ?? ""
         ]
         VTrackingManager.sharedInstance().trackEvent( name, parameters: params )
     }

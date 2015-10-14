@@ -15,4 +15,15 @@
  */
 + (UIImage *)v_imageWithColor:(UIColor *)color;
 
+/**
+ Returns a single pixel image with the given color for the curren mainScreen scale.
+ */
++ (UIImage *)v_singlePixelImageWithColor:(UIColor *)color;
+
+/**
+ Returns an image with the given color and size.
+ */
++ (UIImage *)v_imageWithColor:(UIColor *)color
+                         size:(CGSize)size;
+
 @end

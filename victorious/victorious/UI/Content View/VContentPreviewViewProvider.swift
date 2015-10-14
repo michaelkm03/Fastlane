@@ -27,5 +27,5 @@ import Foundation
     
     /// Informs the receiver that the sequence preview view is active in another context
     /// and should not be modified
-    func relinquishPreviewView()
+    var hasRelinquishedPreviewView: Bool { get set }
 }

@@ -135,7 +135,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
             VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
             event.context = context;
             event.autoPlay = YES;
-            event.watchTime = info[VTrackingKeyTimeCurrent];
+            event.currentTime = info[VTrackingKeyTimeCurrent];
             [self trackAutoplayEvent:event];
         }
     }

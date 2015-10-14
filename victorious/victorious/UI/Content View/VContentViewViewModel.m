@@ -483,12 +483,16 @@
                currentTime:(Float64)currentTime
                 completion:(void (^)(BOOL succeeded))completion
 {
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] addRealtimeCommentWithText:text
                                              publishParameters:publishParameters
                                                        toAsset:self.currentAsset
                                                         atTime:@(currentTime)
                                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
          if (completion)
          {
              completion(YES);
@@ -515,12 +519,12 @@
                                           successBlock:^(NSOperation *_Nullable operation, id  _Nullable result, NSArray *_Nonnull resultObjects)
      {
          __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
          if (completion)
          {
              completion(YES);
          }
-         strongSelf.comments = [strongSelf.sequence.comments array];
-         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
      }
                                              failBlock:^(NSOperation *operation, NSError *error)
      {

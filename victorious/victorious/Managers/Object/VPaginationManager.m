@@ -10,6 +10,7 @@
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
 #import "VURLMacroReplacement.h"
+#import "VStream.h"
 
 NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";
 NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
@@ -63,10 +64,16 @@ NS_ASSUME_NONNULL_BEGIN
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         
         NSInteger maxPages = [fullResponse[@"total_pages"] integerValue];
-        NSArray *payloadContent = fullResponse[@"payload"][@"content"];
+        
+        BOOL enoughItemsForNextPage = YES;
+        if (resultObjects.count > 0 && [[resultObjects firstObject] isKindOfClass:[VStream class]])
+        {
+            VStream *stream = (VStream *)[resultObjects firstObject];
+            enoughItemsForNextPage = stream.streamItems.count > 0;
+        }
         
         // If this is a stream, check to make sure we have enough items to warrant a next page
-        if (payloadContent != nil && payloadContent.count == 0)
+        if (!enoughItemsForNextPage)
         {
             filter.maxPageNumber = filter.currentPageNumber;
         }

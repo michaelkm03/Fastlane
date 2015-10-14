@@ -25,6 +25,7 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "victorious-Swift.h"
 
 static NSString * const kURLKey = @"url";
 static NSString * const kOKButtonKey = @"OK";
@@ -186,6 +187,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    return [StatusBarUtilities statusBarStyleWithColor:navigationBarTextColor];
 }
 
 - (BOOL)v_prefersNavigationBarHidden

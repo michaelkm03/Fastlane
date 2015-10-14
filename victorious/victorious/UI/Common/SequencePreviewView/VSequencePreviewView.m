@@ -186,8 +186,7 @@
 {
     void (^animations)() = ^
     {
-        UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
-        self.backgroundColor = self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
+        self.backgroundColor = self.updatedBackgroundColor;
     };
     if ( animated )
     {
@@ -197,6 +196,12 @@
     {
         animations();
     }
+}
+
+- (UIColor *)updatedBackgroundColor
+{
+    UIColor *nonDetailBackgroundColor = self.usePreferredBackgroundColor ? self.streamBackgroundColor : self.defaultBackgroundColor;
+    return self.focusType == VFocusTypeDetail ? self.defaultBackgroundColor : nonDetailBackgroundColor;
 }
 
 #pragma mark - Gestures
