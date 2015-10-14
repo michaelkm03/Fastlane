@@ -892,7 +892,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         
         //Update the cell that presented the content view if it didn't just have it's preview view returned to it
         BOOL cellPresentingContentViewNeedsUpdate = ![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]];
-        [self refreshCellPresentingContentView:cellPresentingContentViewNeedsUpdate inCollectionView:self.collectionView];
+        [self resetAndRefresh:cellPresentingContentViewNeedsUpdate cellPresentingContentViewInCollectionView:self.collectionView];
     }
     else
     {
@@ -915,7 +915,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                 {
                     //Returning to a marquee cell
                     [marqueeStreamItemCell restorePreviewView:previewView];
-                    [self refreshCellPresentingContentView:![self.cellPresentingContentView isEqual:marqueeStreamItemCell] inCollectionView:marqueeCollectionView];
+                    [self resetAndRefresh:![self.cellPresentingContentView isEqual:marqueeStreamItemCell] cellPresentingContentViewInCollectionView:marqueeCollectionView];
                     foundMarqueeCell = YES;
                     break;
                 }
@@ -926,7 +926,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         {
             //We have flagged a piece of content in a stream cell, force the
             //presenting cell to refresh to get the right content
-            [self refreshCellPresentingContentView:YES inCollectionView:self.collectionView];
+            [self resetAndRefresh:YES cellPresentingContentViewInCollectionView:self.collectionView];
         }
     }
     
@@ -963,7 +963,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     return nil;
 }
 
-- (void)refreshCellPresentingContentView:(BOOL)needsRefresh inCollectionView:(UICollectionView *)collectionView
+- (void)resetAndRefresh:(BOOL)needsRefresh cellPresentingContentViewInCollectionView:(UICollectionView *)collectionView
 {
     self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
     if ( needsRefresh )
