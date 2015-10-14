@@ -35,6 +35,7 @@
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 #import "victorious-Swift.h"
+#import "VCrashlyticsLogTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -66,6 +67,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
 @property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
+@property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
 @property (nonatomic, strong) VFollowingHelper *followHelper;
 @property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 
@@ -97,8 +99,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
+    self.crashlyticsLogTracking = [[VCrashlyticsLogTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
-    
+    [[VTrackingManager sharedInstance] addDelegate:self.crashlyticsLogTracking];
+
     self.sessionTimer = [[VSessionTimer alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];

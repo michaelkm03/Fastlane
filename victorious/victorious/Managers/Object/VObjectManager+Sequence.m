@@ -89,6 +89,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 {
     NSAssert([NSThread isMainThread], @"Call locallyRemoveSequence on the main thread");
     sequence.streams = [NSSet set];
+    sequence.marquees = [NSSet set];
     [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
@@ -183,6 +184,18 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFlagPostDidFail parameters:params];
+        
+        if ( error.code == kVSequenceAlreadyFlagged )
+        {
+            //We've already flagged this sequence, perhaps before 3.4 when the on-system removal was introduced,
+            //so add it to our local batch of flagged contents and show the success stuff to the user
+            [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
+            if ( success != nil )
+            {
+                success( operation, nil, @[] );
+            }
+            return;
+        }
         
         if ( fail != nil )
         {
