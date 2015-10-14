@@ -64,7 +64,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
     self.characterCountMax = [self.dependencyManager numberForKey:kCharacterLimit].integerValue;
-    [self showPlaceholderText];
+    [self showPlaceholderTextIfNecessary];
     
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
@@ -144,14 +144,42 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)removeHashtagFromText:(NSString *)hashtag
 {
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    NSRange rangeOfHashtag = [self.text rangeOfString:hashtagTextWithHashMark];
     
-    if ( rangeOfHashtag.location != NSNotFound )
+    NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    
+    // Find number of occurrences of this specific hashtag
+    NSInteger occurences = 0;
+    for (NSValue *value in ranges)
     {
-        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
+        NSRange range = [value rangeValue];
+        NSString *substring = [self.text substringWithRange:range];
+        if ([hashtagTextWithHashMark isEqualToString:substring])
+        {
+            occurences++;
+        }
     }
-
-    [self showPlaceholderText];
+    
+    NSString *finalString = self.text;
+    
+    // Construct final string by removing range from substring for each occurrence
+    for (int x = 0; x < occurences; x++)
+    {
+        NSArray *ranges = [VHashTags detectHashTags:finalString includeHashSymbol:YES];
+        for (NSValue *value in ranges)
+        {
+            NSRange range = [value rangeValue];
+            NSString *substring = [finalString substringWithRange:range];
+            if ([hashtagTextWithHashMark isEqualToString:substring])
+            {
+                finalString = [finalString stringByReplacingCharactersInRange:range withString:@""];
+                break;
+            }
+        }
+    }
+    
+    self.text = finalString;
+   
+    [self showPlaceholderTextIfNecessary];
     
     [self.delegate textDidUpdate:self.textOutput];
 }
@@ -161,7 +189,20 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self hidePlaceholderText];
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    if ( ![self.text containsString:hashtagTextWithHashMark] )
+    
+    NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    BOOL shouldAdd = YES;
+    for (NSValue *value in ranges)
+    {
+        NSRange range = [value rangeValue];
+        NSString *substring = [self.text substringWithRange:range];
+        if ([substring isEqualToString:hashtagTextWithHashMark])
+        {
+            shouldAdd = NO;
+        }
+    }
+    
+    if ( shouldAdd )
     {
         self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
@@ -201,7 +242,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     {
         [self.textView resignFirstResponder];
         
-        [self showPlaceholderText];
+        [self showPlaceholderTextIfNecessary];
     }
 }
 
@@ -212,7 +253,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 #pragma mark - Placeholder text
 
-- (void)showPlaceholderText
+- (void)showPlaceholderTextIfNecessary
 {
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
@@ -376,6 +417,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
 {
+    [self hidePlaceholderText];
     return YES;
 }
 
