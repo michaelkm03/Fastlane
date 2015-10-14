@@ -889,25 +889,41 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         //Returning content to a stream cell
         [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
+        [self refreshCellPresentingContentView:![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]] inCollectionView:self.collectionView];
     }
     else
     {
-        //Returning content to a marquee cell
+        BOOL foundMarqueeCell = NO;
+        
         for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
         {
+            //See if we're returning content to a marquee cell
             if ( [cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]] )
             {
                 UICollectionView *marqueeCollectionView = [(VAbstractMarqueeCollectionViewCell *)cell marqueeCollectionView];
-                NSInteger marqueeItemRow = [[[(VAbstractMarqueeCollectionViewCell *)cell marquee] marqueeItems] indexOfObject:streamItem];
-                if ( marqueeItemRow != NSNotFound )
+                VAbstractMarqueeStreamItemCell *marqueeStreamItemCell = [self marqueeStreamItemCellRepresentingStreamItem:streamItem inMarqueeCollectionViewCell:(VAbstractMarqueeCollectionViewCell *)cell];
+                if ( marqueeStreamItemCell == nil && [marqueeCollectionView indexPathForCell:self.cellPresentingContentView] != nil )
                 {
-                    NSIndexPath *marqueeItemIndexPath = [NSIndexPath indexPathForItem:marqueeItemRow inSection:0];
-                    if ( [self restorePreviewView:previewView toCellAtIndexPath:marqueeItemIndexPath inCollectionView:marqueeCollectionView] )
-                    {
-                        break;
-                    }
+                    //We've deleted an item from this marquee
+                    marqueeStreamItemCell = (VAbstractMarqueeStreamItemCell *)self.cellPresentingContentView;
+                }
+                
+                if ( marqueeStreamItemCell != nil )
+                {
+                    //Returning to a marquee cell
+                    [marqueeStreamItemCell restorePreviewView:previewView];
+                    [self refreshCellPresentingContentView:![self.cellPresentingContentView isEqual:marqueeStreamItemCell] inCollectionView:marqueeCollectionView];
+                    foundMarqueeCell = YES;
+                    break;
                 }
             }
+        }
+        
+        if ( !foundMarqueeCell )
+        {
+            //We have flagged a piece of content in a stream cell, force the
+            //presenting cell to refresh to get the right content
+            [self refreshCellPresentingContentView:YES inCollectionView:self.collectionView];
         }
     }
     
@@ -920,23 +936,34 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
 }
 
-- (BOOL)restorePreviewView:(VSequencePreviewView *)previewView toCellAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
+- (void)restorePreviewView:(VSequencePreviewView *)previewView toCellAtIndexPath:(NSIndexPath *)indexPath inCollectionView:(UICollectionView *)collectionView
 {
-    BOOL presentingCellNeedsUpdate = YES;
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    if ( cell == nil )
+    NSAssert(cell != nil, @"Callers of restorePreviewView:toCellAtIndexPath:inCollectionView: should never provide a cell from outside the provided collection view");
+    if ( cell == nil || ![cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
     {
-        return NO;
+        return;
     }
     
-    if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
+    [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
+}
+
+- (VAbstractMarqueeStreamItemCell *)marqueeStreamItemCellRepresentingStreamItem:(VStreamItem *)streamItem inMarqueeCollectionViewCell:(VAbstractMarqueeCollectionViewCell *)marqueeCell
+{
+    UICollectionView *marqueeCollectionView = [marqueeCell marqueeCollectionView];
+    NSInteger marqueeItemRow = [[[marqueeCell marquee] marqueeItems] indexOfObject:streamItem];
+    if ( marqueeItemRow != NSNotFound )
     {
-        [(UICollectionViewCell <VContentPreviewViewProvider> *)cell restorePreviewView:previewView];
-        presentingCellNeedsUpdate = ![cell isEqual:self.cellPresentingContentView];
+        NSIndexPath *marqueeItemIndexPath = [NSIndexPath indexPathForItem:marqueeItemRow inSection:0];
+        return (VAbstractMarqueeStreamItemCell *)[marqueeCollectionView cellForItemAtIndexPath:marqueeItemIndexPath];
     }
-    
+    return nil;
+}
+
+- (void)refreshCellPresentingContentView:(BOOL)needsRefresh inCollectionView:(UICollectionView *)collectionView
+{
     self.cellPresentingContentView.hasRelinquishedPreviewView = NO;
-    if ( presentingCellNeedsUpdate )
+    if ( needsRefresh )
     {
         NSIndexPath *oldIndexPath = [collectionView indexPathForCell:self.cellPresentingContentView];
         if ( oldIndexPath != nil )
@@ -945,7 +972,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         }
     }
     self.cellPresentingContentView = nil;
-    return YES;
 }
 
 #pragma mark - Upload Progress View

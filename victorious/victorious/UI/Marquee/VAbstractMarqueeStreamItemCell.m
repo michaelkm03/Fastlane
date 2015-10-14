@@ -205,6 +205,7 @@
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
     self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
