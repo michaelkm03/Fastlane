@@ -70,13 +70,11 @@
     
     self.playIconA = [[UIImageView alloc] initWithImage:playIcon];
     self.playIconA.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playIconA.userInteractionEnabled = NO;
     self.playIconA.backgroundColor = [UIColor clearColor];
     [self addSubview:self.playIconA];
     
     self.playIconB = [[UIImageView alloc] initWithImage:playIcon];
     self.playIconB.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playIconB.userInteractionEnabled = NO;
     self.playIconB.backgroundColor = [UIColor clearColor];
     [self addSubview:self.playIconB];
 }
