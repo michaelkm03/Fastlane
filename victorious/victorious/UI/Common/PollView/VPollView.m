@@ -65,6 +65,18 @@
     self.pollIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.pollIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.pollIconImageView];
+    
+    UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
+    
+    self.playIconA = [[UIImageView alloc] initWithImage:playIcon];
+    self.playIconA.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playIconA.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.playIconA];
+    
+    self.playIconB = [[UIImageView alloc] initWithImage:playIcon];
+    self.playIconB.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playIconB.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.playIconB];
 }
 
 - (void)layoutSubviews
@@ -113,6 +125,31 @@
         self.answerBImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.answerBImageView.clipsToBounds = YES;
         
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconA
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerAImageView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0 constant:0.0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconA
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerAImageView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0 constant:0.0]];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerBImageView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0 constant:0.0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerBImageView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0 constant:0.0]];
         self.hasLayedOutViews = YES;
     }
 }
