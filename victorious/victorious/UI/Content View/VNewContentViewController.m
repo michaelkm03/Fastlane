@@ -491,7 +491,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if ( self.isVideoContent && self.videoPlayer != nil)
+    if (self.isVideoContent && self.videoPlayer != nil && !self.videoPlayerDidFinishPlayingOnce)
     {
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
