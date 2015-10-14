@@ -75,41 +75,4 @@
     self.collectedHashtagsRemoved = nil;
 }
 
-#pragma mark - Utilities
-
-- (NSRange)rangeOfHashtag:(NSString *)hashtag inString:(NSString *)string
-{
-    NSUInteger length = [string length];
-    NSRange range = NSMakeRange(0, length);
-    
-    // Iterate through all matching ranges to find correct range
-    while (range.location != NSNotFound)
-    {
-        // Find range of substring
-        range = [string rangeOfString:hashtag options:0 range:range];
-        if (range.location != NSNotFound)
-        {
-            // If we found a match, check if there are more characters in this string
-            if (string.length > range.location + range.length)
-            {
-                // If there is, check the character next to our hashtag to make sure this is not part of a larger hashtag
-                NSString *nextChar = [string substringWithRange:NSMakeRange(range.location + range.length, 1)];
-                if ([nextChar isEqualToString:@"#"] || [nextChar isEqualToString:@" "])
-                {
-                    return range;
-                }
-            }
-            // If not, this hashtag is the entire string
-            else
-            {
-                return range;
-            }
-            // We found a match but it was part of a bigger hashtag, move onto the next range
-            range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
-        }
-    }
-    
-    return NSMakeRange(NSNotFound, NSNotFound);
-}
-
 @end

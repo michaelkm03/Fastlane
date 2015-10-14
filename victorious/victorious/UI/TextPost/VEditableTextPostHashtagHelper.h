@@ -65,10 +65,4 @@
  */
 - (void)resetCollectedHashtagEdits;
 
-/**
- Function for finding the correct range of a certain hashtag in a string, meaning it will
- ignore any substring matches which are actually part of a larger hashtag.
- */
-- (NSRange)rangeOfHashtag:(NSString *)hashtag inString:(NSString *)string;
-
 @end

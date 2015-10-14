@@ -144,11 +144,22 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)removeHashtagFromText:(NSString *)hashtag
 {
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    NSRange rangeOfHashtag = [self.hashtagHelper rangeOfHashtag:hashtagTextWithHashMark inString:self.text];
     
-    if ( rangeOfHashtag.location != NSNotFound )
+    NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    BOOL shouldRemove = NO;
+    for (NSValue *value in ranges)
     {
-        self.text = [self.text stringByReplacingCharactersInRange:rangeOfHashtag withString:@""];
+        NSRange range = [value rangeValue];
+        NSString *substring = [self.text substringWithRange:range];
+        if ([substring isEqualToString:hashtagTextWithHashMark])
+        {
+            shouldRemove = YES;
+        }
+    }
+    
+    if ( shouldRemove )
+    {
+        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
     }
 
     [self showPlaceholderTextIfNecessary];
@@ -161,13 +172,24 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self hidePlaceholderText];
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    NSRange rangeOfHashtag = [self.hashtagHelper rangeOfHashtag:hashtagTextWithHashMark inString:self.text];
     
-    if ( rangeOfHashtag.location == NSNotFound )
+    NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    BOOL shouldAdd = YES;
+    for (NSValue *value in ranges)
+    {
+        NSRange range = [value rangeValue];
+        NSString *substring = [self.text substringWithRange:range];
+        if ([substring isEqualToString:hashtagTextWithHashMark])
+        {
+            shouldAdd = NO;
+        }
+    }
+    
+    if ( shouldAdd )
     {
         self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
-        
+    
     [self.delegate textDidUpdate:self.textOutput];
 }
 
