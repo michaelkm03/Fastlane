@@ -889,7 +889,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         //Returning content to a stream cell
         [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
-        [self refreshCellPresentingContentView:![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]] inCollectionView:self.collectionView];
+        
+        //Update the cell that presented the content view if it didn't just have it's preview view returned to it
+        BOOL cellPresentingContentViewNeedsUpdate = ![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]];
+        [self refreshCellPresentingContentView:cellPresentingContentViewNeedsUpdate inCollectionView:self.collectionView];
     }
     else
     {
