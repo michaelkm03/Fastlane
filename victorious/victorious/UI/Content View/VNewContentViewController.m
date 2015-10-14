@@ -404,6 +404,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
+    [self.contentCollectionView becomeFirstResponder];
+    
     if (self.viewModel.sequence.isImage)
     {
         [self.blurredBackgroundImageView applyTintAndBlurToImageWithURL:self.viewModel.imageURLRequest.URL
@@ -441,9 +443,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewDidAppear:animated];
     
-    [self.contentCollectionView becomeFirstResponder];
-
-    [self updateInsetsForKeyboardBarState];
+    // Calculate content inset on next run loop, otherwise we get a wildly inaccurate frame for our input accessory view
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self updateInsetsForKeyboardBarState];
+    });
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
