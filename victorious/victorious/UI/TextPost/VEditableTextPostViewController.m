@@ -144,7 +144,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)removeHashtagFromText:(NSString *)hashtag
 {
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-        
+    
     NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
     
     // Find number of occurrences of this specific hashtag
