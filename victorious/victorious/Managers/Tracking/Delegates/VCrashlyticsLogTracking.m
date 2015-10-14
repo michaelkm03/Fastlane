@@ -72,7 +72,7 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
              EventParam: ParamValue
              EventParam: ParamValue
      */
-    NSString *trackingLog = [NSString stringWithFormat:@"\n\t%@\n\t\t%@", eventName, [trackingLogComponents componentsJoinedByString:@"\n\t\t"]];
+    NSString *trackingLog = [NSString stringWithFormat:@"%@ - %@", eventName, [trackingLogComponents componentsJoinedByString:@", "]];
     NSLog(@"%@", trackingLog);
     CLSLog(@"%@", trackingLog);
 }
