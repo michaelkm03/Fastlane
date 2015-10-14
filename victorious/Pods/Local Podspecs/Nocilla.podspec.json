@@ -1,6 +1,6 @@
 {
   "name": "Nocilla",
-  "version": "0.8.1",
+  "version": "0.10.0",
   "summary": "Stunning HTTP stubbing for iOS. Testing HTTP requests has never been easier.",
   "homepage": "https://github.com/luisobo/Nocilla",
   "license": {
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/luisobo/Nocilla.git",
-    "tag": "0.8.1"
+    "tag": "0.10.0"
   },
   "platforms": {
     "ios": "4.0",
@@ -20,18 +20,18 @@
   },
   "source_files": "Nocilla/**/*.{h,m}",
   "public_header_files": [
-    "Nocilla/Nocilla.h",
-    "Nocilla/LSNocilla.h",
-    "Nocilla/DSL/DSL.h",
+    "Nocilla/Categories/NSData+Nocilla.h",
+    "Nocilla/Categories/NSString+Nocilla.h",
     "Nocilla/DSL/LSStubRequestDSL.h",
     "Nocilla/DSL/LSStubResponseDSL.h",
     "Nocilla/DSL/LSBlockResponse.h",
-    "Nocilla/Matchers/*.h",
+    "Nocilla/LSNocilla.h",
+    "Nocilla/Matchers/LSMatcheable.h",
+    "Nocilla/Matchers/NSData+Matcheable.h",
+    "Nocilla/Matchers/NSRegularExpression+Matcheable.h",
+    "Nocilla/Matchers/NSString+Matcheable.h",
     "Nocilla/Model/LSHTTPBody.h",
-    "Nocilla/Categories/NSString+Nocilla.h",
-    "Nocilla/Categories/NSData+Nocilla.h",
-    "Nocilla/Hooks/LSHTTPClientHook.h",
-    "Nocilla/Hooks/ASIHTTPRequest/LSASIHTTPRequestHook.h"
+    "Nocilla/Nocilla.h"
   ],
   "requires_arc": true,
   "frameworks": "CFNetwork"
