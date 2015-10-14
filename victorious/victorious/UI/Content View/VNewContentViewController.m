@@ -401,11 +401,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
     
-    
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
-    
-    [self.contentCollectionView becomeFirstResponder];
     
     if (self.viewModel.sequence.isImage)
     {
@@ -444,6 +441,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewDidAppear:animated];
     
+    [self.contentCollectionView becomeFirstResponder];
+
     [self updateInsetsForKeyboardBarState];
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
