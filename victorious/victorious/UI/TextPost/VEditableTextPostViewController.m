@@ -144,24 +144,41 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)removeHashtagFromText:(NSString *)hashtag
 {
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
-    
+        
     NSArray *ranges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-    BOOL shouldRemove = NO;
+    
+    // Find number of occurrences of this specific hashtag
+    NSInteger occurences = 0;
     for (NSValue *value in ranges)
     {
         NSRange range = [value rangeValue];
         NSString *substring = [self.text substringWithRange:range];
-        if ([substring isEqualToString:hashtagTextWithHashMark])
+        if ([hashtagTextWithHashMark isEqualToString:substring])
         {
-            shouldRemove = YES;
+            occurences++;
         }
     }
     
-    if ( shouldRemove )
+    NSString *finalString = self.text;
+    
+    // Construct final string by removing range from substring for each occurrence
+    for (int x = 0; x < occurences; x++)
     {
-        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
+        NSArray *ranges = [VHashTags detectHashTags:finalString includeHashSymbol:YES];
+        for (NSValue *value in ranges)
+        {
+            NSRange range = [value rangeValue];
+            NSString *substring = [finalString substringWithRange:range];
+            if ([hashtagTextWithHashMark isEqualToString:substring])
+            {
+                finalString = [finalString stringByReplacingCharactersInRange:range withString:@""];
+                break;
+            }
+        }
     }
-
+    
+    self.text = finalString;
+   
     [self showPlaceholderTextIfNecessary];
     
     [self.delegate textDidUpdate:self.textOutput];
