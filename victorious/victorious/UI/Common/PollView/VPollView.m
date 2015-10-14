@@ -68,21 +68,17 @@
     
     UIImage *playIcon = [UIImage imageNamed:@"play-btn-icon"];
     
-    self.playButtonA = [[UIButton alloc] init];
-    self.playButtonA.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.playButtonA setImage:playIcon forState:UIControlStateNormal];
-    self.playButtonA.userInteractionEnabled = NO;
-    self.playButtonA.backgroundColor = [UIColor clearColor];
-    self.playButtonA.userInteractionEnabled = NO;
-    [self addSubview:self.playButtonA];
+    self.playIconA = [[UIImageView alloc] initWithImage:playIcon];
+    self.playIconA.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playIconA.userInteractionEnabled = NO;
+    self.playIconA.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.playIconA];
     
-    self.playButtonB = [[UIButton alloc] init];
-    self.playButtonB.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.playButtonB setImage:playIcon forState:UIControlStateNormal];
-    self.playButtonB.userInteractionEnabled = NO;
-    self.playButtonB.backgroundColor = [UIColor clearColor];
-    self.playButtonB.userInteractionEnabled = NO;
-    [self addSubview:self.playButtonB];
+    self.playIconB = [[UIImageView alloc] initWithImage:playIcon];
+    self.playIconB.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playIconB.userInteractionEnabled = NO;
+    self.playIconB.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.playIconB];
 }
 
 - (void)layoutSubviews
@@ -131,26 +127,26 @@
         self.answerBImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.answerBImageView.clipsToBounds = YES;
         
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playButtonA
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconA
                                                          attribute:NSLayoutAttributeCenterX
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self.answerAImageView
                                                          attribute:NSLayoutAttributeCenterX
                                                         multiplier:1.0 constant:0.0]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playButtonA
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconA
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self.answerAImageView
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0 constant:0.0]];
         
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playButtonB
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
                                                          attribute:NSLayoutAttributeCenterX
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self.answerBImageView
                                                          attribute:NSLayoutAttributeCenterX
                                                         multiplier:1.0 constant:0.0]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playButtonB
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self.answerBImageView

@@ -102,8 +102,8 @@ static NSString *kOrIconKey = @"orIcon";
     [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL];
     [self.pollView.answerBImageView sd_setImageWithURL:self.answerB.previewMediaURL];
     
-    self.pollView.playButtonA.hidden = ![self.answerA.mediaUrl v_hasVideoExtension];
-    self.pollView.playButtonB.hidden = ![self.answerB.mediaUrl v_hasVideoExtension];
+    self.pollView.playIconA.hidden = ![self.answerA.mediaUrl v_hasVideoExtension];
+    self.pollView.playIconB.hidden = ![self.answerB.mediaUrl v_hasVideoExtension];
 }
 
 - (VAnswer *)answerA
