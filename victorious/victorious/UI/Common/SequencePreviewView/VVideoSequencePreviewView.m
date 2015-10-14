@@ -294,6 +294,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
     VideoTrackingEvent *trackingEvent = [[VideoTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
+    trackingEvent.currentTime = @([self.videoPlayer currentTimeSeconds]);
     
     id<VideoTracking>responder = [self v_targetConformingToProtocol:@protocol(VideoTracking)];
     if ( responder != nil )
