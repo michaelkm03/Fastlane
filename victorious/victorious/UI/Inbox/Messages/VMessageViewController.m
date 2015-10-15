@@ -290,7 +290,7 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
-    // Image has not yet downloaded, do not try and show lightbox
+    // Preview image hasn't loaded yet, do not try and show lightbox
     if (image == nil)
     {
         return;
