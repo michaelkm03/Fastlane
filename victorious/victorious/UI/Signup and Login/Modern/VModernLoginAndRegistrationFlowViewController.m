@@ -328,10 +328,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                      VTrackingKeyPermissionName : VTrackingValueDenied }];
                 }
                 [self handleFacebookLoginFailure];
-                NSDictionary *parameters = @{
-                                             VTrackingKeyErrorType : @(VAppErrorTrackingTypeFacebook),
-                                             VTrackingKeyErrorDetails : @(error.code)
-                                             };
+                NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
+                if ( error != nil )
+                {
+                    [parameters setObject:@(error.code) forKey:VTrackingKeyErrorDetails];
+                }
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:parameters];
             }
         }];
