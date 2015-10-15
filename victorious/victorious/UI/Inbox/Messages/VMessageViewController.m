@@ -290,6 +290,12 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
+    // Image has not yet downloaded, do not try and show lightbox
+    if (image == nil)
+    {
+        return;
+    }
+    
     VLightboxViewController *lightbox;
     if ([mediaURL v_hasImageExtension])
     {

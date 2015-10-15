@@ -632,6 +632,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     __weak typeof(self) welf = self;
     [commentCell.commentAndMediaView setOnMediaTapped:^(UIImage *previewImage)
      {
+         // Preview image hasn't loaded yet so don't try and show the lightbox
+         if (previewImage == nil)
+         {
+             return;
+         }
+         
          [welf showLightBoxWithMediaURL:[wCommentCell.comment properMediaURLGivenContentType]
                            previewImage:previewImage
                                 isVideo:wCommentCell.mediaIsVideo
