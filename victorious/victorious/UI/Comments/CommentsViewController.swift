@@ -311,13 +311,16 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
                 }
             }
-            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in
-                if let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView {
-                    strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
-                            previewImage: previewImage,
-                            isVideo: strongCell.mediaIsVideo,
-                            sourceView: commentAndMediaView)
+            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
+                
+                guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView, previewImage = previewImage else {
+                    return
                 }
+                
+                strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
+                    previewImage: previewImage,
+                    isVideo: strongCell.mediaIsVideo,
+                    sourceView: commentAndMediaView)
             }
             return cell
         }
