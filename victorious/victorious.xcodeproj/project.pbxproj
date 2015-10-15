@@ -1172,7 +1172,6 @@
 		F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = F027D8E31B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
-		F02B79C71BCF27CD0082B6E1 /* additionalTrackingTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F02B79C61BCF27CD0082B6E1 /* additionalTrackingTemplate.json */; settings = {ASSET_TAGS = (); }; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
@@ -3472,7 +3471,6 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
-		F02B79C61BCF27CD0082B6E1 /* additionalTrackingTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = additionalTrackingTemplate.json; sourceTree = "<group>"; };
 		F03C134B1B69373200287F4C /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		F03C134C1B69373200287F4C /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -4878,7 +4876,6 @@
 			children = (
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
-				F02B79C61BCF27CD0082B6E1 /* additionalTrackingTemplate.json */,
 				0307F83F1B4F3BA400342C13 /* VLoginOperation.h */,
 				0307F8401B4F3BA400342C13 /* VLoginOperation.m */,
 			);
@@ -8450,7 +8447,6 @@
 				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
-				F02B79C71BCF27CD0082B6E1 /* additionalTrackingTemplate.json in Resources */,
 				A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
