@@ -66,15 +66,15 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)setupVideoUI
 {
-    self.soundIndicator = [[SoundBarView alloc] init];
+    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:4 distanceBetweenBars:1.0];
     self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.soundIndicator.hidden = YES;
+    self.soundIndicator.alpha = 0;
     [self.videoUIContainer addSubview:self.soundIndicator];
     NSDictionary *views = @{ @"soundIndicator" : self.soundIndicator };
     NSDictionary *metrics = @{ @"left" : @(10.0),
                                @"right" : @(10.0),
                                @"width" : @(16.0),
-                               @"height" : @(20.0) };
+                               @"height" : @(16.0) };
     [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-left-[soundIndicator(height)]"
                                                                                   options:0
                                                                                   metrics:metrics
@@ -263,11 +263,18 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     
     // Sound indicator
-    self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
-    if ( !self.soundIndicator.hidden )
+    BOOL soundIdicatorHidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
+    soundIdicatorHidden ? [self.soundIndicator stopAnimating] : [self.soundIndicator startAnimating];
+    CGFloat newAlpha = soundIdicatorHidden ? 0 : 1;
+    if (self.soundIndicator.alpha == newAlpha)
     {
-        [self.soundIndicator startAnimating];
+        return;
     }
+    
+    [UIView animateWithDuration:0.2 animations:^
+    {
+        self.soundIndicator.alpha = newAlpha;
+    }];
 }
 
 #pragma mark - Focus
@@ -295,6 +302,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
     VideoTrackingEvent *trackingEvent = [[VideoTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
+    trackingEvent.currentTime = @([self.videoPlayer currentTimeSeconds]);
     
     id<VideoTracking>responder = [self v_targetConformingToProtocol:@protocol(VideoTracking)];
     if ( responder != nil )

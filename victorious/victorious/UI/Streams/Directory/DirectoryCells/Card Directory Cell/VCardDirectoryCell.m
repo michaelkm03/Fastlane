@@ -72,6 +72,20 @@ static const CGFloat kBorderWidth = 0.5f;
     return  ( VDirectoryItemBaseHeight / VDirectoryItemBaseWidth ) * width;
 }
 
+#pragma mark - View updating methods
+
+- (void)updateDisplaySizeOfPreviewView
+{
+    CGFloat width = CGRectGetWidth(self.bounds);
+    self.previewView.displaySize = CGSizeMake(width, width);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateDisplaySizeOfPreviewView];
+}
+
 #pragma mark - Property Accessors
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
@@ -98,6 +112,7 @@ static const CGFloat kBorderWidth = 0.5f;
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
     self.previewView.dependencyManager = self.dependencyManager;
+    [self updateDisplaySizeOfPreviewView];
     self.previewView.onlyShowPreview = YES;
     [self.previewViewContainer addSubview:self.previewView];
     [self.previewViewContainer v_addFitToParentConstraintsToSubview:self.previewView];

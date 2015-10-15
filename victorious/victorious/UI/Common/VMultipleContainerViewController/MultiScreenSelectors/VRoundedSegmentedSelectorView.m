@@ -12,6 +12,8 @@
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "victorious-Swift.h"
+#import "UIImage+VSolidColor.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -219,6 +221,28 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
                                                                            options:0
                                                                            metrics:@{ @"topInset" : @(3.0f), @"pillHeight" : @(kVPillHeight) }
                                                                              views:pillViews]];
+    
+    CGFloat shadowHeight = 1 / [UIScreen mainScreen].scale;
+    UIImage *shadowImage = [UIImage v_singlePixelImageWithColor:[UIColor v_navigationAndTabBarShadowColor]];
+    UIImageView *shadowImageView = [[UIImageView alloc] initWithImage:shadowImage];
+    shadowImageView.contentMode = UIViewContentModeScaleToFill;
+    shadowImageView.userInteractionEnabled = NO;
+    [self addSubview:shadowImageView];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:shadowImageView
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+    [shadowImageView addConstraint:[NSLayoutConstraint constraintWithItem:shadowImageView
+                                                           attribute:NSLayoutAttributeHeight
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:nil
+                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                          multiplier:1.0f
+                                                            constant:shadowHeight]];
+    [self v_addPinToLeadingTrailingToSubview:shadowImageView];
 }
 
 - (void)addButton:(UIButton *)button toContainer:(UIView *)container afterPriorButton:(UIButton *)priorButton withMetrics:(NSDictionary *)metrics isLast:(BOOL)isLast

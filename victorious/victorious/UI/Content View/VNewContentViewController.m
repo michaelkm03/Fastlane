@@ -401,7 +401,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
     
-    
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
@@ -444,7 +443,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewDidAppear:animated];
     
-    [self updateInsetsForKeyboardBarState];
+    // Calculate content inset on next run loop, otherwise we get a wildly inaccurate frame for our input accessory view
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self updateInsetsForKeyboardBarState];
+    });
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
@@ -491,7 +494,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if ( self.isVideoContent && self.videoPlayer != nil)
+    if (self.isVideoContent && self.videoPlayer != nil && !self.videoPlayerDidFinishPlayingOnce)
     {
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,

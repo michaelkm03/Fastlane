@@ -256,6 +256,9 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
     [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
+    //This assures that the layout of the text will align with the text currently populate the text view
+    [textPostTextView layoutIfNeeded];
+    
     NSCache *cache = [[self class] backgroundFramesCache];
     NSString *cacheKey = [NSString stringWithFormat:@"%@ %@", text, NSStringFromCGRect( textPostTextView.frame )];
     NSArray *backgroundFrames = [cache objectForKey:cacheKey];

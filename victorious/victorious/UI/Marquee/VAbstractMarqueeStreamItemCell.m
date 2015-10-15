@@ -77,15 +77,23 @@
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
-    if ( streamItem == nil || self.hasRelinquishedPreviewView )
+    if ( self.hasRelinquishedPreviewView )
     {
         return;
     }
     
-    if ( [self.previewView canHandleStreamItem:streamItem] )
+    if ([self.previewView canHandleStreamItem:streamItem])
     {
-        [self.previewView updateToStreamItem:streamItem];
-        return;
+        [self.previewView setStreamItem:streamItem];
+        if ( self.previewView.superview == self.previewContainer )
+        {
+            //The preview view has the right sequence and is already present in our UI
+            if ( [self.previewView conformsToProtocol:@protocol(VContentFittingPreviewView)] )
+            {
+                [(id<VContentFittingPreviewView>)self.previewView updateToFitContent:NO];
+            }
+            return;
+        }
     }
     
     [self.previewView removeFromSuperview];
@@ -205,6 +213,7 @@
 - (void)restorePreviewView:(VSequencePreviewView *)previewView
 {
     self.hasRelinquishedPreviewView = NO;
+    self.previewView = previewView;
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }

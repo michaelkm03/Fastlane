@@ -14,8 +14,6 @@
 
 @interface VFollowingStreamCollectionViewController ()
 
-@property (nonatomic, assign) BOOL shouldRefreshOnView;
-
 @end
 
 @implementation VFollowingStreamCollectionViewController
@@ -32,6 +30,7 @@
 {
     [super viewDidLoad];
     
+    [self refreshWithCompletion:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
@@ -45,27 +44,10 @@
                                                   object:[VObjectManager sharedManager]];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if ( self.shouldRefreshOnView )
-    {
-        [self refreshWithCompletion:nil];
-        self.shouldRefreshOnView = NO;
-    }
-}
-
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.streamDataSource unloadStream];
-    self.shouldRefreshOnView = [[VObjectManager sharedManager] mainUser] != nil;
-}
-
-- (void)setShouldRefreshOnView:(BOOL)shouldRefreshOnView
-{
-    _shouldRefreshOnView = shouldRefreshOnView;
-    if ( shouldRefreshOnView )
+    if ( [VObjectManager sharedManager].mainUserLoggedIn )
     {
         [self refreshWithCompletion:nil];
     }

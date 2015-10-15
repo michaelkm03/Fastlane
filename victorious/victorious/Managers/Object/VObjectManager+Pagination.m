@@ -404,8 +404,9 @@ static const NSInteger kUserSearchResultLimit = 20;
         NSString *apiPath = stream.apiPath;
         
         //Strip the marqueeItems and streamItems from the newly returned stream
+        NSOrderedSet *safeMarqueeItems = [NSMutableOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:fullStream.marqueeItems.array]];
         BOOL marqueeNeedsUpdate = marqueeItems.count != fullStream.marqueeItems.count;
-        for (VStreamItem *marqueeItem in fullStream.marqueeItems )
+        for (VStreamItem *marqueeItem in safeMarqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
             if ( !marqueeNeedsUpdate )
@@ -445,6 +446,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                 BOOL streamItemsNeedUpdate = NO;
                 BOOL isMarqueeShelf = [shelfInContext.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
                 NSOrderedSet *newStreamItems = [NSOrderedSet orderedSetWithArray:[[VObjectManager sharedManager] streamItemsAfterStrippingFlaggedItems:shelfInContext.streamItems.array]];
+                shelfInContext.streamItems = newStreamItems;
                 if ( index != NSNotFound )
                 {
                     Shelf *oldShelf = (Shelf *)oldStreamItems[index];
@@ -475,7 +477,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                 }
                 shelfInContext.hasNewEditorializations = streamItemsNeedUpdate;
                 
-                for ( VStreamItem *shelfStreamItem in shelfInContext.streamItems )
+                for ( VStreamItem *shelfStreamItem in newStreamItems )
                 {
                     [self addEditorializationToStreamItem:shelfStreamItem inStreamWithApiPath:shelfInContext.apiPath usingHeadline:shelfStreamItem.headline inMarquee:isMarqueeShelf];
                     shelfStreamItem.headline = nil;
