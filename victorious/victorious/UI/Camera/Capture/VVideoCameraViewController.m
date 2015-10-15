@@ -241,8 +241,21 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 - (void)reverseCameraAction:(UIButton *)reverseButton
 {
     AVCaptureDevice *deviceForPosition = [self.captureController firstAlternatePositionDevice];
+    self.switchCameraButton.enabled = NO;
+    
+    __weak typeof(self) welf = self;
     [self.captureController setCurrentDevice:deviceForPosition
-                              withCompletion:nil];
+                              withCompletion:^(NSError *error) {
+                                  __strong typeof(welf) strongSelf = welf;
+                                  if (strongSelf != nil)
+                                  {
+                                      [strongSelf.captureController setVideoOrientation:[[UIDevice currentDevice] orientation]];
+                                      dispatch_async(dispatch_get_main_queue(), ^(void)
+                                      {
+                                          strongSelf.switchCameraButton.enabled = YES;
+                                      });
+                                  }
+                              }];
 }
 
 - (void)nextAction:(UIBarButtonItem *)nextButton
