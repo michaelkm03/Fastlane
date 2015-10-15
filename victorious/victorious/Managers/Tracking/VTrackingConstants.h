@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// An enum for use in the "VTrackingKeyErrorType" key on tracking calls
 typedef NS_ENUM(NSInteger, VAppErrorTrackingType) {
     VAppErrorTrackingTypeFacebook = 1,
     VAppErrorTrackingTypeTwitter = 2
