@@ -43,7 +43,11 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isGIFVideo] )
+        if ( [sequence isRemoteVideoWithSource:[YouTubeVideoSequencePreviewView remoteSourceName]] )
+        {
+            classType = [YouTubeVideoSequencePreviewView class];
+        }
+        else if ( [sequence isGIFVideo] )
         {
             classType = [VBaseVideoSequencePreviewView class];
         }

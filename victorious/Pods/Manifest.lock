@@ -56,6 +56,7 @@ PODS:
   - SOCKit (1.1)
   - TransitionKit (2.1.1)
   - TTTAttributedLabel (1.13.4)
+  - youtube-ios-player-helper (0.1.4)
 
 DEPENDENCIES:
   - CCHLinkTextView
@@ -71,6 +72,7 @@ DEPENDENCIES:
   - RestKit
   - SDWebImage
   - TTTAttributedLabel
+  - youtube-ios-player-helper
 
 EXTERNAL SOURCES:
   FBSDKCoreKit:
@@ -121,5 +123,6 @@ SPEC CHECKSUMS:
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  youtube-ios-player-helper: 84b1485ebb4b7c6b619c6e05edcb55186723a7c6
 
 COCOAPODS: 0.39.0

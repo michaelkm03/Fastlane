@@ -48,6 +48,12 @@ class VideoToolbarView: UIView {
     private lazy var timeFormatter = VElapsedTimeFormatter()
     private var lastInteractionDate = NSDate()
     
+    func resetTime() {
+        self.elapsedTimeLabel.text = kTimeLabelPlaceholderText
+        self.remainingTimeLabel.text = kTimeLabelPlaceholderText
+        slider.value = 0.0
+    }
+    
     func setCurrentTime( timeSeconds: Float64, duration: Float64 ) {
         slider.value = clampRatio( Float(timeSeconds / duration) )
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
@@ -96,9 +102,7 @@ class VideoToolbarView: UIView {
         
         self.paused = true
         self.hide(animated: false)
-        
-        self.elapsedTimeLabel.text = kTimeLabelPlaceholderText
-        self.remainingTimeLabel.text = kTimeLabelPlaceholderText
+        self.resetTime()
     }
     
     // MARK: - Visibility
