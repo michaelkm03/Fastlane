@@ -328,7 +328,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                      VTrackingKeyPermissionName : VTrackingValueDenied }];
                 }
                 [self handleFacebookLoginFailure];
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
+                NSDictionary *parameters = @{
+                                             VTrackingKeyErrorType : @(VAppErrorTrackingTypeFacebook),
+                                             VTrackingKeyErrorDetails : @(error.code)
+                                             };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:parameters];
             }
         }];
     }

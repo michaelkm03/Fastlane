@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, VAppErrorTrackingType) {
+    VAppErrorTrackingTypeFacebook = 1,
+    VAppErrorTrackingTypeTwitter = 2
+};
+
 // Tracking Event Names
 // Application Lifecycle
 extern NSString * const VTrackingEventApplicationFirstInstall; //< Backend mapping: app-intall
@@ -286,6 +291,8 @@ extern NSString * const VTrackingKeyPermissionState;
 extern NSString * const VTrackingKeyAutoplay; //< For tracking whether a video is autoplaying in the stream
 extern NSString * const VTrackingKeyConnectivity; //< For tracking connectivity level while autoplaying a video
 extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level while autoplaying a video
+extern NSString * const VTrackingKeyErrorType; //< For tracking the type of error being sent
+extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error
 
 // Tracking Event Values
 // ContentType values

@@ -33,6 +33,8 @@ static NSString * const kMacroPermissionName         = @"%%PERMISSION_NAME%%";
 static NSString * const kMacroAutoplay               = @"%%IS_AUTOPLAY%%";
 static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
 static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
+static NSString * const kMacroErrorType              = @"%%ERROR_TYPE%%";
+static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -76,7 +78,9 @@ static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
                                     VTrackingKeyPermissionState    : kMacroPermissionState,
                                     VTrackingKeyAutoplay           : kMacroAutoplay,
                                     VTrackingKeyConnectivity       : kMacroConnectivity,
-                                    VTrackingKeyVolumeLevel        : kMacroVolumeLevel};
+                                    VTrackingKeyVolumeLevel        : kMacroVolumeLevel,
+                                    VTrackingKeyErrorType          : kMacroErrorType,
+                                    VTrackingKeyErrorDetails       : kMacroErrorDetails };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
@@ -84,7 +88,8 @@ static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
                                  VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
-                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey };
+                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey,
+                                 VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
