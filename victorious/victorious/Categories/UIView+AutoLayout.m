@@ -42,6 +42,34 @@
                                                                    views:views]];
 }
 
+- (void)v_addVerticalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{@"top" : @(space),
+                              @"bottom" : @(space) };
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|->=top-[subview]->=bottom-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)v_addHorizontalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{ @"leading" : @(space),
+                               @"trailing" : @(space)
+                               };
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|->=leading-[subview]->=trailing-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
 - (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView
 {
     [self v_addPinToLeadingTrailingToSubview:subView
