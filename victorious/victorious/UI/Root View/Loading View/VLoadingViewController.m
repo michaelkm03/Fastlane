@@ -215,6 +215,11 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
+        
+        NSArray *keyPaths = [templateDecorator keyPathsForKey:@"loginAndRegistrationView"];
+        NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPaths[0]] mutableCopy];
+        dict[@"loadingScreen"] = @{@"name" : @"modernLoading.screen"};
+        [templateDecorator setTemplateValue:dict forKeyPath:keyPaths[0]];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

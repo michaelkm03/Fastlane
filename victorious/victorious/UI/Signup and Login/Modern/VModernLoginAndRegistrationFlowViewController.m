@@ -38,6 +38,7 @@
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
 static NSString * const kLandingScreen = @"landingScreen";
+static NSString * const kLoadingScreen = @"loadingScreen";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
@@ -52,6 +53,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
+@property (nonatomic, strong) UIViewController<VLoginFlowScreen> *loadingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
@@ -77,7 +79,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         // Landing
         _landingScreen = [dependencyManager templateValueOfType:[UIViewController class]
                                                          forKey:kLandingScreen];
-        [self setDelegateForScreensInArray:@[_landingScreen]];
+        _loadingScreen = [dependencyManager templateValueOfType:[UIViewController class]
+                                                         forKey:kLoadingScreen];
+        [self setDelegateForScreensInArray:@[_landingScreen, _loadingScreen]];
         [self setViewControllers:@[_landingScreen]];
         
         // Login + Registration
@@ -302,8 +306,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if ( [FBSDKAccessToken currentAccessToken] == nil ||
          ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
     {
-        self.actionsDisabled = YES;
-        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self pushViewController:self.loadingScreen animated:YES];
         
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];

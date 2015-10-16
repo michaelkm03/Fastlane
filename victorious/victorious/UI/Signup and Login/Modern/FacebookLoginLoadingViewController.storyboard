@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="old-Vq-ksZ">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Facebook Login Loading View Controller-->
+        <scene sceneID="CzE-5E-VRb">
+            <objects>
+                <viewController id="old-Vq-ksZ" customClass="FacebookLoginLoadingViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lZd-cM-V5e"/>
+                        <viewControllerLayoutGuide type="bottom" id="jtD-w8-LCE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="f4M-t7-bo2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UhZ-In-1Xh">
+                                <rect key="frame" x="20" y="268" width="560" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="Hj8-Og-rdg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UhZ-In-1Xh" firstAttribute="centerY" secondItem="f4M-t7-bo2" secondAttribute="centerY" id="Blq-fE-HCn"/>
+                            <constraint firstItem="UhZ-In-1Xh" firstAttribute="centerX" secondItem="f4M-t7-bo2" secondAttribute="centerX" id="MeP-Ts-rgF"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="UhZ-In-1Xh" secondAttribute="leading" id="lfi-F2-cwm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UhZ-In-1Xh" secondAttribute="trailing" id="tCR-h1-FRA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loadingLabel" destination="UhZ-In-1Xh" id="TQv-7q-3ic"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AcG-lv-mnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="273" y="318"/>
+        </scene>
+    </scenes>
+</document>
