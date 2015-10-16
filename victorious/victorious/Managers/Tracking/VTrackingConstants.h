@@ -292,8 +292,12 @@ extern NSString * const VTrackingKeyPermissionState;
 extern NSString * const VTrackingKeyAutoplay; //< For tracking whether a video is autoplaying in the stream
 extern NSString * const VTrackingKeyConnectivity; //< For tracking connectivity level while autoplaying a video
 extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level while autoplaying a video
-extern NSString * const VTrackingKeyErrorType; //< For tracking the type of error being sent
-extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error
+/**
+ For tracking the type of error being sent. The value of this key
+ should be a number represented by one the VAppErrorTrackingType values
+ */
+extern NSString * const VTrackingKeyErrorType;
+extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error, value should be a string
 
 // Tracking Event Values
 // ContentType values
