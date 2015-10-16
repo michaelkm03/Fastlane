@@ -19,6 +19,8 @@
 
 @end
 
+static const CGFloat kPlayIconMinimumSpacingToContainerBorder = 10.0f;
+
 @implementation VPollView
 
 - (instancetype)init
@@ -137,19 +139,38 @@
                                                             toItem:self.answerAImageView
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0 constant:0.0]];
+        [self.playIconA addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconA
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.playIconA
+                                                                   attribute:NSLayoutAttributeHeight
+                                                                  multiplier:1.0/1.0
+                                                                    constant:0.0f]];
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconA spacing:kPlayIconMinimumSpacingToContainerBorder];
+        [self v_addVerticalMinimumSpacingToSubview:self.playIconA spacing:kPlayIconMinimumSpacingToContainerBorder];
+
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerBImageView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0 constant:0.0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.answerBImageView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0 constant:0.0]];
+        [self.playIconB addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.playIconB
+                                                                   attribute:NSLayoutAttributeHeight
+                                                                  multiplier:1.0/1.0
+                                                                    constant:0.0f]];
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:kPlayIconMinimumSpacingToContainerBorder];
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:kPlayIconMinimumSpacingToContainerBorder];
         
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.answerBImageView
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0 constant:0.0]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.answerBImageView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0 constant:0.0]];
         self.hasLayedOutViews = YES;
     }
 }
