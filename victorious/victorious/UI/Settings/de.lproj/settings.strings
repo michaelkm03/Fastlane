@@ -116,7 +116,7 @@
 "f7G-BC-zp9.text" = "Experiemente";
 
 /* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
-"gY1-3u-QH1.text" = "Benachrichtigung beim Registrieren von Testlevelaufstiegen";
+"gY1-3u-QH1.text" = "Testbenachrichtigung zu Levelaufstiegen registrieren";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Immer";
@@ -125,7 +125,7 @@
 "jLQ-YW-sES.normalTitle" = "Speichern";
 
 /* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
-"jfn-8g-oUa.text" = "Benachrichtigungen beim Registrieren von Tests";
+"jfn-8g-oUa.text" = "Testbenachrichtigungen registrieren";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "Server-Umgebung";
@@ -140,7 +140,7 @@
 "lSu-os-HMa.title" = "Datenschutzbestimmungen";
 
 /* Class = "UILabel"; text = "Register Test Achievement Alert"; ObjectID = "lcI-nH-BVd"; */
-"lcI-nH-BVd.text" = "Benachrichtigungen beim Registrieren von Testerfolgen";
+"lcI-nH-BVd.text" = "Testbenachrichtigung zu Erfolgen registrieren";
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Nutzungsbedingungen";

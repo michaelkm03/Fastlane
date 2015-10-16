@@ -72,7 +72,7 @@
 "AnswerTextToShort"     =   "Vos réponses doivent contenir au moins 2 caractères.";
 
 "NoMessagesTitle"       =   "AUCUN MESSAGE";
-"NoMessagesMessage"     =   "Vous pouvez envoyer des messages à tous les utilisateurs de l'application ! Rendez-vous sur le profil de votre choix et cliquez sur l'icône « composer » dans le coin supérieur droit.";
+"NoMessagesMessage"     =   "Vous pouvez envoyer des messages à tous les utilisateurs de l'application ! Cliquez sur l'icône « composer » dans le coin supérieur droit et recherchez la personne de votre choix pour lui envoyer un message.";
 
 "NoNotificationsTitle"       =   "AUCUNE NOTIFICATION POUR LE MOMENT";
 "NoNotificationsMessage"     =   "Plus vous vous impliquerez dans la communauté en commentant, remixant ou publiant des nouveaux contenus, plus les autres membres interagiront avec vous. Découvrez leurs réaction ici";
@@ -84,7 +84,7 @@
 "NoFollowersMessage"    =   "Une activité fréquente vous apportera une plus grande visibilité au sein de la commuanuté et vous permettra de créer votre propre réseau d'abonnés.";
 
 "NotFollowingTitle"     =   "VOUS NE SUIVEZ PERSONNE POUR LE MOMENT";
-"NotFollowingMessage"   =   "Suivez d'autres utilisateurs pour visualiser leur contenu dans votre flux. C'est une manière sympa de découvrir un nouveau contenu ou de se faire de nouveaux amis.";
+"NotFollowingMessage"   =   "Suivez d'autres utilisateurs ou hashtags pour visualiser ces contenus dans votre flux \"Abonnements\". C'est une manière sympa de découvrir de nouvelles publications!";
 
 "NoLikersMessage"       =   "En aimant vos contenus favoris, vous montrerez à la communauté que qui vous plaît!";
 "NoLikersTitle"         =   "PERSONNE N'A AIMÉ CETTE PUBLICATION... POUR L'INSTANT!";
@@ -121,7 +121,7 @@
 
 "Facebook"              =   "Facebook";
 
-"Search people and hashtags"  =  "Recherchez des personnes ou des hashtags";
+"Search people and hashtags"  =  "Recherchez des personnes ou hashtags";
 "No People Found In Search Title" = "AUCUN UTILISATEUR TROUVÉ";
 "No people found in search" = "Affinez votre recherche et réessayez.";
 "No Hashtags Found In Search Title" = "AUCUN HASHTAG TROUVÉ !";
@@ -156,8 +156,8 @@
 "CommentAlreadyReported" =  "Commentaire déjà signalé";
 
 "Ask a question..."     =   "Poser une question...";
-"Vote this"             =   "Voter pour ceci";
-"Vote that"             =   "Voter pour cela";
+"Vote this"             =   "Réponse 1";
+"Vote that"             =   "Réponse 2";
 
 "Uploading"             =   "Votre contenu est en cours de téléchargement.";
 "UploadFinalizing"      =   "Votre publication est en cours de téléchargement. Elle sera bientôt disponible.";
@@ -297,9 +297,9 @@
 "SupportEmailSubjectWithName" = "Commentaires sur %@";
 
 "DiscoverSuggestedPeopleError"  = "Malheureusement, les personnes suggérées n'ont pas pu être chargées.";
-"DiscoverTrendingTagsError"     = "Malheureusement, les hashtags suggérés n'ont pas pu être chargées.";
+"DiscoverTrendingTagsError"     = "Malheureusement, les hashtags populaires n'ont pas pu être chargés.";
 "Suggested People"      = "Personnes suggérées";
-"Trending Tags"         = "Hashtags suggérés";
+"Trending Tags"         = "Hashtags populaires";
 "%@ Voters"             = "%@ votants";
 "%@ Voter"              = "%@ votant";
 
@@ -307,7 +307,7 @@
 "HashtagUnsubscribeError"  = "Une erreur s'est produite lors du désabonnement à ce hashtag. Veuillez réessayer.";
 
 "NoFollowingHashtagsTitle"      =   "VOUS NE SUIVEZ ENCORE AUCUN HASHTAG.";
-"NoFollowingHashtagsMessage"    =   "Établissez une liste de vos contenus préférés en sélectionnant les hashtags correspondants";
+"NoFollowingHashtagsMessage"    =   "Établissez une liste de vos contenus préférés en sélectionnant les hashtags de votre choix.";
 
 "NoHashtagsTitle"      =   "Aucun hashtag ici!";
 "NoHashtagsMessage"    =   "Nous n'avons trouvé aucune publication contenant #%@";
