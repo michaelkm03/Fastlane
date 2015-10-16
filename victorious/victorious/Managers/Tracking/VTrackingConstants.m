@@ -285,6 +285,8 @@ NSString * const VTrackingKeyPermissionState = @"PermissionState";
 NSString * const VTrackingKeyAutoplay = @"Autoplay";
 NSString * const VTrackingKeyConnectivity = @"Connectivity";
 NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
+NSString * const VTrackingKeyErrorType = @"Type";
+NSString * const VTrackingKeyErrorDetails = @"Details";
 
 // Tracking Event Values
 // ContentType values
