@@ -87,7 +87,11 @@
                                                                                  style:UIAlertActionStyleCancel
                                                                                handler:^(UIAlertAction *action)
                                                          {
-                                                             completion(nil);
+                                                             if (completion != nil)
+                                                             {
+                                                                 completion(nil);
+                                                             }
+
                                                          }]];
                        [viewControllerToPresentOnIfNeeded presentViewController:accessNotGrantedAlert
                                                                        animated:YES
@@ -111,7 +115,10 @@
                                                                           style:UIAlertActionStyleCancel
                                                                         handler:^(UIAlertAction *action)
                                                   {
-                                                      completion(nil);
+                                                      if (completion != nil)
+                                                      {
+                                                          completion(nil);
+                                                      }
                                                   }];
                        [alertController addAction:okAction];
                        [viewControllerToPresentOnIfNeeded presentViewController:alertController

@@ -53,7 +53,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
-@property (nonatomic, strong) UIViewController<VLoginFlowScreen> *loadingScreen;
+@property (nonatomic, strong) ModernLoadingViewController *loadingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
@@ -62,6 +62,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL actionsDisabled;
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, assign) BOOL isRegisteredAsNewUser;
+@property (nonatomic, assign) BOOL canceledLoading; //< When the user presses cancel on the loading screen
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
@@ -282,15 +283,37 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     self.actionsDisabled = YES;
     
-    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
-    {
-        self.actionsDisabled = NO;
-        if ( success )
-        {
-            self.isRegisteredAsNewUser = isNewUser;
-            [self continueRegistrationFlowAfterSocialRegistration];
-        }
+    __weak typeof(self) weakSelf = self;
+    [self.loadingScreen setOnAppearance:^{
+        
+        __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
+        
+        [strongSelf.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
+         {
+             strongSelf.actionsDisabled = NO;
+
+             // User canceled log in, do nothing
+             if (strongSelf.canceledLoading)
+             {
+                 VUserManager *userManager = [[VUserManager alloc] init];
+                 [userManager userDidLogout];
+                 return;
+             }
+             
+             if ( success )
+             {
+                 strongSelf.isRegisteredAsNewUser = isNewUser;
+                 [strongSelf continueRegistrationFlowAfterSocialRegistration];
+             }
+             else
+             {
+                 [weakSelf dismissLoadingScreen];
+             }
+         }];
+       
     }];
+    
+    [self showLoadingScreen];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -303,42 +326,55 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    if ( [FBSDKAccessToken currentAccessToken] == nil ||
-         ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
-    {
-        [self pushViewController:self.loadingScreen animated:YES];
+    self.actionsDisabled = YES;
+    
+    __weak typeof(self) weakSelf = self;
+    [self.loadingScreen setOnAppearance:^{
         
-        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
-        [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
-                            fromViewController:self
-                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
+        __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
+
+        if ( [FBSDKAccessToken currentAccessToken] == nil ||
+            ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
         {
-            if ( [FBSDKAccessToken currentAccessToken] != nil )
-            {
-                [self loginWithStoredFacebookToken];
-            }
-            else
-            {
-                self.actionsDisabled = NO;
-                [self.facebookLoginProgressHUD hide:YES];
-                self.facebookLoginProgressHUD = nil;
-                
-                if ( result.isCancelled )
-                {
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                                       parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                                     VTrackingKeyPermissionName : VTrackingValueDenied }];
-                }
-                [self handleFacebookLoginFailure];
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-            }
-        }];
-    }
-    else
-    {
-        [self loginWithStoredFacebookToken];
-    }
+            FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+            loginManager.forceNative = [strongSelf.dependencyManager shouldForceNativeFacebookLogin];
+            [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
+                                fromViewController:strongSelf
+                                           handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
+             {
+                 // User canceled log in, do nothing
+                 if (strongSelf.canceledLoading)
+                 {
+                     strongSelf.actionsDisabled = NO;
+                     return;
+                 }
+                 
+                 if ( [FBSDKAccessToken currentAccessToken] != nil )
+                 {
+                     [strongSelf loginWithStoredFacebookToken];
+                 }
+                 else
+                 {
+                     strongSelf.actionsDisabled = NO;
+                     
+                     if ( result.isCancelled )
+                     {
+                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                            parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                          VTrackingKeyPermissionName : VTrackingValueDenied }];
+                     }
+                     [strongSelf handleFacebookLoginFailure];
+                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
+                 }
+             }];
+        }
+        else
+        {
+            [strongSelf loginWithStoredFacebookToken];
+        }
+    }];
+    
+    [self showLoadingScreen];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -346,27 +382,29 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)loginWithStoredFacebookToken
 {
-    if ( self.facebookLoginProgressHUD == nil )
-    {
-        self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    }
     self.actionsDisabled = YES;
     
     VUserManager *userManager = [[VUserManager alloc] init];
     [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
     {
-        [self.facebookLoginProgressHUD hide:YES];
-        self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
+        
+        if (self.canceledLoading)
+        {
+            return;
+        }
 
         self.isRegisteredAsNewUser = isNewUser;
         [self continueRegistrationFlowAfterSocialRegistration];
     }
                                                      onError:^(NSError *error, BOOL thirdPartyAPIFailure)
     {
-        [self.facebookLoginProgressHUD hide:YES];
-        self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
+        
+        if (self.canceledLoading)
+        {
+            return;
+        }
         
         [self handleFacebookLoginFailure];
     }];
@@ -374,6 +412,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)handleFacebookLoginFailure
 {
+    [self dismissLoadingScreen];
     UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                                    message:NSLocalizedString(@"FacebookLoginFailed", @"")
                                                                       andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
@@ -560,7 +599,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     else
     {
         [self.loginFlowHelper updateProfilePictureWithPictureAtFilePath:profilePictureFilePath
-                                                             completion:nil];;
+                                                             completion:nil];
     }
 }
 
@@ -586,7 +625,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
     UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
-    if ( nextRegisterViewController != nil && self.isRegisteredAsNewUser )
+    if ( nextRegisterViewController != nil && !self.isRegisteredAsNewUser )
     {
         [self pushViewController:nextRegisterViewController
                         animated:YES];
@@ -674,6 +713,28 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [self popToViewController:[self.loginScreens firstObject]
                      animated:YES];
+}
+
+#pragma mark - Loading screen
+
+- (void)loadingScreenCanceled
+{
+    self.canceledLoading = YES;
+    [self dismissLoadingScreen];
+}
+
+- (void)showLoadingScreen
+{
+    self.canceledLoading = NO;
+    [self pushViewController:self.loadingScreen animated:YES];
+}
+
+- (void)dismissLoadingScreen
+{
+    if ([self.topViewController isEqual:self.loadingScreen])
+    {
+        [self popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - VBackgroundContainer

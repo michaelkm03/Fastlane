@@ -75,8 +75,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
                                               completion:^(ACAccount *twitterAccount)
@@ -84,7 +82,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          if (!twitterAccount)
          {
              // Either no twitter permissions or no account was selected
-             [hud hide:YES];
              completion(NO, NO);
              return;
          }
@@ -94,7 +91,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
-                                 [hud hide:YES];
                                  completion(YES, isNewUser);
                              });
 
@@ -108,7 +104,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                                                    andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
                                  [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
                                  
-                                 [hud hide:YES];
                                  completion(NO, NO);
                              });
           }];

@@ -19,7 +19,7 @@
 	<key>modernLanding.screen</key>
 	<string>VModernLandingViewController</string>
 	<key>modernLoading.screen</key>
-	<string>victorious.FacebookLoginLoadingViewController</string>
+	<string>victorious.ModernLoadingViewController</string>
 	<key>modernLoginAndRegistration.flow</key>
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>image.creationFlow</key>
