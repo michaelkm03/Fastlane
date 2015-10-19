@@ -28,12 +28,22 @@
 #import "VPermissionsTrackingHelper.h"
 #import "VUserManager.h"
 #import "victorious-Swift.h"
+#import "VObjectManager+login.h"
 
 #import "VForcedWorkspaceContainerViewController.h"
 
 @import FBSDKCoreKit;
 @import FBSDKLoginKit;
 @import MBProgressHUD;
+
+typedef NS_ENUM( NSInteger, VLoginLoadingType )
+{
+    VLoginLoadingTypeNone,  ///< Default value, usually means there is currently no logged in session
+    VLoginLoadingTypeLogin,        ///< User signed up with email and password
+    VLoginLoadingTypeRegister,     ///< User connected with their Facebook account
+    VLoginLoadingTypeFacebook,   ///< User connected with their Twitter account
+    VLoginLoadingTypeTwitter
+};
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -62,7 +72,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL actionsDisabled;
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, assign) BOOL isRegisteredAsNewUser;
-@property (nonatomic, assign) BOOL canceledLoading; //< When the user presses cancel on the loading screen
+@property (nonatomic, assign) VLoginLoadingType loadingType; //< If the loading screen is present, this is the type of login that they are currently using. Used for determining cancellation state.
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
@@ -291,19 +301,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [strongSelf.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
          {
              strongSelf.actionsDisabled = NO;
-
-             // User canceled log in, do nothing
-             if (strongSelf.canceledLoading)
-             {
-                 VUserManager *userManager = [[VUserManager alloc] init];
-                 [userManager userDidLogout];
-                 return;
-             }
              
              if ( success )
              {
                  strongSelf.isRegisteredAsNewUser = isNewUser;
-                 [strongSelf continueRegistrationFlowAfterSocialRegistration];
+                 [strongSelf continueRegistrationFlowAfterSocialRegistrationWithLoadingType:VLoginLoadingTypeTwitter];
              }
              else
              {
@@ -313,7 +315,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
        
     }];
     
-    [self showLoadingScreen];
+    [self showLoadingScreenWithLoginType:VLoginLoadingTypeTwitter];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -342,13 +344,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                 fromViewController:strongSelf
                                            handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
              {
-                 // User canceled log in, do nothing
-                 if (strongSelf.canceledLoading)
-                 {
-                     strongSelf.actionsDisabled = NO;
-                     return;
-                 }
-                 
                  if ( [FBSDKAccessToken currentAccessToken] != nil )
                  {
                      [strongSelf loginWithStoredFacebookToken];
@@ -377,7 +372,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         }
     }];
     
-    [self showLoadingScreen];
+    [self showLoadingScreenWithLoginType:VLoginLoadingTypeFacebook];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -391,23 +386,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
     {
         self.actionsDisabled = NO;
-        
-        if (self.canceledLoading)
-        {
-            return;
-        }
 
         self.isRegisteredAsNewUser = isNewUser;
-        [self continueRegistrationFlowAfterSocialRegistration];
+        [self continueRegistrationFlowAfterSocialRegistrationWithLoadingType:VLoginLoadingTypeFacebook];
     }
                                                      onError:^(NSError *error, BOOL thirdPartyAPIFailure)
     {
         self.actionsDisabled = NO;
-        
-        if (self.canceledLoading)
-        {
-            return;
-        }
         
         [self handleFacebookLoginFailure];
     }];
@@ -444,7 +429,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
              completion(success, error);
              if (success)
              {
-                 [strongSelf onAuthenticationFinishedWithSuccess:YES];
+                 [strongSelf onAuthenticationFinishedWithSuccess:YES loadingType:VLoginLoadingTypeLogin];
              }
              else
              {
@@ -453,7 +438,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          }];
     }];
     
-    [self showLoadingScreen];
+    [self showLoadingScreenWithLoginType:VLoginLoadingTypeLogin];
 }
 
 - (void)registerWithEmail:(NSString *)email
@@ -480,7 +465,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
              {
                  if (alreadyRegistered)
                  {
-                     [strongSelf onAuthenticationFinishedWithSuccess:YES];
+                     [strongSelf onAuthenticationFinishedWithSuccess:YES loadingType:VLoginLoadingTypeRegister];
                  }
                  else
                  {
@@ -494,7 +479,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          }];
     }];
     
-    [self showLoadingScreen];
+    [self showLoadingScreenWithLoginType:VLoginLoadingTypeRegister];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
@@ -579,7 +564,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         if (success)
         {
-            [self onAuthenticationFinishedWithSuccess:YES];
+            [self onAuthenticationFinishedWithSuccess:YES loadingType:VLoginLoadingTypeNone];
         }
         else
         {
@@ -621,7 +606,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     if (profilePictureFilePath == nil)
     {
-        [self onAuthenticationFinishedWithSuccess:YES];
+        [self onAuthenticationFinishedWithSuccess:YES loadingType:VLoginLoadingTypeRegister];
     }
     else
     {
@@ -647,7 +632,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     UIViewController *nextRegisterViewController = [self nextScreenAfter:currentViewController inArray:self.registrationScreens];
     if (nextRegisterViewController == currentViewController)
     {
-        [self onAuthenticationFinishedWithSuccess:YES];
+        [self onAuthenticationFinishedWithSuccess:YES loadingType:self.loadingType];
     }
     else
     {
@@ -656,8 +641,18 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (void)continueRegistrationFlowAfterSocialRegistration
+- (void)continueRegistrationFlowAfterSocialRegistrationWithLoadingType:(VLoginLoadingType)loadingType
 {
+    if (self.loadingType != loadingType)
+    {
+        // The user has cancelled the registration process, log them out locally
+        if ([[VObjectManager sharedManager] mainUser] != nil)
+        {
+            [[VObjectManager sharedManager] logoutLocally];
+        }
+        return;
+    }
+    
     // Loading screen is not technically part of the flow, so we must use the 2nd to last view controller
     UIViewController *currentViewController = self.topViewController;
     if (currentViewController == self.loadingScreen)
@@ -673,12 +668,22 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     else
     {
-        [self onAuthenticationFinishedWithSuccess:YES];
+        [self onAuthenticationFinishedWithSuccess:YES loadingType:loadingType];
     }
 }
 
-- (void)onAuthenticationFinishedWithSuccess:(BOOL)success
+- (void)onAuthenticationFinishedWithSuccess:(BOOL)success loadingType:(VLoginLoadingType)loadingType
 {
+    if (self.loadingType != loadingType)
+    {
+        // The user has cancelled the login process, log them out locally
+        if ([[VObjectManager sharedManager] mainUser] != nil)
+        {
+            [[VObjectManager sharedManager] logoutLocally];
+        }
+        return;
+    }
+    
     if ( success )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
@@ -747,7 +752,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)onAuthenticationFinished
 {
-    [self onAuthenticationFinishedWithSuccess:YES];
+    [self onAuthenticationFinishedWithSuccess:YES loadingType:VLoginLoadingTypeNone];
 }
 
 - (void)returnToLandingScreen
@@ -760,20 +765,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)loadingScreenCanceled
 {
-    self.canceledLoading = YES;
     [self dismissLoadingScreen];
 }
 
-- (void)showLoadingScreen
+- (void)showLoadingScreenWithLoginType:(VLoginLoadingType)loadingType
 {
-    self.canceledLoading = NO;
+    self.loadingType = loadingType;
     [self pushViewController:self.loadingScreen animated:YES];
 }
 
 - (void)dismissLoadingScreen
 {
-    if ([self.topViewController isEqual:self.loadingScreen])
+    if (self.topViewController == self.loadingScreen)
     {
+        self.loadingType = VLoginLoadingTypeNone;
         [self popViewControllerAnimated:YES];
     }
 }
@@ -789,14 +794,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-    // For Facebook only, when the app loses focus, remove the HUD and re-enable all the buttons.
-    // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
-    if ( self.facebookLoginProgressHUD != nil )
-    {
-        [self.facebookLoginProgressHUD hide:YES];
-        self.facebookLoginProgressHUD = nil;
-        self.actionsDisabled = NO;
-    }
+//    // For Facebook only, when the app loses focus, remove the loading screen and re-enable all the buttons.
+//    // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
+//    if ( self.topViewController == self.loadingScreen )
+//    {
+//        [self dismissLoadingScreen];
+//        self.actionsDisabled = NO;
+//    }
 }
 
 #pragma mark - UINavigationControllerDelegate
