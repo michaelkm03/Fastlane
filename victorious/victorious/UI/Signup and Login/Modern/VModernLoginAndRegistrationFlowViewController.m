@@ -332,7 +332,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.loadingScreen setOnAppearance:^{
         
         __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
-
+        
         if ( [FBSDKAccessToken currentAccessToken] == nil ||
             ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
         {
@@ -350,29 +350,25 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                  }
                  
                  if ( [FBSDKAccessToken currentAccessToken] != nil )
-            	{
-                	[self loginWithStoredFacebookToken];
-            	}
-            	else
-            	{
-                	self.actionsDisabled = NO;
-                	[self.facebookLoginProgressHUD hide:YES];
-                	self.facebookLoginProgressHUD = nil;
-                
-                	if ( result.isCancelled )
-                	{
-                    	[[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                                       		parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                                     VTrackingKeyPermissionName : VTrackingValueDenied }];
-                	}
-                	[self handleFacebookLoginFailure];
-                	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
-                	if ( error != nil )
-                	{
-                    	[parameters setObject:@(error.code) forKey:VTrackingKeyErrorDetails];
-                	}
-                	[[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:parameters];
-            	}
+                 {
+                     [strongSelf loginWithStoredFacebookToken];
+                 }
+                 else
+                 {
+                     if ( result.isCancelled )
+                     {
+                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                            parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                          VTrackingKeyPermissionName : VTrackingValueDenied }];
+                     }
+                     [strongSelf handleFacebookLoginFailure];
+                     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
+                     if ( error != nil )
+                     {
+                         [parameters setObject:@(error.code) forKey:VTrackingKeyErrorDetails];
+                     }
+                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:parameters];
+                 }
              }];
         }
         else
@@ -436,16 +432,28 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.loginFlowHelper loginWithEmail:email
-                                password:password
-                              completion:^(BOOL success, NSError *error)
-     {
-         completion(success, error);
-         if (success)
+    __weak typeof(self) weakSelf = self;
+    [self.loadingScreen setOnAppearance:^
+    {
+        __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
+        
+        [strongSelf.loginFlowHelper loginWithEmail:email
+                                          password:password
+                                        completion:^(BOOL success, NSError *error)
          {
-             [self onAuthenticationFinishedWithSuccess:YES];
-         }
-     }];
+             completion(success, error);
+             if (success)
+             {
+                 [strongSelf onAuthenticationFinishedWithSuccess:YES];
+             }
+             else
+             {
+                 [strongSelf dismissLoadingScreen];
+             }
+         }];
+    }];
+    
+    [self showLoadingScreen];
 }
 
 - (void)registerWithEmail:(NSString *)email
@@ -458,23 +466,35 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.loginFlowHelper registerWithEmail:email
-                                   password:password
-                                 completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
-     {
-         completion(success, alreadyRegistered, error);
-         if (success)
+    __weak typeof(self) weakSelf = self;
+    [self.loadingScreen setOnAppearance:^
+    {
+        __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
+
+        [strongSelf.loginFlowHelper registerWithEmail:email
+                                             password:password
+                                           completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
          {
-             if (alreadyRegistered)
+             completion(success, alreadyRegistered, error);
+             if (success)
              {
-                 [self onAuthenticationFinishedWithSuccess:YES];
+                 if (alreadyRegistered)
+                 {
+                     [strongSelf onAuthenticationFinishedWithSuccess:YES];
+                 }
+                 else
+                 {
+                     [strongSelf continueRegistrationFlow];
+                 }
              }
              else
              {
-                 [self continueRegistrationFlow];
+                 [strongSelf dismissLoadingScreen];
              }
-         }
-     }];
+         }];
+    }];
+    
+    [self showLoadingScreen];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
@@ -617,8 +637,15 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    UIViewController *nextRegisterViewController = [self nextScreenAfter:self.topViewController inArray:self.registrationScreens];
-    if (nextRegisterViewController == self.topViewController)
+    // Loading screen is not technically part of the flow, so we must use the 2nd to last view controller
+    UIViewController *currentViewController = self.topViewController;
+    if (currentViewController == self.loadingScreen)
+    {
+        currentViewController = [self.viewControllers objectAtIndex:self.viewControllers.count - 2];
+    }
+    
+    UIViewController *nextRegisterViewController = [self nextScreenAfter:currentViewController inArray:self.registrationScreens];
+    if (nextRegisterViewController == currentViewController)
     {
         [self onAuthenticationFinishedWithSuccess:YES];
     }
@@ -631,7 +658,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
-    UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
+    // Loading screen is not technically part of the flow, so we must use the 2nd to last view controller
+    UIViewController *currentViewController = self.topViewController;
+    if (currentViewController == self.loadingScreen)
+    {
+        currentViewController = [self.viewControllers objectAtIndex:self.viewControllers.count - 2];
+    }
+    
+    UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:currentViewController inArray:self.registrationScreens];
     if ( nextRegisterViewController != nil && !self.isRegisteredAsNewUser )
     {
         [self pushViewController:nextRegisterViewController

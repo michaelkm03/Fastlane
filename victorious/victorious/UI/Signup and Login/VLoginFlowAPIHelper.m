@@ -116,15 +116,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
     [[[VUserManager alloc] init] loginViaEmail:email
                                       password:password
                                   onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [hud hide:YES];
                             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
                             completion(YES, nil);
                         });
@@ -133,7 +130,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [hud hide:YES];
                             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
                             completion(NO, error);
                         });
@@ -146,8 +142,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
     [[[VUserManager alloc] init] createEmailAccount:email
                                            password:password
                                            userName:nil
@@ -155,7 +149,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [hud hide:YES];
                             BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
                             completion(YES, completeProfile, nil);
                         });
@@ -164,7 +157,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [hud hide:YES];
                             completion(NO, NO, error);
                         });
      }];
