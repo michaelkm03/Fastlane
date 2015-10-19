@@ -13,7 +13,7 @@
 #import "VVideoPlayerToolbarView.h"
 #import "VPassthroughContainerView.h"
 
-static const CGFloat kMinimumPlayButtonInset = 24.0f;
+static const CGFloat kMinimumPlayButtonInset = 14.0f;
 
 /**
  Describes the state of the video preview view

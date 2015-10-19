@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+// An enum for use in the "VTrackingKeyErrorType" key on tracking calls
+typedef NS_ENUM(NSInteger, VAppErrorTrackingType) {
+    VAppErrorTrackingTypeFacebook = 1,
+    VAppErrorTrackingTypeTwitter = 2
+};
+
 // Tracking Event Names
 // Application Lifecycle
 extern NSString * const VTrackingEventApplicationFirstInstall; //< Backend mapping: app-intall
@@ -286,6 +292,12 @@ extern NSString * const VTrackingKeyPermissionState;
 extern NSString * const VTrackingKeyAutoplay; //< For tracking whether a video is autoplaying in the stream
 extern NSString * const VTrackingKeyConnectivity; //< For tracking connectivity level while autoplaying a video
 extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level while autoplaying a video
+/**
+ For tracking the type of error being sent. The value of this key
+ should be a number represented by one the VAppErrorTrackingType values
+ */
+extern NSString * const VTrackingKeyErrorType;
+extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error, value should be a string
 
 // Tracking Event Values
 // ContentType values

@@ -5,7 +5,7 @@
 "5uI-FR-NGs.text" = "Aucun résultat";
 
 /* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
-"9Sb-ui-Qjq.text" = "Nous n'avons pas trouvé cet utilisateur. Vous pouvez réessayer ou lui envoyer un message depuis la page de son profil !";
+"9Sb-ui-Qjq.text" = "Nous n'avons pas trouvé cet utilisateur. Vous pouvez réessayer ou lui envoyer un message directement depuis son profil !";
 
 /* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
 "9lr-kw-Rjm.text" = "Aucune connexion internet.";

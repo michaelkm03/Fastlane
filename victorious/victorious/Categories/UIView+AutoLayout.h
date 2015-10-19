@@ -101,6 +101,16 @@
 - (void)v_addPinToBottomToSubview:(UIView *)subview bottomMargin:(CGFloat)margin;
 
 /**
+ Applies minimum horizontal spacing with the container border to the passed in subview
+ */
+- (void)v_addHorizontalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space;
+
+/**
+ Applies minimum vertical spacing with the container border to the passed in subview
+ */
+- (void)v_addVerticalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space;
+
+/**
  Applies internal width constraint to view. Returns the added constraint
  */
 - (NSLayoutConstraint *)v_addWidthConstraint:(CGFloat)width;

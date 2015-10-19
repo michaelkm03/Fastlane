@@ -5,7 +5,7 @@
 "bEL-Dg-FBP.text" = "Voter pour cela";
 
 /* Class = "UILabel"; text = "Vote this"; ObjectID = "kIg-QZ-oeo"; */
-"kIg-QZ-oeo.text" = "Voter pour ceci";
+"kIg-QZ-oeo.text" = "Réponse 1";
 
 /* Class = "UINavigationItem"; title = "New Poll"; ObjectID = "vcX-pq-4nF"; */
 "vcX-pq-4nF.title" = "Nouveau sondage";

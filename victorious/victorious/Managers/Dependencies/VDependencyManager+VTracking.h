@@ -20,6 +20,7 @@ extern NSString * const VTrackingCreateProfileDoneButtonTapKey;
 extern NSString * const VTrackingRegisteButtonTapKey;
 extern NSString * const VTrackingSignUpButtonTapKey;
 extern NSString * const VTrackingPermissionChangeKey;
+extern NSString * const VTrackingAppErrorKey;
 
 extern NSString * const VTrackingBallisticCountKey;
 

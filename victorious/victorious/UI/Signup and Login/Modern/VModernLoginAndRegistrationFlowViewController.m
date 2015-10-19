@@ -350,22 +350,29 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                  }
                  
                  if ( [FBSDKAccessToken currentAccessToken] != nil )
-                 {
-                     [strongSelf loginWithStoredFacebookToken];
-                 }
-                 else
-                 {
-                     strongSelf.actionsDisabled = NO;
-                     
-                     if ( result.isCancelled )
-                     {
-                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                                            parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                                          VTrackingKeyPermissionName : VTrackingValueDenied }];
-                     }
-                     [strongSelf handleFacebookLoginFailure];
-                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-                 }
+            	{
+                	[self loginWithStoredFacebookToken];
+            	}
+            	else
+            	{
+                	self.actionsDisabled = NO;
+                	[self.facebookLoginProgressHUD hide:YES];
+                	self.facebookLoginProgressHUD = nil;
+                
+                	if ( result.isCancelled )
+                	{
+                    	[[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                       		parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                     VTrackingKeyPermissionName : VTrackingValueDenied }];
+                	}
+                	[self handleFacebookLoginFailure];
+                	NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
+                	if ( error != nil )
+                	{
+                    	[parameters setObject:@(error.code) forKey:VTrackingKeyErrorDetails];
+                	}
+                	[[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:parameters];
+            	}
              }];
         }
         else
