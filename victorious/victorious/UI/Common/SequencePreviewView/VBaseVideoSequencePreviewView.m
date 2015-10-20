@@ -299,6 +299,8 @@
         return;
     }
     
+    VFocusType previousFocusType = self.focusType;
+    
     super.focusType = focusType;
     [self updateBackgroundColorAnimated:YES];
 
@@ -307,7 +309,10 @@
         case VFocusTypeNone:
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
-            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            if ( previousFocusType == VFocusTypeDetail )
+            {
+                [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            }
             if ( self.onlyShowPreview )
             {
                 if ( self.shouldAutoplay )
@@ -328,7 +333,10 @@
         case VFocusTypeStream:
             self.videoPlayer.muted = YES;
             self.userInteractionEnabled = NO;
-            [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            if ( previousFocusType == VFocusTypeDetail )
+            {
+                [[VAudioManager sharedInstance] focusedPlaybackDidEnd];
+            }
             if ( self.shouldAutoplay && !self.onlyShowPreview )
             {
                 [self.videoPlayer play];
