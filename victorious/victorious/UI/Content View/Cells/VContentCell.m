@@ -180,16 +180,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [self hideEndCard:YES];
 }
 
-#pragma mark - Public Methods
-
-- (void)playAnimation
-{
-    self.animationImageView.animationImages = self.animationSequence;
-    self.animationImageView.animationDuration = self.animationDuration;
-    self.animationImageView.animationRepeatCount = self.repeatCount;
-    [self.animationImageView startAnimating];
-}
-
 #pragma mark - End Card
 
 - (BOOL)isEndCardShowing
@@ -310,7 +300,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
         return;
     }
     
-    [self.activityIndicatorView startAnimating];
     self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
                                                                                                  details:details];
@@ -358,7 +347,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self.activityIndicatorView stopAnimating];
-    [self resumeContentPlaybackAnimated:YES];
+    [self resumeContentPlaybackAnimated:NO];
 }
 
 - (void)adDidLoadForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
@@ -376,7 +365,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidEndPlayingAd:self];
     [self resumeContentPlaybackAnimated:YES];
 }
