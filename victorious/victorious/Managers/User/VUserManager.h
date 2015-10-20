@@ -7,6 +7,7 @@
 //
 
 @class VUser;
+@class RKManagedObjectRequestOperation;
 
 typedef void (^VTwitterAuthenticationCompletionBlock)(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId);
 typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL isNewUser);
