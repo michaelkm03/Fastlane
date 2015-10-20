@@ -54,7 +54,7 @@ class victoriousUITests: XCTestCase {
         app.secureTextFields["Login Password Field"].typeText("password")
         app.typeText("\n")
         
-        // Make sure login screen still exists
+        // Make sure last screen does not exist
         let loginScreen = app.navigationBars["VModernLoginView"]
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: loginScreen, handler: nil)
@@ -83,10 +83,45 @@ class victoriousUITests: XCTestCase {
         app.navigationBars["VEnterProfilePictureCameraView"].buttons["Next"].tap()
         app.navigationBars["VSuggestedUsersView"].buttons["Done"].tap()
         
-        // Make sure login screen still exists
+        // Make sure last screen does not exist
         let suggestedUsersScreen = app.navigationBars["VSuggestedUsersView"]
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: suggestedUsersScreen, handler: nil)
+        waitForExpectationsWithTimeout(loginTimeout, handler: nil)
+    }
+    
+    func testFacebookRegister() {
+        
+        app.buttons["Registration Facebook"].tap()
+        
+        let loadingScreen = app.navigationBars["victorious.ModernLoadingView"]
+
+        // Check if loading screen shows up
+        XCTAssert(loadingScreen.exists)
+        
+        // Make sure loading screen dismisses
+        let doesNotExist = NSPredicate(format: "exists == false")
+        expectationForPredicate(doesNotExist, evaluatedWithObject: loadingScreen, handler: nil)
+        waitForExpectationsWithTimeout(loginTimeout, handler: nil)
+    }
+    
+    func testTwitterRegister() {
+        
+        app.buttons["Registration Twitter"].tap()
+        
+        // If we have multiple Twitter accounts
+        if app.navigationBars["VSelectorView"].exists {
+            app.tables.elementBoundByIndex(0).cells.elementBoundByIndex(0).tap()
+        }
+        
+        let loadingScreen = app.navigationBars["victorious.ModernLoadingView"]
+        
+        // Check if loading screen shows up
+        XCTAssert(loadingScreen.exists)
+        
+        // Make sure loading screen dismisses
+        let doesNotExist = NSPredicate(format: "exists == false")
+        expectationForPredicate(doesNotExist, evaluatedWithObject: loadingScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
     }
     
