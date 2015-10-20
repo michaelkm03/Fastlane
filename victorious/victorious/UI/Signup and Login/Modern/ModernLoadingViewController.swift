@@ -51,6 +51,12 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, VBackgrou
         }
     }
     
+    var cancelButtonEnabled = true {
+        didSet {
+            self.cancelButton?.enabled = cancelButtonEnabled
+        }
+    }
+    
     /// A block that gets called when the loading screen finishes appearing
     var onAppearance: (() -> ())?
     

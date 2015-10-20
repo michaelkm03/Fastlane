@@ -71,54 +71,15 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Public Methods
 
-- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion
+- (RKManagedObjectRequestOperation *)loginWithEmail:(NSString *)email
+                                           password:(NSString *)password
+                                         completion:(void(^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
-    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
-                                              completion:^(ACAccount *twitterAccount)
-     {
-         if (!twitterAccount)
-         {
-             // Either no twitter permissions or no account was selected
-             completion(NO, NO);
-             return;
-         }
-         
-         [[[VUserManager alloc] init] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                      onCompletion:^(VUser *user, BOOL isNewUser)
-          {
-              dispatch_async(dispatch_get_main_queue(), ^
-                             {
-                                 completion(YES, isNewUser);
-                             });
-
-          }
-                                                             onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-          {
-              dispatch_async(dispatch_get_main_queue(), ^
-                             {
-                                 UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                                                message:NSLocalizedString(@"TwitterTroubleshooting", @"")
-                                                                                                   andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-                                 [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
-                                 
-                                 completion(NO, NO);
-                             });
-          }];
-     }];
-}
-
-- (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-            completion:(void(^)(BOOL success, NSError *error))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    [[[VUserManager alloc] init] loginViaEmail:email
-                                      password:password
-                                  onCompletion:^(VUser *user, BOOL isNewUser)
+    return [[[VUserManager alloc] init] loginViaEmail:email
+                                             password:password
+                                         onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
@@ -136,16 +97,16 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)registerWithEmail:(NSString *)email
-                 password:(NSString *)password
-               completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
+- (RKManagedObjectRequestOperation *)registerWithEmail:(NSString *)email
+                                              password:(NSString *)password
+                                            completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
-    [[[VUserManager alloc] init] createEmailAccount:email
-                                           password:password
-                                           userName:nil
-                                       onCompletion:^(VUser *user, BOOL isNewUser)
+    return [[[VUserManager alloc] init] createEmailAccount:email
+                                                  password:password
+                                                  userName:nil
+                                              onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
