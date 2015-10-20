@@ -141,7 +141,7 @@
 - (void)returnToLandingScreen;
 
 /**
- *  The user has canceled the Facebook or Twitter login process.
+ *  The user has canceled the login process.
  */
 - (void)loadingScreenCanceled;
 

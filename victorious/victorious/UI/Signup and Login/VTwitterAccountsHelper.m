@@ -91,7 +91,6 @@
                                                              {
                                                                  completion(nil);
                                                              }
-
                                                          }]];
                        [viewControllerToPresentOnIfNeeded presentViewController:accessNotGrantedAlert
                                                                        animated:YES
