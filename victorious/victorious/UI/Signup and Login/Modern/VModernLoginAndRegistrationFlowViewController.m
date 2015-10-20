@@ -84,7 +84,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                          forKey:kLandingScreen];
         _loadingScreen = [dependencyManager templateValueOfType:[UIViewController class]
                                                          forKey:kLoadingScreen];
-        [self setDelegateForScreensInArray:@[_landingScreen, _loadingScreen]];
+        [self setDelegateForScreensInArray:@[_landingScreen, _loadingScreen ?: [NSNull null]]];
         [self setViewControllers:@[_landingScreen]];
         
         // Login + Registration
