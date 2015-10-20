@@ -28,6 +28,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, weak, readwrite) VSequencePreviewView *sequencePreviewView;
 @property (nonatomic, weak) id<VVideoPlayer> videoPlayer;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -64,6 +65,12 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)setup
 {
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [self addSubview:self.activityIndicatorView];
+    [self v_addCenterToParentContraintsToSubview:self.activityIndicatorView];
+    self.activityIndicatorView.hidesWhenStopped = YES;
+    [self.activityIndicatorView stopAnimating];
+    
     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
     animationImageView.backgroundColor = [UIColor clearColor];
     animationImageView.userInteractionEnabled = NO;
@@ -234,12 +241,17 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)resumeContentPlaybackAnimated:(BOOL)animated
 {
+    [self.activityIndicatorView stopAnimating];
+    
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
     
     [self.videoPlayer play];
     self.sequencePreviewView.hidden = NO;
     [self layoutIfNeeded];
+    
+    [self.sequencePreviewView.layer removeAllAnimations];
+    [self.adVideoPlayerViewController.view.layer removeAllAnimations];
     
     void (^animations)() = ^
     {
@@ -298,6 +310,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
         return;
     }
     
+    [self.activityIndicatorView startAnimating];
     self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
                                                                                                  details:details];
@@ -306,6 +319,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.adVideoPlayerViewController.view.alpha = 0.0f;
     [self.shrinkingContentView addSubview:self.adVideoPlayerViewController.view];
     [self.shrinkingContentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
+    [self.activityIndicatorView startAnimating];
     [self.adVideoPlayerViewController start];
     
     [self layoutIfNeeded];
@@ -343,6 +357,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.activityIndicatorView stopAnimating];
     [self resumeContentPlaybackAnimated:YES];
 }
 
@@ -353,6 +368,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidStartPlayingAd:self];
     [self.adTimeoutTimer invalidate];
     self.adTimeoutTimer = nil;
@@ -360,12 +376,14 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidEndPlayingAd:self];
     [self resumeContentPlaybackAnimated:YES];
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.activityIndicatorView stopAnimating];
     [self.delegate contentCellDidEndPlayingAd:self];
     [self resumeContentPlaybackAnimated:YES];
 }
