@@ -31,7 +31,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
 @property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic, assign) VVideoState state;
 @property (nonatomic, strong) NSURL *assetURL;
@@ -111,13 +110,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                      attribute:NSLayoutAttributeWidth
                                                                     multiplier:1.0f
                                                                       constant:0.0f]];
-    
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.activityIndicator.hidesWhenStopped = YES;
-    [self.activityIndicator stopAnimating];
-    [self.videoUIContainer addSubview:self.activityIndicator];
-    [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.activityIndicator];
 }
 
 - (void)onContentTap
@@ -222,15 +214,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
-        if ( self.state == VVideoStateBuffering )
-        {
-            [self.activityIndicator startAnimating];
-        }
-        else
-        {
-            [self.activityIndicator stopAnimating];
-        }
-        
         self.largePlayButton.userInteractionEnabled = YES;
         if ( self.state == VVideoStateNotStarted )
         {
@@ -247,7 +230,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     else
     {
-        [self.activityIndicator stopAnimating];
         self.largePlayButton.userInteractionEnabled = NO;
         if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
         {

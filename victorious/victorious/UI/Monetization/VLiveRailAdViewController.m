@@ -270,8 +270,6 @@ static NSString * const kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
     VLog(@"AdHadError Fired");
 #endif
     
-    [self adDidFinish:nil];
-    
     if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
     {
         [self.delegate adHadErrorInAdViewController:self withError:nil];

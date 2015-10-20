@@ -67,8 +67,6 @@
 
 @property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
 
-- (void)playAnimation;
-
 /**
  Stops the endcard's countdown timer, if the end card is showing
  */
