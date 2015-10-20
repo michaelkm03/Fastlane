@@ -41,10 +41,13 @@ class victoriousUITests: XCTestCase {
         app.secureTextFields["Login Password Field"].typeText("password1")
         app.typeText("\n")
         
+        // Check if loading screen shows up
+        XCTAssert(app.navigationBars["victorious.ModernLoadingView"].exists)
+        
         // Login should have failed, tap alert view
         app.alerts["Login Failed"].collectionViews.buttons["OK"].tap()
         
-        // Type right Info
+        // Type right info
         app.textFields["Login Username Field"].tap()
         app.textFields["Login Username Field"].typeText("user@user.com")
         app.secureTextFields["Login Password Field"].tap()
@@ -56,5 +59,9 @@ class victoriousUITests: XCTestCase {
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: loginScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
+    }
+    
+    func testRegister() {
+        
     }
 }
