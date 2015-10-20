@@ -20,6 +20,9 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 - (RKManagedObjectRequestOperation *)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
                                                                          onError:(VUserManagerLoginErrorBlock)errorBlock;
 
+/**
+ Log in using Twitter oauth data.
+ */
 - (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
                                                  accessSecret:(NSString *)tokenSecret
                                                     twitterID:(NSString *)twitterId
@@ -27,6 +30,9 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
                                                     onSuccess:(VUserManagerLoginCompletionBlock)completion
                                                       onError:(VUserManagerLoginErrorBlock)errorBlock;
 
+/**
+ Retrieve Twitter oauth data for a certain Twitter account.
+ */
 - (void)retrieveTwitterTokenWithAccountIdentifier:(NSString *)identifier
                                      onCompletion:(VTwitterAuthenticationCompletionBlock)completion
                                           onError:(VUserManagerLoginErrorBlock)errorBlock;

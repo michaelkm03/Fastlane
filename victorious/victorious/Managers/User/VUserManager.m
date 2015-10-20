@@ -171,7 +171,11 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     [self retrieveTwitterTokenWithAccountIdentifier:twitterID
                                        onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
     {
-        [self loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onSuccess:completion onError:errorBlock];
+        [self loginViaTwitterWithToken:token
+                          accessSecret:secret
+                             twitterID:twitterId
+                            identifier:identifier
+                             onSuccess:completion onError:errorBlock];
     }
                                             onError:errorBlock];
 }
@@ -182,7 +186,11 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     [self retrieveTwitterTokenWithAccountIdentifier:nil
                                        onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
      {
-         [self loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onSuccess:completion onError:errorBlock];
+         [self loginViaTwitterWithToken:token
+                           accessSecret:secret
+                              twitterID:twitterId
+                             identifier:identifier
+                              onSuccess:completion onError:errorBlock];
      }
                                             onError:errorBlock];
 }
