@@ -32,6 +32,6 @@ class TestAlertsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return "After you register an alert, go back to the stream or profile and pull to refresh. The alert should appear."
+        return NSLocalizedString("TestAlertsViewControllerFooter", comment: "")
     }
 }
