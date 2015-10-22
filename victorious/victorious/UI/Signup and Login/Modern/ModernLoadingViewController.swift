@@ -39,7 +39,7 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, VBackgrou
     
     /// MARK : Public properties
     
-    var delegate: VLoginFlowControllerDelegate?
+    weak var delegate: VLoginFlowControllerDelegate?
     
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -110,7 +110,6 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, VBackgrou
     func backgroundContainerView() -> UIView {
         return view
     }
-    
 }
 
 private extension VDependencyManager {
