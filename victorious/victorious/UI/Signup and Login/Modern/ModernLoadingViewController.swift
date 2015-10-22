@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ModernLoadingViewController: UIViewController, VLoginFlowScreen, VBackgroundContainer {
+class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlowLoadingScreen, VBackgroundContainer {
     
     @IBOutlet weak var loadingLabel: UILabel! {
         didSet {
@@ -51,9 +51,9 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, VBackgrou
         }
     }
     
-    var cancelButtonEnabled = true {
+    var canCancel = true {
         didSet {
-            self.cancelButton?.enabled = cancelButtonEnabled
+            self.cancelButton?.enabled = canCancel
         }
     }
     

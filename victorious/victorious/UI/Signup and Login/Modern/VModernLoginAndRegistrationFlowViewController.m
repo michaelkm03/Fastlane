@@ -54,7 +54,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
-@property (nonatomic, strong) ModernLoadingViewController *loadingScreen;
+@property (nonatomic, strong) UIViewController<VLoginFlowScreen> *currentScreen;
+@property (nonatomic, strong) UIViewController<LoginFlowLoadingScreen> *loadingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
@@ -82,9 +83,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         // Landing
         _landingScreen = [dependencyManager templateValueOfType:[UIViewController class]
                                                          forKey:kLandingScreen];
-        _loadingScreen = [dependencyManager templateValueOfType:[UIViewController class]
-                                                         forKey:kLoadingScreen];
-        [self setDelegateForScreensInArray:@[_landingScreen, _loadingScreen ?: [NSNull null]]];
+        _loadingScreen = [dependencyManager templateValueConformingToProtocol:@protocol(LoginFlowLoadingScreen) forKey:kLoadingScreen];
+
+        [self setDelegateForScreensInArray:@[_landingScreen,  _loadingScreen ?: [NSNull null]]];
         [self setViewControllers:@[_landingScreen]];
         
         // Login + Registration
@@ -258,7 +259,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
-    [self pushViewController:[self.loginScreens firstObject]
+    UIViewController<VLoginFlowScreen> *firstLoginScreen = [self.loginScreens firstObject];
+    self.currentScreen = firstLoginScreen;
+    [self pushViewController:firstLoginScreen
                     animated:YES];
 }
 
@@ -269,7 +272,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self pushViewController:[self nextScreenAfter:self.topViewController inArray:self.registrationScreens]
+    UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
+    self.currentScreen = firstRegistrationScreen;
+    [self pushViewController:firstRegistrationScreen
                     animated:YES];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
@@ -300,7 +305,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
               
           }];
          
-         self.loadingScreen.cancelButtonEnabled = NO;
+         self.loadingScreen.canCancel = NO;
          [self showLoadingScreen];
      }];
     
@@ -324,7 +329,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                     [self handleTwitterFailure];
                                 }];
          
-         self.loadingScreen.cancelButtonEnabled = YES;
+         self.loadingScreen.canCancel = YES;
      }
                                                    onError:^(NSError *error, BOOL thirdPartyAPIFailure)
      {
@@ -643,20 +648,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    // Loading screen is not technically part of the flow, so we must use the 2nd to last view controller
-    UIViewController *currentViewController = self.topViewController;
-    if (currentViewController == self.loadingScreen)
-    {
-        currentViewController = [self.viewControllers objectAtIndex:self.viewControllers.count - 2];
-    }
-    
-    UIViewController *nextRegisterViewController = [self nextScreenAfter:currentViewController inArray:self.registrationScreens];
-    if (nextRegisterViewController == currentViewController)
+    UIViewController<VLoginFlowScreen> *nextRegisterViewController = [self nextScreenAfter:self.currentScreen inArray:self.registrationScreens];
+    if (nextRegisterViewController == self.currentScreen)
     {
         [self onAuthenticationFinishedWithSuccess:YES];
     }
     else
     {
+        self.currentScreen = nextRegisterViewController;
         [self pushViewController:nextRegisterViewController
                         animated:YES];
     }
@@ -664,16 +663,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
-    // Loading screen is not technically part of the flow, so we must use the 2nd to last view controller
-    UIViewController *currentViewController = self.topViewController;
-    if (currentViewController == self.loadingScreen)
-    {
-        currentViewController = [self.viewControllers objectAtIndex:self.viewControllers.count - 2];
-    }
-    
-    UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:currentViewController inArray:self.registrationScreens];
+   UIViewController<VLoginFlowScreen> *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.currentScreen inArray:self.registrationScreens];
     if ( nextRegisterViewController != nil && self.isRegisteredAsNewUser )
     {
+        self.currentScreen = nextRegisterViewController;
         [self pushViewController:nextRegisterViewController
                         animated:YES];
     }
@@ -711,9 +704,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
+- (UIViewController<VLoginFlowScreen> *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
 {
-    for ( UIViewController *viewController in array )
+    for ( UIViewController<VLoginFlowScreen> *viewController in array )
     {
         id<VLoginFlowScreen> screen = (id<VLoginFlowScreen>)viewController;
         if ( [screen respondsToSelector:@selector(displaysAfterSocialRegistration)] && [screen displaysAfterSocialRegistration] )
@@ -724,8 +717,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     return nil;
 }
 
-- (UIViewController *)nextScreenAfter:(UIViewController *)viewController
-                              inArray:(NSArray *)array
+- (UIViewController<VLoginFlowScreen> *)nextScreenAfter:(UIViewController *)viewController
+                                                inArray:(NSArray *)array
 {
     if (![array containsObject:viewController])
     {
@@ -780,7 +773,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if (self.topViewController == self.loadingScreen)
     {
         [self popViewControllerAnimated:YES];
-        self.loadingScreen.cancelButtonEnabled = YES;
+        self.loadingScreen.canCancel = YES;
     }
 }
 
