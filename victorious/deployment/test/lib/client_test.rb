@@ -1,5 +1,4 @@
 require 'test_helper'
-puts $LOAD_PATH
 require 'vams/client'
 
 module VAMS
