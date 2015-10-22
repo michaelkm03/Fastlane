@@ -10,10 +10,18 @@ import Foundation
 
 @objc protocol LoginFlowLoadingScreen {
     
-    /// A block that should get called when the loading screen finishes appearing. 
-    /// Adopters of this protocol should nullify this block after it's called.
-    var onAppearance: (() -> ())? { get set }
+    /// The loading screen's delegate
+    weak var loadingScreenDelegate: LoginLoadingScreenDelegate? { get set }
     
     /// Whether or not the loading screen can be cancelled.
     var canCancel: Bool { get set }
+}
+
+@objc protocol LoginLoadingScreenDelegate {
+    
+    /// Called when the login screen appears for the first time
+    func loadingScreenDidAppear()
+    
+    /// Called when the user presses the cancel button
+    func loadingScreenCancelled()
 }

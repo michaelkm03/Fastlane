@@ -75,6 +75,8 @@
                     viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOnIfNeeded
                                         error:(NSError *)error
 {
+    NSParameterAssert(completion != nil);
+
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
                        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
@@ -87,10 +89,7 @@
                                                                                  style:UIAlertActionStyleCancel
                                                                                handler:^(UIAlertAction *action)
                                                          {
-                                                             if (completion != nil)
-                                                             {
-                                                                 completion(nil);
-                                                             }
+                                                             completion(nil);
                                                          }]];
                        [viewControllerToPresentOnIfNeeded presentViewController:accessNotGrantedAlert
                                                                        animated:YES

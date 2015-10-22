@@ -140,9 +140,4 @@
  */
 - (void)returnToLandingScreen;
 
-/**
- *  The user has canceled the login process.
- */
-- (void)loadingScreenCanceled;
-
 @end

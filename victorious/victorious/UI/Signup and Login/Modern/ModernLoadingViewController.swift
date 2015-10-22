@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlowLoadingScreen, VBackgroundContainer {
+class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBackgroundContainer {
     
     @IBOutlet weak var loadingLabel: UILabel! {
         didSet {
@@ -35,9 +35,9 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlow
     }
     
     private var cancelButton: UIBarButtonItem?
-    private var ellipsesTimer: NSTimer?
+    private var timerManager: VTimerManager?
     
-    /// MARK : Public properties
+    // MARK : Public properties
     
     weak var delegate: VLoginFlowControllerDelegate?
     
@@ -57,10 +57,13 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlow
         }
     }
     
-    /// A block that gets called when the loading screen finishes appearing
-    var onAppearance: (() -> ())?
+    private var hasAppeared = false
     
-    /// MARK: Factory method
+    // MARK: Login Flow Loading Screen
+    
+    weak var loadingScreenDelegate: LoginLoadingScreenDelegate?
+        
+    // MARK: Factory method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ModernLoadingViewController {
         let facebookLoginLoadingViewController: ModernLoadingViewController = self.v_initialViewControllerFromStoryboard()
@@ -75,24 +78,23 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlow
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        ellipsesTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "animate", userInfo: nil, repeats: true)
-        ellipsesTimer?.fire()
-        if let onAppearance = onAppearance {
-            onAppearance()
-            self.onAppearance = nil
+        timerManager?.invalidate()
+        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: "animate", userInfo: nil, repeats: true)
+        if let loadingScreenDelegate = loadingScreenDelegate where !hasAppeared {
+            hasAppeared = true
+            loadingScreenDelegate.loadingScreenDidAppear()
         }
     }
     
     override func viewDidDisappear(animated: Bool) {
-        ellipsesTimer?.invalidate()
-        ellipsesTimer = nil
+        super.viewDidDisappear(animated)
         ellipsesLabel.text = ""
     }
     
-    /// MARK: Actions
+    // MARK: Actions
     
     func pressedCancel() {
-        delegate?.loadingScreenCanceled()
+        loadingScreenDelegate?.loadingScreenCancelled()
     }
     
     func animate() {
@@ -105,7 +107,7 @@ class ModernLoadingViewController: UIViewController, VLoginFlowScreen, LoginFlow
         }
     }
     
-    /// MARK: Background
+    // MARK: Background
     
     func backgroundContainerView() -> UIView {
         return view

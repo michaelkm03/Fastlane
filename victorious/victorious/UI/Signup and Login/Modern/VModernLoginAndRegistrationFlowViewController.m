@@ -43,7 +43,7 @@ static NSString * const kLoadingScreen = @"loadingScreen";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerDelegate, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerDelegate, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate, LoginLoadingScreenDelegate>
 
 @property (nonatomic, strong) VModernFlowControllerAnimationController *animator;
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition *percentDrivenInteraction;
@@ -68,6 +68,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *currentRequest;
+@property (nonatomic, copy) void (^onLoadingAppeared)();
 
 @end
 
@@ -84,8 +85,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _landingScreen = [dependencyManager templateValueOfType:[UIViewController class]
                                                          forKey:kLandingScreen];
         _loadingScreen = [dependencyManager templateValueConformingToProtocol:@protocol(LoginFlowLoadingScreen) forKey:kLoadingScreen];
+        _loadingScreen.loadingScreenDelegate = self;
 
-        [self setDelegateForScreensInArray:@[_landingScreen,  _loadingScreen ?: [NSNull null]]];
+        [self setDelegateForScreensInArray:@[_landingScreen]];
         [self setViewControllers:@[_landingScreen]];
         
         // Login + Registration
@@ -289,23 +291,23 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
+    
     [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
      {
+         
          if (!twitterAccount)
          {
              return;
          }
          
-         __weak typeof(self) weakSelf = self;
-         [self.loadingScreen setOnAppearance:^
-          {
-              __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
-              
-              [strongSelf loginWithTwitterIdentifier:twitterAccount.identifier];
-              
-          }];
-         
          self.loadingScreen.canCancel = NO;
+         
+         __weak typeof(self) weakSelf = self;
+         [self setOnLoadingAppeared:^
+         {
+             [weakSelf loginWithTwitterIdentifier:twitterAccount.identifier];
+         }];
+         
          [self showLoadingScreen];
      }];
     
@@ -316,6 +318,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)loginWithTwitterIdentifier:(NSString *)identifier
 {
     VUserManager *userManager = [[VUserManager alloc] init];
+    
     [userManager retrieveTwitterTokenWithAccountIdentifier:identifier
                                               onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
      {
@@ -403,22 +406,21 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)loginWithStoredFacebookToken
 {
     __weak typeof(self) weakSelf = self;
-    [self.loadingScreen setOnAppearance:^
+    [self setOnLoadingAppeared:^
      {
-         __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
-         
          VUserManager *userManager = [[VUserManager alloc] init];
-         strongSelf.currentRequest = [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
-                                      {
-                                          strongSelf.actionsDisabled = NO;
-                                          
-                                          strongSelf.isRegisteredAsNewUser = isNewUser;
-                                          [strongSelf continueRegistrationFlowAfterSocialRegistration];
-                                      }
-                                                                                      onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-                                      {
-                                          [strongSelf handleFacebookLoginFailure];
-                                      }];
+         
+         weakSelf.currentRequest = [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
+                                    {
+                                        weakSelf.actionsDisabled = NO;
+                                        
+                                        weakSelf.isRegisteredAsNewUser = isNewUser;
+                                        [weakSelf continueRegistrationFlowAfterSocialRegistration];
+                                    }
+                                                                                    onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+                                    {
+                                        [weakSelf handleFacebookLoginFailure];
+                                    }];
      }];
     
     [self showLoadingScreen];
@@ -444,24 +446,22 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) weakSelf = self;
-    [self.loadingScreen setOnAppearance:^
+    [self setOnLoadingAppeared:^
      {
-         __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
-         
-         strongSelf.currentRequest = [strongSelf.loginFlowHelper loginWithEmail:email
-                                                                       password:password
-                                                                     completion:^(BOOL success, NSError *error)
-                                      {
-                                          completion(success, error);
-                                          if (success)
-                                          {
-                                              [strongSelf onAuthenticationFinishedWithSuccess:YES];
-                                          }
-                                          else
-                                          {
-                                              [strongSelf dismissLoadingScreen];
-                                          }
-                                      }];
+         weakSelf.currentRequest = [weakSelf.loginFlowHelper loginWithEmail:email
+                                                                   password:password
+                                                                 completion:^(BOOL success, NSError *error)
+                                    {
+                                        completion(success, error);
+                                        if (success)
+                                        {
+                                            [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                                        }
+                                        else
+                                        {
+                                            [weakSelf dismissLoadingScreen];
+                                        }
+                                    }];
      }];
     
     [self showLoadingScreen];
@@ -478,31 +478,29 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) weakSelf = self;
-    [self.loadingScreen setOnAppearance:^
+    [self setOnLoadingAppeared:^
      {
-         __strong VModernLoginAndRegistrationFlowViewController *strongSelf = weakSelf;
-         
-         strongSelf.currentRequest = [strongSelf.loginFlowHelper registerWithEmail:email
-                                                                          password:password
-                                                                        completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
-                                      {
-                                          completion(success, alreadyRegistered, error);
-                                          if (success)
-                                          {
-                                              if (alreadyRegistered)
-                                              {
-                                                  [strongSelf onAuthenticationFinishedWithSuccess:YES];
-                                              }
-                                              else
-                                              {
-                                                  [strongSelf continueRegistrationFlow];
-                                              }
-                                          }
-                                          else
-                                          {
-                                              [strongSelf dismissLoadingScreen];
-                                          }
-                                      }];
+         weakSelf.currentRequest = [weakSelf.loginFlowHelper registerWithEmail:email
+                                                                      password:password
+                                                                    completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
+                                    {
+                                        completion(success, alreadyRegistered, error);
+                                        if (success)
+                                        {
+                                            if (alreadyRegistered)
+                                            {
+                                                [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                                            }
+                                            else
+                                            {
+                                                [weakSelf continueRegistrationFlow];
+                                            }
+                                        }
+                                        else
+                                        {
+                                            [weakSelf dismissLoadingScreen];
+                                        }
+                                    }];
      }];
     
     [self showLoadingScreen];
@@ -755,13 +753,23 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      animated:YES];
 }
 
-#pragma mark - Loading screen
+#pragma mark - Loading Screen Delegate
 
-- (void)loadingScreenCanceled
+- (void)loadingScreenCancelled
 {
     [self.currentRequest cancel];
     [self dismissLoadingScreen];
 }
+
+- (void)loadingScreenDidAppear
+{
+     if (self.onLoadingAppeared != nil)
+     {
+         self.onLoadingAppeared();
+     }
+}
+
+#pragma mark - Loading screen
 
 - (void)showLoadingScreen
 {
