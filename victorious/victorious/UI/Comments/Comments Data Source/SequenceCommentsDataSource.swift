@@ -34,12 +34,12 @@ class SequenceCommentsDataSource : CommentsDataSource {
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue()) {
-                    delegate?.commentsDataSourceDidUpdate(self)
+                    self.delegate?.commentsDataSourceDidUpdate(self)
                 }
             },
             failBlock: { (operation: NSOperation?, error: NSError?) in
                 dispatch_async(dispatch_get_main_queue()) {
-                    delegate?.commentsDataSourceDidUpdate(self)
+                    self.delegate?.commentsDataSourceDidUpdate(self)
                 }
             })
     }
@@ -50,7 +50,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue()){
-                    delegate?.commentsDataSourceDidUpdate(self)
+                    self.delegate?.commentsDataSourceDidUpdate(self)
                 }
             },
             failBlock: nil)
@@ -62,7 +62,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue()){
-                    delegate?.commentsDataSourceDidUpdate(self)
+                    self.delegate?.commentsDataSourceDidUpdate(self)
                 }
             },
             failBlock: nil)
@@ -95,7 +95,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
             dispatch_async(dispatch_get_main_queue()){
-                delegate?.commentsDataSourceDidUpdate(self, deepLinkId: commentID)
+                self.delegate?.commentsDataSourceDidUpdate(self, deepLinkId: commentID)
             }
         },
             failBlock: nil)
