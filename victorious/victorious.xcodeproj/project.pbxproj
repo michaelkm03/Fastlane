@@ -11309,7 +11309,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6c4b86a1-03d9-4808-bf6a-c16eebc02beb";
+				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
@@ -11658,7 +11658,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6c4b86a1-03d9-4808-bf6a-c16eebc02beb";
+				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
@@ -11817,7 +11817,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6c4b86a1-03d9-4808-bf6a-c16eebc02beb";
+				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
