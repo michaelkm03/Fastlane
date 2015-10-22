@@ -71,11 +71,6 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         return facebookLoginLoadingViewController
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.hidesBackButton = true
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         timerManager?.invalidate()

@@ -773,6 +773,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)showLoadingScreen
 {
+    self.popGestureRecognizer.enabled = NO;
     [self pushViewController:self.loadingScreen animated:YES];
 }
 
@@ -781,6 +782,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if (self.topViewController == self.loadingScreen)
     {
         [self popViewControllerAnimated:YES];
+        self.popGestureRecognizer.enabled = YES;
         self.loadingScreen.canCancel = YES;
     }
 }
