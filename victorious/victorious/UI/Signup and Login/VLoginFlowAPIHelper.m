@@ -71,58 +71,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Public Methods
 
-- (RKManagedObjectRequestOperation *)loginWithEmail:(NSString *)email
-                                           password:(NSString *)password
-                                         completion:(void(^)(BOOL success, NSError *error))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    return [[[VUserManager alloc] init] loginViaEmail:email
-                                             password:password
-                                         onCompletion:^(VUser *user, BOOL isNewUser)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
-                            completion(YES, nil);
-                        });
-     }
-                                         onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
-                            completion(NO, error);
-                        });
-     }];
-}
-
-- (RKManagedObjectRequestOperation *)registerWithEmail:(NSString *)email
-                                              password:(NSString *)password
-                                            completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    return [[[VUserManager alloc] init] createEmailAccount:email
-                                                  password:password
-                                                  userName:nil
-                                              onCompletion:^(VUser *user, BOOL isNewUser)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
-                            completion(YES, completeProfile, nil);
-                        });
-     }
-                                              onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            completion(NO, NO, error);
-                        });
-     }];
-}
-
 - (void)setUsername:(NSString *)username
          completion:(void (^)(BOOL success, NSError *error))completion
 {
@@ -330,11 +278,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [hud hide:YES];
-         [self loginWithEmail:self.resetPasswordEmail
-                     password:password
-                   completion:^(BOOL success, NSError *error)
+         VUserManager *userManager = [[VUserManager alloc] init];
+         [userManager loginViaEmail:self.resetPasswordEmail password:password onCompletion:^(VUser *user, BOOL isNewUser)
           {
-              completion(success, error);
+              completion(YES, nil);
+          } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+          {
+              completion(NO, error);
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)

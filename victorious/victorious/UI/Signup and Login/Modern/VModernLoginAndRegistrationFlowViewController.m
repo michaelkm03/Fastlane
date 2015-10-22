@@ -294,8 +294,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
      {
-         
-         if (!twitterAccount)
+         if (twitterAccount == nil)
          {
              return;
          }
@@ -446,21 +445,24 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) weakSelf = self;
+    
     [self setOnLoadingAppeared:^
      {
-         weakSelf.currentRequest = [weakSelf.loginFlowHelper loginWithEmail:email
-                                                                   password:password
-                                                                 completion:^(BOOL success, NSError *error)
+         VUserManager *userManager = [[VUserManager alloc] init];
+         
+         weakSelf.currentRequest = [userManager loginViaEmail:email
+                                                     password:password
+                                                 onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        completion(success, error);
-                                        if (success)
-                                        {
-                                            [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                                        }
-                                        else
-                                        {
-                                            [weakSelf dismissLoadingScreen];
-                                        }
+                                        completion(YES, nil);
+                                        [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
+                                        
+                                    } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+                                    {
+                                        completion(NO, error);
+                                        [weakSelf dismissLoadingScreen];
+                                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
                                     }];
      }];
     
@@ -480,26 +482,27 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) weakSelf = self;
     [self setOnLoadingAppeared:^
      {
-         weakSelf.currentRequest = [weakSelf.loginFlowHelper registerWithEmail:email
-                                                                      password:password
-                                                                    completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
+         VUserManager *userManager = [[VUserManager alloc] init];
+         
+         weakSelf.currentRequest = [userManager createEmailAccount:email
+                                                          password:password
+                                                          userName:nil
+                                                      onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        completion(success, alreadyRegistered, error);
-                                        if (success)
+                                        BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
+                                        completion(YES, completeProfile, nil);
+                                        if (completeProfile)
                                         {
-                                            if (alreadyRegistered)
-                                            {
-                                                [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                                            }
-                                            else
-                                            {
-                                                [weakSelf continueRegistrationFlow];
-                                            }
+                                            [weakSelf onAuthenticationFinishedWithSuccess:YES];
                                         }
                                         else
                                         {
-                                            [weakSelf dismissLoadingScreen];
+                                            [weakSelf continueRegistrationFlow];
                                         }
+                                        
+                                    } onError:^(NSError *error, BOOL thirdPartyAPIFailure) {
+                                        completion(NO, NO, error);
+                                        [weakSelf dismissLoadingScreen];
                                     }];
      }];
     

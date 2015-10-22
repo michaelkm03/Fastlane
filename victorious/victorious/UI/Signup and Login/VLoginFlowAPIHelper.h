@@ -29,20 +29,6 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
- *  The user has entered the passed email nad password and requested login.
- */
-- (RKManagedObjectRequestOperation *)loginWithEmail:(NSString *)email
-                                           password:(NSString *)password
-                                         completion:(void(^)(BOOL success, NSError *error))completion;
-
-/**
- *  The user has entered the passed in email and password and has requested register.
- */
-- (RKManagedObjectRequestOperation *)registerWithEmail:(NSString *)email
-                                              password:(NSString *)password
-                                            completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion;
-
-/**
  *  The user has entered the passed in username and requested update.
  */
 - (void)setUsername:(NSString *)username
