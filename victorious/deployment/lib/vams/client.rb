@@ -3,7 +3,7 @@ require 'vams/app'
 
 module VAMS
   class Client
-    APP_JSON_PATH = File.join(File.dirname(__FILE__), 'app_submission.json')
+    APP_JSON_PATH = File.join(File.dirname(__FILE__), 'apps_to_build.json')
 
     def self.apps_to_build
       json_string = File.read(APP_JSON_PATH)
