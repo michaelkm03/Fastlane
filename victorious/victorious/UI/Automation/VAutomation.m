@@ -75,3 +75,14 @@ NSString * const VAutomationIdentifierCommentBarSendButton           = @"Comment
 NSString * const VAutomationIdentifierCommentBarClearButton          = @"Comment Bar Clear Attachment Button";
 
 NSString * const VAutomationIdentifierMediaGalleryCollection         = @"Media Gallery Collection";
+
+NSString * const VAutomationAlwaysShowLoginScreenKey                 = @"always-show-login-screen";
+
+@implementation VAutomation
+
++ (BOOL)shouldAlwaysShowLoginScreen
+{
+    return [[[NSProcessInfo processInfo] arguments] containsObject:@"always-show-login-screen"];
+}
+
+@end

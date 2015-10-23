@@ -26,7 +26,7 @@ class victoriousUITests: XCTestCase {
     }
     
     func setupLaunchArguments() {
-        app.launchArguments = ["always-show-login-screen"]
+        app.launchArguments = [VAutomationAlwaysShowLoginScreenKey]
     }
     
     let loginTimeout = 10.0
@@ -78,6 +78,7 @@ class victoriousUITests: XCTestCase {
         // Check if loading screen shows up
         XCTAssert(app.navigationBars["victorious.ModernLoadingView"].exists)
         
+        app.textFields["Signup Username Field"].tap()
         app.textFields["Signup Username Field"].typeText("Test")
         app.navigationBars["VModernEnterNameView"].buttons["Next"].tap()
         app.navigationBars["VEnterProfilePictureCameraView"].buttons["Next"].tap()
