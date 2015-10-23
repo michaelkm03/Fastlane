@@ -544,12 +544,14 @@
 
 - (void)loadCommentsWithCommentId:(NSNumber *)commentId
 {
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
                                                 withCommentId:self.deepLinkCommentId
                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
-         [self.delegate didUpdateCommentsWithDeepLink:commentId];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithDeepLink:commentId];
      }
                                                     failBlock:nil];
 }
@@ -563,12 +565,14 @@
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                   pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
-         [self.delegate didUpdateCommentsWithPageType:pageType];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }
