@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)setupVideoUI
 {
-    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:4 distanceBetweenBars:1.0];
+    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:3 distanceBetweenBars:1.0];
     self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     self.soundIndicator.alpha = 0;
     [self.videoUIContainer addSubview:self.soundIndicator];
@@ -73,7 +73,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     NSDictionary *metrics = @{ @"left" : @(10.0),
                                @"right" : @(10.0),
                                @"width" : @(16.0),
-                               @"height" : @(16.0) };
+                               @"height" : @(14.0) };
     [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-left-[soundIndicator(height)]"
                                                                                   options:0
                                                                                   metrics:metrics
