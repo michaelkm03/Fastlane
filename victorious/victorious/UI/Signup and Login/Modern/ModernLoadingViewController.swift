@@ -57,8 +57,6 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         }
     }
     
-    private var hasAppeared = false
-    
     // MARK: Login Flow Loading Screen
     
     weak var loadingScreenDelegate: LoginLoadingScreenDelegate?
@@ -75,8 +73,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         super.viewDidAppear(animated)
         timerManager?.invalidate()
         timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: "animate", userInfo: nil, repeats: true)
-        if let loadingScreenDelegate = loadingScreenDelegate where !hasAppeared {
-            hasAppeared = true
+        if let loadingScreenDelegate = loadingScreenDelegate {
             loadingScreenDelegate.loadingScreenDidAppear()
         }
     }

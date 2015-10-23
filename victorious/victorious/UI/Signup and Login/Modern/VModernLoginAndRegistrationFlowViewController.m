@@ -769,6 +769,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      if (self.onLoadingAppeared != nil)
      {
          self.onLoadingAppeared();
+         self.onLoadingAppeared = nil;
      }
 }
 

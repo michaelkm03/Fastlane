@@ -82,7 +82,7 @@ NSString * const VAutomationAlwaysShowLoginScreenKey                 = @"always-
 
 + (BOOL)shouldAlwaysShowLoginScreen
 {
-    return [[[NSProcessInfo processInfo] arguments] containsObject:@"always-show-login-screen"];
+    return [[[NSProcessInfo processInfo] arguments] containsObject:VAutomationAlwaysShowLoginScreenKey];
 }
 
 @end
