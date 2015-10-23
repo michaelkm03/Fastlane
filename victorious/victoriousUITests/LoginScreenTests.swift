@@ -95,6 +95,14 @@ class LoginScreenTests: XCTestCase {
         
         app.buttons["Registration Facebook"].tap()
         
+        // UI testing can't capture button presses in safari view controller, 
+        // so assume we have no facebook account
+        if app.buttons["Done"].exists {
+            app.buttons["Done"].tap()
+            app.alerts["Login Failed"].collectionViews.buttons["OK"].tap()
+            return
+        }
+        
         let loadingScreen = app.navigationBars["victorious.ModernLoadingView"]
 
         // Check if loading screen shows up
@@ -104,11 +112,20 @@ class LoginScreenTests: XCTestCase {
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: loadingScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
+        
+        XCUIDevice.sharedDevice().orientation = .FaceUp
+        XCUIDevice.sharedDevice().orientation = .FaceUp
     }
     
     func testTwitterRegister() {
         
         app.buttons["Registration Twitter"].tap()
+        
+        // No Twitter accounts
+        if app.alerts["Can't find a Twitter account!"].exists {
+            app.alerts["Can't find a Twitter account!"].collectionViews.buttons["Cancel"].tap()
+            return
+        }
         
         // If we have multiple Twitter accounts
         if app.navigationBars["VSelectorView"].exists {
