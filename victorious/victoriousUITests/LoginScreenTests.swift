@@ -1,15 +1,15 @@
 
 //
-//  victoriousUITests.swift
-//  victoriousUITests
+//  LoginScreenTests.swift
+//  LoginScreenTests
 //
-//  Created by Carol Guerra on 10/6/15.
+//  Created by Cody Kolodziejzyk on 10/22/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import XCTest
 
-class victoriousUITests: XCTestCase {
+class LoginScreenTests: XCTestCase {
     
     let app = XCUIApplication()
     

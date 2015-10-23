@@ -1169,7 +1169,7 @@
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
 		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
 		E84FC21553AF0ABDE871DF01 /* Pods_UIAutomationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		EBEA19B91BC4A76C00878B18 /* victoriousUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* victoriousUITests.swift */; };
+		EBEA19B91BC4A76C00878B18 /* LoginScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
@@ -3477,7 +3477,7 @@
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.qa.xcconfig"; sourceTree = "<group>"; };
 		EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBEA19B81BC4A76C00878B18 /* victoriousUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = victoriousUITests.swift; sourceTree = "<group>"; };
+		EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenTests.swift; sourceTree = "<group>"; };
 		EBEA19BA1BC4A76C00878B18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIAutomationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -7787,7 +7787,7 @@
 		EBEA19B71BC4A76C00878B18 /* victoriousUITests */ = {
 			isa = PBXGroup;
 			children = (
-				EBEA19B81BC4A76C00878B18 /* victoriousUITests.swift */,
+				EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */,
 				EBEA19BA1BC4A76C00878B18 /* Info.plist */,
 				C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */,
 			);
@@ -10098,7 +10098,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBEA19B91BC4A76C00878B18 /* victoriousUITests.swift in Sources */,
+				EBEA19B91BC4A76C00878B18 /* LoginScreenTests.swift in Sources */,
 				C30546B41BD9B2AD005F6712 /* VAutomation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
