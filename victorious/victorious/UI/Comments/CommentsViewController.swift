@@ -353,7 +353,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+        dispatch_async(dispatch_get_main_queue()) {
             if dataSource.numberOfComments == 0 {
                 self.noContentView?.animateTransitionIn()
             }
