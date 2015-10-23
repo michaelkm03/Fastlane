@@ -880,6 +880,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
+            if (indexPath.row >= (NSInteger)self.viewModel.comments.count)
+            {
+                return nil;
+            }
+            
             VComment *comment = self.viewModel.comments[indexPath.row];
             NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
             
