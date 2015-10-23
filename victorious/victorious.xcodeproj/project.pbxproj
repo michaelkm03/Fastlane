@@ -7022,7 +7022,7 @@
 			isa = PBXGroup;
 			children = (
 				EBEA19BA1BC4A76C00878B18 /* Info.plist */,
-				EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */,
+				C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -7798,8 +7798,8 @@
 		EBEA19B71BC4A76C00878B18 /* victoriousUITests */ = {
 			isa = PBXGroup;
 			children = (
+				EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */,
 				C30546B61BD9B9DC005F6712 /* Supporting Files */,
-				C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */,
 			);
 			path = victoriousUITests;
 			sourceTree = "<group>";

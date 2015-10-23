@@ -35,8 +35,10 @@ class LoginScreenTests: XCTestCase {
         
         app.navigationBars["VModernLandingView"].buttons["Log In"].tap()
         
+        let username = "user@user.com"
+        
         // Type wrong Info
-        app.textFields["Login Username Field"].typeText("user@user.com")
+        app.textFields["Login Username Field"].typeText(username)
         app.secureTextFields["Login Password Field"].tap()
         app.secureTextFields["Login Password Field"].typeText("password1")
         app.typeText("\n")
@@ -48,8 +50,6 @@ class LoginScreenTests: XCTestCase {
         app.alerts["Login Failed"].collectionViews.buttons["OK"].tap()
         
         // Type right info
-        app.textFields["Login Username Field"].tap()
-        app.textFields["Login Username Field"].typeText("user@user.com")
         app.secureTextFields["Login Password Field"].tap()
         app.secureTextFields["Login Password Field"].typeText("password")
         app.typeText("\n")
@@ -59,6 +59,7 @@ class LoginScreenTests: XCTestCase {
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: loginScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
+        
     }
     
     func testRegister() {
