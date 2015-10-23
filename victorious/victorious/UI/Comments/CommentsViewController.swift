@@ -353,28 +353,29 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        
-        if dataSource.numberOfComments == 0 {
-            noContentView?.animateTransitionIn()
-        }
-        else {
-            noContentView?.resetInitialAnimationState()
-        }
-        
-        if collectionView.numberOfItemsInSection(0) == 0 {
-            // First load 
-            collectionView.reloadData()
-        }
-        else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
-            // We only need to update if things have changed
-            collectionView.reloadData()
-            dispatch_after(0.1) {
-                self.collectionView.flashScrollIndicators()
+        dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+            if dataSource.numberOfComments == 0 {
+                self.noContentView?.animateTransitionIn()
             }
-        }
-        dispatch_after(0.1) {
-            self.focusHelper?.updateFocus()
-            self.updateInsetForKeyboardBarState()
+            else {
+                self.noContentView?.resetInitialAnimationState()
+            }
+            
+            if self.collectionView.numberOfItemsInSection(0) == 0 {
+                // First load
+                self.collectionView.reloadData()
+            }
+            else if (self.collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
+                // We only need to update if things have changed
+                self.collectionView.reloadData()
+                dispatch_after(0.1) {
+                    self.collectionView.flashScrollIndicators()
+                }
+            }
+            dispatch_after(0.1) {
+                self.focusHelper?.updateFocus()
+                self.updateInsetForKeyboardBarState()
+            }
         }
     }
     

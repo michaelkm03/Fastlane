@@ -27,44 +27,40 @@ class SequenceCommentsDataSource : CommentsDataSource {
         }
     }
     
+    lazy private var successBlock: VSuccessBlock = { [weak self] (_, _, _) in
+        guard let strongSelf = self else {
+            return
+        }
+        strongSelf.sortInternalComments()
+        strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf)
+    }
+    
+    lazy private var failBlock: VFailBlock = {[weak self](_, _) in
+        guard let strongSelf = self else {
+            return
+        }
+        strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf)
+    }
+    
     func loadFirstPage() {
         
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue()) {
-                    delegate?.commentsDataSourceDidUpdate(self)
-                }
-            },
-            failBlock: { (operation: NSOperation?, error: NSError?) in
-                dispatch_async(dispatch_get_main_queue()) {
-                    delegate?.commentsDataSourceDidUpdate(self)
-                }
-            })
+            successBlock: successBlock,
+            failBlock: failBlock)
     }
     
     func loadNextPage() {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue()){
-                    delegate?.commentsDataSourceDidUpdate(self)
-                }
-            },
+            successBlock: successBlock,
             failBlock: nil)
     }
     
     func loadPreviousPage() {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Previous,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue()){
-                    delegate?.commentsDataSourceDidUpdate(self)
-                }
-            },
+            successBlock: successBlock,
             failBlock: nil)
     }
     
@@ -93,11 +89,12 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     func loadComments(commentID: NSNumber) {
         VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-            dispatch_async(dispatch_get_main_queue()){
-                delegate?.commentsDataSourceDidUpdate(self, deepLinkId: commentID)
-            }
-        },
+            successBlock: { [weak self] (_, _, _) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf, deepLinkId: commentID)
+            },
             failBlock: nil)
     }
     
