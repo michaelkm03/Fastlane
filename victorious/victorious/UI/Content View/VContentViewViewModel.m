@@ -460,12 +460,7 @@
 
 - (void)setComments:(NSArray *)comments
 {
-    comments = [[VObjectManager sharedManager] commentsAfterStrippingFlaggedItems:comments];
-    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
-     {
-         return [comment2.postedAt compare:comment1.postedAt];
-     }];
-    _comments = sortedComments;
+    _comments = [[VObjectManager sharedManager] commentsAfterStrippingFlaggedItems:comments];
 }
 
 #pragma mark - Public Methods
