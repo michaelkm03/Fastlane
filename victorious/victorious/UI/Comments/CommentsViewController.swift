@@ -361,12 +361,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 self.noContentView?.resetInitialAnimationState()
             }
             
-            if self.collectionView.numberOfItemsInSection(0) == 0 {
-                // First load
+            switch self.collectionView.numberOfItemsInSection(0) {
+            case 0: // First load
                 self.collectionView.reloadData()
-            }
-            else if (self.collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
-                // We only need to update if things have changed
+            case dataSource.numberOfComments: // No change, no need to update
+                break
+            default: // There are changes that we need to update
                 self.collectionView.reloadData()
                 dispatch_after(0.1) {
                     self.collectionView.flashScrollIndicators()
