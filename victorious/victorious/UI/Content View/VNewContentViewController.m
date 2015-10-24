@@ -881,13 +881,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
-            if (indexPath.row >= (NSInteger)self.viewModel.comments.count)
+            NSString *reuseIdentifier;
+            if (indexPath.row < (NSInteger)self.viewModel.comments.count)
             {
-                return nil;
+                VComment *comment = self.viewModel.comments[indexPath.row];
+                reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
             }
-            
-            VComment *comment = self.viewModel.comments[indexPath.row];
-            NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+            else
+            {
+                reuseIdentifier = [VContentCommentsCell suggestedReuseIdentifier];
+            }
             
             if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
             {
