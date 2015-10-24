@@ -882,7 +882,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionAllComments:
         {
             NSString *reuseIdentifier;
-            if (indexPath.row < (NSInteger)self.viewModel.comments.count)
+            BOOL modelHasEnoughComments = (indexPath.row < (NSInteger)self.viewModel.comments.count);
+
+            if (modelHasEnoughComments)
             {
                 VComment *comment = self.viewModel.comments[indexPath.row];
                 reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
@@ -900,9 +902,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
+            if (modelHasEnoughComments)
+            {
+                [self configureCommentCell:commentCell withIndex:indexPath.row];
+            }
+            
             commentCell.accessibilityIdentifier = VAutomationIdentifierContentViewCommentCell;
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
-            [self configureCommentCell:commentCell withIndex:indexPath.row];
+            
             return commentCell;
         }
         case VContentViewSectionCount:
