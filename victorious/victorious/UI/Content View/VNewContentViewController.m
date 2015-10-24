@@ -188,7 +188,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
                 [self refreshAllCommentsSection:pageType];
             });
         }
