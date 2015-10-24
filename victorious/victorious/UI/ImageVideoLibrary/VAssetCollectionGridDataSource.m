@@ -192,11 +192,21 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
          {
              [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSection:0]];
          }
-
+         
          NSIndexSet *changedIndexes = [changeDetails changedIndexes];
-         if ([changedIndexes count] > 0)
+         NSMutableIndexSet *safeChangedIndexes = [[NSMutableIndexSet alloc] init];
+         
+         // Filter out indexes that we've deleted to prevent crashing
+         [changedIndexes enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
+             if (![removedIndexes containsIndex:index])
+             {
+                 [safeChangedIndexes addIndex:index];
+             }
+         }];
+
+         if ([safeChangedIndexes count] > 0)
          {
-             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSection:0]];
+             [self.collectionView reloadItemsAtIndexPaths:[safeChangedIndexes indexPathsFromIndexesWithSection:0]];
          }
      } completion:NULL];
 }
