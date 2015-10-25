@@ -46,7 +46,7 @@ class SoundBarView : UIView {
             for index in 0..<numberOfBars {
                 let bar = UIView(frame: rectForBarAtIndex(index, endpoint: CGFloat(randomEndpoint())))
                 bar.backgroundColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8)
-                self.addSubview(bar)
+                addSubview(bar)
                 soundBars.append(bar)
             }
         }
@@ -56,8 +56,7 @@ class SoundBarView : UIView {
     
     /// Stops the animation
     func stopAnimating() {
-        for index in 0..<self.numberOfBars {
-            let view = self.soundBars[index]
+        for view in soundBars {
             view.layer.removeAllAnimations()
         }
         isAnimating = false
@@ -71,8 +70,8 @@ class SoundBarView : UIView {
         }
         
         isAnimating = true
-        for index in 0..<self.numberOfBars {
-            let view = self.soundBars[index]
+        for index in 0..<numberOfBars {
+            let view = soundBars[index]
             let originalFrame = view.frame
             let currentEndpoint = view.frame.height
             let ratio = Double(currentEndpoint) / Double(bounds.height)
@@ -91,12 +90,12 @@ class SoundBarView : UIView {
     
     private func rectForBarAtIndex(barIndex: Int, endpoint: CGFloat) -> CGRect {
         let gapsWidth = distanceBetweenBars * Double(numberOfBars - 1)
-        let totalBarWidth = Double(self.bounds.width) - gapsWidth
+        let totalBarWidth = Double(bounds.width) - gapsWidth
         let barWidth = totalBarWidth / Double(numberOfBars)
         return CGRect(x: (barWidth + distanceBetweenBars) * Double(barIndex), y:  Double(self.bounds.height), width: barWidth, height: -Double(endpoint))
     }
     
     private func randomEndpoint() -> Double {
-        return Double(arc4random_uniform(40)) / 100.0 * Double(self.bounds.height)
+        return Double(arc4random_uniform(40)) / 100.0 * Double(bounds.height)
     }
 }
