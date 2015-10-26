@@ -74,10 +74,6 @@
 		<string>Roboto-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Black.ttf</string>
-		<string>MuseoSans-100.otf</string>
-		<string>MuseoSans-300.otf</string>
-		<string>MuseoSans-500.otf</string>
-		<string>PTSans-Narrow.ttf</string>
 		<string>Impact.ttf</string>
 		<string>HelveticaNeueLightItalic.ttf</string>
 		<string>Arimo-Bold.ttf</string>
@@ -86,8 +82,6 @@
 		<string>Arvo-Regular.ttf</string>
 		<string>Bitter-Bold.ttf</string>
 		<string>Bitter-Regular.ttf</string>
-		<string>DeliusUnicase-Bold.ttf</string>
-		<string>DeliusUnicase-Regular.ttf</string>
 		<string>DroidSans-Bold.ttf</string>
 		<string>DroidSans.ttf</string>
 		<string>JosefinSans-Bold.ttf</string>
@@ -100,7 +94,6 @@
 		<string>Kreon-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
 		<string>Lato-Regular.ttf</string>
-		<string>LeagueGothic-Regular.otf</string>
 		<string>MavenPro-Bold.ttf</string>
 		<string>MavenPro-Regular.ttf</string>
 		<string>Merriweather-Bold.ttf</string>
