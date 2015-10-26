@@ -416,15 +416,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              tintColor:nil];
     }
     
-    if ([self.viewModel.sequence isPoll])
-    {
-        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
-        {
-            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
-            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
-        }
-    }
-    
     if ( self.navigationController != nil )
     {
         [self.dependencyManager applyStyleToNavigationBar:self.navigationController.navigationBar];

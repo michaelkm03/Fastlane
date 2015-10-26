@@ -73,6 +73,7 @@
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
+@property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -791,14 +792,23 @@
 
 - (VPollAnswer)favoredAnswer
 {
-    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    if (_favoredAnswer != VPollAnswerInvalid)
     {
-        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
-        {
-            return [result.answerId isEqualToNumber:[self answerA].remoteId] ? VPollAnswerA : VPollAnswerB;
-        }
+        return _favoredAnswer;
     }
-    return VPollAnswerInvalid;
+    else
+    {
+        for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+        {
+            NSNumber *answerARemoteID = [self answerA].remoteId;
+            if ([result.sequenceId isEqualToString:self.sequence.remoteId] && answerARemoteID != nil)
+            {
+                _favoredAnswer = [result.answerId isEqualToNumber:answerARemoteID] ? VPollAnswerA : VPollAnswerB;
+                break;
+            }
+        }
+        return _favoredAnswer;
+    }
 }
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
