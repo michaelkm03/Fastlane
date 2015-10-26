@@ -51,7 +51,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
                 titleLabel.text = achievementInterstitial.title
                 animatedBadge?.levelNumberString = String(achievementInterstitial.level)
                 
-                guard let iconURL = achievementInterstitial.icon else {
+                guard let iconURL = achievementInterstitial.icon where iconURL.absoluteString.characters.count > 0 else {
                     // In order to add space between the description label and the dismiss button
                     iconImageViewHeightConstraint.constant = 23
                     return
