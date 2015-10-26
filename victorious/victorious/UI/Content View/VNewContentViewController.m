@@ -150,26 +150,26 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
-    
-    if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        [layout calculateCatchAndLockPoints];
+        
+        if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
         {
-            CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
-            
-            if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
+            if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
             {
-                dispatch_async(dispatch_get_main_queue(), ^
+                CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                
+                if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
                 {
                     [self refreshAllCommentsSection:pageType];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [welf.contentCollectionView flashScrollIndicators];
-                                   });
+                    {
+                        [welf.contentCollectionView flashScrollIndicators];
+                    });
                     
                     // If we're prepending new comments, we must adjust the scroll view's offset
                     if ( pageType == VPageTypePrevious )
@@ -181,21 +181,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                         contentOffset.y += diff.y;
                         self.contentCollectionView.contentOffset = contentOffset;
                     }
-                    
                     [self.focusHelper updateFocus];
-                });
+                }
             }
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
+            else
             {
                 [self refreshAllCommentsSection:pageType];
-            });
+            }
         }
-        
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
+    });
 }
 
 - (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
@@ -881,18 +876,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
-            NSString *reuseIdentifier;
-            BOOL modelHasEnoughComments = (indexPath.row < (NSInteger)self.viewModel.comments.count);
-
-            if (modelHasEnoughComments)
-            {
-                VComment *comment = self.viewModel.comments[indexPath.row];
-                reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
-            }
-            else
-            {
-                reuseIdentifier = [VContentCommentsCell suggestedReuseIdentifier];
-            }
+            VComment *comment = self.viewModel.comments[indexPath.row];
+            NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
             
             if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
             {
@@ -902,14 +887,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
-            if (modelHasEnoughComments)
-            {
-                [self configureCommentCell:commentCell withIndex:indexPath.row];
-            }
-            
             commentCell.accessibilityIdentifier = VAutomationIdentifierContentViewCommentCell;
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
-            
+            [self configureCommentCell:commentCell withIndex:indexPath.row];
             return commentCell;
         }
         case VContentViewSectionCount:
