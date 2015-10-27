@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
 @property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic, assign) VVideoState state;
 @property (nonatomic, strong) NSURL *assetURL;
@@ -65,7 +66,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)setupVideoUI
 {
-    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:4 distanceBetweenBars:1.0];
+    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:3 distanceBetweenBars:1.0];
     self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     self.soundIndicator.alpha = 0;
     [self.videoUIContainer addSubview:self.soundIndicator];
@@ -73,7 +74,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     NSDictionary *metrics = @{ @"left" : @(10.0),
                                @"right" : @(10.0),
                                @"width" : @(16.0),
-                               @"height" : @(16.0) };
+                               @"height" : @(14.0) };
     [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-left-[soundIndicator(height)]"
                                                                                   options:0
                                                                                   metrics:metrics
@@ -110,6 +111,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                      attribute:NSLayoutAttributeWidth
                                                                     multiplier:1.0f
                                                                       constant:0.0f]];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.videoUIContainer addSubview:self.activityIndicator];
+    [self.videoUIContainer v_addCenterHorizontallyConstraintsToSubview:self.activityIndicator];
+    [self.videoUIContainer v_addCenterVerticallyConstraintsToSubview:self.activityIndicator];
 }
 
 - (void)onContentTap
@@ -231,11 +238,22 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     else
     {
         self.largePlayButton.userInteractionEnabled = NO;
-        if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
+        if ( self.shouldAutoplay )
         {
-            self.largePlayButton.hidden = YES;
-            self.previewImageView.hidden = YES;
-            self.videoPlayer.view.hidden = NO;
+            if (self.state == VVideoStateNotStarted)
+            {
+                self.largePlayButton.hidden = YES;
+                self.previewImageView.hidden = NO;
+                self.videoPlayer.view.hidden = YES;
+                self.activityIndicator.hidden = NO;
+                [self.activityIndicator startAnimating];
+            }
+            else
+            {
+                self.activityIndicator.hidden = YES;
+                self.largePlayButton.hidden = YES;
+                self.videoPlayer.view.hidden = NO;
+            }
         }
         else
         {
@@ -337,6 +355,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidBecomeReady:videoPlayer];
+    self.state = VVideoStatePlaying;
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
@@ -369,6 +388,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStopBuffering:videoPlayer];
+    self.state = VVideoStatePlaying;
 }
 
 - (void)videoPlayer:(VVideoView *__nonnull)videoPlayer didPlayToTime:(Float64)time
@@ -386,7 +406,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
 {
     [super videoPlayerDidPlay:videoPlayer];
-    self.state = VVideoStatePlaying;
 }
 
 - (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer

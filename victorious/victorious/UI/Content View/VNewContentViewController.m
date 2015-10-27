@@ -150,26 +150,26 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
-    
-    if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        [layout calculateCatchAndLockPoints];
+        
+        if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
         {
-            CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
-            
-            if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
+            if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
             {
-                dispatch_async(dispatch_get_main_queue(), ^
+                CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                
+                if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
                 {
                     [self refreshAllCommentsSection:pageType];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [welf.contentCollectionView flashScrollIndicators];
-                                   });
+                    {
+                        [welf.contentCollectionView flashScrollIndicators];
+                    });
                     
                     // If we're prepending new comments, we must adjust the scroll view's offset
                     if ( pageType == VPageTypePrevious )
@@ -181,18 +181,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                         contentOffset.y += diff.y;
                         self.contentCollectionView.contentOffset = contentOffset;
                     }
-                    
                     [self.focusHelper updateFocus];
-                });
+                }
+            }
+            else
+            {
+                [self refreshAllCommentsSection:pageType];
             }
         }
-        else
-        {
-            [self refreshAllCommentsSection:pageType];
-        }
-        
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
+    });
 }
 
 - (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
@@ -416,15 +414,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
                                                       placeholderImage:nil
                                                              tintColor:nil];
-    }
-    
-    if ([self.viewModel.sequence isPoll])
-    {
-        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
-        {
-            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
-            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
-        }
     }
     
     if ( self.navigationController != nil )
