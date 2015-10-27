@@ -5,3 +5,4 @@ gem 'guard',          require: false
 gem 'guard-minitest', require: false
 gem 'guard-bundler',  require: false
 gem 'minitest-rg',    require: false
+gem 'activesupport',  require: false
