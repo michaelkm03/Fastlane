@@ -95,6 +95,11 @@ class LoginScreenTests: XCTestCase {
             return
         }
         
+        if app.alerts["Login Failed"].exists {
+            app.alerts["Login Failed"].collectionViews.buttons["OK"].tap()
+            return
+        }
+        
         let loadingScreen = app.navigationBars["victorious.ModernLoadingView"]
 
         // Check if loading screen shows up
@@ -105,8 +110,6 @@ class LoginScreenTests: XCTestCase {
         expectationForPredicate(doesNotExist, evaluatedWithObject: loadingScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
         
-        XCUIDevice.sharedDevice().orientation = .FaceUp
-        XCUIDevice.sharedDevice().orientation = .FaceUp
     }
     
     func testTwitterRegister() {
