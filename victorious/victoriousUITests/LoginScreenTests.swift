@@ -40,26 +40,17 @@ class LoginScreenTests: XCTestCase {
         // Type wrong Info
         app.textFields["Login Username Field"].typeText(username)
         app.secureTextFields["Login Password Field"].tap()
-        app.secureTextFields["Login Password Field"].typeText("password1")
+        app.secureTextFields["Login Password Field"].typeText("password")
         app.typeText("\n")
         
         // Check if loading screen shows up
         XCTAssert(app.navigationBars["victorious.ModernLoadingView"].exists)
-        
-        // Login should have failed, tap alert view
-        app.alerts["Login Failed"].collectionViews.buttons["OK"].tap()
-        
-        // Type right info
-        app.secureTextFields["Login Password Field"].tap()
-        app.secureTextFields["Login Password Field"].typeText("password")
-        app.typeText("\n")
         
         // Make sure last screen does not exist
         let loginScreen = app.navigationBars["VModernLoginView"]
         let doesNotExist = NSPredicate(format: "exists == false")
         expectationForPredicate(doesNotExist, evaluatedWithObject: loginScreen, handler: nil)
         waitForExpectationsWithTimeout(loginTimeout, handler: nil)
-        
     }
     
     func testRegister() {
