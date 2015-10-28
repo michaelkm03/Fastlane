@@ -12,5 +12,13 @@ module VAMS
       assert_equal('LeachyPeachy',  first_app.build_name)
       assert_equal(false,           first_app.submit_for_review)
     end
+
+    def test_gets_app_by_build_name
+      build_name = 'LeachyPeachy'
+      app = Client.app_by_build_name(build_name)
+      assert_equal(11, app.app_id)
+      assert_equal(1, app.payload['ios_app_categories']['Books'])
+      assert_equal('com.getvictorious.${ProductPrefix}leachypeachy', app.payload['bundle_id'])
+    end
   end
 end
