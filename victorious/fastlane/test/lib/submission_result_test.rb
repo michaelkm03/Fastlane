@@ -13,14 +13,5 @@ module VAMS
       json_payload = @result.to_json
       assert_equal(@request_json, json_payload)
     end
-
-    def test_response_submission
-      response_code = 404
-      stub_request(:post, 'http://example.com/submission_result').
-        with(body: @request_json).
-        to_return(status: response_code, body: '')
-      response = @result.submit
-      assert_equal(response_code, response.code)
-    end
   end
 end
