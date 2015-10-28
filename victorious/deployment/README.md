@@ -2,13 +2,15 @@
 
 ### Prerequisites
 - Install [Homebrew](http://brew.sh)
+- install Xcode 7.0.1 from apple developer site
 
 ### Setup
 
 ```
 brew install python
 pip install requests
-xcode-select --install
+xcode-select --switch <path_to_xcode_developer_folder>
+xcode-select --install # install command line tools
 ```
 
 ### Build and Push
@@ -16,5 +18,5 @@ xcode-select --install
 ```
 cd <project_dir>/VictoriousiOS/victorious
 gem install fastlane && gem up fastlane
-fastlane release
+fastlane ios deploy
 ```
