@@ -14,6 +14,11 @@ import UIKit
     private var timer = NSTimer()
     private let requestQueue = dispatch_queue_create("TrackingRequestSchedulerQueue", DISPATCH_QUEUE_SERIAL)
     
+    private struct Constants {
+        static let batchFiringTimeInterval = 30.0
+        static let singleFiringTimeInterval = 0.5
+    }
+    
     func batchSendRequests() {
         while trackingRequestsArray.count > 0 {
             let request = trackingRequestsArray.removeFirst()
@@ -25,15 +30,16 @@ import UIKit
     func addRequestToArray(trackingRequest request: NSURLRequest) {
         trackingRequestsArray.append(request)
         if !timer.valid {
-            timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "batchSendRequests", userInfo: nil, repeats: true)
+            timer = NSTimer.scheduledTimerWithTimeInterval(Constants.batchFiringTimeInterval, target: self, selector: "batchSendRequests", userInfo: nil, repeats: true)
         }
     }
     
     private func sendRequest(request: NSURLRequest) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), requestQueue, {
+        dispatch_async(requestQueue, {
             let session = NSURLSession.sharedSession()
             let dataTask = session.dataTaskWithRequest(request)
             dataTask.resume()
+            NSThread.sleepForTimeInterval(Constants.singleFiringTimeInterval)
         })
     }
 }
