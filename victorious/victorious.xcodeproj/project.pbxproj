@@ -363,6 +363,7 @@
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
+		67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
@@ -2023,6 +2024,7 @@
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
+		67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestScheduler.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
@@ -6228,6 +6230,7 @@
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
 				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
+				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -9452,6 +9455,7 @@
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */,
+				67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
