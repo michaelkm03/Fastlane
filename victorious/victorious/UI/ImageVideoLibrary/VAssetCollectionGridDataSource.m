@@ -182,9 +182,20 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     [self.collectionView performBatchUpdates:^
      {
          NSIndexSet *removedIndexes = [changeDetails removedIndexes];
-         if ([removedIndexes count] > 0)
+         NSMutableIndexSet *safeDeletedIndexes = [[NSMutableIndexSet alloc] init];
+         
+         // Filter out indexes that are out of bounds
+         [removedIndexes enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop)
+          {
+              if (index < self.fetchResultForAssetsToDisplay.count)
+              {
+                  [safeDeletedIndexes addIndex:index];
+              }
+          }];
+         
+         if ([safeDeletedIndexes count] > 0)
          {
-             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSection:0]];
+             [self.collectionView deleteItemsAtIndexPaths:[safeDeletedIndexes indexPathsFromIndexesWithSection:0]];
          }
          
          NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
@@ -192,11 +203,22 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
          {
              [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSection:0]];
          }
-
+         
          NSIndexSet *changedIndexes = [changeDetails changedIndexes];
-         if ([changedIndexes count] > 0)
+         NSMutableIndexSet *safeChangedIndexes = [[NSMutableIndexSet alloc] init];
+         
+         // Filter out indexes that we've deleted to prevent crashing
+         [changedIndexes enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop)
          {
-             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSection:0]];
+             if (![removedIndexes containsIndex:index])
+             {
+                 [safeChangedIndexes addIndex:index];
+             }
+         }];
+
+         if ([safeChangedIndexes count] > 0)
+         {
+             [self.collectionView reloadItemsAtIndexPaths:[safeChangedIndexes indexPathsFromIndexesWithSection:0]];
          }
      } completion:NULL];
 }

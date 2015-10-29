@@ -210,8 +210,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
 @property (nonatomic, readonly) NSString *numberOfVotersText;
-
-- (VPollAnswer)favoredAnswer; //< By the current user.
+@property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion;
