@@ -215,7 +215,7 @@
     "ios_app_version":null,
     "ios_app_build":null,
     "ios_bundle_display_name":"${ProductPrefix}Leachy Peachy",
-    "ios_description":null,
+    "ios_description":"Teach me how to peachy",
     "ios_header_image_3x":"http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/assets\/75\/ios\/homeHeaderImage@3x.png?a=10282015214229000000",
     "ios_header_image_2x":"http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/assets\/75\/ios\/homeHeaderImage@2x.png?a=10282015214229000000",
     "ios_header_image":"http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/assets\/75\/ios\/homeHeaderImage.png?a=10282015214229000000",
