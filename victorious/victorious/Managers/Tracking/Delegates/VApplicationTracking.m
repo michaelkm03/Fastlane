@@ -48,6 +48,8 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (atomic, strong) NSMutableArray *trackingRequestArray;
+@property (nonatomic, strong) NSTimer *trackingEventFiringTimer;
 
 @end
 
@@ -93,6 +95,12 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
+        _trackingRequestArray = [[NSMutableArray alloc] init];
+        _trackingEventFiringTimer = [NSTimer scheduledTimerWithTimeInterval:30.0f
+                                                                     target:self
+                                                                   selector:@selector(batchSendRequest)
+                                                                   userInfo:nil
+                                                                    repeats:YES];
     }
     return self;
 }
@@ -163,12 +171,33 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-    dispatch_async( self.requestQueue, ^(void)
+    dispatch_async(self.requestQueue, ^
     {
-        [self sendRequest:request];
+        [self.trackingRequestArray addObject:request];
+        self.trackingEventFiringTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f
+                                                                         target:self
+                                                                       selector:@selector(batchSendRequest)
+                                                                       userInfo:nil
+                                                                        repeats:YES];
     });
+
     
     return YES;
+}
+
+- (void)batchSendRequest
+{
+    dispatch_async(self.requestQueue, ^
+    {
+        while (self.trackingRequestArray.count > 0)
+        {
+            VTrackingURLRequest *request = self.trackingRequestArray.firstObject;
+            [self.trackingRequestArray removeObject:request];
+            [self sendRequest:request];
+            
+        }
+        [self.trackingEventFiringTimer invalidate];
+    });
 }
 
 - (VObjectManager *)applicationObjectManager
