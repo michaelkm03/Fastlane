@@ -59,38 +59,30 @@ static const int64_t kAssetLoopClippingScale = 100;
     {
         __block AVPlayerItem *playerItem = nil;
         
-        if (loop)
-        {
-            AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
-                                                    options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
-            [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
-                                                     NSStringFromSelector(@selector(tracks))]
-                                 completionHandler:^
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
+                                                options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
+        [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration))]
+                             completionHandler:^
+         {
+             if (loop)
              {
                  AVComposition *composition = [self loopingCompositionWithAsset:asset];
                  // Fallback to normal playback if we can't loop.
                  playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
-                 
-                 dispatch_async( dispatch_get_main_queue(), ^
+             }
+             else
+             {
+                 playerItem = [AVPlayerItem playerItemWithAsset:asset];
+             }
+             
+             dispatch_async( dispatch_get_main_queue(), ^
+             {
+                 if ( onReady != nil )
                  {
-                     if ( onReady != nil )
-                     {
-                         onReady( playerItem, itemURL, asset.duration );
-                     }
-                 });
-             }];
-        }
-        else
-        {
-            playerItem = [AVPlayerItem playerItemWithURL:itemURL];
-            dispatch_async( dispatch_get_main_queue(), ^
-            {
-                if ( onReady != nil )
-                {
-                    onReady( playerItem, itemURL, CMTimeMake(0, 0) );
-                }
-            });
-        }
+                     onReady( playerItem, itemURL, asset.duration );
+                 }
+             });
+         }];
     });
 }
 
