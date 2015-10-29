@@ -16,15 +16,15 @@ module VAMS
     def test_gets_app_by_build_name
       build_name = 'LeachyPeachy'
       app = Client.app_by_build_name(build_name)
-      assert_equal(11, app.app_id)
-      assert_equal(1, app.payload['ios_app_categories']['Books'])
-      assert_equal('com.getvictorious.${ProductPrefix}leachypeachy', app.payload['bundle_id'])
+      assert_equal("75", app.app_id)
+      assert_equal(1, app.ios_app_categories['Books'])
+      assert_equal('com.getvictorious.${ProductPrefix}leachypeachy', app.bundle_id)
     end
 
     def test_response_submission
-      timestamp = Time.parse("2015-03-10 01:39:34")
-      result = SubmissionResult.new(id: 1, status: 'All good', datetime: timestamp)
-      request_json = "{\"id\":1,\"status\":\"All good\",\"datetime\":\"2015-03-10T01:39:34.000-07:00\"}"
+      timestamp     = Time.parse("2015-03-10 01:39:34")
+      result        = SubmissionResult.new(id: 1, status: 'All good', datetime: timestamp)
+      request_json  = "{\"id\":1,\"status\":\"All good\",\"datetime\":\"2015-03-10T01:39:34.000-07:00\"}"
       response_code = 404
       stub_request(:post, 'https://example.com/submission_result').
         with(body: request_json).

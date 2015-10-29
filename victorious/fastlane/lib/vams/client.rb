@@ -16,7 +16,7 @@ module VAMS
 
     def app_by_build_name(build_name)
       json = json_from_file(path: APP_BY_BUILD_NAME)
-      App.new(json)
+      App.new(json['payload'])
     end
 
     def submit_result(result)
