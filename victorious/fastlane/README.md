@@ -11,6 +11,8 @@ brew install python
 pip install requests
 xcode-select --switch <path_to_xcode_developer_folder>
 xcode-select --install # install command line tools
+export VAMS_USER=<vams_username>
+export VAMS_PASSWORD=<vams_password> # ask your team mate for it
 ```
 
 ### Build and Push
