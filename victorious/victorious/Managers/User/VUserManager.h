@@ -16,12 +16,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 @interface VUserManager : NSObject
 
 /**
- Log in using the current Facebook session (make sure you use the Facebook SDK to establish a session before calling this)
- */
-- (RKManagedObjectRequestOperation *)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                                                                         onError:(VUserManagerLoginErrorBlock)errorBlock;
-
-/**
  Log in using Twitter oauth data.
  */
 - (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken

@@ -59,58 +59,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     }
 }
 
-- (RKManagedObjectRequestOperation *)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                                                                         onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    __block BOOL isNewUser = YES;
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSDictionary *payload = ((NSDictionary *)fullResponse)[ @"payload" ];
-        isNewUser = ((NSNumber *)payload[ @"new_user" ]).boolValue;
-        
-        if ( isNewUser )
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
-                                               parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
-                                                             VTrackingKeyPermissionName : VTrackingValueAuthorized }];
-        }
-        
-        VUser *user = [resultObjects firstObject];
-        if ([user isKindOfClass:[VUser class]])
-        {
-            NSString *eventName = isNewUser ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
-            [[VTrackingManager sharedInstance] trackEvent:eventName];
-            
-            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeFacebook
-                                                       forKey:kLastLoginTypeUserDefaultsKey];
-            if (completion)
-            {
-                completion(user, isNewUser);
-            }
-        }
-        else if (errorBlock)
-        {
-            errorBlock(nil, NO);
-        }
-    };
-    VFailBlock failed = ^(NSOperation *operation, NSError *error)
-    {
-        // Do nothing if we've cancelled the request
-        if (operation.isCancelled)
-        {
-            return;
-        }
-        
-        if ( errorBlock != nil )
-        {
-            errorBlock(error, NO);
-        }
-    };
-    return [[VObjectManager sharedManager] createFacebookWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
-                                                      successBlock:success
-                                                         failBlock:failed];
-}
-
 - (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
                                                  accessSecret:(NSString *)tokenSecret
                                                     twitterID:(NSString *)twitterId
