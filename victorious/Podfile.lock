@@ -54,6 +54,7 @@ PODS:
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - SOCKit (1.1)
+  - SwiftyJSON (2.3.1)
   - TransitionKit (2.1.1)
   - TTTAttributedLabel (1.13.4)
   - youtube-ios-player-helper (0.1.4)
@@ -71,6 +72,7 @@ DEPENDENCIES:
   - OAStackView
   - RestKit
   - SDWebImage
+  - SwiftyJSON
   - TTTAttributedLabel
   - youtube-ios-player-helper
 
@@ -121,6 +123,7 @@ SPEC CHECKSUMS:
   RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  SwiftyJSON: 592b53bee5ef3dd9b3bebc6b9cb7ee35426ae8c3
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   youtube-ios-player-helper: 84b1485ebb4b7c6b619c6e05edcb55186723a7c6

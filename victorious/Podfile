@@ -7,6 +7,7 @@ use_frameworks!
 
 target :victorious do
     pod 'RestKit'
+    pod 'SwiftyJSON'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
     pod 'KVOController'
@@ -28,6 +29,16 @@ end
 
 target 'UIAutomationTests', :exclusive => true do
   pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
+end
+
+target :VictoriousIOSSDK do
+	pod 'SwiftyJSON'
+	link_with 'VictoriousIOSSDK'
+end
+
+target :VictoriousIOSSDKTests do
+	pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+	link_with 'VictoriousIOSSDKTests'
 end
 
 post_install do |installer|

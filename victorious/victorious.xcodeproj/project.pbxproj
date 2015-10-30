@@ -115,6 +115,30 @@
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
 		032ABC421B7A6BCB00F968A3 /* VictoriousCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370FBB71B71B261009047B6 /* VictoriousCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03314F1F1BE3E2DE00EE74FD /* VictoriousIOSSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03314F261BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
+		03314F311BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
+		03314F321BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		03314F401BE3E6E800EE74FD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F3F1BE3E6E800EE74FD /* Request.swift */; };
+		03314F421BE3E6F400EE74FD /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F411BE3E6F400EE74FD /* RequestTests.swift */; };
+		03314F4E1BE40F0100EE74FD /* AccountCreateEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */; };
+		03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */; };
+		03314F501BE40F0100EE74FD /* EndpointRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */; };
+		03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F471BE40F0100EE74FD /* ImageAssetTests.swift */; };
+		03314F521BE40F0100EE74FD /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F481BE40F0100EE74FD /* UserTests.swift */; };
+		03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */; };
+		03314F541BE40F0100EE74FD /* AccountCreateEndpoint.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */; };
+		03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4C1BE40F0100EE74FD /* ImageAsset.json */; };
+		03314F561BE40F0100EE74FD /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
+		03314F611BE40F3200EE74FD /* AccountCreateEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */; };
+		03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */; };
+		03314F631BE40F3200EE74FD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F591BE40F3200EE74FD /* Endpoint.swift */; };
+		03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5B1BE40F3200EE74FD /* ImageAsset.swift */; };
+		03314F651BE40F3200EE74FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5C1BE40F3200EE74FD /* User.swift */; };
+		03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */; };
+		03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */; };
+		03314F681BE40F3200EE74FD /* VSDKCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03314F601BE40F3200EE74FD /* VSDKCrypto.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
@@ -343,6 +367,7 @@
 		0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
+		2B5C9810F9B3E583B2CCBC5C /* Pods_VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */; };
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
@@ -842,6 +867,7 @@
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
+		AE4DAF6FB0284740906C2437 /* Pods_VictoriousIOSSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
 		B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B074C5B31B39D41F00EA3FFC /* VHashmarkView.xib */; };
@@ -1308,6 +1334,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		03314F271BE3E2DF00EE74FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03314F1B1BE3E2DE00EE74FD;
+			remoteInfo = VictoriousIOSSDK;
+		};
+		03314F2F1BE3E2DF00EE74FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03314F1B1BE3E2DE00EE74FD;
+			remoteInfo = VictoriousIOSSDK;
+		};
 		0352FC751B72AE3200DB6EAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1377,6 +1417,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				03314F321BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Embed Frameworks */,
 				0370FBCB1B71B261009047B6 /* VictoriousCommon.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1385,6 +1426,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		025E664C694725631B5A4367 /* Pods-VictoriousIOSSDKTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.stable.xcconfig"; sourceTree = "<group>"; };
 		0306F7A41ADDF939009FE3AA /* VJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VJSONHelper.h; sourceTree = "<group>"; };
 		0306F7A51ADDF939009FE3AA /* VJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelper.m; sourceTree = "<group>"; };
 		0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelperTests.m; sourceTree = "<group>"; };
@@ -1544,6 +1586,31 @@
 		032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEnvironment+VDataCacheID.h"; sourceTree = "<group>"; };
 		032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEnvironment+VDataCacheID.m"; sourceTree = "<group>"; };
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
+		03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousIOSSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VictoriousIOSSDK.h; sourceTree = "<group>"; };
+		03314F201BE3E2DE00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VictoriousIOSSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03314F2E1BE3E2DF00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03314F3F1BE3E6E800EE74FD /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		03314F411BE3E6F400EE74FD /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
+		03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateEndpointTests.swift; sourceTree = "<group>"; };
+		03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
+		03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointRequestTests.swift; sourceTree = "<group>"; };
+		03314F471BE40F0100EE74FD /* ImageAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAssetTests.swift; sourceTree = "<group>"; };
+		03314F481BE40F0100EE74FD /* UserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
+		03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneWayRequestTests.swift; sourceTree = "<group>"; };
+		03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccountCreateEndpoint.json; sourceTree = "<group>"; };
+		03314F4C1BE40F0100EE74FD /* ImageAsset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageAsset.json; sourceTree = "<group>"; };
+		03314F4D1BE40F0100EE74FD /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
+		03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateEndpoint.swift; sourceTree = "<group>"; };
+		03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedString.swift"; sourceTree = "<group>"; };
+		03314F591BE40F3200EE74FD /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		03314F5B1BE40F3200EE74FD /* ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
+		03314F5C1BE40F3200EE74FD /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+VictoriousIOSSDK.swift"; sourceTree = "<group>"; };
+		03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneWayRequest.swift; sourceTree = "<group>"; };
+		03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSDKCrypto.h; sourceTree = "<group>"; };
+		03314F601BE40F3200EE74FD /* VSDKCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSDKCrypto.m; sourceTree = "<group>"; };
 		0340337A1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VModernEnterNameViewController.strings"; sourceTree = "<group>"; };
 		0340337B1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		0340337C1BD085A0000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VNoContentView.strings"; sourceTree = "<group>"; };
@@ -1979,9 +2046,15 @@
 		03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverSuggestedPersonCell.xib; sourceTree = "<group>"; };
 		03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLightboxViewController.xib; sourceTree = "<group>"; };
 		04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.release.xcconfig"; sourceTree = "<group>"; };
+		0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.qa.xcconfig"; sourceTree = "<group>"; };
 		0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManagerTests.m; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
+		1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
+		267FA2CEB7EA831DB83105B5 /* Pods-VictoriousIOSSDKTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.qa.xcconfig"; sourceTree = "<group>"; };
+		2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VictoriousIOSSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FF26ACB7B7F5D83A0C89A42 /* Pods-VictoriousIOSSDK.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.stable.xcconfig"; sourceTree = "<group>"; };
+		3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VictoriousIOSSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.staging.xcconfig"; sourceTree = "<group>"; };
@@ -2042,6 +2115,7 @@
 		79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRootViewController+UIAutomation.m"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
+		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2870,6 +2944,8 @@
 		B0E158521B7159FE004F0A60 /* VUtilityButtonSeperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonSeperator.m; sourceTree = "<group>"; };
 		B0E158531B7159FE004F0A60 /* VUtilityButtonSeperator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUtilityButtonSeperator.xib; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6E4C00CAA076E3D3D35B10A /* Pods-VictoriousIOSSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.release.xcconfig"; sourceTree = "<group>"; };
+		BC2D8AAB3016F7E483662531 /* Pods-VictoriousIOSSDK.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.staging.xcconfig"; sourceTree = "<group>"; };
 		BE11447719D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeStreamItemCell.h; sourceTree = "<group>"; };
 		BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeStreamItemCell.m; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3055,6 +3131,8 @@
 		C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.debug.xcconfig"; sourceTree = "<group>"; };
 		CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.qa.xcconfig"; sourceTree = "<group>"; };
+		D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		D7267F959E8B908BE92B6A4A /* Pods-VictoriousIOSSDKTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.staging.xcconfig"; sourceTree = "<group>"; };
 		D800A6161AEEAA0F00F1A06A /* VCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCompatibility.h; sourceTree = "<group>"; };
 		D800A6181AF01B6100F1A06A /* VCameraCoachMarkAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCoachMarkAnimator.h; sourceTree = "<group>"; };
 		D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCoachMarkAnimator.m; sourceTree = "<group>"; };
@@ -3709,6 +3787,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		03314F181BE3E2DE00EE74FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B5C9810F9B3E583B2CCBC5C /* Pods_VictoriousIOSSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03314F221BE3E2DF00EE74FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03314F261BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */,
+				AE4DAF6FB0284740906C2437 /* Pods_VictoriousIOSSDKTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0352FC7A1B72B90000DB6EAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3764,6 +3859,7 @@
 				DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */,
 				DBAD890219F5BA5B00D678A0 /* EventKitUI.framework in Frameworks */,
 				038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */,
+				03314F311BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */,
 				DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */,
 				DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */,
 				DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */,
@@ -4405,6 +4501,67 @@
 				0326BBB919A8183800D995DA /* VPushNotificationManager.m */,
 			);
 			path = "Push Notifications";
+			sourceTree = "<group>";
+		};
+		03314F1D1BE3E2DE00EE74FD /* VictoriousIOSSDK */ = {
+			isa = PBXGroup;
+			children = (
+				03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */,
+				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
+				03314F591BE40F3200EE74FD /* Endpoint.swift */,
+				03314F201BE3E2DE00EE74FD /* Info.plist */,
+				03314F5A1BE40F3200EE74FD /* Models */,
+				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
+				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
+				03314F3F1BE3E6E800EE74FD /* Request.swift */,
+				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
+				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
+				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
+			);
+			path = VictoriousIOSSDK;
+			sourceTree = "<group>";
+		};
+		03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */,
+				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
+				03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */,
+				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
+				03314F461BE40F0100EE74FD /* Models */,
+				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
+				03314F411BE3E6F400EE74FD /* RequestTests.swift */,
+				03314F4A1BE40F0100EE74FD /* Test Data */,
+			);
+			path = VictoriousIOSSDKTests;
+			sourceTree = "<group>";
+		};
+		03314F461BE40F0100EE74FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
+				03314F481BE40F0100EE74FD /* UserTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		03314F4A1BE40F0100EE74FD /* Test Data */ = {
+			isa = PBXGroup;
+			children = (
+				03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */,
+				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
+				03314F4D1BE40F0100EE74FD /* User.json */,
+			);
+			path = "Test Data";
+			sourceTree = "<group>";
+		};
+		03314F5A1BE40F3200EE74FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				03314F5C1BE40F3200EE74FD /* User.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		03449FE21A0C7EBB0070EC80 /* Session Timer */ = {
@@ -5225,6 +5382,16 @@
 				E781D16A8108A3A2E52805D8 /* Pods-UIAutomationTests.staging.xcconfig */,
 				FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */,
 				72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */,
+				D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */,
+				0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */,
+				BC2D8AAB3016F7E483662531 /* Pods-VictoriousIOSSDK.staging.xcconfig */,
+				2FF26ACB7B7F5D83A0C89A42 /* Pods-VictoriousIOSSDK.stable.xcconfig */,
+				B6E4C00CAA076E3D3D35B10A /* Pods-VictoriousIOSSDK.release.xcconfig */,
+				1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */,
+				267FA2CEB7EA831DB83105B5 /* Pods-VictoriousIOSSDKTests.qa.xcconfig */,
+				D7267F959E8B908BE92B6A4A /* Pods-VictoriousIOSSDKTests.staging.xcconfig */,
+				025E664C694725631B5A4367 /* Pods-VictoriousIOSSDKTests.stable.xcconfig */,
+				7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -6552,6 +6719,8 @@
 				BE171D811868BE64004E5202 /* victorious */,
 				0370FBB41B71B261009047B6 /* VictoriousCommon */,
 				0370FBC31B71B261009047B6 /* VictoriousCommonTests */,
+				03314F1D1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
+				03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
 			);
 			sourceTree = "<group>";
@@ -6566,6 +6735,8 @@
 				0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */,
 				0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */,
 				A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */,
+				03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */,
+				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6601,6 +6772,8 @@
 				EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */,
 				8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */,
 				A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */,
+				2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */,
+				3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -8028,6 +8201,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		03314F191BE3E2DE00EE74FD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03314F1F1BE3E2DE00EE74FD /* VictoriousIOSSDK.h in Headers */,
+				03314F681BE40F3200EE74FD /* VSDKCrypto.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0352FC7B1B72B90000DB6EAB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -8083,6 +8265,47 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03314F3D1BE3E2DF00EE74FD /* Build configuration list for PBXNativeTarget "VictoriousIOSSDK" */;
+			buildPhases = (
+				6C9D82ACB0DE878DBEB249B2 /* Check Pods Manifest.lock */,
+				03314F171BE3E2DE00EE74FD /* Sources */,
+				03314F181BE3E2DE00EE74FD /* Frameworks */,
+				03314F191BE3E2DE00EE74FD /* Headers */,
+				03314F1A1BE3E2DE00EE74FD /* Resources */,
+				1B91173E26C9B51DE9D64A92 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VictoriousIOSSDK;
+			productName = VictoriousIOSSDK;
+			productReference = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03314F3E1BE3E2DF00EE74FD /* Build configuration list for PBXNativeTarget "VictoriousIOSSDKTests" */;
+			buildPhases = (
+				43F2561BB8B0678DC6D46E57 /* Check Pods Manifest.lock */,
+				03314F211BE3E2DF00EE74FD /* Sources */,
+				03314F221BE3E2DF00EE74FD /* Frameworks */,
+				03314F231BE3E2DF00EE74FD /* Resources */,
+				34D23722767CEF5C74A5D693 /* Embed Pods Frameworks */,
+				3DB3C53CEC4361215AB61723 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03314F281BE3E2DF00EE74FD /* PBXTargetDependency */,
+			);
+			name = VictoriousIOSSDKTests;
+			productName = VictoriousIOSSDKTests;
+			productReference = 03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0352FC911B72B90100DB6EAB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */;
@@ -8205,6 +8428,7 @@
 			);
 			dependencies = (
 				0370FBC91B71B261009047B6 /* PBXTargetDependency */,
+				03314F301BE3E2DF00EE74FD /* PBXTargetDependency */,
 			);
 			name = victorious;
 			productName = victorious;
@@ -8246,6 +8470,13 @@
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
+					03314F1B1BE3E2DE00EE74FD = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = ABHRJGEGKA;
+					};
+					03314F241BE3E2DF00EE74FD = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					0352FC7D1B72B90000DB6EAB = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -8305,11 +8536,30 @@
 				0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */,
 				0352FCBE1B72C60200DB6EAB /* downloadtemplate */,
 				A7DB4D291B7AB1D300199D10 /* UIAutomationTests */,
+				03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
+				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		03314F1A1BE3E2DE00EE74FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03314F231BE3E2DF00EE74FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
+				03314F561BE40F0100EE74FD /* User.json in Resources */,
+				03314F541BE40F0100EE74FD /* AccountCreateEndpoint.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0352FC7C1B72B90000DB6EAB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8671,6 +8921,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		1B91173E26C9B51DE9D64A92 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		346C2309BE6994E43CF25E2D /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8686,6 +8951,36 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		34D23722767CEF5C74A5D693 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3DB3C53CEC4361215AB61723 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3FF8C50618A5A06A00812968 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8699,6 +8994,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			showEnvVarsInLog = 0;
+		};
+		43F2561BB8B0678DC6D46E57 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		484564DCC2B82A0EACA56D51 /* Copy Pods Resources */ = {
@@ -8732,6 +9042,21 @@
 			showEnvVarsInLog = 0;
 		};
 		656D0A6792A17147424BD44B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6C9D82ACB0DE878DBEB249B2 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -8883,6 +9208,36 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		03314F171BE3E2DE00EE74FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
+				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
+				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
+				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
+				03314F651BE40F3200EE74FD /* User.swift in Sources */,
+				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
+				03314F611BE40F3200EE74FD /* AccountCreateEndpoint.swift in Sources */,
+				03314F631BE40F3200EE74FD /* Endpoint.swift in Sources */,
+				03314F401BE3E6E800EE74FD /* Request.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03314F211BE3E2DF00EE74FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
+				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
+				03314F501BE40F0100EE74FD /* EndpointRequestTests.swift in Sources */,
+				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
+				03314F421BE3E6F400EE74FD /* RequestTests.swift in Sources */,
+				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
+				03314F4E1BE40F0100EE74FD /* AccountCreateEndpointTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0352FC791B72B90000DB6EAB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -9949,6 +10304,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		03314F281BE3E2DF00EE74FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */;
+			targetProxy = 03314F271BE3E2DF00EE74FD /* PBXContainerItemProxy */;
+		};
+		03314F301BE3E2DF00EE74FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */;
+			targetProxy = 03314F2F1BE3E2DF00EE74FD /* PBXContainerItemProxy */;
+		};
 		0352FC761B72AE3200DB6EAB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
@@ -10424,6 +10789,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -10473,6 +10839,245 @@
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		03314F331BE3E2DF00EE74FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		03314F341BE3E2DF00EE74FD /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A20A4DF2C5233B28DD45B90 /* Pods-VictoriousIOSSDK.qa.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = QA;
+		};
+		03314F351BE3E2DF00EE74FD /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC2D8AAB3016F7E483662531 /* Pods-VictoriousIOSSDK.staging.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Staging;
+		};
+		03314F361BE3E2DF00EE74FD /* Stable */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FF26ACB7B7F5D83A0C89A42 /* Pods-VictoriousIOSSDK.stable.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Stable;
+		};
+		03314F371BE3E2DF00EE74FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6E4C00CAA076E3D3D35B10A /* Pods-VictoriousIOSSDK.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		03314F381BE3E2DF00EE74FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = VictoriousIOSSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		03314F391BE3E2DF00EE74FD /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 267FA2CEB7EA831DB83105B5 /* Pods-VictoriousIOSSDKTests.qa.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = QA;
+		};
+		03314F3A1BE3E2DF00EE74FD /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7267F959E8B908BE92B6A4A /* Pods-VictoriousIOSSDKTests.staging.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Staging;
+		};
+		03314F3B1BE3E2DF00EE74FD /* Stable */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 025E664C694725631B5A4367 /* Pods-VictoriousIOSSDKTests.stable.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Stable;
+		};
+		03314F3C1BE3E2DF00EE74FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = VictoriousIOSSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -11230,6 +11835,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -11541,6 +12147,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = no;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -11575,6 +12182,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -11739,6 +12347,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -11794,6 +12403,30 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		03314F3D1BE3E2DF00EE74FD /* Build configuration list for PBXNativeTarget "VictoriousIOSSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03314F331BE3E2DF00EE74FD /* Debug */,
+				03314F341BE3E2DF00EE74FD /* QA */,
+				03314F351BE3E2DF00EE74FD /* Staging */,
+				03314F361BE3E2DF00EE74FD /* Stable */,
+				03314F371BE3E2DF00EE74FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03314F3E1BE3E2DF00EE74FD /* Build configuration list for PBXNativeTarget "VictoriousIOSSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03314F381BE3E2DF00EE74FD /* Debug */,
+				03314F391BE3E2DF00EE74FD /* QA */,
+				03314F3A1BE3E2DF00EE74FD /* Staging */,
+				03314F3B1BE3E2DF00EE74FD /* Stable */,
+				03314F3C1BE3E2DF00EE74FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0352FC911B72B90100DB6EAB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
