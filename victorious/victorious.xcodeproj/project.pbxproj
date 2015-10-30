@@ -8242,8 +8242,8 @@
 			attributes = {
 				CLASSPREFIX = V;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					0352FC7D1B72B90000DB6EAB = {
