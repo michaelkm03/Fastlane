@@ -487,9 +487,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.isVideoContent && self.videoPlayer != nil)
     {
-        if ([self.videoPlayer respondsToSelector:@selector(exitFromContentView)])
+        if ([self.videoPlayer respondsToSelector:@selector(didExitFromContentView)])
         {
-            [self.videoPlayer exitFromContentView];
+            [self.videoPlayer didExitFromContentView];
         }
         
         if ( !self.videoPlayerDidFinishPlayingOnce )

@@ -340,7 +340,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     }
 }
 
-- (void)exitFromContentView
+- (void)didExitFromContentView
 {
     if (!self.loop)
     {

@@ -19,22 +19,22 @@ import UIKit
         static let singleFiringTimeInterval = 0.5
     }
     
-    func batchSendRequests() {
+    func addRequestToArray(trackingRequest request: NSURLRequest) {
+        trackingRequestsArray.append(request)
+        if !timer.valid {
+            timer = NSTimer.scheduledTimerWithTimeInterval(Constants.batchFiringTimeInterval, target: self, selector: "sendAllQueuedRequests", userInfo: nil, repeats: true)
+        }
+    }
+    
+    func sendAllQueuedRequests() {
         while trackingRequestsArray.count > 0 {
             let request = trackingRequestsArray.removeFirst()
-            sendRequest(request)
+            sendSingleRequest(request)
         }
         self.timer.invalidate()
     }
     
-    func addRequestToArray(trackingRequest request: NSURLRequest) {
-        trackingRequestsArray.append(request)
-        if !timer.valid {
-            timer = NSTimer.scheduledTimerWithTimeInterval(Constants.batchFiringTimeInterval, target: self, selector: "batchSendRequests", userInfo: nil, repeats: true)
-        }
-    }
-    
-    private func sendRequest(request: NSURLRequest) {
+    private func sendSingleRequest(request: NSURLRequest) {
         dispatch_async(requestQueue, {
             let session = NSURLSession.sharedSession()
             let dataTask = session.dataTaskWithRequest(request)

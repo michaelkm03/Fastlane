@@ -166,15 +166,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-//    dispatch_async(self.requestQueue, ^
-//    {
-//        [self.trackingRequestArray addObject:request];
-//        self.trackingEventFiringTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f
-//                                                                         target:self
-//                                                                       selector:@selector(batchSendRequest)
-//                                                                       userInfo:nil
-//                                                                        repeats:YES];
-//    });
     [self.requestScheduler addRequestToArrayWithTrackingRequest:request];
     
     return YES;

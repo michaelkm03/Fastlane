@@ -57,24 +57,21 @@ static const int64_t kAssetLoopClippingScale = 100;
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^
     {
-        __block AVPlayerItem *playerItem = nil;
-        
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
                                                 options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
         [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration))]
                              completionHandler:^
          {
-             if (loop)
+             AVPlayerItem *playerItem;
+             if ( loop )
              {
                  AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                 // Fallback to normal playback if we can't loop.
                  playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
              }
              else
              {
                  playerItem = [AVPlayerItem playerItemWithAsset:asset];
              }
-             
              dispatch_async( dispatch_get_main_queue(), ^
              {
                  if ( onReady != nil )

@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
  When user exits a content view with a video, call this method in - viewWillDisappear:
  to give the VVideoPlayer instance a chance to cleanup.
  */
-- (void)exitFromContentView;
+- (void)didExitFromContentView;
 
 @end
 
