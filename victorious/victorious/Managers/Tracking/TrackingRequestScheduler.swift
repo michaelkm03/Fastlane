@@ -10,19 +10,33 @@ import UIKit
 
 @objc class TrackingRequestScheduler:NSObject {
     
+    var batchFiringTimeInterval = 30.0
+    
     private var trackingRequestsArray = [NSURLRequest]()
     private var timer = NSTimer()
     private let requestQueue = dispatch_queue_create("TrackingRequestSchedulerQueue", DISPATCH_QUEUE_SERIAL)
-    
+
     private struct Constants {
-        static let batchFiringTimeInterval = 30.0
         static let singleFiringTimeInterval = 0.5
+    }
+    
+    convenience init(batchFiringInterval batchInterval: Double?) {
+        self.init()
+        if let batchTime = batchInterval {
+            switch batchTime {
+            case 1...60:
+                batchFiringTimeInterval = batchTime
+            default:
+                print("batchFiringTimeInterval should have a range between 1s and 60s")
+                break;
+            }
+        }
     }
     
     func addRequestToArray(trackingRequest request: NSURLRequest) {
         trackingRequestsArray.append(request)
         if !timer.valid {
-            timer = NSTimer.scheduledTimerWithTimeInterval(Constants.batchFiringTimeInterval, target: self, selector: "sendAllQueuedRequests", userInfo: nil, repeats: true)
+            timer = NSTimer.scheduledTimerWithTimeInterval(batchFiringTimeInterval, target: self, selector: "sendAllQueuedRequests", userInfo: nil, repeats: true)
         }
     }
     
