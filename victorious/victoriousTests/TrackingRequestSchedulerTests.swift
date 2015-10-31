@@ -11,14 +11,14 @@ import Nocilla
 @testable import victorious
 
 class TrackingRequestSchedulerTests: XCTestCase {
-    private struct URLRequestRecord {
+    private struct TrackingRequestRecord {
         var request: NSURLRequest {
             return NSURLRequest(URL: NSURL(string: urlString)!)
         }
         var urlString: String
-        var hasFired: Bool
+        var hasFired = false
     }
-    private var trackingRequestRecords = [URLRequestRecord]()
+    private var trackingRequestRecords = [TrackingRequestRecord]()
     private let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
     
     override func setUp() {
@@ -26,9 +26,9 @@ class TrackingRequestSchedulerTests: XCTestCase {
         
         LSNocilla.sharedInstance().start()
         
-        trackingRequestRecords.append(URLRequestRecord(urlString: "http://www.google.com", hasFired: false))
-        trackingRequestRecords.append(URLRequestRecord(urlString: "http://www.apple.com", hasFired: false))
-        trackingRequestRecords.append(URLRequestRecord(urlString: "http://www.yahoo.com", hasFired: false))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.google.com", hasFired: false))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.apple.com", hasFired: false))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.yahoo.com", hasFired: false))
     }
     
     override func tearDown() {
@@ -39,16 +39,17 @@ class TrackingRequestSchedulerTests: XCTestCase {
     }
     
     func testBatchFiringTrackingRequests() {
+        requestScheduler.addRequestToArray(trackingRequest: NSURLRequest(URL: NSURL(string: "http:www.nba.com")!))
+        
         for var record in trackingRequestRecords {
             stubRequest("GET", record.urlString).andDo{ (header: AutoreleasingUnsafeMutablePointer<NSDictionary?>, status: UnsafeMutablePointer<Int>, body: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) -> Void in
                 record.hasFired = true
             }
             requestScheduler.addRequestToArray(trackingRequest: record.request)
         }
-        
-        NSThread.sleepForTimeInterval(3)
-        for record in trackingRequestRecords {
-            XCTAssert(record.hasFired, "tracking request to \(record.urlString) was not successfully sent")
+        //TODO
+        for result in trackingRequestRecords {
+            XCTAssertTrue(result.hasFired, "tracking request to \(result.urlString) was not successfully sent")
         }
     }
 }
