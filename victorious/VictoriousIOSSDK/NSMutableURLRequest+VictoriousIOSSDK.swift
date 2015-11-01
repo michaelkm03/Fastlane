@@ -13,36 +13,43 @@ import Foundation
 import UIKit
 #endif
 
-/// A type that provides user authorization information (user ID, token, etc)
-public protocol UserAuthorizationProvider {
+/// Encapsulates information needed to execute authenticated requests to the Victorious API
+public struct AuthenticationContext {
     /// The user ID, as returned by a successful login or account create call.
-    var userID: Int64 { get }
+    let userID: Int64
     
     /// An authorization token, as returned by a successful login or account create call.
-    var token: String { get }
+    let token: String
+    
+    public init(userID: Int64, token: String) {
+        self.userID = userID
+        self.token = token
+    }
 }
 
-/// If no authorization information is available (because the user is not logged in and/or the endpoint
-/// in use does not require authentication), this struct provides the default values that the server
+/// If no authentication information is available (because the user is not logged in and/or the endpoint
+/// in use does not require authentication), these are the default values that the server
 /// expects in this case.
-private struct DefaultAuthorizationProvider: UserAuthorizationProvider {
-    let userID: Int64 = 0
-    let token = ""
-}
+private let defaultAuthenticationContext = AuthenticationContext(userID: 0, token: "")
 
-/// A type that provides client authentication information. In contract to *user* authentication,
-/// which authenticates the person *using* the app, this information authenticates the app 
-/// itself to the Victorious API.
-public protocol ClientAuthorizationProvider {
+/// Encapsulates some basic information that is required in 
+/// order to execute a request to the Victorious API.
+public struct RequestContext {
     /// An ID that identifies this application to the Victorious API
-    var appID: Int { get }
+    public let appID: Int
     
     /// The value of UIDevice.currentDevice().identifierForVendor, or if UIDevice is
     /// unavailable on your platform, any UUID that identifies this device.
-    var deviceID: String { get }
+    public let deviceID: String
     
     /// The value of CFBundleVersion in the application's Info.plist file
-    var buildNumber: String { get }
+    public let buildNumber: String
+    
+    public init(appID: Int, deviceID: String, buildNumber: String) {
+        self.appID = appID
+        self.deviceID = deviceID
+        self.buildNumber = buildNumber
+    }
 }
 
 private struct HTTPHeader {
@@ -68,13 +75,13 @@ extension NSMutableURLRequest {
     
     /// Sets the "Authorization" header appropriately for Victorious API requests. Since the Date and User-Agent headers are
     /// used in calculating the correct Authentication header, this method calculates and sets those, too.
-    public func vsdk_setAuthorizationHeader(clientAuthorizationProvider clientAuthorizationProvider: ClientAuthorizationProvider, userAuthorizationProvider: UserAuthorizationProvider = DefaultAuthorizationProvider()) {
+    public func vsdk_setAuthorizationHeader(requestContext requestContext: RequestContext, authenticationContext: AuthenticationContext = defaultAuthenticationContext) {
         
         let currentDate = NSMutableURLRequest.dateFormatter.stringFromDate(NSDate())
         setValue(currentDate, forHTTPHeaderField: HTTPHeader.date)
         
-        let previousUserAgent = valueForHTTPHeaderField(HTTPHeader.userAgent) ?? "victorious/\(clientAuthorizationProvider.buildNumber)"
-        let newUserAgent = "\(previousUserAgent) aid:\(clientAuthorizationProvider.appID) uuid:\(clientAuthorizationProvider.deviceID) build:\(clientAuthorizationProvider.buildNumber)"
+        let previousUserAgent = valueForHTTPHeaderField(HTTPHeader.userAgent) ?? "victorious/\(requestContext.buildNumber)"
+        let newUserAgent = "\(previousUserAgent) aid:\(requestContext.appID) uuid:\(requestContext.deviceID) build:\(requestContext.buildNumber)"
         setValue(newUserAgent, forHTTPHeaderField: HTTPHeader.userAgent)
         
         var path: String = ""
@@ -83,8 +90,8 @@ extension NSMutableURLRequest {
            let percentEncodedPath = urlComponents.percentEncodedPath {
             path = percentEncodedPath
         }
-        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(userAuthorizationProvider.token)\(self.HTTPMethod)")
-        setValue("Basic \(userAuthorizationProvider.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
+        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.HTTPMethod)")
+        setValue("Basic \(authenticationContext.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
     }
     
     /// Sets the value of the "X-Client-Platform" header to a constant value

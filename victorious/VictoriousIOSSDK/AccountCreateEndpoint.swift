@@ -23,7 +23,7 @@ public enum NewAccountCredentials {
 /// The endpoint that creates a new account, or logs into an existing social (Facebook/Twitter) account.
 ///
 /// Path: /api/account/create
-public struct AccountCreateEndpoint: Endpoint {
+public struct AccountCreateEndpoint: RequestType {
     /// The credentials that will be used to create a new account
     public let credentials: NewAccountCredentials
     
@@ -66,7 +66,7 @@ public struct AccountCreateEndpoint: Endpoint {
            let user = User(json: payload) {
             return AccountCreateResponse(token: token, user: user, newUser: payload["new_user"].bool ?? true)
         }
-        throw EndpointResponseParsingError()
+        throw ResponseParsingError()
     }
     
     private static let basePath = NSURL(string: "/api/account/create")!
