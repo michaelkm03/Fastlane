@@ -16,7 +16,6 @@ class TrackingRequestSchedulerTests: XCTestCase {
             return NSURLRequest(URL: NSURL(string: urlString)!)
         }
         var urlString: String
-        var hasFired = false
     }
     private var trackingRequestRecords = [TrackingRequestRecord]()
     private let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
@@ -26,9 +25,9 @@ class TrackingRequestSchedulerTests: XCTestCase {
         
         LSNocilla.sharedInstance().start()
         
-        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.google.com", hasFired: false))
-        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.apple.com", hasFired: false))
-        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.yahoo.com", hasFired: false))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.google.com"))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.apple.com"))
+        trackingRequestRecords.append(TrackingRequestRecord(urlString: "http://www.yahoo.com"))
     }
     
     override func tearDown() {
@@ -39,17 +38,21 @@ class TrackingRequestSchedulerTests: XCTestCase {
     }
     
     func testBatchFiringTrackingRequests() {
-        requestScheduler.addRequestToArray(trackingRequest: NSURLRequest(URL: NSURL(string: "http:www.nba.com")!))
+        let async = VAsyncTestHelper()
+        var firedRequestsCount = 0
         
-        for var record in trackingRequestRecords {
-            stubRequest("GET", record.urlString).andDo{ (header: AutoreleasingUnsafeMutablePointer<NSDictionary?>, status: UnsafeMutablePointer<Int>, body: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) -> Void in
-                record.hasFired = true
+        for index in 0..<trackingRequestRecords.count {
+            let record = trackingRequestRecords[index]
+            stubRequest("GET", record.urlString).andDo{ [unowned self] (header: AutoreleasingUnsafeMutablePointer<NSDictionary?>, status: UnsafeMutablePointer<Int>, body: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) -> Void in
+                firedRequestsCount++
+                if index == self.trackingRequestRecords.count - 1 {
+                    async.signal()
+                }
             }
             requestScheduler.addRequestToArray(trackingRequest: record.request)
         }
-        //TODO
-        for result in trackingRequestRecords {
-            XCTAssertTrue(result.hasFired, "tracking request to \(result.urlString) was not successfully sent")
-        }
+        
+        async.waitForSignal(3)
+        XCTAssert(firedRequestsCount == trackingRequestRecords.count, "Some requests are not successfully fired")
     }
 }

@@ -2037,6 +2037,7 @@
 		676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
+		6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victoriousTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6798,6 +6799,7 @@
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */,
 				6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */,
+				6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -10553,7 +10555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11359,7 +11361,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11708,7 +11710,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
@@ -11736,7 +11738,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11868,7 +11870,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
