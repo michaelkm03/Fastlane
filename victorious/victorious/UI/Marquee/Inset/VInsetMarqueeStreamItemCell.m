@@ -44,6 +44,9 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     self.contentContainer.layer.shadowOffset = kShadowOffset;
     self.contentContainer.layer.shadowRadius = kShadowRadius;
     self.contentContainer.layer.shadowOpacity = kShadowOpacity;
+    self.contentContainer.layer.masksToBounds = NO;
+    self.contentContainer.layer.shouldRasterize = YES;
+    self.contentContainer.layer.rasterizationScale = [UIScreen mainScreen].scale;
     
     self.overlayContainer.backgroundColor = [UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity];
 }
