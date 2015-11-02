@@ -336,6 +336,8 @@
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */; };
 		03BC6FAE1BE6F83B00CFCBEE /* PageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FAD1BE6F83B00CFCBEE /* PageableTests.swift */; };
+		03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */; };
+		03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */; };
 		03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */; };
@@ -1982,6 +1984,8 @@
 		03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadProgressViewController.m; sourceTree = "<group>"; };
 		03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		03BC6FAD1BE6F83B00CFCBEE /* PageableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageableTests.swift; sourceTree = "<group>"; };
+		03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardPaginator.swift; sourceTree = "<group>"; };
+		03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardPaginatorTests.swift; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -4519,6 +4523,7 @@
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				03314F3F1BE3E6E800EE74FD /* Request.swift */,
+				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
@@ -4536,6 +4541,7 @@
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03BC6FAD1BE6F83B00CFCBEE /* PageableTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
+				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 			);
 			path = VictoriousIOSSDKTests;
@@ -9229,6 +9235,7 @@
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
+				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9237,6 +9244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
