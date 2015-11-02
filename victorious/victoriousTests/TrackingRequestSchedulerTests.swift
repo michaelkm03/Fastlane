@@ -18,7 +18,6 @@ class TrackingRequestSchedulerTests: XCTestCase {
         var urlString: String
     }
     private var trackingRequestRecords = [TrackingRequestRecord]()
-    private let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
     
     override func setUp() {
         super.setUp()
@@ -40,10 +39,11 @@ class TrackingRequestSchedulerTests: XCTestCase {
     func testBatchFiringTrackingRequests() {
         let async = VAsyncTestHelper()
         var firedRequestsCount = 0
+        let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
         
         for index in 0..<trackingRequestRecords.count {
             let record = trackingRequestRecords[index]
-            stubRequest("GET", record.urlString).andDo{ [unowned self] (header: AutoreleasingUnsafeMutablePointer<NSDictionary?>, status: UnsafeMutablePointer<Int>, body: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) -> Void in
+            stubRequest("GET", record.urlString).andDo{ [unowned self] (_: AutoreleasingUnsafeMutablePointer<NSDictionary?>, _: UnsafeMutablePointer<Int>, _: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) in
                 firedRequestsCount++
                 if index == self.trackingRequestRecords.count - 1 {
                     async.signal()
@@ -54,5 +54,20 @@ class TrackingRequestSchedulerTests: XCTestCase {
         
         async.waitForSignal(3)
         XCTAssert(firedRequestsCount == trackingRequestRecords.count, "Some requests are not successfully fired")
+    }
+    
+    func testTrackingRequestsShouldNotFire() {
+        var firedRequestsCount = 0
+        let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 10)
+        
+        for index in 0..<trackingRequestRecords.count {
+            let record = trackingRequestRecords[index]
+            stubRequest("GET", record.urlString).andDo{ (_: AutoreleasingUnsafeMutablePointer<NSDictionary?>, _: UnsafeMutablePointer<Int>, _: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) in
+                firedRequestsCount++
+            }
+            requestScheduler.addRequestToArray(trackingRequest: record.request)
+        }
+        
+        XCTAssertTrue(firedRequestsCount == 0, "No requests should be fired at this time")
     }
 }
