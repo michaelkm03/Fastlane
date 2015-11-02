@@ -23,7 +23,7 @@ INFOPLIST="$APP_BUNDLE/Info.plist"
 # Facebook
 
 FB_APPID=$(/usr/libexec/PlistBuddy -c "Print :FacebookAppID" "$INFOPLIST" 2> /dev/null)
-DISPLAY_NAME=$(/usr/libexec/PlistBuddy -c "Print :CFBundleDisplayName" "$INFOPLIST" 2> /dev/null | sed 's/[^a-zA-Z0-9]//')
+DISPLAY_NAME=$(/usr/libexec/PlistBuddy -c "Print :CFBundleDisplayName" "$INFOPLIST" 2> /dev/null | sed 's/[^a-zA-Z0-9]//g')
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes Array" "$INFOPLIST"
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes: string fb${FB_APPID}${DISPLAY_NAME}" "$INFOPLIST"
 /usr/libexec/PlistBuddy -c "Add FacebookUrlSchemeSuffix string $DISPLAY_NAME" "$INFOPLIST"
