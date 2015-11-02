@@ -168,7 +168,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     }
     else
     {
-        return self.rootNavigationController.innerNavigationController;
+        return self.internalTabBarController;
     }
 }
 
@@ -180,7 +180,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     }
     else
     {
-        return self.rootNavigationController.innerNavigationController;
+        return self.internalTabBarController;
     }
 }
 
