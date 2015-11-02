@@ -42,19 +42,6 @@ public protocol PaginatorType {
     func parsePageInformationFromResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) -> (nextPage: ContinuationType?, previousPage: ContinuationType?)
 }
 
-public struct PageableResponse<T, R> {
-    public let nextPage: T?
-    public let previousPage: T?
-    public let response: R
-    
-    public init(nextPage: T?, previousPage: T?, response: R)
-    {
-        self.nextPage = nextPage
-        self.previousPage = previousPage
-        self.response = response
-    }
-}
-
 extension Pageable {
     public var urlRequest: NSURLRequest {
         return paginator.paginatedRequestWithRequest(pageableURLRequest)
