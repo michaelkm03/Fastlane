@@ -108,23 +108,24 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
-    // Make sure we're listening for interstitial events
-    [[InterstitialManager sharedInstance] setInterstitialListener:self];
-    
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [self configureTabBar];
     }
+    
+    // Make sure we're listening for interstitial events
+    [[InterstitialManager sharedInstance] setInterstitialListener:self];
 }
 
 - (void)configureTabBar
 {
-    // Configure Tab Bar
     self.internalTabBarController = [[NavigationBarHiddenTabViewController alloc] init];
     self.internalTabBarController.delegate = self;
     self.tabShim = [self.dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
-    
     [self.internalTabBarController.tabBar setTintColor:self.tabShim.selectedIconColor];
+    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
+    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:self.internalTabBarController.tabBar];
+
     VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
@@ -132,9 +133,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         self.internalTabBarController.tabBar.translucent = NO;
         self.internalTabBarController.tabBar.barTintColor = solidColorBackground.backgroundColor;
     }
-    
-    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
-    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:self.internalTabBarController.tabBar];
     
     [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
 }
