@@ -406,6 +406,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidPlay:(id<VVideoPlayer> __nonnull)videoPlayer
 {
     [super videoPlayerDidPlay:videoPlayer];
+    self.state = VVideoStatePlaying;
 }
 
 - (void)videoPlayerDidPause:(id<VVideoPlayer> __nonnull)videoPlayer
