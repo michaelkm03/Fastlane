@@ -69,13 +69,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self = [super initWithNibName:nil bundle:nil];
     if ( self != nil )
     {
-        _internalTabBarController = [[NavigationBarHiddenTabViewController alloc] init];
-        _internalTabBarController.delegate = self;
         _rootNavigationController = [[VNavigationController alloc] init];
-        _rootNavigationController.innerNavigationController.viewControllers = @[_internalTabBarController];
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
-        _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
         _launchOperationQueue = [[NSOperationQueue alloc] init];
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
@@ -112,7 +108,22 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
+    // Make sure we're listening for interstitial events
+    [[InterstitialManager sharedInstance] setInterstitialListener:self];
+    
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    {
+        [self configureTabBar];
+    }
+}
+
+- (void)configureTabBar
+{
     // Configure Tab Bar
+    self.internalTabBarController = [[NavigationBarHiddenTabViewController alloc] init];
+    self.internalTabBarController.delegate = self;
+    self.tabShim = [self.dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
+    
     [self.internalTabBarController.tabBar setTintColor:self.tabShim.selectedIconColor];
     VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
@@ -121,14 +132,11 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         self.internalTabBarController.tabBar.translucent = NO;
         self.internalTabBarController.tabBar.barTintColor = solidColorBackground.backgroundColor;
     }
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
-    {
-        self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
-    }
-    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:_internalTabBarController.tabBar];
     
-    // Make sure we're listening for interstitial events
-    [[InterstitialManager sharedInstance] setInterstitialListener:self];
+    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
+    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:self.internalTabBarController.tabBar];
+    
+    [self.rootNavigationController.innerNavigationController pushViewController:self.internalTabBarController animated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -432,8 +440,8 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (void)hideLoginViewController:(void (^ __nonnull)(void))completion
 {
-    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
-
+    [self configureTabBar];
+    
     [self.autoShowLoginViewController willMoveToParentViewController:nil];
     [UIView animateWithDuration:0.5
                           delay:0.0
@@ -452,6 +460,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
          self.autoShowLoginViewController = nil;
          [self setNeedsStatusBarAppearanceUpdate];
          completion();
+         
      }];
 }
 
