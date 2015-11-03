@@ -71,110 +71,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Public Methods
 
-- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
-    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
-                                              completion:^(ACAccount *twitterAccount)
-     {
-         if (!twitterAccount)
-         {
-             // Either no twitter permissions or no account was selected
-             [hud hide:YES];
-             completion(NO, NO);
-             return;
-         }
-         
-         [[[VUserManager alloc] init] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                      onCompletion:^(VUser *user, BOOL isNewUser)
-          {
-              dispatch_async(dispatch_get_main_queue(), ^
-                             {
-                                 [hud hide:YES];
-                                 completion(YES, isNewUser);
-                             });
-
-          }
-                                                             onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-          {
-              dispatch_async(dispatch_get_main_queue(), ^
-                             {
-                                 UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                                                message:NSLocalizedString(@"TwitterTroubleshooting", @"")
-                                                                                                   andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-                                 [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
-                                 
-                                 [hud hide:YES];
-                                 completion(NO, NO);
-                             });
-          }];
-     }];
-}
-
-- (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-            completion:(void(^)(BOOL success, NSError *error))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
-    [[[VUserManager alloc] init] loginViaEmail:email
-                                      password:password
-                                  onCompletion:^(VUser *user, BOOL isNewUser)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
-                            completion(YES, nil);
-                        });
-     }
-                                         onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
-                            completion(NO, error);
-                        });
-     }];
-}
-
-- (void)registerWithEmail:(NSString *)email
-                 password:(NSString *)password
-               completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
-{
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
-                                              animated:YES];
-    [[[VUserManager alloc] init] createEmailAccount:email
-                                           password:password
-                                           userName:nil
-                                       onCompletion:^(VUser *user, BOOL isNewUser)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
-                            completion(YES, completeProfile, nil);
-                        });
-     }
-                                              onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(NO, NO, error);
-                        });
-     }];
-}
-
 - (void)setUsername:(NSString *)username
          completion:(void (^)(BOOL success, NSError *error))completion
 {
@@ -382,11 +278,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [hud hide:YES];
-         [self loginWithEmail:self.resetPasswordEmail
-                     password:password
-                   completion:^(BOOL success, NSError *error)
+         VUserManager *userManager = [[VUserManager alloc] init];
+         [userManager loginViaEmail:self.resetPasswordEmail password:password onCompletion:^(VUser *user, BOOL isNewUser)
           {
-              completion(success, error);
+              completion(YES, nil);
+          } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+          {
+              completion(NO, error);
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)

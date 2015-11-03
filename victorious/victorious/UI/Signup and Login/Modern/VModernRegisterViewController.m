@@ -162,14 +162,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.passwordField clearValidation];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    self.emailField.text = nil;
-    self.passwordField.text = nil;
-}
-
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;
