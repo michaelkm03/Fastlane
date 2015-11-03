@@ -14,6 +14,7 @@
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VStatusBarStyle.h"
+#import "VObjectManager+Login.h"
 
 // Views + Helpers
 #import "UIView+AutoLayout.h"
@@ -120,8 +121,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         self.internalTabBarController.tabBar.translucent = NO;
         self.internalTabBarController.tabBar.barTintColor = solidColorBackground.backgroundColor;
     }
-    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
-    
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    {
+        self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
+    }
     self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:_internalTabBarController.tabBar];
     
     // Make sure we're listening for interstitial events
@@ -429,6 +432,8 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (void)hideLoginViewController:(void (^ __nonnull)(void))completion
 {
+    self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
+
     [self.autoShowLoginViewController willMoveToParentViewController:nil];
     [UIView animateWithDuration:0.5
                           delay:0.0
