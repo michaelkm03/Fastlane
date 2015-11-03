@@ -1,5 +1,5 @@
 //
-//  AccountCreateEndpointTests.swift
+//  AccountCreateRequestTests.swift
 //  VictoriousIOSSDK
 //
 //  Created by Josh Hinman on 10/25/15.
@@ -10,15 +10,15 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class AccountCreateEndpointTests: XCTestCase {
+class AccountCreateRequestTests: XCTestCase {
     
     func testEmailRequest() {
         let mockEmail = "joe@abc.com"
         let mockPassword = "hunter2"
         let credentials = NewAccountCredentials.EmailPassword(email: mockEmail, password: mockPassword)
         
-        let accountCreateEndpoint = AccountCreateEndpoint(credentials: credentials)
-        let request = accountCreateEndpoint.urlRequest
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let request = accountCreateRequest.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/account/create")
         
@@ -36,8 +36,8 @@ class AccountCreateEndpointTests: XCTestCase {
         let mockToken = "abcxyz"
         let credentials = NewAccountCredentials.Facebook(accessToken: mockToken)
         
-        let accountCreateEndpoint = AccountCreateEndpoint(credentials: credentials)
-        let request = accountCreateEndpoint.urlRequest
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let request = accountCreateRequest.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/account/create/via_facebook_modern")
         
@@ -56,8 +56,8 @@ class AccountCreateEndpointTests: XCTestCase {
         let mockTwitterID = "31337"
         let credentials = NewAccountCredentials.Twitter(accessToken: mockToken, accessSecret: mockSecret, twitterID: mockTwitterID)
         
-        let accountCreateEndpoint = AccountCreateEndpoint(credentials: credentials)
-        let request = accountCreateEndpoint.urlRequest
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let request = accountCreateRequest.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/account/create/via_twitter_modern")
         
@@ -73,7 +73,7 @@ class AccountCreateEndpointTests: XCTestCase {
     }
     
     func testResponseParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("AccountCreateEndpoint", withExtension: "json"),
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("AccountCreateResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
@@ -83,10 +83,10 @@ class AccountCreateEndpointTests: XCTestCase {
         let mockPassword = "hunter2"
         let credentials = NewAccountCredentials.EmailPassword(email: mockEmail, password: mockPassword)
         
-        let accountCreateEndpoint = AccountCreateEndpoint(credentials: credentials)
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         
         do {
-            let response = try accountCreateEndpoint.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let response = try accountCreateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "f08745e841c878da64951f7bb3ceb114df27cfda")
             XCTAssertTrue(response.newUser)
             XCTAssertEqual(response.user.userID, 1760702)

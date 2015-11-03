@@ -1,5 +1,5 @@
 //
-//  AccountCreateEndpoint.swift
+//  AccountCreateRequest.swift
 //  VictoriousIOSSDK
 //
 //  Created by Josh Hinman on 10/24/15.
@@ -23,12 +23,12 @@ public enum NewAccountCredentials {
 /// The endpoint that creates a new account, or logs into an existing social (Facebook/Twitter) account.
 ///
 /// Path: /api/account/create
-public struct AccountCreateEndpoint: Endpoint {
+public struct AccountCreateRequest: RequestType {
     /// The credentials that will be used to create a new account
     public let credentials: NewAccountCredentials
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: AccountCreateEndpoint.basePath)
+        let urlRequest = NSMutableURLRequest(URL: AccountCreateRequest.basePath)
         urlRequest.HTTPMethod = "POST"
         
         switch credentials {
@@ -66,7 +66,7 @@ public struct AccountCreateEndpoint: Endpoint {
            let user = User(json: payload) {
             return AccountCreateResponse(token: token, user: user, newUser: payload["new_user"].bool ?? true)
         }
-        throw EndpointResponseParsingError()
+        throw ResponseParsingError()
     }
     
     private static let basePath = NSURL(string: "/api/account/create")!

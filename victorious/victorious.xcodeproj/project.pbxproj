@@ -120,19 +120,17 @@
 		03314F311BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
 		03314F321BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		03314F401BE3E6E800EE74FD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F3F1BE3E6E800EE74FD /* Request.swift */; };
-		03314F421BE3E6F400EE74FD /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F411BE3E6F400EE74FD /* RequestTests.swift */; };
-		03314F4E1BE40F0100EE74FD /* AccountCreateEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */; };
+		03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */; };
 		03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */; };
-		03314F501BE40F0100EE74FD /* EndpointRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */; };
+		03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F451BE40F0100EE74FD /* RequestTypeTests.swift */; };
 		03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F471BE40F0100EE74FD /* ImageAssetTests.swift */; };
 		03314F521BE40F0100EE74FD /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F481BE40F0100EE74FD /* UserTests.swift */; };
 		03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */; };
-		03314F541BE40F0100EE74FD /* AccountCreateEndpoint.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */; };
+		03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */; };
 		03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4C1BE40F0100EE74FD /* ImageAsset.json */; };
 		03314F561BE40F0100EE74FD /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
-		03314F611BE40F3200EE74FD /* AccountCreateEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */; };
+		03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */; };
 		03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */; };
-		03314F631BE40F3200EE74FD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F591BE40F3200EE74FD /* Endpoint.swift */; };
 		03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5B1BE40F3200EE74FD /* ImageAsset.swift */; };
 		03314F651BE40F3200EE74FD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5C1BE40F3200EE74FD /* User.swift */; };
 		03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */; };
@@ -1592,19 +1590,17 @@
 		03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VictoriousIOSSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03314F2E1BE3E2DF00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03314F3F1BE3E6E800EE74FD /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		03314F411BE3E6F400EE74FD /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
-		03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateEndpointTests.swift; sourceTree = "<group>"; };
+		03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateRequestTests.swift; sourceTree = "<group>"; };
 		03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
-		03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointRequestTests.swift; sourceTree = "<group>"; };
+		03314F451BE40F0100EE74FD /* RequestTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTypeTests.swift; sourceTree = "<group>"; };
 		03314F471BE40F0100EE74FD /* ImageAssetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAssetTests.swift; sourceTree = "<group>"; };
 		03314F481BE40F0100EE74FD /* UserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneWayRequestTests.swift; sourceTree = "<group>"; };
-		03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccountCreateEndpoint.json; sourceTree = "<group>"; };
+		03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccountCreateResponse.json; sourceTree = "<group>"; };
 		03314F4C1BE40F0100EE74FD /* ImageAsset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageAsset.json; sourceTree = "<group>"; };
 		03314F4D1BE40F0100EE74FD /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
-		03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateEndpoint.swift; sourceTree = "<group>"; };
+		03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateRequest.swift; sourceTree = "<group>"; };
 		03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedString.swift"; sourceTree = "<group>"; };
-		03314F591BE40F3200EE74FD /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		03314F5B1BE40F3200EE74FD /* ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		03314F5C1BE40F3200EE74FD /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+VictoriousIOSSDK.swift"; sourceTree = "<group>"; };
@@ -4506,9 +4502,8 @@
 		03314F1D1BE3E2DE00EE74FD /* VictoriousIOSSDK */ = {
 			isa = PBXGroup;
 			children = (
-				03314F571BE40F3200EE74FD /* AccountCreateEndpoint.swift */,
+				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
-				03314F591BE40F3200EE74FD /* Endpoint.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
@@ -4524,13 +4519,12 @@
 		03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				03314F431BE40F0100EE74FD /* AccountCreateEndpointTests.swift */,
+				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
-				03314F451BE40F0100EE74FD /* EndpointRequestTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				03314F461BE40F0100EE74FD /* Models */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
-				03314F411BE3E6F400EE74FD /* RequestTests.swift */,
+				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 			);
 			path = VictoriousIOSSDKTests;
@@ -4548,7 +4542,7 @@
 		03314F4A1BE40F0100EE74FD /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				03314F4B1BE40F0100EE74FD /* AccountCreateEndpoint.json */,
+				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
@@ -8556,7 +8550,7 @@
 			files = (
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
-				03314F541BE40F0100EE74FD /* AccountCreateEndpoint.json in Resources */,
+				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9218,8 +9212,7 @@
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
-				03314F611BE40F3200EE74FD /* AccountCreateEndpoint.swift in Sources */,
-				03314F631BE40F3200EE74FD /* Endpoint.swift in Sources */,
+				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9230,11 +9223,10 @@
 			files = (
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
-				03314F501BE40F0100EE74FD /* EndpointRequestTests.swift in Sources */,
+				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
-				03314F421BE3E6F400EE74FD /* RequestTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
-				03314F4E1BE40F0100EE74FD /* AccountCreateEndpointTests.swift in Sources */,
+				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
