@@ -893,7 +893,6 @@
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
-		C30546B41BD9B2AD005F6712 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
 		C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */; };
@@ -904,6 +903,7 @@
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
+		C30E3FA21BE959C200184F57 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */; };
 		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; };
 		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; };
@@ -10107,7 +10107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBEA19B91BC4A76C00878B18 /* LoginScreenTests.swift in Sources */,
-				C30546B41BD9B2AD005F6712 /* VAutomation.m in Sources */,
+				C30E3FA21BE959C200184F57 /* VAutomation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
