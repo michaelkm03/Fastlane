@@ -96,6 +96,7 @@
 #import "VLightweightContentViewController.h"
 #import "VLinearGradientView.h"
 #import "VListicleView.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "VMarqueeController.h"
 #import "VMediaAttachmentPresenter.h"
 #import "VMessage+Fetcher.h"

@@ -86,3 +86,15 @@ extern NSString * const VAutomationIdentifierCommentBarSendButton;
 extern NSString * const VAutomationIdentifierCommentBarClearButton;
 
 extern NSString * const VAutomationIdentifierMediaGalleryCollection;
+
+extern NSString * const VAutomationAlwaysShowLoginScreenKey;
+
+@interface VAutomation : NSObject
+
+/*
+ * Whether or not the app should always show the login screen, regardless of a previously signed in user.
+ * Used for automated UI testing.
+*/
++ (BOOL)shouldAlwaysShowLoginScreen;
+
+@end
