@@ -81,17 +81,9 @@ class AlertParser: NSObject {
             let levelNumber = levelInfo["level"] as? Int,
             let progressPercentage = levelInfo["progress"] as? Int,
             let title = paramsDict["title"] as? String,
+            let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
             let description = paramsDict["description"] as? String {
-                
-                // Icon URL is optional
-                var parsedIconURL: NSURL?
-            
-                if let iconURLString = paramsDict["icon"] as? String,
-                    let iconURL = NSURL(string: iconURLString) {
-                        parsedIconURL = iconURL
-                }
-                
-                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icon: parsedIconURL)
+                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icons: icons)
         }
         return nil
     }

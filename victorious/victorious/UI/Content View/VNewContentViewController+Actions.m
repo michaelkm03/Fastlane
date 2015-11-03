@@ -262,7 +262,10 @@
     [actionSheetViewController addActionItems:actionItems];
     
     // Pause video when presenting action sheet
-    [self.videoPlayer pause];
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        [self.videoPlayer pause];
+    }
     
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
 }
