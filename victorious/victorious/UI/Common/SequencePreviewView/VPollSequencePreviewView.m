@@ -99,8 +99,30 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL];
-    [self.pollView.answerBImageView sd_setImageWithURL:self.answerB.previewMediaURL];
+    
+    __block NSInteger count = 0;
+    
+    __weak typeof(self) weakSelf = self;
+    [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        count++;
+        if (count == 2)
+        {
+            strongSelf.readyForDisplay = YES;
+        }
+    }];
+    
+    [self.pollView.answerBImageView sd_setImageWithURL:self.answerB.previewMediaURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        count++;
+        if (count == 2)
+        {
+            strongSelf.readyForDisplay = YES;
+        }
+    }];
     
     self.pollView.playIconA.hidden = ![self.answerA.mediaUrl v_hasVideoExtension];
     self.pollView.playIconB.hidden = ![self.answerB.mediaUrl v_hasVideoExtension];
