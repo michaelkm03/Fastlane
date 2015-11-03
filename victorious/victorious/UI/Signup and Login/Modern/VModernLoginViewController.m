@@ -192,14 +192,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.dependencyManager trackViewWillAppear:self];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    self.emailField.text = nil;
-    self.passwordField.text = nil;
-}
-
 #pragma mark - Notifications
 
 - (void)textFieldDidChange:(NSNotification *)notification
