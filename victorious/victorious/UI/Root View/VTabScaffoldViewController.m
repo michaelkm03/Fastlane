@@ -439,7 +439,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)hideLoginViewController:(void (^ __nonnull)(void))completion
 {
     [self configureTabBar];
-    
     [self.autoShowLoginViewController willMoveToParentViewController:nil];
     [UIView animateWithDuration:0.5
                           delay:0.0
@@ -458,7 +457,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
          self.autoShowLoginViewController = nil;
          [self setNeedsStatusBarAppearanceUpdate];
          completion();
-         
      }];
 }
 
