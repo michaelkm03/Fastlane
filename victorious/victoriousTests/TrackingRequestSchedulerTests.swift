@@ -49,7 +49,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
                     async.signal()
                 }
             }
-            requestScheduler.addRequestToArray(trackingRequest: record.request)
+            requestScheduler.scheduleRequest(record.request)
         }
         
         async.waitForSignal(3)
@@ -65,7 +65,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
             stubRequest("GET", record.urlString).andDo{ (_: AutoreleasingUnsafeMutablePointer<NSDictionary?>, _: UnsafeMutablePointer<Int>, _: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) in
                 firedRequestsCount++
             }
-            requestScheduler.addRequestToArray(trackingRequest: record.request)
+            requestScheduler.scheduleRequest(record.request)
         }
         
         XCTAssertTrue(firedRequestsCount == 0, "No requests should be fired at this time")
