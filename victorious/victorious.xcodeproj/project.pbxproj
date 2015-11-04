@@ -119,7 +119,7 @@
 		03314F261BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
 		03314F311BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
 		03314F321BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		03314F401BE3E6E800EE74FD /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F3F1BE3E6E800EE74FD /* Request.swift */; };
+		03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F3F1BE3E6E800EE74FD /* RequestType.swift */; };
 		03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */; };
 		03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */; };
 		03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F451BE40F0100EE74FD /* RequestTypeTests.swift */; };
@@ -1598,7 +1598,7 @@
 		03314F201BE3E2DE00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VictoriousIOSSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03314F2E1BE3E2DF00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03314F3F1BE3E6E800EE74FD /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		03314F3F1BE3E6E800EE74FD /* RequestType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
 		03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateRequestTests.swift; sourceTree = "<group>"; };
 		03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
 		03314F451BE40F0100EE74FD /* RequestTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTypeTests.swift; sourceTree = "<group>"; };
@@ -4528,7 +4528,7 @@
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
-				03314F3F1BE3E6E800EE74FD /* Request.swift */,
+				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
@@ -9248,7 +9248,7 @@
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				03BC6FB41BE83D5200CFCBEE /* SequenceLikersRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
-				03314F401BE3E6E800EE74FD /* Request.swift in Sources */,
+				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9264,7 +9264,6 @@
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
-				03BC6FAE1BE6F83B00CFCBEE /* PageableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

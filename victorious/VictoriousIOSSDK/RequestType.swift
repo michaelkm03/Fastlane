@@ -5,7 +5,6 @@
 //  Created by Josh Hinman on 10/12/15.
 //  Copyright © 2015 Victorious, Inc. All rights reserved.
 //
-// TODO: Rename this file
 
 import Foundation
 import SwiftyJSON
