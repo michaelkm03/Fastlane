@@ -208,12 +208,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     // Tap/Double Tap gestures
     [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
     
-    // Aspect ratio
-    self.videoPlayer.useAspectFit = YES;
-    
     // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
+        // Aspect ratio
+        self.videoPlayer.useAspectFit = YES;
+        
         self.largePlayButton.userInteractionEnabled = YES;
         if ( self.state == VVideoStateNotStarted )
         {
@@ -230,6 +230,9 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     else
     {
+        // Set proper aspect ratio for stream focus type
+        self.videoPlayer.useAspectFit = self.streamContentModeIsAspectFit;
+        
         self.largePlayButton.userInteractionEnabled = NO;
         if ( self.shouldAutoplay )
         {

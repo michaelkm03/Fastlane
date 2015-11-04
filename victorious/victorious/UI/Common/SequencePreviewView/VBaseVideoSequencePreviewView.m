@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) VAsset *asset;
 @property (nonatomic, strong, readwrite) UIView *videoContainer;
+@property (nonatomic, assign, readwrite) BOOL streamContentModeIsAspectFit;
 
 @end
 
@@ -379,6 +380,7 @@
 - (void)updateToFitContent:(BOOL)fit
 {
     self.videoPlayer.useAspectFit = fit;
+    self.streamContentModeIsAspectFit = fit;
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
