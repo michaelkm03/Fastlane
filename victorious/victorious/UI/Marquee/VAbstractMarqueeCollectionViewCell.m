@@ -77,6 +77,11 @@
 
 - (void)setFocusType:(VFocusType)focusType
 {
+    if (_focusType == focusType)
+    {
+        return;
+    }
+    
     _focusType = focusType;
     if ( focusType != VFocusTypeNone )
     {
