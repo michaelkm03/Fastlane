@@ -166,8 +166,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-    [self.requestScheduler addRequestToArrayWithTrackingRequest:request];
-    
+    [self.requestScheduler scheduleRequest:request];
     return YES;
 }
 

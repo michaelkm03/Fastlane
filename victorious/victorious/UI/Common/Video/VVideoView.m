@@ -233,7 +233,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     {
         [self.player replaceCurrentItemWithPlayerItem:playerItem];
     }
-
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AVPlayerItemDidPlayToEndTimeNotification

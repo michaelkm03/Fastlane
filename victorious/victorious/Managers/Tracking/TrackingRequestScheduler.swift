@@ -8,12 +8,15 @@
 
 import UIKit
 
-@objc class TrackingRequestScheduler:NSObject {
+/// This object collects tracking network requests and fire them in batch
+/// in a certain time interval (The interval is determined by property batchFiringTimeInterval)
+@objc class TrackingRequestScheduler: NSObject {
     
+    /// The interval (number of seconds) at which this scheduler batch fires tracking network requests
     var batchFiringTimeInterval = 30.0
     
     private var trackingRequestsArray = [NSURLRequest]()
-    private var timer = NSTimer()
+    private var timer = VTimerManager()
     private let requestQueue = dispatch_queue_create("TrackingRequestSchedulerQueue", DISPATCH_QUEUE_SERIAL)
 
     private struct Constants {
@@ -33,13 +36,16 @@ import UIKit
         }
     }
     
-    func addRequestToArray(trackingRequest request: NSURLRequest) {
+    /// Adds a request to `trackingRequestsArray` and send it out in next `sendAllQueuedRequests()`
+    func scheduleRequest(request: NSURLRequest) {
         trackingRequestsArray.append(request)
-        if !timer.valid {
-            timer = NSTimer.scheduledTimerWithTimeInterval(batchFiringTimeInterval, target: self, selector: "sendAllQueuedRequests", userInfo: nil, repeats: true)
+        if !timer.isValid() {
+            timer = VTimerManager.scheduledTimerManagerWithTimeInterval(batchFiringTimeInterval, target: self, selector: "sendAllQueuedRequests", userInfo: nil, repeats: true)
         }
     }
     
+    /// Sends out all the tracking network requests stored in `trackingRequestsArray`.
+    /// Waits for a short period of time (`singleFiringTimeInterval`) after each request to preserve order
     func sendAllQueuedRequests() {
         while trackingRequestsArray.count > 0 {
             let request = trackingRequestsArray.removeFirst()
