@@ -121,7 +121,6 @@
 		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		034912711B7EA5E700EA8A07 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
-		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0352FC691B729B0300DB6EAB /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
@@ -188,8 +187,6 @@
 		036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38171A0C4DE90014DF66 /* Arvo-Regular.ttf */; };
 		036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38191A0C4DE90014DF66 /* Bitter-Bold.ttf */; };
 		036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381A1A0C4DE90014DF66 /* Bitter-Regular.ttf */; };
-		036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */; };
-		036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */; };
 		036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F381F1A0C4DE90014DF66 /* DroidSans-Bold.ttf */; };
 		036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38201A0C4DE90014DF66 /* DroidSans.ttf */; };
 		036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38221A0C4DE90014DF66 /* JosefinSans-Bold.ttf */; };
@@ -202,7 +199,6 @@
 		036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F382F1A0C4DE90014DF66 /* Kreon-Regular.ttf */; };
 		036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38311A0C4DE90014DF66 /* Lato-Bold.ttf */; };
 		036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */; };
-		036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */; };
 		036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38361A0C4DE90014DF66 /* MavenPro-Bold.ttf */; };
 		036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38371A0C4DE90014DF66 /* MavenPro-Regular.ttf */; };
 		036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38391A0C4DE90014DF66 /* Merriweather-Bold.ttf */; };
@@ -217,7 +213,6 @@
 		036F38851A0C4DEA0014DF66 /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38461A0C4DE90014DF66 /* PlayfairDisplay-Regular.ttf */; };
 		036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */; };
 		036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */; };
-		036F38881A0C4DEA0014DF66 /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */; };
 		036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384C1A0C4DE90014DF66 /* PT_Serif-Web-Bold.ttf */; };
 		036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384D1A0C4DE90014DF66 /* PT_Serif-Web-Regular.ttf */; };
 		036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F384F1A0C4DE90014DF66 /* Raleway-Medium.ttf */; };
@@ -319,19 +314,11 @@
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
 		03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856419B42C9100E27D05 /* Impact.ttf */; };
 		03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */; };
-		03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */; };
 		03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */; };
-		03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857119B42C9100E27D05 /* Roboto-BoldItalic.ttf */; };
-		03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857219B42C9100E27D05 /* Roboto-Italic.ttf */; };
 		03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857319B42C9100E27D05 /* Roboto-Light.ttf */; };
-		03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857419B42C9100E27D05 /* Roboto-LightItalic.ttf */; };
 		03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857519B42C9100E27D05 /* Roboto-Medium.ttf */; };
-		03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857619B42C9100E27D05 /* Roboto-MediumItalic.ttf */; };
 		03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857719B42C9100E27D05 /* Roboto-Regular.ttf */; };
 		03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857819B42C9100E27D05 /* Roboto-Thin.ttf */; };
-		03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1857919B42C9100E27D05 /* Roboto-ThinItalic.ttf */; };
-		03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */; };
-		03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */; };
 		03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859519B42D3000E27D05 /* Crashlytics.framework */; };
 		03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185AF19B42E5D00E27D05 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B119B42E5D00E27D05 /* OAuth+Additions.m */; };
@@ -469,7 +456,6 @@
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
-		A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */; };
@@ -817,7 +803,6 @@
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
-		A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
 		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
@@ -896,6 +881,7 @@
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
+		C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
 		C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */; };
@@ -905,9 +891,12 @@
 		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
+		C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */; };
 		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; };
 		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; };
+		C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F6B101BD0658C00779FB1 /* ModernLoadingViewController.swift */; };
+		C32F6B131BD06E6D00779FB1 /* ModernLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C32F6B121BD06E6D00779FB1 /* ModernLoadingViewController.storyboard */; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
@@ -1167,7 +1156,7 @@
 		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
 		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
-		E84FC21553AF0ABDE871DF01 /* Pods_UIAutomationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */; };
+		E84FC21553AF0ABDE871DF01 /* Pods_UIAutomationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
@@ -1700,8 +1689,6 @@
 		036F38171A0C4DE90014DF66 /* Arvo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Regular.ttf"; sourceTree = "<group>"; };
 		036F38191A0C4DE90014DF66 /* Bitter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Bold.ttf"; sourceTree = "<group>"; };
 		036F381A1A0C4DE90014DF66 /* Bitter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bitter-Regular.ttf"; sourceTree = "<group>"; };
-		036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Bold.ttf"; sourceTree = "<group>"; };
-		036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DeliusUnicase-Regular.ttf"; sourceTree = "<group>"; };
 		036F381F1A0C4DE90014DF66 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
 		036F38201A0C4DE90014DF66 /* DroidSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSans.ttf; sourceTree = "<group>"; };
 		036F38221A0C4DE90014DF66 /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -1714,7 +1701,6 @@
 		036F382F1A0C4DE90014DF66 /* Kreon-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kreon-Regular.ttf"; sourceTree = "<group>"; };
 		036F38311A0C4DE90014DF66 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
-		036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LeagueGothic-Regular.otf"; sourceTree = "<group>"; };
 		036F38361A0C4DE90014DF66 /* MavenPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MavenPro-Bold.ttf"; sourceTree = "<group>"; };
 		036F38371A0C4DE90014DF66 /* MavenPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MavenPro-Regular.ttf"; sourceTree = "<group>"; };
 		036F38391A0C4DE90014DF66 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
@@ -1729,7 +1715,6 @@
 		036F38461A0C4DE90014DF66 /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Bold.ttf"; sourceTree = "<group>"; };
 		036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Sans-Web-Regular.ttf"; sourceTree = "<group>"; };
-		036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		036F384C1A0C4DE90014DF66 /* PT_Serif-Web-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Serif-Web-Bold.ttf"; sourceTree = "<group>"; };
 		036F384D1A0C4DE90014DF66 /* PT_Serif-Web-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PT_Serif-Web-Regular.ttf"; sourceTree = "<group>"; };
 		036F384F1A0C4DE90014DF66 /* Raleway-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Medium.ttf"; sourceTree = "<group>"; };
@@ -1934,20 +1919,11 @@
 		03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadProgressViewController.m; sourceTree = "<group>"; };
 		03C1856419B42C9100E27D05 /* Impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Impact.ttf; sourceTree = "<group>"; };
 		03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
-		03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
-		03C1857119B42C9100E27D05 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
-		03C1857219B42C9100E27D05 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		03C1857319B42C9100E27D05 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
-		03C1857419B42C9100E27D05 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		03C1857519B42C9100E27D05 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
-		03C1857619B42C9100E27D05 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		03C1857719B42C9100E27D05 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		03C1857819B42C9100E27D05 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
-		03C1857919B42C9100E27D05 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
-		03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
-		03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
-		03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		03C1859519B42D3000E27D05 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		03C185AE19B42E5D00E27D05 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		03C185AF19B42E5D00E27D05 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
@@ -2966,6 +2942,7 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
 		C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertViewController.h; sourceTree = "<group>"; };
 		C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertViewController.m; sourceTree = "<group>"; };
@@ -2986,6 +2963,8 @@
 		C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementInterstitial.swift; sourceTree = "<group>"; };
 		C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
 		C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementAnimator.swift; sourceTree = "<group>"; };
+		C32F6B101BD0658C00779FB1 /* ModernLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModernLoadingViewController.swift; sourceTree = "<group>"; };
+		C32F6B121BD06E6D00779FB1 /* ModernLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModernLoadingViewController.storyboard; sourceTree = "<group>"; };
 		C3345F601B59ACB30091D889 /* VMenuItemControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuItemControl.h; sourceTree = "<group>"; };
 		C3345F611B59ACB30091D889 /* VMenuItemControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuItemControl.m; sourceTree = "<group>"; };
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
@@ -4597,15 +4576,6 @@
 			path = Bitter;
 			sourceTree = "<group>";
 		};
-		036F381B1A0C4DE90014DF66 /* Delius */ = {
-			isa = PBXGroup;
-			children = (
-				036F381C1A0C4DE90014DF66 /* DeliusUnicase-Bold.ttf */,
-				036F381D1A0C4DE90014DF66 /* DeliusUnicase-Regular.ttf */,
-			);
-			path = Delius;
-			sourceTree = "<group>";
-		};
 		036F381E1A0C4DE90014DF66 /* DroidSans */ = {
 			isa = PBXGroup;
 			children = (
@@ -4658,14 +4628,6 @@
 				036F38321A0C4DE90014DF66 /* Lato-Regular.ttf */,
 			);
 			path = Lato;
-			sourceTree = "<group>";
-		};
-		036F38331A0C4DE90014DF66 /* LeagueGothic */ = {
-			isa = PBXGroup;
-			children = (
-				036F38341A0C4DE90014DF66 /* LeagueGothic-Regular.otf */,
-			);
-			path = LeagueGothic;
 			sourceTree = "<group>";
 		};
 		036F38351A0C4DE90014DF66 /* MavenPro */ = {
@@ -4727,7 +4689,6 @@
 			children = (
 				036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */,
 				036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */,
-				036F384A1A0C4DE90014DF66 /* PTSans-Narrow.ttf */,
 			);
 			path = PTSans;
 			sourceTree = "<group>";
@@ -5069,7 +5030,6 @@
 				036F38121A0C4DE90014DF66 /* Arimo */,
 				036F38151A0C4DE90014DF66 /* Arvo */,
 				036F38181A0C4DE90014DF66 /* Bitter */,
-				036F381B1A0C4DE90014DF66 /* Delius */,
 				036F381E1A0C4DE90014DF66 /* DroidSans */,
 				A705646019E737A5004A8387 /* HelveticaNeue */,
 				03C1856319B42C9100E27D05 /* Impact */,
@@ -5078,11 +5038,9 @@
 				036F382A1A0C4DE90014DF66 /* Jura */,
 				036F382D1A0C4DE90014DF66 /* Kreon */,
 				036F38301A0C4DE90014DF66 /* Lato */,
-				036F38331A0C4DE90014DF66 /* LeagueGothic */,
 				036F38351A0C4DE90014DF66 /* MavenPro */,
 				036F38381A0C4DE90014DF66 /* Merriweather */,
 				036F383B1A0C4DE90014DF66 /* Montserrat */,
-				03C1858D19B42CEA00E27D05 /* MuseoSans */,
 				036F383E1A0C4DE90014DF66 /* OpenSans */,
 				036F38411A0C4DE90014DF66 /* Oswald */,
 				036F38441A0C4DE90014DF66 /* PlayfairDisplay */,
@@ -5113,29 +5071,13 @@
 			isa = PBXGroup;
 			children = (
 				03C1856E19B42C9100E27D05 /* Roboto-Black.ttf */,
-				03C1856F19B42C9100E27D05 /* Roboto-BlackItalic.ttf */,
 				03C1857019B42C9100E27D05 /* Roboto-Bold.ttf */,
-				03C1857119B42C9100E27D05 /* Roboto-BoldItalic.ttf */,
-				03C1857219B42C9100E27D05 /* Roboto-Italic.ttf */,
 				03C1857319B42C9100E27D05 /* Roboto-Light.ttf */,
-				03C1857419B42C9100E27D05 /* Roboto-LightItalic.ttf */,
 				03C1857519B42C9100E27D05 /* Roboto-Medium.ttf */,
-				03C1857619B42C9100E27D05 /* Roboto-MediumItalic.ttf */,
 				03C1857719B42C9100E27D05 /* Roboto-Regular.ttf */,
 				03C1857819B42C9100E27D05 /* Roboto-Thin.ttf */,
-				03C1857919B42C9100E27D05 /* Roboto-ThinItalic.ttf */,
 			);
 			path = Roboto;
-			sourceTree = "<group>";
-		};
-		03C1858D19B42CEA00E27D05 /* MuseoSans */ = {
-			isa = PBXGroup;
-			children = (
-				03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */,
-				03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */,
-				03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */,
-			);
-			path = MuseoSans;
 			sourceTree = "<group>";
 		};
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
@@ -6614,10 +6556,10 @@
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				0392694D1B5C720400FCD0AA /* downloadtemplate */,
 				03C1856219B42C9100E27D05 /* Fonts */,
-				A7DB4D2B1B7AB1D400199D10 /* UIAutomationTests */,
 				BE171D781868BE64004E5202 /* Frameworks */,
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
+				A7DB4D2B1B7AB1D400199D10 /* UIAutomationTests */,
 				BE171D811868BE64004E5202 /* victorious */,
 				0370FBB41B71B261009047B6 /* VictoriousCommon */,
 				0370FBC31B71B261009047B6 /* VictoriousCommonTests */,
@@ -7229,6 +7171,9 @@
 		D85B702B1B0EAF3F0038CA5B /* Modern */ = {
 			isa = PBXGroup;
 			children = (
+				C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */,
+				C32F6B121BD06E6D00779FB1 /* ModernLoadingViewController.storyboard */,
+				C32F6B101BD0658C00779FB1 /* ModernLoadingViewController.swift */,
 				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.h */,
 				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m */,
 				D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */,
@@ -8313,8 +8258,8 @@
 			attributes = {
 				CLASSPREFIX = V;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					0352FC7D1B72B90000DB6EAB = {
@@ -8466,7 +8411,6 @@
 				036F38851A0C4DEA0014DF66 /* PlayfairDisplay-Regular.ttf in Resources */,
 				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
-				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
 				A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
@@ -8476,17 +8420,16 @@
 				A7A0617F1B4DB5B500E8FFCF /* GIFSearch.storyboard in Resources */,
 				F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */,
 				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
+				C32F6B131BD06E6D00779FB1 /* ModernLoadingViewController.storyboard in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */,
-				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
 				C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */,
 				D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */,
 				A7D378421AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,
-				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */,
 				03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */,
@@ -8504,12 +8447,9 @@
 				A7D378441AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */,
-				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				D8D8129E1B13849E00E93B37 /* VModernLoginViewController.storyboard in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
 				F06B41C71B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib in Resources */,
-				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
-				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */,
 				A7D378641AF308B3007FF197 /* component.json in Resources */,
 				F0E0F1B81AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib in Resources */,
@@ -8565,12 +8505,10 @@
 				A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
-				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */,
-				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,
 				035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */,
@@ -8597,7 +8535,6 @@
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
-				036F38881A0C4DEA0014DF66 /* PTSans-Narrow.ttf in Resources */,
 				F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */,
 				036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */,
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
@@ -8605,18 +8542,14 @@
 				A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */,
 				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
 				D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */,
-				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
-				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
 				F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */,
 				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
-				036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				F0E0F1BA1AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib in Resources */,
 				A6B9FD091B603FD300166BE8 /* VImageCameraViewController.storyboard in Resources */,
-				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
 				676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */,
 			);
@@ -9053,7 +8986,6 @@
 				79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */,
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
 				A7607DB21B8FEBAF0048B899 /* ContentCreationTests.swift in Sources */,
-				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				0368ED521BAA06600094D4DE /* CommentTests.swift in Sources */,
 				0368ED531BAA06750094D4DE /* RegistrationTests.swift in Sources */,
 				79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */,
@@ -9129,7 +9061,6 @@
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */,
 				7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */,
-				A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
 				A6E104D51B56C88D0062392A /* VPublishShareCollectionViewCell.m in Sources */,
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
@@ -9150,6 +9081,7 @@
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
 				A721E96B1B57617B000B7901 /* VEditorializationItem+RestKit.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
+				C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
 				D85E42841AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
@@ -9321,6 +9253,7 @@
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
+				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
@@ -9769,6 +9702,7 @@
 				C39AFE351BBA3374004050C3 /* AchievementPresentationController.swift in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
+				C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
 				A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */,
 				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,

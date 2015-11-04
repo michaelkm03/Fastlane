@@ -58,7 +58,6 @@
 - (void)v_addHorizontalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space
 {
     NSParameterAssert( [subview isDescendantOfView:self] );
-    
     NSDictionary *views = @{ @"subview" : subview };
     NSDictionary *metrics = @{ @"leading" : @(space),
                                @"trailing" : @(space)

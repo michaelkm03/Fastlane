@@ -14,6 +14,7 @@
 #import "VLoginRegistrationFlow.h"
 #import "VUser.h"
 #import "UIView+AutoLayout.h"
+#import "VAutomation.h"
 
 static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationView";
 
@@ -93,8 +94,8 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 - (UIViewController *)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
                                       WithCompletion:(VAuthorizedActionCompletion)completion
 {
-    // Nothing to show if we are already logged in so don't even create the loginVC.
-    if (self.objectManager.mainUserLoggedIn)
+    // Nothing to show if we are already logged in AND we are not in a testing environment that requires login, so don't even create the loginVC.
+    if (self.objectManager.mainUserLoggedIn && ![VAutomation shouldAlwaysShowLoginScreen])
     {
         return nil;
     }

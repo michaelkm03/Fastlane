@@ -75,6 +75,8 @@
                     viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOnIfNeeded
                                         error:(NSError *)error
 {
+    NSParameterAssert(completion != nil);
+
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
                        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
@@ -111,7 +113,10 @@
                                                                           style:UIAlertActionStyleCancel
                                                                         handler:^(UIAlertAction *action)
                                                   {
-                                                      completion(nil);
+                                                      if (completion != nil)
+                                                      {
+                                                          completion(nil);
+                                                      }
                                                   }];
                        [alertController addAction:okAction];
                        [viewControllerToPresentOnIfNeeded presentViewController:alertController
