@@ -158,7 +158,6 @@ static NSString * const kInitialKey = @"initial";
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
-    [self updateBadge];
 }
 
 #pragma mark - Rotation
