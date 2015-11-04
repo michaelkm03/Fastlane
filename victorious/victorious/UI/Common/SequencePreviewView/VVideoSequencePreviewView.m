@@ -31,7 +31,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
 @property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic, assign) VVideoState state;
 @property (nonatomic, strong) NSURL *assetURL;
@@ -111,12 +110,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                                                                      attribute:NSLayoutAttributeWidth
                                                                     multiplier:1.0f
                                                                       constant:0.0f]];
-    
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.videoUIContainer addSubview:self.activityIndicator];
-    [self.videoUIContainer v_addCenterHorizontallyConstraintsToSubview:self.activityIndicator];
-    [self.videoUIContainer v_addCenterVerticallyConstraintsToSubview:self.activityIndicator];
 }
 
 - (void)onContentTap
@@ -215,12 +208,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     // Tap/Double Tap gestures
     [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
     
-    // Aspect ratio
-    self.videoPlayer.useAspectFit = YES;
-    
     // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
+        // Aspect ratio
+        self.videoPlayer.useAspectFit = YES;
+        
         self.largePlayButton.userInteractionEnabled = YES;
         if ( self.state == VVideoStateNotStarted )
         {
@@ -237,6 +230,9 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     else
     {
+        // Set proper aspect ratio for stream focus type
+        self.videoPlayer.useAspectFit = self.streamContentModeIsAspectFit;
+        
         self.largePlayButton.userInteractionEnabled = NO;
         if ( self.shouldAutoplay )
         {
@@ -245,12 +241,9 @@ typedef NS_ENUM(NSUInteger, VVideoState)
                 self.largePlayButton.hidden = YES;
                 self.previewImageView.hidden = NO;
                 self.videoPlayer.view.hidden = YES;
-                self.activityIndicator.hidden = NO;
-                [self.activityIndicator startAnimating];
             }
             else
             {
-                self.activityIndicator.hidden = YES;
                 self.largePlayButton.hidden = YES;
                 self.videoPlayer.view.hidden = NO;
             }

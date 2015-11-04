@@ -56,6 +56,11 @@ class SoundBarView : UIView {
     
     /// Stops the animation
     func stopAnimating() {
+        
+        if (!isAnimating) {
+            return
+        }
+        
         for view in soundBars {
             view.layer.removeAllAnimations()
         }

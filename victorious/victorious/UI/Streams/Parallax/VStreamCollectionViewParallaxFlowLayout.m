@@ -9,8 +9,6 @@
 #import "VStreamCollectionViewParallaxFlowLayout.h"
 #import "VParallaxScrolling.h"
 
-static const CGFloat kHeaderFadeoutBuffer = 20.0f;
-
 @interface VStreamCollectionViewParallaxFlowLayout ()
 
 @end
@@ -49,13 +47,6 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
             {
                 // Offset the frame of the header to create parallax effect
                 headerFrame.origin.y += contentOffset.y * parallaxRatio;
-                
-                // Adjust alpha to create smooth fade out of header if its still visible behind cells
-                if (contentOffset.y > headerFrame.size.height - kHeaderFadeoutBuffer)
-                {
-                    CGFloat newAlpha = 1 - (contentOffset.y - headerFrame.size.height) / (headerFrame.size.height - kHeaderFadeoutBuffer);
-                    layoutAttributes.alpha = newAlpha;
-                }
             }
             
             layoutAttributes.frame = headerFrame;
