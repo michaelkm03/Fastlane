@@ -49,7 +49,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, strong) TrackingRequestScheduler *requestScheduler;
+@property (nonatomic, strong, readwrite) TrackingRequestScheduler *requestScheduler;
 
 @end
 
@@ -94,7 +94,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
         _requestScheduler = [[TrackingRequestScheduler alloc] init];
     }
     return self;

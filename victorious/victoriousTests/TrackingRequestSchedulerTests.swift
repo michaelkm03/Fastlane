@@ -33,6 +33,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
         super.tearDown()
         
         LSNocilla.sharedInstance().stop()
+        LSNocilla.sharedInstance().clearStubs()
         trackingRequestRecords.removeAll()
     }
     

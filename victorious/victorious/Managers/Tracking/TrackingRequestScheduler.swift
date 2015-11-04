@@ -15,6 +15,7 @@ import UIKit
     /// The interval (number of seconds) at which this scheduler batch fires tracking network requests
     var batchFiringTimeInterval = 30.0
     
+    /// The array that stores the scheduled tracking requests to be fired
     private var trackingRequestsArray = [NSURLRequest]()
     private var timer = VTimerManager()
     private let requestQueue = dispatch_queue_create("TrackingRequestSchedulerQueue", DISPATCH_QUEUE_SERIAL)
@@ -52,6 +53,17 @@ import UIKit
             sendSingleRequest(request)
         }
         self.timer.invalidate()
+    }
+    
+    /// Remove all the tracking network requests stored in `trackingRequestsArray`.
+    func cancelAllQueuedRequests() {
+        timer.invalidate()
+        trackingRequestsArray.removeAll()
+    }
+    
+    /// - returns: the number of tracking network requests stored in `trackingRequestsArray`.
+    func numberOfQueuedRequests() -> Int{
+        return trackingRequestsArray.count
     }
     
     private func sendSingleRequest(request: NSURLRequest) {
