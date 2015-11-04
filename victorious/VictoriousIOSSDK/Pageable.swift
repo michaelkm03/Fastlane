@@ -13,5 +13,5 @@ import SwiftyJSON
 public protocol Pageable: RequestType {
     typealias PageableResultType
     
-    func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws -> (results: PageableResultType, nextPageRequest: Self?, previousPageRequest: Self?)
+    func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws -> (results: PageableResultType, nextPage: Self?, previousPage: Self?)
 }
