@@ -67,7 +67,7 @@
 - (void)testMonthAgo
 {
     // The time interval
-    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 31);//1 month ago
+    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 32);//1 month ago
     
     // Create the NSDates
     NSDate *monthAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
@@ -78,11 +78,10 @@
 
 - (void)testWeeksAgo
 {
-    // The time interval
-    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 7 * 3);//3 months ago
+    NSInteger timeInterval = -(3 * 7); // 3 weeks ago
     
     // Create the NSDates
-    NSDate *weeksAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
+    NSDate *weeksAgo = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:timeInterval toDate:[NSDate date] options:0];
     NSString *timeSince = [weeksAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"WeeksAgo", @""), 3];
     XCTAssertTrue([timeSince isEqualToString:testString], @"Failed Weeks ago");
@@ -91,10 +90,10 @@
 - (void)testWeekAgo
 {
     // The time interval
-    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 7);//1 Week ago
+    NSInteger timeInterval = -7; // 1 week ago
     
     // Create the NSDates
-    NSDate *weekAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
+    NSDate *weekAgo = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:timeInterval toDate:[NSDate date] options:0];
     NSString *timeSince = [weekAgo timeSince];
     XCTAssertTrue([timeSince isEqualToString:NSLocalizedString(@"LastWeek", @"")], @"Failed last Week");
 }
@@ -102,10 +101,10 @@
 - (void)testDaysAgo
 {
     // The time interval
-    NSTimeInterval theTimeInterval = -(60 * 60 * 24 * 3);//3 Day ago
+    NSInteger timeInterval = -3; // 3 Days ago
     
     // Create the NSDates
-    NSDate *daysAgo = [NSDate dateWithTimeInterval:theTimeInterval sinceDate:[NSDate date]];
+    NSDate *daysAgo = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay value:timeInterval toDate:[NSDate date] options:0];
     NSString *timeSince = [daysAgo timeSince];
     NSString *testString = [NSString stringWithFormat:NSLocalizedString(@"DaysAgo", @""), 3];
     XCTAssertTrue([timeSince isEqualToString:testString], @"Failed days ago");
