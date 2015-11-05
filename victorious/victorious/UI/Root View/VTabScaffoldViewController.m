@@ -122,11 +122,14 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
                                                        queue:nil
                                                   usingBlock:^(NSNotification *notification)
      {
-         VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                              dependencyManager:self.dependencyManager];
-         [authorizedAction performFromViewController:self
-                                             context:VAuthorizationContextDefault
-                                          completion:^(BOOL authorized) { }];
+         if (![VObjectManager sharedManager].mainUserLoggedIn)
+         {
+             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                  dependencyManager:self.dependencyManager];
+             [authorizedAction performFromViewController: self.rootNavigationController.innerNavigationController.visibleViewController
+                                                 context:VAuthorizationContextDefault
+                                              completion:^(BOOL authorized) { }];
+         }
      }];
 }
 
