@@ -52,7 +52,8 @@ public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDe
 }
 
 /// An asynchronous task that can be canceled
-public protocol Cancelable {
+@objc(VSDKCancelable)
+public protocol Cancelable: class {
     func cancel() -> ()
 }
 
