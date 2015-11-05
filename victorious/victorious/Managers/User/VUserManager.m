@@ -59,59 +59,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     }
 }
 
-- (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
-                                                 accessSecret:(NSString *)tokenSecret
-                                                    twitterID:(NSString *)twitterId
-                                                   identifier:(NSString *)identifier
-                                                    onSuccess:(VUserManagerLoginCompletionBlock)completion
-                                                      onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *user = [resultObjects firstObject];
-        if (![user isKindOfClass:[VUser class]])
-        {
-            if (errorBlock)
-            {
-                errorBlock(nil, NO);
-            }
-        }
-        else
-        {
-            BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
-            
-            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter forKey:kLastLoginTypeUserDefaultsKey];
-            [[NSUserDefaults standardUserDefaults] setObject:identifier forKey:kAccountIdentifierDefaultsKey];
-            
-            if (completion)
-            {
-                completion(user, isNewUser);
-            }
-            
-            [[VTrackingManager sharedInstance] trackEvent:isNewUser ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
-        }
-    };
-    VFailBlock failed = ^(NSOperation *operation, NSError *error)
-    {
-        // Do nothing if we've cancelled the request
-        if (operation.isCancelled)
-        {
-            return;
-        }
-        
-        if (errorBlock)
-        {
-            errorBlock(error, NO);
-        }
-    };
-    
-    return [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                     accessSecret:tokenSecret
-                                                        twitterId:twitterId
-                                                     successBlock:success
-                                                        failBlock:failed];
-}
-
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
                         onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
@@ -123,7 +70,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                           accessSecret:secret
                              twitterID:twitterId
                             identifier:identifier
-                             onSuccess:completion onError:errorBlock];
+                          onCompletion:completion onError:errorBlock];
     }
                                             onError:errorBlock];
 }
@@ -138,7 +85,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                            accessSecret:secret
                               twitterID:twitterId
                              identifier:identifier
-                              onSuccess:completion onError:errorBlock];
+                           onCompletion:completion onError:errorBlock];
      }
                                             onError:errorBlock];
 }

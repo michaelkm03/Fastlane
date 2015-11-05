@@ -321,31 +321,35 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [userManager retrieveTwitterTokenWithAccountIdentifier:identifier
                                               onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
      {
-         self.currentRequest = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onSuccess:^(VUser *user, BOOL isNewUser)
+         self.currentRequest = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
                                 {
                                     self.isRegisteredAsNewUser = isNewUser;
                                     [self continueRegistrationFlowAfterSocialRegistration];
                                 }
                                                              onError:^(NSError *error, BOOL thirdPartyAPIFailure)
                                 {
-                                    [self handleTwitterFailure];
+                                    [self handleTwitterLoginError:error];
                                 }];
          
          self.loadingScreen.canCancel = YES;
      }
                                                    onError:^(NSError *error, BOOL thirdPartyAPIFailure)
      {
-         [self handleTwitterFailure];
+         [self handleTwitterLoginError:error];
      }];
 }
 
-- (void)handleTwitterFailure
+- (void)handleTwitterLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
-    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                   message:NSLocalizedString(@"TwitterTroubleshooting", @"")
-                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-    [self presentViewController:alertController animated:YES completion:nil];
+    
+    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
+    {
+        UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                                                                       message:NSLocalizedString(@"TwitterTroubleshooting", @"")
+                                                                          andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 - (void)selectedFacebookAuthorization

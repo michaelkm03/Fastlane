@@ -12,6 +12,7 @@ import Foundation
 import VictoriousIOSSDK
 
 private let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
+private let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
 /// NOTE: Eventually all of VUserManager will be re-written in Swift here. But for now, I'm starting with Facebook
 extension VUserManager {
@@ -21,8 +22,8 @@ extension VUserManager {
         
         let objectManager = VObjectManager.sharedManager()
         let facebookToken = FBSDKAccessToken.currentAccessToken().tokenString
-        let accountCreateEndpoint = AccountCreateRequest(credentials: .Facebook(accessToken: facebookToken))
-        let cancelable = objectManager.executeRequest(accountCreateEndpoint) { (result, error) in
+        let accountCreateRequest = AccountCreateRequest(credentials: .Facebook(accessToken: facebookToken))
+        let cancelable = objectManager.executeRequest(accountCreateRequest) { (result, error) in
             dispatch_async(dispatch_get_main_queue()) {
                 if let result = result {
                     if result.newUser {
@@ -34,6 +35,24 @@ extension VUserManager {
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidSucceed)
                     NSUserDefaults.standardUserDefaults().setInteger(VLoginType.FaceBook.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
                     completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .FaceBook, objectManager: objectManager), result.newUser)
+                } else {
+                    errorBlock(error as? NSError, false)
+                }
+            }
+        }
+        return VCancelable(cancelable)
+    }
+    
+    func loginViaTwitterWithToken(oauthToken: String, accessSecret: String, twitterID: String, identifier: String, onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> VCancelable {
+        
+        let objectManager = VObjectManager.sharedManager()
+        let accountCreateRequest = AccountCreateRequest(credentials: .Twitter(accessToken: oauthToken, accessSecret: accessSecret, twitterID: twitterID))
+        let cancelable = objectManager.executeRequest(accountCreateRequest) { (result, error) in
+            dispatch_async(dispatch_get_main_queue()) {
+                if let result = result {
+                    NSUserDefaults.standardUserDefaults().setInteger(VLoginType.Twitter.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+                    NSUserDefaults.standardUserDefaults().setObject(twitterID, forKey: kAccountIdentifierDefaultsKey)
+                    completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .Twitter, objectManager: objectManager), result.newUser)
                 } else {
                     errorBlock(error as? NSError, false)
                 }

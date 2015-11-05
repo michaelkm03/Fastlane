@@ -16,16 +16,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 @interface VUserManager : NSObject
 
 /**
- Log in using Twitter oauth data.
- */
-- (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
-                                                 accessSecret:(NSString *)tokenSecret
-                                                    twitterID:(NSString *)twitterId
-                                                   identifier:(NSString *)identifier
-                                                    onSuccess:(VUserManagerLoginCompletionBlock)completion
-                                                      onError:(VUserManagerLoginErrorBlock)errorBlock;
-
-/**
  Retrieve Twitter oauth data for a certain Twitter account.
  */
 - (void)retrieveTwitterTokenWithAccountIdentifier:(NSString *)identifier
