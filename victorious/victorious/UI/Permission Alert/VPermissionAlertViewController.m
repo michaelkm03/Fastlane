@@ -36,9 +36,6 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @property (weak, nonatomic) IBOutlet VButtonWithCircularEmphasis *confirmationButton;
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (weak, nonatomic) IBOutlet VRoundedImageView *iconImageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 @end
 

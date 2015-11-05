@@ -167,13 +167,10 @@
                     </view>
                     <connections>
                         <outlet property="alertContainerView" destination="M6g-YF-N4q" id="PvL-dA-VE0"/>
-                        <outlet property="bottomConstraint" destination="8OP-sT-sPV" id="6vX-Sz-IOb"/>
                         <outlet property="confirmationButton" destination="zxv-Um-jbA" id="HaA-XZ-1XQ"/>
                         <outlet property="denyButton" destination="Lv4-pq-CPH" id="gCv-bd-NzM"/>
                         <outlet property="iconImageView" destination="uqE-hA-Enb" id="sU9-vz-mbb"/>
                         <outlet property="messageTextView" destination="cMw-dh-B3Z" id="vx5-zg-OCI"/>
-                        <outlet property="middleConstraint" destination="Re7-mg-hli" id="lSd-4z-OF2"/>
-                        <outlet property="topConstraint" destination="H1g-tP-0GB" id="Y7T-IN-41V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Lz-a2-K12" userLabel="First Responder" sceneMemberID="firstResponder"/>
