@@ -10,10 +10,10 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VObjectManager {
-    func executeRequest<R: RequestType>(request: R, callback: ((result: R.ResultType?, error: ErrorType?) -> ())?) {
+    func executeRequest<R: RequestType>(request: R, callback: ((result: R.ResultType?, error: ErrorType?) -> ())?) -> Cancelable {
         
         let environment = VEnvironmentManager.sharedInstance().currentEnvironment
-        request.execute(baseURL: environment.baseURL, requestContext: RequestContext(environment: environment), authenticationContext: nil, callback: callback)
+        return request.execute(baseURL: environment.baseURL, requestContext: RequestContext(environment: environment), authenticationContext: nil, callback: callback)
     }
 }
 

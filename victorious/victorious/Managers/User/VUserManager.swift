@@ -17,12 +17,12 @@ private let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.Logi
 extension VUserManager {
     
     /// Log in using the current Facebook session (make sure you use the Facebook SDK to establish a session before calling this)
-    func loginViaFacebookWithStoredToken(onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) {
+    func loginViaFacebookWithStoredToken(onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> VCancelable {
         
         let objectManager = VObjectManager.sharedManager()
         let facebookToken = FBSDKAccessToken.currentAccessToken().tokenString
-        let accountCreateEndpoint = AccountCreateEndpoint(credentials: .Facebook(accessToken: facebookToken))
-        objectManager.executeRequest(accountCreateEndpoint) { (result, error) -> () in
+        let accountCreateEndpoint = AccountCreateRequest(credentials: .Facebook(accessToken: facebookToken))
+        let cancelable = objectManager.executeRequest(accountCreateEndpoint) { (result, error) in
             dispatch_async(dispatch_get_main_queue()) {
                 if let result = result {
                     if result.newUser {
@@ -39,6 +39,7 @@ extension VUserManager {
                 }
             }
         }
+        return VCancelable(cancelable)
     }
     
     private func loggedIn(withUser user: User, token: String, loginType: VLoginType, objectManager: VObjectManager) -> VUser {

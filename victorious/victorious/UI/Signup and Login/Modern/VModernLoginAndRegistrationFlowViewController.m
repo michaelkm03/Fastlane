@@ -67,7 +67,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
-@property (nonatomic, strong) RKManagedObjectRequestOperation *currentRequest;
+@property (nonatomic, strong) id currentRequest;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
 
 @end
@@ -383,7 +383,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                         parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
                                                                       VTrackingKeyPermissionName : VTrackingValueDenied }];
                  }
-                 [self handleFacebookLoginFailure];
+                 [self handleFacebookLoginError:error];
                  NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObject:@(VAppErrorTrackingTypeFacebook) forKey:VTrackingKeyErrorType];
                  if ( error != nil )
                  {
@@ -418,20 +418,24 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                     }
                                                                                     onError:^(NSError *error, BOOL thirdPartyAPIFailure)
                                     {
-                                        [weakSelf handleFacebookLoginFailure];
+                                        [weakSelf handleFacebookLoginError:error];
                                     }];
      }];
     
     [self showLoadingScreen];
 }
 
-- (void)handleFacebookLoginFailure
+- (void)handleFacebookLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
-    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                   message:NSLocalizedString(@"FacebookLoginFailed", @"")
-                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-    [self presentViewController:alertController animated:YES completion:nil];
+    
+    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
+    {
+        UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                                       message:NSLocalizedString(@"FacebookLoginFailed", @"")
+                                                                          andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -761,7 +765,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)loadingScreenCancelled
 {
     [self.currentRequest cancel];
-    [self dismissLoadingScreen];
+    self.loadingScreen.canCancel = NO;
 }
 
 - (void)loadingScreenDidAppear
