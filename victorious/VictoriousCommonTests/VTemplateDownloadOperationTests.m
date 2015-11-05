@@ -457,7 +457,7 @@
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     NSInteger newBuild = [self.buildNumber integerValue] + 1;
-    downloadOperation.buildNumber = [NSString stringWithFormat:@"%ld", newBuild];
+    downloadOperation.buildNumber = [NSString stringWithFormat:@"%ld", (long)newBuild];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     downloadOperation.shouldRetry = NO;

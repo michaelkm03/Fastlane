@@ -229,8 +229,10 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                              [strongSelf didPlayToTime:time];
                          }];
     
-    
-    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    if ( self.loop )
+    {
+        [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AVPlayerItemDidPlayToEndTimeNotification
@@ -296,6 +298,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     if ( !self.isPlaying )
     {
+        if (self.player.currentItem != self.newestPlayerItem)
+        {
+            [self.player replaceCurrentItemWithPlayerItem:self.newestPlayerItem];
+        }
+        
         [self.player play];
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
         {
@@ -329,6 +336,14 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
         [self.delegate videoPlayer:self didPlayToTime:self.currentTimeSeconds];
+    }
+}
+
+- (void)didExitFromContentView
+{
+    if (!self.loop)
+    {
+        [self.player replaceCurrentItemWithPlayerItem:nil];
     }
 }
 

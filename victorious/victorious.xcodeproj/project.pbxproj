@@ -350,6 +350,7 @@
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
+		67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
@@ -360,6 +361,7 @@
 		676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */; };
 		676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */; };
 		676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */; };
+		6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
@@ -2008,6 +2010,7 @@
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
+		67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestScheduler.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
@@ -2018,6 +2021,8 @@
 		676372E61B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeStreamItemCell.swift; sourceTree = "<group>"; };
 		676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
+		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
+		6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victoriousTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6190,6 +6195,7 @@
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
 				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
+				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -6756,6 +6762,8 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				0EAB5EA61BC441910055DA79 /* VPushNotificationManagerTests.m */,
+				6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */,
+				6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9455,6 +9463,7 @@
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */,
+				67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
@@ -9956,6 +9965,7 @@
 				A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */,
 				A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */,
 				A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */,
+				6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */,
 				A72005351A03073B00285A9C /* VUploadTaskInformationTests.m in Sources */,
 				A72005341A03073B00285A9C /* VUploadTaskCreatorTests.m in Sources */,
 				A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */,
@@ -10563,7 +10573,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11369,7 +11379,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11718,7 +11728,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
@@ -11746,7 +11756,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -11878,7 +11888,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousTests/victoriousTests-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
