@@ -88,6 +88,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)dealloc
 {
     _internalTabBarController.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View Lifecycle
@@ -115,6 +116,18 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     
     // Make sure we're listening for interstitial events
     [[InterstitialManager sharedInstance] setInterstitialListener:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *notification)
+     {
+         VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                              dependencyManager:self.dependencyManager];
+         [authorizedAction performFromViewController:self
+                                             context:VAuthorizationContextDefault
+                                          completion:^(BOOL authorized) { }];
+     }];
 }
 
 - (void)configureTabBar
@@ -151,6 +164,12 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     {
         [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotate
