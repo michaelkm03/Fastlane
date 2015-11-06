@@ -19,7 +19,6 @@ NSString * const VFollowSourceScreenLikers = @"likers";
 NSString * const VFollowSourceScreenMessageableUsers = @"messageable_users";
 NSString * const VFollowSourceScreenFindFriendsContacts = @"find_friends.contacts";
 NSString * const VFollowSourceScreenFindFriendsFacebook = @"find_friends.facebook";
-NSString * const VFollowSourceScreenFindFriendsTwitter = @"find_friends.twitter";
 NSString * const VFollowSourceScreenStream = @"stream";
 NSString * const VFollowSourceScreenTrendingUserShelf = @"trending_user";
 NSString * const VFollowSourceScreenRecommendedUserShelf = @"recommended_user";
