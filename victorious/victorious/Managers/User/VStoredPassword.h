@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A class that manages storing user passwords to the keychain
  */
@@ -21,7 +23,7 @@
 /**
  Returns a previously-stored password
  */
-- (NSString *)passwordForEmail:(NSString *)email;
+- (nullable NSString *)passwordForEmail:(NSString *)email;
 
 /**
  Removes a previously-stored password from the keychain
@@ -29,3 +31,5 @@
 - (BOOL)clearSavedPassword;
 
 @end
+
+NS_ASSUME_NONNULL_END
