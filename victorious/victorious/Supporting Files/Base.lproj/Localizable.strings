@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "Already Following";
 "FacebookFollowingSectionHeader"    =   "Follow Your Facebook Friends";
-"TwitterFollowingSectionHeader"     =   "Follow Your Twitter Friends";
 "AddressBookFollowingSectionHeader" =   "Follow Your Contacts";
 
 "ConversationLoadError" =   "Unable to load conversation";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Find friends from Facebook";
 "Connect to Facebook"   =   "Connect to Facebook";
 "FBSafety"              =   "We don't store your passwords and will never post anything without your permission.";
-
-"FindTwitterFriends"    =   "Find friends from Twitter";
-"Connect to Twitter"    =   "Connect to Twitter";
-"TwitterSafety"         =   "We don't store your passwords and will never post anything without your permission.";
-
-"FindInstagramFriends"  =   "Find friends from Instagram";
-"Connect to Instagram"  =   "Connect to Instagram";
 
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
