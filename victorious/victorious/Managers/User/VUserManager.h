@@ -68,9 +68,4 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
  */
 - (void)userDidLogout;
 
-/**
- Saves the user's password in the keychain for automatic login in the future
- */
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email;
-
 @end
