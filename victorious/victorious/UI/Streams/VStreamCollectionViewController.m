@@ -885,44 +885,45 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     VStreamItem *streamItem = previewView.streamItem;
     NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:streamItem];
-    if ( indexPath.row != NSNotFound )
+    
+    BOOL foundMarqueeCell = NO;
+    
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
     {
-        //Returning content to a stream cell
-        [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
-        
-        //Update the cell that presented the content view if it didn't just have it's preview view returned to it
-        BOOL cellPresentingContentViewNeedsUpdate = ![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]];
-        [self resetCellPresentingContentViewInCollectionView:self.collectionView withRefresh:cellPresentingContentViewNeedsUpdate];
-    }
-    else
-    {
-        BOOL foundMarqueeCell = NO;
-        
-        for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+        //See if we're returning content to a marquee cell
+        if ( [cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]] )
         {
-            //See if we're returning content to a marquee cell
-            if ( [cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]] )
+            UICollectionView *marqueeCollectionView = [(VAbstractMarqueeCollectionViewCell *)cell marqueeCollectionView];
+            VAbstractMarqueeStreamItemCell *marqueeStreamItemCell = [self marqueeStreamItemCellRepresentingStreamItem:streamItem inMarqueeCollectionViewCell:(VAbstractMarqueeCollectionViewCell *)cell];
+            if ( marqueeStreamItemCell == nil && [marqueeCollectionView indexPathForCell:self.cellPresentingContentView] != nil )
             {
-                UICollectionView *marqueeCollectionView = [(VAbstractMarqueeCollectionViewCell *)cell marqueeCollectionView];
-                VAbstractMarqueeStreamItemCell *marqueeStreamItemCell = [self marqueeStreamItemCellRepresentingStreamItem:streamItem inMarqueeCollectionViewCell:(VAbstractMarqueeCollectionViewCell *)cell];
-                if ( marqueeStreamItemCell == nil && [marqueeCollectionView indexPathForCell:self.cellPresentingContentView] != nil )
-                {
-                    //We've deleted an item from this marquee
-                    marqueeStreamItemCell = (VAbstractMarqueeStreamItemCell *)self.cellPresentingContentView;
-                }
-                
-                if ( marqueeStreamItemCell != nil )
-                {
-                    //Returning to a marquee cell
-                    [marqueeStreamItemCell restorePreviewView:previewView];
-                    [self resetCellPresentingContentViewInCollectionView:marqueeCollectionView withRefresh:![self.cellPresentingContentView isEqual:marqueeStreamItemCell]];
-                    foundMarqueeCell = YES;
-                    break;
-                }
+                //We've deleted an item from this marquee
+                marqueeStreamItemCell = (VAbstractMarqueeStreamItemCell *)self.cellPresentingContentView;
+            }
+            
+            if ( marqueeStreamItemCell != nil )
+            {
+                //Returning to a marquee cell
+                [marqueeStreamItemCell restorePreviewView:previewView];
+                [self resetCellPresentingContentViewInCollectionView:marqueeCollectionView withRefresh:![self.cellPresentingContentView isEqual:marqueeStreamItemCell]];
+                foundMarqueeCell = YES;
+                break;
             }
         }
-        
-        if ( !foundMarqueeCell )
+    }
+    
+    if (!foundMarqueeCell)
+    {
+        if ( indexPath.row != NSNotFound )
+        {
+            //Returning content to a stream cell
+            [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
+            
+            //Update the cell that presented the content view if it didn't just have it's preview view returned to it
+            BOOL cellPresentingContentViewNeedsUpdate = ![self.cellPresentingContentView isEqual:[self.collectionView cellForItemAtIndexPath:indexPath]];
+            [self resetCellPresentingContentViewInCollectionView:self.collectionView withRefresh:cellPresentingContentViewNeedsUpdate];
+        }
+        else
         {
             //We have flagged a piece of content in a stream cell, force the
             //presenting cell to refresh to get the right content
