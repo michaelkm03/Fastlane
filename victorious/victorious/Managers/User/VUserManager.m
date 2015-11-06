@@ -9,6 +9,7 @@
 #import "TWAPIManager.h"
 #import "victorious-Swift.h"
 #import "VObjectManager+Login.h"
+#import "VStoredPassword.h"
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VConstants.h"
@@ -29,7 +30,6 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
 
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
 static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
-static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
 @implementation VUserManager
@@ -50,7 +50,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     else if ( loginType == VLastLoginTypeEmail )
     {
         NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-        NSString *password = [self passwordForEmail:email];
+        NSString *password = [[[VStoredPassword alloc] init] passwordForEmail:email];
         [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
     }
     else if ( errorBlock != nil )
@@ -171,7 +171,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forEmail:email];
+            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -225,7 +225,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forEmail:email];
+            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -259,7 +259,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
     
-    [self clearSavedPassword];
+    [[[VStoredPassword alloc] init] clearSavedPassword];
     
     //Delete all conversations / pollresults for the user!
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
@@ -291,68 +291,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
      }];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
-}
-
-#pragma mark - Keychain
-
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email
-{
-    if ( email == nil || password == nil )
-    {
-        return NO;
-    }
-    
-    if ( [self passwordForEmail:email] != nil )
-    {
-        [self clearSavedPassword];
-    }
-    
-    CFTypeRef result;
-    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)(@{
-                                                           (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                           (__bridge id)kSecAttrAccount: email,
-                                                           (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                           (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
-                                                           }), &result);
-    return err == errSecSuccess;
-}
-
-- (NSString *)passwordForEmail:(NSString *)email
-{
-    if ( email == nil )
-    {
-        return nil;
-    }
-    
-    CFTypeRef result;
-    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)(@{
-                                                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                                    (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                                    (__bridge id)kSecAttrAccount: email,
-                                                                    (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
-                                                                    (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
-                                                                    (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue
-                                                                    }), &result);
-    if (err == errSecSuccess)
-    {
-        NSDictionary *keychainItem = (__bridge_transfer NSDictionary *)result;
-        NSData *keychainData = (NSData *)keychainItem[(__bridge id)(kSecValueData)];
-        NSString *password = [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
-        return password;
-    }
-    else
-    {
-        return nil;
-    }
-}
-
-- (BOOL)clearSavedPassword
-{
-    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)(@{
-                                                              (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                              (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                              }));
-    return err == errSecSuccess;
 }
 
 @end

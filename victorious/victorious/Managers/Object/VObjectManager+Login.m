@@ -12,6 +12,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
+#import "VStoredPassword.h"
 #import "VUser+RestKit.h"
 #import "VDependencyManager.h"
 #import "VVoteType.h"
@@ -189,9 +190,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [[[VStoredPassword alloc] init] savePassword:newPassword forEmail:self.mainUser.email];
+
         if (success)
         {
-            [[[VUserManager alloc] init] savePassword:newPassword forEmail:self.mainUser.email];
             success(operation, fullResponse, resultObjects);
         }
     };
