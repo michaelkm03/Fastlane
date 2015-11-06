@@ -1004,7 +1004,6 @@
 		D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70441B0EAF3F0038CA5B /* VFindFriendsTableView.m */; };
 		D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */; };
 		D85B70751B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70481B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m */; };
-		D85B70761B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B704A1B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m */; };
 		D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */; };
 		D85B70781B0EAF3F0038CA5B /* VFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B704E1B0EAF3F0038CA5B /* VFindFriendsViewController.m */; };
 		D85B70791B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70501B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m */; };
@@ -3155,8 +3154,6 @@
 		D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableViewController.m; sourceTree = "<group>"; };
 		D85B70471B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindInstagramFriendsViewController.h; sourceTree = "<group>"; };
 		D85B70481B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindInstagramFriendsViewController.m; sourceTree = "<group>"; };
-		D85B70491B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindTwitterFriendsTableViewController.h; sourceTree = "<group>"; };
-		D85B704A1B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindTwitterFriendsTableViewController.m; sourceTree = "<group>"; };
 		D85B704B1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedFriendsTableViewController.h; sourceTree = "<group>"; };
 		D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedFriendsTableViewController.m; sourceTree = "<group>"; };
 		D85B704D1B0EAF3F0038CA5B /* VFindFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsViewController.h; sourceTree = "<group>"; };
@@ -7279,8 +7276,6 @@
 				D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */,
 				D85B70471B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.h */,
 				D85B70481B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m */,
-				D85B70491B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.h */,
-				D85B704A1B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m */,
 				D85B704B1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.h */,
 				D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */,
 			);
@@ -9250,7 +9245,6 @@
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
 				A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */,
 				0317D7501B912A2F00D75E6B /* VDependencyManager+VUserProfile.m in Sources */,
-				D85B70761B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,

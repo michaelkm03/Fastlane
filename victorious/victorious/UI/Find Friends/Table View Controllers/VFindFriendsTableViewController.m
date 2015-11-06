@@ -22,7 +22,6 @@
 #import "VFollowResponder.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
-#import "VFindTwitterFriendsTableViewController.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate, VFollowResponder>
 
@@ -491,8 +490,7 @@
     
     NSDictionary *dict = @{
                            NSStringFromClass([VFindContactsTableViewController class]) : VFollowSourceScreenFindFriendsContacts,
-                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook,
-                           NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
+                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook
                            };
     return [dict valueForKey:NSStringFromClass([displayedVC class])];
 }

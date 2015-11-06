@@ -58,10 +58,9 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
-    [[VObjectManager sharedManager] findFriendsBySocial:kVFacebookSocialSelector
-                                                  token:[[FBSDKAccessToken currentAccessToken] tokenString]
-                                                 secret:nil
-                                       withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    [[VObjectManager sharedManager] findFriendsBySocialWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
+                                                          secret:nil
+                                                withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         if (completionBlock)
         {
