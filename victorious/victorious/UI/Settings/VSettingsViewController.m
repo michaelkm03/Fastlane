@@ -321,14 +321,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         [[VObjectManager sharedManager] logout];
         [self updateLogoutButtonState];
     }
-    else
-    {
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                             dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:self
-                                            context:VAuthorizationContextDefault
-                                         completion:^(BOOL authorized) { }];
-    }
     
     [self.tableView beginUpdates];
     [self.tableView endUpdates];

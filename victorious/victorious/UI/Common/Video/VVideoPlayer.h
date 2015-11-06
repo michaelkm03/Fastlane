@@ -112,6 +112,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign, readonly) CGFloat aspectRatio;
 
+@optional
+
+/**
+ When user exits a content view with a video, call this method in - viewWillDisappear:
+ to give the VVideoPlayer instance a chance to cleanup.
+ */
+- (void)didExitFromContentView;
+
 @end
 
 NS_ASSUME_NONNULL_END

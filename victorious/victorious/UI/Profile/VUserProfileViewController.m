@@ -882,6 +882,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(location))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
 }
 
 #pragma mark - VAccessoryNavigationSource

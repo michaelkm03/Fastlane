@@ -483,12 +483,20 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if (self.isVideoContent && self.videoPlayer != nil && !self.videoPlayerDidFinishPlayingOnce)
+    if (self.isVideoContent && self.videoPlayer != nil)
     {
-        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+        if ([self.videoPlayer respondsToSelector:@selector(didExitFromContentView)])
+        {
+            [self.videoPlayer didExitFromContentView];
+        }
+        
+        if ( !self.videoPlayerDidFinishPlayingOnce )
+        {
+            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
+                                      VTrackingKeyStreamId : self.viewModel.streamId,
+                                      VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+        }
     }
 
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];

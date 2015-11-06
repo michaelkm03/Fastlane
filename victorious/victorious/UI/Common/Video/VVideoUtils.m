@@ -55,33 +55,32 @@ static const int64_t kAssetLoopClippingScale = 100;
                            loop:(BOOL)loop
                   readyCallback:(void(^)(AVPlayerItem *, NSURL *composedItemURL, CMTime originalAssetDuration))onReady
 {
-    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^void
-                   {
-                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
-                                                               options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
-                       [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
-                                                                NSStringFromSelector(@selector(tracks))]
-                                            completionHandler:^{
-                                                __block AVPlayerItem *playerItem = nil;
-                                                if ( loop )
-                                                {
-                                                    AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                                                    // Fallback to normal playback if we can't loop.
-                                                    playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
-                                                }
-                                                else
-                                                {
-                                                    playerItem = [AVPlayerItem playerItemWithAsset:asset];
-                                                }
-                                                dispatch_async( dispatch_get_main_queue(), ^
-                                                               {
-                                                                   if ( onReady != nil )
-                                                                   {
-                                                                       onReady( playerItem, itemURL, asset.duration );
-                                                                   }
-                                                               });
-                                            }];
-                   });
+    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^
+    {
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
+                                                options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
+        [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration))]
+                             completionHandler:^
+         {
+             AVPlayerItem *playerItem;
+             if ( loop )
+             {
+                 AVComposition *composition = [self loopingCompositionWithAsset:asset];
+                 playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
+             }
+             else
+             {
+                 playerItem = [AVPlayerItem playerItemWithAsset:asset];
+             }
+             dispatch_async( dispatch_get_main_queue(), ^
+             {
+                 if ( onReady != nil )
+                 {
+                     onReady( playerItem, itemURL, asset.duration );
+                 }
+             });
+         }];
+    });
 }
 
 @end
