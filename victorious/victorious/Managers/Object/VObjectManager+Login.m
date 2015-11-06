@@ -370,8 +370,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     [[[FBSDKLoginManager alloc] init] logOut];
     [[[VUserManager alloc] init] userDidLogout];
     [[InterstitialManager sharedInstance] clearAllRegisteredInterstitials];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Password reset
