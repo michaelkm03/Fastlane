@@ -36,10 +36,6 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @property (weak, nonatomic) IBOutlet VButtonWithCircularEmphasis *confirmationButton;
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (weak, nonatomic) IBOutlet VRoundedImageView *iconImageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -113,62 +109,15 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     return UIStatusBarStyleLightContent;
 }
 
-- (void)updateViewConstraints
+- (void)viewDidLayoutSubviews
 {
-    // Get total height of all other views
-    CGFloat totalHeight = self.topConstraint.constant;
-    totalHeight += CGRectGetHeight(self.iconImageView.bounds);
-    totalHeight += self.middleConstraint.constant;
-    totalHeight += self.bottomConstraint.constant;
-    totalHeight += CGRectGetHeight(self.confirmationButton.bounds);
-    
-    // Get the maximum height of the alert view
     CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - kMaxAlertHeightDifferenceFromSuperview;
     
-    // Get bounds for glyphs
-    CGRect textBounds = [self boundingRectForCharacterRange:NSMakeRange(0, self.messageText.length)];
-    
-    // Account for text view insets and calculate total text view height
-    CGFloat insetsTotal = self.messageTextView.textContainerInset.top + self.messageTextView.textContainerInset.bottom;
-    CGFloat textHeight = ceil(CGRectGetHeight(textBounds)) + insetsTotal;
-    
-    // Find out how high the text view should be
-    CGFloat newTextViewConstant = 0;
-    if (textHeight + totalHeight < maxHeight)
+    // Turn on scrolling on the text view if alert is the max size
+    if (CGRectGetHeight(self.alertContainerView.frame) >= maxHeight)
     {
-        newTextViewConstant = textHeight;
-        self.messageTextView.scrollEnabled = NO;
-    }
-    else
-    {
-        newTextViewConstant = maxHeight - totalHeight;
         self.messageTextView.scrollEnabled = YES;
     }
-    
-    // Set the text view height
-    self.textViewHeightConstraint.constant = newTextViewConstant;
-    
-    [super updateViewConstraints];
-}
-
-#pragma mark - Helpers
-
-- (CGRect)boundingRectForCharacterRange:(NSRange)range
-{
-    NSDictionary *attrsDictionary = @{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey]};
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:self.messageText attributes:attrsDictionary];
-    
-    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:attrString];
-    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-    [textStorage addLayoutManager:layoutManager];
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(CGRectGetWidth(self.messageTextView.frame), CGFLOAT_MAX)];
-    textContainer.lineFragmentPadding = 10.0f;
-    textContainer.lineBreakMode = NSLineBreakByWordWrapping;
-    [layoutManager addTextContainer:textContainer];
-    
-    NSRange glyphRange;
-    [layoutManager characterRangeForGlyphRange:range actualGlyphRange:&glyphRange];
-    return [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
 }
 
 #pragma mark - Properties
