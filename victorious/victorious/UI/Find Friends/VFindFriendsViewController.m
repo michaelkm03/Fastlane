@@ -11,8 +11,6 @@
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VFindFriendsTableViewController.h"
-#import "VFindInstagramFriendsViewController.h"
-#import "VFindTwitterFriendsTableViewController.h"
 #import "VObjectManager+Users.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VTabBarViewController.h"
@@ -34,7 +32,6 @@
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
-@property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
 @property (nonatomic) BOOL shouldShowInvite;
 @property (nonatomic, strong) NSString *appStoreLink;
 @property (nonatomic, strong) NSString *appName;
@@ -126,7 +123,6 @@
     _shouldShowInvite = shouldShowInvite;
     self.contactsInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
     self.facebookInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
-    self.twitterInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string
@@ -185,7 +181,6 @@
 {
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
-    self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.contactsInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
@@ -195,18 +190,12 @@
     self.facebookInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
     self.facebookInnerViewController.dependencyManager = self.dependencyManager;
     
-    self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.twitterInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
-    self.twitterInnerViewController.dependencyManager = self.dependencyManager;
-    
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
-                                          v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
-                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"])
+                                          v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"])
                                           ];
     
     self.contactsInnerViewController.delegate = self;
     self.facebookInnerViewController.delegate = self;
-    self.twitterInnerViewController.delegate = self;
 }
 
 #pragma mark - VFindFriendsTableViewControllerDelegate Method
@@ -267,7 +256,6 @@
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController         selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController         selectedUsers]];
-    [newFriends addObjectsFromArray:[self.twitterInnerViewController          selectedUsers]];
     [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
                                withSuccessBlock:nil
                                       failBlock:nil];
