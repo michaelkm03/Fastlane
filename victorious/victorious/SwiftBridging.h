@@ -131,6 +131,7 @@
 #import "VSimpleModalTransition.h"
 #import "VSleekStreamCellFactory.h"
 #import "VStoredLogin.h"
+#import "VStoredPassword.h"
 #import "VStream+Fetcher.h"
 #import "VStream+RestKit.h"
 #import "VStreamCellFactory.h"

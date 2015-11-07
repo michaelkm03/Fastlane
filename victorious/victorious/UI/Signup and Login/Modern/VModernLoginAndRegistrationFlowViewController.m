@@ -492,10 +492,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      {
          VUserManager *userManager = [[VUserManager alloc] init];
          
-         weakSelf.currentRequest = [userManager createEmailAccount:email
-                                                          password:password
-                                                          userName:nil
-                                                      onCompletion:^(VUser *user, BOOL isNewUser)
+         weakSelf.currentRequest = [userManager createAccountWithEmail:email
+                                                              password:password
+                                                          onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
                                         BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
                                         completion(YES, completeProfile, nil);
@@ -508,7 +507,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                             [weakSelf continueRegistrationFlow];
                                         }
                                         
-                                    } onError:^(NSError *error, BOOL thirdPartyAPIFailure) {
+                                    }
+                                                               onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+                                    {
                                         completion(NO, NO, error);
                                         [weakSelf dismissLoadingScreen];
                                     }];

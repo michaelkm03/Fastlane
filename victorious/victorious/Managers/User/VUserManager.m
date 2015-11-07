@@ -145,58 +145,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     }];
 }
 
-- (RKManagedObjectRequestOperation *)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    if (email == nil || password == nil)
-    {
-        if (errorBlock)
-        {
-            errorBlock(nil, NO);
-        }
-        return nil;
-    }
-    
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *user = [resultObjects firstObject];
-        
-        if (![user isKindOfClass:[VUser class]])
-        {
-            if (errorBlock)
-            {
-                errorBlock(nil, NO);
-            }
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
-            [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
-            
-            if (completion)
-            {
-                completion(user, NO);
-            }
-        }
-    };
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        // Do nothing if we've cancelled the request
-        if (operation.isCancelled)
-        {
-            return;
-        }
-        
-        if (errorBlock)
-        {
-            errorBlock(error, NO);
-        }
-        VLog(@"Error in victorious Login: %@", error);
-    };
-    
-    return [[VObjectManager sharedManager] createVictoriousWithEmail:email password:password username:userName successBlock:success failBlock:fail];
-}
-
 - (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
                                           password:(NSString *)password
                                       onCompletion:(VUserManagerLoginCompletionBlock)completion

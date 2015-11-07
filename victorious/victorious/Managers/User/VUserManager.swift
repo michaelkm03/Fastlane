@@ -59,6 +59,23 @@ extension VUserManager {
         }
     }
     
+    func createAccountWithEmail(email: String, password: String, onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> Cancelable {
+        let objectManager = VObjectManager.sharedManager()
+        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
+        return objectManager.executeRequest(accountCreateRequest) { (result, error) in
+            dispatch_async(dispatch_get_main_queue()) {
+                if let result = result {
+                    NSUserDefaults.standardUserDefaults().setInteger(VLoginType.Email.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+                    NSUserDefaults.standardUserDefaults().setObject(email, forKey: kAccountIdentifierDefaultsKey)
+                    VStoredPassword().savePassword(password, forEmail: email)
+                    completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .Twitter, objectManager: objectManager), result.newUser)
+                } else {
+                    errorBlock(error as? NSError, false)
+                }
+            }
+        }
+    }
+    
     private func loggedIn(withUser user: User, token: String, loginType: VLoginType, objectManager: VObjectManager) -> VUser {
         // TODO: check for existing user
         let moc = objectManager.managedObjectStore.mainQueueManagedObjectContext

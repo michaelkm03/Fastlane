@@ -313,6 +313,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)failedWithError:(NSError *)error
 {
+    if ( [error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled )
+    {
+        return;
+    }
+    
     NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
     

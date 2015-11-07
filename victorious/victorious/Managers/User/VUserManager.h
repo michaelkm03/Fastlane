@@ -23,18 +23,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Create a new account with the specified e-mail and password. 
- If an account already exists on the server with the specified e-mail address
- an error will occur, unless the specified password matches the password on
- that account. In that case, the existing account will be logged in.
- */
-- (RKManagedObjectRequestOperation *)createEmailAccount:(NSString *)email
-                                               password:(NSString *)password
-                                               userName:(NSString *)userName
-                                           onCompletion:(VUserManagerLoginCompletionBlock)completion
-                                                onError:(VUserManagerLoginErrorBlock)errorBlock;
-
-/**
  Log in using an e-mail address and password
  */
 - (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
