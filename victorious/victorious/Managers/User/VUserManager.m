@@ -42,7 +42,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     if ( loginType == VLastLoginTypeFacebook )
     {
         FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
-        if ((currentToken != nil) && ([currentToken.expirationDate timeIntervalSinceNow] > 0))
+        if ( currentToken != nil && [currentToken.expirationDate timeIntervalSinceNow] > 0 )
         {
             [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
         }
