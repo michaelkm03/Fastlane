@@ -6,13 +6,24 @@
 
 ### Setup
 
+#### Installation
+
 ```
 brew install python
 pip install requests
 xcode-select --switch <path_to_xcode_developer_folder>
 xcode-select --install # install command line tools
-export VAMS_USER=<vams_username>
-export VAMS_PASSWORD=<vams_password> # ask your team mate for it
+```
+
+#### Environment variables
+
+Add the following environment variables to the `victorious/fastlane/.env` file
+
+```
+PRODUCTION_VAMS_USER = '<production_username>'
+PRODUCTION_VAMS_PASSWORD = '<production_password>'
+STAGING_VAMS_USER = '<staging_username>'
+STAGING_VAMS_PASSWORD = '<staging_password>'
 ```
 
 ### Build and Push

@@ -20,3 +20,6 @@ products
 
 # Python modules
 *.pyc
+
+# fastlane setup
+victorious/fastlane/.env

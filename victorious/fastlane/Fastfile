@@ -1,7 +1,6 @@
 FASTLANE_DIRECTORY = File.dirname(__FILE__)
 $LOAD_PATH.unshift(FASTLANE_DIRECTORY + '/lib')
-require 'vams/client'
-require 'vams/metadata'
+require 'vams'
 
 # Customise this file, documentation can be found here:
 # https://github.com/KrauseFx/fastlane/tree/master/docs
