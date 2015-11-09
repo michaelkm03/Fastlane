@@ -63,7 +63,7 @@ extension Sequence {
             return nil
         }
         
-        let dateFormatter = DateFormatter()
+        let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         
         // MARK: - Required data
         
