@@ -54,11 +54,6 @@ extension User {
         name = json["name"].string
         location = json["profile_location"].string
         tagline = json["profile_tagline"].string
-        
-        if let previewAssetsArray = json["preview"]["assets"].array {
-            avatar = previewAssetsArray.flatMap { ImageAsset(json: $0) }
-        } else {
-            avatar = []
-        }
+        avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
     }
 }
