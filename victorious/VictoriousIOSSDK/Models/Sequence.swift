@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Sequence: StreamItemType {
-    public let remoteId: String
+    public let remoteID: String
     public let headline: String?
     public let name: String
     public let category: Category
@@ -24,7 +24,7 @@ public struct Sequence: StreamItemType {
     public let likeCount: Int
     public let memeCount: Int
     public let nameEmbeddedInContent: Bool
-    public let parentUserId: Int64?
+    public let parentUserID: Int64?
     public let permissionsMask: Int
     public let previewData: AnyObject?
     public let previewType: AssetType?
@@ -63,13 +63,13 @@ extension Sequence {
         // MARK: - Required data
         
         guard let category      = Category(rawValue: json["category"].string ?? ""),
-            let remoteId        = json["id"].string,
+            let remoteID        = json["id"].string,
             let user            = User(json: json["user"]),
             let releasedAt      = dateFormatter.dateFromString(json["released_at"].string ?? "") else {
             return nil
         }
         self.category           = category
-        self.remoteId           = remoteId
+        self.remoteID           = remoteID
         self.releasedAt         = releasedAt
         self.user               = user
     
@@ -94,7 +94,7 @@ extension Sequence {
         hasReposted             = json["has_reposted"].bool ?? false
         isGifStyle              = json["is_gif_style"].bool ?? false
         trendingTopicName       = json["trending_topic_name"].string
-        parentUserId            = json["parent_user"].int64
+        parentUserID            = json["parent_user"].int64
         adBreaks                = (json["ad_breaks"].array ?? []).flatMap { AdBreak(json: $0) }
         comments                = (json["comments"].array ?? []).flatMap { Comment(json: $0) }
         endCard                 = EndCard(json: json["endcard"])

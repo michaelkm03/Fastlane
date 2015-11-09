@@ -16,14 +16,14 @@ extension VStream: DataStoreObject {
 extension VStream: Serializable {
     
     func serialize( stream: Stream, dataStore: DataStore ) {
-        remoteId        = String(stream.remoteId)
+        remoteId        = String(stream.remoteID)
         itemType        = stream.type
         itemSubType     = stream.subtype
         name            = stream.name
         count           = stream.postCount
         
         streamItems += stream.items.flatMap {
-            let sequence: VSequence = dataStore.findOrCreateObject([ "remoteId" : String($0.remoteId) ])
+            let sequence: VSequence = dataStore.findOrCreateObject([ "remoteID" : String($0.remoteID) ])
             sequence.serialize( $0, dataStore: dataStore )
             return sequence
         }

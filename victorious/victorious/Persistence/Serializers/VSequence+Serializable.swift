@@ -34,12 +34,12 @@ extension VSequence: Serializable {
         nameEmbeddedInContent   = sequence.nameEmbeddedInContent
         permissionsMask         = sequence.permissionsMask
         previewImagesObject     = sequence.previewImagesObject
-        remoteId                = sequence.remoteId
+        remoteId                = sequence.remoteID
         repostCount             = sequence.repostCount
         sequenceDescription     = sequence.sequenceDescription
        
         
-        user = dataStore.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
+        user = dataStore.findOrCreateObject( [ "remoteID" : Int(sequence.user.userID) ] ) as VUser
         
         previewImageAssets = Set<VImageAsset>(sequence.previewImageAssets.flatMap {
             let imageAsset: VImageAsset = dataStore.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
@@ -48,7 +48,7 @@ extension VSequence: Serializable {
         })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
-            let node: VNode = dataStore.findOrCreateObject([ "remoteId" : Int($0.nodeId)! ])
+            let node: VNode = dataStore.findOrCreateObject([ "remoteID" : Int($0.nodeID)! ])
             node.serialize( $0, dataStore: dataStore )
             return node
         })

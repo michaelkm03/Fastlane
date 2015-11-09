@@ -642,6 +642,7 @@
 		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
 		A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */; };
 		A75C6D031BF1356F000453FC /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C6D021BF1356F000453FC /* DateFormat.swift */; };
+		A75C6D071BF1437F000453FC /* Stream.json in Resources */ = {isa = PBXBuildFile; fileRef = A75C6D061BF1437F000453FC /* Stream.json */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -824,6 +825,7 @@
 		A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22041BA77E0400F2CD37 /* ContentViewHandoffController.swift */; };
 		A7BA22081BA7825200F2CD37 /* VVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */; };
 		A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */; };
+		A7BAD63D1BF144800076D3B7 /* StreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BAD63C1BF144800076D3B7 /* StreamTests.swift */; };
 		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
 		A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C713B11B74450A00089B5E /* GCDUtils.swift */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
@@ -2559,6 +2561,7 @@
 		A75C64AE1AE0299900245125 /* VTextPostImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostImageHelper.h; sourceTree = "<group>"; };
 		A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostImageHelper.m; sourceTree = "<group>"; };
 		A75C6D021BF1356F000453FC /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
+		A75C6D061BF1437F000453FC /* Stream.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Stream.json; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -2873,6 +2876,7 @@
 		A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayerToolbarView.m; sourceTree = "<group>"; };
 		A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewProvider.swift; sourceTree = "<group>"; };
 		A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayer.h; sourceTree = "<group>"; };
+		A7BAD63C1BF144800076D3B7 /* StreamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTests.swift; sourceTree = "<group>"; };
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
@@ -4654,6 +4658,7 @@
 			children = (
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				A7BAD63C1BF144800076D3B7 /* StreamTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4666,6 +4671,7 @@
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
+				A75C6D061BF1437F000453FC /* Stream.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
 			path = "Test Data";
@@ -8813,6 +8819,7 @@
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
+				A75C6D071BF1437F000453FC /* Stream.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9512,6 +9519,7 @@
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
+				A7BAD63D1BF144800076D3B7 /* StreamTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				0315EAD51BED8C3100645071 /* LoginRequestTests.swift in Sources */,

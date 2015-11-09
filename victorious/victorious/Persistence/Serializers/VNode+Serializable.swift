@@ -16,13 +16,13 @@ extension VNode: DataStoreObject {
 extension VNode: Serializable {
     
     func serialize( node: Node, dataStore: DataStore ) {
-        guard let remoteId = Int(node.nodeId) else {
+        guard let remoteID = Int(node.nodeID) else {
             return
         }
-        self.remoteId = NSNumber(integer: remoteId)
+        self.remoteId = NSNumber(integer: remoteID)
         
         assets = Optional(assets) + node.assets.flatMap {
-            let asset: VAsset = dataStore.findOrCreateObject([ "remoteId" : Int($0.assetId) ])
+            let asset: VAsset = dataStore.findOrCreateObject([ "remoteID" : Int($0.assetID) ])
             asset.serialize( $0, dataStore: dataStore )
             return asset
         }

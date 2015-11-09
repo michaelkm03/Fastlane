@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Stream: StreamItemType {
-    public let remoteId: String
+    public let remoteID: String
     public let type: String
     public let subtype: String
     public let name: String
@@ -32,10 +32,10 @@ public struct Stream: StreamItemType {
 
 extension Stream {
     public init?(json: JSON) {
-        guard let remoteId = json["id"].string else {
+        guard let remoteID = json["id"].string else {
             return nil
         }
-        self.remoteId           = remoteId
+        self.remoteID           = remoteID
         
         type                    = json["type"].string ?? ""
         subtype                 = json["subtype"].string ?? ""

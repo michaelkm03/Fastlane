@@ -24,7 +24,7 @@ public enum AssetType: String {
 }
 
 public struct Asset {
-    public let assetId: Int64
+    public let assetID: Int64
     public let audioMuted: Bool
     public let backgroundColor: String?
     public let backgroundImageUrl: String?
@@ -33,7 +33,7 @@ public struct Asset {
     public let loop: Bool
     public let mimeType: MimeType?
     public let playerControlsDisabled: Bool
-    public let remoteContentId: String?
+    public let remoteContentID: String?
     public let remotePlayback: Bool
     public let remoteSource: String?
     public let speed: Double
@@ -43,14 +43,14 @@ public struct Asset {
 
 extension Asset {
     public init?(json: JSON) {
-        guard let assetId = Int64(json["asset_id"].string ?? ""),
+        guard let assetID = Int64(json["asset_id"].string ?? ""),
             let type = AssetType(rawValue: json["type"].string ?? ""),
             let data = json["data"].string else {
                 return nil
         }
         self.type               = type
         self.data               = data
-        self.assetId            = assetId
+        self.assetID            = assetID
         
         audioMuted              = json["audio_muted"].bool ?? false
         backgroundColor         = json["background_color"].string
@@ -59,7 +59,7 @@ extension Asset {
         loop                    = json["loop"].bool ?? false
         mimeType                = MimeType(rawValue: json["mime_type"].string ?? "")
         playerControlsDisabled  = json["player_controls_disabled"].bool ?? false
-        remoteContentId         = json["remote_content_id"].string
+        remoteContentID         = json["remote_content_id"].string
         remotePlayback          = json["remote_playback"].bool ?? false
         remoteSource            = json["remote_source"].string
         speed                   = json["speed"].double ?? 1.0

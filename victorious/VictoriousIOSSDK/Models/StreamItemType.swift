@@ -29,7 +29,7 @@ public enum StreamContentType: String {
 }
 
 public protocol StreamItemType {
-    var remoteId: String { get }
+    var remoteID: String { get }
     var previewImagesObject: AnyObject? { get }
     var previewTextPostAsset: String? { get }
     var streamContentType: StreamContentType? { get }

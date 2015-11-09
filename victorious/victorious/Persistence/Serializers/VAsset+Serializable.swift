@@ -24,8 +24,8 @@ extension VAsset: Serializable {
         loop                    = asset.loop
         mimeType                = asset.mimeType?.rawValue
         playerControlsDisabled  = asset.playerControlsDisabled
-        remoteContentId         = asset.remoteContentId
-        remoteId                = Int(asset.assetId)
+        remoteContentId         = asset.remoteContentID
+        remoteId                = Int(asset.assetID)
         remotePlayback          = asset.remotePlayback
         remoteSource            = asset.remoteSource
         speed                   = asset.speed

@@ -1,0 +1,2132 @@
+{
+	"id": "feed:following",
+	"type": "feed",
+	"subtype": "following",
+	"name": "Following feed",
+	"items": [{
+		"id": "13396",
+		"type": "shelf",
+		"subtype": "marquee",
+		"name": "Following Stream Marquee",
+		"title": "Marquee",
+		"postCount": 2,
+		"streamUrl": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream_with_marquee\/13396\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+		"items": [{
+			"id": "15446",
+			"type": "sequence",
+			"subtype": "video",
+			"is_ugc": false,
+			"created_by": "97",
+			"name": "simon test",
+			"description": "simon test",
+			"permissions": 3486,
+			"preview": {
+				"type": "media",
+				"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/thumbnail-00001.jpg",
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/640x360.jpg",
+					"type": "image\/jpeg",
+					"width": 640,
+					"height": 360
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/80x45.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 45
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/320x180.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 180
+				}]
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "owner_video",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-08-27 17:43:05",
+			"display_order": null,
+			"expires_at": "",
+			"sequence_counts": {
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [{
+				"id": "27596",
+				"display_order": 0,
+				"sequence_id": "15446",
+				"should_autoplay": true,
+				"parent_id": "",
+				"user_id": "2956",
+				"user": {
+					"id": "2956",
+					"name": "cody who",
+					"status": "complete",
+					"am_following": true,
+					"autofollow": "yes",
+					"last_login_date": "2015-11-09 19:13:32",
+					"is_direct_message_disabled": false,
+					"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+					"profile_location": "Santa Monica, CA",
+					"profile_tagline": "Who",
+					"preview": {
+						"assets": [{
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+							"type": "image\/jpeg",
+							"width": 80,
+							"height": 80
+						}, {
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/320x320.jpg",
+							"type": "image\/jpeg",
+							"width": 320,
+							"height": 320
+						}]
+					},
+					"isCreator": false,
+					"fanloyalty": {
+						"points": 1517,
+						"level": 5,
+						"progress": 89
+					}
+				},
+				"text": "",
+				"media_type": "video",
+				"media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/e918a13729ed28a55af1e6918d54712b\/playlist.m3u8",
+				"thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/e918a13729ed28a55af1e6918d54712b\/thumbnail-00001.jpg",
+				"posted_at": "2015-10-21 01:48:51"
+			}, {
+				"id": "27194",
+				"display_order": 1,
+				"sequence_id": "15446",
+				"should_autoplay": true,
+				"parent_id": "",
+				"user_id": "2956",
+				"user": {
+					"id": "2956",
+					"name": "cody who",
+					"status": "complete",
+					"am_following": true,
+					"autofollow": "yes",
+					"last_login_date": "2015-11-09 19:13:32",
+					"is_direct_message_disabled": false,
+					"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+					"profile_location": "Santa Monica, CA",
+					"profile_tagline": "Who",
+					"preview": {
+						"assets": [{
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+							"type": "image\/jpeg",
+							"width": 80,
+							"height": 80
+						}, {
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/320x320.jpg",
+							"type": "image\/jpeg",
+							"width": 320,
+							"height": 320
+						}]
+					},
+					"isCreator": false,
+					"fanloyalty": {
+						"points": 1517,
+						"level": 5,
+						"progress": 89
+					}
+				},
+				"text": "",
+				"media_type": "video",
+				"media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0ee730b10e41a60eac619eae75662e8e\/playlist.m3u8",
+				"thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0ee730b10e41a60eac619eae75662e8e\/thumbnail-00001.jpg",
+				"posted_at": "2015-10-13 23:44:09"
+			}, {
+				"id": "27193",
+				"display_order": 2,
+				"sequence_id": "15446",
+				"should_autoplay": false,
+				"parent_id": "",
+				"user_id": "2956",
+				"user": {
+					"id": "2956",
+					"name": "cody who",
+					"status": "complete",
+					"am_following": true,
+					"autofollow": "yes",
+					"last_login_date": "2015-11-09 19:13:32",
+					"is_direct_message_disabled": false,
+					"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+					"profile_location": "Santa Monica, CA",
+					"profile_tagline": "Who",
+					"preview": {
+						"assets": [{
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/80x80.jpg",
+							"type": "image\/jpeg",
+							"width": 80,
+							"height": 80
+						}, {
+							"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/24084340f4a29cf68d9e2f6edbe39953\/320x320.jpg",
+							"type": "image\/jpeg",
+							"width": 320,
+							"height": 320
+						}]
+					},
+					"isCreator": false,
+					"fanloyalty": {
+						"points": 1517,
+						"level": 5,
+						"progress": 89
+					}
+				},
+				"text": "rewgergergregergw",
+				"media_type": "",
+				"media_url": "",
+				"thumbnail_url": "",
+				"posted_at": "2015-10-13 23:44:02"
+			}],
+			"created_at": "2015-08-27 17:45:18",
+			"is_paid": false,
+			"preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/thumbnail-00001.jpg",
+			"user": {
+				"id": "97",
+				"name": "Daily Grace",
+				"status": "complete",
+				"am_following": true,
+				"autofollow": "no",
+				"last_login_date": "2015-10-28 16:41:14",
+				"is_direct_message_disabled": true,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/80x80.jpg",
+				"profile_location": "Los Angeles, CA",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/68x80.jpg",
+						"type": "image\/jpeg",
+						"width": 68,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/274x320.jpg",
+						"type": "image\/jpeg",
+						"width": 274,
+						"height": 320
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/548x640.jpg",
+						"type": "image\/jpeg",
+						"width": 548,
+						"height": 640
+					}]
+				},
+				"isCreator": true,
+				"fanloyalty": {
+					"points": 0,
+					"level": 1,
+					"progress": 0
+				}
+			},
+			"tracking": {
+				"view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=15446&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=15446&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-25-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=15446&percentage=25&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-50-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=15446&percentage=50&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-75-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=15446&percentage=75&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-100-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=15446&percentage=100&view_time=%%TIME_CURRENT%%&connectivity=%%CONNECTIVITY%%&volume_level=%%VOLUME_LEVEL%%&is_autoplay=%%IS_AUTOPLAY%%&from_rule=0"],
+				"view-error": [],
+				"view-stall": [],
+				"view-skip": [],
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=15446&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=15446&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=15446&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=15446&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "7418",
+				"display_order": 0,
+				"assets": [{
+					"audio_muted": false,
+					"node_id": "7418",
+					"asset_id": "7116",
+					"display_order": 0,
+					"type": "path",
+					"duration": "127",
+					"loop": 0,
+					"mime_type": "application\/x-mpegURL",
+					"player_controls_disabled": false,
+					"remote_playback": false,
+					"remote_source": null,
+					"remote_content_id": null,
+					"stream_autoplay": false,
+					"speed": 1,
+					"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/playlist.m3u8"
+				}, {
+					"audio_muted": false,
+					"node_id": "7418",
+					"asset_id": "7116",
+					"display_order": 1,
+					"type": "path",
+					"duration": "127",
+					"loop": 0,
+					"mime_type": "video\/mp4",
+					"player_controls_disabled": false,
+					"remote_playback": false,
+					"remote_source": null,
+					"remote_content_id": null,
+					"stream_autoplay": false,
+					"speed": 1,
+					"bitrate": 720,
+					"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/720\/video.mp4"
+				}, {
+					"audio_muted": false,
+					"node_id": "7418",
+					"asset_id": "7116",
+					"display_order": 2,
+					"type": "path",
+					"duration": "127",
+					"loop": 0,
+					"mime_type": "video\/mp4",
+					"player_controls_disabled": false,
+					"remote_playback": false,
+					"remote_source": null,
+					"remote_content_id": null,
+					"stream_autoplay": false,
+					"speed": 1,
+					"bitrate": 480,
+					"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/f4c9b9fc3564e4af36e61e5b1ce78ec2\/480\/video.mp4"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/a5346dfc96471522063c6512c1588dd6"
+			}]
+		}, {
+			"id": "15418",
+			"type": "sequence",
+			"subtype": "image",
+			"is_ugc": false,
+			"created_by": "97",
+			"name": "Testing tall images.",
+			"description": "Testing tall images.",
+			"permissions": 3742,
+			"preview": {
+				"type": "media",
+				"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/447x1080.jpg",
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/265x640.jpg",
+					"type": "image\/jpeg",
+					"width": 265,
+					"height": 640
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/33x80.jpg",
+					"type": "image\/jpeg",
+					"width": 33,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/132x320.jpg",
+					"type": "image\/jpeg",
+					"width": 132,
+					"height": 320
+				}]
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "owner_image",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": true,
+			"released_at": "2015-08-26 19:06:26",
+			"display_order": null,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 2,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"votetypes": [{
+					"id": "12",
+					"count": 4
+				}, {
+					"id": "10",
+					"count": 2
+				}, {
+					"id": "14",
+					"count": 2
+				}, {
+					"id": "16",
+					"count": 1
+				}, {
+					"id": "5",
+					"count": 1
+				}, {
+					"id": "8",
+					"count": 1
+				}],
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-08-26 19:06:44",
+			"is_paid": false,
+			"preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/447x1080.jpg",
+			"user": {
+				"id": "97",
+				"name": "Daily Grace",
+				"status": "complete",
+				"am_following": true,
+				"autofollow": "no",
+				"last_login_date": "2015-10-28 16:41:14",
+				"is_direct_message_disabled": true,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/80x80.jpg",
+				"profile_location": "Los Angeles, CA",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/68x80.jpg",
+						"type": "image\/jpeg",
+						"width": 68,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/274x320.jpg",
+						"type": "image\/jpeg",
+						"width": 274,
+						"height": 320
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/52794fe3b67fb5adfddc098d20f240c7\/548x640.jpg",
+						"type": "image\/jpeg",
+						"width": 548,
+						"height": 640
+					}]
+				},
+				"isCreator": true,
+				"fanloyalty": {
+					"points": 0,
+					"level": 1,
+					"progress": 0
+				}
+			},
+			"tracking": {
+				"view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=15418&percentage=0&from_rule=0"],
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=15418&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=15418&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=15418&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=15418&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "7390",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "7390",
+					"asset_id": "7088",
+					"display_order": 0,
+					"type": "path",
+					"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8af9f948c85d1ef1f91b39c9deaaf29f\/original.jpg"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/d82ff9a967175c7b689abd736be59705"
+			}]
+		}]
+	}, {
+		"id": "17066",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "XXXXXXXXX",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "XXXXXXXXX",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:47:12",
+		"display_order": 1,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:47:12",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9022",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9022",
+				"asset_id": "8708",
+				"display_order": 0,
+				"type": "text",
+				"data": "XXXXXXXXX",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/22d8370f2e99a9b72d88ced7bec8fab9"
+		}]
+	}, {
+		"id": "17065",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "WHHHHUUTTT????",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "WHHHHUUTTT????",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:36:33",
+		"display_order": 2,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:36:33",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9021",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9021",
+				"asset_id": "8707",
+				"display_order": 0,
+				"type": "text",
+				"data": "WHHHHUUTTT????",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/d7220fd799999123baee7da3d9cd676e"
+		}]
+	}, {
+		"id": "17064",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "sf dasf dasfdsa fds fasd",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "sf dasf dasfdsa fds fasd",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:35:01",
+		"display_order": 3,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"votetypes": [{
+				"id": "10",
+				"count": 1
+			}, {
+				"id": "8",
+				"count": 5
+			}, {
+				"id": "12",
+				"count": 1
+			}, {
+				"id": "14",
+				"count": 1
+			}, {
+				"id": "16",
+				"count": 1
+			}, {
+				"id": "5",
+				"count": 1
+			}],
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:35:01",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9020",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9020",
+				"asset_id": "8706",
+				"display_order": 0,
+				"type": "text",
+				"data": "sf dasf dasfdsa fds fasd",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/e3d2128995a7fecd83331271717c86e8"
+		}]
+	}, {
+		"id": "user:3694",
+		"type": "shelf",
+		"subtype": "user",
+		"name": "Patrick Lynch",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": false,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"title": "RECOMMENDED PROFILE",
+		"postCount": 241,
+		"followersCount": 15,
+		"streamUrl": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_user\/3694\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+		"items": [{
+			"id": "17066",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "XXXXXXXXX",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "XXXXXXXXX",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:47:12",
+			"display_order": 1,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:47:12",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17066&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9022",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9022",
+					"asset_id": "8708",
+					"display_order": 0,
+					"type": "text",
+					"data": "XXXXXXXXX",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/22d8370f2e99a9b72d88ced7bec8fab9"
+			}]
+		}, {
+			"id": "17065",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "WHHHHUUTTT????",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "WHHHHUUTTT????",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:36:33",
+			"display_order": 2,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:36:33",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17065&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9021",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9021",
+					"asset_id": "8707",
+					"display_order": 0,
+					"type": "text",
+					"data": "WHHHHUUTTT????",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/d7220fd799999123baee7da3d9cd676e"
+			}]
+		}, {
+			"id": "17064",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "sf dasf dasfdsa fds fasd",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "sf dasf dasfdsa fds fasd",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:35:01",
+			"display_order": 3,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"votetypes": [{
+					"id": "10",
+					"count": 1
+				}, {
+					"id": "8",
+					"count": 5
+				}, {
+					"id": "12",
+					"count": 1
+				}, {
+					"id": "14",
+					"count": 1
+				}, {
+					"id": "16",
+					"count": 1
+				}, {
+					"id": "5",
+					"count": 1
+				}],
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:35:01",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17064&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9020",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9020",
+					"asset_id": "8706",
+					"display_order": 0,
+					"type": "text",
+					"data": "sf dasf dasfdsa fds fasd",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/e3d2128995a7fecd83331271717c86e8"
+			}]
+		}, {
+			"id": "17063",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "ff dsaf dsafdsa",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "ff dsaf dsafdsa",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:32:57",
+			"display_order": 4,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:32:57",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9019",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9019",
+					"asset_id": "8705",
+					"display_order": 0,
+					"type": "text",
+					"data": "ff dsaf dsafdsa",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/b74737087e8ec497f4ed3311f684f885"
+			}]
+		}, {
+			"id": "17062",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "fad sfdsa fdas fdasfds",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "fad sfdsa fdas fdasfds",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:32:30",
+			"display_order": 5,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:32:30",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9018",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9018",
+					"asset_id": "8704",
+					"display_order": 0,
+					"type": "text",
+					"data": "fad sfdsa fdas fdasfds",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/903443e280bd1decdf6fd8f30c159611"
+			}]
+		}, {
+			"id": "17061",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:13:35",
+			"display_order": 6,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:13:35",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9017",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9017",
+					"asset_id": "8703",
+					"display_order": 0,
+					"type": "text",
+					"data": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/f70cb7180d0db447de7e2ed103961512"
+			}]
+		}, {
+			"id": "17060",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "s  gdas gdsag ads gdsag dsag asdf dsaf sdafsad",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "s  gdas gdsag ads gdsag dsag asdf dsaf sdafsad",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:12:04",
+			"display_order": 7,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:12:04",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17060&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17060&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17060&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17060&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9016",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9016",
+					"asset_id": "8702",
+					"display_order": 0,
+					"type": "text",
+					"data": "s  gdas gdsag ads gdsag dsag asdf dsaf sdafsad",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/e845b482b7dc721af975ca03177c6ff3"
+			}]
+		}, {
+			"id": "17059",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "fd safd asfdsfdsa fads",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "fd safd asfdsfdsa fads",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 03:10:12",
+			"display_order": 8,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 03:10:12",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17059&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17059&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17059&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17059&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9015",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9015",
+					"asset_id": "8701",
+					"display_order": 0,
+					"type": "text",
+					"data": "fd safd asfdsfdsa fads",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/fef85a0b17f9552e80bb3e1a24d56256"
+			}]
+		}, {
+			"id": "17056",
+			"type": "sequence",
+			"subtype": "text",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "f dasfd sa#hash fa",
+			"description": null,
+			"permissions": 2077,
+			"preview": {
+				"type": "text",
+				"data": "f dasfd sa#hash fa",
+				"background_image": "",
+				"background_color": "595959",
+				"assets": []
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_text",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-07 00:32:15",
+			"display_order": 9,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-07 00:32:15",
+			"is_paid": false,
+			"preview_image": "",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17056&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17056&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17056&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17056&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "9012",
+				"display_order": 0,
+				"assets": [{
+					"node_id": "9012",
+					"asset_id": "8698",
+					"display_order": 0,
+					"type": "text",
+					"data": "f dasfd sa#hash fa",
+					"background_color": "595959"
+				}],
+				"interactions": [],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/c11dee15cfa602f033de8f8b01555259"
+			}]
+		}, {
+			"id": "16543",
+			"type": "sequence",
+			"subtype": "poll",
+			"is_ugc": true,
+			"created_by": "3694",
+			"name": "Question",
+			"description": "<none>",
+			"permissions": 2061,
+			"preview": {
+				"type": "media",
+				"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/563723db856e8542e86f38177b2e7646\/640x320.jpg",
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/563723db856e8542e86f38177b2e7646\/640x320.jpg",
+					"type": "image\/jpeg",
+					"width": 640,
+					"height": 320
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/563723db856e8542e86f38177b2e7646\/80x40.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 40
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/563723db856e8542e86f38177b2e7646\/320x160.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 160
+				}]
+			},
+			"status": "public",
+			"am_liking": false,
+			"category": "ugc_poll",
+			"name_embedded_in_content": false,
+			"is_remix": false,
+			"is_gif_style": false,
+			"is_repost": false,
+			"has_reposted": false,
+			"released_at": "2015-11-03 23:57:03",
+			"display_order": 10,
+			"expires_at": "",
+			"sequence_counts": {
+				"comments": 0,
+				"remixes": 0,
+				"reposts": 0,
+				"gifs": 0,
+				"likes": 0,
+				"memes": 0,
+				"quotes": 0,
+				"reposted_by_following": 0
+			},
+			"engagements": [],
+			"recent_comments": [],
+			"created_at": "2015-11-03 23:57:03",
+			"is_paid": false,
+			"preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/563723db856e8542e86f38177b2e7646\/640x320.jpg",
+			"user": {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+				"am_following": false,
+				"autofollow": "no",
+				"last_login_date": "2015-11-06 22:23:28",
+				"is_direct_message_disabled": false,
+				"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+				"profile_location": "",
+				"profile_tagline": "",
+				"preview": {
+					"assets": [{
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+						"type": "image\/jpeg",
+						"width": 80,
+						"height": 80
+					}, {
+						"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+						"type": "image\/jpeg",
+						"width": 320,
+						"height": 320
+					}]
+				},
+				"isCreator": false,
+				"fanloyalty": {
+					"points": 2764,
+					"level": 7,
+					"progress": 24
+				},
+				"email": "pdlynch@gmail.com",
+				"access_level": "api_user",
+				"hub_role": null,
+				"max_video_duration": 15
+			},
+			"tracking": {
+				"view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=16543&percentage=0&from_rule=0"],
+				"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=16543&from_rule=0"],
+				"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=16543&from_rule=0"],
+				"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=16543&from_rule=0"],
+				"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=16543&from_rule=0&share_dest=%%SHARE_DEST%%"]
+			},
+			"nodes": [{
+				"node_id": "8499",
+				"display_order": 0,
+				"assets": [],
+				"interactions": [{
+					"node_id": "8499",
+					"display_order": 0,
+					"start_time": "-1",
+					"type": "query",
+					"interaction_id": "447",
+					"question": "Question",
+					"answers": [{
+						"label": "AnswerA",
+						"media_type": "image",
+						"label_media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b672383714a47c0286e98031ab21eb92\/original.jpg",
+						"media": [{
+							"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b672383714a47c0286e98031ab21eb92\/original.jpg",
+							"mime_type": "application\/x-mpegURL"
+						}, {
+							"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b672383714a47c0286e98031ab21eb92\/720\/video.mp4",
+							"mime_type": "video\/mp4"
+						}],
+						"label_thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b672383714a47c0286e98031ab21eb92\/398x398.jpg",
+						"display_order": 0,
+						"answer_id": "897",
+						"is_correct": "0",
+						"points": "0",
+						"currency": "0",
+						"answer_action": {
+							"goto_node": "0"
+						}
+					}, {
+						"label": "AnwerB",
+						"media_type": "image",
+						"label_media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/856e42c7e83cd756ba3444788500d304\/original.jpg",
+						"media": [{
+							"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/856e42c7e83cd756ba3444788500d304\/original.jpg",
+							"mime_type": "application\/x-mpegURL"
+						}, {
+							"data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/856e42c7e83cd756ba3444788500d304\/720\/video.mp4",
+							"mime_type": "video\/mp4"
+						}],
+						"label_thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/856e42c7e83cd756ba3444788500d304\/1779x1778.jpg",
+						"display_order": 1,
+						"answer_id": "898",
+						"is_correct": "0",
+						"points": "0",
+						"currency": "0",
+						"answer_action": {
+							"goto_node": "0"
+						}
+					}],
+					"timeout": "0"
+				}],
+				"share_url": "http:\/\/share-dev.victorious.com\/#shares\/4578826255c4db37fc5fd81226f14652"
+			}]
+		}]
+	}, {
+		"id": "17063",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "ff dsaf dsafdsa",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "ff dsaf dsafdsa",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:32:57",
+		"display_order": 4,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:32:57",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17063&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9019",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9019",
+				"asset_id": "8705",
+				"display_order": 0,
+				"type": "text",
+				"data": "ff dsaf dsafdsa",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/b74737087e8ec497f4ed3311f684f885"
+		}]
+	}, {
+		"id": "17062",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "fad sfdsa fdas fdasfds",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "fad sfdsa fdas fdasfds",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:32:30",
+		"display_order": 5,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:32:30",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17062&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9018",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9018",
+				"asset_id": "8704",
+				"display_order": 0,
+				"type": "text",
+				"data": "fad sfdsa fdas fdasfds",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/903443e280bd1decdf6fd8f30c159611"
+		}]
+	}, {
+		"id": "17061",
+		"type": "sequence",
+		"subtype": "text",
+		"is_ugc": true,
+		"created_by": "3694",
+		"name": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+		"description": null,
+		"permissions": 2077,
+		"preview": {
+			"type": "text",
+			"data": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+			"background_image": "",
+			"background_color": "595959",
+			"assets": []
+		},
+		"status": "public",
+		"am_liking": false,
+		"category": "ugc_text",
+		"name_embedded_in_content": false,
+		"is_remix": false,
+		"is_gif_style": false,
+		"is_repost": false,
+		"has_reposted": false,
+		"released_at": "2015-11-07 03:13:35",
+		"display_order": 6,
+		"expires_at": "",
+		"sequence_counts": {
+			"comments": 0,
+			"remixes": 0,
+			"reposts": 0,
+			"gifs": 0,
+			"likes": 0,
+			"memes": 0,
+			"quotes": 0,
+			"reposted_by_following": 0
+		},
+		"engagements": [],
+		"recent_comments": [],
+		"created_at": "2015-11-07 03:13:35",
+		"is_paid": false,
+		"preview_image": "",
+		"user": {
+			"id": "3694",
+			"name": "Patrick Lynch",
+			"status": "complete",
+			"am_following": true,
+			"autofollow": "no",
+			"last_login_date": "2015-11-06 22:23:28",
+			"is_direct_message_disabled": false,
+			"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+			"profile_location": "",
+			"profile_tagline": "",
+			"preview": {
+				"assets": [{
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
+					"type": "image\/jpeg",
+					"width": 80,
+					"height": 80
+				}, {
+					"imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
+					"type": "image\/jpeg",
+					"width": 320,
+					"height": 320
+				}]
+			},
+			"isCreator": false,
+			"fanloyalty": {
+				"points": 2764,
+				"level": 7,
+				"progress": 24
+			},
+			"email": "pdlynch@gmail.com",
+			"access_level": "api_user",
+			"hub_role": null,
+			"max_video_duration": 15
+		},
+		"tracking": {
+			"cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+			"cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+			"cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0"],
+			"share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=17061&from_rule=0&share_dest=%%SHARE_DEST%%"]
+		},
+		"nodes": [{
+			"node_id": "9017",
+			"display_order": 0,
+			"assets": [{
+				"node_id": "9017",
+				"asset_id": "8703",
+				"display_order": 0,
+				"type": "text",
+				"data": "fdas fdsa fadsf adsf asdf asdf asf asdfds af asfd sa",
+				"background_color": "595959"
+			}],
+			"interactions": [],
+			"share_url": "http:\/\/share-dev.victorious.com\/#shares\/f70cb7180d0db447de7e2ed103961512"
+		}]
+	}]
+}
