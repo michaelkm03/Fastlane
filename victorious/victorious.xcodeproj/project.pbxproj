@@ -2740,6 +2740,7 @@
 		A789F7031BF11B0400F5C87B /* StreamItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemType.swift; sourceTree = "<group>"; };
 		A789F7041BF11B0400F5C87B /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JSON+NSDate.swift"; sourceTree = "<group>"; };
+		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
 		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
 		A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
@@ -12818,9 +12819,10 @@
 		A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */,
 				A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */,
 			);
-			currentVersion = A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */;
+			currentVersion = A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */;
 			path = victoriOS.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
