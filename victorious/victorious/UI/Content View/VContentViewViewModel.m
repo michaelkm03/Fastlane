@@ -672,12 +672,12 @@
 
 - (NSString *)answerALabelText
 {
-    return [self answerA].label;
+    return [self answerA].label ?: @"";
 }
 
 - (NSString *)answerBLabelText
 {
-    return [self answerB].label;
+    return [self answerB].label ?: @"";
 }
 
 - (NSURL *)answerAThumbnailMediaURL
