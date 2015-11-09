@@ -43,7 +43,11 @@ extension Stream {
         title                   = json["title"].string ?? ""
         postCount               = json["postCount"].int ?? 0
         streamUrl               = json["streamUrl"].string ?? ""
-        items                   = (json["items"].array ?? json["content"].array ?? []).flatMap { Sequence(json:$0) ?? Stream(json: $0) }
+        
+        items = (json["items"].array ?? json["content"].array ?? []).flatMap {
+            let isStream = json["items" ] != nil || json["streamUrl"] != nil
+            return isStream ? Stream(json: $0) : Sequence(json:$0)
+        }
         
         // MARK: - StreamItemType
         

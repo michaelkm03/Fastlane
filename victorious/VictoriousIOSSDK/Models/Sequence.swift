@@ -58,11 +58,6 @@ public struct Sequence: StreamItemType {
 extension Sequence {
     public init?(json: JSON) {
         
-        // Differentiate from Stream (StreamItemType)
-        if json["items" ] != nil || json["streamUrl"] != nil {
-            return nil
-        }
-        
         let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         
         // MARK: - Required data
