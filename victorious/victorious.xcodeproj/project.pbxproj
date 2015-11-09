@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0300AA551BF15CDE000A121D /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA541BF15CDE000A121D /* TODO.swift */; };
 		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
@@ -1447,6 +1448,7 @@
 
 /* Begin PBXFileReference section */
 		025E664C694725631B5A4367 /* Pods-VictoriousIOSSDKTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.stable.xcconfig"; sourceTree = "<group>"; };
+		0300AA541BF15CDE000A121D /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		0306F7A41ADDF939009FE3AA /* VJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VJSONHelper.h; sourceTree = "<group>"; };
 		0306F7A51ADDF939009FE3AA /* VJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelper.m; sourceTree = "<group>"; };
 		0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelperTests.m; sourceTree = "<group>"; };
@@ -4612,6 +4614,7 @@
 			isa = PBXGroup;
 			children = (
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 			);
 			path = Models;
@@ -9325,6 +9328,7 @@
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
 				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
+				0300AA551BF15CDE000A121D /* TODO.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
