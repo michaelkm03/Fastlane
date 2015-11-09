@@ -63,12 +63,14 @@ extension Sequence {
             return nil
         }
         
+        let dateFormatter = DateFormatter()
+        
         // MARK: - Required data
         
         guard let category      = Category(rawValue: json["category"].string ?? ""),
             let remoteId        = json["id"].string,
             let user            = User(json: json["user"]),
-            let releasedAt      = json["released_at"].date else {
+            let releasedAt      = dateFormatter.dateFromString(json["released_at"].string ?? "") else {
             return nil
         }
         self.category           = category

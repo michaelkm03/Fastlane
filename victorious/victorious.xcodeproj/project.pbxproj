@@ -641,6 +641,7 @@
 		A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */; };
 		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
 		A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */; };
+		A75C6D031BF1356F000453FC /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C6D021BF1356F000453FC /* DateFormatter.swift */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -749,7 +750,6 @@
 		A789F70D1BF11B0400F5C87B /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7021BF11B0400F5C87B /* Stream.swift */; };
 		A789F70E1BF11B0400F5C87B /* StreamItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7031BF11B0400F5C87B /* StreamItemType.swift */; };
 		A789F70F1BF11B0400F5C87B /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7041BF11B0400F5C87B /* TODO.swift */; };
-		A789F7121BF11C1700F5C87B /* JSON+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */; };
 		A789F7291BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */; };
 		A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* ContextDataStore.swift */; };
 		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
@@ -2558,6 +2558,7 @@
 		A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextCalloutFormatter.swift; sourceTree = "<group>"; };
 		A75C64AE1AE0299900245125 /* VTextPostImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostImageHelper.h; sourceTree = "<group>"; };
 		A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostImageHelper.m; sourceTree = "<group>"; };
+		A75C6D021BF1356F000453FC /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -2752,7 +2753,6 @@
 		A789F7021BF11B0400F5C87B /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		A789F7031BF11B0400F5C87B /* StreamItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemType.swift; sourceTree = "<group>"; };
 		A789F7041BF11B0400F5C87B /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
-		A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JSON+NSDate.swift"; sourceTree = "<group>"; };
 		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
 		A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContextDataStore+SwiftDataStore.swift"; sourceTree = "<group>"; };
 		A789F7171BF11F4900F5C87B /* ContextDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStore.swift; sourceTree = "<group>"; };
@@ -4615,7 +4615,6 @@
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
-				A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
@@ -4625,6 +4624,7 @@
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				A789F7381BF1201A00F5C87B /* StreamRequest.swift */,
+				A75C6D021BF1356F000453FC /* DateFormatter.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
@@ -9484,10 +9484,10 @@
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
+				A75C6D031BF1356F000453FC /* DateFormatter.swift in Sources */,
 				A789F7061BF11B0400F5C87B /* Answer.swift in Sources */,
 				A789F70B1BF11B0400F5C87B /* Sequence.Category.swift in Sources */,
 				A789F7071BF11B0400F5C87B /* Asset.swift in Sources */,
-				A789F7121BF11C1700F5C87B /* JSON+NSDate.swift in Sources */,
 				A789F70F1BF11B0400F5C87B /* TODO.swift in Sources */,
 				A789F70A1BF11B0400F5C87B /* Node.swift in Sources */,
 				A789F7391BF1201A00F5C87B /* StreamRequest.swift in Sources */,

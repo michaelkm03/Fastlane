@@ -30,7 +30,7 @@ public struct StreamRequest: Pageable {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    public init?( apiPath: String, previousPageWithPaginator paginator: StandardPaginator) {
+    private init?( apiPath: String, previousPageWithPaginator paginator: StandardPaginator) {
         let pageNumber = paginator.pageNumber - 1
         if pageNumber <= 0 {
             return nil
