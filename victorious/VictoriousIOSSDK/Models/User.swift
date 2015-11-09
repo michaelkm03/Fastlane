@@ -26,6 +26,8 @@ public struct User {
     public var location: String?
     public var tagline: String?
     public var avatar: [ImageAsset]
+    public var fanLoyalty: FanLoyalty?
+    public var numberOfFollowers: Int64?
     
     public init(userID: Int64, status: ProfileStatus)
     {
@@ -63,6 +65,15 @@ extension User {
         
         if let previewAssetsArray = json["preview"]["assets"].array {
             avatar = previewAssetsArray.flatMap { ImageAsset(json: $0) }
+        }
+        
+        let fanLoyaltyJSON = json["fanloyalty"]
+        if let fanLoyaltyStats = FanLoyalty(json: fanLoyaltyJSON) {
+            fanLoyalty = fanLoyaltyStats
+        }
+        
+        if let numFollowersString = json["number_of_followers"].string {
+            numberOfFollowers = Int64(numFollowersString)
         }
     }
 }
