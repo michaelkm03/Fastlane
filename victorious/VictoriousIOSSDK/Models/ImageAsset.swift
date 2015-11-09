@@ -12,22 +12,21 @@ import SwiftyJSON
 public struct ImageAsset {
     public let url: NSURL
     public let size: CGSize
-    
-    public init(url: NSURL, size: CGSize) {
-        self.url = url
-        self.size = size
-    }
+    public let type: String
 }
 
 extension ImageAsset {
     public init?(json: JSON) {
-        if let urlString = json["imageURL"].string,
-           let url = NSURL(string: urlString),
-           let width = json["width"].number,
-           let height = json["height"].number {
-            self.init(url: url, size: CGSizeMake(CGFloat(width.doubleValue), CGFloat(height.doubleValue)))
-        } else {
-            return nil
+        guard let urlString = json["imageURL"].string,
+            let url = NSURL(string: urlString),
+            let width = json["width"].int,
+            let type = json["type"].string,
+            let height = json["height"].int else {
+                return nil
         }
+        
+        self.url = url
+        self.type = type
+        self.size = CGSize(width: width, height: height)
     }
 }
