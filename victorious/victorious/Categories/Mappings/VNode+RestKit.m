@@ -8,7 +8,6 @@
 
 #import "VNode+RestKit.h"
 
-#import "VNodeAction+RestKit.h"
 #import "VAsset+RestKit.h"
 #import "VInteraction+RestKit.h"
 
@@ -37,7 +36,6 @@
     //Now add relationships
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(assets) mapping:[VAsset entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(interactions) mapping:[VInteraction entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodeAction) mapping:[VNodeAction entityMapping]];
     
     return mapping;
 }

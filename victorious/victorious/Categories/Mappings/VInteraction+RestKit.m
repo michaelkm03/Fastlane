@@ -7,9 +7,6 @@
 //
 
 #import "VInteraction+RestKit.h"
-
-#import "VInteractionAction+RestKit.h"
-#import "VRule+RestKit.h"
 #import "VAnswer+RestKit.h"
 
 @implementation VInteraction (RestKit)
@@ -38,8 +35,6 @@
 
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(interactionAction) mapping:[VInteractionAction entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(rules) mapping:[VRule entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(answers) mapping:[VAnswer entityMapping]];
 
     return mapping;
