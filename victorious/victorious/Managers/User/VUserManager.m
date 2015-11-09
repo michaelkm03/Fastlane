@@ -50,6 +50,10 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             // Current access token is invalid, logout to clear
             [[[FBSDKLoginManager alloc] init] logOut];
+            if ( errorBlock != nil )
+            {
+                errorBlock ( nil, NO );
+            }
         }
     }
     else if ( loginType == VLastLoginTypeTwitter )
