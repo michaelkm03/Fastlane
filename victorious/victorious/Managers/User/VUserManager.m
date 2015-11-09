@@ -42,18 +42,25 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     if ( loginType == VLastLoginTypeFacebook && [FBSDKAccessToken currentAccessToken] != nil )
     {
         [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
+        return;
     }
     else if ( loginType == VLastLoginTypeTwitter )
     {
         [self loginViaTwitterWithTwitterID:identifier onCompletion:completion onError:errorBlock];
+        return;
     }
     else if ( loginType == VLastLoginTypeEmail )
     {
         NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
         NSString *password = [[[VStoredPassword alloc] init] passwordForEmail:email];
-        [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
+        if ( email != nil && password != nil )
+        {
+            [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
+            return;
+        }
     }
-    else if ( errorBlock != nil )
+    
+    if ( errorBlock != nil )
     {
         errorBlock( nil, NO );
     }
@@ -143,63 +150,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             completion(twitterAccount.identifier, oauthToken, tokenSecret, twitterId);
         }
     }];
-}
-
-- (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
-                                          password:(NSString *)password
-                                      onCompletion:(VUserManagerLoginCompletionBlock)completion
-                                           onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    if (email == nil || password == nil)
-    {
-        if (errorBlock)
-        {
-            errorBlock(nil, NO);
-        }
-        return nil;
-    }
-    
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *user = [resultObjects firstObject];
-        if (![user isKindOfClass:[VUser class]])
-        {
-            if (errorBlock)
-            {
-                errorBlock(nil, NO);
-            }
-        }
-        else
-        {
-            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
-            [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
-            
-            if (completion)
-            {
-                completion(user, NO);
-            }
-        }
-    };
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        // Do nothing if we've cancelled the request
-        if (operation.isCancelled)
-        {
-            return;
-        }
-        
-        if (errorBlock)
-        {
-            errorBlock(error, NO);
-        }
-        VLog(@"Error in victorious Login: %@", error);
-    };
-    
-    return [[VObjectManager sharedManager] loginToVictoriousWithEmail:email
-                                                             password:password
-                                                         successBlock:success
-                                                            failBlock:fail];
 }
 
 - (void)userDidLogout

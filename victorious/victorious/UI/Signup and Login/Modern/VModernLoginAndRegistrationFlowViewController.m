@@ -35,6 +35,7 @@
 @import FBSDKCoreKit;
 @import FBSDKLoginKit;
 @import MBProgressHUD;
+@import VictoriousIOSSDK;
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -67,7 +68,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
-@property (nonatomic, strong) id currentRequest;
+@property (nonatomic, strong) id<VSDKCancelable> currentRequest;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
 
 @end

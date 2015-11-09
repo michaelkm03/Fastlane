@@ -23,14 +23,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Log in using an e-mail address and password
- */
-- (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
-                                          password:(NSString *)password
-                                      onCompletion:(VUserManagerLoginCompletionBlock)completion
-                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
-
-/**
  Re-login to whatever service the user last logged in with
  */
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;

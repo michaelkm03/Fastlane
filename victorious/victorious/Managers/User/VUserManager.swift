@@ -14,7 +14,6 @@ import VictoriousIOSSDK
 private let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 private let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
-/// NOTE: Eventually all of VUserManager will be re-written in Swift here. But for now, I'm starting with Facebook
 extension VUserManager {
     
     /// Log in using the current Facebook session (make sure you use the Facebook SDK to establish a session before calling this)
@@ -34,7 +33,7 @@ extension VUserManager {
                     }
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidSucceed)
                     NSUserDefaults.standardUserDefaults().setInteger(VLoginType.FaceBook.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
-                    completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .FaceBook, objectManager: objectManager), result.newUser)
+                    completionBlock(self.loggedInWithUser(result.user, token: result.token, loginType: .FaceBook, objectManager: objectManager), result.newUser)
                 } else {
                     errorBlock(error as? NSError, false)
                 }
@@ -42,6 +41,7 @@ extension VUserManager {
         }
     }
     
+    /// Log in using Twitter oauth data.
     func loginViaTwitterWithToken(oauthToken: String, accessSecret: String, twitterID: String, identifier: String, onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> Cancelable {
         
         let objectManager = VObjectManager.sharedManager()
@@ -51,7 +51,7 @@ extension VUserManager {
                 if let result = result {
                     NSUserDefaults.standardUserDefaults().setInteger(VLoginType.Twitter.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
                     NSUserDefaults.standardUserDefaults().setObject(twitterID, forKey: kAccountIdentifierDefaultsKey)
-                    completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .Twitter, objectManager: objectManager), result.newUser)
+                    completionBlock(self.loggedInWithUser(result.user, token: result.token, loginType: .Twitter, objectManager: objectManager), result.newUser)
                 } else {
                     errorBlock(error as? NSError, false)
                 }
@@ -59,6 +59,10 @@ extension VUserManager {
         }
     }
     
+    /// Create a new account with the specified e-mail and password.
+    /// If an account already exists on the server with the specified e-mail address
+    /// an error will occur, unless the specified password matches the password on
+    /// that account. In that case, the existing account will be logged in.
     func createAccountWithEmail(email: String, password: String, onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> Cancelable {
         let objectManager = VObjectManager.sharedManager()
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
@@ -68,7 +72,7 @@ extension VUserManager {
                     NSUserDefaults.standardUserDefaults().setInteger(VLoginType.Email.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
                     NSUserDefaults.standardUserDefaults().setObject(email, forKey: kAccountIdentifierDefaultsKey)
                     VStoredPassword().savePassword(password, forEmail: email)
-                    completionBlock(self.loggedIn(withUser: result.user, token: result.token, loginType: .Twitter, objectManager: objectManager), result.newUser)
+                    completionBlock(self.loggedInWithUser(result.user, token: result.token, loginType: .Email, objectManager: objectManager), result.newUser)
                 } else {
                     errorBlock(error as? NSError, false)
                 }
@@ -76,7 +80,25 @@ extension VUserManager {
         }
     }
     
-    private func loggedIn(withUser user: User, token: String, loginType: VLoginType, objectManager: VObjectManager) -> VUser {
+    /// Log in using an e-mail address and password
+    func loginViaEmail(email: String, password: String, onCompletion completionBlock: VUserManagerLoginCompletionBlock, onError errorBlock: VUserManagerLoginErrorBlock) -> Cancelable {
+        let objectManager = VObjectManager.sharedManager()
+        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
+        return objectManager.executeRequest(accountCreateRequest) { (result, error) -> () in
+            dispatch_async(dispatch_get_main_queue()) {
+                if let result = result {
+                    NSUserDefaults.standardUserDefaults().setInteger(VLoginType.Email.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+                    NSUserDefaults.standardUserDefaults().setObject(email, forKey: kAccountIdentifierDefaultsKey)
+                    VStoredPassword().savePassword(password, forEmail: email)
+                    completionBlock(self.loggedInWithUser(result.user, token: result.token, loginType: .Email, objectManager: objectManager), true)
+                } else {
+                    errorBlock(error as? NSError, false)
+                }
+            }
+        }
+    }
+    
+    private func loggedInWithUser(user: User, token: String, loginType: VLoginType, objectManager: VObjectManager) -> VUser {
         // TODO: check for existing user
         let moc = objectManager.managedObjectStore.mainQueueManagedObjectContext
         let managedUser = VUser(entity: NSEntityDescription.entityForName(VUser.entityName(), inManagedObjectContext: moc)!, insertIntoManagedObjectContext: moc)

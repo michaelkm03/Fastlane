@@ -30,6 +30,9 @@
 #import "VEmailValidator.h"
 #import "UIAlertController+VSimpleAlert.h"
 
+// Swift
+#import "victorious-Swift.h"
+
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VLoginFlowAPIHelper ()
