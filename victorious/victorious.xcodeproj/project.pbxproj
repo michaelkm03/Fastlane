@@ -750,6 +750,23 @@
 		A789F70E1BF11B0400F5C87B /* StreamItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7031BF11B0400F5C87B /* StreamItemType.swift */; };
 		A789F70F1BF11B0400F5C87B /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7041BF11B0400F5C87B /* TODO.swift */; };
 		A789F7121BF11C1700F5C87B /* JSON+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */; };
+		A789F7291BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */; };
+		A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* ContextDataStore.swift */; };
+		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
+		A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* DataStore.swift */; };
+		A789F72D1BF11F4900F5C87B /* PersistentStreamRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */; };
+		A789F72E1BF11F4900F5C87B /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71E1BF11F4900F5C87B /* Serializable.swift */; };
+		A789F72F1BF11F4900F5C87B /* VAsset+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */; };
+		A789F7301BF11F4900F5C87B /* VImageAsset+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */; };
+		A789F7311BF11F4900F5C87B /* VNode+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */; };
+		A789F7321BF11F4900F5C87B /* VSequence+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */; };
+		A789F7331BF11F4900F5C87B /* VStream+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */; };
+		A789F7341BF11F4900F5C87B /* VUser+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */; };
+		A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */; };
+		A789F7361BF11F4900F5C87B /* NSSet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */; };
+		A789F7371BF11F4900F5C87B /* Set+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7281BF11F4900F5C87B /* Set+Operators.swift */; };
+		A789F7391BF1201A00F5C87B /* StreamRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7381BF1201A00F5C87B /* StreamRequest.swift */; };
+		A789F73B1BF1207F00F5C87B /* VictoriousCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73A1BF1207F00F5C87B /* VictoriousCoreDataManager.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
@@ -845,7 +862,6 @@
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
-		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
 		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
@@ -2729,6 +2745,23 @@
 		A789F7041BF11B0400F5C87B /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		A789F7111BF11C1700F5C87B /* JSON+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JSON+NSDate.swift"; sourceTree = "<group>"; };
 		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
+		A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContextDataStore+SwiftDataStore.swift"; sourceTree = "<group>"; };
+		A789F7171BF11F4900F5C87B /* ContextDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStore.swift; sourceTree = "<group>"; };
+		A789F7181BF11F4900F5C87B /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		A789F7191BF11F4900F5C87B /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStreamRequest.swift; sourceTree = "<group>"; };
+		A789F71E1BF11F4900F5C87B /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
+		A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Serializable.swift"; sourceTree = "<group>"; };
+		A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Serialization.swift"; sourceTree = "<group>"; };
+		A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNode+Serializable.swift"; sourceTree = "<group>"; };
+		A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Serializable.swift"; sourceTree = "<group>"; };
+		A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Serializable.swift"; sourceTree = "<group>"; };
+		A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Serializable.swift"; sourceTree = "<group>"; };
+		A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
+		A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extensions.swift"; sourceTree = "<group>"; };
+		A789F7281BF11F4900F5C87B /* Set+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+Operators.swift"; sourceTree = "<group>"; };
+		A789F7381BF1201A00F5C87B /* StreamRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamRequest.swift; sourceTree = "<group>"; };
+		A789F73A1BF1207F00F5C87B /* VictoriousCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousCoreDataManager.swift; sourceTree = "<group>"; };
 		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
 		A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
@@ -2897,7 +2930,6 @@
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
-		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIAutomationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DB4D2D1B7AB1D400199D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
@@ -4572,6 +4604,7 @@
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
+				A789F7381BF1201A00F5C87B /* StreamRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
@@ -6368,6 +6401,69 @@
 			path = "Photo Filters";
 			sourceTree = "<group>";
 		};
+		A789F7141BF11F4900F5C87B /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				A789F7151BF11F4900F5C87B /* DataStore */,
+				A789F71A1BF11F4900F5C87B /* Models */,
+				A789F71B1BF11F4900F5C87B /* Requests */,
+				A789F71D1BF11F4900F5C87B /* Serializers */,
+				A789F7251BF11F4900F5C87B /* Utils */,
+				A789F73A1BF1207F00F5C87B /* VictoriousCoreDataManager.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		A789F7151BF11F4900F5C87B /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */,
+				A789F7171BF11F4900F5C87B /* ContextDataStore.swift */,
+				A789F7181BF11F4900F5C87B /* CoreDataManager.swift */,
+				A789F7191BF11F4900F5C87B /* DataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		A789F71A1BF11F4900F5C87B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A789F71B1BF11F4900F5C87B /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		A789F71D1BF11F4900F5C87B /* Serializers */ = {
+			isa = PBXGroup;
+			children = (
+				A789F71E1BF11F4900F5C87B /* Serializable.swift */,
+				A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */,
+				A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */,
+				A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */,
+				A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */,
+				A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */,
+				A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */,
+			);
+			path = Serializers;
+			sourceTree = "<group>";
+		};
+		A789F7251BF11F4900F5C87B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */,
+				A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */,
+				A789F7281BF11F4900F5C87B /* Set+Operators.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A78F17701B67F3AE009F6B8F /* Experiment Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -6855,6 +6951,7 @@
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
 				794246431B7D39A200F5F879 /* Operations */,
+				A789F7141BF11F4900F5C87B /* Persistence */,
 				03C185CD19B4308400E27D05 /* Protocols */,
 				D8B0500E19AD2A740048E2BE /* Simple Models */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
@@ -7030,7 +7127,6 @@
 				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
 				F06B418E1B7C30BC008709E8 /* HashtagShelf.swift */,
 				F05AD66C1B828EF300500CCF /* ListShelf.swift */,
-				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
 				F059A0021B852D1800037BC8 /* Shelf.swift */,
 				F06B418C1B7C30BB008709E8 /* UserShelf.swift */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
@@ -9341,6 +9437,7 @@
 				A789F7121BF11C1700F5C87B /* JSON+NSDate.swift in Sources */,
 				A789F70F1BF11B0400F5C87B /* TODO.swift in Sources */,
 				A789F70A1BF11B0400F5C87B /* Node.swift in Sources */,
+				A789F7391BF1201A00F5C87B /* StreamRequest.swift in Sources */,
 				A789F70E1BF11B0400F5C87B /* StreamItemType.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
@@ -9485,6 +9582,7 @@
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A721E91C1B572454000B7901 /* VStreamItem+Fetcher.m in Sources */,
+				A789F7311BF11F4900F5C87B /* VNode+Serializable.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
@@ -9654,6 +9752,7 @@
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
+				A789F72E1BF11F4900F5C87B /* Serializable.swift in Sources */,
 				F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
@@ -9688,6 +9787,7 @@
 				C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
+				A789F7341BF11F4900F5C87B /* VUser+Serializable.swift in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
@@ -9723,6 +9823,7 @@
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
+				A789F72F1BF11F4900F5C87B /* VAsset+Serializable.swift in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
@@ -9738,6 +9839,7 @@
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
+				A789F73B1BF1207F00F5C87B /* VictoriousCoreDataManager.swift in Sources */,
 				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
@@ -9753,6 +9855,7 @@
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
+				A789F7331BF11F4900F5C87B /* VStream+Serializable.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
@@ -9803,6 +9906,7 @@
 				A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,
+				A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */,
@@ -9846,6 +9950,7 @@
 				A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */,
 				F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
+				A789F7301BF11F4900F5C87B /* VImageAsset+Serialization.swift in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
@@ -9882,6 +9987,7 @@
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
+				A789F7361BF11F4900F5C87B /* NSSet+Extensions.swift in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
 				F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
@@ -9965,6 +10071,7 @@
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
+				A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
@@ -9998,7 +10105,7 @@
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
 				A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */,
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
-				A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */,
+				A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */,
 				F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
@@ -10057,6 +10164,7 @@
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
+				A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
@@ -10086,6 +10194,7 @@
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
+				A789F7371BF11F4900F5C87B /* Set+Operators.swift in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
 				F06B417F1B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift in Sources */,
@@ -10181,6 +10290,7 @@
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */,
 				A721E9291B572454000B7901 /* VInteraction+RestKit.m in Sources */,
+				A789F7321BF11F4900F5C87B /* VSequence+Serializable.swift in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
 				A721E9641B572454000B7901 /* VAlertViewBlockDelegate.m in Sources */,
 				A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */,
@@ -10265,6 +10375,7 @@
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
+				A789F72D1BF11F4900F5C87B /* PersistentStreamRequest.swift in Sources */,
 				C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
@@ -10281,6 +10392,7 @@
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
+				A789F7291BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift in Sources */,
 				7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
