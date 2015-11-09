@@ -75,6 +75,8 @@
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
 		0315EACE1BEC529A00645071 /* VStoredPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */; };
 		0315EAD11BEC52C400645071 /* VStoredPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 0315EAD01BEC52C400645071 /* VStoredPassword.m */; };
+		0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315EAD21BED800A00645071 /* LoginRequest.swift */; };
+		0315EAD51BED8C3100645071 /* LoginRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315EAD41BED8C3100645071 /* LoginRequestTests.swift */; };
 		0317D7501B912A2F00D75E6B /* VDependencyManager+VUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0317D74E1B9128E700D75E6B /* VDependencyManager+VUserProfile.m */; };
 		03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 03199B001B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m */; };
 		031DF6231B7981F200FDD7D3 /* VEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A77951151B28AB9A00D9DB0A /* VEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -358,6 +360,7 @@
 		03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B719B42E5D00E27D05 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
+		03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03C540E11BED8E94009D5286 /* LoginResponse.json */; };
 		03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */; };
 		03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C92D131ABB96030057D30E /* LightweightContentView.storyboard */; };
 		03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C92D151ABB96030057D30E /* VLightweightContentViewController.m */; };
@@ -1591,6 +1594,8 @@
 		0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredPasswordTests.m; sourceTree = "<group>"; };
 		0315EACF1BEC52C400645071 /* VStoredPassword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStoredPassword.h; sourceTree = "<group>"; };
 		0315EAD01BEC52C400645071 /* VStoredPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredPassword.m; sourceTree = "<group>"; };
+		0315EAD21BED800A00645071 /* LoginRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
+		0315EAD41BED8C3100645071 /* LoginRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginRequestTests.swift; sourceTree = "<group>"; };
 		0317D74D1B9128E700D75E6B /* VDependencyManager+VUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VUserProfile.h"; sourceTree = "<group>"; };
 		0317D74E1B9128E700D75E6B /* VDependencyManager+VUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VUserProfile.m"; sourceTree = "<group>"; };
 		03199B001B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VShareMenuItem.m"; sourceTree = "<group>"; };
@@ -2027,6 +2032,7 @@
 		03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceUserInteractions.m; sourceTree = "<group>"; };
 		03C185C519B42FD600E27D05 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03C185C619B42FD600E27D05 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
+		03C540E11BED8E94009D5286 /* LoginResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginResponse.json; sourceTree = "<group>"; };
 		03C82F1E1A81DDFE00190C7D /* VUserTaggingTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorage.h; sourceTree = "<group>"; };
 		03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTaggingTextStorage.m; sourceTree = "<group>"; };
 		03C92D131ABB96030057D30E /* LightweightContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightweightContentView.storyboard; sourceTree = "<group>"; };
@@ -4548,6 +4554,7 @@
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
+				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
@@ -4568,6 +4575,7 @@
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
+				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
 				03314F461BE40F0100EE74FD /* Models */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
@@ -4592,6 +4600,7 @@
 			children = (
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
+				03C540E11BED8E94009D5286 /* LoginResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
@@ -8643,6 +8652,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
@@ -9314,6 +9324,7 @@
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
+				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
@@ -9336,6 +9347,7 @@
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
+				0315EAD51BED8C3100645071 /* LoginRequestTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
