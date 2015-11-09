@@ -884,7 +884,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     VStreamItem *streamItem = previewView.streamItem;
     NSIndexPath *indexPath = [self.streamDataSource indexPathForItem:streamItem];
-    if ( indexPath.row != NSNotFound )
+    if ( indexPath.row != NSNotFound && indexPath == self.lastSelectedIndexPath )
     {
         //Returning content to a stream cell
         [self restorePreviewView:previewView toCellAtIndexPath:indexPath inCollectionView:self.collectionView];
