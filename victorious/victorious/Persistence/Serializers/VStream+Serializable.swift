@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: DataStoreObject {}
+extension VStream: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 
 extension VStream: Serializable {
     
-    public func serialize( stream: Stream, dataStore: DataStore ) {
+    func serialize( stream: Stream, dataStore: DataStore ) {
         remoteId        = String(stream.remoteId)
         itemType        = stream.type
         itemSubType     = stream.subtype

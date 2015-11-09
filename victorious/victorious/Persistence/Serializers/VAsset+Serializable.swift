@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VAsset: DataStoreObject {}
+extension VAsset: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 
 extension VAsset: Serializable {
     
-    public func serialize( asset: Asset, dataStore: DataStore ) {
+    func serialize( asset: Asset, dataStore: DataStore ) {
         audioMuted              = asset.audioMuted
         backgroundColor         = asset.backgroundColor
         backgroundImageUrl      = asset.backgroundImageUrl

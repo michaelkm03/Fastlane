@@ -10,14 +10,14 @@ import Foundation
 
 /// An interface that defines a object object used by the DataStore protocol.  Model types that will
 /// be managed using a DataStore object must implement DataStoreObject.
-@objc public protocol DataStoreObject {
+@objc protocol DataStoreObject {
     
     /// Identifies the type of the object to the store for operations such as loading, saving, etc.
-    static func entityName() -> String
+    static func entityName() -> String! //< TODO: Remove implicit unwrap
 }
 
 /// An interface that defines the basic behaviors of a persistent data store.
-@objc public protocol DataStoreObjC {
+@objc protocol DataStoreObjC {
     
     /// Writes all changes from any modified objects to the persistent store
     func saveChanges() -> Bool
@@ -52,7 +52,7 @@ import Foundation
 
 
 /// Adapts methods of the DataStore protocol to use generics
-public protocol DataStore: DataStoreObjC {
+protocol DataStore: DataStoreObjC {
     
     func createObjectAndSave<T: DataStoreObject>( @noescape configurations: (T) -> () ) -> T
     

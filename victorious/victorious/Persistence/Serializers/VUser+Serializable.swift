@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VUser: DataStoreObject {}
+extension VUser: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 
 extension VUser: Serializable {
     
-    public func serialize( user: User, dataStore: DataStore ) {
+    func serialize( user: User, dataStore: DataStore ) {
         remoteId        = NSNumber(integer: Int(user.userID))
         name            = user.name
     }

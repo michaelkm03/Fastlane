@@ -14,19 +14,19 @@ import CoreData
 /// from the background context when changes are made in the background.  The entire stack
 /// is initialized when CoreDataManager is initialized and does not use any lazily-loaded
 /// setup methods.
-public class CoreDataManager: NSObject {
+class CoreDataManager: NSObject {
     
     /// An object that points to the location to one version (.mom, created from an .xcmappingmodel)
     /// of a verioned Core Data managed object model (.momd, from an .xcdatamodeld).  Note the 'd' in
     // the latter file extension, which indicates that the file is versioned.
-    public struct ModelVersion {
+    struct ModelVersion {
         /// The version identifier configured in the managed obejct model (e.g. "2.0")
         let identifier: String
         
         /// URL of the managed object model version in the bundle (.mom)
         let managedObjectModelURL: NSURL
         
-        public init( identifier: String, managedObjectModelURL: NSURL ) {
+        init( identifier: String, managedObjectModelURL: NSURL ) {
             self.identifier = identifier
             self.managedObjectModelURL = managedObjectModelURL
         }
@@ -36,12 +36,12 @@ public class CoreDataManager: NSObject {
     let previousModelVersion: ModelVersion?
     let persistentStoreURL: NSURL
     
-    public let mainContext: NSManagedObjectContext
-    public let backgroundContext: NSManagedObjectContext
+    let mainContext: NSManagedObjectContext
+    let backgroundContext: NSManagedObjectContext
     private let managedObjectModel: NSManagedObjectModel
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     
-    public init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
+    init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
         
         // WARNING: This is for testing only, it deletes the store on disk every time
         do { try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL ) } catch {}
@@ -85,7 +85,7 @@ public class CoreDataManager: NSObject {
         }
     }
 
-    public func deletePersistentStore() {
+    func deletePersistentStore() {
         do {
             try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
         } catch {

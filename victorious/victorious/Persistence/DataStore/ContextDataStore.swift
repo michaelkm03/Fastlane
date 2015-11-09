@@ -9,16 +9,16 @@
 import Foundation
 import CoreData
 
-@objc public enum ContextDataStoreType: Int {
+@objc enum ContextDataStoreType: Int {
     case Main
     case Background
 }
 
-@objc public class ContextDataStoreObject : NSManagedObject {
+@objc class ContextDataStoreObject : NSManagedObject {
     
-    public func identifier() -> AnyObject { return self.objectID }
+    func identifier() -> AnyObject { return self.objectID }
     
-    public lazy var dataStore: DataStore = {
+    lazy var dataStore: DataStore = {
         return ContextDataStore( managedObjectContext: self.managedObjectContext! )
     }()
 }
@@ -30,15 +30,15 @@ import CoreData
 /// on which to operate.  In this way, this DataStore implementation provides a per-context interface
 /// into a single CoreData-managed persistent store.  So there is one store/database per CoreDataManager
 /// instance, and one DataStore imeplementation per context.
-@objc public class ContextDataStore: NSObject, DataStore {
+@objc class ContextDataStore: NSObject, DataStore {
     
-    public let managedObjectContext: NSManagedObjectContext
+    let managedObjectContext: NSManagedObjectContext
     
-    public required init(managedObjectContext: NSManagedObjectContext) {
+    required init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
     }
     
-    public func saveChanges() -> Bool {
+    func saveChanges() -> Bool {
         do {
             try self.managedObjectContext.save()
             return true
@@ -55,7 +55,7 @@ import CoreData
         return false
     }
     
-    public func destroy( object: DataStoreObject ) -> Bool {
+    func destroy( object: DataStoreObject ) -> Bool {
         
         self.managedObjectContext.deleteObject( object as! NSManagedObject )
         do {
@@ -67,14 +67,14 @@ import CoreData
         return false
     }
     
-    public func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: DataStoreObject -> Void ) -> DataStoreObject {
+    func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: DataStoreObject -> Void ) -> DataStoreObject {
         let object = self.createObjectWithEntityName( entityName )
         configurations( object )
         self.saveChanges()
         return object
     }
     
-    public func createObjectWithEntityName( entityName: String ) -> DataStoreObject {
+    func createObjectWithEntityName( entityName: String ) -> DataStoreObject {
 
         guard let entity = NSEntityDescription.entityForName( entityName, inManagedObjectContext: self.managedObjectContext ) else {
             fatalError( "Could not find entity for name: \(entityName).  Make sure the entity name configurated in the managed object object matches the expected class type." )
@@ -88,7 +88,7 @@ import CoreData
         return object
     }
     
-    public func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject {
+    func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject {
         if let existingObject = self.findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, limit: 1).first {
             return existingObject
         }
@@ -102,7 +102,7 @@ import CoreData
         }
     }
     
-    public func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [DataStoreObject] {
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [DataStoreObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
@@ -130,7 +130,7 @@ import CoreData
         return [DataStoreObject]()
     }
     
-    public func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject? {
+    func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject? {
         return self.managedObjectContext.objectWithID( identifier as! NSManagedObjectID ) as? DataStoreObject
     }
 }

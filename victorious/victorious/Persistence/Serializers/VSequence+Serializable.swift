@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VSequence: DataStoreObject {}
+extension VSequence: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 
 extension VSequence: Serializable {
     
-    public func serialize( streamItem: StreamItemType, dataStore: DataStore ) {
+    func serialize( streamItem: StreamItemType, dataStore: DataStore ) {
         guard let sequence = streamItem as? Sequence else {
             return
         }

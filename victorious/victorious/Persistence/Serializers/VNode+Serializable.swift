@@ -9,11 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VNode: DataStoreObject {}
+extension VNode: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 
 extension VNode: Serializable {
     
-    public func serialize( node: Node, dataStore: DataStore ) {
+    func serialize( node: Node, dataStore: DataStore ) {
         guard let remoteId = Int(node.nodeId) else {
             return
         }

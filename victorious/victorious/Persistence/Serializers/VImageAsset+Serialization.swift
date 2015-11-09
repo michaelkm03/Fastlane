@@ -9,11 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VImageAsset: DataStoreObject {}
-
+extension VImageAsset: DataStoreObject {
+    // Will need to implement `entityName` when +RestKit categories are removed
+}
 extension VImageAsset: Serializable {
     
-    public func serialize( imageAsset: ImageAsset, dataStore: DataStore ) {
+    func serialize( imageAsset: ImageAsset, dataStore: DataStore ) {
         height = imageAsset.size.height
         imageURL = imageAsset.url.absoluteString
         type = imageAsset.type

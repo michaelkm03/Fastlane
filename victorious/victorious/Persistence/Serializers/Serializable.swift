@@ -14,7 +14,7 @@ enum PersistenceError: ErrorType {
 }
 
 /// Defines an object that can be populated from a generic type.
-public protocol Serializable  {
+protocol Serializable  {
     
     /// The generic type which is the source of data from which to populate the receiver
     typealias ModelType
@@ -30,7 +30,7 @@ public protocol Serializable  {
     func deserialize() -> ModelType
 }
 
-public extension Serializable {
+extension Serializable {
     
     func deserialize() -> ModelType {
         fatalError( "Cannot deserialize object of type \(self.dynamicType).  Implemented a `desererialize()` method to allow this." )
