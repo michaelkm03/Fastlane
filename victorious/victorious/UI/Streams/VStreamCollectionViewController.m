@@ -330,9 +330,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [super viewDidDisappear:animated];
     
-    // Stop any video cells
+    // Stop any video cells, including marquee cell, which handles stopping its own video cells
     [self.focusHelper endFocusOnAllCells];
-    [self.marqueeCellController endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
