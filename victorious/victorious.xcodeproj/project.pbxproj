@@ -4614,9 +4614,9 @@
 		03314F461BE40F0100EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
-				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4640,9 +4640,9 @@
 		03314F5A1BE40F3200EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
-				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
