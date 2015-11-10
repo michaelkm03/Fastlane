@@ -19,15 +19,29 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
 
 @implementation VMultipartFormDataWriter
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithOutputFileURL:(NSURL *)outputFileURL
 {
     NSParameterAssert(outputFileURL != nil);
+    NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outputFileURL append:NO];
+    [outputStream open];
+    return [self initWithOutputStream:outputStream];
+}
+
+- (instancetype)initWithOutputStream:(NSOutputStream *)stream
+{
+    NSParameterAssert(stream != nil);
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _outputQueue = dispatch_queue_create("VMultipartFormDataWriter.outputQueue", DISPATCH_QUEUE_SERIAL);
-        _outputFileURL = outputFileURL;
         _boundary = kDefaultBoundary;
+        _outputStream = stream;
     }
     return self;
 }
@@ -43,12 +57,6 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
 - (NSString *)contentTypeHeader
 {
     return [NSString stringWithFormat:@"multipart/form-data; boundary=\"%@\"", self.boundary];
-}
-
-- (void)startWriting
-{
-    self.outputStream = [NSOutputStream outputStreamWithURL:self.outputFileURL append:NO];
-    [self.outputStream open];
 }
 
 - (BOOL)appendPlaintext:(NSString *)s withFieldName:(NSString *)fieldName error:(NSError *__autoreleasing *)error
@@ -191,10 +199,6 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
 
 - (BOOL)appendData:(NSData *)data error:(NSError *__autoreleasing *)error
 {
-    if (!self.outputStream)
-    {
-        [self startWriting];
-    }
     const NSUInteger bufferLen = 2048;
     uint8_t buffer[bufferLen];
     for (NSUInteger i = 0; i < data.length; i += bufferLen)

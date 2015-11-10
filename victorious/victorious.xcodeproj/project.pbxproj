@@ -11,8 +11,11 @@
 		0300AA5A1BF17C20000A121D /* VMultipartFormDataWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0300AA5B1BF17C20000A121D /* VMultipartFormDataWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */; };
 		0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */; };
+		0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */; };
 		0300AA611BF197FE000A121D /* NSURL+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA601BF197FE000A121D /* NSURL+MimeType.swift */; };
 		0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */; };
+		0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA641BF29305000A121D /* AccountUpdateRequestTests.swift */; };
+		0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */; };
 		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
@@ -1468,8 +1471,11 @@
 		0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipartFormDataWriter.h; sourceTree = "<group>"; };
 		0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriter.m; sourceTree = "<group>"; };
 		0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipartFormDataWriterTests.m; sourceTree = "<group>"; };
+		0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequest.swift; sourceTree = "<group>"; };
 		0300AA601BF197FE000A121D /* NSURL+MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+MimeType.swift"; sourceTree = "<group>"; };
 		0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+MimeTypeTests.swift"; sourceTree = "<group>"; };
+		0300AA641BF29305000A121D /* AccountUpdateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequestTests.swift; sourceTree = "<group>"; };
+		0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AccountUpdateResponse.json; sourceTree = "<group>"; };
 		0306F7A41ADDF939009FE3AA /* VJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VJSONHelper.h; sourceTree = "<group>"; };
 		0306F7A51ADDF939009FE3AA /* VJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelper.m; sourceTree = "<group>"; };
 		0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelperTests.m; sourceTree = "<group>"; };
@@ -4585,6 +4591,7 @@
 			isa = PBXGroup;
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
+				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
 				C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */,
@@ -4613,6 +4620,7 @@
 			isa = PBXGroup;
 			children = (
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
+				0300AA641BF29305000A121D /* AccountUpdateRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
@@ -4645,6 +4653,7 @@
 			isa = PBXGroup;
 			children = (
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
+				0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */,
 				C3209CAB1BF15ABD00EA229D /* FollowingHashtagsResponse.json */,
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
@@ -8707,6 +8716,7 @@
 				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
+				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
 				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
@@ -9389,6 +9399,7 @@
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
+				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				0300AA5B1BF17C20000A121D /* VMultipartFormDataWriter.m in Sources */,
@@ -9408,6 +9419,7 @@
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
+				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
 				C3209CB01BF163F300EA229D /* HashtagSearchResponseTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,

@@ -11,7 +11,7 @@ import Foundation
 
 extension NSURL {
     /// Returns the MIME type that matches this URL's extension, or nil if no MIME type could be determined.
-    public func vsdk_mimeType() -> String? {
+    public var vsdk_mimeType: String? {
         guard let pathExtension = self.pathExtension else {
             return nil
         }
