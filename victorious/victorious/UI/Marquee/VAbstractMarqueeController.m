@@ -36,7 +36,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) VStreamItem *selectedItem;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
 
@@ -177,7 +177,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         VStreamItem *focusedStreamItem = self.marqueeItems[currentFocusPage];
         for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
-            const BOOL isSelectedCell = self.selectedIndexPath != nil && [self.collectionView indexPathForCell:cell] == self.selectedIndexPath;
+            const BOOL isSelectedCell = self.selectedItem != nil && [cell.previewView.streamItem isEqual:self.selectedItem];
             if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] && !isSelectedCell )
             {
                 BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
@@ -194,7 +194,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
     {
-        const BOOL isSelectedCell = self.selectedIndexPath != nil && [self.collectionView indexPathForCell:cell] == self.selectedIndexPath;
+        const BOOL isSelectedCell = self.selectedItem != nil && [cell.previewView.streamItem isEqual:self.selectedItem];
         if ( !isSelectedCell )
         {
             if ( [cell.previewView conformsToProtocol:@protocol(VFocusable)] )
@@ -306,7 +306,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedIndexPath = indexPath;
+    self.selectedItem = self.marqueeItems[indexPath.row];
     [self.selectionDelegate marqueeController:self
                                 didSelectItem:self.marqueeItems[indexPath.row]
                              withPreviewImage:nil
