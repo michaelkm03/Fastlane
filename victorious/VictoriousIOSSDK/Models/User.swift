@@ -58,8 +58,6 @@ extension User {
         tagline = json["profile_tagline"].string
         fanLoyalty = FanLoyalty(json: json["fanloyalty"])
         avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
-        
-        let numFollowersString = json["number_of_followers"].string
-        numberOfFollowers = numFollowersString != nil ? Int64(numFollowersString!) : 0
+        numberOfFollowers = Int64(json["number_of_followers"].stringValue)
     }
 }

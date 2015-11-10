@@ -4605,9 +4605,9 @@
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
-				6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
+				6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */,
 				C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
@@ -4629,8 +4629,8 @@
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
-				6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */,
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
+				6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
 			);
@@ -4640,10 +4640,10 @@
 		03314F461BE40F0100EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
-				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4652,6 +4652,7 @@
 			isa = PBXGroup;
 			children = (
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
+				6731B2641BF1834700B9FFFE /* FanLoyalty.json */,
 				C3209CAB1BF15ABD00EA229D /* FollowingHashtagsResponse.json */,
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
@@ -4659,10 +4660,9 @@
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
-				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
-				6731B2641BF1834700B9FFFE /* FanLoyalty.json */,
-				03314F4D1BE40F0100EE74FD /* User.json */,
 				6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */,
+				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
+				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -4670,12 +4670,12 @@
 		03314F5A1BE40F3200EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				6759555C1BF1553100D40A87 /* SuggestedUser.swift */,
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
-				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
-				6759555C1BF1553100D40A87 /* SuggestedUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
