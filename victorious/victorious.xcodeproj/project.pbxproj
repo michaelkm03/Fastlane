@@ -398,6 +398,8 @@
 		676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */; };
 		676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */; };
 		6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */; };
+		6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */; };
+		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
 		67A42FC71BF298050087FBE9 /* FollowersRequestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC61BF298050087FBE9 /* FollowersRequestTest.swift */; };
@@ -2132,6 +2134,8 @@
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
 		6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victoriousTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequest.swift; sourceTree = "<group>"; };
+		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersRequest.swift; sourceTree = "<group>"; };
@@ -4589,6 +4593,7 @@
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
+				6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */,
 				C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */,
 				C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
@@ -4615,6 +4620,7 @@
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				67A42FC61BF298050087FBE9 /* FollowersRequestTest.swift */,
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
+				6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
@@ -9392,6 +9398,7 @@
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
+				6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				03BC6FB41BE83D5200CFCBEE /* SequenceLikersRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
@@ -9406,6 +9413,7 @@
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
+				6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
