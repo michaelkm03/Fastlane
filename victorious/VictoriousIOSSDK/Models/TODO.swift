@@ -43,3 +43,10 @@ extension AdBreak {
         return nil
     }
 }
+
+public struct Sequence {}
+extension Sequence {
+    public init?(json: JSON) {
+        return nil
+    }
+}

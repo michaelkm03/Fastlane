@@ -68,9 +68,7 @@ extension User {
         }
         
         let fanLoyaltyJSON = json["fanloyalty"]
-        if let fanLoyaltyStats = FanLoyalty(json: fanLoyaltyJSON) {
-            fanLoyalty = fanLoyaltyStats
-        }
+        fanLoyalty = FanLoyalty(json: fanLoyaltyJSON)
         
         if let numFollowersString = json["number_of_followers"].string {
             numberOfFollowers = Int64(numFollowersString)
