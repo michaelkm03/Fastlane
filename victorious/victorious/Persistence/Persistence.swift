@@ -1,5 +1,5 @@
 //
-//  VictoriousCoreDataManager.swift
+//  Persistence.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/15.
@@ -13,7 +13,7 @@ import VictoriousIOSSDK
 /// This file has some less-than-ideal convenience methods to support easy integration.
 /// A better non-global, non-Singleton API would be preferred.
 
-private struct VictoriousCoreDataManager {
+private struct PersistentStore {
     
     private static var instance: CoreDataManager? = nil
     
@@ -41,5 +41,13 @@ private struct VictoriousCoreDataManager {
             )
         }
         return instance!
+    }
+    
+    var mainContext: DataStore {
+        return PersistentStore.sharedManager.mainContext
+    }
+    
+    var backgroundContext: DataStore {
+        return PersistentStore.sharedManager.backgroundContext
     }
 }
