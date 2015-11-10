@@ -42,7 +42,6 @@ class StreamRequestTests: XCTestCase {
         }
         
         var request = StreamRequest(apiPath: apiPath)
-        
         do {
             var output = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertNotNil( output.results )

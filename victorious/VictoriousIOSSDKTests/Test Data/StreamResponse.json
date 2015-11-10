@@ -45,6 +45,11 @@
 			"engagements": [],
 			"created_at": "2015-08-27 17:45:18",
 			"is_paid": false,
+			"user" : {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+			}
 		},{
 			"id": "15418",
 			"type": "sequence",
@@ -69,6 +74,11 @@
 			"recent_comments": [],
 			"created_at": "2015-08-26 19:06:44",
 			"is_paid": false,
+			"user" : {
+				"id": "3694",
+				"name": "Patrick Lynch",
+				"status": "complete",
+			}
 		}]
 	}
 }
