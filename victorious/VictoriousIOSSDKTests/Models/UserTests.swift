@@ -28,7 +28,7 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.status, ProfileStatus.Complete)
         XCTAssertEqual(user.location, "Fargo, ND")
         XCTAssertEqual(user.tagline, "My coolest tagline")
-        XCTAssertEqual(user.fanLoyalty.points, Int64(2764))
+        XCTAssertEqual(user.fanLoyalty?.points, Int64(2764))
         XCTAssertEqual(user.numberOfFollowers, Int64(15))
         
         if user.avatar.count == 2 {
