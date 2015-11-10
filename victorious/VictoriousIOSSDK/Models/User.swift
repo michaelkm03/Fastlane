@@ -20,19 +20,12 @@ public enum ProfileStatus: String {
 /// A struct representing a user's information
 public struct User {
     public let userID: Int64
-    public var email: String?
-    public var name: String?
-    public var status: ProfileStatus
-    public var location: String?
-    public var tagline: String?
-    public var avatar: [ImageAsset]
-    
-    public init(userID: Int64, status: ProfileStatus)
-    {
-        self.userID = userID
-        self.status = status
-        avatar = []
-    }
+    public let email: String?
+    public let name: String?
+    public let status: ProfileStatus
+    public let location: String?
+    public let tagline: String?
+    public let avatar: [ImageAsset]
 }
 
 extension User {
@@ -51,7 +44,8 @@ extension User {
         
         if let statusString = json["status"].string,
            let status = ProfileStatus(rawValue: statusString) {
-            self.init(userID: userIDFromJSON, status: status)
+            self.userID = userIDFromJSON
+            self.status = status
         } else {
             return nil
         }
@@ -60,9 +54,6 @@ extension User {
         name = json["name"].string
         location = json["profile_location"].string
         tagline = json["profile_tagline"].string
-        
-        if let previewAssetsArray = json["preview"]["assets"].array {
-            avatar = previewAssetsArray.flatMap { ImageAsset(json: $0) }
-        }
+        avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
     }
 }
