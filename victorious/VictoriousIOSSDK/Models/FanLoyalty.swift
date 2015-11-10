@@ -9,7 +9,6 @@
 import SwiftyJSON
 
 public struct FanLoyalty {
-    
     public let points: Int64
     public let level: Int
     public let progress: Int

@@ -22,7 +22,7 @@ class SuggestedUsersRequestTests: XCTestCase {
         
         do {
             let suggestedUsersRequest = SuggestedUsersRequest()
-            let (results, _, _) = try suggestedUsersRequest.parseResponse(NSURLResponse(), toRequest: suggestedUsersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try suggestedUsersRequest.parseResponse(NSURLResponse(), toRequest: suggestedUsersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 5)
             
             XCTAssertEqual(results[0].user.userID, 3694)

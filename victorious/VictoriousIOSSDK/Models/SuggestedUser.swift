@@ -11,12 +11,11 @@ public struct SuggestedUser {
     public let recentSequences: [Sequence]
     
     public init?(user: User?, recentSequences: [Sequence]?) {
-        if let user = user,
-            let recentSequences = recentSequences {
-                self.user = user
-                self.recentSequences = recentSequences
-        } else {
-            return nil
+        guard let user = user,
+            let recentSequences = recentSequences else {
+                return nil
         }
+        self.user = user
+        self.recentSequences = recentSequences
     }
 }

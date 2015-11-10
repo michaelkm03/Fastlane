@@ -13,7 +13,7 @@ public struct SuggestedUsersRequest: RequestType {
         return NSURLRequest(URL: NSURL(string: "/api/discover/suggested_users")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [SuggestedUser], nextPage: SequenceLikersRequest?, previousPage: SequenceLikersRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [SuggestedUser] {
         guard let suggestedUsersJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
@@ -23,6 +23,6 @@ public struct SuggestedUsersRequest: RequestType {
                 recentSequences: $0["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) })
         }
         
-        return (suggestedUsers, nil, nil)
+        return (suggestedUsers)
     }
 }
