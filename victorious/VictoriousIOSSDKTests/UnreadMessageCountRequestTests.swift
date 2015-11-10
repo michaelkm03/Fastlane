@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class UnreadMessageCountRequestTests: XCTestCase {
     
-    func testRequestPath() {
+    func testRequest() {
         let unreadMessageCount = UnreadMessageCountRequest()
         XCTAssertEqual(unreadMessageCount.urlRequest.URL?.absoluteString, "/api/message/unread_message_count")
     }
