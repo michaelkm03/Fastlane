@@ -27,18 +27,23 @@ class SuggestedUsersRequestTests: XCTestCase {
             
             XCTAssertEqual(results[0].user.userID, 3694)
             XCTAssertEqual(results[0].recentSequences.count, 10)
+            XCTAssertEqual(results[0].recentSequences[0].sequenceID, 16543)
             
             XCTAssertEqual(results[1].user.userID, 97)
             XCTAssertEqual(results[1].recentSequences.count, 10)
+            XCTAssertEqual(results[1].recentSequences[0].sequenceID, 16393)
 
             XCTAssertEqual(results[2].user.userID, 708)
             XCTAssertEqual(results[2].recentSequences.count, 10)
+            XCTAssertEqual(results[2].recentSequences[0].sequenceID, 12683)
 
             XCTAssertEqual(results[3].user.userID, 2956)
             XCTAssertEqual(results[3].recentSequences.count, 10)
+            XCTAssertEqual(results[3].recentSequences[0].sequenceID, 16891)
 
             XCTAssertEqual(results[4].user.userID, 1419)
             XCTAssertEqual(results[4].recentSequences.count, 5)
+            XCTAssertEqual(results[4].recentSequences[0].sequenceID, 16547)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
