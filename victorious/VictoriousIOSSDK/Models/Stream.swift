@@ -11,23 +11,20 @@ import SwiftyJSON
 
 public struct Stream: StreamItemType {
     public let remoteID: String
-    public let type: String
-    public let subtype: String
     public let name: String
     public let title: String?
     public let postCount: Int
     public let streamUrl: String?
     public let items: [StreamItemType]
+    public let type: StreamContentType?
+    public let subtype: StreamContentType?
     
     // MARK: - StreamItemType
     
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
     public let streamContentType: StreamContentType?
-    public let itemType: StreamContentType?
-    public let itemSubType: StreamContentType?
     public let previewImageAssets: [ImageAsset]
-    public let streams: [Stream]
 }
 
 extension Stream {
@@ -37,26 +34,25 @@ extension Stream {
         }
         self.remoteID           = remoteID
         
-        type                    = json["type"].string ?? ""
-        subtype                 = json["subtype"].string ?? ""
         name                    = json["name"].string ?? ""
         title                   = json["title"].string ?? ""
         postCount               = json["postCount"].int ?? 0
         streamUrl               = json["streamUrl"].string ?? ""
         
-        items = (json["items"].array ?? json["content"].array ?? []).flatMap {
-            let isStream = json["items" ] != nil || json["streamUrl"] != nil
+        items = ( json["items"].array ?? json["content"].array ?? []).flatMap {
+            let isStream = $0["items"] != nil || $0["streamUrl"] != nil
             return isStream ? Stream(json: $0) : Sequence(json:$0)
         }
         
         // MARK: - StreamItemType
         
-        previewImagesObject     = json["preview_image"].object
         previewTextPostAsset    = json["preview"].string
         previewImageAssets      = (json["preview.assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        streams                 = (json["streams"].array ?? []).flatMap { Stream(json: $0) }
         streamContentType       = StreamContentType( rawValue: json["stream_content_type"].string ?? "" )
-        itemType                = StreamContentType( rawValue: json["type"].string ?? "" )
-        itemSubType             = StreamContentType( rawValue: json["subtype"].string ?? "" )
+        type                    = StreamContentType( rawValue: json["type"].string ?? "" )
+        subtype                 = StreamContentType( rawValue: json["subtype"].string ?? "" )
+        
+        let previewImage = json["preview_image"]
+        previewImagesObject = (previewImage.array?.flatMap { $0.string } as? AnyObject) ?? previewImage.string as? AnyObject
     }
 }

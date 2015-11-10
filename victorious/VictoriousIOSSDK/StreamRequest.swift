@@ -11,18 +11,6 @@ import SwiftyJSON
 
 public struct StreamRequest: Pageable {
     
-    public struct Result {
-        public let stream: Stream
-        let nextPage: StreamRequest?
-        let previousPage: StreamRequest?
-        
-        public init( stream: Stream, nextPage: StreamRequest? = nil, previousPage: StreamRequest? = nil ) {
-            self.stream = stream
-            self.nextPage = nextPage
-            self.previousPage = previousPage
-        }
-    }
-    
     public let apiPath: String
     
     public init( apiPath: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -30,16 +18,14 @@ public struct StreamRequest: Pageable {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    private init?( apiPath: String, previousPageWithPaginator paginator: StandardPaginator) {
-        let pageNumber = paginator.pageNumber - 1
-        if pageNumber <= 0 {
+    private init?( apiPath: String, paginator: StandardPaginator?) {
+        guard let paginator = paginator else {
             return nil
-            
         }
-        self.init( apiPath: apiPath, pageNumber: pageNumber, itemsPerPage: paginator.itemsPerPage)
+        self.init( apiPath: apiPath, pageNumber: paginator.pageNumber, itemsPerPage: paginator.itemsPerPage)
     }
     
-    private let paginator: StandardPaginator
+    let paginator: StandardPaginator
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: self.apiPath)!
@@ -57,8 +43,8 @@ public struct StreamRequest: Pageable {
         
         return (
             results: stream,
-            nextPage: stream.items.count == 0 ? nil : StreamRequest( apiPath: apiPath, pageNumber: paginator.pageNumber + 1),
-            previousPage: StreamRequest( apiPath: apiPath, previousPageWithPaginator: paginator )
+            nextPage: stream.items.count == 0 ? nil : StreamRequest( apiPath: apiPath, paginator: paginator.nextPage ),
+            previousPage: StreamRequest( apiPath: apiPath, paginator: paginator.previousPage )
         )
     }
 }

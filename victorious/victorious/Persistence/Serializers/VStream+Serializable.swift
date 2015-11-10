@@ -17,8 +17,8 @@ extension VStream: Serializable {
     
     func serialize( stream: Stream, dataStore: DataStore ) {
         remoteId        = String(stream.remoteID)
-        itemType        = stream.type
-        itemSubType     = stream.subtype
+        itemType        = stream.type?.rawValue ?? ""
+        itemSubType     = stream.subtype?.rawValue ?? ""
         name            = stream.name
         count           = stream.postCount
         

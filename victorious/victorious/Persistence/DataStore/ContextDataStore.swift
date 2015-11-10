@@ -9,11 +9,6 @@
 import Foundation
 import CoreData
 
-@objc enum ContextDataStoreType: Int {
-    case Main
-    case Background
-}
-
 @objc class ContextDataStoreObject : NSManagedObject {
     
     func identifier() -> AnyObject { return self.objectID }

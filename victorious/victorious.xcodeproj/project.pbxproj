@@ -628,6 +628,8 @@
 		A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */; };
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
+		A747A8B51BF1770700406E05 /* Stream-Invalid.json in Resources */ = {isa = PBXBuildFile; fileRef = A747A8B41BF1770700406E05 /* Stream-Invalid.json */; };
+		A747A8B71BF180DB00406E05 /* StreamResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A747A8B61BF180DB00406E05 /* StreamResponse.json */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -755,7 +757,6 @@
 		A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* ContextDataStore.swift */; };
 		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
 		A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* DataStore.swift */; };
-		A789F72D1BF11F4900F5C87B /* PersistentStreamRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */; };
 		A789F72E1BF11F4900F5C87B /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71E1BF11F4900F5C87B /* Serializable.swift */; };
 		A789F72F1BF11F4900F5C87B /* VAsset+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */; };
 		A789F7301BF11F4900F5C87B /* VImageAsset+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */; };
@@ -798,6 +799,7 @@
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
+		A7AC03021BF166E6000741B3 /* StreamRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AC03011BF166E5000741B3 /* StreamRequestTests.swift */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
@@ -2538,6 +2540,8 @@
 		A74783D81B9FC792005654A6 /* VVideoPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayerDelegate.h; sourceTree = "<group>"; };
 		A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoToolbarView.swift; sourceTree = "<group>"; };
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
+		A747A8B41BF1770700406E05 /* Stream-Invalid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Stream-Invalid.json"; sourceTree = "<group>"; };
+		A747A8B61BF180DB00406E05 /* StreamResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StreamResponse.json; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
@@ -2761,7 +2765,6 @@
 		A789F7171BF11F4900F5C87B /* ContextDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStore.swift; sourceTree = "<group>"; };
 		A789F7181BF11F4900F5C87B /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A789F7191BF11F4900F5C87B /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
-		A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStreamRequest.swift; sourceTree = "<group>"; };
 		A789F71E1BF11F4900F5C87B /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Serializable.swift"; sourceTree = "<group>"; };
 		A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Serialization.swift"; sourceTree = "<group>"; };
@@ -2827,6 +2830,7 @@
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
+		A7AC03011BF166E5000741B3 /* StreamRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamRequestTests.swift; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
 		A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
 		A7AEF98A1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFooterActivityIndicatorView.h; sourceTree = "<group>"; };
@@ -4643,6 +4647,7 @@
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
+				A7AC03011BF166E5000741B3 /* StreamRequestTests.swift */,
 				03314F461BE40F0100EE74FD /* Models */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
@@ -4671,7 +4676,9 @@
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
+				A747A8B41BF1770700406E05 /* Stream-Invalid.json */,
 				A75C6D061BF1437F000453FC /* Stream.json */,
+				A747A8B61BF180DB00406E05 /* StreamResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
 			path = "Test Data";
@@ -6461,7 +6468,6 @@
 		A789F71B1BF11F4900F5C87B /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				A789F71C1BF11F4900F5C87B /* PersistentStreamRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -8815,8 +8821,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
+				A747A8B71BF180DB00406E05 /* StreamResponse.json in Resources */,
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
+				A747A8B51BF1770700406E05 /* Stream-Invalid.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A75C6D071BF1437F000453FC /* Stream.json in Resources */,
@@ -9520,6 +9528,7 @@
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
 				A7BAD63D1BF144800076D3B7 /* StreamTests.swift in Sources */,
+				A7AC03021BF166E6000741B3 /* StreamRequestTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				0315EAD51BED8C3100645071 /* LoginRequestTests.swift in Sources */,
@@ -10436,7 +10445,6 @@
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
-				A789F72D1BF11F4900F5C87B /* PersistentStreamRequest.swift in Sources */,
 				C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
