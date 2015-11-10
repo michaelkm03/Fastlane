@@ -1010,6 +1010,7 @@
 		C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA79E1BF173DE003446CC /* TrendingGIFsRequestTests.swift */; };
 		C3FEA7A11BF17405003446CC /* GIFSearchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */; };
 		C3FEA7A31BF17583003446CC /* TrendingGIFsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7A21BF17582003446CC /* TrendingGIFsRequest.swift */; };
+		C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
 		D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536231B17B4310049B77A /* VPromptCarouselViewController.m */; };
 		D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */; };
@@ -3184,6 +3185,7 @@
 		C3FEA79E1BF173DE003446CC /* TrendingGIFsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingGIFsRequestTests.swift; sourceTree = "<group>"; };
 		C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequestTests.swift; sourceTree = "<group>"; };
 		C3FEA7A21BF17582003446CC /* TrendingGIFsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingGIFsRequest.swift; sourceTree = "<group>"; };
+		C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequest.swift; sourceTree = "<group>"; };
 		CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.debug.xcconfig"; sourceTree = "<group>"; };
 		CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.qa.xcconfig"; sourceTree = "<group>"; };
 		D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4571,6 +4573,7 @@
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
+				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
@@ -9357,6 +9360,7 @@
 				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
 				C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */,
 				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
+				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0300AA551BF15CDE000A121D /* TODO.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
