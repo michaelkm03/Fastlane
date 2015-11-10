@@ -9,7 +9,6 @@
 import SwiftyJSON
 
 public struct SuggestedUsersRequest: RequestType {
-    
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/discover/suggested_users")!)
     }
@@ -19,7 +18,10 @@ public struct SuggestedUsersRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let suggestedUsers = suggestedUsersJSON.flatMap { SuggestedUser(user: User(json: $0), recentSequences: $0["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) }) }
+        let suggestedUsers = suggestedUsersJSON.flatMap {
+            SuggestedUser(user: User(json: $0),
+                recentSequences: $0["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) })
+        }
         
         return (suggestedUsers, nil, nil)
     }
