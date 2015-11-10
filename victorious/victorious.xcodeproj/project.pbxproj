@@ -429,6 +429,13 @@
 		79D081AC1BF17EC300E8A0C5 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D081AB1BF17EC300E8A0C5 /* DateFormat.swift */; };
 		79D081AE1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */; };
 		79D081B01BF192C300E8A0C5 /* NoConversationsConversationListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081AF1BF192C300E8A0C5 /* NoConversationsConversationListResponse.json */; };
+		79D081B41BF19A2100E8A0C5 /* ConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D081B31BF19A2100E8A0C5 /* ConversationRequestTests.swift */; };
+		79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */; };
+		79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */; };
+		79D081BA1BF1A0DF00E8A0C5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D081B91BF1A0DF00E8A0C5 /* Message.swift */; };
+		79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D9FC531BF27FF400445D2D /* MinDataConverationResponse.json */; };
+		79D9FC561BF2812F00445D2D /* NoDataConverationResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */; };
+		79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -2163,6 +2170,13 @@
 		79D081AB1BF17EC300E8A0C5 /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InvalidConversationListResponse.json; sourceTree = "<group>"; };
 		79D081AF1BF192C300E8A0C5 /* NoConversationsConversationListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NoConversationsConversationListResponse.json; sourceTree = "<group>"; };
+		79D081B31BF19A2100E8A0C5 /* ConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRequestTests.swift; sourceTree = "<group>"; };
+		79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRequest.swift; sourceTree = "<group>"; };
+		79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ConversationResponse.json; sourceTree = "<group>"; };
+		79D081B91BF1A0DF00E8A0C5 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		79D9FC531BF27FF400445D2D /* MinDataConverationResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MinDataConverationResponse.json; sourceTree = "<group>"; };
+		79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NoDataConverationResponse.json; sourceTree = "<group>"; };
+		79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InvalidDataConverationResponse.json; sourceTree = "<group>"; };
 		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4581,6 +4595,7 @@
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
 				79D081A71BF15CD200E8A0C5 /* ConversationListRequest.swift */,
 				79D081AB1BF17EC300E8A0C5 /* DateFormat.swift */,
+				79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -4589,6 +4604,8 @@
 			isa = PBXGroup;
 			children = (
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
+				79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */,
+				79D081B31BF19A2100E8A0C5 /* ConversationRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				03314F461BE40F0100EE74FD /* Models */,
@@ -4598,7 +4615,6 @@
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 				79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */,
-				79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
@@ -4615,6 +4631,10 @@
 		03314F4A1BE40F0100EE74FD /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */,
+				79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */,
+				79D9FC531BF27FF400445D2D /* MinDataConverationResponse.json */,
+				79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */,
 				79D081AF1BF192C300E8A0C5 /* NoConversationsConversationListResponse.json */,
 				79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */,
 				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
@@ -4634,6 +4654,7 @@
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
+				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -8673,15 +8694,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79D9FC561BF2812F00445D2D /* NoDataConverationResponse.json in Resources */,
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				79D081AE1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json in Resources */,
 				79D081B01BF192C300E8A0C5 /* NoConversationsConversationListResponse.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
+				79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */,
+				79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */,
 				79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */,
 				79D081A61BF15B9E00E8A0C5 /* ConversationListResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
+				79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9348,11 +9373,13 @@
 				79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */,
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
+				79D081BA1BF1A0DF00E8A0C5 /* Message.swift in Sources */,
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
 				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
+				79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */,
 				79D081AC1BF17EC300E8A0C5 /* DateFormat.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
@@ -9373,6 +9400,7 @@
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
+				79D081B41BF19A2100E8A0C5 /* ConversationRequestTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */,

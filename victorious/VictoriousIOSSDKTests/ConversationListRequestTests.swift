@@ -37,7 +37,8 @@ class ConversationListRequestTests: XCTestCase {
                 XCTAssertEqual(firstConversation.thumbnailURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
                 XCTAssertEqual(firstConversation.mediaURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
                 XCTAssertEqual(firstConversation.mediaType, "image")
-                
+
+                // Test Date parsing
                 let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
                 let testDate = dateFormatter.dateFromString("2015-08-28 23:25:31")
                 XCTAssertEqual(firstConversation.postedAt, testDate)
