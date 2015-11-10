@@ -875,6 +875,9 @@
 		A7EF1BD41BF2758000D429DE /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EF1BD31BF2758000D429DE /* DateFormat.swift */; };
 		A7EF1BD61BF275D400D429DE /* StreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EF1BD51BF275D400D429DE /* StreamTests.swift */; };
 		A7EF1BD81BF275DA00D429DE /* StreamRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */; };
+		A7EF1BDC1BF2761E00D429DE /* Stream-Invalid.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BD91BF2761E00D429DE /* Stream-Invalid.json */; };
+		A7EF1BDD1BF2761E00D429DE /* Stream.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BDA1BF2761E00D429DE /* Stream.json */; };
+		A7EF1BDE1BF2761E00D429DE /* StreamResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BDB1BF2761E00D429DE /* StreamResponse.json */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
 		A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F529521A9E66E000F7E41F /* VStreamTrackingHelper.m */; };
 		A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */; };
@@ -2968,6 +2971,9 @@
 		A7EF1BD31BF2758000D429DE /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		A7EF1BD51BF275D400D429DE /* StreamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTests.swift; sourceTree = "<group>"; };
 		A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamRequestTests.swift; sourceTree = "<group>"; };
+		A7EF1BD91BF2761E00D429DE /* Stream-Invalid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Stream-Invalid.json"; sourceTree = "<group>"; };
+		A7EF1BDA1BF2761E00D429DE /* Stream.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Stream.json; sourceTree = "<group>"; };
+		A7EF1BDB1BF2761E00D429DE /* StreamResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StreamResponse.json; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollPaginator.h; sourceTree = "<group>"; };
 		A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollPaginator.m; sourceTree = "<group>"; };
@@ -4670,6 +4676,9 @@
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
+				A7EF1BD91BF2761E00D429DE /* Stream-Invalid.json */,
+				A7EF1BDA1BF2761E00D429DE /* Stream.json */,
+				A7EF1BDB1BF2761E00D429DE /* StreamResponse.json */,
 				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
@@ -8733,12 +8742,15 @@
 				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
+				A7EF1BDE1BF2761E00D429DE /* StreamResponse.json in Resources */,
+				A7EF1BDD1BF2761E00D429DE /* Stream.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
 				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 				C314E6C11BF13E3F00FB9591 /* Hashtag.json in Resources */,
+				A7EF1BDC1BF2761E00D429DE /* Stream-Invalid.json in Resources */,
 				C314E6BB1BF13C0100FB9591 /* TrendingHashtagResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
