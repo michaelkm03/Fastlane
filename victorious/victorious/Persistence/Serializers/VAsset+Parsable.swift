@@ -1,5 +1,5 @@
 //
-//  VAsset+Serializable.swift
+//  VAsset+PersistenceParsable.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/6/15.
@@ -9,13 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VAsset: DataStoreObject {
-    // Will need to implement `entityName` when +RestKit categories are removed
-}
-
-extension VAsset: Serializable {
+extension VAsset: PersistenceParsable {
     
-    func serialize( asset: Asset, dataStore: DataStore ) {
+    func populate( fromSourceModel asset: Asset ) {
         audioMuted              = asset.audioMuted
         backgroundColor         = asset.backgroundColor
         backgroundImageUrl      = asset.backgroundImageUrl

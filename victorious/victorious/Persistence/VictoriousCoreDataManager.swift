@@ -43,11 +43,3 @@ private struct VictoriousCoreDataManager {
         return instance!
     }
 }
-
-func BackgroundContextDataStore() -> DataStore {
-    return ContextDataStore( managedObjectContext: VictoriousCoreDataManager.sharedManager.backgroundContext )
-}
-
-func MainContextDataStore() -> DataStore {
-    return ContextDataStore( managedObjectContext: VictoriousCoreDataManager.sharedManager.mainContext )
-}

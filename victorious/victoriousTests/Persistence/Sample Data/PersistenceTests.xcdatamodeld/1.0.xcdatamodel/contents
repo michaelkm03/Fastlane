@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="1.0" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="14E46" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.0" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
     <entity name="PersistentEntity" representedClassName=".PersistentEntity" syncable="YES">
         <attribute name="dateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="numberAttribute" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>

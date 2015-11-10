@@ -753,17 +753,16 @@
 		A789F70D1BF11B0400F5C87B /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7021BF11B0400F5C87B /* Stream.swift */; };
 		A789F70E1BF11B0400F5C87B /* StreamItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7031BF11B0400F5C87B /* StreamItemType.swift */; };
 		A789F70F1BF11B0400F5C87B /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7041BF11B0400F5C87B /* TODO.swift */; };
-		A789F7291BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */; };
-		A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* ContextDataStore.swift */; };
+		A789F7291BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */; };
+		A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */; };
 		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
 		A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* DataStore.swift */; };
-		A789F72E1BF11F4900F5C87B /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71E1BF11F4900F5C87B /* Serializable.swift */; };
-		A789F72F1BF11F4900F5C87B /* VAsset+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */; };
-		A789F7301BF11F4900F5C87B /* VImageAsset+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */; };
-		A789F7311BF11F4900F5C87B /* VNode+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */; };
-		A789F7321BF11F4900F5C87B /* VSequence+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */; };
-		A789F7331BF11F4900F5C87B /* VStream+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */; };
-		A789F7341BF11F4900F5C87B /* VUser+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */; };
+		A789F72F1BF11F4900F5C87B /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */; };
+		A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */; };
+		A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */; };
+		A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */; };
+		A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */; };
+		A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */; };
 		A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */; };
 		A789F7361BF11F4900F5C87B /* NSSet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */; };
 		A789F7371BF11F4900F5C87B /* Set+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7281BF11F4900F5C87B /* Set+Operators.swift */; };
@@ -771,11 +770,6 @@
 		A789F73B1BF1207F00F5C87B /* VictoriousCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73A1BF1207F00F5C87B /* VictoriousCoreDataManager.swift */; };
 		A789F74C1BF1211D00F5C87B /* ContextDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */; };
 		A789F74E1BF1211D00F5C87B /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
-		A789F74F1BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */; };
-		A789F7501BF1211D00F5C87B /* 1.1-2.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A789F7421BF1211D00F5C87B /* 1.1-2.0.xcmappingmodel */; };
-		A789F7511BF1211D00F5C87B /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A789F7431BF1211D00F5C87B /* PersistenceTests.xcdatamodeld */; };
-		A789F7521BF1211D00F5C87B /* SampleCoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7471BF1211D00F5C87B /* SampleCoreDataModels.swift */; };
-		A789F7531BF1211D00F5C87B /* SampleMigrationPolicies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7481BF1211D00F5C87B /* SampleMigrationPolicies.swift */; };
 		A789F7541BF1211D00F5C87B /* CoreDataPathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74A1BF1211D00F5C87B /* CoreDataPathHelper.swift */; };
 		A789F7551BF1211D00F5C87B /* KVOHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74B1BF1211D00F5C87B /* KVOHelper.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
@@ -901,6 +895,13 @@
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
+		A7F2D0BD1BF19D4300490D7B /* DataStoreObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BC1BF19D4300490D7B /* DataStoreObjc.swift */; };
+		A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */; };
+		A7F2D0C21BF26D1B00490D7B /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A789F7431BF1211D00F5C87B /* PersistenceTests.xcdatamodeld */; };
+		A7F2D0C31BF26D2000490D7B /* 1.0-1.1.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */; };
+		A7F2D0C41BF26D2000490D7B /* 1.1-2.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A789F7421BF1211D00F5C87B /* 1.1-2.0.xcmappingmodel */; };
+		A7F2D0C51BF26D4600490D7B /* SampleCoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7471BF1211D00F5C87B /* SampleCoreDataModels.swift */; };
+		A7F2D0C61BF26D4600490D7B /* SampleMigrationPolicies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7481BF1211D00F5C87B /* SampleMigrationPolicies.swift */; };
 		A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F529521A9E66E000F7E41F /* VStreamTrackingHelper.m */; };
 		A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */; };
 		A7F711F81AE1D5A00086F729 /* VAbstractProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711DD1AE1D5A00086F729 /* VAbstractProfileEditViewController.m */; };
@@ -2761,17 +2762,16 @@
 		A789F7031BF11B0400F5C87B /* StreamItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemType.swift; sourceTree = "<group>"; };
 		A789F7041BF11B0400F5C87B /* TODO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
-		A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContextDataStore+SwiftDataStore.swift"; sourceTree = "<group>"; };
-		A789F7171BF11F4900F5C87B /* ContextDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStore.swift; sourceTree = "<group>"; };
+		A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStore.swift"; sourceTree = "<group>"; };
+		A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStoreObjc.swift"; sourceTree = "<group>"; };
 		A789F7181BF11F4900F5C87B /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A789F7191BF11F4900F5C87B /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
-		A789F71E1BF11F4900F5C87B /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
-		A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Serializable.swift"; sourceTree = "<group>"; };
-		A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Serialization.swift"; sourceTree = "<group>"; };
-		A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNode+Serializable.swift"; sourceTree = "<group>"; };
-		A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Serializable.swift"; sourceTree = "<group>"; };
-		A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Serializable.swift"; sourceTree = "<group>"; };
-		A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Serializable.swift"; sourceTree = "<group>"; };
+		A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Parsable.swift"; sourceTree = "<group>"; };
+		A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Parsable.swift"; sourceTree = "<group>"; };
+		A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNode+Parsable.swift"; sourceTree = "<group>"; };
+		A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Parsable.swift"; sourceTree = "<group>"; };
+		A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Parsable.swift"; sourceTree = "<group>"; };
+		A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extensions.swift"; sourceTree = "<group>"; };
 		A789F7281BF11F4900F5C87B /* Set+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+Operators.swift"; sourceTree = "<group>"; };
@@ -3005,6 +3005,8 @@
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollPaginator.h; sourceTree = "<group>"; };
 		A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollPaginator.m; sourceTree = "<group>"; };
+		A7F2D0BC1BF19D4300490D7B /* DataStoreObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreObjc.swift; sourceTree = "<group>"; };
+		A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceParsable.swift; sourceTree = "<group>"; };
 		A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTrackingHelper.h; sourceTree = "<group>"; };
 		A7F529521A9E66E000F7E41F /* VStreamTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamTrackingHelper.m; sourceTree = "<group>"; };
 		A7F5936E1A39436000B5E3A2 /* VPurchaseStringMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseStringMaker.h; sourceTree = "<group>"; };
@@ -6439,8 +6441,7 @@
 			children = (
 				A789F7151BF11F4900F5C87B /* DataStore */,
 				A789F71A1BF11F4900F5C87B /* Models */,
-				A789F71B1BF11F4900F5C87B /* Requests */,
-				A789F71D1BF11F4900F5C87B /* Serializers */,
+				A789F71D1BF11F4900F5C87B /* Parsers */,
 				A789F7251BF11F4900F5C87B /* Utils */,
 				A789F73A1BF1207F00F5C87B /* VictoriousCoreDataManager.swift */,
 			);
@@ -6450,10 +6451,11 @@
 		A789F7151BF11F4900F5C87B /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
-				A789F7161BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift */,
-				A789F7171BF11F4900F5C87B /* ContextDataStore.swift */,
+				A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */,
+				A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */,
 				A789F7181BF11F4900F5C87B /* CoreDataManager.swift */,
 				A789F7191BF11F4900F5C87B /* DataStore.swift */,
+				A7F2D0BC1BF19D4300490D7B /* DataStoreObjc.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -6465,24 +6467,18 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A789F71B1BF11F4900F5C87B /* Requests */ = {
+		A789F71D1BF11F4900F5C87B /* Parsers */ = {
 			isa = PBXGroup;
 			children = (
+				A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */,
+				A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */,
+				A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */,
+				A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */,
+				A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */,
+				A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */,
+				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 			);
-			path = Requests;
-			sourceTree = "<group>";
-		};
-		A789F71D1BF11F4900F5C87B /* Serializers */ = {
-			isa = PBXGroup;
-			children = (
-				A789F71E1BF11F4900F5C87B /* Serializable.swift */,
-				A789F71F1BF11F4900F5C87B /* VAsset+Serializable.swift */,
-				A789F7201BF11F4900F5C87B /* VImageAsset+Serialization.swift */,
-				A789F7211BF11F4900F5C87B /* VNode+Serializable.swift */,
-				A789F7221BF11F4900F5C87B /* VSequence+Serializable.swift */,
-				A789F7231BF11F4900F5C87B /* VStream+Serializable.swift */,
-				A789F7241BF11F4900F5C87B /* VUser+Serializable.swift */,
-			);
+			name = Parsers;
 			path = Serializers;
 			sourceTree = "<group>";
 		};
@@ -9652,7 +9648,7 @@
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A721E91C1B572454000B7901 /* VStreamItem+Fetcher.m in Sources */,
-				A789F7311BF11F4900F5C87B /* VNode+Serializable.swift in Sources */,
+				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
@@ -9782,6 +9778,7 @@
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
+				A7F2D0BD1BF19D4300490D7B /* DataStoreObjc.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -9822,7 +9819,6 @@
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
-				A789F72E1BF11F4900F5C87B /* Serializable.swift in Sources */,
 				F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
@@ -9857,7 +9853,7 @@
 				C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
-				A789F7341BF11F4900F5C87B /* VUser+Serializable.swift in Sources */,
+				A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
@@ -9893,7 +9889,7 @@
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
-				A789F72F1BF11F4900F5C87B /* VAsset+Serializable.swift in Sources */,
+				A789F72F1BF11F4900F5C87B /* VAsset+Parsable.swift in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
@@ -9925,7 +9921,7 @@
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
-				A789F7331BF11F4900F5C87B /* VStream+Serializable.swift in Sources */,
+				A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
@@ -10020,7 +10016,7 @@
 				A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */,
 				F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
-				A789F7301BF11F4900F5C87B /* VImageAsset+Serialization.swift in Sources */,
+				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
@@ -10091,6 +10087,7 @@
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
+				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
 				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
@@ -10115,6 +10112,7 @@
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */,
+				A7F2D0C41BF26D2000490D7B /* 1.1-2.0.xcmappingmodel in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
@@ -10143,6 +10141,7 @@
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
+				A7F2D0C21BF26D1B00490D7B /* PersistenceTests.xcdatamodeld in Sources */,
 				7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
@@ -10234,7 +10233,7 @@
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
-				A789F72A1BF11F4900F5C87B /* ContextDataStore.swift in Sources */,
+				A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
@@ -10360,7 +10359,7 @@
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */,
 				A721E9291B572454000B7901 /* VInteraction+RestKit.m in Sources */,
-				A789F7321BF11F4900F5C87B /* VSequence+Serializable.swift in Sources */,
+				A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
 				A721E9641B572454000B7901 /* VAlertViewBlockDelegate.m in Sources */,
 				A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */,
@@ -10381,6 +10380,7 @@
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */,
 				672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */,
+				A7F2D0C51BF26D4600490D7B /* SampleCoreDataModels.swift in Sources */,
 				A6E104D31B56C88D0062392A /* VPublishSaveCollectionViewCell.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				A721E91E1B572454000B7901 /* VAbstractFilter+RestKit.m in Sources */,
@@ -10427,6 +10427,7 @@
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
+				A7F2D0C61BF26D4600490D7B /* SampleMigrationPolicies.swift in Sources */,
 				A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */,
@@ -10461,7 +10462,7 @@
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
-				A789F7291BF11F4900F5C87B /* ContextDataStore+SwiftDataStore.swift in Sources */,
+				A789F7291BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift in Sources */,
 				7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
@@ -10475,6 +10476,7 @@
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,
 				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
+				A7F2D0C31BF26D2000490D7B /* 1.0-1.1.xcmappingmodel in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
@@ -10550,11 +10552,9 @@
 				D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */,
 				A77B43D01B2129050016F47B /* VSequencePermissionsTests.m in Sources */,
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
-				A789F7531BF1211D00F5C87B /* SampleMigrationPolicies.swift in Sources */,
 				A7EB574F1AF841CC006AA1CF /* VURLDetectorTests.m in Sources */,
 				0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */,
 				0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */,
-				A789F7501BF1211D00F5C87B /* 1.1-2.0.xcmappingmodel in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
 				0394204A1AB88A9A0087ADFA /* VDependencyManagerImageTests.m in Sources */,
 				A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */,
@@ -10568,7 +10568,6 @@
 				035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */,
 				A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */,
 				F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */,
-				A789F7521BF1211D00F5C87B /* SampleCoreDataModels.swift in Sources */,
 				F03C13761B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
 				03A7614F1B3232970016B69D /* NSURL+VDataCacheIDTests.m in Sources */,
 				F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */,
@@ -10580,7 +10579,6 @@
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
 				A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */,
 				A75C649E1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m in Sources */,
-				A789F74F1BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel in Sources */,
 				A72005281A03073B00285A9C /* VHashTagsTest.m in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				F0C83A351B0F87EF00A6EC1A /* VCoachmarkViewTests.m in Sources */,
@@ -10596,7 +10594,6 @@
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
 				F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,
-				A789F7511BF1211D00F5C87B /* PersistenceTests.xcdatamodeld in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
 				035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
 				A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */,
@@ -12977,7 +12974,7 @@
 				A789F7451BF1211D00F5C87B /* 1.1.xcdatamodel */,
 				A789F7461BF1211D00F5C87B /* 2.0.xcdatamodel */,
 			);
-			currentVersion = A789F7441BF1211D00F5C87B /* 1.0.xcdatamodel */;
+			currentVersion = A789F7461BF1211D00F5C87B /* 2.0.xcdatamodel */;
 			path = PersistenceTests.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

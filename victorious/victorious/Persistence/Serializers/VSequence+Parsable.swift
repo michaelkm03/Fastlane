@@ -1,5 +1,5 @@
 //
-//  VSequence+Serializable.swift
+//  VSequence+PersistenceParsable.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/15.
@@ -9,15 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VSequence: DataStoreObject {
-    // Will need to implement `entityName` when +RestKit categories are removed
-}
-
-extension VSequence: Serializable {
+extension VSequence: PersistenceParsable {
     
-    func serialize( streamItem: StreamItemType, dataStore: DataStore ) {
+    func populate( fromSourceModel streamItem: StreamItemType ) {
         guard let sequence = streamItem as? Sequence else {
-            return
+                return
         }
         
         category                = sequence.category.rawValue
@@ -42,14 +38,14 @@ extension VSequence: Serializable {
         user = dataStore.findOrCreateObject( [ "remoteID" : Int(sequence.user.userID) ] ) as VUser
         
         previewImageAssets = Set<VImageAsset>(sequence.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = dataStore.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
-            imageAsset.serialize( $0, dataStore: dataStore )
+            let imageAsset: VImageAsset = self.dataStore.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+            imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
         })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
             let node: VNode = dataStore.findOrCreateObject([ "remoteID" : Int($0.nodeID)! ])
-            node.serialize( $0, dataStore: dataStore )
+            node.populate( fromSourceModel: $0 )
             return node
         })
     }

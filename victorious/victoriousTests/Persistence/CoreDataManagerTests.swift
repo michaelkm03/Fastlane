@@ -68,8 +68,12 @@ class CoreDataManagerTests: XCTestCase {
             model.numberAttribute = NSNumber(integer: i)
             // Set the `stringAttribute` attribute in version 1.0
             model.setValue( "\(i)", forKey: "stringAttribute" )
-            do { try moc.save() }
-            catch { fatalError( "Failed to save." ) }
+        }
+        do {
+            try moc.save()
+        }
+        catch {
+            XCTFail( "Failed to save." )
         }
         
         // PART 2: Create a core data manager with version 1.1 to allow lightweight migration to occur
@@ -86,7 +90,7 @@ class CoreDataManagerTests: XCTestCase {
         request.sortDescriptors = [ NSSortDescriptor(key: "numberAttribute", ascending: true) ]
         
         // Ensure that the lightweight migration was successful
-        let models = try! coreDataManager.mainContext.executeFetchRequest( request ) as! [PersistentEntity]
+        let models = try! moc.executeFetchRequest( request ) as! [PersistentEntity]
         XCTAssertEqual( models.count, testModelCount )
         for i in 0..<models.count {
             let model = models[i]
@@ -138,7 +142,7 @@ class CoreDataManagerTests: XCTestCase {
         // Insert a new object in the background context, as if from a network response
         self.coreDataManager.backgroundContext.performBlock {
             let moc = self.coreDataManager.backgroundContext
-            let entity = NSEntityDescription.entityForName( PersistentEntity.entityName(), inManagedObjectContext: moc)
+            let entity = NSEntityDescription.entityForName( PersistentEntity.dataStoreEntityName(), inManagedObjectContext: moc)
             let persistentEntity = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
             persistentEntity.newStringAttribute = self.text
             try! moc.save()

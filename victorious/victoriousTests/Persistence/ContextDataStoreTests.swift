@@ -12,8 +12,6 @@ import XCTest
 class ContextDataStoreTests: XCTestCase {
     
     var coreDataManager: CoreDataManager!
-    var mainDataStore: DataStore!
-    var backgroundDataStore: DataStore!
     
     let versionedModelName = "PersistenceTests"
     let pathHelper = CoreDataPathHelper()
@@ -42,7 +40,6 @@ class ContextDataStoreTests: XCTestCase {
                     modelVersion: versionIdentifier )
             )
         )
-        self.mainDataStore = ContextDataStore(managedObjectContext: coreDataManager.mainContext)
     }
     
     override func tearDown() {
@@ -50,6 +47,8 @@ class ContextDataStoreTests: XCTestCase {
     }
     
     func testCreateConfiguration() {
+        
+        let mainDataStore = self.coreDataManager.mainContext
         
         mainDataStore.createObjectAndSave() { (model: PersistentEntity) in
             model.newStringAttribute = self.text
@@ -68,6 +67,8 @@ class ContextDataStoreTests: XCTestCase {
     }
     
     func testFindAll() {
+        
+        let mainDataStore = self.coreDataManager.mainContext
         
         let count = 10
         for i in 0..<count {

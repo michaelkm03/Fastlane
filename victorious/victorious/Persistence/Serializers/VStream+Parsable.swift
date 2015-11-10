@@ -1,5 +1,5 @@
 //
-//  VStream+Serializable.swift
+//  VStream+PersistenceParsable.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/6/15.
@@ -9,13 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: DataStoreObject {
-    // Will need to implement `entityName` when +RestKit categories are removed
-}
-
-extension VStream: Serializable {
+extension VStream: PersistenceParsable {
     
-    func serialize( stream: Stream, dataStore: DataStore ) {
+    func populate( fromSourceModel stream: Stream ) {
         remoteId        = String(stream.remoteID)
         itemType        = stream.type?.rawValue ?? ""
         itemSubType     = stream.subtype?.rawValue ?? ""
@@ -23,8 +19,8 @@ extension VStream: Serializable {
         count           = stream.postCount
         
         streamItems += stream.items.flatMap {
-            let sequence: VSequence = dataStore.findOrCreateObject([ "remoteID" : String($0.remoteID) ])
-            sequence.serialize( $0, dataStore: dataStore )
+            let sequence: VSequence = self.dataStore.findOrCreateObject([ "remoteID" : String($0.remoteID) ])
+            sequence.populate( fromSourceModel: $0 )
             return sequence
         }
     }

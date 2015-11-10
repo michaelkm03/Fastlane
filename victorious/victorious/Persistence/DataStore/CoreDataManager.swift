@@ -43,9 +43,6 @@ class CoreDataManager: NSObject {
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
         
-        // WARNING: This is for testing only, it deletes the store on disk every time
-        do { try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL ) } catch {}
-        
         self.persistentStoreURL = persistentStoreURL
         self.currentModelVersion = currentModelVersion
         self.previousModelVersion = previousModelVersion
