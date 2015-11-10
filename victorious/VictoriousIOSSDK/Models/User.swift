@@ -20,21 +20,14 @@ public enum ProfileStatus: String {
 /// A struct representing a user's information
 public struct User {
     public let userID: Int64
-    public var email: String?
-    public var name: String?
-    public var status: ProfileStatus
-    public var location: String?
-    public var tagline: String?
-    public var avatar: [ImageAsset]
-    public var fanLoyalty: FanLoyalty?
-    public var numberOfFollowers: Int64?
-    
-    public init(userID: Int64, status: ProfileStatus)
-    {
-        self.userID = userID
-        self.status = status
-        avatar = []
-    }
+    public let email: String?
+    public let name: String?
+    public let status: ProfileStatus
+    public let location: String?
+    public let tagline: String?
+    public let avatar: [ImageAsset]
+    public let fanLoyalty: FanLoyalty?
+    public let numberOfFollowers: Int64?
 }
 
 extension User {
@@ -53,7 +46,8 @@ extension User {
         
         if let statusString = json["status"].string,
            let status = ProfileStatus(rawValue: statusString) {
-            self.init(userID: userIDFromJSON, status: status)
+            self.userID = userIDFromJSON
+            self.status = status
         } else {
             return nil
         }
@@ -62,16 +56,10 @@ extension User {
         name = json["name"].string
         location = json["profile_location"].string
         tagline = json["profile_tagline"].string
+        fanLoyalty = FanLoyalty(json: json["fanloyalty"])
+        avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
         
-        if let previewAssetsArray = json["preview"]["assets"].array {
-            avatar = previewAssetsArray.flatMap { ImageAsset(json: $0) }
-        }
-        
-        let fanLoyaltyJSON = json["fanloyalty"]
-        fanLoyalty = FanLoyalty(json: fanLoyaltyJSON)
-        
-        if let numFollowersString = json["number_of_followers"].string {
-            numberOfFollowers = Int64(numFollowersString)
-        }
+        let numFollowersString = json["number_of_followers"].string
+        numberOfFollowers = numFollowersString != nil ? Int64(numFollowersString!) : 0
     }
 }
