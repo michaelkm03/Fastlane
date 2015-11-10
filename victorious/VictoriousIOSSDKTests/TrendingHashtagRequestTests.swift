@@ -12,16 +12,6 @@ import XCTest
 
 class TrendingHashtagRequestTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("TrendingHashtagResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
@@ -42,8 +32,14 @@ class TrendingHashtagRequestTests: XCTestCase {
         }
     }
     
-    func testRequest() {
+    func testDiscoverRequest() {
         let trendingHashtagRequest = TrendingHashtagRequest()
         XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, "/api/discover/hashtags")
+    }
+
+    func testSearchRequest() {
+        let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞")
+        let urlRequest = hashtagRequest.urlRequest
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E/1/15")
     }
 }
