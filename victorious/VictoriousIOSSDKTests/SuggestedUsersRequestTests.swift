@@ -38,7 +38,7 @@ class SuggestedUsersRequestTests: XCTestCase {
             XCTAssertEqual(results[3].recentSequences.count, 10)
 
             XCTAssertEqual(results[4].user.userID, 1419)
-            XCTAssertEqual(results[4].recentSequences.count, 10)
+            XCTAssertEqual(results[4].recentSequences.count, 5)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

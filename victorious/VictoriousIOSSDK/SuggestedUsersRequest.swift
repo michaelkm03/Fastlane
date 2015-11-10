@@ -8,7 +8,6 @@
 
 import SwiftyJSON
 
-
 public struct SuggestedUsersRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
@@ -20,17 +19,7 @@ public struct SuggestedUsersRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let users = suggestedUsersJSON.flatMap { User(json: $0) }
-        
-        var recentSequencesForAllUsers: [[Sequence]] = [[]]
-        
-        for eachUserJSON in suggestedUsersJSON {
-            let eachUserRecentSequences = eachUserJSON["recent_sequences"].arrayValue
-            let recentSequencesPerUser = eachUserRecentSequences.flatMap { Sequence(json: $0) }
-            recentSequencesForAllUsers.append(recentSequencesPerUser)
-        }
-        
-        let suggestedUsers = Array(Zip2Sequence(users, recentSequencesForAllUsers)).flatMap { SuggestedUser(user: $0, recentSequences: $1) }
+        let suggestedUsers = suggestedUsersJSON.flatMap { SuggestedUser(user: User(json: $0), recentSequences: $0["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) }) }
         
         return (suggestedUsers, nil, nil)
     }
