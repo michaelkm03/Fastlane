@@ -36,7 +36,7 @@ static NSString * const kDefaultBoundary = @"M9EzbDHvJfWcrApoq3eUJWs3UF";
 {
     if (_outputStream)
     {
-        VLog("WARNING: VMultipartFormDataWriter is being deallocated with its stream still open. Always call -finishWriting to close the stream before deallocating!");
+        NSLog(@"WARNING: VMultipartFormDataWriter is being deallocated with its stream still open. Always call -finishWriting to close the stream before deallocating!");
     }
 }
 

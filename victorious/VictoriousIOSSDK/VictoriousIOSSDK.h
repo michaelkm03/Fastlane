@@ -14,5 +14,5 @@ FOUNDATION_EXPORT double VictoriousIOSSDKVersionNumber;
 //! Project version string for VictoriousIOSSDK.
 FOUNDATION_EXPORT const unsigned char VictoriousIOSSDKVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <VictoriousIOSSDK/PublicHeader.h>
+#import <VictoriousIOSSDK/VMultipartFormDataWriter.h>
 #import <VictoriousIOSSDK/VSDKCrypto.h>

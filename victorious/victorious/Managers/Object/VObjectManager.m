@@ -11,7 +11,6 @@
 #import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
-#import "VMultipartFormDataWriter.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
@@ -39,6 +38,7 @@
 static NSString * const kAlertsKey = @"alerts";
 
 @import VictoriousCommon;
+@import VictoriousIOSSDK;
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
