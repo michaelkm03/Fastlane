@@ -9,9 +9,10 @@
 import Foundation
 import SwiftyJSON
 
+/// Retrieves a list of users who follows a specific user
 public struct FollowersRequest: Pageable {
     /// Followers will be retrieved by this user ID
-    public let mainUserID: Int64
+    public let userID: Int64
     
     private let paginator: StandardPaginator
     
@@ -20,12 +21,12 @@ public struct FollowersRequest: Pageable {
     }
     
     private init(userID: Int64, paginator: StandardPaginator) {
-        self.mainUserID = userID
+        self.userID = userID
         self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "api/follow/followers_list/\(mainUserID)")!
+        let url = NSURL(string: "api/follow/followers_list/\(userID)")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
         
@@ -38,11 +39,11 @@ public struct FollowersRequest: Pageable {
         }
         
         let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: FollowersRequest? = usersJSON.count > 0 ? FollowersRequest(userID: mainUserID, paginator: paginator.nextPage) : nil
+        let nextPageRequest: FollowersRequest? = usersJSON.count > 0 ? FollowersRequest(userID: userID, paginator: paginator.nextPage) : nil
         let previousPageRequest: FollowersRequest?
         
         if let previousPage = paginator.previousPage {
-            previousPageRequest = FollowersRequest(userID: mainUserID, paginator: previousPage)
+            previousPageRequest = FollowersRequest(userID: userID, paginator: previousPage)
         } else {
             previousPageRequest = nil
         }
