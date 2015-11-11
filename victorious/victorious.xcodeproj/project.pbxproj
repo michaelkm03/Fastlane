@@ -430,6 +430,9 @@
 		79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */; };
 		79CFD3CD1BF2A105004F70D9 /* FlagConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */; };
 		79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */; };
+		79CFD3D11BF2A722004F70D9 /* ConversationWithUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3D01BF2A722004F70D9 /* ConversationWithUserRequestTests.swift */; };
+		79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */; };
+		79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */; };
 		79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081A11BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json */; };
 		79D081A41BF155BF00E8A0C5 /* ConversationListRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */; };
 		79D081A61BF15B9E00E8A0C5 /* ConversationListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */; };
@@ -2191,6 +2194,9 @@
 		79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkConversationReadRequest.swift; sourceTree = "<group>"; };
 		79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagConversationRequestTests.swift; sourceTree = "<group>"; };
 		79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagConversationRequest.swift; sourceTree = "<group>"; };
+		79CFD3D01BF2A722004F70D9 /* ConversationWithUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationWithUserRequestTests.swift; sourceTree = "<group>"; };
+		79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationWithUserRequest.swift; sourceTree = "<group>"; };
+		79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ConversationWithUserFoundResponse.json; sourceTree = "<group>"; };
 		79D081A11BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UnreadMessageCountResponse.json; sourceTree = "<group>"; };
 		79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRequestTests.swift; sourceTree = "<group>"; };
 		79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ConversationListResponse.json; sourceTree = "<group>"; };
@@ -4622,12 +4628,18 @@
 			isa = PBXGroup;
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
+				79D081A71BF15CD200E8A0C5 /* ConversationListRequest.swift */,
+				79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */,
+				79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */,
+				79D081AB1BF17EC300E8A0C5 /* DateFormat.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
+				79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
 				C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */,
 				C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
+				79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
@@ -4635,16 +4647,11 @@
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
-				79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */,
 				C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */,
+				79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
-				79D081A71BF15CD200E8A0C5 /* ConversationListRequest.swift */,
-				79D081AB1BF17EC300E8A0C5 /* DateFormat.swift */,
-				79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */,
-				79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */,
-				79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -4655,21 +4662,22 @@
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
 				79D081A31BF155BF00E8A0C5 /* ConversationListRequestTests.swift */,
 				79D081B31BF19A2100E8A0C5 /* ConversationRequestTests.swift */,
+				79CFD3D01BF2A722004F70D9 /* ConversationWithUserRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
+				79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */,
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
+				79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */,
 				03314F461BE40F0100EE74FD /* Models */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
-				79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */,
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
-				79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */,
-				79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */,
+				79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
@@ -4687,23 +4695,24 @@
 		03314F4A1BE40F0100EE74FD /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */,
-				79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */,
-				79D9FC531BF27FF400445D2D /* MinDataConverationResponse.json */,
-				79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */,
-				79D081AF1BF192C300E8A0C5 /* NoConversationsConversationListResponse.json */,
-				79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */,
-				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
+				79D081A51BF15B9E00E8A0C5 /* ConversationListResponse.json */,
+				79D081B71BF19EE100E8A0C5 /* ConversationResponse.json */,
+				79CFD3D41BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json */,
 				C3209CAB1BF15ABD00EA229D /* FollowingHashtagsResponse.json */,
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
+				79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */,
+				79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */,
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
+				79D9FC531BF27FF400445D2D /* MinDataConverationResponse.json */,
+				79D081AF1BF192C300E8A0C5 /* NoConversationsConversationListResponse.json */,
+				79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
-				79D081A11BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json */,
 				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
+				79D081A11BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
 			);
 			path = "Test Data";
@@ -4712,12 +4721,12 @@
 		03314F5A1BE40F3200EE74FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
-				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
-				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -8764,6 +8773,7 @@
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
 				79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */,
+				79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */,
 				79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */,
 				79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */,
 				79D081A61BF15B9E00E8A0C5 /* ConversationListResponse.json in Resources */,
@@ -9458,6 +9468,7 @@
 				79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */,
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79D081AC1BF17EC300E8A0C5 /* DateFormat.swift in Sources */,
+				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
@@ -9481,6 +9492,7 @@
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
 				C3209CB01BF163F300EA229D /* HashtagSearchResponseTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
+				79CFD3D11BF2A722004F70D9 /* ConversationWithUserRequestTests.swift in Sources */,
 				79D081B41BF19A2100E8A0C5 /* ConversationRequestTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,

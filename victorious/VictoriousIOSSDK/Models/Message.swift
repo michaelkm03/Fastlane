@@ -11,7 +11,7 @@ import SwiftyJSON
 
 public struct Message {
     public let messageID: Int64
-    public let sender: User
+    public let sender: User?
     public let text: String?
     public let isRead: Bool?
     public let postedAt: NSDate?
@@ -27,15 +27,14 @@ extension Message {
 
         // Parse Required Fields
         if let messageIDString = json["message_id"].string,
-           let messageIDNumber = Int64(messageIDString),
-           let sender = User(json: json["sender_user"]) {
+           let messageIDNumber = Int64(messageIDString) {
             self.messageID = messageIDNumber
-            self.sender = sender
         } else {
             return nil
         }
         
         // Parse Optionsl Fields independently
+        self.sender = User(json: json["sender_user"])
         self.text = json["text"].string
         if let isReadNumber = json["is_read"].int {
             self.isRead = Bool(isReadNumber)
