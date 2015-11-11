@@ -44,7 +44,7 @@ class FlagRequestTests: XCTestCase {
     }
     
     func testFlaggingMessage() {
-        let mockMessageID: Int64 = 101
+        let mockMessageID: Int64 = 10001
         let flagRequest = FlagRequest(messageID: mockMessageID)
         let urlRequest = flagRequest.urlRequest
         

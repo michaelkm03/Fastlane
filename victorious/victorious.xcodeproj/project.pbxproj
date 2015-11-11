@@ -4599,6 +4599,7 @@
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
+				6782EA881BF2DC8D000C7C0D /* FlagRequest.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
 				C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */,
 				C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */,
@@ -4616,7 +4617,6 @@
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
-				6782EA881BF2DC8D000C7C0D /* FlagRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -4626,6 +4626,7 @@
 			children = (
 				03314F431BE40F0100EE74FD /* AccountCreateRequestTests.swift */,
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
+				6782EA8A1BF2DF50000C7C0D /* FlagRequestTests.swift */,
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
@@ -4638,7 +4639,6 @@
 				6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
-				6782EA8A1BF2DF50000C7C0D /* FlagRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
