@@ -26,6 +26,7 @@ public enum StreamContentType: String {
     case Poll           = "poll"
     case Text           = "text"
     case Content        = "content"
+    case Link           = "link"
 }
 
 public protocol StreamItemType {
@@ -33,4 +34,6 @@ public protocol StreamItemType {
     var previewImagesObject: AnyObject? { get }
     var previewTextPostAsset: String? { get }
     var previewImageAssets: [ImageAsset] { get }
+    var type: StreamContentType { get }
+    var subtype: StreamContentType { get }
 }

@@ -10,18 +10,21 @@ import Foundation
 import SwiftyJSON
 
 public struct Stream: StreamItemType {
-    public let remoteID: String
+    public let streamID: String
     public let name: String
     public let title: String?
     public let postCount: Int
     public let streamUrl: String?
     public let items: [StreamItemType]
-    public let type: StreamContentType
-    public let subtype: StreamContentType
     public let streamContentType: StreamContentType?
     
     // MARK: - StreamItemType
     
+    public var remoteID: String {
+        return self.streamID
+    }
+    public let type: StreamContentType
+    public let subtype: StreamContentType
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
     public let previewImageAssets: [ImageAsset]
@@ -29,13 +32,13 @@ public struct Stream: StreamItemType {
 
 extension Stream {
     public init?(json: JSON) {
-        guard let remoteID          = json["id"].string,
+        guard let streamID          = json["id"].string,
             let type                = StreamContentType(rawValue: json["type"].string ?? "" ),
             let subtype             = StreamContentType(rawValue: json["subtype"].string ?? "" ),
             let streamContentType   = StreamContentType(rawValue: json["stream_content_type"].string ?? "") else {
                 return nil
         }
-        self.remoteID               = remoteID
+        self.streamID               = streamID
         self.type                   = type
         self.subtype                = subtype
         self.streamContentType      = streamContentType

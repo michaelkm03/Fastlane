@@ -22,6 +22,7 @@ extension Sequence {
         case OwnerVideoRepost   = "owner_video_repost"
         case OwnerMemeRepost    = "owner_meme_repost"
         case OwnerQuoteRepost   = "owner_secret_repost"
+        case OwnerAnnouncement  = "owner_announcement"
         
         case UGCPoll            = "ugc_poll"
         case UGCText            = "ugc_text"
