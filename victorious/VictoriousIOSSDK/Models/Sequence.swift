@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Sequence: StreamItemType {
-    public let remoteID: String
+    public let sequenceID: Int64
     public let headline: String?
     public let name: String
     public let category: Category
@@ -46,13 +46,14 @@ public struct Sequence: StreamItemType {
     
     // MARK: - StreamItemType
     
+    public var remoteID: String {
+        return String(self.sequenceID)
+    }
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
-    public let streamContentType: StreamContentType?
-    public let type: StreamContentType?
-    public let subtype: StreamContentType?
     public let previewImageAssets: [ImageAsset]
-    public let streams: [Stream]
+    public let type: StreamContentType
+    public let subtype: StreamContentType
 }
 
 extension Sequence {
@@ -62,16 +63,20 @@ extension Sequence {
         
         // MARK: - Required data
         
-        guard let category      = Category(rawValue: json["category"].string ?? ""),
-            let remoteID        = json["id"].string,
+        guard let category      = Category(rawValue: json["category"].stringValue),
+            let sequenceID      = Int64(json["id"].stringValue),
             let user            = User(json: json["user"]),
-            let releasedAt      = dateFormatter.dateFromString(json["released_at"].string ?? "") else {
-            return nil
+            let type            = StreamContentType(rawValue: json["type"].stringValue),
+            let subtype         = StreamContentType(rawValue: json["subtype"].stringValue),
+            let releasedAt      = dateFormatter.dateFromString(json["released_at"].stringValue) else {
+                return nil
         }
         self.category           = category
-        self.remoteID           = remoteID
+        self.sequenceID         = sequenceID
         self.releasedAt         = releasedAt
         self.user               = user
+        self.type               = type
+        self.subtype            = subtype
     
         // MARK: - Optional data
         
@@ -89,7 +94,7 @@ extension Sequence {
         memeCount               = json["sequence_counts"]["memes"].int ?? 0
         repostCount             = json["sequence_counts"]["reposts"].int ?? 0
         likeCount               = json["sequence_counts"]["likes"].int ?? 0
-        previewType             = AssetType(rawValue:json["preview"]["type"].string ?? "")
+        previewType             = AssetType(rawValue:json["preview"]["type"].stringValue)
         previewData             = json["preview.data"].object
         hasReposted             = json["has_reposted"].bool ?? false
         isGifStyle              = json["is_gif_style"].bool ?? false
@@ -110,9 +115,5 @@ extension Sequence {
         previewImagesObject     = json["preview_image"].object
         previewTextPostAsset    = json["preview"].string
         previewImageAssets      = (json["preview"]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        streams                 = (json["streams"].array ?? []).flatMap { Stream(json: $0) }
-        streamContentType       = StreamContentType(rawValue: json["stream_content_type"].string ?? "")
-        type                    = StreamContentType(rawValue: json["type"].string ?? "" )
-        subtype                 = StreamContentType(rawValue: json["subtype"].string ?? "")
     }
 }

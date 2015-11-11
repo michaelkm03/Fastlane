@@ -9,13 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-public enum MimeType: String {
-    case JPG = "image/jpeg"
-    case M3U8 = "application/x-mpegURL"
-    case MP4 = "video/mp4"
-    case PNG = "image/png"
-}
-
 public enum AssetType: String {
     case Media = "media"
     case Path = "path"
@@ -31,7 +24,7 @@ public struct Asset {
     public let data: String
     public let duration: Double
     public let loop: Bool
-    public let mimeType: MimeType?
+    public let mimeType: String?
     public let playerControlsDisabled: Bool
     public let remoteContentID: String?
     public let remotePlayback: Bool
@@ -57,7 +50,7 @@ extension Asset {
         backgroundImageUrl      = json["background_image"].string
         duration                = json["duration"].double ?? 0.0
         loop                    = json["loop"].bool ?? false
-        mimeType                = MimeType(rawValue: json["mime_type"].string ?? "")
+        mimeType                = json["mime_type"].string
         playerControlsDisabled  = json["player_controls_disabled"].bool ?? false
         remoteContentID         = json["remote_content_id"].string
         remotePlayback          = json["remote_playback"].bool ?? false

@@ -26,14 +26,14 @@ public enum StreamContentType: String {
     case Poll           = "poll"
     case Text           = "text"
     case Content        = "content"
+    case Link           = "link"
 }
 
 public protocol StreamItemType {
     var remoteID: String { get }
     var previewImagesObject: AnyObject? { get }
     var previewTextPostAsset: String? { get }
-    var streamContentType: StreamContentType? { get }
-    var type: StreamContentType? { get }
-    var subtype: StreamContentType? { get }
     var previewImageAssets: [ImageAsset] { get }
+    var type: StreamContentType { get }
+    var subtype: StreamContentType { get }
 }

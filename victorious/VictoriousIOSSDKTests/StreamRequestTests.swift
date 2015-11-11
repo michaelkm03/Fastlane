@@ -12,25 +12,44 @@ import XCTest
 
 class StreamRequestTests: XCTestCase {
     
-    let apiPath = "/api/sample/stream"
+    let streamAPIPath = "http://dev.getvictorious.com/api/sequence/feed/following/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
     
-    func testRequest() {
+    let streamWithSequenceAPIPath = "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+    
+    func testSimpleStreamRequest() {
         
-        var request: StreamRequest
-        
-        request = StreamRequest(apiPath: apiPath)
-        XCTAssertEqual( request.paginator.pageNumber, 1 )
-        XCTAssertEqual( request.paginator.itemsPerPage, 15 )
-        XCTAssertEqual( request.urlRequest.URL!.absoluteString, apiPath + "/1/15" )
+        var request = StreamRequest( apiPath: streamAPIPath )!
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/feed/following/1/15" )
         
         let pageNumber = 2
         let itemsPerPage = 20
-        request = StreamRequest(apiPath: apiPath, pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        XCTAssertEqual( request.paginator.pageNumber, pageNumber )
-        XCTAssertEqual( request.paginator.itemsPerPage, itemsPerPage )
+        request = StreamRequest(apiPath: streamAPIPath, sequenceID: nil, pageNumber: pageNumber, itemsPerPage: itemsPerPage)!
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/feed/following/\(pageNumber)/\(itemsPerPage)" )
+    }
+    
+    func testComplexStreamRequest() {
         
-        let requestPath = request.urlRequest.URL!.absoluteString
-        XCTAssertEqual( requestPath, apiPath + "/\(pageNumber)/\(itemsPerPage)" )
+        let sequenceID = "321321"
+        var request = StreamRequest( apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID )!
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/1/15" )
+        
+        let pageNumber = 2
+        let itemsPerPage = 20
+        request = StreamRequest(apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)!
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString,  "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/\(pageNumber)/\(itemsPerPage)" )
+    }
+    
+    func testInvalidStreamRequest() {
+        
+        // Test a missing sequenceID with URL that has sequence ID macro
+        let sequenceID = "321321"
+        var request = StreamRequest( apiPath: streamWithSequenceAPIPath )
+        XCTAssertNil( request )
+        
+        // Test an unknown macro that will not be replaced
+        let extraMacroPath = "%%UNKNOWN_MACRO%%"
+        request = StreamRequest(apiPath: extraMacroPath, sequenceID: sequenceID)
+        XCTAssertNil( request )
     }
     
     func testParseResponse() {
@@ -41,7 +60,7 @@ class StreamRequestTests: XCTestCase {
                 return
         }
         
-        var request = StreamRequest(apiPath: apiPath)
+        var request = StreamRequest(apiPath: streamAPIPath)!
         do {
             var output = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertNotNil( output.results )
