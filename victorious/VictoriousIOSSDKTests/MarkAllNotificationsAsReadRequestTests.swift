@@ -14,5 +14,6 @@ class MarkAllNotificationsAsReadRequestTests: XCTestCase {
     func testRequest() {
         let request = MarkAllNotificationsAsReadRequest()
         XCTAssertEqual(request.urlRequest.URL?.absoluteString, "/api/notification/mark_all_notifications_read")
+        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
     }
 }

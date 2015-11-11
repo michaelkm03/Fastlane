@@ -13,6 +13,8 @@ public struct MarkAllNotificationsAsReadRequest: RequestType {
     public let urlRequest: NSURLRequest
     
     public init() {
-        urlRequest = NSURLRequest(URL: NSURL(string: "/api/notification/mark_all_notifications_read")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/notification/mark_all_notifications_read")!)
+        request.HTTPMethod = "POST"
+        urlRequest = request
     }
 }
