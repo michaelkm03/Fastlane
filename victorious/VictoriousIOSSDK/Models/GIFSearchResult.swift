@@ -18,7 +18,7 @@ public struct GIFSearchResult {
     public let height: Int
     public let thumbnailURL: String?
     public let thumbnailStillURL: String
-    public let remoteID: String?
+    public let remoteID: String
 }
 
 extension GIFSearchResult {
@@ -28,7 +28,8 @@ extension GIFSearchResult {
             let mp4URLString = json["mp4_url"].string,
             let widthNumber = json["width"].int,
             let heightNumber = json["height"].int,
-            let thumbnailStillURLString = json["thumbnail_still"].string else {
+            let thumbnailStillURLString = json["thumbnail_still"].string,
+            let remoteIDString = json["remote_id"].string else {
                 return nil
         }
         
@@ -37,10 +38,10 @@ extension GIFSearchResult {
         width = widthNumber
         height = heightNumber
         thumbnailStillURL = thumbnailStillURLString
+        remoteID = remoteIDString
         gifSize = json["gif_size"].int64
         mp4Size = json["mp4_size"].int64
         frames = json["frames"].int
         thumbnailURL = json["thumbnail"].string
-        remoteID = json["remote_id"].string
     }
 }

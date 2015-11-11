@@ -23,7 +23,7 @@ class GIFSearchRequestTests: XCTestCase {
         
         do {
             let searchGIFs = GIFSearchRequest(searchTerm: "lol")
-            let (results, _, previousPage) = try searchGIFs.parseResponse(NSURLResponse(), toRequest: searchGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let (results, nextPage, previousPage) = try searchGIFs.parseResponse(NSURLResponse(), toRequest: searchGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 15)
             XCTAssertEqual(results[0].gifURL, "https://media2.giphy.com/media/KxufLEowgK7Xa/giphy.gif")
             XCTAssertEqual(results[0].mp4URL, "https://media2.giphy.com/media/KxufLEowgK7Xa/giphy.mp4")
@@ -31,6 +31,8 @@ class GIFSearchRequestTests: XCTestCase {
             XCTAssertEqual(results[1].mp4URL, "https://media1.giphy.com/media/10I5e2yNnaozOo/giphy.mp4")
             
             XCTAssertNil(previousPage, "There should be no page before page 1")
+            XCTAssertNotNil(nextPage, "There should be a next page")
+            
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
