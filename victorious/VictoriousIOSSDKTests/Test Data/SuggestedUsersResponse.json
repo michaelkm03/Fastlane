@@ -2700,63 +2700,6 @@
                 "share_url": "http:\/\/share-dev.victorious.com\/#shares\/730634e4e67b95affeea41e589153561"
             }]
         }, {
-            "id": "11767",
-            "type": "sequence",
-            "subtype": null,
-            "is_ugc": false,
-            "created_by": "708",
-            "name": "AND-611",
-            "description": null,
-            "permissions": 3742,
-            "preview": {
-                "type": "media",
-                "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/a038080d47d00b4d8446c432895af072\/640x640.png",
-                "assets": [{
-                    "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/a038080d47d00b4d8446c432895af072\/640x640.png",
-                    "type": "image\/png",
-                    "width": 640,
-                    "height": 640
-                }]
-            },
-            "status": "public",
-            "am_liking": false,
-            "category": "",
-            "name_embedded_in_content": false,
-            "is_remix": false,
-            "is_gif_style": false,
-            "is_repost": false,
-            "has_reposted": false,
-            "released_at": "2015-02-14 15:18:08",
-            "display_order": null,
-            "expires_at": "2015-02-14 23:59:59",
-            "sequence_counts": {
-                "reposted_by_following": 0
-            },
-            "engagements": [],
-            "recent_comments": [],
-            "created_at": "2015-02-14 15:18:08",
-            "is_paid": false,
-            "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/a038080d47d00b4d8446c432895af072\/640x640.png",
-            "tracking": {
-                "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=11767&from_rule=0"],
-                "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=11767&from_rule=0"],
-                "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=11767&from_rule=0"],
-                "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=11767&from_rule=0&share_dest=%%SHARE_DEST%%"]
-            },
-            "nodes": [{
-                "node_id": "3838",
-                "display_order": 0,
-                "assets": [{
-                    "node_id": "3838",
-                    "asset_id": "3600",
-                    "display_order": 0,
-                    "type": "path",
-                    "data": "http:\/\/www.getvictorious.com"
-                }],
-                "interactions": [],
-                "share_url": "http:\/\/share-dev.victorious.com\/#shares\/dfe66f467e99dca46f00d64d098fde78"
-            }]
-        }, {
             "id": "11766",
             "type": "sequence",
             "subtype": "image",
