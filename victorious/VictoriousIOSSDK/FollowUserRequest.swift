@@ -33,10 +33,10 @@ public struct FollowUserRequest: RequestType {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int64 {
         
-        guard let followedUserID = responseJSON["payload"]["follow_relationship_id"].int64 else {
+        guard let followRelationshipID = responseJSON["payload"]["follow_relationship_id"].int64 else {
             throw ResponseParsingError()
         }
         
-        return followedUserID
+        return followRelationshipID
     }
 }
