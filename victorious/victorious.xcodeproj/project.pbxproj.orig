@@ -8744,7 +8744,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< Updated upstream
+=======
+				C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */,
 				C32D8BDE1BF2E06300AB5085 /* ImageSearchResponse.json in Resources */,
+				C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */,
+>>>>>>> Stashed changes
 				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
