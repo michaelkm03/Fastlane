@@ -18,6 +18,5 @@ class MarkConversationReadRequestTests: XCTestCase {
         XCTAssertEqual(markConversationReadRequest.urlRequest.HTTPMethod, "POST")
         let expectedPostValues = ["conversation_id":3797].vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
         XCTAssertEqual(markConversationReadRequest.urlRequest.HTTPBody, expectedPostValues)
-    }
-    
+    }    
 }

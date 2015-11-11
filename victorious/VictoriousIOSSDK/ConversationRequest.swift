@@ -9,14 +9,16 @@
 import Foundation
 import SwiftyJSON
 
+// A RequestType for fetching pages of messages for a particular conversation.
 public struct ConversationRequest: RequestType {
     
-    /// Likers will be retrieved for the sequence with this ID
+    /// The conversation for this request
     public let conversationID: Int64
     private static let basePath = "/api/message/conversation/"
     private static let descPathParameter = "desc"
     private let paginator: StandardPaginator
     
+    // Masks the paginator
     public init(conversationID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 10) {
         self.init(conversationID: conversationID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
     }

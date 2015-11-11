@@ -22,5 +22,4 @@ public struct MarkConversationReadRequest : RequestType {
         urlRequest.vsdk_addURLEncodedFormPost(["conversation_id":String(conversationID)])
         return urlRequest
     }
-
 }

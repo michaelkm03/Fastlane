@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-// Represents a request to the backend to determine whether or not the currenlty logged in user has a p
+// A request to the backend to determine whether or not the currenlty logged in user has a p
 public struct ConversationWithUserRequest: RequestType {
 
     public let userID: Int64
@@ -27,14 +27,11 @@ public struct ConversationWithUserRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int64, messages: [Message]) {
-        
         guard let messagesArrayJSON = responseJSON["payload"]["messages"].array,
               let conversationIDString = responseJSON["payload"]["conversation_id"].string,
               let conversationID = Int64(conversationIDString) else {
             throw ResponseParsingError()
         }
-        
-        
         let messages = messagesArrayJSON.flatMap{Message(json: $0)}
         
         return (conversationID, messages)

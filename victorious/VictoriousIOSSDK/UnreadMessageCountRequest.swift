@@ -9,6 +9,7 @@
 import Foundation
 import SwiftyJSON
 
+// A RequestTypes for fetching the unread message count. For this user.
 public struct UnreadMessageCountRequest: RequestType {
     
     public var urlRequest: NSURLRequest {

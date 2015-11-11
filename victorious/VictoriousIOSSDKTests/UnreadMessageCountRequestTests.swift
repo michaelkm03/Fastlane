@@ -30,6 +30,5 @@ class UnreadMessageCountRequestTests: XCTestCase {
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")
         }
-    }
-    
+    }    
 }

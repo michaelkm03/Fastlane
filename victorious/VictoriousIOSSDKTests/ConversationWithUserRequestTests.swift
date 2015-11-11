@@ -36,7 +36,5 @@ class ConversationWithUserRequestTests: XCTestCase {
         if let firstMessage = result.messages.first {
             XCTAssertEqual(firstMessage.messageID, 8768)
         }
-
     }
-
 }
