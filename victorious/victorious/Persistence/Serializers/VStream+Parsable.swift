@@ -13,11 +13,12 @@ extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel stream: Stream ) {
         remoteId        = String(stream.remoteID)
-        itemType        = stream.type?.rawValue ?? ""
-        itemSubType     = stream.subtype?.rawValue ?? ""
+        itemType        = stream.type.rawValue ?? ""
+        itemSubType     = stream.subtype.rawValue ?? ""
         name            = stream.name
         count           = stream.postCount
         
+        // TODO: Add or replace?  What about order??
         streamItems += stream.items.flatMap {
             let sequence: VSequence = self.dataStore.findOrCreateObject([ "remoteID" : String($0.remoteID) ])
             sequence.populate( fromSourceModel: $0 )

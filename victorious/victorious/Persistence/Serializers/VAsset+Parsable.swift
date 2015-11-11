@@ -18,7 +18,7 @@ extension VAsset: PersistenceParsable {
         data                    = asset.data
         duration                = asset.duration
         loop                    = asset.loop
-        mimeType                = asset.mimeType?.rawValue
+        mimeType                = asset.mimeType
         playerControlsDisabled  = asset.playerControlsDisabled
         remoteContentId         = asset.remoteContentID
         remoteId                = Int(asset.assetID)

@@ -25,14 +25,23 @@ public struct User {
     public let status: ProfileStatus
     public let location: String?
     public let tagline: String?
-    public let avatar: [ImageAsset]
+    public let previewAssets: [ImageAsset]
     public let fanLoyalty: FanLoyalty?
-    public let numberOfFollowers: Int64?
+    public let isCreator: Bool
+    public let isDirectMessagingDisabled: Bool
+    public let isFollowedByMainUser: Bool
+    public let numberOfFollowers: Int64
+    public let numberOfFollowing: Int64
+    public let profileImageURL: String
+    public let tokenUpdatedAt: NSDate?
+    public let previewImageAssets: [ImageAsset]
+    public let maxVideoUploadDuration: Int64
 }
 
 extension User {
     public init?(json: JSON) {
         let userIDFromJSON: Int64
+        let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         
         // Check for "id" as either a string or a number, because the back-end is inconsistent.
         if let userIDString = json["id"].string,
@@ -52,12 +61,21 @@ extension User {
             return nil
         }
         
-        email = json["email"].string
-        name = json["name"].string
-        location = json["profile_location"].string
-        tagline = json["profile_tagline"].string
-        fanLoyalty = FanLoyalty(json: json["fanloyalty"])
-        avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
-        numberOfFollowers = Int64(json["number_of_followers"].stringValue)
+        email                       = json["email"].string
+        name                        = json["name"].string
+        location                    = json["profile_location"].string
+        tagline                     = json["profile_tagline"].string
+        fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
+        previewAssets               = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
+        
+        isCreator                   = json["isCreator"].bool ?? false
+        isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool ?? false
+        isFollowedByMainUser        = json["am_following"].bool ?? false
+        numberOfFollowers           = Int64(json["number_of_followers"].stringValue) ?? 0
+        numberOfFollowing           = Int64(json["number_of_following"].stringValue) ?? 0
+        profileImageURL             = json["profile_image"].string ?? ""
+        tokenUpdatedAt              = dateFormatter.dateFromString(json["token_updated_at"].stringValue)
+        previewImageAssets          = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
+        maxVideoUploadDuration      = Int64(json["max_video_duration"].stringValue) ?? 0
     }
 }

@@ -99,6 +99,9 @@ extension VUserManager {
     }
     
     private func loggedInWithUser(user: User, token: String, loginType: VLoginType, objectManager: VObjectManager) -> VUser {
+        
+        // TODO: START HERE!!!
+        
         // TODO: check for existing user
         let moc = objectManager.managedObjectStore.mainQueueManagedObjectContext
         let managedUser = VUser(entity: NSEntityDescription.entityForName(VUser.entityName(), inManagedObjectContext: moc)!, insertIntoManagedObjectContext: moc)
