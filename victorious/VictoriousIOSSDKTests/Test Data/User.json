@@ -25,5 +25,11 @@
                 }]
     },
     "isCreator": true,
-    "ballistic_counts": []
+    "ballistic_counts": [],
+    "fanloyalty": {
+        "points": 2764,
+        "level": 7,
+        "progress": 24
+    },
+    "number_of_followers": "15"
 }

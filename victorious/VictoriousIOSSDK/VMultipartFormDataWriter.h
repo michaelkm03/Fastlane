@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Writes a series of fields to a file on disk in multipart/form-data format.
  This class does not attempt to encode any non-ASCII characters in field
  names, so you must limit your field names to 7-bit ASCII characters.
  */
 @interface VMultipartFormDataWriter : NSObject
-
-@property (nonatomic, readonly) NSURL *outputFileURL; ///< The file URL passed into the init method.
 
 /**
  A string used to seperate the fields in the output
@@ -34,9 +34,18 @@
 /**
  Creates a new instance of VMultipartFormDataWriter
  
+ @param stream The stream to write to. Should already be open.
+ */
+- (instancetype)initWithOutputStream:(NSOutputStream *)stream NS_DESIGNATED_INITIALIZER;
+
+/**
+ Creates a new instance of VMultipartFormDataWriter
+ 
  @param outputFileURL the file to open for writing.
  */
 - (instancetype)initWithOutputFileURL:(NSURL *)outputFileURL;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Returns a content-type header (not including the header itself, i.e. "Content-Type: ")
@@ -100,3 +109,5 @@
 - (void)closeOutputFileWithoutFinishing;
 
 @end
+
+NS_ASSUME_NONNULL_END
