@@ -1028,6 +1028,7 @@
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
 		C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */; };
 		C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */; };
+		C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
 		D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536231B17B4310049B77A /* VPromptCarouselViewController.m */; };
 		D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */; };
@@ -3219,6 +3220,7 @@
 		C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		C3E772251B4DD163005809A5 /* VTableViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewStreamFocusHelper.h; sourceTree = "<group>"; };
 		C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewStreamFocusHelper.m; sourceTree = "<group>"; };
+		C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NotificationsResponse.json; sourceTree = "<group>"; };
 		CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.debug.xcconfig"; sourceTree = "<group>"; };
 		CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.qa.xcconfig"; sourceTree = "<group>"; };
 		D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4682,6 +4684,7 @@
 				6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */,
 				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
+				C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -8737,6 +8740,7 @@
 				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
 				6731B2651BF1834700B9FFFE /* FanLoyalty.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
+				C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
 				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
