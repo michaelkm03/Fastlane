@@ -37,7 +37,7 @@ class FollowersRequestTest: XCTestCase {
     
     func testRequest() {
         let followersRequest = FollowersRequest(userID: 101, pageNumber: 102, itemsPerPage: 103)
-        XCTAssertEqual(followersRequest.urlRequest.URL?.absoluteString, "api/follow/followers_list/101/102/103")
+        XCTAssertEqual(followersRequest.urlRequest.URL?.absoluteString, "/api/follow/followers_list/101/102/103")
     }
     
     func testPreviousPage() {
@@ -50,7 +50,7 @@ class FollowersRequestTest: XCTestCase {
         do {
             let followersRequest = FollowersRequest(userID: 101, pageNumber: 2, itemsPerPage: 102)
             let (_, _, previousPage) = try followersRequest.parseResponse(NSURLResponse(), toRequest: followersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(previousPage?.urlRequest.URL?.absoluteString, "api/follow/followers_list/101/1/102")
+            XCTAssertEqual(previousPage?.urlRequest.URL?.absoluteString, "/api/follow/followers_list/101/1/102")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
@@ -66,7 +66,7 @@ class FollowersRequestTest: XCTestCase {
         do {
             let followersRequest = FollowersRequest(userID: 101, pageNumber: 1, itemsPerPage: 102)
             let (_, nextPage, _) = try followersRequest.parseResponse(NSURLResponse(), toRequest: followersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(nextPage?.urlRequest.URL?.absoluteString, "api/follow/followers_list/101/2/102")
+            XCTAssertEqual(nextPage?.urlRequest.URL?.absoluteString, "/api/follow/followers_list/101/2/102")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

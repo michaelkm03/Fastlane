@@ -26,7 +26,7 @@ public struct FollowersRequest: Pageable {
     }
     
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "api/follow/followers_list/\(userID)")!
+        let url = NSURL(string: "/api/follow/followers_list/\(userID)")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
         
