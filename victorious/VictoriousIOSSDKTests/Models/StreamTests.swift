@@ -24,9 +24,9 @@ class StreamTests: XCTestCase {
         }
         
         XCTAssertEqual( stream.remoteID, "13396" )
-        XCTAssertEqual( stream.type, .Shelf )
-        XCTAssertEqual( stream.subtype, .Marquee )
-        XCTAssertEqual( stream.streamContentType, .Sequence )
+        XCTAssertEqual( stream.type, StreamContentType.Shelf )
+        XCTAssertEqual( stream.subtype, StreamContentType.Marquee )
+        XCTAssertEqual( stream.streamContentType, StreamContentType.Sequence )
         XCTAssertEqual( stream.name, "Following Stream Marquee" )
         XCTAssertEqual( stream.title, "Marquee" )
         XCTAssertEqual( stream.postCount, 2 )
@@ -40,16 +40,13 @@ class StreamTests: XCTestCase {
     }
     
     func testDefaults() {
-        let data = "{ \"id\" : \"21321\" }".dataUsingEncoding(NSUTF8StringEncoding)!
-        guard let stream = Stream(json: JSON(data: data)) else {
-            XCTFail("Stream initializer failed" )
-            return
+        guard let url = NSBundle(forClass: self.dynamicType).URLForResource("SimpleStream", withExtension: "json" ),
+            let mockData = NSData(contentsOfURL: url),
+            let stream = Stream(json: JSON(data: mockData)) else {
+                XCTFail("Stream initializer failed" )
+                return
         }
         
-        XCTAssertEqual( stream.remoteID, "21321" )
-        XCTAssertNil( stream.type )
-        XCTAssertNil( stream.subtype )
-        XCTAssertNil( stream.streamContentType )
         XCTAssertEqual( stream.name, "" )
         XCTAssertEqual( stream.title, "" )
         XCTAssertEqual( stream.postCount, 0 )

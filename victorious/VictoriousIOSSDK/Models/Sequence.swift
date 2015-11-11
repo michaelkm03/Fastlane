@@ -48,11 +48,7 @@ public struct Sequence: StreamItemType {
     
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
-    public let streamContentType: StreamContentType?
-    public let type: StreamContentType?
-    public let subtype: StreamContentType?
     public let previewImageAssets: [ImageAsset]
-    public let streams: [Stream]
 }
 
 extension Sequence {
@@ -110,9 +106,5 @@ extension Sequence {
         previewImagesObject     = json["preview_image"].object
         previewTextPostAsset    = json["preview"].string
         previewImageAssets      = (json["preview"]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        streams                 = (json["streams"].array ?? []).flatMap { Stream(json: $0) }
-        streamContentType       = StreamContentType(rawValue: json["stream_content_type"].string ?? "")
-        type                    = StreamContentType(rawValue: json["type"].string ?? "" )
-        subtype                 = StreamContentType(rawValue: json["subtype"].string ?? "")
     }
 }
