@@ -48,4 +48,3 @@ class FollowUserRequestTests: XCTestCase {
         XCTAssertNotNil(bodyString.rangeOfString("target_user_id=\(targetUserID)"))
     }
 }
-

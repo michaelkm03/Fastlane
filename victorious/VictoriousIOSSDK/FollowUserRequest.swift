@@ -26,8 +26,8 @@ public struct FollowUserRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/follow/add")!
         let request = NSMutableURLRequest(URL: url)
-        let credentials = [ "source": screenName, "target_user_id": String(userToFollowID) ]
-        request.vsdk_addURLEncodedFormPost(credentials)
+        let params = [ "source": screenName, "target_user_id": String(userToFollowID) ]
+        request.vsdk_addURLEncodedFormPost(params)
         return request
     }
     
