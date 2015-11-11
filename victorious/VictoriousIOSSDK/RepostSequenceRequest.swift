@@ -1,5 +1,5 @@
 //
-//  LikeSequenceRequest.swift
+//  RepostSequenceRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/10/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct LikeSequenceRequest: RequestType {
+public struct RepostSequenceRequest: RequestType {
     private let sequenceID: Int64
     
     public init (sequenceID: Int64) {
@@ -16,9 +16,9 @@ public struct LikeSequenceRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/sequence/like")!)
+        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/repost/create")!)
         urlRequest.HTTPMethod = "POST"
-        let likedSequenceInfo = [ "sequence_id": sequenceID ]
+        let likedSequenceInfo = [ "parent_node_id": sequenceID ]
         urlRequest.vsdk_addURLEncodedFormPost(likedSequenceInfo)
         
         return urlRequest
