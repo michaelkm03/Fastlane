@@ -26,6 +26,8 @@ public struct User {
     public let location: String?
     public let tagline: String?
     public let avatar: [ImageAsset]
+    public let fanLoyalty: FanLoyalty?
+    public let numberOfFollowers: Int64?
 }
 
 extension User {
@@ -54,6 +56,8 @@ extension User {
         name = json["name"].string
         location = json["profile_location"].string
         tagline = json["profile_tagline"].string
+        fanLoyalty = FanLoyalty(json: json["fanloyalty"])
         avatar = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
+        numberOfFollowers = Int64(json["number_of_followers"].stringValue)
     }
 }
