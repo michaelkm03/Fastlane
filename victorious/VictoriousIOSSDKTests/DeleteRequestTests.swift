@@ -10,12 +10,8 @@ import XCTest
 import VictoriousIOSSDK
 
 class DeleteRequestTests: XCTestCase {
+    
     func testDeletingSequence() {
-        /*
-        /api/sequence/remove
-        sequence_id: 12345
-        */
-        
         let mockSequenceID: Int64 = 101
         let deleteRequest = DeleteRequest(sequenceID: mockSequenceID)
         let urlRequest = deleteRequest.urlRequest
@@ -32,11 +28,6 @@ class DeleteRequestTests: XCTestCase {
     }
     
     func testDeletingComment() {
-        /*
-        /api/message/remove
-        comment_id: 28481
-        removal_reason: (blank)
-        */
         let mockCommentID: Int64 = 1001
         let deleteRequest = DeleteRequest(commentID: mockCommentID)
         let urlRequest = deleteRequest.urlRequest
@@ -53,10 +44,6 @@ class DeleteRequestTests: XCTestCase {
     }
     
     func testDeleteConversation() {
-        /*
-        /api/message/delete_conversation
-        conversation_id: 3289
-        */
         let mockConversationID: Int64 = 10001
         let deleteRequest = DeleteRequest(conversationID: mockConversationID)
         let urlRequest = deleteRequest.urlRequest
