@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMultipartFormDataWriter.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskCreator.h"
+
+@import VictoriousIOSSDK;
 
 @implementation VUploadTaskCreator
 
