@@ -9,7 +9,7 @@
 import Foundation
 
 public struct LikeSequenceRequest: RequestType {
-    private let sequenceID: Int64
+    public let sequenceID: Int64
     
     public init (sequenceID: Int64) {
         self.sequenceID = sequenceID
