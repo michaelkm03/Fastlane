@@ -54,7 +54,6 @@ public struct DeleteRequest: RequestType {
         }
         
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
-        request.HTTPMethod = "POST"
         request.vsdk_addURLEncodedFormPost(contentDeletedInfo)
         
         return request
