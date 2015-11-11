@@ -37,6 +37,7 @@ public struct FlagRequest: RequestType {
     public var urlRequest: NSURLRequest {
         var contentFlaggedInfo: [String: Int64]
         var urlString: String
+        
         switch targetContent {
         case let .Sequence(sequenceID):
             urlString = "/api/sequence/flag"
