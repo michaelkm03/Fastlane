@@ -15,7 +15,7 @@ public struct GIFSearchRequest: Pageable {
     // A term to use when searching for GIFs
     public let searchTerm: String
     
-    public var urlRequest: NSURLRequest
+    public let urlRequest: NSURLRequest
     
     private let paginator: StandardPaginator
     
