@@ -403,6 +403,8 @@
 		676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */; };
 		676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */; };
 		6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */; };
+		6782EA891BF2DC8D000C7C0D /* FlagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA881BF2DC8D000C7C0D /* FlagRequest.swift */; };
+		6782EA8B1BF2DF50000C7C0D /* FlagRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA8A1BF2DF50000C7C0D /* FlagRequestTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
@@ -2141,6 +2143,8 @@
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
 		6781CE401BE44ABB00370679 /* victoriousTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victoriousTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		6782EA881BF2DC8D000C7C0D /* FlagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagRequest.swift; sourceTree = "<group>"; };
+		6782EA8A1BF2DF50000C7C0D /* FlagRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagRequestTests.swift; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
@@ -4612,6 +4616,7 @@
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
+				6782EA881BF2DC8D000C7C0D /* FlagRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -4633,6 +4638,7 @@
 				6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
+				6782EA8A1BF2DF50000C7C0D /* FlagRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
@@ -9403,6 +9409,7 @@
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
+				6782EA891BF2DC8D000C7C0D /* FlagRequest.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				6759555B1BF145B000D40A87 /* SuggestedUsersRequest.swift in Sources */,
@@ -9425,6 +9432,7 @@
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
 				C3209CB01BF163F300EA229D /* HashtagSearchResponseTests.swift in Sources */,
+				6782EA8B1BF2DF50000C7C0D /* FlagRequestTests.swift in Sources */,
 				03BC6FB61BE84A1000CFCBEE /* SequenceLikersRequestTests.swift in Sources */,
 				6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
