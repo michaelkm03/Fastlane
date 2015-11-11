@@ -51,7 +51,6 @@ public struct FlagRequest: RequestType {
         }
         
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!)
-        request.HTTPMethod = "POST"
         request.vsdk_addURLEncodedFormPost(contentFlaggedInfo)
         
         return request
