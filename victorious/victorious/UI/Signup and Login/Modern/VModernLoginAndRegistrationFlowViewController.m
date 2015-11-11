@@ -360,8 +360,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    if ( [FBSDKAccessToken currentAccessToken] == nil ||
-        ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[[FBSDKAccessToken currentAccessToken] permissions]] )
+    FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
+    if ( currentToken == nil ||
+        ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[currentToken permissions]] ||
+        [currentToken.expirationDate timeIntervalSinceNow] <= 0)
     {
         self.actionsDisabled = YES;
         self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -433,14 +435,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)handleFacebookLoginError:(NSError *)error
 {
     [self dismissLoadingScreen];
-    
-    if ( ![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled )
-    {
-        UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                                       message:NSLocalizedString(@"FacebookLoginFailed", @"")
-                                                                          andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
+    UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                                   message:NSLocalizedString(@"FacebookLoginFailed", @"")
+                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+    [self presentViewController:alertController animated:YES completion:nil];
+    [[[FBSDKLoginManager alloc] init] logOut];
 }
 
 - (void)loginWithEmail:(NSString *)email

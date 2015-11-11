@@ -39,10 +39,22 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
     NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
     
-    if ( loginType == VLastLoginTypeFacebook && [FBSDKAccessToken currentAccessToken] != nil )
+    if ( loginType == VLastLoginTypeFacebook )
     {
-        [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
-        return;
+        FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
+        if ( currentToken != nil && [currentToken.expirationDate timeIntervalSinceNow] > 0 )
+        {
+            [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
+        }
+        else
+        {
+            // Current access token is invalid, logout to clear
+            [[[FBSDKLoginManager alloc] init] logOut];
+            if ( errorBlock != nil )
+            {
+                errorBlock ( nil, NO );
+            }
+        }
     }
     else if ( loginType == VLastLoginTypeTwitter )
     {
