@@ -21,7 +21,16 @@ protocol DataStoreObject : class {
 extension NSManagedObject: DataStoreObject {
     
     class func dataStoreEntityName() -> String {
-        return (NSStringFromClass(self) as NSString).pathExtension
+        let className = (NSStringFromClass(self) as NSString)
+        if className.pathExtension.characters.count > 0 {
+            return className.pathExtension
+        }
+        else if className.substringToIndex(1) == "V" {
+            return className.substringFromIndex(1)
+        }
+        else {
+            return className as String
+        }
     }
     
     var dataStore: DataStore {

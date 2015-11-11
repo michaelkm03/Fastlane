@@ -172,7 +172,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     self.isLoading = YES;
     
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
-    
+   
     self.loginOperation = [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     

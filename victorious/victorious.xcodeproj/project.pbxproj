@@ -761,7 +761,7 @@
 		A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */; };
 		A789F7361BF11F4900F5C87B /* NSSet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */; };
 		A789F7371BF11F4900F5C87B /* Set+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7281BF11F4900F5C87B /* Set+Operators.swift */; };
-		A789F73B1BF1207F00F5C87B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73A1BF1207F00F5C87B /* Persistence.swift */; };
+		A789F73B1BF1207F00F5C87B /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73A1BF1207F00F5C87B /* PersistentStore.swift */; };
 		A789F74C1BF1211D00F5C87B /* ContextDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */; };
 		A789F74E1BF1211D00F5C87B /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
 		A789F7541BF1211D00F5C87B /* CoreDataPathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74A1BF1211D00F5C87B /* CoreDataPathHelper.swift */; };
@@ -2791,7 +2791,7 @@
 		A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extensions.swift"; sourceTree = "<group>"; };
 		A789F7281BF11F4900F5C87B /* Set+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+Operators.swift"; sourceTree = "<group>"; };
-		A789F73A1BF1207F00F5C87B /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		A789F73A1BF1207F00F5C87B /* PersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
 		A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStoreTests.swift; sourceTree = "<group>"; };
 		A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
 		A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.0-1.1.xcmappingmodel"; sourceTree = "<group>"; };
@@ -4755,8 +4755,6 @@
 			children = (
 				A7EF1BC11BF2754D00D429DE /* Answer.swift */,
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
-				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
-				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				A7EF1BC31BF2754D00D429DE /* Interaction.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
 				A7EF1BC51BF2754D00D429DE /* Sequence.Category.swift */,
@@ -6512,7 +6510,7 @@
 				A789F71A1BF11F4900F5C87B /* Models */,
 				A789F71D1BF11F4900F5C87B /* Parsers */,
 				A789F7251BF11F4900F5C87B /* Utils */,
-				A789F73A1BF1207F00F5C87B /* Persistence.swift */,
+				A789F73A1BF1207F00F5C87B /* PersistentStore.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -9995,7 +9993,7 @@
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
-				A789F73B1BF1207F00F5C87B /* Persistence.swift in Sources */,
+				A789F73B1BF1207F00F5C87B /* PersistentStore.swift in Sources */,
 				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,

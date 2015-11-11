@@ -50,5 +50,6 @@
 @dynamic previewAssets;
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
+@dynamic loginType;
 
 @end
