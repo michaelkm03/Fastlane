@@ -34,32 +34,3 @@ public struct StandardPaginator {
         return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
     }
 }
-
-enum StreamURLMacros: String {
-    
-    case PageNumber     = "%%PAGE_NUM%%"
-    case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
-    case SequenceID     = "%%SEQUENCE_ID%%"
-    
-    static var all: [StreamURLMacros] {
-        return [ .PageNumber, .ItemsPerPage, .SequenceID ]
-    }
-    
-    static func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
-        var apiPathWithMacrosReplaced = apiPath
-        for macro in StreamURLMacros.all where apiPath.containsString(macro.rawValue) {
-            switch macro {
-            case .PageNumber:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(pageNumber))
-            case .ItemsPerPage:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(itemsPerPage))
-            case .SequenceID:
-                guard let sequenceID = sequenceID else {
-                    return nil
-                }
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: sequenceID)
-            }
-        }
-        return NSURL(string: apiPathWithMacrosReplaced)
-    }
-}
