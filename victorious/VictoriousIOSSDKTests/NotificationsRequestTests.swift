@@ -38,4 +38,3 @@ class NotificationsRequestTests: XCTestCase {
         XCTAssertEqual(notifications.urlRequest.URL?.absoluteString, "/api/notification/notifications_list/1/100")
     }
 }
-
