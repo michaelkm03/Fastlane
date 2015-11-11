@@ -1029,6 +1029,9 @@
 		C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */; };
 		C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */; };
 		C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */; };
+		C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */; };
+		C3E7C0EB1BF3CCF700AFE545 /* Notification.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0EA1BF3CCF700AFE545 /* Notification.json */; };
+		C3E7C0ED1BF3E1BD00AFE545 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EC1BF3E1BD00AFE545 /* Notification.swift */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
 		D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536231B17B4310049B77A /* VPromptCarouselViewController.m */; };
 		D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */; };
@@ -3221,6 +3224,9 @@
 		C3E772251B4DD163005809A5 /* VTableViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewStreamFocusHelper.h; sourceTree = "<group>"; };
 		C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NotificationsResponse.json; sourceTree = "<group>"; };
+		C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
+		C3E7C0EA1BF3CCF700AFE545 /* Notification.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Notification.json; sourceTree = "<group>"; };
+		C3E7C0EC1BF3E1BD00AFE545 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.debug.xcconfig"; sourceTree = "<group>"; };
 		CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.qa.xcconfig"; sourceTree = "<group>"; };
 		D11EA7F4FF10545C429DE4B6 /* Pods-VictoriousIOSSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4663,6 +4669,7 @@
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
+				C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
 			);
 			path = Models;
@@ -4679,12 +4686,13 @@
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
+				C3E7C0EA1BF3CCF700AFE545 /* Notification.json */,
+				C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
 				6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */,
 				C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
-				C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -4695,6 +4703,7 @@
 				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				C3E7C0EC1BF3E1BD00AFE545 /* Notification.swift */,
 				6759555C1BF1553100D40A87 /* SuggestedUser.swift */,
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
@@ -8747,6 +8756,7 @@
 				679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
+				C3E7C0EB1BF3CCF700AFE545 /* Notification.json in Resources */,
 				C314E6C11BF13E3F00FB9591 /* Hashtag.json in Resources */,
 				C314E6BB1BF13C0100FB9591 /* TrendingHashtagResponse.json in Resources */,
 			);
@@ -9428,6 +9438,7 @@
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
+				C3E7C0ED1BF3E1BD00AFE545 /* Notification.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				0300AA5B1BF17C20000A121D /* VMultipartFormDataWriter.m in Sources */,
 				6759555B1BF145B000D40A87 /* SuggestedUsersRequest.swift in Sources */,
@@ -9447,6 +9458,7 @@
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
+				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
