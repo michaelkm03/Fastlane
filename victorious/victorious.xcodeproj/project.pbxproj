@@ -419,6 +419,7 @@
 		678D944A1BF42E7A009A1F93 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94491BF42E7A009A1F93 /* VoteResultTests.swift */; };
 		678D944C1BF437C0009A1F93 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944B1BF437C0009A1F93 /* Vote.swift */; };
 		678D944E1BF4399D009A1F93 /* VoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944D1BF4399D009A1F93 /* VoteTests.swift */; };
+		678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
@@ -2199,6 +2200,7 @@
 		678D94491BF42E7A009A1F93 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		678D944B1BF437C0009A1F93 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		678D944D1BF4399D009A1F93 /* VoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteTests.swift; sourceTree = "<group>"; };
+		678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultByUserRequest.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersRequest.swift; sourceTree = "<group>"; };
@@ -4706,6 +4708,7 @@
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
+				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -9529,6 +9532,7 @@
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
+				678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */,
 				A7EF1BCF1BF2754D00D429DE /* Stream.swift in Sources */,
 				A7EF1BCC1BF2754D00D429DE /* Node.swift in Sources */,
 				A7EF1BD41BF2758000D429DE /* DateFormat.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  AnswerPollActionRequestTests.swift
+//  PollAnsweringActionRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/11/15.
