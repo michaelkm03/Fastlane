@@ -31,13 +31,13 @@ class PollResultByUserRequestTests: XCTestCase {
             let pollResultRequest = PollResultByUserRequest(userID: 101)
             
             let results = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(results.count, 10)
-            XCTAssertEqual(results[0].sequenceID, 405130)
-            XCTAssertEqual(results[0].answerID, 123)
-            XCTAssertEqual(results[1].sequenceID, 420812)
-            XCTAssertEqual(results[1].answerID, 123)
-            XCTAssertEqual(results[2].sequenceID, 643629)
-            XCTAssertEqual(results[2].answerID, 1234)
+            XCTAssertEqual(results.count, 15)
+            XCTAssertEqual(results[0].sequenceID, 14609)
+            XCTAssertEqual(results[0].answerID, 744)
+            XCTAssertEqual(results[1].sequenceID, 15064)
+            XCTAssertEqual(results[1].answerID, 834)
+            XCTAssertEqual(results[2].sequenceID, 15585)
+            XCTAssertEqual(results[2].answerID, 855)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

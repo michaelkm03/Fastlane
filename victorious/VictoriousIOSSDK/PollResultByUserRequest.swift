@@ -17,10 +17,16 @@ public struct PollResultByUserRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "")!)
+        return NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Vote] {
-        return [Vote(sequenceID: 0, answerID: 0)]
+        guard let votesJSONArray = responseJSON["payload"].array else {
+            throw ResponseParsingError()
+        }
+        
+        let votes = votesJSONArray.flatMap { Vote(json: $0) }
+        
+        return votes
     }
 }
