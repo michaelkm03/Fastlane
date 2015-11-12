@@ -9,7 +9,7 @@
 import Foundation
 
 /// The request for creating user's answer to a poll
-public struct AnswerPollActionRequest: RequestType {
+public struct PollAnsweringActionRequest: RequestType {
     public let answerID: Int64
     public let sequenceID: Int64
     

@@ -9,13 +9,13 @@
 import XCTest
 import VictoriousIOSSDK
 
-class AnswerPollActionRequestTests: XCTestCase {
+class PollAnsweringActionRequestTests: XCTestCase {
     
     func testSelectingFirstAnswerRequest() {
         let mockAnswerID: Int64 = 101
         let mockSequenceID: Int64 = 102
         
-        let answerPollRequest = AnswerPollActionRequest(answerID: mockAnswerID, sequenceID: mockSequenceID)
+        let answerPollRequest = PollAnsweringActionRequest(answerID: mockAnswerID, sequenceID: mockSequenceID)
         let urlRequest = answerPollRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/pollresult/create")
