@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OpenXMSDK.h"
 
 @class AVPlayer;
 
-@interface VAdPlayerView : OXMMediaPlaybackView
+@interface VAdPlayerView : UIView
 
 /**
  The AVPlayer to be used by this view to display video
