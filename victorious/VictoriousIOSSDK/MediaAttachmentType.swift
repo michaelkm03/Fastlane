@@ -14,4 +14,5 @@ public enum MediaAttachmentType: String {
     case Video = "video"
     case GIF = "gif"
     case VoteType = "voteType"
+    case NoMedia = ""
 }
