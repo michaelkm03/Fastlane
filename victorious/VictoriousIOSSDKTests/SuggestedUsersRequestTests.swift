@@ -34,7 +34,7 @@ class SuggestedUsersRequestTests: XCTestCase {
             XCTAssertEqual(results[1].recentSequences[0].sequenceID, 16393)
 
             XCTAssertEqual(results[2].user.userID, 708)
-            XCTAssertEqual(results[2].recentSequences.count, 10)
+            XCTAssertEqual(results[2].recentSequences.count, 9)
             XCTAssertEqual(results[2].recentSequences[0].sequenceID, 12683)
 
             XCTAssertEqual(results[3].user.userID, 2956)
