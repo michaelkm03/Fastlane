@@ -151,7 +151,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
     
-    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    for ( NSInteger i = 0; i < 4; i++ )
     {
         VLoginType loginType = (VLoginType)i;
         [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
@@ -167,7 +167,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
          }];
     }
     
-    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    for ( NSInteger i = 0; i < 4; i++ )
     {
         VLoginType loginType = (VLoginType)i;
         [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)

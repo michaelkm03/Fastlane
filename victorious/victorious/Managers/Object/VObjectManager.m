@@ -11,7 +11,6 @@
 #import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
-#import "VMultipartFormDataWriter.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
@@ -39,6 +38,7 @@
 static NSString * const kAlertsKey = @"alerts";
 
 @import VictoriousCommon;
+@import VictoriousIOSSDK;
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -204,7 +204,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
-            [self logoutLocally];
+            [[[VUserManager alloc] init] logout];
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                                userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             if ( failBlock != nil )
@@ -251,7 +251,8 @@ NS_ASSUME_NONNULL_BEGIN
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if ( rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError )
         {
-            [self logoutLocally];
+            // TODO: Create logout operation
+            //[[[VUserManager alloc] init] logoutLocally];
         }
         else
         {
@@ -277,7 +278,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     else if( errorCode == kVUserBannedError && self.mainUser )
     {
-        [self logoutLocally];
+        // TODO: Create logout operation
+        // [[[VUserManager alloc] init] logoutLocally];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                         message:NSLocalizedString(@"UserBannedMessage", @"")
                                                        delegate:nil

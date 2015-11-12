@@ -34,50 +34,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 
 @implementation VUserManager
 
-- (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
-{
-    NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
-    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-    
-    if ( loginType == VLastLoginTypeFacebook )
-    {
-        FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
-        if ( currentToken != nil && [currentToken.expirationDate timeIntervalSinceNow] > 0 )
-        {
-            [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
-        }
-        else
-        {
-            // Current access token is invalid, logout to clear
-            [[[FBSDKLoginManager alloc] init] logOut];
-            if ( errorBlock != nil )
-            {
-                errorBlock ( nil, NO );
-            }
-        }
-    }
-    else if ( loginType == VLastLoginTypeTwitter )
-    {
-        [self loginViaTwitterWithTwitterID:identifier onCompletion:completion onError:errorBlock];
-        return;
-    }
-    else if ( loginType == VLastLoginTypeEmail )
-    {
-        NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-        NSString *password = [[[VStoredPassword alloc] init] passwordForEmail:email];
-        if ( email != nil && password != nil )
-        {
-            [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
-            return;
-        }
-    }
-    
-    if ( errorBlock != nil )
-    {
-        errorBlock( nil, NO );
-    }
-}
-
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
                         onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
@@ -162,45 +118,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             completion(twitterAccount.identifier, oauthToken, tokenSecret, twitterId);
         }
     }];
-}
-
-- (void)userDidLogout
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
-    
-    [[[VStoredPassword alloc] init] clearSavedPassword];
-    
-    //Delete all conversations / pollresults for the user!
-    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^(void)
-     {
-         [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
-         
-         NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
-         [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
-         [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-         
-         NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
-         for (NSManagedObject *conversation in conversations)
-         {
-             [context deleteObject:conversation];
-         }
-         
-         NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
-         [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
-         [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-         
-         NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
-         for (NSManagedObject *pollResult in pollResults)
-         {
-             [context deleteObject:pollResult];
-         }
-         
-         [context save:nil];
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 @end

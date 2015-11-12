@@ -73,6 +73,14 @@
     return viewController;
 }
 
+- (void)setProfile:(VUser *)profile
+{
+    _profile = profile;
+    
+    self.registrationModel = [[VRegistrationModel alloc] init];
+    self.registrationModel.username = profile.name;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad

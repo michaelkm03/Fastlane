@@ -268,8 +268,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)updatePassword:(NSString *)password
-           completion:(void (^)(BOOL success, NSError *error))completion
+- (void)updatePassword:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -278,16 +277,21 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken
                                                    newPassword:password
-                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                  successBlock:^(NSOperation *restKitOperation, id result, NSArray *resultObjects)
      {
          [hud hide:YES];
-         VUserManager *userManager = [[VUserManager alloc] init];
-         [userManager loginViaEmail:self.resetPasswordEmail password:password onCompletion:^(VUser *user, BOOL isNewUser)
+         
+         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:self.resetPasswordEmail password:password];
+         [operation queueInBackground:^(NSError *_Nullable error)
           {
-              completion(YES, nil);
-          } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-          {
-              completion(NO, error);
+              if ( error == nil )
+              {
+                  completion(YES, nil);
+              }
+              else
+              {
+                  completion(NO, error);
+              }
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)

@@ -9,10 +9,6 @@
 import Foundation
 import CoreData
 
-public extension NSManagedObject {
-    public func identifier() -> AnyObject { return self.objectID }
-}
-
 public class PersistentEntity: NSManagedObject {
     
     @NSManaged public var dateAttribute: NSDate?

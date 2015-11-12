@@ -31,6 +31,8 @@ class RequestPushNotificationPermissionOperation : Operation {
             name: VPushNotificationManagerDidReceiveResponse,
             object: VPushNotificationManager.sharedPushNotificationManager())
         VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+        
+        finishedExecuting()
     }
     
     // MARK: - Notification Observer

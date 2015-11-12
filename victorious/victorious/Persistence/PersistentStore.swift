@@ -9,20 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-public struct PersistentStore {
+@objc public class PersistentStore: NSObject {
     
     private static var instance: CoreDataManager? = nil
     
     static let persistentStorePath = "victoriOS.sqlite"
     static let managedObjectModelName = "victoriOS"
-    static let version = "victorious-4.0"
+    static let managedObjectModelVersion = "victorious-4.0"
     
     private static var sharedManager: CoreDataManager {
         if instance == nil {
             let docsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             let persistentStoreURL = docsDirectory.URLByAppendingPathComponent( persistentStorePath )
             
-            let momPath = ("\(managedObjectModelName).momd" as NSString).stringByAppendingPathComponent( version )
+            let momPath = ("\(managedObjectModelName).momd" as NSString).stringByAppendingPathComponent( managedObjectModelVersion )
             guard let momURLInBundle = NSBundle.mainBundle().URLForResource( momPath, withExtension: "mom" ) else {
                 fatalError( "Cannot find managed object model (.mom) for URL in bundle: \(momPath)" )
             }
@@ -30,7 +30,7 @@ public struct PersistentStore {
             instance = CoreDataManager(
                 persistentStoreURL: persistentStoreURL,
                 currentModelVersion: CoreDataManager.ModelVersion(
-                    identifier: version,
+                    identifier: managedObjectModelVersion,
                     managedObjectModelURL: momURLInBundle
                 ),
                 previousModelVersion: nil
@@ -45,5 +45,13 @@ public struct PersistentStore {
     
     static var backgroundContext: DataStore {
         return PersistentStore.sharedManager.backgroundContext
+    }
+    
+    public static func getMainContext() -> DataStoreBasic {
+        return self.mainContext
+    }
+    
+    public static var getBackgroundContext: DataStoreBasic {
+        return self.backgroundContext
     }
 }

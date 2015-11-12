@@ -1,0 +1,39 @@
+//
+//  ConversationWithUserRequest.swift
+//  victorious
+//
+//  Created by Michael Sena on 11/10/15.
+//  Copyright © 2015 Victorious. All rights reserved.
+//
+
+import Foundation
+import SwiftyJSON
+
+// A request to the backend to determine whether or not the currenlty logged in user has a p
+public struct ConversationWithUserRequest: RequestType {
+
+    public let userID: Int64
+    private static let basePath = "/api/message/conversation_with_user"
+    
+    public init(userID: Int64) {
+        self.userID = userID
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let path = NSURL(string: ConversationWithUserRequest.basePath)?.URLByAppendingPathComponent(String(self.userID))
+        let urlRequest = NSMutableURLRequest(URL: path!)
+
+        return urlRequest
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int64, messages: [Message]) {
+        guard let messagesArrayJSON = responseJSON["payload"]["messages"].array,
+              let conversationIDString = responseJSON["payload"]["conversation_id"].string,
+              let conversationID = Int64(conversationIDString) else {
+            throw ResponseParsingError()
+        }
+        let messages = messagesArrayJSON.flatMap{Message(json: $0)}
+        
+        return (conversationID, messages)
+    }
+}

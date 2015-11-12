@@ -68,7 +68,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
-@property (nonatomic, strong) id<VSDKCancelable> currentRequest;
+@property (nonatomic, strong) NSOperation *currentOperation;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
 
 @end
@@ -322,7 +322,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [userManager retrieveTwitterTokenWithAccountIdentifier:identifier
                                               onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
      {
-         self.currentRequest = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
+         self.currentOperation = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
                                 {
                                     self.isRegisteredAsNewUser = isNewUser;
                                     [self continueRegistrationFlowAfterSocialRegistration];
@@ -414,19 +414,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) weakSelf = self;
     [self setOnLoadingAppeared:^
      {
-         VUserManager *userManager = [[VUserManager alloc] init];
-         
-         weakSelf.currentRequest = [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
-                                    {
-                                        weakSelf.actionsDisabled = NO;
-                                        
-                                        weakSelf.isRegisteredAsNewUser = isNewUser;
-                                        [weakSelf continueRegistrationFlowAfterSocialRegistration];
-                                    }
-                                                                                    onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-                                    {
-                                        [weakSelf handleFacebookLoginError:error];
-                                    }];
+         NetworkOperation *operation = [AccountCreateOperationObjc createWithFacebook];
+         [operation queueInBackground:^(NSError *_Nullable error)
+          {
+              if ( error == nil )
+              {
+                  weakSelf.actionsDisabled = NO;
+                  // TODO: weakSelf.isRegisteredAsNewUser = operation.isNewUser;
+                  [weakSelf continueRegistrationFlowAfterSocialRegistration];
+              }
+              else
+              {
+                  [weakSelf handleFacebookLoginError:error];
+              }
+          }];
      }];
     
     [self showLoadingScreen];
@@ -456,22 +457,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [self setOnLoadingAppeared:^
      {
-         VUserManager *userManager = [[VUserManager alloc] init];
-         
-         weakSelf.currentRequest = [userManager loginViaEmail:email
-                                                     password:password
-                                                 onCompletion:^(VUser *user, BOOL isNewUser)
-                                    {
-                                        completion(YES, nil);
-                                        [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
-                                        
-                                    } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-                                    {
-                                        completion(NO, error);
-                                        [weakSelf dismissLoadingScreen];
-                                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
-                                    }];
+         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:email password:password];
+         [operation queueInBackground:^(NSError *_Nullable error)
+         {
+             if ( error == nil )
+             {
+                 completion(YES, nil);
+                 [weakSelf onAuthenticationFinishedWithSuccess:YES];
+             }
+             else
+             {
+                 completion(NO, error);
+                 [weakSelf dismissLoadingScreen];
+             }
+         }];
      }];
     
     [self showLoadingScreen];
@@ -490,29 +489,28 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) weakSelf = self;
     [self setOnLoadingAppeared:^
      {
-         VUserManager *userManager = [[VUserManager alloc] init];
-         
-         weakSelf.currentRequest = [userManager createAccountWithEmail:email
-                                                              password:password
-                                                          onCompletion:^(VUser *user, BOOL isNewUser)
-                                    {
-                                        BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
-                                        completion(YES, completeProfile, nil);
-                                        if (completeProfile)
-                                        {
-                                            [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                                        }
-                                        else
-                                        {
-                                            [weakSelf continueRegistrationFlow];
-                                        }
-                                        
-                                    }
-                                                               onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-                                    {
-                                        completion(NO, NO, error);
-                                        [weakSelf dismissLoadingScreen];
-                                    }];
+         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:email password:password];
+         [operation queueInBackground:^(NSError *_Nullable error)
+          {
+              if ( error == nil )
+              {
+                  BOOL completeProfile = YES; // FIXME: [user.status isEqualToString:kUserStatusComplete];
+                  completion(YES, completeProfile, nil);
+                  if (completeProfile)
+                  {
+                      [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                  }
+                  else
+                  {
+                      [weakSelf continueRegistrationFlow];
+                  }
+              }
+              else
+              {
+                  completion(NO, NO, error);
+                  [weakSelf dismissLoadingScreen];
+              }
+          }];
      }];
     
     [self showLoadingScreen];
@@ -769,7 +767,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)loadingScreenCancelled
 {
-    [self.currentRequest cancel];
+    [self.currentOperation cancel];
     self.loadingScreen.canCancel = NO;
 }
 

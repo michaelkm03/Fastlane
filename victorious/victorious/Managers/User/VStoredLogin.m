@@ -9,6 +9,18 @@
 #import "VStoredLogin.h"
 #import "VUser+RestKit.h"
 #import "VObjectManager.h"
+#import "victorious-Swift.h"
+
+@interface VStoredLoginInfo()
+
+@property (nonatomic, strong, readwrite) NSString *token;
+@property (nonatomic, strong, readwrite) NSNumber *userRemoteId;
+@property (nonatomic, assign, readwrite) VLoginType lastLoginType;
+
+@end
+
+@implementation VStoredLoginInfo
+@end
 
 static const NSTimeInterval kTokenExpirationTotalDuration           = 60 * 60 * 24 * 30; ///< 30 days in seconds
 static const NSTimeInterval kTokenExpirationAnticipationDuration    = 60 * 60; ///< 1 hour in seconds
@@ -20,7 +32,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 @implementation VStoredLogin
 
-- (VUser *)lastLoggedInUserFromDisk
+- (VStoredLoginInfo *)storedLoginInfo
 {
     NSNumber *storedUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultStoredUserIdKey];
     if ( storedUserId == nil || storedUserId.integerValue == 0 )
@@ -42,7 +54,11 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     }
     else
     {
-        return [self createNewUserWithRemoteId:storedUserId token:token];
+        VStoredLoginInfo *info = [[VStoredLoginInfo alloc] init];
+        info.userRemoteId = storedUserId;
+        info.token = token;
+        info.lastLoginType = [self lastLoginType];
+        return info;
     }
 }
 
@@ -63,9 +79,10 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     return (VLoginType)loginTypeNumber.integerValue;
 }
 
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user loginType:(VLoginType)loginType
+- (BOOL)saveLoggedInUserToDisk:(VUser *)user
 {
-    if ( user.remoteId == nil || user.remoteId.integerValue == 0 ||
+    if ( user.loginType == nil ||
+         user.remoteId == nil || user.remoteId.integerValue == 0 ||
          user.token == nil || user.token.length == 0 )
     {
         return NO;
@@ -77,7 +94,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     {
         [[NSUserDefaults standardUserDefaults] setObject:user.remoteId forKey:kUserDefaultStoredUserIdKey];
         [[NSUserDefaults standardUserDefaults] setObject:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
-        [[NSUserDefaults standardUserDefaults] setObject:@(loginType) forKey:kUserDefaultLoginTypeKey];
+        [[NSUserDefaults standardUserDefaults] setObject:user.loginType forKey:kUserDefaultLoginTypeKey];
         [self clearSavedToken];
         return [self saveToken:user.token withUserId:user.remoteId];
     }
@@ -159,14 +176,6 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
                                   (__bridge id)kSecAttrService: kKeychainTokenService };
     OSStatus status = SecItemDelete( (__bridge CFDictionaryRef)dictionary );
     return status == errSecSuccess;
-}
-
-- (VUser *)createNewUserWithRemoteId:(NSNumber *)remoteId token:(NSString *)token
-{
-    VUser *user = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
-    user.remoteId = remoteId;
-    user.token = token;
-    return user;
 }
 
 @end

@@ -318,7 +318,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        [[VObjectManager sharedManager] logout];
+        [[[VUserManager alloc] init] logout];
         [self updateLogoutButtonState];
     }
     

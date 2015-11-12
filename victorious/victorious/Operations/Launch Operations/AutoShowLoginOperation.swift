@@ -22,25 +22,18 @@ import Foundation
 /// An `Operation` subclass for auto-showing login on startup.
 class AutoShowLoginOperation: Operation {
     
-    let loginAuthorizedAction: VAuthorizedAction
     private let dependencyManager: VDependencyManager
-    private let viewControllerToPresentFrom: UIViewController
     
     /// A Delegate to manage the showing/hiding of the loginViewController.
     weak var delegate: AutoShowLoginOperationDelegate?
     
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
-    /// - parameter objectManager: The object manager to use when creating an internal VAuthorizedAction. Will be used to dervie current login status.
     /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
-    /// - parameter viewControllerToPresentFrom: A `UIViewController` to provide to VAuthorizedAction.
-    ///
     /// - returns: An AutoShowLoginOperation.
-    init(objectManager: VObjectManager, dependencyManager: VDependencyManager, viewControllerToPresentFrom: UIViewController) {
+    init(dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate) {
         self.dependencyManager = dependencyManager
-        self.viewControllerToPresentFrom = viewControllerToPresentFrom
-        loginAuthorizedAction = VAuthorizedAction(objectManager: objectManager, dependencyManager: dependencyManager)
-        
+        self.delegate = delegate
         super.init()
         
         qualityOfService = .UserInteractive
@@ -51,28 +44,45 @@ class AutoShowLoginOperation: Operation {
     override func start() {
         super.start()
         
-        if cancelled {
+        assert( NSThread.currentThread().isMainThread )
+        
+        guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
             finishedExecuting()
             return
         }
         
         beganExecuting()
         
-        dispatch_async(dispatch_get_main_queue(), {
-            let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
-                withCompletion: { (success: Bool) in
+        let dataStore = PersistentStore.mainContext
+        if let currentUser = VUser.currentUser(inContext: dataStore) {
+            
+            if currentUser.status != "complete" {
+                // User must complete his or her profile, show the create profile view
+                let viewController = VProfileCreateViewController.newWithDependencyManager(self.dependencyManager)
+                viewController.profile = currentUser
+                (viewController as VAuthorizationProvider).authorizedAction = { authorized in
                     self.delegate?.hideLoginViewController() {
                         self.finishedExecuting()
                     }
-            })
-            if let loginVC = loginVC {
-                self.delegate?.showLoginViewController(loginVC)
+                }
+                self.delegate?.showLoginViewController( viewController )
             }
             else {
-                // If the loginVC is nil we should not show and just finish up
-                self.finishedExecuting()
+                // User is already logged in, proceed onward
+                finishedExecuting()
             }
-        })
+        }
+        else {
+            // User is not logged in, show login view
+            let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
+                forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
+            viewController.setCompletionBlock(){ (finished) -> Void in
+                self.delegate?.hideLoginViewController() {
+                    self.finishedExecuting()
+                }
+            }
+            viewController.setAuthorizationContext?( .Default ) // TODO: Get context
+            self.delegate?.showLoginViewController( viewController as! UIViewController )
+        }
     }
-    
 }

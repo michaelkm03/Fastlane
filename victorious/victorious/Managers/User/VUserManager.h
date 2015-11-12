@@ -22,14 +22,5 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
                                      onCompletion:(VTwitterAuthenticationCompletionBlock)completion
                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-/**
- Re-login to whatever service the user last logged in with
- */
-- (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
-
-/**
- Performs any cleanup necessary after user has logged out through the server (i.e. VObjectManager).
- */
-- (void)userDidLogout;
 
 @end

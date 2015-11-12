@@ -1,5 +1,5 @@
 //
-//  DataStoreObjc.swift
+//  DataStoreBasic.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/9/15.
@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 /// An interface that defines the basic behaviors of a persistent data store.
-@objc protocol DataStoreObjC {
+@objc public protocol DataStoreBasic {
     
     /// Writes all changes from any modified objects to the persistent store
     func saveChanges() -> Bool
@@ -41,4 +41,10 @@ import CoreData
     /// Searches for an object matching the data in the query dictionary, or creates a new object
     /// and populates it with the data in the query dictionary.
     func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject
+    
+    func cacheObject(object: NSManagedObject?, forKey key: String)
+    
+    func cachedObjectForKey(key: String) -> NSManagedObject?
+    
+    func getObjectWithIdentifier(identifier: AnyObject) -> NSManagedObject?
 }

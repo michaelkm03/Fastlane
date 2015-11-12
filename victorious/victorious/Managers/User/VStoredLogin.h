@@ -11,6 +11,17 @@
 
 @class VUser;
 
+NS_ASSUME_NONNULL_BEGIN
+
+@interface VStoredLoginInfo: NSObject
+
+@property (nonatomic, strong, readonly) NSString *token;
+@property (nonatomic, strong, readonly) NSNumber *userRemoteId;
+@property (nonatomic, assign, readonly) VLoginType lastLoginType;
+
+
+@end
+
 /**
  A class that manages storing user info to disk so that the application can log
  in quickly after loading without having to contact the server.
@@ -18,21 +29,9 @@
 @interface VStoredLogin : NSObject
 
 /**
- Retrives an abbreviated user object read from disk that can be used to log in
- (i.e. to set current, authorized user) without having to contact the server.
- 
- @see saveUserToDisk:
- 
- @return A valid user that can be set to the main user.  Returns nil if there is
- isn't any last logged in user or if the authorization data of the last
- logged in user is invalid.
- */
-- (VUser *)lastLoggedInUserFromDisk;
 
-/**
- Returns the login type associated with the last logged in user that is saved to disk.
  */
-- (VLoginType)lastLoginType;
+- (nullable VStoredLoginInfo *)storedLoginInfo;
 
 /**
  Save an abbreviated user object to disk to be retreived later when logging in
@@ -41,10 +40,9 @@
  @see userFromDisk
  
  @param user The currently logged in user to save.
- @param loginType The method the user used to login in.
  @return Whether or not the write operation was successful.
  */
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user loginType:(VLoginType)loginType;
+- (BOOL)saveLoggedInUserToDisk:(VUser *)user;
 
 /**
  Removes any data stored on the device about the last logged in user.  This
@@ -53,3 +51,5 @@
 - (BOOL)clearLoggedInUserFromDisk;
 
 @end
+
+NS_ASSUME_NONNULL_END
