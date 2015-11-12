@@ -182,10 +182,6 @@ extern NSString * const VTrackingEventUserDidSelectFindFriends;
 extern NSString * const VTrackingEventUserDidImportDeviceContacts; //< Params: Count (numer of contacts imported)
 extern NSString * const VTrackingEventUserDidImportFacebookContacts; //< Params: Count (numer of contacts imported)
 extern NSString * const VTrackingEventImportFacebookContactsDidFail; //< Params: ErrorMessage
-extern NSString * const VTrackingEventUserDidImportTwitterContacts; //< Params: Count (numer of contacts imported)
-extern NSString * const VTrackingEventImportTwitterContactsDidFail; //< Params: ErrorMessage
-extern NSString * const VTrackingEventUserDidImportInstagramContacts; //< Params: Count (numer of contacts imported)
-extern NSString * const VTrackingEventImportInstagramContactsDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectInvite; 
 extern NSString * const VTrackingEventUserDidInviteFiendsWithEmail; 
 extern NSString * const VTrackingEventUserDidInviteFiendsWithSMS; 

@@ -45,6 +45,8 @@
 
 @property (nonatomic, readonly) BOOL shouldLoop;
 
+@property (nonatomic, readonly) BOOL streamContentModeIsAspectFit;
+
 /**
  Creates a video player using the provided frame.  This class provides a default implementation,
  but allows subclasses to override this method to provide a different implementation of `VVideoView`.
