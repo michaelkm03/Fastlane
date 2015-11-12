@@ -33,17 +33,8 @@
 
 - (CGRect)boundingRectForCharacterRange:(NSRange)range
 {
-    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
-    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-    [textStorage addLayoutManager:layoutManager];
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(self.bounds.size.width, CGFLOAT_MAX)];
-    textContainer.lineFragmentPadding = 0;
-    textContainer.lineBreakMode = NSLineBreakByCharWrapping;
-    [layoutManager addTextContainer:textContainer];
-    
-    NSRange glyphRange;
-    [layoutManager characterRangeForGlyphRange:range actualGlyphRange:&glyphRange];
-    return [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
+    NSRange glyphRange = [self.layoutManager glyphRangeForCharacterRange:range actualCharacterRange:nil];
+    return [self.layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:self.textContainer];
 }
 
 @end
