@@ -329,16 +329,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
         [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
         
-        // Add followers and following to main user object
-        [[VObjectManager sharedManager] loadFollowersForUser:self.mainUser
-                                                    pageType:VPageTypeFirst
-                                                successBlock:nil
-                                                   failBlock:nil];
-        [[VObjectManager sharedManager] loadFollowingsForUser:self.mainUser
-                                                     pageType:VPageTypeFirst
-                                                 successBlock:nil
-                                                    failBlock:nil];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     }
 }

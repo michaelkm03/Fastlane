@@ -407,6 +407,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          self.retryHUD.margin = 0.0f;
          [self.retryProfileLoadButton setUserInteractionEnabled:YES];
      }];
+    
+    // Reload follow counts when user pulls to refresh
+    [self reloadUserFollowCounts];
 }
 
 - (void)retryProfileLoad
