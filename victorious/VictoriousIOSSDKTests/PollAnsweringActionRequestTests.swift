@@ -15,7 +15,7 @@ class PollAnsweringActionRequestTests: XCTestCase {
         let mockAnswerID: Int64 = 101
         let mockSequenceID: Int64 = 102
         
-        let answerPollRequest = PollAnsweringActionRequest(answerID: mockAnswerID, sequenceID: mockSequenceID)
+        let answerPollRequest = PollAnsweringActionRequest(sequenceID: mockSequenceID, answerID: mockAnswerID)
         let urlRequest = answerPollRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/pollresult/create")
