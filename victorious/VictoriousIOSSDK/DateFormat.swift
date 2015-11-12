@@ -2,7 +2,7 @@
 //  DateFormat.swift
 //  victorious
 //
-//  Created by Michael Sena on 11/9/15.
+//  Created by Patrick Lynch on 11/9/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
