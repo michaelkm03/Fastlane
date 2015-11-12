@@ -23,7 +23,7 @@ public struct BatchFollowUsersRequest: RequestType {
         let url = NSURL(string: "/api/follow/batchadd")!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        let converted = NSDictionary(dictionary: ["target_user_ids" : usersToFollow.flatMap { NSNumber(longLong: $0) }])
+        let converted = NSDictionary(dictionary: ["target_user_ids" : usersToFollow.map { NSNumber(longLong: $0) }])
         request.vsdk_addURLEncodedFormPost(converted)
         return request
     }
