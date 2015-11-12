@@ -4665,8 +4665,8 @@
 			isa = PBXGroup;
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
-				A7EF1BD31BF2758000D429DE /* DateFormat.swift */,
 				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
+				A7EF1BD31BF2758000D429DE /* DateFormat.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
@@ -4772,8 +4772,6 @@
 			children = (
 				A7EF1BC11BF2754D00D429DE /* Answer.swift */,
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
-				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
-				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				A7EF1BC31BF2754D00D429DE /* Interaction.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
 				A7EF1BC51BF2754D00D429DE /* Sequence.Category.swift */,
