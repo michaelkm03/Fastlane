@@ -19,4 +19,8 @@ public struct PollResultByUserRequest: RequestType {
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "")!)
     }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Vote] {
+        return [Vote(sequenceID: 0, answerID: 0)]
+    }
 }
