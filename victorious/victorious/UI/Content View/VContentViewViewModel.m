@@ -785,11 +785,6 @@
     return totalVotes;
 }
 
-- (void)reloadPollData
-{
-    [self fetchPollData];
-}
-
 - (VPollAnswer)favoredAnswer
 {
     if (_favoredAnswer != VPollAnswerInvalid)
