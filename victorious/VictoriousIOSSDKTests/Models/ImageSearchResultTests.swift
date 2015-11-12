@@ -22,7 +22,7 @@ class ImageSearchResultTests: XCTestCase {
             XCTFail("Image search result initializer failed")
             return
         }
-        XCTAssertEqual(imageSearchResult.imageURL, "http://www.myprosurfer.co.uk/wp-content/uploads/surfer-420x261.jpg")
-        XCTAssertEqual(imageSearchResult.thumbnailURL, "http://tse4.mm.bing.net/th?id=OIP.Md0a950fb482ba6aaf969b912b6e85bcco0&pid=15.1&H=99&W=160")
+        XCTAssertEqual(imageSearchResult.imageURL, NSURL(string: "http://www.myprosurfer.co.uk/wp-content/uploads/surfer-420x261.jpg")!)
+        XCTAssertEqual(imageSearchResult.thumbnailURL, NSURL(string: "http://tse4.mm.bing.net/th?id=OIP.Md0a950fb482ba6aaf969b912b6e85bcco0&pid=15.1&H=99&W=160")!)
     }
 }

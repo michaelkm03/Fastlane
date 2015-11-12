@@ -9,19 +9,21 @@
 import SwiftyJSON
 
 public struct ImageSearchResult {
-    public let imageURL: String
-    public let thumbnailURL: String
+    public let imageURL: NSURL
+    public let thumbnailURL: NSURL
 }
 
 extension ImageSearchResult {
     public init?(json: JSON) {
         
         guard let imageURLString = json["url"].string,
-            let thumbnailURLString = json["thumbnail"].string else {
+            let thumbnailURLString = json["thumbnail"].string,
+            let imageURL = NSURL(string: imageURLString),
+            let thumbnailURL = NSURL(string: thumbnailURLString) else {
                 return nil
         }
         
-        imageURL = imageURLString
-        thumbnailURL = thumbnailURLString
+        self.imageURL = imageURL
+        self.thumbnailURL = thumbnailURL
     }
 }

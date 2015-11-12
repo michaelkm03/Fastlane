@@ -23,8 +23,8 @@ class ImageSearchRequestTests: XCTestCase {
             let searchImages = ImageSearchRequest(searchTerm: "surfer")
             let (results, nextPage, previousPage) = try searchImages.parseResponse(NSURLResponse(), toRequest: searchImages.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 35)
-            XCTAssertEqual(results[0].imageURL, "http://lithe.files.wordpress.com/2008/02/surfer.jpg")
-            XCTAssertEqual(results[1].imageURL, "http://www.myprosurfer.co.uk/wp-content/uploads/surfer-420x261.jpg")
+            XCTAssertEqual(results[0].imageURL, NSURL(string: "http://lithe.files.wordpress.com/2008/02/surfer.jpg")!)
+            XCTAssertEqual(results[1].imageURL, NSURL(string: "http://www.myprosurfer.co.uk/wp-content/uploads/surfer-420x261.jpg")!)
             
             XCTAssertNil(previousPage, "There should be no page before page 1")
             XCTAssertNotNil(nextPage, "There should be a next page")
