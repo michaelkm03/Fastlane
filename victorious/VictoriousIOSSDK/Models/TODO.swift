@@ -43,23 +43,3 @@ extension AdBreak {
         return nil
     }
 }
-
-/// This is a temporary implementation to make tests pass
-public struct Sequence {
-    public var sequenceID: Int64
-    
-    public init (sequenceID: Int64) {
-        self.sequenceID = sequenceID
-    }
-}
-extension Sequence {
-    public init?(json: JSON) {
-        if let sequenceID = json["id"].string {
-            self.sequenceID = Int64(sequenceID)!
-        } else if let sequenceID = json["id"].int64 {
-            self.sequenceID = sequenceID
-        } else {
-            return nil
-        }
-    }
-}
