@@ -29,23 +29,10 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = sequence.isLikedByMainUser.boolValue ? @"/api/sequence/unlike" : @"/api/sequence/like";
+    NSString *apiPath = sequence.isLikedByMainUser.boolValue ? @"/api/sequence/like" : @"/api/sequence/unlike";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
     {
-        if ( sequence.isLikedByMainUser.boolValue )
-        {
-            sequence.isLikedByMainUser = @NO;
-            [sequence removeLikersObject:self.mainUser];
-            sequence.likeCount = @(sequence.likeCount.integerValue - 1);
-        }
-        else
-        {
-            [sequence addLikersObject:self.mainUser];
-            sequence.isLikedByMainUser = @YES;
-            sequence.likeCount = @(sequence.likeCount.integerValue + 1);
-        }
-        
         if ( success != nil )
         {
             success( operation, result, resultObjects );
