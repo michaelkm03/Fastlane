@@ -13,9 +13,7 @@ import SwiftyJSON
 public struct Notification {
     
     private let dateFormatter: NSDateFormatter = {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return dateFormatter
+        return NSDateFormatter(format: .Standard)
     }()
     
     public let body: String?
@@ -47,11 +45,7 @@ public struct Notification {
         body = json["body"].string
         deeplink = json["deeplink"].string
         imageURL = json["creator_profile_image_url"].string
-        if let isReadString = json["is_read"].string {
-            isRead = isReadString == "true" ? true : false
-        } else {
-            isRead = nil
-        }
+        isRead = Bool(json["is_read"].stringValue)
         type = json["type"].string
         updatedAt = dateFormatter.dateFromString(json["updated_at"].stringValue)
         displayOrder = json["display_order"].int
