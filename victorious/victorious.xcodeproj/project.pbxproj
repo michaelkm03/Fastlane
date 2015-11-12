@@ -1044,6 +1044,10 @@
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
 		C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */; };
 		C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */; };
+		C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */; };
+		C3E7C0FF1BF4139E00AFE545 /* MediaAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */; };
+		C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */; };
+		C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */; };
 		C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */; };
 		C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */; };
 		C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */; };
@@ -3260,6 +3264,10 @@
 		C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		C3E772251B4DD163005809A5 /* VTableViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewStreamFocusHelper.h; sourceTree = "<group>"; };
 		C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewStreamFocusHelper.m; sourceTree = "<group>"; };
+		C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageRequestTests.swift; sourceTree = "<group>"; };
+		C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentType.swift; sourceTree = "<group>"; };
+		C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendMessageResponse.json; sourceTree = "<group>"; };
+		C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageRequest.swift; sourceTree = "<group>"; };
 		C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
 		C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultTests.swift; sourceTree = "<group>"; };
 		C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GIFSearchResult.json; sourceTree = "<group>"; };
@@ -4655,8 +4663,8 @@
 			isa = PBXGroup;
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
-				A7EF1BD31BF2758000D429DE /* DateFormat.swift */,
 				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
+				A7EF1BD31BF2758000D429DE /* DateFormat.swift */,
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
@@ -4664,12 +4672,14 @@
 				C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
+				C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
+				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				A7EF1BD11BF2757B00D429DE /* StreamRequest.swift */,
@@ -4700,6 +4710,7 @@
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
+				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */,
@@ -4738,6 +4749,7 @@
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
+				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
 				A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */,
@@ -4757,8 +4769,6 @@
 			children = (
 				A7EF1BC11BF2754D00D429DE /* Answer.swift */,
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
-				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
-				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
 				A7EF1BC31BF2754D00D429DE /* Interaction.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
 				A7EF1BC51BF2754D00D429DE /* Sequence.Category.swift */,
@@ -8815,6 +8825,7 @@
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
 				A7EF1BDE1BF2761E00D429DE /* StreamResponse.json in Resources */,
+				C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */,
 				A7EF1BDD1BF2761E00D429DE /* Stream.json in Resources */,
 				6731B2651BF1834700B9FFFE /* FanLoyalty.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
@@ -9503,6 +9514,7 @@
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				C3209CA61BF14AB600EA229D /* HashtagResponseParser.swift in Sources */,
 				C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */,
+				C3E7C0FF1BF4139E00AFE545 /* MediaAttachmentType.swift in Sources */,
 				C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */,
 				03314F621BE40F3200EE74FD /* Dictionary+URLEncodedString.swift in Sources */,
 				C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */,
@@ -9528,6 +9540,7 @@
 				6759555D1BF1553100D40A87 /* SuggestedUser.swift in Sources */,
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
+				C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */,
 				A7EF1BD21BF2757B00D429DE /* StreamRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9539,6 +9552,7 @@
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
 				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,
+				C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
