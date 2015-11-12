@@ -213,6 +213,19 @@
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
+    if ( sequence.isLikedByMainUser.boolValue )
+    {
+        sequence.isLikedByMainUser = @NO;
+        [sequence removeLikersObject:[VObjectManager sharedManager].mainUser];
+        sequence.likeCount = @(sequence.likeCount.integerValue - 1);
+    }
+    else
+    {
+        [sequence addLikersObject:[VObjectManager sharedManager].mainUser];
+        sequence.isLikedByMainUser = @YES;
+        sequence.likeCount = @(sequence.likeCount.integerValue + 1);
+    }
+    
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
     
