@@ -23,6 +23,8 @@ public struct Message {
 }
 
 extension Message {
+    static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
+    
     public init?(json: JSON) {
 
         // Parse Required Fields
@@ -44,8 +46,7 @@ extension Message {
         
         // Use our standard dateformat for postedAt
         if let postedAtString = json["posted_at"].string {
-            let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
-            let date = dateFormatter.dateFromString(postedAtString)
+            let date = Message.dateFormatter.dateFromString(postedAtString)
             self.postedAt = date
         } else {
             self.postedAt = nil

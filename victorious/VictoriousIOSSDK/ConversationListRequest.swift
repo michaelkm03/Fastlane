@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 // A RequestType to grab pages of the currently logged in user's conversation
-public struct ConversationListRequest: RequestType {
+public struct ConversationListRequest: Pageable {
     
     private static let basePath = NSURL(string: "/api/message/conversation_list")!
     private let paginator: StandardPaginator

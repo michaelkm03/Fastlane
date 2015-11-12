@@ -9,19 +9,20 @@
 import Foundation
 import SwiftyJSON
 
-// A request to the backend to determine whether or not the currenlty logged in user has a p
+// A request to the backend to determine whether or not the currently logged
+// in user has an existing conversation with the passed in userID.
 public struct ConversationWithUserRequest: RequestType {
 
     public let userID: Int64
-    private static let basePath = "/api/message/conversation_with_user"
+    private static let basePath = NSURL(string: "/api/message/conversation_with_user")!
     
     public init(userID: Int64) {
         self.userID = userID
     }
     
     public var urlRequest: NSURLRequest {
-        let path = NSURL(string: ConversationWithUserRequest.basePath)?.URLByAppendingPathComponent(String(self.userID))
-        let urlRequest = NSMutableURLRequest(URL: path!)
+        let path = ConversationWithUserRequest.basePath.URLByAppendingPathComponent(String(self.userID))
+        let urlRequest = NSMutableURLRequest(URL: path)
 
         return urlRequest
     }
