@@ -415,6 +415,8 @@
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		678D94441BF41BE3009A1F93 /* PollAnsweringActionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94431BF41BE3009A1F93 /* PollAnsweringActionRequest.swift */; };
 		678D94461BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94451BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift */; };
+		678D94481BF428AA009A1F93 /* VoteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94471BF428AA009A1F93 /* VoteResult.swift */; };
+		678D944A1BF42E7A009A1F93 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94491BF42E7A009A1F93 /* VoteResultTests.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
@@ -2191,6 +2193,8 @@
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		678D94431BF41BE3009A1F93 /* PollAnsweringActionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnsweringActionRequest.swift; sourceTree = "<group>"; };
 		678D94451BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnsweringActionRequestTests.swift; sourceTree = "<group>"; };
+		678D94471BF428AA009A1F93 /* VoteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResult.swift; sourceTree = "<group>"; };
+		678D94491BF42E7A009A1F93 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersRequest.swift; sourceTree = "<group>"; };
@@ -4741,6 +4745,7 @@
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				678D94491BF42E7A009A1F93 /* VoteResultTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4791,6 +4796,7 @@
 				6759555C1BF1553100D40A87 /* SuggestedUser.swift */,
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
+				678D94471BF428AA009A1F93 /* VoteResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9542,6 +9548,7 @@
 				A7EF1BC91BF2754D00D429DE /* Answer.swift in Sources */,
 				6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
+				678D94481BF428AA009A1F93 /* VoteResult.swift in Sources */,
 				A7EF1BD01BF2754D00D429DE /* StreamItemType.swift in Sources */,
 				0300AA5B1BF17C20000A121D /* VMultipartFormDataWriter.m in Sources */,
 				6759555B1BF145B000D40A87 /* SuggestedUsersRequest.swift in Sources */,
@@ -9568,6 +9575,7 @@
 				6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
+				678D944A1BF42E7A009A1F93 /* VoteResultTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
