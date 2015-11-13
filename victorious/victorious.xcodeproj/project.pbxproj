@@ -511,6 +511,7 @@
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EED6A91B5EE4210074052E /* VAlongsideTransitioner.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EED6A81B5EE4210074052E /* VAlongsideTransitioner.m */; };
 		A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EED6AC1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m */; };
+		A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70417621A365EE80042CABD /* VPurchaseRecordTests.m */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
@@ -673,6 +674,7 @@
 		A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */; };
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
+		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -2380,6 +2382,7 @@
 		A6EED6A81B5EE4210074052E /* VAlongsideTransitioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlongsideTransitioner.m; sourceTree = "<group>"; };
 		A6EED6AB1B5EE4EB0074052E /* VAlongsidePresentationAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlongsidePresentationAnimator.h; sourceTree = "<group>"; };
 		A6EED6AC1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlongsidePresentationAnimator.m; sourceTree = "<group>"; };
+		A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernLoginAndRegistrationFlowViewController.swift; sourceTree = "<group>"; };
 		A70417621A365EE80042CABD /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
 		A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
 		A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Discover.m"; sourceTree = "<group>"; };
@@ -2641,6 +2644,7 @@
 		A74783D81B9FC792005654A6 /* VVideoPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayerDelegate.h; sourceTree = "<group>"; };
 		A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoToolbarView.swift; sourceTree = "<group>"; };
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
+		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
@@ -4684,6 +4688,7 @@
 				D85B702B1B0EAF3F0038CA5B /* Modern */,
 				D8D812B31B14FE5B00E93B37 /* VLoginFlowAPIHelper.h */,
 				D8D812B41B14FE5B00E93B37 /* VLoginFlowAPIHelper.m */,
+				A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */,
 				D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */,
 				D8758D231B100571008C6C0D /* VTwitterAccountsHelper.h */,
 				D8758D241B100571008C6C0D /* VTwitterAccountsHelper.m */,
@@ -7758,6 +7763,7 @@
 				D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */,
 				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
 				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
+				A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */,
 				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
 				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
 				D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */,
@@ -10325,6 +10331,7 @@
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
+				A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
 				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
@@ -10363,6 +10370,7 @@
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
 				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
+				A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,

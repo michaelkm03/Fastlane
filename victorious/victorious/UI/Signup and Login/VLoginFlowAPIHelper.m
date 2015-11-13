@@ -274,6 +274,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
+    __weak typeof(self) weakSelf = self;
+    
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken
                                                    newPassword:password
@@ -281,9 +283,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          [hud hide:YES];
          
-         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:self.resetPasswordEmail password:password];
-         [operation queueInBackground:^(NSError *_Nullable error)
-          {
+         [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSError *_Nullable error) {
               if ( error == nil )
               {
                   completion(YES, nil);

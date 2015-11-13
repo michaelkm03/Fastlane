@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class StoredLoginOperation: NetworkOperation {
+class StoredLoginOperation: Operation {
     
     override func start() {
         super.start()

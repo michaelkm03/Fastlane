@@ -10,6 +10,8 @@ import Foundation
 
 class Operation: NSOperation {
     
+    static let defaultQueue = NSOperationQueue()
+    
     private var _executing = false
     private var _finished = false
     
@@ -45,4 +47,37 @@ class Operation: NSOperation {
         }
     }
     
+    class func sharedQueue() -> NSOperationQueue {
+        return Operation.defaultQueue
+    }
+    
+    func queueInBackground() {
+        self.queueInBackground(nil)
+    }
+    
+    func queueInBackground( completionMainQueueBlock:(()->())?) {
+        self.completionBlock = {
+            dispatch_async( dispatch_get_main_queue()) {
+                completionMainQueueBlock?()
+            }
+        }
+        Operation.defaultQueue.addOperation( self )
+    }
+    
+    func queueNext( operation: NSOperation ) {
+        for dependentOperation in dependencyOperations {
+            dependentOperation.addDependency( operation )
+        }
+        Operation.defaultQueue.addOperation( operation )
+    }
+    
+    var dependencyOperations: [NSOperation] {
+        return Operation.defaultQueue.operations.filter { $0.dependencies.contains(self) }
+    }
+    
+    func cancelAllOperations() {
+        for operation in Operation.defaultQueue.operations {
+            operation.cancel()
+        }
+    }
 }

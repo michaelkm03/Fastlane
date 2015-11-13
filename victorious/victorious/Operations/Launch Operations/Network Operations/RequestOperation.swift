@@ -9,9 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RequestOperation<T: RequestType> : NetworkOperation {
+class RequestOperation<T: RequestType> : Operation {
     
     private var request: T
+    
+    private var error: NSError?
     
     init( request: T ) {
         self.request = request
@@ -27,6 +29,22 @@ class RequestOperation<T: RequestType> : NetworkOperation {
         if let request = self.request as? Cancelable {
             request.cancel()
         }
+    }
+    
+    func queue( completioneBlock:((NSError?)->())?) {
+        self.completionBlock = {
+            self.onComplete()
+            completioneBlock?( self.error )
+        }
+        NSOperationQueue.mainQueue().addOperation( self )
+    }
+    
+    func onComplete() {
+        // Override in subclasses
+    }
+    
+    func onError( error: NSError? ) {
+        // Override in subclasses
     }
     
     override func start() {
@@ -51,20 +69,16 @@ class RequestOperation<T: RequestType> : NetworkOperation {
             baseURL: baseURL,
             requestContext: requestContext,
             authenticationContext: authenticationContext,
-            callback: { [weak self] (result, error) -> () in
-                defer {
-                    self?.finishedExecuting()
-                }
-                
-                guard let strongSelf = self where strongSelf.cancelled == false else {
+            callback: { (result, error) -> () in
+                guard !self.cancelled else {
                     return
                 }
-                
                 if let result = result {
-                    strongSelf.onResponse( result )
+                    self.onResponse( result )
                 } else {
-                    strongSelf.onError( error as? NSError )
+                    self.onError( error as? NSError )
                 }
+                self.finishedExecuting()
             }
         )
     }

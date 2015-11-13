@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 // Extensions for Objective-C
-class AccountCreateOperationObjc: NSObject {
+/*class AccountCreateOperationObjc: NSObject {
     
     class func createWithEmail(email: String, password: String) -> NetworkOperation {
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
@@ -23,7 +23,7 @@ class AccountCreateOperationObjc: NSObject {
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         return AccountCreateOperation( request: accountCreateRequest, loginType: loginType )
     }
-}
+}*/
 
 class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
@@ -39,10 +39,6 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         self.loginType = loginType
         self.accountIdentifier = accountIdentifier
         super.init( request: request )
-    }
-    
-    override func start() {
-        super.start()
     }
     
     override func onResponse(result: AccountCreateResponse) {

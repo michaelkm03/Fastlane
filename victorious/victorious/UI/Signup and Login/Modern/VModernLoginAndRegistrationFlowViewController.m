@@ -414,20 +414,18 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) weakSelf = self;
     [self setOnLoadingAppeared:^
      {
-         NetworkOperation *operation = [AccountCreateOperationObjc createWithFacebook];
-         [operation queueInBackground:^(NSError *_Nullable error)
-          {
-              if ( error == nil )
-              {
-                  weakSelf.actionsDisabled = NO;
-                  // TODO: weakSelf.isRegisteredAsNewUser = operation.isNewUser;
-                  [weakSelf continueRegistrationFlowAfterSocialRegistration];
-              }
-              else
-              {
-                  [weakSelf handleFacebookLoginError:error];
-              }
-          }];
+         [weakSelf queueLoginOperationWithFacebook:^(NSError *_Nullable error) {
+             if ( error == nil )
+             {
+                 weakSelf.actionsDisabled = NO;
+                 // TODO: weakSelf.isRegisteredAsNewUser = operation.isNewUser;
+                 [weakSelf continueRegistrationFlowAfterSocialRegistration];
+             }
+             else
+             {
+                 [weakSelf handleFacebookLoginError:error];
+             }
+         }];
      }];
     
     [self showLoadingScreen];
@@ -457,9 +455,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [self setOnLoadingAppeared:^
      {
-         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:email password:password];
-         [operation queueInBackground:^(NSError *_Nullable error)
-         {
+         [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
              if ( error == nil )
              {
                  completion(YES, nil);
@@ -489,28 +485,26 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     __weak typeof(self) weakSelf = self;
     [self setOnLoadingAppeared:^
      {
-         NetworkOperation *operation = [AccountCreateOperationObjc createWithEmail:email password:password];
-         [operation queueInBackground:^(NSError *_Nullable error)
-          {
-              if ( error == nil )
-              {
-                  BOOL completeProfile = YES; // FIXME: [user.status isEqualToString:kUserStatusComplete];
-                  completion(YES, completeProfile, nil);
-                  if (completeProfile)
-                  {
-                      [weakSelf onAuthenticationFinishedWithSuccess:YES];
-                  }
-                  else
-                  {
-                      [weakSelf continueRegistrationFlow];
-                  }
-              }
-              else
-              {
-                  completion(NO, NO, error);
-                  [weakSelf dismissLoadingScreen];
-              }
-          }];
+         [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+             if ( error == nil )
+             {
+                 BOOL completeProfile = YES; // FIXME: [user.status isEqualToString:kUserStatusComplete];
+                 completion(YES, completeProfile, nil);
+                 if (completeProfile)
+                 {
+                     [weakSelf onAuthenticationFinishedWithSuccess:YES];
+                 }
+                 else
+                 {
+                     [weakSelf continueRegistrationFlow];
+                 }
+             }
+             else
+             {
+                 completion(NO, NO, error);
+                 [weakSelf dismissLoadingScreen];
+             }
+         }];
      }];
     
     [self showLoadingScreen];
