@@ -22,7 +22,7 @@ NSString * const kDefaultTextKey = @"defaultText";
 static NSString * const kCharacterLimit = @"characterLimit";
 static const CGFloat kAccessoryViewHeight = 44.0f;
 
-@interface VEditableTextPostViewController() <UITextViewDelegate, VContentInputAccessoryViewDelegate>
+@interface VEditableTextPostViewController() <VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, strong) NSString *placeholderText;
 @property (nonatomic, strong) UIButton *overlayButton;
@@ -305,9 +305,12 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self hidePlaceholderText];
+    if ( [super respondsToSelector:@selector(textViewDidChange:)] )
+    {
+        [super textViewDidChange:textView];
+    }
     
-    self.text = self.textView.text;
+    [self hidePlaceholderText];
     
     [self updateAddedAndDeletedHashtags];
     
