@@ -397,6 +397,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
+         
          // Reload follow counts when user pulls to refresh
          [self reloadUserFollowCounts];
      }

@@ -320,6 +320,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     if ( user != nil )
     {
         self.mainUser = user;
+        [self.mainUser.managedObjectContext saveToPersistentStore:nil];
+        
         self.loginType = loginType;
 
         [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
