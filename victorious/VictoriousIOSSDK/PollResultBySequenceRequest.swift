@@ -30,4 +30,3 @@ public struct PollResultBySequenceRequest: RequestType {
         return voteResults
     }
 }
- 

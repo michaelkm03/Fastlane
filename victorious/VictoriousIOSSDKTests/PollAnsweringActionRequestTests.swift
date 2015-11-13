@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class PollAnsweringActionRequestTests: XCTestCase {
     
-    func testSelectingFirstAnswerRequest() {
+    func testAnsweringActionRequest() {
         let mockAnswerID: Int64 = 101
         let mockSequenceID: Int64 = 102
         
