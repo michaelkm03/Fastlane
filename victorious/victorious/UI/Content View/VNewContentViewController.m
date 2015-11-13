@@ -228,6 +228,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.contentCell playAd:self.viewModel.monetizationPartner
                          details:self.viewModel.monetizationDetails];
     }
+    
+    [self.contentCell.sequencePreviewView setLikebuttonVisible:YES];
 }
 
 - (void)didUpdatePollsData
@@ -598,6 +600,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCell prepareForDismissal];
     [self setAccessoryButtonsHidden:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.contentCell.sequencePreviewView setLikebuttonVisible:NO];
 }
 
 #pragma mark - Private Mehods

@@ -58,4 +58,6 @@
 
 - (void)updateBackgroundColorAnimated:(BOOL)animated;
 
+- (void)setLikebuttonVisible:(BOOL)visible;
+
 @end

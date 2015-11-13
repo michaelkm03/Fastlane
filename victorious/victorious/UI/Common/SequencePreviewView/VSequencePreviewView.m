@@ -258,8 +258,8 @@
 
 - (void)configureLikeButtonForSequence:(VSequence *)sequence
 {
-    const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
-    if ( isLikeButtonTemplateEnabled && !self.shouldHideLikeButton )
+    self.likeButton.hidden = YES;
+    if ([self canShowLikeButton])
     {
         __weak typeof(self) welf = self;
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
@@ -269,12 +269,10 @@
              [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
              [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];
-        self.likeButton.hidden = NO;
     }
     else
     {
         self.expressionsObserver = nil;
-        self.likeButton.hidden = YES;
     }
     
     [self layoutIfNeeded];
@@ -283,6 +281,24 @@
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
     [self.detailDelegate previewView:self didLikeSequence:self.sequence completion: nil];
+}
+
+- (void)setLikebuttonVisible:(BOOL)visible
+{
+    if (visible && [self canShowLikeButton])
+    {
+        self.likeButton.hidden = NO;
+    }
+    else
+    {
+        self.likeButton.hidden = YES;
+    }
+}
+
+- (BOOL)canShowLikeButton
+{
+    const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    return isLikeButtonTemplateEnabled && !self.shouldHideLikeButton;
 }
 
 @end
