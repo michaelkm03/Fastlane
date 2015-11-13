@@ -1,5 +1,5 @@
 //
-//  FlagContentRequestTests.swift
+//  FlagSequenceRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/13/15.
@@ -9,11 +9,11 @@
 import XCTest
 import VictoriousIOSSDK
 
-class FlagContentRequestTests: XCTestCase {
+class FlagSequenceRequestTests: XCTestCase {
     
-    func testFlaggingContentRequest() {
+    func testFlaggingSequenceRequest() {
         let mockSequenceID: Int64 = 101
-        let flagRequest = FlagContentRequest(sequenceID: mockSequenceID)
+        let flagRequest = FlagSequenceRequest(sequenceID: mockSequenceID)
         let urlRequest = flagRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/sequence/flag")

@@ -1,5 +1,5 @@
 //
-//  FlagContentRequest.swift
+//  FlagSequenceRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/13/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct FlagContentRequest: RequestType {
+public struct FlagSequenceRequest: RequestType {
     private let sequenceID: Int64
     
     public init(sequenceID: Int64) {
