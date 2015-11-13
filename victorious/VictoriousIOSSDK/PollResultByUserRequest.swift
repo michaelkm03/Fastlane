@@ -20,13 +20,13 @@ public struct PollResultByUserRequest: RequestType {
         return NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Vote] {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [PollAnswer] {
         guard let votesJSONArray = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let votes = votesJSONArray.flatMap { Vote(json: $0) }
+        let pollAnswers = votesJSONArray.flatMap { PollAnswer(json: $0) }
         
-        return votes
+        return pollAnswers
     }
 }

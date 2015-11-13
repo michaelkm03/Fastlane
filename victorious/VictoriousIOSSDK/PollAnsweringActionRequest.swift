@@ -10,16 +10,16 @@ import Foundation
 
 /// The request for creating user's answer to a poll
 public struct PollAnsweringActionRequest: RequestType {
-    public let vote: Vote
+    public let pollAnswer: PollAnswer
     
     public init(sequenceID: Int64, answerID: Int64) {
-        self.vote = Vote(sequenceID: sequenceID, answerID: answerID)
+        self.pollAnswer = PollAnswer(sequenceID: sequenceID, answerID: answerID)
     }
     
     public var urlRequest: NSURLRequest {
         let pollAnswerInfo = [
-            "answer_id": vote.answerID,
-            "sequence_id": vote.sequenceID
+            "answer_id": pollAnswer.answerID,
+            "sequence_id": pollAnswer.sequenceID
         ]
         
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/pollresult/create")!)

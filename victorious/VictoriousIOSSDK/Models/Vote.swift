@@ -1,5 +1,5 @@
 //
-//  Vote.swift
+//  PollAnswer.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/11/15.

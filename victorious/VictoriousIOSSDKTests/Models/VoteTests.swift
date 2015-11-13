@@ -1,5 +1,5 @@
 //
-//  VoteTests.swift
+//  PollAnswerTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/11/15.
@@ -10,27 +10,27 @@ import XCTest
 import VictoriousIOSSDK
 import SwiftyJSON
 
-class VoteTests: XCTestCase {
+class PollAnswerTests: XCTestCase {
     
     func testValid() {
         let mockSequenceID = 101
         let mockAnswerID = 102
         let validJSON = JSON(["sequence_id": mockSequenceID, "answer_id": mockAnswerID])
         
-        guard let vote = Vote(json: validJSON) else {
+        guard let pollAnswer = PollAnswer(json: validJSON) else {
             XCTFail("Initialization failed")
             return
         }
         
-        XCTAssertEqual(vote.sequenceID, Int64(mockSequenceID))
-        XCTAssertEqual(vote.answerID, Int64(mockAnswerID))
+        XCTAssertEqual(pollAnswer.sequenceID, Int64(mockSequenceID))
+        XCTAssertEqual(pollAnswer.answerID, Int64(mockAnswerID))
     }
     
     func testInvalid() {
         let invalidJSON = JSON(["sequence_id": false, "answer_id": "Not really an ID"])
         let anotherInvalidJSON = JSON([])
         
-        XCTAssertNil(Vote(json: invalidJSON))
-        XCTAssertNil(Vote(json: anotherInvalidJSON))
+        XCTAssertNil(PollAnswer(json: invalidJSON))
+        XCTAssertNil(PollAnswer(json: anotherInvalidJSON))
     }
 }
