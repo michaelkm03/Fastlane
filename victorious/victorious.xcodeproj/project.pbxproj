@@ -1122,7 +1122,6 @@
 		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
 		DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */; };
-		DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */; };
 		DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B551A425A7200B4ADC8 /* VHashtag.m */; };
 		DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */; };
 		DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */; };
@@ -1131,10 +1130,6 @@
 		DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 		DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */; };
-		DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */; };
-		DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */; };
-		DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */; };
-		DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */; };
 		DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */; };
 		DBAD890219F5BA5B00D678A0 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */; };
 		DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890319F5BAC500D678A0 /* CoreText.framework */; };
@@ -1142,8 +1137,6 @@
 		DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */; };
 		DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */; };
 		DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1A0491A0025F600E16D62 /* VAdViewController.m */; };
-		DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */; };
-		DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC45CD319F4C4C1003079C4 /* libLiveRail.a */; };
 		DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */; };
 		DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7919F5860A00E0AC95 /* AdSupport.framework */; };
 		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
@@ -3378,8 +3371,6 @@
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTransition.h; sourceTree = "<group>"; };
 		DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTransition.m; sourceTree = "<group>"; };
-		DB34DC5A1A09B5AF001EC711 /* VLiveRailAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLiveRailAdViewController.h; sourceTree = "<group>"; };
-		DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLiveRailAdViewController.m; sourceTree = "<group>"; };
 		DB531B541A425A7200B4ADC8 /* VHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtag.h; sourceTree = "<group>"; };
 		DB531B551A425A7200B4ADC8 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
 		DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelperTests.m; sourceTree = "<group>"; };
@@ -3393,26 +3384,6 @@
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
 		DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstTimeInstallHelper.h; sourceTree = "<group>"; };
 		DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelper.m; sourceTree = "<group>"; };
-		DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTremorVideoAd.a; sourceTree = "<group>"; };
-		DBAD6C9B1A2FD67F00AB5A4B /* TremorVideoAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TremorVideoAd.h; sourceTree = "<group>"; };
-		DBAD6C9D1A2FD7B700AB5A4B /* VTremorAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTremorAdViewController.h; sourceTree = "<group>"; };
-		DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTremorAdViewController.m; sourceTree = "<group>"; };
-		DBAD88ED19F5B83A00D678A0 /* OpenXMSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenXMSDK.h; sourceTree = "<group>"; };
-		DBAD88EE19F5B83A00D678A0 /* OXMAdBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBanner.h; sourceTree = "<group>"; };
-		DBAD88EF19F5B83A00D678A0 /* OXMAdBannerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBannerController.h; sourceTree = "<group>"; };
-		DBAD88F019F5B83A00D678A0 /* OXMAdBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdBannerView.h; sourceTree = "<group>"; };
-		DBAD88F119F5B83A00D678A0 /* OXMAdInterstitialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdInterstitialController.h; sourceTree = "<group>"; };
-		DBAD88F219F5B83A00D678A0 /* OXMAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMAdRequest.h; sourceTree = "<group>"; };
-		DBAD88F319F5B83A00D678A0 /* OXMConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMConsole.h; sourceTree = "<group>"; };
-		DBAD88F419F5B83A00D678A0 /* OXMErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMErrors.h; sourceTree = "<group>"; };
-		DBAD88F519F5B83A00D678A0 /* OXMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMFunctions.h; sourceTree = "<group>"; };
-		DBAD88F619F5B83A00D678A0 /* OXMMediaPlaybackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMMediaPlaybackView.h; sourceTree = "<group>"; };
-		DBAD88F719F5B83A00D678A0 /* OXMNativeAdData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAdData.h; sourceTree = "<group>"; };
-		DBAD88F819F5B83A00D678A0 /* OXMNativeAdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAdRequest.h; sourceTree = "<group>"; };
-		DBAD88F919F5B83A00D678A0 /* OXMNativeAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMNativeAds.h; sourceTree = "<group>"; };
-		DBAD88FA19F5B83A00D678A0 /* OXMVideoAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXMVideoAdManager.h; sourceTree = "<group>"; };
-		DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOpenXMSDK.a; sourceTree = "<group>"; };
-		DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = OpenXMSDKResources.bundle; sourceTree = "<group>"; };
 		DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		DBAD890319F5BAC500D678A0 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -3421,10 +3392,6 @@
 		DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DBB1A0481A0025F600E16D62 /* VAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdViewController.h; sourceTree = "<group>"; };
 		DBB1A0491A0025F600E16D62 /* VAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdViewController.m; sourceTree = "<group>"; };
-		DBB1A04E1A00AF4500E16D62 /* VOpenXAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VOpenXAdViewController.h; sourceTree = "<group>"; };
-		DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VOpenXAdViewController.m; sourceTree = "<group>"; };
-		DBC45CD319F4C4C1003079C4 /* libLiveRail.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libLiveRail.a; sourceTree = "<group>"; };
-		DBC45CD419F4C4C1003079C4 /* LiveRailAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRailAdManager.h; sourceTree = "<group>"; };
 		DBC45CD619F4CBD0003079C4 /* VAdVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdVideoPlayerViewController.h; sourceTree = "<group>"; };
 		DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdVideoPlayerViewController.m; sourceTree = "<group>"; };
 		DBD02A7919F5860A00E0AC95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -3771,7 +3738,6 @@
 			files = (
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */,
-				DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */,
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
 				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
@@ -3791,9 +3757,7 @@
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
-				DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
-				DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */,
 				0370FBCA1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */,
 				1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */,
 			);
@@ -5099,7 +5063,6 @@
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
-				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
 				C348D1FD1B8C03CA0040042C /* DominantColor */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
@@ -7642,15 +7605,6 @@
 			path = HashTags;
 			sourceTree = "<group>";
 		};
-		DBAD6C991A2FD49300AB5A4B /* Tremor */ = {
-			isa = PBXGroup;
-			children = (
-				DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */,
-				DBAD6C9B1A2FD67F00AB5A4B /* TremorVideoAd.h */,
-			);
-			path = Tremor;
-			sourceTree = "<group>";
-		};
 		DBAD775B19F711D900B6A939 /* Monetization */ = {
 			isa = PBXGroup;
 			children = (
@@ -7660,65 +7614,9 @@
 				DBC45CD719F4CBD0003079C4 /* VAdVideoPlayerViewController.m */,
 				DBB1A0481A0025F600E16D62 /* VAdViewController.h */,
 				DBB1A0491A0025F600E16D62 /* VAdViewController.m */,
-				DB34DC5A1A09B5AF001EC711 /* VLiveRailAdViewController.h */,
-				DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */,
-				DBB1A04E1A00AF4500E16D62 /* VOpenXAdViewController.h */,
-				DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */,
-				DBAD6C9D1A2FD7B700AB5A4B /* VTremorAdViewController.h */,
-				DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */,
 				A7C15E771BAA50B2007B969C /* VMonetizationPartner.h */,
 			);
 			path = Monetization;
-			sourceTree = "<group>";
-		};
-		DBAD88EA19F5B7F200D678A0 /* Ad Networks */ = {
-			isa = PBXGroup;
-			children = (
-				DBC45CD219F4C496003079C4 /* LiveRail */,
-				DBAD88EB19F5B83A00D678A0 /* OpenXMSDK */,
-				DBAD6C991A2FD49300AB5A4B /* Tremor */,
-			);
-			path = "Ad Networks";
-			sourceTree = "<group>";
-		};
-		DBAD88EB19F5B83A00D678A0 /* OpenXMSDK */ = {
-			isa = PBXGroup;
-			children = (
-				DBAD88EC19F5B83A00D678A0 /* Headers */,
-				DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */,
-				DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */,
-			);
-			path = OpenXMSDK;
-			sourceTree = "<group>";
-		};
-		DBAD88EC19F5B83A00D678A0 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				DBAD88ED19F5B83A00D678A0 /* OpenXMSDK.h */,
-				DBAD88EE19F5B83A00D678A0 /* OXMAdBanner.h */,
-				DBAD88EF19F5B83A00D678A0 /* OXMAdBannerController.h */,
-				DBAD88F019F5B83A00D678A0 /* OXMAdBannerView.h */,
-				DBAD88F119F5B83A00D678A0 /* OXMAdInterstitialController.h */,
-				DBAD88F219F5B83A00D678A0 /* OXMAdRequest.h */,
-				DBAD88F319F5B83A00D678A0 /* OXMConsole.h */,
-				DBAD88F419F5B83A00D678A0 /* OXMErrors.h */,
-				DBAD88F519F5B83A00D678A0 /* OXMFunctions.h */,
-				DBAD88F619F5B83A00D678A0 /* OXMMediaPlaybackView.h */,
-				DBAD88F719F5B83A00D678A0 /* OXMNativeAdData.h */,
-				DBAD88F819F5B83A00D678A0 /* OXMNativeAdRequest.h */,
-				DBAD88F919F5B83A00D678A0 /* OXMNativeAds.h */,
-				DBAD88FA19F5B83A00D678A0 /* OXMVideoAdManager.h */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
-		DBC45CD219F4C496003079C4 /* LiveRail */ = {
-			isa = PBXGroup;
-			children = (
-				DBC45CD319F4C4C1003079C4 /* libLiveRail.a */,
-				DBC45CD419F4C4C1003079C4 /* LiveRailAdManager.h */,
-			);
-			path = LiveRail;
 			sourceTree = "<group>";
 		};
 		DBDD7D5C1A97F49C0023CBF9 /* Location */ = {
@@ -8491,7 +8389,6 @@
 				F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */,
-				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */,
@@ -9186,7 +9083,6 @@
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
-				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
@@ -9315,7 +9211,6 @@
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
 				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
-				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				F0A34A811B9FC0A8000D70EF /* TrackableShelf.swift in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
@@ -9405,7 +9300,6 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
-				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
 				797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */,
 				A721E92A1B572454000B7901 /* VInteractionAction+RestKit.m in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,
@@ -10526,12 +10420,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -11332,12 +11221,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -11643,12 +11527,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -11677,12 +11556,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
@@ -11841,12 +11715,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
