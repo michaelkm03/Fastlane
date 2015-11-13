@@ -420,10 +420,8 @@
 		67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
 		67FD54B71BF68D5300CF52F7 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */; };
-		67FD54B91BF68D8D00CF52F7 /* FlagMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B81BF68D8D00CF52F7 /* FlagMessageRequest.swift */; };
 		67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */; };
 		67FD54BD1BF68F7100CF52F7 /* FlagCommentRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */; };
-		67FD54BF1BF68F8000CF52F7 /* FlagMessageRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BE1BF68F8000CF52F7 /* FlagMessageRequestTests.swift */; };
 		67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */; };
 		67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C21BF6939400CF52F7 /* DeleteCommentRequest.swift */; };
 		67FD54C51BF693A800CF52F7 /* DeleteConversationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C41BF693A800CF52F7 /* DeleteConversationRequest.swift */; };
@@ -2229,10 +2227,8 @@
 		67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowersResponse.json; sourceTree = "<group>"; };
 		67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
 		67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentRequest.swift; sourceTree = "<group>"; };
-		67FD54B81BF68D8D00CF52F7 /* FlagMessageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagMessageRequest.swift; sourceTree = "<group>"; };
 		67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentRequestTests.swift; sourceTree = "<group>"; };
-		67FD54BE1BF68F8000CF52F7 /* FlagMessageRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagMessageRequestTests.swift; sourceTree = "<group>"; };
 		67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSequenceRequest.swift; sourceTree = "<group>"; };
 		67FD54C21BF6939400CF52F7 /* DeleteCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCommentRequest.swift; sourceTree = "<group>"; };
 		67FD54C41BF693A800CF52F7 /* DeleteConversationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConversationRequest.swift; sourceTree = "<group>"; };
@@ -4746,7 +4742,6 @@
 				03314F581BE40F3200EE74FD /* Dictionary+URLEncodedString.swift */,
 				67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */,
 				79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */,
-				67FD54B81BF68D8D00CF52F7 /* FlagMessageRequest.swift */,
 				67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */,
 				67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */,
 				C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */,
@@ -4793,7 +4788,6 @@
 				03314F441BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift */,
 				67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */,
 				79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */,
-				67FD54BE1BF68F8000CF52F7 /* FlagMessageRequestTests.swift */,
 				67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */,
 				67A42FC61BF298050087FBE9 /* FollowersRequestTest.swift */,
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
@@ -9661,7 +9655,6 @@
 				A7EF1BCD1BF2754D00D429DE /* Sequence.Category.swift in Sources */,
 				A7EF1BCB1BF2754D00D429DE /* Interaction.swift in Sources */,
 				A7EF1BC91BF2754D00D429DE /* Answer.swift in Sources */,
-				67FD54B91BF68D8D00CF52F7 /* FlagMessageRequest.swift in Sources */,
 				6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
 				A7EF1BD01BF2754D00D429DE /* StreamItemType.swift in Sources */,
@@ -9687,7 +9680,6 @@
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
 				67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */,
-				67FD54BF1BF68F8000CF52F7 /* FlagMessageRequestTests.swift in Sources */,
 				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
