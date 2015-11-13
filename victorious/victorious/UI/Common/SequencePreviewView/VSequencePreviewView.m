@@ -282,11 +282,7 @@
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    likeButton.enabled = NO;
-    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion:^(BOOL success)
-     {
-         likeButton.enabled = YES;
-     }];
+    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion: nil];
 }
 
 @end
