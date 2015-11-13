@@ -164,6 +164,7 @@
 		035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */; };
 		035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */; };
 		035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */; };
+		035B267D1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */; };
 		035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 035CD7891BA222DE008A01EB /* Explore.storyboard */; };
 		035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */; };
 		035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */; };
@@ -579,7 +580,6 @@
 		A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */; };
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
-		A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8F1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib */; };
 		A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
@@ -1603,6 +1603,15 @@
 		035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VDefaultTemplate.h"; sourceTree = "<group>"; };
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
 		035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultTemplateTests.m; sourceTree = "<group>"; };
+		035B267E1BF67AEE005D397C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCardSeeMoreDirectoryCell.xib; sourceTree = "<group>"; };
+		035B26811BF67AF2005D397C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B26831BF67AF4005D397C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B26851BF67AF5005D397C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B26871BF67AF6005D397C /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B26891BF67AF8005D397C /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B268B1BF67AF9005D397C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B268D1BF67AFA005D397C /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VCardSeeMoreDirectoryCell.strings; sourceTree = "<group>"; };
+		035B268F1BF67AFC005D397C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VCardSeeMoreDirectoryCell.strings"; sourceTree = "<group>"; };
 		035CD7881BA222DE008A01EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Explore.storyboard; sourceTree = "<group>"; };
 		035CD78D1BA222E2008A01EB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Explore.strings; sourceTree = "<group>"; };
 		035CD78F1BA222E4008A01EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Explore.strings; sourceTree = "<group>"; };
@@ -2379,7 +2388,6 @@
 		A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardDirectoryCell.xib; sourceTree = "<group>"; };
 		A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardSeeMoreDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardSeeMoreDirectoryCell.m; sourceTree = "<group>"; };
-		A7299E8F1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardSeeMoreDirectoryCell.xib; sourceTree = "<group>"; };
 		A7299EA01AA69C0200B6BC1F /* VAuthorizationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationProvider.h; sourceTree = "<group>"; };
 		A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizedAction.h; sourceTree = "<group>"; };
 		A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedAction.m; sourceTree = "<group>"; };
@@ -7687,7 +7695,7 @@
 				A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */,
 				A7299E8D1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.h */,
 				A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */,
-				A7299E8F1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib */,
+				035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */,
 			);
 			path = "Card Directory Cell";
 			sourceTree = "<group>";
@@ -8263,6 +8271,7 @@
 				ja,
 				ko,
 				vi,
+				"zh-Hant",
 			);
 			mainGroup = BE171D6D1868BE64004E5202;
 			productRefGroup = BE171D771868BE64004E5202 /* Products */;
@@ -8465,7 +8474,7 @@
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
-				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,
+				035B267D1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib in Resources */,
 				035CD7871BA222DE008A01EB /* Explore.storyboard in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */,
@@ -9979,6 +9988,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		035B267F1BF67AEE005D397C /* VCardSeeMoreDirectoryCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				035B267E1BF67AEE005D397C /* Base */,
+				035B26811BF67AF2005D397C /* es */,
+				035B26831BF67AF4005D397C /* fr */,
+				035B26851BF67AF5005D397C /* de */,
+				035B26871BF67AF6005D397C /* pt */,
+				035B26891BF67AF8005D397C /* ja */,
+				035B268B1BF67AF9005D397C /* ko */,
+				035B268D1BF67AFA005D397C /* vi */,
+				035B268F1BF67AFC005D397C /* zh-Hant */,
+			);
+			name = VCardSeeMoreDirectoryCell.xib;
+			sourceTree = "<group>";
+		};
 		035CD7891BA222DE008A01EB /* Explore.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
