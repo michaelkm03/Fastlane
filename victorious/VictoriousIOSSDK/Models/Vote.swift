@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct Vote {
+public struct PollAnswer {
     public let sequenceID: Int64
     public let answerID: Int64
     
@@ -19,7 +19,7 @@ public struct Vote {
     }
 }
 
-extension Vote {
+extension PollAnswer {
     public init?(json: JSON) {
         guard let sequenceID = Int64(json["sequence_id"].stringValue),
         let answerID = Int64(json["answer_id"].stringValue) else {
