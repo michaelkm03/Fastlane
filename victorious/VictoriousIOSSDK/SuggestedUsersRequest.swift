@@ -18,14 +18,17 @@ public struct SuggestedUsersRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let suggestedUsers = suggestedUsersJSON.flatMap ({ jsonValue -> SuggestedUser? in
-            guard let validUser = User(json: jsonValue) else {
+        let suggestedUsers = suggestedUsersJSON.flatMap { json -> SuggestedUser? in
+            var userJson = json
+            guard let validUser = User(json: userJson) else {
                 return nil
             }
-            return SuggestedUser (user: validUser,
-                recentSequences: jsonValue["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) })
-        })
-        
+            for i in 0..<userJson["recent_sequences"].count {
+                userJson["recent_sequences"][i][ "user" ] = userJson
+            }
+            let sequences = userJson["recent_sequences"].arrayValue.flatMap{ Sequence(json:$0) }
+            return SuggestedUser(user: validUser, recentSequences: sequences)
+        }
         return suggestedUsers
     }
 }
