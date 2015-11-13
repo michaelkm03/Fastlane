@@ -16,8 +16,8 @@ public struct VoteResult {
 
 extension VoteResult {
     public init?(json: JSON) {
-        guard let answerID = Int64(json["id"].stringValue),
-            let count = json["count"].int64 else {
+        guard let answerID = Int64(json["id"].stringValue) ?? Int64(json["answer_id"].stringValue),
+            let count = json["count"].int64 ?? json["total_count"].int64 else {
                 return nil
         }
         self.voteID = answerID
