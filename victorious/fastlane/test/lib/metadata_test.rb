@@ -7,7 +7,8 @@ require 'vams/app'
 module VAMS
   class MetadataTest < Minitest::Test
     def test_extracts_metadata
-      app      = Client.app_by_build_name('LeachyPeachy')
+      client   = Client.new
+      app      = client.app_by_build_name('LeachyPeachy')
       metadata = Metadata.new(app)
 
       assert_equal('Victorious Inc',                    metadata.copyright)

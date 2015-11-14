@@ -1,29 +1,33 @@
 require 'json'
+require 'digest/sha1'
 require 'vams/app'
 require 'vams/payloads'
 require 'vams/environment'
 require 'httparty'
 
 module VAMS
-  module Client
-    extend self
+  class Client
+    attr_reader :environment, :date
 
+    DEFAULT_USER_ID = 0
     module Endpoints
       LOGIN = '/api/login'
     end
 
-    DEFAULT_USER_ID = 0
+    def initialize(environment: :staging, date: construct_date)
+      @environment = environment
+      @date        = date
+    end
 
-    def authenticate(date: `date`.split(" ").join(" "), environment: :staging)
-      env = Environment.send(environment)
-      date      = date.to_s
+    def authenticate
+      env       = Environment.send(environment)
       post_data = {
         email: env.username,
         password: env.password
       }
-      headers = {
+      headers   = {
         'User-Agent' => env.useragent,
-        'Date' => date
+        'Date' => @date.to_s
       }
 
       response = send_request(type:    :post,
@@ -65,6 +69,10 @@ module VAMS
     def json_from_file(path:)
       json_string = File.read(path)
       JSON.parse(json_string)
+    end
+
+    def construct_date
+      `date`.split(" ").join(" ")
     end
   end
 end
