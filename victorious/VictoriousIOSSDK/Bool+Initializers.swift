@@ -21,7 +21,7 @@ public extension Bool {
     }
     
     init?<T : IntegerType>( _ integer: T) {
-        if integer == 01 {
+        if integer == 1 {
             self.init(true)
         } else if integer == 0 {
             self.init(false)
