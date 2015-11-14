@@ -110,14 +110,19 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 
 #pragma mark - public
 
+- (NSString *)text
+{
+    return self.textPostTextView.text;
+}
+
 - (void)setText:(NSString *)text
 {
-    if ( [_text isEqualToString:text] )
+    if ( [self.textPostTextView.text isEqualToString:text] )
     {
         return;
     }
     
-    _text = text;
+    self.textPostTextView.text = text;
     [self updateTextView];
 }
 
@@ -206,11 +211,11 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 
 - (void)updateTextView
 {
-    if ( self.text != nil )
+    NSString *text = self.text;
+    if ( text != nil )
     {
         [self updateTextView:self.textPostTextView
-                    withText:self.text
-               calloutRanges:[self.calloutHelper calloutRangesForText:self.text]
+               calloutRanges:[self.calloutHelper calloutRangesForText:text]
               textAttributes:self.attributes
            calloutAttributes:self.calloutAttributes];
     }
@@ -227,45 +232,34 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
 }
 
 - (void)updateTextView:(VTextPostTextView *)textPostTextView
-              withText:(NSString *)text
          calloutRanges:(NSArray *)calloutRanges
         textAttributes:(NSDictionary *)textAttributes
      calloutAttributes:(NSDictionary *)calloutAttributes
 {
-    if ( text == nil )
-    {
-        return;
-    }
-    
     const BOOL wasSelected = textPostTextView.selectable;
     textPostTextView.selectable = YES;
     
-    textPostTextView.attributedText = [[NSAttributedString alloc] initWithString:@" " attributes:textAttributes];
-    textPostTextView.textContainer.size = CGSizeMake( textPostTextView.bounds.size.width, CGFLOAT_MAX );
-    NSRange range = { 0, 1 };
-    CGRect characterBounds = [textPostTextView.layoutManager boundingRectForGlyphRange:range inTextContainer:textPostTextView.textContainer];
+    CGSize characterBounds = [@" " sizeWithAttributes:textAttributes];
     
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
-    textPostTextView.attributedText = attributedText;
-    
+    [self.textView.textStorage setAttributes:textAttributes range:NSMakeRange(0, textPostTextView.textStorage.length)];
     self.textView.tintColor = calloutAttributes[ NSForegroundColorAttributeName ];
     self.textView.linkTextTouchAttributes = @{ NSBackgroundColorAttributeName : [UIColor clearColor],
                                                NSForegroundColorAttributeName : [self.textView.tintColor v_colorDarkenedBy:0.25] };
     
-    [self.textCalloutFormatter applyAttributes:calloutAttributes toText:attributedText inCalloutRanges:calloutRanges];
-    [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
-    textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
+    [self.textCalloutFormatter applyAttributes:calloutAttributes toText:textPostTextView.textStorage inCalloutRanges:calloutRanges];
+    [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:textPostTextView.textStorage withCalloutRanges:calloutRanges];
     
     //This assures that the layout of the text will align with the text currently populate the text view
     [textPostTextView layoutIfNeeded];
     
+    NSString *text = textPostTextView.textStorage.string;
     NSCache *cache = [[self class] backgroundFramesCache];
     NSString *cacheKey = [NSString stringWithFormat:@"%@ %@", text, NSStringFromCGRect( textPostTextView.frame )];
     NSArray *backgroundFrames = [cache objectForKey:cacheKey];
     if ( backgroundFrames == nil || text.length == 0 )
     {
         backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:textPostTextView
-                                                                             characterWidth:characterBounds.size.width
+                                                                             characterWidth:characterBounds.width
                                                                         calloutRangeObjects:calloutRanges];
         [cache setObject:backgroundFrames forKey:cacheKey];
     }
@@ -273,6 +267,13 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
     self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
     
     textPostTextView.selectable = wasSelected;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self updateTextView];
 }
 
 #pragma mark - CCHLinkTextViewDelegate
