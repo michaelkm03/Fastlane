@@ -263,8 +263,8 @@
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {
              __strong typeof(welf) strongSelf = welf;
-             [strongSelf.likeButton setActive:self.sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:self.sequence.likeCount.integerValue];
+             [strongSelf.likeButton setActive:strongSelf.sequence.isLikedByMainUser.boolValue];
+             [strongSelf.likeButton setCount:strongSelf.sequence.likeCount.integerValue];
          }];
         self.likeButton.hidden = NO;
     }
