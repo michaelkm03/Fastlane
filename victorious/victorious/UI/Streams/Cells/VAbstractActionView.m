@@ -138,12 +138,7 @@
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     
-    UIButton *button = sender;
-    button.enabled = NO;
-    [responder willLikeSequence:self.sequence withView:sender completion:^(BOOL success)
-     {
-         button.enabled = YES;
-    }];
+    [responder willLikeSequence:self.sequence withView:sender completion:nil];
 }
 
 @end
