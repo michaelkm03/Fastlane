@@ -1,5 +1,5 @@
 //
-//  Dictionary+URLEncodedString.swift
+//  NSDictionary+URLEncodedString.swift
 //  VictoriousIOSSDK
 //
 //  Created by Josh Hinman on 10/25/15.
@@ -10,6 +10,7 @@ import Foundation
 
 private let keySeparator = "&"
 private let valueSeparator = "="
+private let arrayValueSeperator = "[]"
 
 private let queryPartAllowedCharacterSet: NSCharacterSet = {
     let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
@@ -17,23 +18,41 @@ private let queryPartAllowedCharacterSet: NSCharacterSet = {
     return mutableCharacterSet.copy() as! NSCharacterSet
 }()
 
-extension Dictionary {
-    /// Returns the contents of this dictionary as a URL-encoded string
-    /// (e.g. key=value&otherkey=othervalue&...
+extension NSDictionary {
     public func vsdk_urlEncodedString() -> String {
         let encodedString = NSMutableString()
         for (key, value) in self {
-            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet),
-               let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
-                if encodedString.length != 0 {
-                    encodedString.appendString(keySeparator)
+            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+                
+                // Checks for an array value and encodes it appropriately
+                if let valueArray = value as? NSArray {
+                    for value in valueArray {
+                        if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+                            encodedString.appendURLParameter(key, value: value, useArraySeperator: true)
+                        }
+                    }
                 }
-                encodedString.appendString(key)
-                encodedString.appendString(valueSeparator)
-                encodedString.appendString(value)
+                else if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(queryPartAllowedCharacterSet) {
+                    encodedString.appendURLParameter(key, value: value)
+                }
             }
+            
         }
         return encodedString as String
+    }
+}
+
+private extension NSMutableString {
+    func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
+        if self.length != 0 {
+            self.appendString(keySeparator)
+        }
+        self.appendString(key)
+        if useArraySeperator {
+            self.appendString(arrayValueSeperator)
+        }
+        self.appendString(valueSeparator)
+        self.appendString(value)
     }
 }
 
@@ -44,7 +63,7 @@ extension NSMutableURLRequest {
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public func vsdk_addURLEncodedFormPost<K, V>(postValues: [K : V]) {
+    public func vsdk_addURLEncodedFormPost(postValues: NSDictionary) {
         HTTPMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         HTTPBody = postValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
