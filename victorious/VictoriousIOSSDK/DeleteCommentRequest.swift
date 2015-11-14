@@ -20,7 +20,7 @@ public struct DeleteCommentRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/remove")!)
         
-        var commentInfo: [String: Any] = ["comment_id": commentID]
+        var commentInfo: [String: AnyObject] = ["comment_id": NSNumber(longLong: commentID)]
         if let reason = removalReason {
             commentInfo["removal_reason"] = reason
         }

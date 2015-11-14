@@ -17,7 +17,7 @@ public struct FlagCommentRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/flag")!)
-        request.vsdk_addURLEncodedFormPost(["comment_id": commentID])
+        request.vsdk_addURLEncodedFormPost(["comment_id": NSNumber(longLong: commentID)])
         
         return request
     }
