@@ -11,28 +11,29 @@ module VAMS
 
     DEFAULT_USER_ID = 0
     module Endpoints
-      LOGIN = '/api/login'
+      LOGIN     = '/api/login'
+      APPS_LIST = '/api/app/apps_list'
     end
 
     def initialize(environment: :staging, date: construct_date)
       @environment = environment
       @date        = date
+      @env         = Environment.send(environment.to_sym)
     end
 
     def authenticate
-      env       = Environment.send(environment)
       post_data = {
-        email: env.username,
-        password: env.password
+        email:    @env.username,
+        password: @env.password
       }
       headers   = {
-        'User-Agent' => env.useragent,
-        'Date' => @date.to_s
+        'User-Agent' => @env.useragent,
+        'Date'       => @date.to_s
       }
 
       response = send_request(type:    :post,
                               path:    Endpoints::LOGIN,
-                              host:    env.host,
+                              host:    @env.host,
                               headers: headers,
                               options: post_data)
 
@@ -45,8 +46,19 @@ module VAMS
     end
 
     def apps_to_build
-      json = json_from_file(path: APPS_TO_BUILD_JSON_PATH)
-      json.map { |data| App.new(data) }
+      endpoint = Endpoints::APPS_LIST
+      headers = {
+        'Authorization' => construct_auth_header(endpoint: endpoint),
+        'User-Agent'    => @env.useragent,
+        'Date'          => @date.to_s
+      }
+
+      response = send_request(type:    :get,
+                              path:    endpoint,
+                              host:    @env.host,
+                              headers: headers)
+      json     = JSON.parse(response.body)
+      json['payload'].map { |data| App.new(data) }
     end
 
     def app_by_build_name(build_name)
@@ -56,8 +68,7 @@ module VAMS
 
     def submit_result(result:, environment:)
       options = { body: result.to_json }
-      env     = Environment.send(environment.to_sym)
-      send_request(type: :post, host: env.host, path: '/submission_result', options: options)
+      send_request(type: :post, host: @env.host, path: '/submission_result', options: options)
     end
 
     private
@@ -73,6 +84,17 @@ module VAMS
 
     def construct_date
       `date`.split(" ").join(" ")
+    end
+
+    def auth_data
+      (@token && @user_id) ? [@token, @user_id] : authenticate
+    end
+
+    def construct_auth_header(endpoint:)
+      token, user_id = auth_data
+      hash_data      = "#{@date}#{endpoint}#{@env.useragent}#{token}GET"
+      auth_hash      = Digest::SHA1.hexdigest(hash_data)
+      "BASIC #{user_id}:#{auth_hash}"
     end
   end
 end
