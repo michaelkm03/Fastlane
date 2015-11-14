@@ -47,7 +47,8 @@ class StoredLoginOperation: Operation {
                 self.queueNext( operation, queue: Operation.defaultQueue )
         }
         else {
-            // No nothing bceause we can't login withjout a stored token or credentials
+            // Nothin to do here-- we need a stored token or credentials to log in.
+            // Subsequence operations in the queue will handle logging in the user.
         }
     }
 }

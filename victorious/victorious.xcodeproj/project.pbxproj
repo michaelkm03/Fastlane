@@ -5764,8 +5764,8 @@
 			children = (
 				794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */,
 				794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */,
-				794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */,
 				A74679691BF6BE6C0026FD2E /* LogoutLocallyOperation.swift */,
+				794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */,
 			);
 			path = "Launch Operations";
 			sourceTree = "<group>";
@@ -6162,10 +6162,10 @@
 		A72892F41BF3FB880072BCC9 /* Network Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A72892FB1BF3FC760072BCC9 /* AccountCreateOperation.swift */,
 				A72892F51BF3FB880072BCC9 /* ConversationListOperation.swift */,
 				A72892F61BF3FB880072BCC9 /* LogoutOperation.swift */,
 				A72892FF1BF4133E0072BCC9 /* RequestOperation.swift */,
-				A72892FB1BF3FC760072BCC9 /* AccountCreateOperation.swift */,
 				A72893011BF41AE90072BCC9 /* StoredLoginOperation.swift */,
 				A72893051BF430670072BCC9 /* VLoginType+Credentials.swift */,
 				A7486A131BF6659000547BAF /* VLoginType+Tracking.swift */,
