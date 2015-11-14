@@ -22,7 +22,6 @@
 #import "VSessionTimer.h"
 #import "VTemplateDecorator.h"
 #import "VTemplateDownloadOperation.h"
-#import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"

@@ -23,17 +23,24 @@ import Foundation
 class AutoShowLoginOperation: Operation {
     
     private let dependencyManager: VDependencyManager
+    private let context: VAuthorizationContext
     
     /// A Delegate to manage the showing/hiding of the loginViewController.
     weak var delegate: AutoShowLoginOperationDelegate?
+    
+    convenience init( dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate ) {
+        self.init( dependencyManager: dependencyManager, delegate: delegate, context: .Default)
+    }
     
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
     /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
     /// - returns: An AutoShowLoginOperation.
-    init(dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate) {
+    required init( dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate, context: VAuthorizationContext) {
         self.dependencyManager = dependencyManager
         self.delegate = delegate
+        self.context = context
+        
         super.init()
         
         qualityOfService = .UserInteractive
@@ -53,28 +60,10 @@ class AutoShowLoginOperation: Operation {
             
             self.beganExecuting()
             
-            let dataStore = PersistentStore.mainContext
-            if let currentUser = VUser.currentUser(inContext: dataStore) {
+            if VUser.currentUser() != nil {
                 
                 // User is already logged in, proceed onward
                 self.finishedExecuting()
-                
-                // FIXME:
-               /* if currentUser.status != "complete" {
-                    // User must complete his or her profile, show the create profile view
-                    let viewController = VProfileCreateViewController.newWithDependencyManager(self.dependencyManager)
-                    viewController.profile = currentUser
-                    (viewController as VAuthorizationProvider).authorizedAction = { authorized in
-                        self.delegate?.hideLoginViewController() {
-                            self.finishedExecuting()
-                        }
-                    }
-                    self.delegate?.showLoginViewController( viewController )
-                }
-                else {
-                    // User is already logged in, proceed onward
-                    self.finishedExecuting()
-                }*/
             }
             else {
                 // User is not logged in, show login view
@@ -85,7 +74,7 @@ class AutoShowLoginOperation: Operation {
                         self.finishedExecuting()
                     }
                 }
-                viewController.setAuthorizationContext?( .Default ) // TODO: Get context
+                viewController.setAuthorizationContext?( self.context )
                 self.delegate?.showLoginViewController( viewController as! UIViewController )
             }
         }

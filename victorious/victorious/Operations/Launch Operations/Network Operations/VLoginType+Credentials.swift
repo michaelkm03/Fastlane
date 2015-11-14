@@ -15,10 +15,6 @@ extension VLoginType {
     
     func storedCredentials( accountIdentifier: String? = nil ) -> NewAccountCredentials? {
         switch self {
-        case .Twitter:
-            // TODO: use `loginViaTwitterWithTwitterID:`
-            // TODO: return .Twitter(accessToken: String, accessSecret: String, twitterID: String)
-            return nil
             
         case .Facebook:
             guard let currentToken = FBSDKAccessToken.currentAccessToken()
@@ -34,7 +30,7 @@ extension VLoginType {
             }
             return .EmailPassword(email: email, password: password)
             
-        case .None:
+        default:
             return nil
         }
     }

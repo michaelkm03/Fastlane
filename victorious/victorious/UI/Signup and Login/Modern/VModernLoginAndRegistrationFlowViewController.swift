@@ -28,12 +28,20 @@ extension VModernLoginAndRegistrationFlowViewController {
         return operation
     }
     
-    func queueLoginOperationWithTwitter( completion:(NSError?)->() ) -> NSOperation {
+    func queueLoginOperationWithTwitter(oauthToken: String, accessSecret: String, twitterID: String, identifier: String) -> NSOperation {
         let loginType = VLoginType.Twitter
-        let credentials: NewAccountCredentials = loginType.storedCredentials()!
+        let credentials: NewAccountCredentials = .Twitter(accessToken: oauthToken, accessSecret: accessSecret, twitterID: twitterID)
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let operation = AccountCreateOperation( request: accountCreateRequest, loginType: loginType )
-        operation.queue( completion )
+        operation.queue()  { error in
+            if error == nil {
+                self.actionsDisabled = false
+                self.isRegisteredAsNewUser = operation.isNewUser
+                self.continueRegistrationFlowAfterSocialRegistration()
+            } else {
+                self.handleTwitterLoginError(error)
+            }
+        }
         return operation
     }
     

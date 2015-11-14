@@ -13,7 +13,6 @@
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
 #import "VObjectManager+Login.h"
-#import "VUserManager.h"
 #import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"

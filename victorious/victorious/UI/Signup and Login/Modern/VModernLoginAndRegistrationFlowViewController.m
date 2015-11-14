@@ -26,7 +26,6 @@
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "VPermissionsTrackingHelper.h"
-#import "VUserManager.h"
 #import "victorious-Swift.h"
 #import "VTwitterAccountsHelper.h"
 
@@ -289,7 +288,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    
     [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
      {
          if (twitterAccount == nil)
@@ -300,38 +298,24 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          self.loadingScreen.canCancel = NO;
          
          __weak typeof(self) weakSelf = self;
-         [self showLoadingScreenWithCompletion:^{
-             [weakSelf loginWithTwitterIdentifier:twitterAccount.identifier];
-         }];
+         [self showLoadingScreenWithCompletion:^
+          {
+              
+              VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
+              [twitterManager refreshTwitterTokenWithIdentifier:twitterAccount.identifier
+                                             fromViewController:self
+                                                completionBlock:^(BOOL success, NSError *error)
+               {
+                   weakSelf.currentOperation = [self queueLoginOperationWithTwitter:twitterManager.oauthToken
+                                                                       accessSecret:twitterManager.secret
+                                                                          twitterID:twitterManager.twitterId
+                                                                         identifier:twitterAccount.identifier];
+               }];
+          }];
      }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
-}
-
-- (void)loginWithTwitterIdentifier:(NSString *)identifier
-{
-    VUserManager *userManager = [[VUserManager alloc] init];
-    
-    [userManager retrieveTwitterTokenWithAccountIdentifier:identifier
-                                              onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
-     {
-         [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
-                                {
-                                    self.isRegisteredAsNewUser = isNewUser;
-                                    [self continueRegistrationFlowAfterSocialRegistration];
-                                }
-                                                             onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-                                {
-                                    [self handleTwitterLoginError:error];
-                                }];
-         
-         self.loadingScreen.canCancel = YES;
-     }
-                                                   onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         [self handleTwitterLoginError:error];
-     }];
 }
 
 - (void)handleTwitterLoginError:(NSError *)error

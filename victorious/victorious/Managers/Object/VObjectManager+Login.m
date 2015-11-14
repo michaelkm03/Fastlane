@@ -18,7 +18,6 @@
 #import "VVoteType.h"
 #import "VTracking.h"
 #import "MBProgressHUD.h"
-#import "VUserManager.h"
 #import "VTemplateDecorator.h"
 #import "NSDictionary+VJSONLogging.h"
 #import "VStoredLogin.h"

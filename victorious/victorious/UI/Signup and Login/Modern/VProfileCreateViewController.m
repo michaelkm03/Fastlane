@@ -12,7 +12,6 @@
 #import "VDependencyManager.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VUserManager.h"
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"

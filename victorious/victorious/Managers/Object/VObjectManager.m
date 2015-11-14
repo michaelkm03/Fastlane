@@ -204,7 +204,8 @@ NS_ASSUME_NONNULL_BEGIN
         
         if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
-            [[[VUserManager alloc] init] logout];
+            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
+            
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                                userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
             if ( failBlock != nil )
@@ -251,8 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if ( rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError )
         {
-            // TODO: Create logout operation
-            //[[[VUserManager alloc] init] logoutLocally];
+            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
         }
         else
         {
@@ -278,8 +278,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
     else if( errorCode == kVUserBannedError && self.mainUser )
     {
-        // TODO: Create logout operation
-        // [[[VUserManager alloc] init] logoutLocally];
+        [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                         message:NSLocalizedString(@"UserBannedMessage", @"")
                                                        delegate:nil

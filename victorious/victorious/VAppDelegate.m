@@ -16,7 +16,6 @@
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
 #import "VUploadManager.h"
-#import "VUserManager.h"
 #import "VConstants.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
