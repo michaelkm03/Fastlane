@@ -1,5 +1,5 @@
 //
-//  Dictionary+URLEncodedStringTests.swift
+//  NSDictionary+URLEncodedStringTests.swift
 //  VictoriousIOSSDK
 //
 //  Created by Josh Hinman on 10/25/15.
@@ -15,7 +15,7 @@ class URLEncodedStringTests: XCTestCase {
     func testURLEncodedString() {
         let mockValues = [ "foo": "bar",
                            "strawberry": "🍓",
-                           "ampersand=equal": "& ="]
+                           "ampersand=equal": "& ="] as NSDictionary
         
         let result = mockValues.vsdk_urlEncodedString()
         
@@ -30,7 +30,7 @@ class URLEncodedStringTests: XCTestCase {
     
     func testMutableURLRequestAddURLEncodedFormPost() {
         let mockValues = [ "foo": "bar",
-                           "dodgers": "doyers" ]
+                           "dodgers": "doyers" ] as NSDictionary
         
         let urlRequest = NSMutableURLRequest()
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)
@@ -41,5 +41,21 @@ class URLEncodedStringTests: XCTestCase {
         let expectedBody =  mockValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
         let actualBody = urlRequest.HTTPBody
         XCTAssertEqual(expectedBody, actualBody)
+    }
+    
+    func testArrayValueEncodedString() {
+        let mockArray = [1, 2] as [Int64]
+        let mockValues = ["test" : "yes", "mockIDs" : mockArray.flatMap({ NSNumber(longLong: $0) })] as NSDictionary
+        
+        let urlRequest = NSMutableURLRequest()
+        urlRequest.vsdk_addURLEncodedFormPost(mockValues)
+        
+        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
+        
+        let actualBody = String(data: urlRequest.HTTPBody!, encoding: NSUTF8StringEncoding)!
+        XCTAssertNotNil(actualBody.rangeOfString("mockIDs[]=1"))
+        XCTAssertNotNil(actualBody.rangeOfString("mockIDs[]=2"))
+        XCTAssertNotNil(actualBody.rangeOfString("test=yes"))
     }
 }
