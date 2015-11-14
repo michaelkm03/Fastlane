@@ -1009,6 +1009,12 @@
 		C32D8BD81BF2D45500AB5085 /* FollowHashtagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BD71BF2D45500AB5085 /* FollowHashtagRequest.swift */; };
 		C32D8BDA1BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BD91BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift */; };
 		C32D8BDC1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BDB1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift */; };
+		C32D8BDE1BF2E06300AB5085 /* ImageSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C32D8BDD1BF2E06300AB5085 /* ImageSearchResponse.json */; };
+		C32D8BE01BF2E08900AB5085 /* ImageSearchResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BDF1BF2E08900AB5085 /* ImageSearchResultTests.swift */; };
+		C32D8BE41BF2E0EE00AB5085 /* ImageSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = C32D8BE31BF2E0EE00AB5085 /* ImageSearchResult.json */; };
+		C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BE51BF2E19100AB5085 /* ImageSearchResult.swift */; };
+		C32D8BEA1BF2E65800AB5085 /* ImageSearchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BE91BF2E65800AB5085 /* ImageSearchRequestTests.swift */; };
+		C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BEB1BF2E75B00AB5085 /* ImageSearchRequest.swift */; };
 		C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32F6B101BD0658C00779FB1 /* ModernLoadingViewController.swift */; };
 		C32F6B131BD06E6D00779FB1 /* ModernLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C32F6B121BD06E6D00779FB1 /* ModernLoadingViewController.storyboard */; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
@@ -3248,6 +3254,12 @@
 		C32D8BD71BF2D45500AB5085 /* FollowHashtagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowHashtagRequest.swift; sourceTree = "<group>"; };
 		C32D8BD91BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowHashtagRequestTests.swift; sourceTree = "<group>"; };
 		C32D8BDB1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowHashtagRequest.swift; sourceTree = "<group>"; };
+		C32D8BDD1BF2E06300AB5085 /* ImageSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageSearchResponse.json; sourceTree = "<group>"; };
+		C32D8BDF1BF2E08900AB5085 /* ImageSearchResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchResultTests.swift; sourceTree = "<group>"; };
+		C32D8BE31BF2E0EE00AB5085 /* ImageSearchResult.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageSearchResult.json; sourceTree = "<group>"; };
+		C32D8BE51BF2E19100AB5085 /* ImageSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchResult.swift; sourceTree = "<group>"; };
+		C32D8BE91BF2E65800AB5085 /* ImageSearchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchRequestTests.swift; sourceTree = "<group>"; };
+		C32D8BEB1BF2E75B00AB5085 /* ImageSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchRequest.swift; sourceTree = "<group>"; };
 		C32F6B101BD0658C00779FB1 /* ModernLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModernLoadingViewController.swift; sourceTree = "<group>"; };
 		C32F6B121BD06E6D00779FB1 /* ModernLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModernLoadingViewController.storyboard; sourceTree = "<group>"; };
 		C3345F601B59ACB30091D889 /* VMenuItemControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuItemControl.h; sourceTree = "<group>"; };
@@ -4777,6 +4789,7 @@
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */,
 				C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */,
+				C32D8BEB1BF2E75B00AB5085 /* ImageSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */,
@@ -4826,6 +4839,7 @@
 				C352CF371BF2834E00790921 /* FollowUserRequestTests.swift */,
 				C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
+				C32D8BE91BF2E65800AB5085 /* ImageSearchRequestTests.swift */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
 				C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */,
@@ -4859,6 +4873,7 @@
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
+				C32D8BDF1BF2E08900AB5085 /* ImageSearchResultTests.swift */,
 				C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */,
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
@@ -4884,6 +4899,8 @@
 				C314E6C01BF13E3F00FB9591 /* Hashtag.json */,
 				C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */,
 				03314F4C1BE40F0100EE74FD /* ImageAsset.json */,
+				C32D8BDD1BF2E06300AB5085 /* ImageSearchResponse.json */,
+				C32D8BE31BF2E0EE00AB5085 /* ImageSearchResult.json */,
 				79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */,
 				79D9FC571BF281BB00445D2D /* InvalidDataConverationResponse.json */,
 				03C540E11BED8E94009D5286 /* LoginResponse.json */,
@@ -4918,6 +4935,7 @@
 				C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
+				C32D8BE51BF2E19100AB5085 /* ImageSearchResult.swift */,
 				A7EF1BC31BF2754D00D429DE /* Interaction.swift */,
 				79D081B91BF1A0DF00E8A0C5 /* Message.swift */,
 				A7EF1BC41BF2754D00D429DE /* Node.swift */,
@@ -8970,6 +8988,7 @@
 				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				79D081AE1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json in Resources */,
 				79D081B01BF192C300E8A0C5 /* NoConversationsConversationListResponse.json in Resources */,
+				C32D8BDE1BF2E06300AB5085 /* ImageSearchResponse.json in Resources */,
 				C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */,
 				67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */,
 				C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */,
@@ -8991,6 +9010,8 @@
 				6731B2651BF1834700B9FFFE /* FanLoyalty.json in Resources */,
 				A7DC00D51BF2BBC100E24A2F /* SimpleStream.json in Resources */,
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
+				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
+				C32D8BE41BF2E0EE00AB5085 /* ImageSearchResult.json in Resources */,
 				679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
@@ -9670,6 +9691,7 @@
 				79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */,
 				79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */,
 				C3209CAA1BF1520900EA229D /* FollowingHashtagsRequest.swift in Sources */,
+				C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */,
 				C3FEA7A31BF17583003446CC /* TrendingGIFsRequest.swift in Sources */,
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
@@ -9684,6 +9706,7 @@
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				C3209CA61BF14AB600EA229D /* HashtagResponseParser.swift in Sources */,
 				C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */,
+				C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */,
 				C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */,
 				C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */,
 				0300AA611BF197FE000A121D /* NSURL+MimeType.swift in Sources */,
@@ -9743,6 +9766,7 @@
 				C3348B231BF53FAA004183A1 /* Bool+InitializersTests.swift in Sources */,
 				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
+				C32D8BEA1BF2E65800AB5085 /* ImageSearchRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
 				79CFD3CD1BF2A105004F70D9 /* FlagConversationRequestTests.swift in Sources */,
@@ -9760,6 +9784,7 @@
 				0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */,
 				C32D8BD01BF2D08E00AB5085 /* UnfollowUserRequestTests.swift in Sources */,
 				C352CF381BF2834E00790921 /* FollowUserRequestTests.swift in Sources */,
+				C32D8BE01BF2E08900AB5085 /* ImageSearchResultTests.swift in Sources */,
 				03314F511BE40F0100EE74FD /* ImageAssetTests.swift in Sources */,
 				79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */,
 				A7EF1BD81BF275DA00D429DE /* StreamRequestTests.swift in Sources */,
