@@ -9,12 +9,7 @@
 #import "VAdVideoPlayerViewController.h"
 #import "VConstants.h"
 #import "VAdViewController.h"
-#import "VLiveRailAdViewController.h"
-#import "VOpenXAdViewController.h"
-#import "VTremorAdViewController.h"
 #import "UIView+AutoLayout.h"
-
-#define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
 @interface VAdVideoPlayerViewController () <VAdViewControllerDelegate>
 
@@ -37,22 +32,13 @@
         _adDetails = details;
         _monetizationPartner = monetizationPartner;
         
-        switch (_monetizationPartner)
+        // When ads are supported again, switch on the `monitizationPartner` value to
+        // provide a view controller for the `adViewController` property.
+        _adViewController = nil;
+        
+        if ( _adViewController == nil )
         {
-            case VMonetizationPartnerLiveRail:
-                _adViewController = [[VLiveRailAdViewController alloc] initWithNibName:nil bundle:nil];
-                break;
-                
-            case VMonetizationPartnerOpenX:
-                _adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
-                break;
-                
-            case VMonetizationPartnerTremor:
-                _adViewController = [[VTremorAdViewController alloc] initWithNibName:nil bundle:nil];
-                break;
-                
-            default:
-                break;
+            return nil;
         }
     }
     return self;
@@ -82,11 +68,7 @@
     self.adViewController.adServerMonetizationDetails = self.adDetails;
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
-    if (self.monetizationPartner != VMonetizationPartnerTremor)
-    {
-        [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view
-                                                leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];
-    }
+    [self.view v_addFitToParentConstraintsToSubview:self.adViewController.view leading:0.0f trailing:0.0f top:40.0f bottom:0.0f];
     [self.adViewController didMoveToParentViewController:self];
     [self.adViewController startAdManager];
 }
