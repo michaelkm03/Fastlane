@@ -30,6 +30,9 @@ class StoredLoginOperation: Operation {
             user.setCurrentUser(inContext: dataStore)
             dataStore.saveChanges()
             
+            let id = Int64(user.remoteId.integerValue)
+            self.queueNext( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )
+            
             // TODO: Fetch soem more user info by adding more operations
             // api/follow/counts/%d
             // api/sequence/users_interactions/%@/%@
@@ -47,8 +50,24 @@ class StoredLoginOperation: Operation {
                 self.queueNext( operation, queue: Operation.defaultQueue )
         }
         else {
-            // Nothin to do here-- we need a stored token or credentials to log in.
+            // Nothing to do here--we need a stored token or credentials to log in.
             // Subsequence operations in the queue will handle logging in the user.
+        }
+    }
+}
+
+class UserInfoOperation: RequestOperation<UserInfoRequest> {
+    
+    init( userID: Int64 ) {
+        super.init( request: UserInfoRequest(userID: userID) )
+    }
+    
+    override func onResponse( response: UserInfoRequest.ResultType ) {
+        let dataStore = PersistentStore.backgroundContext
+        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
+        persistentUser.populate(fromSourceModel: response)
+        guard dataStore.saveChanges() else {
+            fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
         }
     }
 }
