@@ -18,8 +18,8 @@ public struct PollVoteRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let pollAnswerInfo = [
-            "answer_id": pollAnswer.answerID,
-            "sequence_id": pollAnswer.sequenceID
+            "answer_id": NSNumber(longLong: pollAnswer.answerID),
+            "sequence_id": NSNumber(longLong: pollAnswer.sequenceID)
         ]
         
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/pollresult/create")!)
