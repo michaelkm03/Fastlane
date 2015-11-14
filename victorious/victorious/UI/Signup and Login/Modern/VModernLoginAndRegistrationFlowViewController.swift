@@ -11,8 +11,25 @@ import VictoriousIOSSDK
 
 extension VModernLoginAndRegistrationFlowViewController {
     
-    func queueLoginOperationWithFacebook( completion:(NSError?)->() ) -> NSOperation {
+    func queueLoginOperationWithFacebook() -> NSOperation {
         let loginType = VLoginType.Facebook
+        let credentials: NewAccountCredentials = loginType.storedCredentials()!
+        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+        let operation = AccountCreateOperation( request: accountCreateRequest, loginType: loginType )
+        operation.queue() { error in
+            if error == nil {
+                self.actionsDisabled = false
+                self.isRegisteredAsNewUser = operation.isNewUser
+                self.continueRegistrationFlowAfterSocialRegistration()
+            } else {
+                self.handleFacebookLoginError(error)
+            }
+        }
+        return operation
+    }
+    
+    func queueLoginOperationWithTwitter( completion:(NSError?)->() ) -> NSOperation {
+        let loginType = VLoginType.Twitter
         let credentials: NewAccountCredentials = loginType.storedCredentials()!
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let operation = AccountCreateOperation( request: accountCreateRequest, loginType: loginType )

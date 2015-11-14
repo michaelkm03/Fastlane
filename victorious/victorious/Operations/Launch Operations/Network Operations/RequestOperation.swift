@@ -9,21 +9,68 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RequestOperation<T: RequestType> : Operation {
-    
-    private var request: T
+private let _defaultQueue = NSOperationQueue()
+
+class RequestOperation<T: RequestType> : NSOperation {
     
     private var error: NSError?
+    
+    let request: T
+    
+    var defaultQueue: NSOperationQueue {
+        return _defaultQueue
+    }
+    
+    var currentEnvironment: VEnvironment {
+        return VEnvironmentManager.sharedInstance().currentEnvironment
+    }
+    
+    var requestContext: RequestContext {
+        return RequestContext(v_environment: currentEnvironment)
+    }
+    
+    var baseURL: NSURL {
+        return currentEnvironment.baseURL
+    }
+    
+    var authenticationContext: AuthenticationContext? {
+        if let currentUser = VUser.currentUser(inContext: PersistentStore.backgroundContext) {
+            return AuthenticationContext(v_currentUser: currentUser)
+        }
+        return nil
+    }
     
     init( request: T ) {
         self.request = request
     }
     
-    func onResponse( result: T.ResultType ) {
-        // Override in subclasses
+    final func queue( completionBlock:((NSError?)->())? = nil) {
+        self.completionBlock = {
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.onComplete( self.error )
+                completionBlock?(nil)
+            }
+        }
+        _defaultQueue.addOperation( self )
     }
     
-    override func cancel() {
+    func cancelAllOperations() {
+        for operation in _defaultQueue.operations {
+            operation.cancel()
+        }
+    }
+    
+    // MARK: - Subclassing
+    
+    /// Called on background thread, designed to be overriden in subclasses.
+    func onResponse( response: T.ResultType ) {}
+    
+    /// Called on main thread, designed to be overriden in subclasses.
+    func onComplete( error: NSError? ) {}
+    
+    // MARK: - NSOperation overrides
+    
+    final override func cancel() {
         super.cancel()
         
         if let request = self.request as? Cancelable {
@@ -31,44 +78,13 @@ class RequestOperation<T: RequestType> : Operation {
         }
     }
     
-    func queue( completioneBlock:((NSError?)->())?) {
-        self.completionBlock = {
-            self.onComplete()
-            completioneBlock?( self.error )
-        }
-        NSOperationQueue.mainQueue().addOperation( self )
-    }
-    
-    func onComplete() {
-        // Override in subclasses
-    }
-    
-    func onError( error: NSError? ) {
-        // Override in subclasses
-    }
-    
-    override func start() {
-        super.start()
+    final override func main() {
+        let semaphore = dispatch_semaphore_create(0)
         
-        guard !cancelled else {
-            finishedExecuting()
-            return
-        }
-        beganExecuting()
-        
-        var authenticationContext: AuthenticationContext?
-        if let currentUser = VUser.currentUser(inContext: PersistentStore.backgroundContext) {
-            authenticationContext = AuthenticationContext(v_currentUser: currentUser)
-        }
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(v_environment: currentEnvironment)
-        let baseURL = currentEnvironment.baseURL
-        
-        request.execute(
-            baseURL: baseURL,
-            requestContext: requestContext,
-            authenticationContext: authenticationContext,
+        self.request.execute(
+            baseURL: self.baseURL,
+            requestContext: self.requestContext,
+            authenticationContext: self.authenticationContext,
             callback: { (result, error) -> () in
                 guard !self.cancelled else {
                     return
@@ -76,11 +92,14 @@ class RequestOperation<T: RequestType> : Operation {
                 if let result = result {
                     self.onResponse( result )
                 } else {
-                    self.onError( error as? NSError )
+                    self.error = NSError(domain: "", code: 0, userInfo: nil )
                 }
-                self.finishedExecuting()
+                dispatch_async( dispatch_get_main_queue() ) {
+                    dispatch_semaphore_signal( semaphore )
+                }
             }
         )
+        dispatch_semaphore_wait( semaphore, DISPATCH_TIME_FOREVER )
     }
 }
 

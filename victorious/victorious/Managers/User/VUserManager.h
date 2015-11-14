@@ -22,5 +22,4 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
                                      onCompletion:(VTwitterAuthenticationCompletionBlock)completion
                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-
 @end

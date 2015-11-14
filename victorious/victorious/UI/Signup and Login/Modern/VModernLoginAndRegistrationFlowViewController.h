@@ -18,6 +18,14 @@
  */
 @interface VModernLoginAndRegistrationFlowViewController : UINavigationController <VLoginRegistrationFlow, VHasManagedDependencies>
 
+@property (nonatomic, assign) BOOL actionsDisabled;
+
+@property (nonatomic, assign) BOOL isRegisteredAsNewUser;
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+
+- (void)continueRegistrationFlowAfterSocialRegistration;
+
+- (void)handleFacebookLoginError:(NSError *)error;
 
 @end

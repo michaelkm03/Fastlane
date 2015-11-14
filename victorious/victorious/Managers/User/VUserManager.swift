@@ -39,7 +39,7 @@ extension VUserManager {
             return
         }
         
-        LogoutOperation().queueInBackground() { error in
+        LogoutOperation().queue() { error in
             self.logoutDidFinish()
         }
     }

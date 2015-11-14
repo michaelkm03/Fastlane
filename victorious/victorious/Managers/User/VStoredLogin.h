@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSNumber *userRemoteId;
 @property (nonatomic, assign, readonly) VLoginType lastLoginType;
 
-
 @end
 
 /**

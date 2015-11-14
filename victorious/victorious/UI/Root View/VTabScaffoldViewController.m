@@ -41,6 +41,7 @@ static NSString * const kMenuKey = @"menu";
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
 
@@ -56,6 +57,9 @@ static NSString * const kMenuKey = @"menu";
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
+        
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.maxConcurrentOperationCount = 1;
     }
     return self;
 }
@@ -403,7 +407,7 @@ static NSString * const kMenuKey = @"menu";
     NSArray *operationsToAdd = @[ pushNotificationOperation, ftueVideoOperation, forceLoginOperation ];
     
     // All operations run on main queue since there is not networking or background processing
-    [[NSOperationQueue mainQueue] addOperations:operationsToAdd waitUntilFinished:NO];
+    [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 
 #pragma mark - AutoShowLoginOperationDelegate

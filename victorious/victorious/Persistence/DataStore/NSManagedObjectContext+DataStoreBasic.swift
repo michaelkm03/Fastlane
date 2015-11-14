@@ -1,5 +1,5 @@
 //
-//  ContextDataStore.swift
+//  NSManagedObjectContext+DataStoreBasic.swift
 //  Persistence
 //
 //  Created by Patrick Lynch on 10/15/15.
@@ -37,8 +37,8 @@ extension NSManagedObjectContext: DataStoreBasic {
         return false
     }
     
-    public func destroy( object: NSManagedObject ) -> Bool {
-        self.deleteObject( object )
+    public func destroy( object: DataStoreObject ) -> Bool {
+        self.deleteObject( object as! NSManagedObject )
         do {
             try self.save()
         } catch {
@@ -48,36 +48,36 @@ extension NSManagedObjectContext: DataStoreBasic {
         return false
     }
     
-    public func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
+    public func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: DataStoreObject -> Void ) -> DataStoreObject {
         let object = self.createObjectWithEntityName( entityName )
         configurations( object )
         self.saveChanges()
         return object
     }
     
-    public func createObjectWithEntityName( entityName: String ) -> NSManagedObject {
+    public func createObjectWithEntityName( entityName: String ) -> DataStoreObject {
 
         guard let entity = NSEntityDescription.entityForName( entityName, inManagedObjectContext: self ) else {
             fatalError( "Could not find entity for name: \(entityName).  Make sure the entity name configurated in the managed object object matches the expected class type." )
         }
         
-        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self)
+        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as DataStoreObject
     }
     
-    public func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject {
+    public func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject {
         if let existingObject = self.findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, limit: 1).first {
             return existingObject
         }
         else {
             let object = self.createObjectWithEntityName( entityName )
             for (key, value) in queryDictionary {
-                object.setValue(value, forKey: key)
+                (object as! NSManagedObject).setValue(value, forKey: key)
             }
             return object
         }
     }
     
-    public func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [NSManagedObject] {
+    public func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [DataStoreObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
@@ -96,21 +96,21 @@ extension NSManagedObjectContext: DataStoreBasic {
         }
         
         do {
-            if let results = try self.executeFetchRequest( request ) as? [NSManagedObject] {
+            if let results = try self.executeFetchRequest( request ) as? [DataStoreObject] {
                 return results
             }
         } catch {
             print( "Error: \(error)" )
         }
-        return [NSManagedObject]()
+        return [DataStoreObject]()
     }
     
-    public func getObjectWithIdentifier(identifier: AnyObject) -> NSManagedObject? {
-        return self.objectWithID( identifier as! NSManagedObjectID )
+    public func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject? {
+        return self.objectWithID( identifier as! NSManagedObjectID ) as DataStoreObject
     }
     
-    public func cacheObject(object: NSManagedObject?, forKey key: String) {
-        var cache = userInfo[SingleObjectCacheKey] as? [String : NSManagedObject] ?? [:]
+    public func cacheObject(object: DataStoreObject?, forKey key: String) {
+        var cache = userInfo[SingleObjectCacheKey] as? [String : DataStoreObject] ?? [:]
         if let object = object {
             cache[key] = object
         } else {
@@ -119,10 +119,10 @@ extension NSManagedObjectContext: DataStoreBasic {
         userInfo[SingleObjectCacheKey] = cache
     }
     
-    public func cachedObjectForKey(key: String) -> NSManagedObject? {
+    public func cachedObjectForKey(key: String) -> DataStoreObject? {
         guard let cache = userInfo[SingleObjectCacheKey] as? [String : NSManagedObject] else {
             return nil
         }
-        return cache[key]
+        return cache[key] as? DataStoreObject
     }
 }

@@ -44,7 +44,7 @@ class StoredLoginOperation: Operation {
                     loginType: loginType,
                     accountIdentifier: accountIdentifier
                 )
-                self.queueNext(operation)
+                self.queueNext( operation, queue: Operation.defaultQueue )
         }
         else {
             // No nothing bceause we can't login withjout a stored token or credentials

@@ -61,10 +61,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) NSArray *loginScreens;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
-// Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
-@property (nonatomic, assign) BOOL actionsDisabled;
 @property (nonatomic, assign) BOOL hasShownInitial;
-@property (nonatomic, assign) BOOL isRegisteredAsNewUser;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
 
@@ -303,12 +300,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          self.loadingScreen.canCancel = NO;
          
          __weak typeof(self) weakSelf = self;
-         [self setOnLoadingAppeared:^
-         {
+         [self showLoadingScreenWithCompletion:^{
              [weakSelf loginWithTwitterIdentifier:twitterAccount.identifier];
          }];
-         
-         [self showLoadingScreen];
      }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
@@ -322,7 +316,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [userManager retrieveTwitterTokenWithAccountIdentifier:identifier
                                               onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
      {
-         self.currentOperation = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
+         [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onCompletion:^(VUser *user, BOOL isNewUser)
                                 {
                                     self.isRegisteredAsNewUser = isNewUser;
                                     [self continueRegistrationFlowAfterSocialRegistration];
@@ -412,23 +406,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)loginWithStoredFacebookToken
 {
     __weak typeof(self) weakSelf = self;
-    [self setOnLoadingAppeared:^
-     {
-         [weakSelf queueLoginOperationWithFacebook:^(NSError *_Nullable error) {
-             if ( error == nil )
-             {
-                 weakSelf.actionsDisabled = NO;
-                 // TODO: weakSelf.isRegisteredAsNewUser = operation.isNewUser;
-                 [weakSelf continueRegistrationFlowAfterSocialRegistration];
-             }
-             else
-             {
-                 [weakSelf handleFacebookLoginError:error];
-             }
-         }];
-     }];
-    
-    [self showLoadingScreen];
+    [self showLoadingScreenWithCompletion:^{
+        weakSelf.currentOperation = [weakSelf queueLoginOperationWithFacebook];
+    }];
 }
 
 - (void)handleFacebookLoginError:(NSError *)error
@@ -452,24 +432,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) weakSelf = self;
-    
-    [self setOnLoadingAppeared:^
-     {
-         [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
-             if ( error == nil )
-             {
-                 completion(YES, nil);
-                 [weakSelf onAuthenticationFinishedWithSuccess:YES];
-             }
-             else
-             {
-                 completion(NO, error);
-                 [weakSelf dismissLoadingScreen];
-             }
-         }];
-     }];
-    
-    [self showLoadingScreen];
+    [self showLoadingScreenWithCompletion:^{
+        [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
+            if ( error == nil )
+            {
+                completion(YES, nil);
+                [weakSelf onAuthenticationFinishedWithSuccess:YES];
+            }
+            else
+            {
+                completion(NO, error);
+                [weakSelf dismissLoadingScreen];
+            }
+        }];
+    }];
 }
 
 - (void)registerWithEmail:(NSString *)email
@@ -483,8 +459,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) weakSelf = self;
-    [self setOnLoadingAppeared:^
-     {
+    [self showLoadingScreenWithCompletion:^{
          [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
              if ( error == nil )
              {
@@ -506,8 +481,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
              }
          }];
      }];
-    
-    [self showLoadingScreen];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
@@ -780,6 +753,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     self.popGestureRecognizer.enabled = NO;
     [self pushViewController:self.loadingScreen animated:YES];
+}
+
+- (void)showLoadingScreenWithCompletion:(void(^)())completion
+{
+    self.onLoadingAppeared = completion;
+    [self showLoadingScreen];
 }
 
 - (void)dismissLoadingScreen

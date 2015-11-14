@@ -648,7 +648,6 @@
 		A721E9751B5822FD000B7901 /* GIFSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */; };
 		A72892F81BF3FB880072BCC9 /* ConversationListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72892F51BF3FB880072BCC9 /* ConversationListOperation.swift */; };
 		A72892F91BF3FB880072BCC9 /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72892F61BF3FB880072BCC9 /* LogoutOperation.swift */; };
-		A72892FA1BF3FB880072BCC9 /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72892F71BF3FB880072BCC9 /* NetworkOperation.swift */; };
 		A72892FC1BF3FC760072BCC9 /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72892FB1BF3FC760072BCC9 /* AccountCreateOperation.swift */; };
 		A72893001BF4133E0072BCC9 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72892FF1BF4133E0072BCC9 /* RequestOperation.swift */; };
 		A72893021BF41AE90072BCC9 /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72893011BF41AE90072BCC9 /* StoredLoginOperation.swift */; };
@@ -675,6 +674,8 @@
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
+		A7486A141BF6659000547BAF /* VLoginType+Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A131BF6659000547BAF /* VLoginType+Tracking.swift */; };
+		A7486A161BF6873F00547BAF /* VSettingsViewController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A151BF6873F00547BAF /* VSettingsViewController+Swift.swift */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -788,7 +789,7 @@
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
 		A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = A78740A31BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m */; };
 		A789F7291BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */; };
-		A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */; };
+		A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */; };
 		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
 		A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* DataStore.swift */; };
 		A789F72F1BF11F4900F5C87B /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */; };
@@ -2599,7 +2600,6 @@
 		A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
 		A72892F51BF3FB880072BCC9 /* ConversationListOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListOperation.swift; sourceTree = "<group>"; };
 		A72892F61BF3FB880072BCC9 /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
-		A72892F71BF3FB880072BCC9 /* NetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkOperation.swift; sourceTree = "<group>"; };
 		A72892FB1BF3FC760072BCC9 /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A72892FF1BF4133E0072BCC9 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		A72893011BF41AE90072BCC9 /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
@@ -2645,6 +2645,8 @@
 		A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoToolbarView.swift; sourceTree = "<group>"; };
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
 		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
+		A7486A131BF6659000547BAF /* VLoginType+Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VLoginType+Tracking.swift"; sourceTree = "<group>"; };
+		A7486A151BF6873F00547BAF /* VSettingsViewController+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSettingsViewController+Swift.swift"; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
@@ -2854,7 +2856,7 @@
 		A78740A41BA362E40093D1E0 /* VImageAssetFinder+PollAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VImageAssetFinder+PollAssets.h"; sourceTree = "<group>"; };
 		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
 		A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStore.swift"; sourceTree = "<group>"; };
-		A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStoreObjc.swift"; sourceTree = "<group>"; };
+		A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStoreBasic.swift"; sourceTree = "<group>"; };
 		A789F7181BF11F4900F5C87B /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		A789F7191BF11F4900F5C87B /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Parsable.swift"; sourceTree = "<group>"; };
@@ -4665,6 +4667,7 @@
 				A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */,
 				0314D3FC19B46B5E00FA363C /* VSettingsViewController.h */,
 				0314D3FD19B46B5E00FA363C /* VSettingsViewController.m */,
+				A7486A151BF6873F00547BAF /* VSettingsViewController+Swift.swift */,
 				0314D3FE19B46B5E00FA363C /* VTOSViewController.h */,
 				0314D3FF19B46B5E00FA363C /* VTOSViewController.m */,
 				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
@@ -6179,11 +6182,11 @@
 			children = (
 				A72892F51BF3FB880072BCC9 /* ConversationListOperation.swift */,
 				A72892F61BF3FB880072BCC9 /* LogoutOperation.swift */,
-				A72892F71BF3FB880072BCC9 /* NetworkOperation.swift */,
 				A72892FF1BF4133E0072BCC9 /* RequestOperation.swift */,
 				A72892FB1BF3FC760072BCC9 /* AccountCreateOperation.swift */,
 				A72893011BF41AE90072BCC9 /* StoredLoginOperation.swift */,
 				A72893051BF430670072BCC9 /* VLoginType+Credentials.swift */,
+				A7486A131BF6659000547BAF /* VLoginType+Tracking.swift */,
 			);
 			name = "Network Operations";
 			path = "Launch Operations/Network Operations";
@@ -6636,7 +6639,7 @@
 			isa = PBXGroup;
 			children = (
 				A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */,
-				A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift */,
+				A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */,
 				A789F7181BF11F4900F5C87B /* CoreDataManager.swift */,
 				A789F7191BF11F4900F5C87B /* DataStore.swift */,
 				A7F2D0BC1BF19D4300490D7B /* DataStoreBasic.swift */,
@@ -10237,6 +10240,7 @@
 				C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */,
 				A721E91B1B572454000B7901 /* VStream+Fetcher.m in Sources */,
 				A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */,
+				A7486A161BF6873F00547BAF /* VSettingsViewController+Swift.swift in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
 				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
 				A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */,
@@ -10479,7 +10483,7 @@
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
-				A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreObjc.swift in Sources */,
+				A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
@@ -10670,6 +10674,7 @@
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,
+				A7486A141BF6659000547BAF /* VLoginType+Tracking.swift in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
@@ -10739,7 +10744,6 @@
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
 				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,
 				D85B707F1B0EAF3F0038CA5B /* VRegistrationModel.m in Sources */,
-				A72892FA1BF3FB880072BCC9 /* NetworkOperation.swift in Sources */,
 				0314D4AB19B46B5E00FA363C /* VMessageContainerViewController.m in Sources */,
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,

@@ -25,6 +25,7 @@
 #import "UIViewController+VRootNavigationController.h"
 #import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
+#import "VSettingsViewController.h"
 #import "VAbstractMarqueeController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"

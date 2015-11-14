@@ -22,6 +22,8 @@ import VictoriousIOSSDK
             let docsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             let persistentStoreURL = docsDirectory.URLByAppendingPathComponent( persistentStorePath )
             
+            try! NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
+            
             let momPath = ("\(managedObjectModelName).momd" as NSString).stringByAppendingPathComponent( managedObjectModelVersion )
             guard let momURLInBundle = NSBundle.mainBundle().URLForResource( momPath, withExtension: "mom" ) else {
                 fatalError( "Cannot find managed object model (.mom) for URL in bundle: \(momPath)" )

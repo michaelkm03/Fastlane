@@ -44,45 +44,50 @@ class AutoShowLoginOperation: Operation {
     override func start() {
         super.start()
         
-        assert( NSThread.currentThread().isMainThread )
-        
-        guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
-            finishedExecuting()
-            return
-        }
-        
-        beganExecuting()
-        
-        let dataStore = PersistentStore.mainContext
-        if let currentUser = VUser.currentUser(inContext: dataStore) {
+        dispatch_async( dispatch_get_main_queue() ) {
             
-            if currentUser.status != "complete" {
-                // User must complete his or her profile, show the create profile view
-                let viewController = VProfileCreateViewController.newWithDependencyManager(self.dependencyManager)
-                viewController.profile = currentUser
-                (viewController as VAuthorizationProvider).authorizedAction = { authorized in
+            guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+                self.finishedExecuting()
+                return
+            }
+            
+            self.beganExecuting()
+            
+            let dataStore = PersistentStore.mainContext
+            if let currentUser = VUser.currentUser(inContext: dataStore) {
+                
+                // User is already logged in, proceed onward
+                self.finishedExecuting()
+                
+                // FIXME:
+               /* if currentUser.status != "complete" {
+                    // User must complete his or her profile, show the create profile view
+                    let viewController = VProfileCreateViewController.newWithDependencyManager(self.dependencyManager)
+                    viewController.profile = currentUser
+                    (viewController as VAuthorizationProvider).authorizedAction = { authorized in
+                        self.delegate?.hideLoginViewController() {
+                            self.finishedExecuting()
+                        }
+                    }
+                    self.delegate?.showLoginViewController( viewController )
+                }
+                else {
+                    // User is already logged in, proceed onward
+                    self.finishedExecuting()
+                }*/
+            }
+            else {
+                // User is not logged in, show login view
+                let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
+                    forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
+                viewController.setCompletionBlock(){ (finished) -> Void in
                     self.delegate?.hideLoginViewController() {
                         self.finishedExecuting()
                     }
                 }
-                self.delegate?.showLoginViewController( viewController )
+                viewController.setAuthorizationContext?( .Default ) // TODO: Get context
+                self.delegate?.showLoginViewController( viewController as! UIViewController )
             }
-            else {
-                // User is already logged in, proceed onward
-                finishedExecuting()
-            }
-        }
-        else {
-            // User is not logged in, show login view
-            let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
-                forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
-            viewController.setCompletionBlock(){ (finished) -> Void in
-                self.delegate?.hideLoginViewController() {
-                    self.finishedExecuting()
-                }
-            }
-            viewController.setAuthorizationContext?( .Default ) // TODO: Get context
-            self.delegate?.showLoginViewController( viewController as! UIViewController )
         }
     }
 }

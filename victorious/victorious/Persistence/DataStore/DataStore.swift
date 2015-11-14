@@ -10,12 +10,10 @@ import Foundation
 
 /// An interface that defines a object object used by the DataStore protocol.  Model types that will
 /// be managed using a DataStore object must implement DataStoreObject.
-public protocol DataStoreObject : class {
+@objc public protocol DataStoreObject : class {
     
     /// Identifies the type of the object to the store for operations such as loading, saving, etc.
     static func dataStoreEntityName() -> String
-    
-    var dataStore: DataStore { get }
     
     var identifier: AnyObject { get }
 }
@@ -35,6 +33,17 @@ extension NSManagedObject: DataStoreObject {
         }
     }
     
+    public var identifier: AnyObject {
+        return self.objectID
+    }
+}
+
+public protocol DataStoreObjectSwift: DataStoreObject {
+    var dataStore: DataStore { get }
+}
+
+extension NSManagedObject: DataStoreObjectSwift {
+    
     public var dataStore: DataStore {
         guard let dataStore = self.managedObjectContext as? DataStore else {
             fatalError( "There is no managed object context associated with this managed object." +
@@ -42,28 +51,24 @@ extension NSManagedObject: DataStoreObject {
         }
         return dataStore
     }
-    
-    public var identifier: AnyObject {
-        return self.objectID
-    }
 }
 
 /// Adapts methods of the DataStore protocol to use generics
 public protocol DataStore: DataStoreBasic {
     
-    func getObject<T: DataStoreObject>( identifier: AnyObject ) -> T?
+    func getObject<T: DataStoreObjectSwift>( identifier: AnyObject ) -> T?
     
-    func createObjectAndSave<T: NSManagedObject>( @noescape configurations: (T) -> () ) -> T
+    func createObjectAndSave<T: DataStoreObjectSwift>( @noescape configurations: (T) -> () ) -> T
     
-    func createObject<T: NSManagedObject>() -> T
+    func createObject<T: DataStoreObjectSwift>() -> T
     
-    func findOrCreateObject<T: NSManagedObject>( queryDictionary: [ String : AnyObject ] ) -> T
+    func findOrCreateObject<T: DataStoreObjectSwift>( queryDictionary: [ String : AnyObject ] ) -> T
     
-    func findObjects<T: NSManagedObject>( queryDictionary: [ String : AnyObject ], limit: Int  ) -> [T]
+    func findObjects<T: DataStoreObjectSwift>( queryDictionary: [ String : AnyObject ], limit: Int  ) -> [T]
     
-    func findObjects<T: NSManagedObject>( queryDictionary: [ String : AnyObject ]  ) -> [T]
+    func findObjects<T: DataStoreObjectSwift>( queryDictionary: [ String : AnyObject ]  ) -> [T]
     
-    func findObjects<T: NSManagedObject>( limit limit: Int ) -> [T]
+    func findObjects<T: DataStoreObjectSwift>( limit limit: Int ) -> [T]
     
-    func findObjects<T: NSManagedObject>() -> [T]
+    func findObjects<T: DataStoreObjectSwift>() -> [T]
 }

@@ -9,26 +9,49 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: RequestOperation<OneWayRequest> {
-    
-    init() {
-        super.init( request: OneWayRequest(url: NSURL(string: "/api/logout")! ) )
-    }
+class LogoutLocally: Operation {
     
     override func start() {
-        self.cancelAllOperations()
         super.start()
-    }
-    
-    override func onResponse(result: Void) {
         
-        let dataStore = PersistentStore.backgroundContext
+        self.beganExecuting()
+
+        let dataStore = PersistentStore.mainContext
         VUser.clearCurrentUser(inContext: dataStore)
         
+        InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
+        NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )
+        
+        VStoredLogin().clearLoggedInUserFromDisk()
+        VStoredPassword().clearSavedPassword()
+        
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
+        VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
+        
+        self.queueNext( LogoutOperation(), queue: Operation.defaultQueue )
+        
+        self.finishedExecuting()
+    }
+}
+
+class LogoutOperation: RequestOperation<LogoutRequest> {
+    
+    init() {
+        super.init( request: LogoutRequest() )
+    }
+    
+    override func onResponse(result: LogoutRequest.ResultType) {
+        
+        let dataStore = PersistentStore.backgroundContext
+        
         // TODO: Data cleanup, deleting stuff that belongs to main user
-        /*
+        
         //Delete all conversations / pollresults for the user!
-        NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+        /*NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
         [context performBlockAndWait:^(void)
         {
         
@@ -51,28 +74,8 @@ class LogoutOperation: RequestOperation<OneWayRequest> {
         {
         [context deleteObject:pollResult];
         }
-        
-        [context save:nil];
-        }];
-        */
+        }];*/
         
         dataStore.saveChanges()
-    }
-    
-    override func onComplete() {
-        
-        /// Perform any non-persistence related cleanup necessary after user has logged out remotely
-        
-        InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
-        
-        NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
-        NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )
-        
-        VStoredLogin().clearLoggedInUserFromDisk()
-        VStoredPassword().clearSavedPassword()
-        
-        VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
     }
 }

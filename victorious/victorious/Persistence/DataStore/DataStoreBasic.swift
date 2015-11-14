@@ -16,35 +16,35 @@ import CoreData
     func saveChanges() -> Bool
     
     /// Marks an object for deletion, which will occur upon the next call to `saveChanges()`
-    func destroy( object: NSManagedObject ) -> Bool
+    func destroy( object: DataStoreObject ) -> Bool
     
     /// Creates a new object of type `entityName`
     ///
     /// -parameter entityName String, the name or type of the entity to create
-    func createObjectWithEntityName( entityName: String ) -> NSManagedObject
+    func createObjectWithEntityName( entityName: String ) -> DataStoreObject
     
     /// Creates a new object of type `entityName`
     ///
     /// -parameter entityName String, the name or type of the entity to create
     /// -configurations An optional closure that is called after creating the object which allows
     /// calling code to provide values for all required attributes
-    func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject
+    func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: DataStoreObject -> Void ) -> DataStoreObject
     
     /// Searches for objects matching the data in the query dictionary
     ///
     /// -parameter entityName String, the name or type of the entity to search for
     /// -parameter queryDictionary A dictionary of values that will be marshed into predicate used to search for matching objects
     /// -parameter limit Int, the maximum nunber of result objects to return
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [NSManagedObject]
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [DataStoreObject]
     
     
     /// Searches for an object matching the data in the query dictionary, or creates a new object
     /// and populates it with the data in the query dictionary.
-    func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject
+    func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject
     
-    func cacheObject(object: NSManagedObject?, forKey key: String)
+    func cacheObject(object: DataStoreObject?, forKey key: String)
     
-    func cachedObjectForKey(key: String) -> NSManagedObject?
+    func cachedObjectForKey(key: String) -> DataStoreObject?
     
-    func getObjectWithIdentifier(identifier: AnyObject) -> NSManagedObject?
+    func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject?
 }

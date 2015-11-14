@@ -38,25 +38,28 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     override func start() {
         super.start()
         
-        beganExecuting()
-        
-        // Bail early if we have already seen the FTUE Video
-        guard firstTimeInstallHelper.hasBeenShown() == false else {
-            finishedExecuting()
-            return
-        }
-        
-        guard let config = dependencyManager.templateValueOfType(NSDictionary.self, forKey: kFirstTimeContentKey) as? [NSObject : AnyObject],
-            let firstTimeContentDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(config),
-            let lightWeightContentVC = firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self,
-                forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController else {
-                finishedExecuting()
+        dispatch_async( dispatch_get_main_queue() ) {
+            
+            self.beganExecuting()
+            
+            // Bail early if we have already seen the FTUE Video
+            guard self.firstTimeInstallHelper.hasBeenShown() == false else {
+                self.finishedExecuting()
                 return
-        }
-        
-        lightWeightContentVC.delegate = self;
-        self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
-            self.firstTimeInstallHelper.savePlaybackDefaults()
+            }
+            
+            guard let config = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: self.kFirstTimeContentKey) as? [NSObject : AnyObject],
+                let firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(config),
+                let lightWeightContentVC = firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self,
+                    forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController else {
+                        self.finishedExecuting()
+                        return
+            }
+            
+            lightWeightContentVC.delegate = self;
+            self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
+                self.firstTimeInstallHelper.savePlaybackDefaults()
+            }
         }
     }
     

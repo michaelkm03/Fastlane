@@ -9,30 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
-// Extensions for Objective-C
-/*class AccountCreateOperationObjc: NSObject {
-    
-    class func createWithEmail(email: String, password: String) -> NetworkOperation {
-        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
-        return AccountCreateOperation( request: accountCreateRequest, loginType: .Email, accountIdentifier: email )
-    }
-    
-    class func createWithFacebook() -> NetworkOperation {
-        let loginType = VLoginType.Facebook
-        let credentials: NewAccountCredentials = loginType.storedCredentials()!
-        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-        return AccountCreateOperation( request: accountCreateRequest, loginType: loginType )
-    }
-}*/
-
 class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
     private let loginType: VLoginType
     private let accountIdentifier: String?
-    private var userObjectIdentifier: AnyObject?
+    private var userIdentifier: AnyObject?
     
     var isNewUser = false
-    
     var persistentUser: VUser?
     
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
@@ -41,37 +24,34 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         super.init( request: request )
     }
     
-    override func onResponse(result: AccountCreateResponse) {
+    // MARK: - Operation overrides
+    
+    override func onResponse( response: AccountCreateRequest.ResultType ) {
         let dataStore = PersistentStore.backgroundContext
-        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(result.user.userID) ])
-        persistentUser.populate(fromSourceModel: result.user)
-        persistentUser.loginType = loginType.rawValue
-        persistentUser.token = result.token
+        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
+        persistentUser.populate(fromSourceModel: response.user)
+        persistentUser.loginType = self.loginType.rawValue
+        persistentUser.token = response.token
         persistentUser.setCurrentUser(inContext: dataStore)
         guard dataStore.saveChanges() else {
             fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
         }
         
-        isNewUser = result.newUser
-        userObjectIdentifier = persistentUser.identifier
+        // Set these to be accessed during completion on main thread
+        self.userIdentifier = persistentUser.identifier
+        self.isNewUser = response.newUser
     }
     
-    override func onError(error: NSError?) {
-        loginType.trackFailure()
-    }
-    
-    override func onComplete() {
-        
+    override func onComplete( error: NSError? ) {
         let dataStore = PersistentStore.mainContext
-        guard self.finished,
-            let identifier = userObjectIdentifier,
+        guard let identifier = userIdentifier,
             let persistentUser: VUser = dataStore.getObject(identifier) else {
-            fatalError( "Something's wrong." )
+                fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
         }
         
+        persistentUser.setCurrentUser(inContext: dataStore)
+        VStoredLogin().saveLoggedInUserToDisk( persistentUser )
         self.persistentUser = persistentUser
-        
-        // TODO: Check if userINfo cache transfers to main context from background
         
         NSUserDefaults.standardUserDefaults().setInteger( loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
         if let accountIdentifier = accountIdentifier {
@@ -80,65 +60,12 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         
         loginType.trackSuccess( isNewUser )
         
-        self.queueNext( ConversationListOperation() )
+        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
         
         // TODO: (from object manager)
-        /*
-        [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn]
-        
-        [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil]
-        [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
-        
-        // Add followers and following to main user object
-        [[VObjectManager sharedManager] loadFollowersForUser:self.mainUser
-        pageType:VPageTypeFirst
-        successBlock:nil
-        failBlock:nil]
-        [[VObjectManager sharedManager] loadFollowingsForUser:self.mainUser
-        pageType:VPageTypeFirst
-        successBlock:nil
-        failBlock:nil]
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self]*/
-        
-        VStoredLogin().saveLoggedInUserToDisk( persistentUser )
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
-    }
-}
+        // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
 
-extension VLoginType {
-    
-    func trackSuccess(newUser: Bool) {
-        switch self {
-        case .Email:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidSucceed)
-        case .Facebook:
-            if newUser {
-                let params = [
-                    VTrackingKeyPermissionName: VTrackingValueAuthorized,
-                    VTrackingKeyPermissionState: VTrackingValueFacebookDidAllow
-                ]
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserPermissionDidChange, parameters: params)
-                VTrackingManager.sharedInstance().trackEvent(VTrackingEventSignupWithFacebookDidSucceed)
-            }
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidSucceed)
-        case .Twitter:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithTwitterDidSucceed)
-        default:
-            return
-        }
-    }
-    
-    func trackFailure() {
-        switch self {
-        case .Email:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidFail)
-        case .Facebook:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidFail)
-        case .Twitter:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithTwitterDidFailUnknown)
-        default:
-            return
-        }
+        
+        self.queueNext( ConversationListOperation(), queue: Operation.defaultQueue )
     }
 }

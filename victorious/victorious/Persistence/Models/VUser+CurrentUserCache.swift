@@ -31,6 +31,6 @@ public extension VUser {
     }
     
     public func setCurrentUser( inContext context: DataStoreBasic ) {
-        context.cacheObject( self as NSManagedObject, forKey: VUser.cacheKey )
+        context.cacheObject( self, forKey: VUser.cacheKey )
     }
 }

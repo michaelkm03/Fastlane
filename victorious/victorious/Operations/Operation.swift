@@ -12,24 +12,26 @@ class Operation: NSOperation {
     
     static let defaultQueue = NSOperationQueue()
     
+    var mainQueueCompletionBlock: (()->())?
+    
     private var _executing = false
     private var _finished = false
     
     /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move into an excuting state.
-    func beganExecuting () {
+    final func beganExecuting () {
         executing = true
         finished = false
     }
     
     /// Subclasses that do not implement `main()` and need to maintain excuting state call this to move out of an executing state and are finished doing work.
-    func finishedExecuting () {
+    final func finishedExecuting () {
         executing = false
         finished = true
     }
     
     // MARK: - KVO-able NSNotification State
     
-    override var executing : Bool {
+   final override var executing : Bool {
         get {return _executing }
         set {
             willChangeValueForKey("isExecuting")
@@ -38,7 +40,7 @@ class Operation: NSOperation {
         }
     }
     
-    override var finished : Bool {
+    final override var finished: Bool {
         get {return _finished }
         set {
             willChangeValueForKey("isFinished")
@@ -51,33 +53,41 @@ class Operation: NSOperation {
         return Operation.defaultQueue
     }
     
-    func queueInBackground() {
-        self.queueInBackground(nil)
+    final func queue() {
+        self.queue(nil)
     }
     
-    func queueInBackground( completionMainQueueBlock:(()->())?) {
+    final func queueOn( queue: NSOperationQueue, mainQueueCompletionBlock:(()->())?) {
         self.completionBlock = {
+            if mainQueueCompletionBlock != nil {
+                self.mainQueueCompletionBlock = mainQueueCompletionBlock
+            }
             dispatch_async( dispatch_get_main_queue()) {
-                completionMainQueueBlock?()
+                self.mainQueueCompletionBlock?()
             }
         }
-        Operation.defaultQueue.addOperation( self )
+        queue.addOperation( self )
     }
     
-    func queueNext( operation: NSOperation ) {
-        for dependentOperation in dependencyOperations {
+    final func queue( completion:(()->())?) {
+        self.queueOn( Operation.defaultQueue, mainQueueCompletionBlock: completion )
+    }
+}
+
+extension NSOperation {
+    
+    /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
+    /// effectively "cutting in line" all the dependency operations.  This allows operations to
+    /// instantiate and queue a follow-up operation.
+    func queueNext( operation: NSOperation, queue: NSOperationQueue ) {
+        for dependentOperation in dependentOperationsInQueue( queue ) {
             dependentOperation.addDependency( operation )
         }
-        Operation.defaultQueue.addOperation( operation )
+        queue.addOperation( operation )
     }
     
-    var dependencyOperations: [NSOperation] {
-        return Operation.defaultQueue.operations.filter { $0.dependencies.contains(self) }
-    }
-    
-    func cancelAllOperations() {
-        for operation in Operation.defaultQueue.operations {
-            operation.cancel()
-        }
+    /// Returns an array of operations which are dependencies of the receiver
+    func dependentOperationsInQueue( queue: NSOperationQueue) -> [NSOperation] {
+        return queue.operations.filter { $0.dependencies.contains(self) }
     }
 }
