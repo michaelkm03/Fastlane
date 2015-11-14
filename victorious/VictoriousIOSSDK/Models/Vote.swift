@@ -22,8 +22,8 @@ public struct PollAnswer {
 extension PollAnswer {
     public init?(json: JSON) {
         guard let sequenceID = Int64(json["sequence_id"].stringValue),
-        let answerID = Int64(json["answer_id"].stringValue) else {
-            return nil
+            let answerID = Int64(json["answer_id"].stringValue) else {
+                return nil
         }
         self.sequenceID = sequenceID
         self.answerID = answerID

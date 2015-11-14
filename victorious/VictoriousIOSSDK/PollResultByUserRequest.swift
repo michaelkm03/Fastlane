@@ -25,8 +25,6 @@ public struct PollResultByUserRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let pollAnswers = votesJSONArray.flatMap { PollAnswer(json: $0) }
-        
-        return pollAnswers
+        return votesJSONArray.flatMap { PollAnswer(json: $0) }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  PollAnsweringActionRequest.swift
+//  PollVoteRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/11/15.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// The request for creating user's answer to a poll
-public struct PollAnsweringActionRequest: RequestType {
+public struct PollVoteRequest: RequestType {
     public let pollAnswer: PollAnswer
     
     public init(sequenceID: Int64, answerID: Int64) {

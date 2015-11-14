@@ -25,8 +25,6 @@ public struct PollResultBySequenceRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let voteResults = voteResultsJSONArray.flatMap { VoteResult(json: $0) }
-        
-        return voteResults
+        return voteResultsJSONArray.flatMap { VoteResult(json: $0) }
     }
 }

@@ -415,8 +415,8 @@
 		6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
-		678D94441BF41BE3009A1F93 /* PollAnsweringActionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94431BF41BE3009A1F93 /* PollAnsweringActionRequest.swift */; };
-		678D94461BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94451BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift */; };
+		678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */; };
+		678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */; };
 		678D94481BF428AA009A1F93 /* VoteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94471BF428AA009A1F93 /* VoteResult.swift */; };
 		678D944A1BF42E7A009A1F93 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94491BF42E7A009A1F93 /* VoteResultTests.swift */; };
 		678D944C1BF437C0009A1F93 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944B1BF437C0009A1F93 /* Vote.swift */; };
@@ -2201,8 +2201,8 @@
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
-		678D94431BF41BE3009A1F93 /* PollAnsweringActionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnsweringActionRequest.swift; sourceTree = "<group>"; };
-		678D94451BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnsweringActionRequestTests.swift; sourceTree = "<group>"; };
+		678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollVoteRequest.swift; sourceTree = "<group>"; };
+		678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollVoteRequestTests.swift; sourceTree = "<group>"; };
 		678D94471BF428AA009A1F93 /* VoteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResult.swift; sourceTree = "<group>"; };
 		678D94491BF42E7A009A1F93 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		678D944B1BF437C0009A1F93 /* Vote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
@@ -4705,7 +4705,7 @@
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
-				678D94431BF41BE3009A1F93 /* PollAnsweringActionRequest.swift */,
+				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */,
 				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
@@ -4740,7 +4740,7 @@
 				03314F461BE40F0100EE74FD /* Models */,
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
-				678D94451BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift */,
+				678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */,
 				6779A2121BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift */,
 				678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
@@ -9586,7 +9586,7 @@
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
 				6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */,
-				678D94441BF41BE3009A1F93 /* PollAnsweringActionRequest.swift in Sources */,
+				678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */,
 				A7EF1BD21BF2757B00D429DE /* StreamRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9597,7 +9597,7 @@
 			files = (
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
-				678D94461BF41BF8009A1F93 /* PollAnsweringActionRequestTests.swift in Sources */,
+				678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */,
 				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,
 				03314F4F1BE40F0100EE74FD /* Dictionary+URLEncodedStringTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,

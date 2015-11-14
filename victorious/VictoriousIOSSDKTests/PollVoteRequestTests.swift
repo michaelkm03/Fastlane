@@ -1,5 +1,5 @@
 //
-//  PollAnsweringActionRequestTests.swift
+//  PollVoteRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/11/15.
@@ -9,14 +9,14 @@
 import XCTest
 import VictoriousIOSSDK
 
-class PollAnsweringActionRequestTests: XCTestCase {
+class PollVoteRequestTests: XCTestCase {
     
     func testAnsweringActionRequest() {
         let mockAnswerID: Int64 = 101
         let mockSequenceID: Int64 = 102
         
-        let answerPollRequest = PollAnsweringActionRequest(sequenceID: mockSequenceID, answerID: mockAnswerID)
-        let urlRequest = answerPollRequest.urlRequest
+        let pollVoteRequest = PollVoteRequest(sequenceID: mockSequenceID, answerID: mockAnswerID)
+        let urlRequest = pollVoteRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/pollresult/create")
         
