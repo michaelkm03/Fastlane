@@ -27,10 +27,16 @@ class PollAnswerTests: XCTestCase {
     }
     
     func testInvalid() {
-        let invalidJSON = JSON(["sequence_id": false, "answer_id": "Not really an ID"])
-        let anotherInvalidJSON = JSON([])
+        let invalidJSONArray = [
+            JSON(["sequence_id": false, "answer_id": 101]),
+            JSON(["sequence_id": 102, "answer_id": "Nonsense count"]),
+            JSON(["sequence_id": 103]),
+            JSON(["answer_id": 104]),
+            JSON([])
+        ]
         
-        XCTAssertNil(PollAnswer(json: invalidJSON))
-        XCTAssertNil(PollAnswer(json: anotherInvalidJSON))
+        for invalidJSON in invalidJSONArray {
+            XCTAssertNil(PollAnswer(json: invalidJSON))
+        }
     }
 }

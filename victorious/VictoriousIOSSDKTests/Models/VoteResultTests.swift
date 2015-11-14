@@ -27,10 +27,16 @@ class VoteResultTests: XCTestCase {
     }
     
     func testInvalid() {
-        let invalidJSON = JSON(["id": false, "count": "A count that does not make sense"])
-        let anotherInvalidJSON = JSON([])
+        let invalidJSONArray = [
+            JSON(["id": false, "count": 101]),
+            JSON(["id": 102, "count": "Nonsense count"]),
+            JSON(["id": 103]),
+            JSON(["count": 104]),
+            JSON([])
+        ]
         
-        XCTAssertNil(VoteResult(json: invalidJSON))
-        XCTAssertNil(VoteResult(json: anotherInvalidJSON))
+        for invalidJSON in invalidJSONArray {
+            XCTAssertNil(VoteResult(json: invalidJSON))
+        }
     }
 }
