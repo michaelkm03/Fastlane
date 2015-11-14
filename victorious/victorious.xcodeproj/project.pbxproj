@@ -671,6 +671,9 @@
 		A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */; };
 		A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */; };
 		A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */; };
+		A74679771BF6D01A0026FD2E /* UserInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */; };
+		A74679991BF6D8500026FD2E /* UserInfoRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */; };
+		A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A746799A1BF6DA360026FD2E /* UserInfoResponse.json */; };
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
@@ -2654,6 +2657,9 @@
 		A74679661AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWebBrowser.h"; sourceTree = "<group>"; };
 		A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VWebBrowser.m"; sourceTree = "<group>"; };
 		A74679691AFC3318005EB1D9 /* VWebBrowserLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VWebBrowserLayout.h; sourceTree = "<group>"; };
+		A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoRequest.swift; sourceTree = "<group>"; };
+		A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoRequestTests.swift; sourceTree = "<group>"; };
+		A746799A1BF6DA360026FD2E /* UserInfoResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInfoResponse.json; sourceTree = "<group>"; };
 		A74783D81B9FC792005654A6 /* VVideoPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayerDelegate.h; sourceTree = "<group>"; };
 		A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoToolbarView.swift; sourceTree = "<group>"; };
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
@@ -4799,6 +4805,7 @@
 				C32D8BD11BF2D1A800AB5085 /* UnfollowUserRequest.swift */,
 				79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */,
 				C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */,
+				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */,
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
@@ -4836,6 +4843,7 @@
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
+				A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */,
@@ -4904,6 +4912,7 @@
 				79D081A11BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json */,
 				C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */,
 				03314F4D1BE40F0100EE74FD /* User.json */,
+				A746799A1BF6DA360026FD2E /* UserInfoResponse.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -8993,6 +9002,7 @@
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
 				679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
+				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 				79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */,
 				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
@@ -9695,6 +9705,7 @@
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */,
+				A74679771BF6D01A0026FD2E /* UserInfoRequest.swift in Sources */,
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
@@ -9741,6 +9752,7 @@
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */,
 				C3348B231BF53FAA004183A1 /* Bool+InitializersTests.swift in Sources */,
+				A74679991BF6D8500026FD2E /* UserInfoRequestTests.swift in Sources */,
 				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
 				03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
