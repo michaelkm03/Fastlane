@@ -17,7 +17,7 @@
 @interface VTextPostTextView : CCHLinkTextView
 
 /**
- The drames to be drawing.  This setter will automatically trigger the view
+ The frames to be drawing.  This setter will automatically trigger the view
  into redrawing its background upon updating.
  */
 @property (nonatomic, strong) NSArray *backgroundFrames;

@@ -24,10 +24,10 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let conversationRequest = ConversationRequest(conversationID: 3797, pageNumber: 1, itemsPerPage: 99)
-        let result: (results: [Message], ConversationRequest?, ConversationRequest?) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+        let (results, _, _) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
 
-        XCTAssertEqual(result.results.count, 1)
-        if let firstMessage = result.results.first {
+        XCTAssertEqual(results.count, 1)
+        if let firstMessage = results.first {
             XCTAssertEqual(firstMessage.text, "this is a test")
             XCTAssertEqual(firstMessage.isRead, true)
             XCTAssertEqual(firstMessage.messageID, 8749)
@@ -55,10 +55,10 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let conversationRequest = ConversationRequest(conversationID: 3797, pageNumber: 1, itemsPerPage: 99)
-        let result: (results: [Message], ConversationRequest?, ConversationRequest?) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+        let (results, _, _) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         
-        XCTAssertEqual(result.results.count, 1)
-        if let firstMessage = result.results.first {
+        XCTAssertEqual(results.count, 1)
+        if let firstMessage = results.first {
             XCTAssertEqual(firstMessage.messageID, 8749)
             XCTAssertEqual(firstMessage.sender!.userID, 97)
             XCTAssertNil(firstMessage.text)
@@ -79,9 +79,11 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let conversationRequest = ConversationRequest(conversationID: 3797, pageNumber: 1, itemsPerPage: 99)
-        let result: (results: [Message], ConversationRequest?, ConversationRequest?) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+        let (results, previousPage, nextPage) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
 
-        XCTAssertEqual(result.results.count, 0)
+        XCTAssertEqual(results.count, 0)
+        XCTAssertNil(previousPage)
+        XCTAssertNil(nextPage)
     }
     
     func testInvalid() {
@@ -92,8 +94,8 @@ class ConversationRequestTests: XCTestCase {
         }
         
         let conversationRequest = ConversationRequest(conversationID: 3797, pageNumber: 1, itemsPerPage: 99)
-        let result: (results: [Message], ConversationRequest?, ConversationRequest?) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+        let (results, _, _) = try! conversationRequest.parseResponse(NSURLResponse(), toRequest: conversationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         
-        XCTAssertEqual(result.results.count, 0)
+        XCTAssertEqual(results.count, 0)
     }
 }

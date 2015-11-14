@@ -22,18 +22,17 @@ public struct Conversation {
 }
 
 extension Conversation {
+    static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
+    
     public init?(json: JSON) {
         if let conversationID = json["conversation_id"].int64,
-            let messageIDString = json["message_id"].string,
-            let messageIDNumber = Int64(messageIDString),
+            let messageIDNumber = Int64(json["message_id"].stringValue),
             let recipientUser = User(json:json["other_interlocutor_user"]),
             let postedAtString = json["posted_at"].string {
                 self.conversationID = conversationID
                 self.previewMessageID = messageIDNumber
                 self.recipient = recipientUser
-
-                let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
-                self.postedAt = dateFormatter.dateFromString(postedAtString)
+                self.postedAt = Conversation.dateFormatter.dateFromString(postedAtString)
         }
         else {
             return nil

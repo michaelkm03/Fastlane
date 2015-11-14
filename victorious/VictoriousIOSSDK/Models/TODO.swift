@@ -44,13 +44,6 @@ extension AdBreak {
     }
 }
 
-public struct Notification {}
-extension Notification {
-    public init?(json: JSON) {
-        return nil
-    }
-}
-
 public struct PollResult {}
 extension PollResult {
     public init?(json: JSON) {
