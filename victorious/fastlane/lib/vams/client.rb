@@ -32,11 +32,12 @@ module VAMS
         'Date'       => @date.to_s
       }
 
-      response = send_request(type:    :post,
-                              path:    Endpoints::LOGIN,
-                              host:    @env.host,
-                              headers: headers,
-                              options: post_data)
+      response = send_request(type:     :post,
+                              path:     Endpoints::LOGIN,
+                              protocol: @env.protocol,
+                              host:     @env.host,
+                              headers:  headers,
+                              options:  post_data)
 
       json    = JSON.parse(response.body)
       payload = json['payload']
@@ -48,10 +49,11 @@ module VAMS
 
     def apps_to_build
       endpoint          = Endpoints::APPS_LIST
-      response          = send_request(type:    :get,
-                                       path:    endpoint,
-                                       host:    @env.host,
-                                       headers: construct_headers(endpoint: endpoint))
+      response          = send_request(type:     :get,
+                                       path:     endpoint,
+                                       host:     @env.host,
+                                       protocol: @env.protocol,
+                                       headers:  construct_headers(endpoint: endpoint))
       json              = JSON.parse(response.body)
       unlocked_app_data = json['payload'].select { |data| data['app_state'] == 'unlocked' }
       unlocked_app_data.map { |data| App.new(data) }
@@ -59,26 +61,28 @@ module VAMS
 
     def app_by_build_name(build_name)
       endpoint = Endpoints::APP_BY_BUILD_NAME + '/' + build_name
-      response = send_request(type:    :get,
-                              path:    endpoint,
-                              host:    @env.host,
-                              headers: construct_headers(endpoint: endpoint))
+      response = send_request(type:     :get,
+                              path:     endpoint,
+                              host:     @env.host,
+                              protocol: @env.protocol,
+                              headers:  construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       App.new(json['payload'])
     end
 
     def submit_result(result:, environment:)
       options = { body: result.to_json }
-      send_request(type:    :post,
-                   host:    @env.host,
-                   path:    Endpoints::SUBMISSION_RESPONSE,
-                   options: options)
+      send_request(type:     :post,
+                   host:     @env.host,
+                   protocol: @env.protocol,
+                   path:     Endpoints::SUBMISSION_RESPONSE,
+                   options:  options)
     end
 
     private
 
-    def send_request(type:, protocol: 'https://', host:, path:, options:{}, headers: {})
-      HTTParty.send(type.to_sym, protocol + host + path, headers: headers, query: options)
+    def send_request(type:, protocol: 'https', host:, path:, options:{}, headers: {})
+      HTTParty.send(type.to_sym, protocol + '://' + host + path, headers: headers, query: options)
     end
 
     def construct_headers(endpoint:)

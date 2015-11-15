@@ -24,6 +24,8 @@ PRODUCTION_VAMS_USER = '<production_username>'
 PRODUCTION_VAMS_PASSWORD = '<production_password>'
 STAGING_VAMS_USER = '<staging_username>'
 STAGING_VAMS_PASSWORD = '<staging_password>'
+DEVELOPMENT_VAMS_USER = '<development_username>'
+DEVELOPMENT_VAMS_PASSWORD = '<development_password>'
 ```
 
 ### Build and Push
