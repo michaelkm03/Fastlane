@@ -6,21 +6,13 @@ module Environment
   extend self
   CONFIG_PATH = File.join(__dir__, 'config.yml')
 
-  def staging
-    environment_data(:staging)
-  end
-
-  def production
-    environment_data(:production)
-  end
-
-  private
-
-  def environment_data(env)
+  def construct(env)
     hash = config[env.to_s].merge(secrets(env.to_s))
     hash = hash.symbolize_keys
     OpenStruct.new(hash)
   end
+
+  private
 
   def config
     @config ||= YAML.load_file(CONFIG_PATH)

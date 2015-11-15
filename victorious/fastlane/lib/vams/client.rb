@@ -18,7 +18,7 @@ module VAMS
     def initialize(environment: :staging, date: construct_date)
       @environment = environment
       @date        = date
-      @env         = Environment.send(environment.to_sym)
+      @env         = Environment.construct(environment.to_sym)
     end
 
     def authenticate

@@ -52,7 +52,7 @@ module VAMS
     private
 
     def stub_login(environment:, date:)
-      env = Environment.send(environment.to_sym)
+      env = Environment.construct(environment.to_sym)
       stub_request(:post, "https://#{environment.to_s}.getvictorious.com/api/login?email=#{env.username}&password=#{env.password}").
         with(:headers => {'Date'=> date.to_s, 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
         to_return(:status => 200, :body => File.read(SUCCESSFUL_LOGIN_PATH))
