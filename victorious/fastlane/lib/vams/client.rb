@@ -78,11 +78,6 @@ module VAMS
       HTTParty.send(type.to_sym, protocol + host + path, headers: headers, query: options)
     end
 
-    def json_from_file(path:)
-      json_string = File.read(path)
-      JSON.parse(json_string)
-    end
-
     def construct_headers(endpoint:)
       {
         'Authorization' => construct_auth_header(endpoint: endpoint),
