@@ -32,7 +32,7 @@ def apply_config(build_name:)
   sh "cd ../../ && ./build-scripts/apply-config.sh #{build_name}"
 end
 
-def prepare_metadata_for_submission(build_name:)
+def prepare_metadata_for_submission(build_name:, client:)
   app_with_meta = VAMS::Client.app_by_build_name(build_name)
   metadata      = VAMS::Metadata.new(app_with_meta)
   save_text_into_file(text: metadata.ios_description, path: FASTLANE_METADATA_PATHS[:description])
@@ -56,9 +56,10 @@ platform :ios do
 
   desc "Deploy a new version to the App Store"
   lane :deploy do
-    VAMS::Client.apps_to_build.each do |app|
+    client = VAMS::Client.new(environment: :staging)
+    client.apps_to_build.each do |app|
       apply_config(build_name: app.build_name)
-      prepare_metadata_for_submission(build_name: app.build_name)
+      prepare_metadata_for_submission(build_name: app.build_name, client: client)
       sigh
       gym(
         scheme: 'release-victorious',
