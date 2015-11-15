@@ -56,19 +56,19 @@ module VAMS
       env = Environment.construct(environment.to_sym)
       stub_request(:post, "https://#{environment.to_s}.getvictorious.com/api/login?email=#{env.username}&password=#{env.password}").
         with(:headers => {'Date'=> date.to_s, 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
-        to_return(:status => 200, :body => File.read(SUCCESSFUL_LOGIN_PATH))
+        to_return(:status => 200, :body => File.read(Payloads::SUCCESSFUL_LOGIN_PATH))
     end
 
     def stub_apps_list(environment: :staging, date:)
       stub_request(:get, "https://staging.getvictorious.com/api/app/apps_list").
         with(:headers => {'Authorization'=>'BASIC 634159:80bc93519221902f41e16c5e32692868f2a7b7e7', 'Date'=>'2015-11-14 12:39:40 -0800', 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
-        to_return(:status => 200, :body => File.read(APPS_TO_BUILD_JSON_PATH), :headers => {})
+        to_return(:status => 200, :body => File.read(Payloads::APPS_TO_BUILD_JSON_PATH), :headers => {})
     end
 
     def stub_app_by_build_name(environment: :staging, date:)
       stub_request(:get, "https://staging.getvictorious.com/api/app/app_by_build_name/LeachyPeachy").
         with(:headers => {'Authorization'=>'BASIC 634159:9d946db398914a5525607026b4b4ed74c46704b8', 'Date'=>'2015-11-14 12:39:40 -0800', 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
-        to_return(:status => 200, :body => File.read(APP_BY_BUILD_NAME), :headers => {})
+        to_return(:status => 200, :body => File.read(Payloads::APP_BY_BUILD_NAME), :headers => {})
     end
 
     def stub_submit_result(status:)
