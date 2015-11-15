@@ -11,8 +11,9 @@ module VAMS
 
     DEFAULT_USER_ID = 0
     module Endpoints
-      LOGIN     = '/api/login'
-      APPS_LIST = '/api/app/apps_list'
+      LOGIN             = '/api/login'
+      APPS_LIST         = '/api/app/apps_list'
+      APP_BY_BUILD_NAME = '/api/app/app_by_build_name'
     end
 
     def initialize(environment: :staging, date: construct_date)
@@ -46,24 +47,23 @@ module VAMS
     end
 
     def apps_to_build
-      endpoint = Endpoints::APPS_LIST
-      headers = {
-        'Authorization' => construct_auth_header(endpoint: endpoint),
-        'User-Agent'    => @env.useragent,
-        'Date'          => @date.to_s
-      }
-
+      endpoint          = Endpoints::APPS_LIST
       response          = send_request(type:    :get,
                                        path:    endpoint,
                                        host:    @env.host,
-                                       headers: headers)
+                                       headers: construct_headers(endpoint: endpoint))
       json              = JSON.parse(response.body)
       unlocked_app_data = json['payload'].select { |data| data['app_state'] == 'unlocked' }
       unlocked_app_data.map { |data| App.new(data) }
     end
 
     def app_by_build_name(build_name)
-      json = json_from_file(path: APP_BY_BUILD_NAME)
+      endpoint = Endpoints::APP_BY_BUILD_NAME + '/' + build_name
+      response = send_request(type: :get,
+                              path: endpoint,
+                              host: @env.host,
+                              headers: construct_headers(endpoint: endpoint))
+      json     = JSON.parse(response.body)
       App.new(json['payload'])
     end
 
@@ -81,6 +81,14 @@ module VAMS
     def json_from_file(path:)
       json_string = File.read(path)
       JSON.parse(json_string)
+    end
+
+    def construct_headers(endpoint:)
+      {
+        'Authorization' => construct_auth_header(endpoint: endpoint),
+        'User-Agent'    => @env.useragent,
+        'Date'          => @date.to_s
+      }
     end
 
     def construct_date
