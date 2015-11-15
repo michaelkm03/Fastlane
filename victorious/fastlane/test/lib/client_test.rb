@@ -28,6 +28,7 @@ module VAMS
       assert_equal("75",             first_app.app_id)
       assert_equal('Leachy Peachy',  first_app.app_name)
       assert_equal('leachypeachy',   first_app.build_name)
+      assert_equal('unlocked',       first_app.app_state)
     end
 
     def test_gets_app_by_build_name

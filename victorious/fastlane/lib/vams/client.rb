@@ -53,12 +53,13 @@ module VAMS
         'Date'          => @date.to_s
       }
 
-      response = send_request(type:    :get,
-                              path:    endpoint,
-                              host:    @env.host,
-                              headers: headers)
-      json     = JSON.parse(response.body)
-      json['payload'].map { |data| App.new(data) }
+      response          = send_request(type:    :get,
+                                       path:    endpoint,
+                                       host:    @env.host,
+                                       headers: headers)
+      json              = JSON.parse(response.body)
+      unlocked_app_data = json['payload'].select { |data| data['app_state'] == 'unlocked' }
+      unlocked_app_data.map { |data| App.new(data) }
     end
 
     def app_by_build_name(build_name)
