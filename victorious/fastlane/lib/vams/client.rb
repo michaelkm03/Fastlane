@@ -10,9 +10,10 @@ module VAMS
 
     DEFAULT_USER_ID = 0
     module Endpoints
-      LOGIN             = '/api/login'
-      APPS_LIST         = '/api/app/apps_list'
-      APP_BY_BUILD_NAME = '/api/app/app_by_build_name'
+      LOGIN               = '/api/login'
+      APPS_LIST           = '/api/app/apps_list'
+      APP_BY_BUILD_NAME   = '/api/app/app_by_build_name'
+      SUBMISSION_RESPONSE = '/api/app/app_submission_response'
     end
 
     def initialize(environment: :staging, date: Time.now)
@@ -58,9 +59,9 @@ module VAMS
 
     def app_by_build_name(build_name)
       endpoint = Endpoints::APP_BY_BUILD_NAME + '/' + build_name
-      response = send_request(type: :get,
-                              path: endpoint,
-                              host: @env.host,
+      response = send_request(type:    :get,
+                              path:    endpoint,
+                              host:    @env.host,
                               headers: construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       App.new(json['payload'])
@@ -68,7 +69,10 @@ module VAMS
 
     def submit_result(result:, environment:)
       options = { body: result.to_json }
-      send_request(type: :post, host: @env.host, path: '/submission_result', options: options)
+      send_request(type:    :post,
+                   host:    @env.host,
+                   path:    Endpoints::SUBMISSION_RESPONSE,
+                   options: options)
     end
 
     private

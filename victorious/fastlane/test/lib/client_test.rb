@@ -71,7 +71,7 @@ module VAMS
     end
 
     def stub_submit_result(status:)
-      stub_request(:post, 'https://staging.getvictorious.com/submission_result?body=%7B%22id%22:1,%22status%22:%22All%20good%22,%22datetime%22:%222015-03-10T01:39:34.000-07:00%22%7D').
+      stub_request(:post, 'https://staging.getvictorious.com/api/app/app_submission_response?body=%7B%22id%22:1,%22status%22:%22All%20good%22,%22datetime%22:%222015-03-10T01:39:34.000-07:00%22%7D').
         to_return(status: status, body: '')
     end
   end
