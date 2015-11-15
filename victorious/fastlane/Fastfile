@@ -33,7 +33,7 @@ def apply_config(build_name:)
 end
 
 def prepare_metadata_for_submission(build_name:, client:)
-  app_with_meta = VAMS::Client.app_by_build_name(build_name)
+  app_with_meta = client.app_by_build_name(build_name)
   metadata      = VAMS::Metadata.new(app_with_meta)
   save_text_into_file(text: metadata.ios_description, path: FASTLANE_METADATA_PATHS[:description])
 end
