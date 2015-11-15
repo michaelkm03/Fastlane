@@ -23,3 +23,4 @@ products
 
 # fastlane setup
 victorious/fastlane/.env
+victorious/fastlane/report.xml
