@@ -1,7 +1,6 @@
 require 'test_helper'
 require 'vams/client'
 require 'vams/metadata'
-require 'vams/payloads'
 require 'vams/app'
 
 module VAMS

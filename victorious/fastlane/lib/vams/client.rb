@@ -1,7 +1,6 @@
 require 'json'
 require 'digest/sha1'
 require 'vams/app'
-require 'vams/payloads'
 require 'vams/environment'
 require 'httparty'
 
