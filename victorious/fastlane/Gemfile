@@ -4,6 +4,10 @@ gem 'activesupport', require: false
 gem 'httparty'
 gem 'dotenv'
 
+group :development do
+  gem 'pry', require: false
+end
+
 group :test do
   gem 'minitest'
   gem 'guard'

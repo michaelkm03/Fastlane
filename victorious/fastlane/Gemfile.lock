@@ -81,6 +81,7 @@ DEPENDENCIES
   httparty
   minitest
   minitest-rg
+  pry
   webmock
 
 BUNDLED WITH
