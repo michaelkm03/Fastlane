@@ -16,7 +16,7 @@ module VAMS
       APP_BY_BUILD_NAME = '/api/app/app_by_build_name'
     end
 
-    def initialize(environment: :staging, date: construct_date)
+    def initialize(environment: :staging, date: Time.now)
       @environment = environment
       @date        = date
       @env         = Environment.construct(environment.to_sym)
@@ -89,10 +89,6 @@ module VAMS
         'User-Agent'    => @env.useragent,
         'Date'          => @date.to_s
       }
-    end
-
-    def construct_date
-      `date`.split(" ").join(" ")
     end
 
     def auth_data
