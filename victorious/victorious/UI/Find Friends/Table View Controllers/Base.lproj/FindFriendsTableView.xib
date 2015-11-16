@@ -151,7 +151,7 @@
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="259" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-BR-Oom" userLabel="Info Label">
                                     <rect key="frame" x="31" y="12" width="259" height="65"/>
                                     <animations/>
-                                    <string key="text">Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.</string>
+                                    <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis accumsan arcu, ut sagittis metus accumsan ut. Aliquam enim diam, scelerisque ut neque eget, ultrices laoreet orci. Sed tincidunt est odio, et egestas augue maximus in. </string>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
