@@ -140,7 +140,6 @@
 		03314F521BE40F0100EE74FD /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F481BE40F0100EE74FD /* UserTests.swift */; };
 		03314F531BE40F0100EE74FD /* OneWayRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */; };
 		03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */; };
-		03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4C1BE40F0100EE74FD /* ImageAsset.json */; };
 		03314F561BE40F0100EE74FD /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
 		03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */; };
 		03314F621BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */; };
@@ -368,7 +367,6 @@
 		03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B719B42E5D00E27D05 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
-		03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03C540E11BED8E94009D5286 /* LoginResponse.json */; };
 		03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */; };
 		03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C92D131ABB96030057D30E /* LightweightContentView.storyboard */; };
 		03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C92D151ABB96030057D30E /* VLightweightContentViewController.m */; };
@@ -990,6 +988,10 @@
 		C314E6BB1BF13C0100FB9591 /* TrendingHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */; };
 		C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */; };
 		C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314E6BE1BF13D2300FB9591 /* Hashtag.swift */; };
+		C3183B441BFA614400E9BC28 /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03C540E11BED8E94009D5286 /* LoginResponse.json */; };
+		C3183B451BFA614800E9BC28 /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3209CAB1BF15ABD00EA229D /* FollowingHashtagsResponse.json */; };
+		C3183B461BFA614F00E9BC28 /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4C1BE40F0100EE74FD /* ImageAsset.json */; };
+		C3183B471BFA615700E9BC28 /* HashtagSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */; };
 		C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DF51BACE7D300F4BCFF /* AchievementInterstitial.swift */; };
 		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; };
 		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; };
@@ -997,8 +999,6 @@
 		C3209CA61BF14AB600EA229D /* HashtagResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA51BF14AB600EA229D /* HashtagResponseParser.swift */; };
 		C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */; };
 		C3209CAA1BF1520900EA229D /* FollowingHashtagsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA91BF1520900EA229D /* FollowingHashtagsRequest.swift */; };
-		C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3209CAB1BF15ABD00EA229D /* FollowingHashtagsResponse.json */; };
-		C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3209CAD1BF163C500EA229D /* HashtagSearchResponse.json */; };
 		C3209CB01BF163F300EA229D /* HashtagSearchResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */; };
 		C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */; };
 		C32D8BD01BF2D08E00AB5085 /* UnfollowUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32D8BCF1BF2D08E00AB5085 /* UnfollowUserRequestTests.swift */; };
@@ -8889,21 +8889,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				79D9FC561BF2812F00445D2D /* NoDataConverationResponse.json in Resources */,
-				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
 				79D081AE1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json in Resources */,
 				79D081B01BF192C300E8A0C5 /* NoConversationsConversationListResponse.json in Resources */,
 				C32D8BDE1BF2E06300AB5085 /* ImageSearchResponse.json in Resources */,
 				C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */,
 				67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */,
 				C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */,
-				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
-				03314F551BE40F0100EE74FD /* ImageAsset.json in Resources */,
-				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
 				A7EF1BDE1BF2761E00D429DE /* StreamResponse.json in Resources */,
 				C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */,
 				A7EF1BDD1BF2761E00D429DE /* Stream.json in Resources */,
 				03BC6FB81BE84A6E00CFCBEE /* SequenceLikersResponse.json in Resources */,
+				C3183B461BFA614F00E9BC28 /* ImageAsset.json in Resources */,
 				C3FEA79D1BF17307003446CC /* TrendingGIFsResponse.json in Resources */,
+				C3183B441BFA614400E9BC28 /* LoginResponse.json in Resources */,
 				C32D8BD41BF2D32800AB5085 /* FollowHashtagResponse.json in Resources */,
 				C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
@@ -8912,18 +8910,16 @@
 				79D9FC581BF281BB00445D2D /* InvalidDataConverationResponse.json in Resources */,
 				79D081A21BF14A0C00E8A0C5 /* UnreadMessageCountResponse.json in Resources */,
 				79D081A61BF15B9E00E8A0C5 /* ConversationListResponse.json in Resources */,
+				C3183B451BFA614800E9BC28 /* FollowingHashtagsResponse.json in Resources */,
 				6731B2651BF1834700B9FFFE /* FanLoyalty.json in Resources */,
 				A7DC00D51BF2BBC100E24A2F /* SimpleStream.json in Resources */,
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
-				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
 				C32D8BE41BF2E0EE00AB5085 /* ImageSearchResult.json in Resources */,
 				679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 				79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */,
-				03C540E21BED8E94009D5286 /* LoginResponse.json in Resources */,
-				C3209CAC1BF15ABD00EA229D /* FollowingHashtagsResponse.json in Resources */,
-				C3209CAE1BF163C500EA229D /* HashtagSearchResponse.json in Resources */,
+				C3183B471BFA615700E9BC28 /* HashtagSearchResponse.json in Resources */,
 				790254751BF293E200D20AFE /* Hashtag.json in Resources */,
 				C3E7C0EB1BF3CCF700AFE545 /* Notification.json in Resources */,
 				A7EF1BDC1BF2761E00D429DE /* Stream-Invalid.json in Resources */,
