@@ -14,7 +14,5 @@
 typedef NS_ENUM(NSInteger, VMonetizationPartner)
 {
     VMonetizationPartnerNone,
-    VMonetizationPartnerLiveRail,
-    VMonetizationPartnerOpenX,
-    VMonetizationPartnerTremor
+    VMonetizationPartnerCount
 };
