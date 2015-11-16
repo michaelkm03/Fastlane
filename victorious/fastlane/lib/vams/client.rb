@@ -2,6 +2,7 @@ require 'json'
 require 'digest/sha1'
 require 'vams/app'
 require 'vams/environment'
+require 'vams/screenshots'
 require 'httparty'
 
 module VAMS
@@ -14,6 +15,7 @@ module VAMS
       APPS_LIST           = '/api/app/apps_list'
       APP_BY_BUILD_NAME   = '/api/app/app_by_build_name'
       SUBMISSION_RESPONSE = '/api/app/app_submission_response'
+      SCREENSHOTS         = '/api/app/screenshots'
     end
 
     def initialize(environment: :staging, date: Time.now)
@@ -75,6 +77,17 @@ module VAMS
                               headers:  construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       App.new(json['payload'])
+    end
+
+    def get_screenshots(build_name)
+      endpoint = Endpoints::SCREENSHOTS + '/' + build_name
+      response = send_request(type: :get,
+                              path: endpoint,
+                              host: @env.host,
+                              protocol: @env.protocol,
+                              headers: construct_headers(endpoint: endpoint))
+      json     = JSON.parse(response.body)
+      Screenshots.new(json['payload'])
     end
 
     def submit_result(result:, environment:)

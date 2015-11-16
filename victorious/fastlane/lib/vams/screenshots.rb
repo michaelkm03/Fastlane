@@ -1,0 +1,2 @@
+class Screenshots < OpenStruct
+end
