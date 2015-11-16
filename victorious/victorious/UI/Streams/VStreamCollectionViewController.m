@@ -740,14 +740,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                       dependencyManager:self.dependencyManager];
     
     __weak typeof(self) welf = self;
-    void (^completionBlock)(BOOL success) = ^void(BOOL success)
-    {
-        if (completion != nil)
-        {
-            completion(success);
-        }
-        
-    };
     [authorization performFromViewController:self context:VAuthorizationContextDefault
                                           completion:^(BOOL authorized)
      {
@@ -760,16 +752,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {
-                  completionBlock( YES );
+                  completion( YES );
                   
               } failBlock:^(NSOperation *operation, NSError *error)
               {
-                  completionBlock( NO );
+                  completion( NO );
               }];
          }
          else
          {
-             completionBlock( NO );
+             completion( NO );
          }
      }];
 }

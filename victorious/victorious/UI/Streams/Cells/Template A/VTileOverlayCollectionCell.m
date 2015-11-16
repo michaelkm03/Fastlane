@@ -282,7 +282,11 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
                                                                   withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
-    [responder willLikeSequence:self.sequence withView:likeButton completion:nil];
+    likeButton.enabled = NO;
+    [responder willLikeSequence:self.sequence withView:likeButton completion:^(BOOL success)
+     {
+         likeButton.enabled = YES;
+     }];
 }
 
 - (void)selectedCommentButton:(UIButton *)commentButton

@@ -195,7 +195,8 @@ shouldChangeTextInRange:(NSRange)range
     }
     
     NSRange selectedRange = textView.selectedRange;
-    [textView.textStorage setAttributes:sizedAttributes range:NSMakeRange(0, textView.textStorage.length)];
+    textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+                                                              attributes:sizedAttributes];
     textView.selectedRange = selectedRange;
     
     [self resizeText];

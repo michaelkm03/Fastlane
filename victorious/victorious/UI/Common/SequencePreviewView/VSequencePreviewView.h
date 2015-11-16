@@ -41,17 +41,13 @@
 
 @property (nonatomic, weak) id<VSequencePreviewViewDetailDelegate> detailDelegate;
 
-/**
- This likeButton is hidden by default.
- Call showLikeButton:shouldShowLikeButton to configure and show it
- */
 @property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
 /**
- Call this method to show or hide the like button on this preview view
- The like button will only show up if it is enabled in template
+ Designed to be overridden by subclasses for any content types for which the like button shouldn't be enabled.
+ Returns no by default, i.e. the like button is enabled by default.
  */
-- (void)showLikeButton:(BOOL)shouldShowLikeButton;
+@property (nonatomic, assign, readonly) BOOL shouldHideLikeButton;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.

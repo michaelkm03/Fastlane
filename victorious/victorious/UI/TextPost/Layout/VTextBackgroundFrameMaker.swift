@@ -19,7 +19,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
     
     /**
     Creates an array of background frames as CGRects for using properies of the provided text view.
-    This will not automatically set the background frames to be rendered.  That is the reponsibility
+    This will not automatically set the background frames to be renered.  That is the reponsibility
     of calling code.
     */
     func createBackgroundFramesForTextView( textView: UITextView, characterWidth: CGFloat, calloutRangeObjects: NSArray ) -> NSArray

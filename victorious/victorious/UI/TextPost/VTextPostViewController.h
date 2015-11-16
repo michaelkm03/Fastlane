@@ -15,7 +15,7 @@
  The view controller that renders text posts, both when displaying static posts
  as well as when displaying editable (@see VEditableTextPostViewController).
  */
-@interface VTextPostViewController : UIViewController <UITextViewDelegate, VHasManagedDependencies>
+@interface VTextPostViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

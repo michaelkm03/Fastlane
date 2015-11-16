@@ -20,6 +20,7 @@
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
+#import "TremorVideoAd.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
@@ -415,10 +416,33 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)seedMonetizationNetworks:(NSArray *)adSystems
 {
-    for ( NSDictionary *adSystem in adSystems )
+    if (adSystems)
     {
-        NSNumber *number = [adSystem valueForKey:@"ad_system"];
-        __unused VMonetizationPartner adSystem = number.integerValue;
+        NSUInteger i;
+        NSString *appID;
+        
+        for (i = 0; i < adSystems.count; i++)
+        {
+            NSDictionary *item = adSystems[i];
+            NSInteger adSystem = [[item valueForKey:@"ad_system"] integerValue];
+            
+            switch (adSystem)
+            {
+                case VMonetizationPartnerTremor:
+                    appID = [item valueForKey:@"tremor_app_id"];
+                    
+                    // If we have an appID, seed the Tremor Ad Network
+                    if (appID && (appID != nil && ![appID isKindOfClass:[NSNull class]]))
+                    {
+                        [TremorVideoAd initWithAppID:appID];
+                        [TremorVideoAd start];
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
     }
 }
 

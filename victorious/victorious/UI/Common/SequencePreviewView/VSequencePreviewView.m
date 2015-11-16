@@ -118,7 +118,6 @@
                                                         multiplier:1.0
                                                           constant:-3.0f]];
         [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-        _likeButton.hidden = YES;
         
         [self setGesturesEnabled:NO];
     }
@@ -140,6 +139,11 @@
     }
 }
 
+- (BOOL)shouldHideLikeButton
+{
+    return NO; //< By default, but can be overriden in subclasses
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     if ( sequence != self.sequence )
@@ -148,7 +152,8 @@
     }
     
     [super setStreamItem:sequence];
-    [self layoutIfNeeded];
+    
+    [self configureLikeButtonForSequence:sequence];
 }
 
 - (VSequence *)sequence
@@ -251,20 +256,18 @@
 
 #pragma mark - Like button
 
-- (void)showLikeButton:(BOOL)shouldShowLikeButton
+- (void)configureLikeButtonForSequence:(VSequence *)sequence
 {
     const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
-    BOOL willShowLikeButton = isLikeButtonTemplateEnabled && shouldShowLikeButton;
-    
-    if (willShowLikeButton)
+    if ( isLikeButtonTemplateEnabled && !self.shouldHideLikeButton )
     {
         __weak typeof(self) welf = self;
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {
              __strong typeof(welf) strongSelf = welf;
-             [strongSelf.likeButton setActive:strongSelf.sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:strongSelf.sequence.likeCount.integerValue];
+             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];
         self.likeButton.hidden = NO;
     }
@@ -273,11 +276,17 @@
         self.expressionsObserver = nil;
         self.likeButton.hidden = YES;
     }
+    
+    [self layoutIfNeeded];
 }
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion: nil];
+    likeButton.enabled = NO;
+    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion:^(BOOL success)
+     {
+         likeButton.enabled = YES;
+     }];
 }
 
 @end

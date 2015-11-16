@@ -208,7 +208,7 @@
     // Grab the preroll
     VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
-    self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
+    self.monetizationPartner = adSystemPartner;
     self.monetizationDetails = self.adChain;
 }
 
