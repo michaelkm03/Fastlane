@@ -38,7 +38,7 @@
     
     CGFloat radius = self.profileButton.bounds.size.width * 0.5f;
     self.profileButton.layer.cornerRadius = radius;
-    self.descriptionLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:9.0f];
+    self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
