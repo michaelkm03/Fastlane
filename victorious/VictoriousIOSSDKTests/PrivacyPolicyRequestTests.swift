@@ -21,7 +21,7 @@ class PrivacyPolicyRequestTests: XCTestCase {
         }
         do {
             let ppRequest = PrivacyPolicyRequest()
-            let result = try ppRequest.parseHTML(NSURLResponse(), toRequest:ppRequest.urlRequest, responseData: mockData)
+            let result = try ppRequest.parseResponse(NSURLResponse(), toRequest:ppRequest.urlRequest, responseData: mockData, responseJSON: JSON(data:mockData))
             XCTAssertEqual(result, "<html>testHTML</html>")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
