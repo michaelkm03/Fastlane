@@ -57,7 +57,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
-@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate, AutoShowLoginOperationDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate, ForceLoginOperationDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
@@ -330,18 +330,18 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     if ( [VUser currentUser] != nil )
     {
         Operation *operation = [[LogoutLocally alloc] init];
-        [operation queueOn:[NSOperationQueue mainQueue] mainQueueCompletionBlock:^{
+        [operation queueOn:[NSOperationQueue mainQueue] mainQueueCompletionBlock:^void(Operation *op){
             [self updateLogoutButtonState];
         }];
     }
     else
     {
-        [[[AutoShowLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self] queue];
+        [[[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self] queue];
         [self updateLogoutButtonState];
     }
 }
 
-#pragma mark - AutoShowLoginOperationDelegate
+#pragma mark - ForceLoginOperationDelegate
 
 - (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
 {

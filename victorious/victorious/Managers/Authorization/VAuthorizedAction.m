@@ -112,7 +112,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     {
         [loginFlowController setAuthorizationContext:authorizationContext];
     }
-    [loginFlowController setCompletionBlock:completionActionBlock];
+    loginFlowController.completion = completionActionBlock;
     
     return loginFlowController;
 }

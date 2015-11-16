@@ -26,7 +26,7 @@ typedef void (^VLoginFlowCompletionBlock) (BOOL authorized);
  *  A completion block to be called after the completion of the flow. Protocol conformers must call this 
  *  when they are finished.
  */
-- (void)setCompletionBlock:(VLoginFlowCompletionBlock)completion;
+@property (nonatomic, copy) VLoginFlowCompletionBlock completion;
 
 @optional
 

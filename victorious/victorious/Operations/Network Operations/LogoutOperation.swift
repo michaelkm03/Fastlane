@@ -9,54 +9,34 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: NetworkOperation<OneWayRequest> {
+class LogoutOperation: RequestOperation<LogoutRequest> {
     
-    init() {
-        super.init( request: OneWayRequest(url: NSURL(string: "/api/logout")! ) )
-    }
+    let userIdentifier: AnyObject
     
-    override func start() {
-        super.start()
+    init( userIdentifier: AnyObject ) {
+        self.userIdentifier = userIdentifier
         
-        // TODO: Cancel/remove other requests in network operaiton queue
+        super.init( request: LogoutRequest() )
+        
+        qualityOfService = .UserInitiated
     }
     
-    override func onResponse(result: Void) {
+    override func onResponse(result: LogoutRequest.ResultType) {
         
         let dataStore = PersistentStore.backgroundContext
-        VUser.clearCurrentUser(inContext: dataStore)
-        
-        // TODO: Data cleanup, deleting stuff that belongs to main user
-        // TODO: Perhaps a `LoginCleanupOperation`?
-        /*
-        //Delete all conversations / pollresults for the user!
-        NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-        [context performBlockAndWait:^(void)
-        {
-        
-        NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
-        [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
-        [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
-        NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
-        for (NSManagedObject *conversation in conversations)
-        {
-        [context deleteObject:conversation];
+        guard let loggedOutUser: VUser = dataStore.getObject(self.userIdentifier) else {
+            fatalError()
         }
         
-        NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
-        [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
-        [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
-        NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
-        for (NSManagedObject *pollResult in pollResults)
-        {
-        [context deleteObject:pollResult];
+        let conversations: [VConversation] = dataStore.findObjects( [ "user" : loggedOutUser ])
+        for object in conversations {
+            dataStore.destroy( object )
         }
         
-        [context save:nil];
-        }];
-        */
+        let pollResults: [VPollResult] = dataStore.findObjects( [ "user" : loggedOutUser ])
+        for object in pollResults {
+            dataStore.destroy( object )
+        }
         
         dataStore.saveChanges()
     }

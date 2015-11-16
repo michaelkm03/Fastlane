@@ -8,13 +8,9 @@
 
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
 #import "VMessageContainerViewController.h"
-#import "VObjectManager+Login.h"
 #import "VStream+Fetcher.h"
-#import "VObjectManager+ContentCreation.h"
 #import "VInboxViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VAuthorizedAction.h"
@@ -43,6 +39,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
+#import "victorious-Swift.h"
 
 @import KVOController;
 @import MBProgressHUD;
@@ -88,7 +85,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     viewController.dependencyManager = dependencyManager;
     [viewController addLoginStatusChangeObserver];
     
-    VUser *mainUser = [VObjectManager sharedManager].mainUser;
+    VUser *mainUser = [VUser currentUser];
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
     if ( isCurrentUser )
     {
@@ -327,7 +324,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowCounts
 {
-    [[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
+    // FIXME: [[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
 }
 
 - (void)setInitialHeaderState
@@ -389,27 +386,27 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
 {
     self.remoteId = remoteId;
-    [[VObjectManager sharedManager] fetchUser:self.remoteId
-                                  forceReload:forceReload
-                             withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self.retryHUD hide:YES];
-         [self.retryProfileLoadButton removeFromSuperview];
-         self.retryHUD = nil;
-         self.user = [resultObjects lastObject];
-         
-         // Reload follow counts when user pulls to refresh
-         [self reloadUserFollowCounts];
-     }
-                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-         self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
-         self.retryHUD.mode = MBProgressHUDModeCustomView;
-         self.retryHUD.customView = self.retryProfileLoadButton;
-         self.retryHUD.margin = 0.0f;
-         [self.retryProfileLoadButton setUserInteractionEnabled:YES];
-     }];
+    
+    [self fetchUserInfoWithUserID:remoteId.integerValue completion:^(NSError *_Nullable error) {
+        if ( error == nil )
+        {
+            //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
+            self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
+            self.retryHUD.mode = MBProgressHUDModeCustomView;
+            self.retryHUD.customView = self.retryProfileLoadButton;
+            self.retryHUD.margin = 0.0f;
+            [self.retryProfileLoadButton setUserInteractionEnabled:YES];
+        }
+        else
+        {
+            [self.retryHUD hide:YES];
+            [self.retryProfileLoadButton removeFromSuperview];
+            self.retryHUD = nil;
+            
+            // Reload follow counts when user pulls to refresh
+            [self reloadUserFollowCounts];
+        }
+    }];
 }
 
 - (void)retryProfileLoad
@@ -535,10 +532,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.representsMainUser )
     {
-        self.user = [VObjectManager sharedManager].mainUser;
+        self.user = [VUser currentUser];
         [self updateCollectionViewDataSource];
     }
-    else if ( [VObjectManager sharedManager].authorized )
+    else if ( [VUser currentUser] != nil )
     {
         [self reloadUserFollowingRelationship];
     }

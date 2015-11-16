@@ -31,7 +31,7 @@
 
 static NSString * const kMenuKey = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate, InterstitialListener>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, ForceLoginOperationDelegate, InterstitialListener>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -213,7 +213,7 @@ static NSString * const kMenuKey = @"menu";
                      animated:(BOOL)animated
                    completion:(void(^)())completion
 {
-    [self checkAuthorizationOnNavigationDestination:navigationDestination
+    /*[self checkAuthorizationOnNavigationDestination:navigationDestination
                                          completion:^(BOOL shouldNavigate)
      {
          if (shouldNavigate)
@@ -222,7 +222,12 @@ static NSString * const kMenuKey = @"menu";
                                  animated:animated
                                completion:completion];
          }
-     }];
+     }];*/
+    
+    // TODO: Replace above authorization check
+    [self _navigateToDestination:navigationDestination
+                        animated:animated
+                      completion:completion];
 }
 
 - (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
@@ -387,7 +392,7 @@ static NSString * const kMenuKey = @"menu";
     }
     self.hasSetupFirstLaunchOperations = YES;
 
-    AutoShowLoginOperation *forceLoginOperation = [[AutoShowLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self];
+    ForceLoginOperation *forceLoginOperation = [[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self];
     
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
@@ -410,7 +415,7 @@ static NSString * const kMenuKey = @"menu";
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 
-#pragma mark - AutoShowLoginOperationDelegate
+#pragma mark - ForceLoginOperationDelegate
 
 - (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
 {

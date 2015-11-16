@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class ConversationListOperation: NetworkOperation<ConversationListRequest> {
+class ConversationListOperation: RequestOperation<ConversationListRequest> {
     
     init() {
         super.init( request: ConversationListRequest() )

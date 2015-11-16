@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
 
-// TODO: Delete this class, use AutoShowLoginOperation instead
+// TODO: Delete this class, use ForceLoginOperation instead
 @interface VAuthorizedAction : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

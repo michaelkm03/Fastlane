@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractPresenter.h"
+#import "VCreationTypes.h"
 
 @class VDependencyManager;
 
@@ -20,5 +21,7 @@
  *  animation from the top of the screen.
  */
 @property (nonatomic, assign) BOOL showsCreationSheetFromTop;
+
+- (void)presentWorkspaceOnViewController:(UIViewController *)originViewController creationType:(VCreationType)creationType;
 
 @end

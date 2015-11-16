@@ -12,7 +12,7 @@ class Operation: NSOperation {
     
     static let defaultQueue = NSOperationQueue()
     
-    var mainQueueCompletionBlock: (()->())?
+    var mainQueueCompletionBlock: ((Operation)->())?
     
     private var _executing = false
     private var _finished = false
@@ -57,19 +57,19 @@ class Operation: NSOperation {
         self.queue(nil)
     }
     
-    final func queueOn( queue: NSOperationQueue, mainQueueCompletionBlock:(()->())?) {
+    final func queueOn( queue: NSOperationQueue, mainQueueCompletionBlock:((Operation)->())?) {
         self.completionBlock = {
             if mainQueueCompletionBlock != nil {
                 self.mainQueueCompletionBlock = mainQueueCompletionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?()
+                self.mainQueueCompletionBlock?( self )
             }
         }
         queue.addOperation( self )
     }
     
-    final func queue( completion:(()->())?) {
+    final func queue( completion:((Operation)->())?) {
         self.queueOn( Operation.defaultQueue, mainQueueCompletionBlock: completion )
     }
 }
@@ -83,6 +83,14 @@ extension NSOperation {
         for dependentOperation in dependentOperationsInQueue( queue ) {
             dependentOperation.addDependency( operation )
         }
+        queue.addOperation( operation )
+    }
+    
+    /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
+    /// effectively "cutting in line" all the dependency operations.  This allows operations to
+    /// instantiate and queue a follow-up operation.
+    func queueBefore( operation: NSOperation, queue: NSOperationQueue ) {
+        self.addDependency( operation )
         queue.addOperation( operation )
     }
     

@@ -1,5 +1,5 @@
 //
-//  AutoShowLoginOperation.swift
+//  ForceLoginOperation.swift
 //  victorious
 //
 //  Created by Michael Sena on 8/10/15.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-/// A delegate for the AutoShowLoginOperation. Conformers should be able to
+/// A delegate for the ForceLoginOperation. Conformers should be able to
 /// show/hide the given loginViewController. Either through containment or presentation.
-@objc protocol AutoShowLoginOperationDelegate {
+@objc protocol ForceLoginOperationDelegate {
     
-    /// Informs the delegate that the AutoShowLoginOperation now needs it's loginVC to be shown.
+    /// Informs the delegate that the ForceLoginOperation now needs it's loginVC to be shown.
     func showLoginViewController(loginViewController: UIViewController)
     
     /// Informs the delegate that the loginViewController passed above should be hidden. This will always be called after `showLoginViewController`
@@ -20,23 +20,23 @@ import Foundation
 }
 
 /// An `Operation` subclass for auto-showing login on startup.
-class AutoShowLoginOperation: Operation {
+class ForceLoginOperation: Operation {
     
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
     
     /// A Delegate to manage the showing/hiding of the loginViewController.
-    weak var delegate: AutoShowLoginOperationDelegate?
+    weak var delegate: ForceLoginOperationDelegate?
     
-    convenience init( dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate ) {
+    convenience init( dependencyManager: VDependencyManager, delegate: ForceLoginOperationDelegate ) {
         self.init( dependencyManager: dependencyManager, delegate: delegate, context: .Default)
     }
     
-    /// Initializes a new AutoShowLoginOperation with the provided parameters.
+    /// Initializes a new ForceLoginOperation with the provided parameters.
     ///
     /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
-    /// - returns: An AutoShowLoginOperation.
-    required init( dependencyManager: VDependencyManager, delegate: AutoShowLoginOperationDelegate, context: VAuthorizationContext) {
+    /// - returns: An ForceLoginOperation.
+    required init( dependencyManager: VDependencyManager, delegate: ForceLoginOperationDelegate, context: VAuthorizationContext) {
         self.dependencyManager = dependencyManager
         self.delegate = delegate
         self.context = context
@@ -69,7 +69,7 @@ class AutoShowLoginOperation: Operation {
                 // User is not logged in, show login view
                 let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
                     forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
-                viewController.setCompletionBlock(){ (finished) -> Void in
+                viewController.completion = { (finished) -> Void in
                     self.delegate?.hideLoginViewController() {
                         self.finishedExecuting()
                     }

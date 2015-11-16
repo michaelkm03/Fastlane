@@ -146,11 +146,19 @@ static const CGFloat kLineSpacing = 40.0f;
 
 - (IBAction)pressedDismiss:(id)sender
 {
+    if (self.completionHandler != nil)
+    {
+        self.completionHandler(self, VCreationTypeUnknown);
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)tappedBackground:(UITapGestureRecognizer *)tap
 {
+    if (self.completionHandler != nil)
+    {
+        self.completionHandler(self, VCreationTypeUnknown);
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -186,6 +194,7 @@ static const CGFloat kLineSpacing = 40.0f;
     {
         self.completionHandler(self, [self itemIdentifierFromString:menuItem.identifier]);
     }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (VCreationType)itemIdentifierFromString:(NSString *)identifierString

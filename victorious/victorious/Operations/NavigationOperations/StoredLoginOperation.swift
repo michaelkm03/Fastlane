@@ -24,7 +24,7 @@ class StoredLoginOperation: Operation {
         if let info = storedLogin.storedLoginInfo() {
             
             let dataStore = PersistentStore.mainContext
-            let user: VUser = dataStore.findOrCreateObject( [ "remoteId" : info.userRemoteId ])
+            let user: VUser = dataStore.findOrCreateObject([ "remoteId" : info.userRemoteId ])
             user.loginType = info.lastLoginType.rawValue
             user.token = info.token
             user.setCurrentUser(inContext: dataStore)
@@ -33,7 +33,7 @@ class StoredLoginOperation: Operation {
             let id = Int64(user.remoteId.integerValue)
             self.queueNext( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )
             
-            // TODO: Fetch soem more user info by adding more operations
+            // TODO: Maybe Fetch soem more user info by adding more operations. not sure if we still need this here
             // api/follow/counts/%d
             // api/sequence/users_interactions/%@/%@
         }
@@ -50,24 +50,9 @@ class StoredLoginOperation: Operation {
                 self.queueNext( operation, queue: Operation.defaultQueue )
         }
         else {
-            // Nothing to do here--we need a stored token or credentials to log in.
-            // Subsequence operations in the queue will handle logging in the user.
-        }
-    }
-}
-
-class UserInfoOperation: RequestOperation<UserInfoRequest> {
-    
-    init( userID: Int64 ) {
-        super.init( request: UserInfoRequest(userID: userID) )
-    }
-    
-    override func onResponse( response: UserInfoRequest.ResultType ) {
-        let dataStore = PersistentStore.backgroundContext
-        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
-        persistentUser.populate(fromSourceModel: response)
-        guard dataStore.saveChanges() else {
-            fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
+            // Nothing to do here without a stored token or credentials to log in.
+            // Subsequence operations in the queue will handle logging in the user
+            // after this one completes without creating a valid user object.
         }
     }
 }

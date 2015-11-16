@@ -19,15 +19,6 @@
  */
 @interface VUserProfileNavigationDestination : NSObject <VDeeplinkSupporter, VHasManagedDependencies, VNavigationDestination>
 
-@property (nonatomic, strong, readonly) VObjectManager *objectManager; ///< The object manager provided in the -init call
-
-/**
- Initializes a new instance of the receiver.
- 
- @param objectManager An instance of VObjectManager used to retrieve the current user
- */
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager NS_DESIGNATED_INITIALIZER;
-
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
