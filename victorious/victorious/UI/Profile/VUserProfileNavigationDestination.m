@@ -60,8 +60,12 @@
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     [self createProfile];
-    *alternateViewController = self.profileViewController;
-    return YES;
+    if ( self.profileViewController != nil )
+    {
+        *alternateViewController = self.profileViewController;
+        return YES;
+    }
+    else return NO;
 }
 
 - (UIViewController *)alternateViewController

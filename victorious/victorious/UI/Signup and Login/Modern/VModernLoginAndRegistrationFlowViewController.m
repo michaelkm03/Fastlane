@@ -50,7 +50,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *popGestureRecognizer;
 
 @property (nonatomic, assign) VAuthorizationContext authorizationContext;
-@property (nonatomic, strong) VLoginFlowCompletionBlock completionBlock;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
@@ -70,6 +69,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @end
 
 @implementation VModernLoginAndRegistrationFlowViewController
+
+@synthesize completion;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -234,17 +235,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:^
          {
-             if (self.completionBlock != nil)
+             if (self.completion != nil)
              {
-                 self.completionBlock(NO);
+                 self.completion(NO);
              }
          }];
     }
     else
     {
-        if (self.completionBlock != nil)
+        if (self.completion != nil)
         {
-            self.completionBlock(NO);
+            self.completion(NO);
         }
     }
 }
@@ -648,17 +649,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:^
          {
-             if (self.completionBlock != nil)
+             if (self.completion != nil)
              {
-                 self.completionBlock(success);
+                 self.completion(success);
              }
          }];
     }
     else
     {
-        if (self.completionBlock != nil)
+        if (self.completion != nil)
         {
-            self.completionBlock(success);
+            self.completion(success);
         }
     }
 }

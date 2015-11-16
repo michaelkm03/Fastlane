@@ -329,14 +329,16 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     if ( [VUser currentUser] != nil )
     {
-        Operation *operation = [[LogoutLocally alloc] init];
+        // Logout
+        Operation *operation = [[LogoutLocally alloc] initFromViewController:self dependencyManager:self.dependencyManager];
         [operation queueOn:[NSOperationQueue mainQueue] mainQueueCompletionBlock:^void(Operation *op){
             [self updateLogoutButtonState];
         }];
     }
     else
     {
-        [[[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self] queue];
+        // Show login prompt
+        [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queue];
         [self updateLogoutButtonState];
     }
 }

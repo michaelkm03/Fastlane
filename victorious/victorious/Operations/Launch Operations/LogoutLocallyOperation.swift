@@ -10,7 +10,13 @@ import Foundation
 
 class LogoutLocally: Operation {
     
-    override init() {
+    let fromViewController: UIViewController
+    let dependencyManager: VDependencyManager
+    
+    required init(fromViewController: UIViewController, dependencyManager: VDependencyManager) {
+        self.fromViewController = fromViewController
+        self.dependencyManager = dependencyManager
+        
         super.init()
         
         qualityOfService = .UserInitiated
@@ -26,7 +32,13 @@ class LogoutLocally: Operation {
             fatalError( "Cannot get current user." )
         }
         
+        // Show the login again once we're logged out
+        let loginOperation = ShowLoginOperation(originViewController: fromViewController, dependencyManager: dependencyManager)
+        self.queueNext( loginOperation, queue: Operation.defaultQueue )
+        
+        // Perform a fire-and-forget remote log out with the server
         let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
+        self.queueNext( remoteLogoutOperation, queue: remoteLogoutOperation.defaultQueue )
         
         VUser.clearCurrentUser(inContext: dataStore)
         
@@ -42,8 +54,6 @@ class LogoutLocally: Operation {
         VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
         
         NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
-        
-        self.queueNext( remoteLogoutOperation, queue: Operation.defaultQueue )
         
         self.finishedExecuting()
     }
