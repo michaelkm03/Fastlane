@@ -26,7 +26,7 @@ public class SendMessageRequest: RequestType {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext("\(recipientID)", withFieldName: "to_user_id")
+        try writer.appendPlaintext(String(recipientID), withFieldName: "to_user_id")
         
         if let mediaURL = mediaURL,
             let mediaType = mediaType,
