@@ -12,12 +12,6 @@ class YouTubeVideoSequencePreviewView : VVideoSequencePreviewView {
     
     class func remoteSourceName() -> String { return "youtube" }
     
-    override var shouldHideLikeButton: Bool {
-        // The like button covers the YouTube logo in the player,
-        // so we have to disable it in this sequence preview view type
-        return true
-    }
-    
     override var shouldAutoplay: Bool {
         // The current limitations of the YouTube web player make it impracticaly
         // to support auto play at this time, so we'll disable it
