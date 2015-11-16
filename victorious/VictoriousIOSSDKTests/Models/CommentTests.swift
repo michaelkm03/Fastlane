@@ -28,7 +28,7 @@ class CommentTests: XCTestCase {
         XCTAssertEqual(comment.shouldAutoplay, false)
         XCTAssertEqual(comment.user.name, "Ryan Higa")
         XCTAssertEqual(comment.text, "test")
-        XCTAssertEqual(comment.mediaType, .NoMedia)
+        XCTAssertNil(comment.mediaType)
         XCTAssertEqual(comment.mediaURL, NSURL(string: ""))
         XCTAssertEqual(comment.thumbnailURL, NSURL(string: ""))
         XCTAssertEqual(comment.flags, 0)
