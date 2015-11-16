@@ -130,6 +130,9 @@
 		<string>Quicksand-Bold.ttf</string>
 		<string>Quicksand-Light.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
+		<string>MuseoSans-100.otf</string>
+		<string>MuseoSans-300.otf</string>
+		<string>MuseoSans-500.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
