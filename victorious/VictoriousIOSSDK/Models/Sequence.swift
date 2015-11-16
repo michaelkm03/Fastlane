@@ -107,7 +107,7 @@ extension Sequence {
         nodes                   = (json["nodes"].array ?? []).flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])
-        voteResults             = (json["sequence_counts"]["votetypes"].array ?? []).flatMap { VoteResult(json: $0) }
+        voteResults             = (json["sequence_counts"]["pollresponses"].array ?? []).flatMap { VoteResult(json: $0) }
         recentComments          = (json["recent_comments"].array ?? []).flatMap { Comment(json: $0) }
         
         // MARK: - StreamItemType

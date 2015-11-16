@@ -1,0 +1,254 @@
+{
+    "error": 0,
+    "message": "",
+    "api_version": "1.2-1",
+    "host": "ip-172-31-20-153",
+    "app_id": 1,
+    "user_id": 4041,
+    "login_id": 4066,
+    "page_number": 1,
+    "total_pages": 1,
+    "experiment_ids": [31],
+    "alerts": [{
+        "id": "1336",
+        "type": "levelUp",
+        "params": {
+            "backgroundVideo": "",
+            "description": "Level up!",
+            "title": "",
+            "user": {
+                "id": "4041",
+                "name": "Sky Test",
+                "status": "complete",
+                "am_following": false,
+                "autofollow": "no",
+                "last_login_date": "2015-10-28 18:23:06",
+                "is_direct_message_disabled": false,
+                "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                "profile_location": "",
+                "profile_tagline": "",
+                "preview": {
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                        "type": "image\/jpeg",
+                        "width": 80,
+                        "height": 80
+                    }, {
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/320x320.jpg",
+                        "type": "image\/jpeg",
+                        "width": 320,
+                        "height": 320
+                    }]
+                },
+                "isCreator": false,
+                "fanloyalty": {
+                    "points": 100,
+                    "level": 2,
+                    "progress": 0
+                }
+            }
+        }
+    }, {
+        "id": "1345",
+        "type": "levelUp",
+        "params": {
+            "backgroundVideo": "",
+            "description": "Level up!",
+            "title": "",
+            "user": {
+                "id": "4041",
+                "name": "Sky Test",
+                "status": "complete",
+                "am_following": false,
+                "autofollow": "no",
+                "last_login_date": "2015-10-28 18:23:06",
+                "is_direct_message_disabled": false,
+                "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                "profile_location": "",
+                "profile_tagline": "",
+                "preview": {
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                        "type": "image\/jpeg",
+                        "width": 80,
+                        "height": 80
+                    }, {
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/320x320.jpg",
+                        "type": "image\/jpeg",
+                        "width": 320,
+                        "height": 320
+                    }]
+                },
+                "isCreator": false,
+                "fanloyalty": {
+                    "points": 200,
+                    "level": 3,
+                    "progress": 0
+                }
+            }
+        }
+    }, {
+        "id": "1354",
+        "type": "levelUp",
+        "params": {
+            "backgroundVideo": "",
+            "description": "Level up!",
+            "title": "",
+            "user": {
+                "id": "4041",
+                "name": "Sky Test",
+                "status": "complete",
+                "am_following": false,
+                "autofollow": "no",
+                "last_login_date": "2015-10-29 18:25:19",
+                "is_direct_message_disabled": false,
+                "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                "profile_location": "",
+                "profile_tagline": "",
+                "preview": {
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                        "type": "image\/jpeg",
+                        "width": 80,
+                        "height": 80
+                    }, {
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/320x320.jpg",
+                        "type": "image\/jpeg",
+                        "width": 320,
+                        "height": 320
+                    }]
+                },
+                "isCreator": false,
+                "fanloyalty": {
+                    "points": 100,
+                    "level": 2,
+                    "progress": 0
+                }
+            }
+        }
+    }, {
+        "id": "1356",
+        "type": "levelUp",
+        "params": {
+            "backgroundVideo": "",
+            "description": "Level up!",
+            "title": "",
+            "user": {
+                "id": "4041",
+                "name": "Sky Test",
+                "status": "complete",
+                "am_following": false,
+                "autofollow": "no",
+                "last_login_date": "2015-10-29 23:54:23",
+                "is_direct_message_disabled": false,
+                "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                "profile_location": "",
+                "profile_tagline": "",
+                "preview": {
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                        "type": "image\/jpeg",
+                        "width": 80,
+                        "height": 80
+                    }, {
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/320x320.jpg",
+                        "type": "image\/jpeg",
+                        "width": 320,
+                        "height": 320
+                    }]
+                },
+                "isCreator": false,
+                "fanloyalty": {
+                    "points": 200,
+                    "level": 3,
+                    "progress": 0
+                }
+            }
+        }
+    }, {
+        "id": "1375",
+        "type": "levelUp",
+        "params": {
+            "backgroundVideo": "",
+            "description": "Level up!",
+            "title": "",
+            "user": {
+                "id": "4041",
+                "name": "Sky Test",
+                "status": "complete",
+                "am_following": false,
+                "autofollow": "no",
+                "last_login_date": "2015-11-03 02:53:43",
+                "is_direct_message_disabled": false,
+                "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                "profile_location": "",
+                "profile_tagline": "",
+                "preview": {
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/80x80.jpg",
+                        "type": "image\/jpeg",
+                        "width": 80,
+                        "height": 80
+                    }, {
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/5877cc767444909f139902d2e879aecc\/320x320.jpg",
+                        "type": "image\/jpeg",
+                        "width": 320,
+                        "height": 320
+                    }]
+                },
+                "isCreator": false,
+                "fanloyalty": {
+                    "points": 402,
+                    "level": 4,
+                    "progress": 1
+                }
+            }
+        }
+    }],
+    "payload": [{
+        "sequence_id": "14609",
+        "answer_id": "744"
+    }, {
+        "sequence_id": "15064",
+        "answer_id": "834"
+    }, {
+        "sequence_id": "15585",
+        "answer_id": "855"
+    }, {
+        "sequence_id": "2026",
+        "answer_id": "323"
+    }, {
+        "sequence_id": "16243",
+        "answer_id": "880"
+    }, {
+        "sequence_id": "15998",
+        "answer_id": "873"
+    }, {
+        "sequence_id": "11966",
+        "answer_id": "546"
+    }, {
+        "sequence_id": "15915",
+        "answer_id": "870"
+    }, {
+        "sequence_id": "16324",
+        "answer_id": "882"
+    }, {
+        "sequence_id": "10451",
+        "answer_id": "392"
+    }, {
+        "sequence_id": "10450",
+        "answer_id": "389"
+    }, {
+        "sequence_id": "10447",
+        "answer_id": "383"
+    }, {
+        "sequence_id": "10446",
+        "answer_id": "382"
+    }, {
+        "sequence_id": "10443",
+        "answer_id": "377"
+    }, {
+        "sequence_id": "17100",
+        "answer_id": "911"
+    }]
+}

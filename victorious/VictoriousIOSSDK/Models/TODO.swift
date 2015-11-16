@@ -16,13 +16,6 @@ extension Comment {
     }
 }
 
-public struct VoteResult {}
-extension VoteResult {
-    public init?(json: JSON) {
-        return nil
-    }
-}
-
 public struct Tracking {}
 extension Tracking {
     public init?(json: JSON) {
