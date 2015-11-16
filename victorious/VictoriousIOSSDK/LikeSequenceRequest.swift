@@ -17,7 +17,7 @@ public struct LikeSequenceRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/sequence/like")!)
-        let likedSequenceInfo = [ "sequence_id": sequenceID ]
+        let likedSequenceInfo = [ "sequence_id": NSNumber(longLong: sequenceID) ]
         urlRequest.vsdk_addURLEncodedFormPost(likedSequenceInfo)
         
         return urlRequest

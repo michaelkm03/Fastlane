@@ -38,23 +38,23 @@ class TrackingRequestSchedulerTests: XCTestCase {
     }
     
     func testBatchFiringTrackingRequests() {
-        let async = VAsyncTestHelper()
         var firedRequestsCount = 0
         let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
-        
+        let expectation = expectationWithDescription("Last tracking requests sent")
+
         for index in 0..<trackingRequestRecords.count {
             let record = trackingRequestRecords[index]
             stubRequest("GET", record.urlString).andDo{ [unowned self] (_: AutoreleasingUnsafeMutablePointer<NSDictionary?>, _: UnsafeMutablePointer<Int>, _: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) in
                 firedRequestsCount++
                 if index == self.trackingRequestRecords.count - 1 {
-                    async.signal()
+                    expectation.fulfill()
                 }
             }
             requestScheduler.scheduleRequest(record.request)
         }
         
-        async.waitForSignal(3)
-        XCTAssert(firedRequestsCount == trackingRequestRecords.count, "Some requests are not successfully fired")
+        waitForExpectationsWithTimeout(3, handler: nil)
+        XCTAssertEqual(firedRequestsCount, trackingRequestRecords.count, "Some requests are not successfully fired")
     }
     
     func testTrackingRequestsShouldNotFire() {
