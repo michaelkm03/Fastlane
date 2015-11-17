@@ -10,8 +10,9 @@
 #import "VStreamItem+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VEditorializationItem.h"
+#import "victorious-Swift.h"
 
-static const CGFloat kDesiredLabelSizeMultiplier = 1.25;
+static const CGFloat kDesiredLabelSizeMultiplier = 1.5;
 
 @interface VMarqueeCaptionView ()
 
@@ -85,8 +86,8 @@ static const CGFloat kDesiredLabelSizeMultiplier = 1.25;
 {
     UIFont *font = self.hasHeadline ? self.headlineFont : self.captionFont;
     [self.captionLabel setFont:font];
-    CGSize currentSize = [self.captionLabel.text sizeWithAttributes:
-                          @{NSFontAttributeName: self.captionFont}];
+    
+    CGSize currentSize = [self.captionLabel.attributedText size];
     CGFloat desiredLabelHeight = currentSize.height * kDesiredLabelSizeMultiplier;
     if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
     {
@@ -98,7 +99,12 @@ static const CGFloat kDesiredLabelSizeMultiplier = 1.25;
 - (void)updateLabelText
 {
     NSString *captionText = self.hasHeadline ? self.editorialization.marqueeHeadline : self.marqueeItem.name;
-    self.captionLabel.text = captionText;
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
+    
+    self.captionLabel.attributedText = attributedText;
 }
 
 - (void)updateDividerConstraints
