@@ -351,6 +351,7 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
+		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
@@ -2014,6 +2015,7 @@
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
+		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
@@ -4682,6 +4684,7 @@
 			children = (
 				036F38481A0C4DE90014DF66 /* PT_Sans-Web-Bold.ttf */,
 				036F38491A0C4DE90014DF66 /* PT_Sans-Web-Regular.ttf */,
+				6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */,
 			);
 			path = PTSans;
 			sourceTree = "<group>";
@@ -8455,6 +8458,7 @@
 				D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */,
 				0366EAF91B68714A0073A233 /* VAssetCollectionListViewController.storyboard in Resources */,
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
+				6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */,
 				C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */,
