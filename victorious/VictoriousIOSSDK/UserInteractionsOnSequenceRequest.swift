@@ -14,15 +14,15 @@ public struct UserInteractionsOnSequenceRequest: RequestType {
     let sequenceID: Int64
     let userID: Int64
     
-    private static let basePath = NSURL(string: "/api/sequence/users_interactions")!
-    
     public init(sequenceID: Int64, userID: Int64) {
         self.sequenceID = sequenceID
         self.userID = userID
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: UserInteractionsOnSequenceRequest.basePath.URLByAppendingPathComponent(String(self.sequenceID)).URLByAppendingPathComponent(String(self.userID)))
+        let basePath = NSURL(string: "/api/sequence/users_interactions")!
+        let fullURL = basePath.URLByAppendingPathComponent(String(self.sequenceID)).URLByAppendingPathComponent(String(self.userID))
+        return NSURLRequest(URL: fullURL)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
@@ -33,5 +33,3 @@ public struct UserInteractionsOnSequenceRequest: RequestType {
     }
     
 }
-
-

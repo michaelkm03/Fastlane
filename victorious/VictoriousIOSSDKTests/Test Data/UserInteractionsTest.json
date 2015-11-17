@@ -41,6 +41,6 @@
 		}
 	}],
 	"payload": {
-		"has_reposted": false
+		"has_reposted": true
 	}
 }

@@ -22,7 +22,7 @@ class UserInteractionsOnSequenceRequestTests: XCTestCase {
         do {
             let userInteractionsRequest = UserInteractionsOnSequenceRequest(sequenceID: 16435, userID:5121)
             let result = try userInteractionsRequest.parseResponse(NSURLResponse(), toRequest: userInteractionsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertFalse(result)
+            XCTAssertTrue(result)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
