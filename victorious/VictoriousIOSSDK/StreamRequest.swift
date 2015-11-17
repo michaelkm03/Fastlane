@@ -13,8 +13,9 @@ public struct StreamRequest: Pageable {
     
     let pageNumber: Int
     let itemsPerPage: Int
-    let apiPath: String
-    let sequenceID: String?
+    
+    public let apiPath: String
+    public let sequenceID: String?
     
     public let urlRequest: NSURLRequest
     
@@ -35,8 +36,15 @@ public struct StreamRequest: Pageable {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: Stream, nextPage: StreamRequest?, previousPage: StreamRequest?) {
         
-        let payload = responseJSON["payload"]
-        guard let stream = Stream(json: payload) else {
+        let stream: Stream
+        if responseJSON["payload"].array != nil,
+            let streamFromItems = Stream(json: JSON([ "id" : "anonymous:stream", "items" : responseJSON["payload"] ])) {
+                stream = streamFromItems
+        }
+        else if let streamFromObject = Stream(json: responseJSON["payload"]) {
+            stream = streamFromObject
+        }
+        else {
             throw ResponseParsingError()
         }
         

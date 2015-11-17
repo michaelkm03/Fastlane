@@ -9,6 +9,8 @@
 import Foundation
 import VictoriousIOSSDK
 
+extension VStream: DataStoreObjectSwift {}
+
 extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel stream: Stream ) {
@@ -18,11 +20,18 @@ extension VStream: PersistenceParsable {
         name            = stream.name
         count           = stream.postCount
         
-        // TODO: Add or replace?  What about order??
         streamItems += stream.items.flatMap {
-            let sequence: VSequence = self.dataStore.findOrCreateObject([ "remoteID" : String($0.remoteID) ])
-            sequence.populate( fromSourceModel: $0 )
-            return sequence
+            if let sequence = $0 as? Sequence {
+                let persistentSequence = self.dataStore.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
+                persistentSequence.populate( fromSourceModel: sequence )
+                return persistentSequence
+            }
+            else if let stream = $0 as? Stream {
+                let persistentStream = self.dataStore.findOrCreateObject([ "remoteId" : stream.streamID ]) as VStream
+                persistentStream.populate( fromSourceModel: stream )
+                return persistentStream
+            }
+            return nil
         }
     }
 }

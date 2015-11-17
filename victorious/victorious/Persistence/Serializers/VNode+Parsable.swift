@@ -18,7 +18,7 @@ extension VNode: PersistenceParsable {
         self.remoteId = NSNumber(integer: remoteID)
         
         assets = Optional(assets) + node.assets.flatMap {
-            let asset: VAsset = self.dataStore.findOrCreateObject([ "remoteID" : Int($0.assetID) ])
+            let asset: VAsset = self.dataStore.findOrCreateObject([ "remoteId" : Int($0.assetID) ])
             asset.populate( fromSourceModel: $0 )
             return asset
         }

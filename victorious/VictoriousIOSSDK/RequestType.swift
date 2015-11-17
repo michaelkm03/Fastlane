@@ -39,7 +39,7 @@ public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDe
     public let localizedDescription: String?
     
     public var description: String {
-        return localizedDescription ?? "EndpointResponseParsingError"
+        return localizedDescription ?? "ResponseParsingError"
     }
     
     public var debugDescription: String {

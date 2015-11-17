@@ -41,7 +41,6 @@
 @dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;
-@dynamic status;
 @dynamic adBreaks;
 @dynamic comments;
 @dynamic endCard;

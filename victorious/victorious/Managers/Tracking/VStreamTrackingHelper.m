@@ -102,14 +102,15 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         return;
     }
     
-    NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
+    // FIXME: Uncomment
+    /*NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,
                               VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
-                                          eventId:sequence.remoteId];
+                                          eventId:sequence.remoteId];*/
 }
 
 - (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info

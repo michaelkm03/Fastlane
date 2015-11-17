@@ -560,7 +560,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
-    self.currentStream = [VStream streamForUser:self.user];
+    id<DataStoreBasic> dataStore = [PersistentStore getMainContext];
+    NSCharacterSet *charSet = [NSCharacterSet v_pathPartCharacterSet];
+    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    self.currentStream = (VStream *)[dataStore findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+    [dataStore saveChanges];
     
     [self updateProfileHeader];
     

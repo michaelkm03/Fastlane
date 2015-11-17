@@ -27,6 +27,7 @@ public enum StreamContentType: String {
     case Text           = "text"
     case Content        = "content"
     case Link           = "link"
+    case None           = "none"
 }
 
 public protocol StreamItemType {

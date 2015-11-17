@@ -145,10 +145,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }
-    NSString *path = [url v_pathComponent];
-    
-    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *apiPath = [url v_pathComponent];
+    id<DataStoreBasic> dataStore = [PersistentStore getMainContext];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    VStream *stream = (VStream *)[dataStore findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    [dataStore saveChanges];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
@@ -633,13 +635,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.focusHelper endFocusOnCell:cell];
-}
-
-#pragma mark - Activity indivator footer
-
-- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
-{
-    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

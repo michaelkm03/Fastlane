@@ -538,6 +538,9 @@
 		A7078CE71BFA7D2B008FB7FF /* VLoginType+Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CD51BFA7D2B008FB7FF /* VLoginType+Credentials.swift */; };
 		A7078CE81BFA7D2B008FB7FF /* VLoginType+Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CD61BFA7D2B008FB7FF /* VLoginType+Tracking.swift */; };
 		A7078CEA1BFA8852008FB7FF /* ShowWorkspaceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */; };
+		A7078CEE1BFAD531008FB7FF /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CED1BFAD531008FB7FF /* StreamOperation.swift */; };
+		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */; };
+		A7078CF21BFBD50B008FB7FF /* LikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */; };
 		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
@@ -2463,6 +2466,9 @@
 		A7078CD51BFA7D2B008FB7FF /* VLoginType+Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VLoginType+Credentials.swift"; sourceTree = "<group>"; };
 		A7078CD61BFA7D2B008FB7FF /* VLoginType+Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VLoginType+Tracking.swift"; sourceTree = "<group>"; };
 		A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowWorkspaceOperation.swift; sourceTree = "<group>"; };
+		A7078CED1BFAD531008FB7FF /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamOperation.swift; sourceTree = "<group>"; };
+		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewDataSource+Networking.swift"; sourceTree = "<group>"; };
+		A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceOperation.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+CurrentUserCache.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
@@ -4798,6 +4804,7 @@
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
 				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
+				A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -5883,6 +5890,9 @@
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
+				A7078CC81BFA7D2B008FB7FF /* NavigationOperations */,
+				A7078CCC1BFA7D2B008FB7FF /* Network Operations */,
 				A746796D1BF6CC7B0026FD2E /* Helpers */,
 				794246441B7D39B000F5F879 /* Operation.swift */,
 			);
@@ -6050,9 +6060,11 @@
 				A7078CD01BFA7D2B008FB7FF /* LogoutOperation.swift */,
 				A7078CD21BFA7D2B008FB7FF /* NetworkOperation.swift */,
 				A7078CD31BFA7D2B008FB7FF /* RequestOperation.swift */,
+				A7078CED1BFAD531008FB7FF /* StreamOperation.swift */,
 				A7078CD41BFA7D2B008FB7FF /* UserInfoOperation.swift */,
 				A7078CD51BFA7D2B008FB7FF /* VLoginType+Credentials.swift */,
 				A7078CD61BFA7D2B008FB7FF /* VLoginType+Tracking.swift */,
+				A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */,
 			);
 			path = "Network Operations";
 			sourceTree = "<group>";
@@ -6345,9 +6357,6 @@
 		A746796D1BF6CC7B0026FD2E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
-				A7078CC81BFA7D2B008FB7FF /* NavigationOperations */,
-				A7078CCC1BFA7D2B008FB7FF /* Network Operations */,
 				A746796E1BF6CC9B0026FD2E /* VStoredLogin.h */,
 				A746796F1BF6CC9B0026FD2E /* VStoredLogin.m */,
 				A74679701BF6CC9B0026FD2E /* VStoredPassword.h */,
@@ -10562,6 +10571,7 @@
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
+				A7078CEE1BFAD531008FB7FF /* StreamOperation.swift in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
@@ -10657,6 +10667,7 @@
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
+				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
@@ -10833,6 +10844,7 @@
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */,
+				A7078CF21BFBD50B008FB7FF /* LikeSequenceOperation.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */,
 				A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */,

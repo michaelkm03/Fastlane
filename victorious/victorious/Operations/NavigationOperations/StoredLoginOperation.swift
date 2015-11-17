@@ -27,6 +27,9 @@ class StoredLoginOperation: Operation {
             let user: VUser = dataStore.findOrCreateObject([ "remoteId" : info.userRemoteId ])
             user.loginType = info.lastLoginType.rawValue
             user.token = info.token
+            if user.status == nil {
+                user.status = "stored"
+            }
             user.setCurrentUser(inContext: dataStore)
             dataStore.saveChanges()
             

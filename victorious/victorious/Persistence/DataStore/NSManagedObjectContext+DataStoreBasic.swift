@@ -26,10 +26,14 @@ extension NSManagedObjectContext: DataStoreBasic {
             return true
         } catch {
             print( "Failed to save entity:" )
+            if let object = (error as NSError).userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
+                print( "\t- Validation failed on object \(object.dynamicType)." )
+            }
             if let detailedErrors = (error as NSError).userInfo[ "NSDetailedErrors" ] as? [NSError] {
                 for detailedError in detailedErrors {
-                    if let validationField = detailedError.userInfo[ "NSValidationErrorKey" ] as? String {
-                        print( "\t- Missing value for non-optional field \"\(validationField)\"" )
+                    if let validationField = detailedError.userInfo[ "NSValidationErrorKey" ] as? String,
+                        let object = detailedError.userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
+                            print( "\t- Missing value for non-optional field \"\(validationField)\" on object \(object.dynamicType)." )
                     }
                 }
             }
