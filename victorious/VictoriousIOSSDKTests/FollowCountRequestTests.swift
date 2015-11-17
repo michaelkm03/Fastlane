@@ -40,16 +40,9 @@ class FollowCountRequestTests: XCTestCase {
             JSON([])
         ]
         
+        let followCountRequest = FollowCountRequest(userID: 101)
         for invalidMockJSON in invalidMockJSONArray {
-            do {
-                let followCountRequest = FollowCountRequest(userID: 101)
-                let _ = try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON)
-                XCTFail("Every invalid initialization should throw and not reach this line")
-            } catch let error as ResponseParsingError {
-                XCTAssertNotNil(error)
-            } catch {
-                XCTFail("No generic error should be thrown")
-            }
+            AssertThrows(ResponseParsingError(), block: try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON))
         }
     }
 }

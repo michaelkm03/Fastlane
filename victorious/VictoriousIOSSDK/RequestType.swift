@@ -35,7 +35,7 @@ extension RequestType {
 }
 
 /// ErrorType thrown when an endpoint request succeeds on an TCP/IP and HTTP level, but for some reason the response couldn't be parsed.
-public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDebugStringConvertible {
+public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDebugStringConvertible, Equatable {
     public let localizedDescription: String?
     
     public var description: String {
@@ -49,6 +49,11 @@ public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDe
     public init(localizedDescription: String? = nil) {
         self.localizedDescription = localizedDescription
     }
+}
+
+/// Equatable conformance for ResponseParsingError
+public func ==(lhs: ResponseParsingError, rhs: ResponseParsingError) -> Bool {
+    return lhs.description == rhs.description
 }
 
 /// An asynchronous task that can be canceled
