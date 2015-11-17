@@ -7,10 +7,7 @@
 //
 
 #import "VDirectoryCollectionViewController.h"
-#import "VDependencyManager+VObjectManager.h"
-#import "VStream+Fetcher.h"
 #import "NSString+VParseHelp.h"
-#import "VObjectManager.h"
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"

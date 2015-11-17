@@ -581,7 +581,7 @@
 		A7078CEE1BFAD531008FB7FF /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CED1BFAD531008FB7FF /* StreamOperation.swift */; };
 		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */; };
 		A7078CF21BFBD50B008FB7FF /* LikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */; };
-		A7078CF41BFBD969008FB7FF /* VStreamCollectionViewController+Networkking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* VStreamCollectionViewController+Networkking.swift */; };
+		A7078CF41BFBD969008FB7FF /* StreamLikeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */; };
 		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
@@ -2561,7 +2561,7 @@
 		A7078CED1BFAD531008FB7FF /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamOperation.swift; sourceTree = "<group>"; };
 		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewDataSource+Networking.swift"; sourceTree = "<group>"; };
 		A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceOperation.swift; sourceTree = "<group>"; };
-		A7078CF31BFBD969008FB7FF /* VStreamCollectionViewController+Networkking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+Networkking.swift"; sourceTree = "<group>"; };
+		A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamLikeHelper.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+CurrentUserCache.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
@@ -4878,7 +4878,7 @@
 				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
-				A7078CF31BFBD969008FB7FF /* VStreamCollectionViewController+Networkking.swift */,
+				A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */,
 				F06B41B01B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.h */,
 				F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */,
 				F0FC97D01B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.h */,
@@ -11030,7 +11030,7 @@
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
 				F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
-				A7078CF41BFBD969008FB7FF /* VStreamCollectionViewController+Networkking.swift in Sources */,
+				A7078CF41BFBD969008FB7FF /* StreamLikeHelper.swift in Sources */,
 				A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */,
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,

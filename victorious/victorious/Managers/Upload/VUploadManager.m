@@ -89,10 +89,10 @@ static inline BOOL isSessionQueue()
 {
     if ( _objectManager != nil )
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:_objectManager];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
     }
     _objectManager = objectManager;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:_objectManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
 - (void)startURLSession

@@ -102,6 +102,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) SequenceLikeHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -186,6 +187,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    self.streamLikeHelper = [[SequenceLikeHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -712,31 +714,17 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
-    
-    CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
-    [[self.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
-    
-    if ( sequence.isLikedByMainUser.boolValue )
-    {
-        [self likeSequence:sequence completion:^void(BOOL success)
+    [self.streamLikeHelper likeSequence:sequence
+                         triggeringView:view
+                   originViewController:self
+                      dependencyManager:self.dependencyManager
+                             completion:^void(BOOL success)
+     {
+         if ( completion != nil )
          {
-             if ( completion != nil )
-             {
-                 completion( success );
-             }
-         }];
-    }
-    else
-    {
-        [self unlikeSequence:sequence completion:^void(BOOL success)
-         {
-             if ( completion != nil )
-             {
-                 completion( success );
-             }
-         }];
-    }
+             completion( success );
+         }
+     }];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -751,7 +739,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && ([VObjectManager sharedManager].mainUser != nil) )
+    if ( sequence.permissions.canRepost && [VUser currentUser] != nil )
     {
         return YES;
     }

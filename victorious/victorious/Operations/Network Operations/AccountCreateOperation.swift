@@ -60,7 +60,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         
         loginType.trackSuccess( isNewUser )
         
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         
         // TODO: (from object manager)
         // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]

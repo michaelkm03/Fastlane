@@ -9,56 +9,38 @@
 #import <objc/runtime.h>
 
 #import "VSequenceActionController.h"
-
-#pragma mark - Models
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VTracking.h"
-
-#pragma mark - Controllers
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VUserProfileViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VAbstractMediaLinkViewController.h"
 #import "VTabScaffoldViewController.h"
-
-#pragma mark-  Views
 #import "VNoContentView.h"
 #import "VFacebookActivity.h"
-
-#pragma mark - Managers
-#import "VObjectManager+Login.h"
-#import "VObjectManager+ContentCreation.h"
-#import "VObjectManager+Sequence.h"
-
-#pragma mark - Categories
 #import "NSString+VParseHelp.h"
 #import "UIActionSheet+VBlocks.h"
-
-#pragma mark - Dependency Manager
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
-
-#pragma mark - Remixing
 #import "VRemixPresenter.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
-
 #import "victorious-Swift.h"
 
 @interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 @property (nonatomic, strong) VRemixPresenter *remixPresenter;
+@property (nonatomic, strong) SequenceLikeHelper *sequenceLikeHelper;
 
 @end
 
@@ -72,6 +54,15 @@
 {
     CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
     [viewController.navigationController pushViewController:commentsViewController animated:YES];
+}
+
+- (SequenceLikeHelper *)sequenceLikeHelper
+{
+    if ( _sequenceLikeHelper == nil )
+    {
+        _sequenceLikeHelper = [[SequenceLikeHelper alloc] init];
+    }
+    return _sequenceLikeHelper;
 }
 
 #pragma mark - User
@@ -201,20 +192,8 @@
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
+    [self.sequenceLikeHelper likeSequence:sequence triggeringView:actionView originViewController:viewController dependencyManager:self.dependencyManager completion:completion];
     
-    CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
-    [[self.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
-    
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
-     }];
 }
 
 #pragma mark - Repost

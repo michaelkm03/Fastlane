@@ -21,25 +21,6 @@ class RequestOperation<T: RequestType> : NSOperation {
         return _defaultQueue
     }
     
-    var currentEnvironment: VEnvironment {
-        return VEnvironmentManager.sharedInstance().currentEnvironment
-    }
-    
-    var requestContext: RequestContext {
-        return RequestContext(v_environment: currentEnvironment)
-    }
-    
-    var baseURL: NSURL {
-        return currentEnvironment.baseURL
-    }
-    
-    var authenticationContext: AuthenticationContext? {
-        if let currentUser = VUser.currentUser(inContext: PersistentStore.backgroundContext) {
-            return AuthenticationContext(v_currentUser: currentUser)
-        }
-        return nil
-    }
-    
     init( request: T ) {
         self.request = request
     }
@@ -88,10 +69,22 @@ class RequestOperation<T: RequestType> : NSOperation {
     final override func main() {
         let semaphore = dispatch_semaphore_create(0)
         self.onStart()
+        
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(v_environment: currentEnvironment)
+        let baseURL = currentEnvironment.baseURL
+        let authenticationContext: AuthenticationContext? = {
+            if let identifier = VUser.currentUser()?.identifier,
+                let currentUser: VUser = PersistentStore.backgroundContext.getObject( identifier ) {
+                    return AuthenticationContext(v_currentUser: currentUser)
+            }
+            return nil
+        }()
+        
         self.request.execute(
-            baseURL: self.baseURL,
-            requestContext: self.requestContext,
-            authenticationContext: self.authenticationContext,
+            baseURL: baseURL,
+            requestContext: requestContext,
+            authenticationContext: authenticationContext,
             callback: { [weak self] (result, error) -> () in
                 guard let strongSelf = self where !strongSelf.cancelled else {
                     return

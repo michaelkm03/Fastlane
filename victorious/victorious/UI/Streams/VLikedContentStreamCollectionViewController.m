@@ -9,12 +9,12 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VObjectManager+Login.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
 static NSString * const kNoLikedContentTitleKey = @"noContentTitle";
 static NSString * const kNoLikedContentSubtitleKey = @"noContentSubtitle";
 static NSString * const kNoLikedContentIconKey = @"noContentIcon";
+static NSString * const kLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
 @interface VLikedContentStreamCollectionViewController ()
 
@@ -46,7 +46,7 @@ static NSString * const kNoLikedContentIconKey = @"noContentIcon";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
-                                               object:[VObjectManager sharedManager]];
+                                               object:nil];
 }
 
 - (void)dealloc

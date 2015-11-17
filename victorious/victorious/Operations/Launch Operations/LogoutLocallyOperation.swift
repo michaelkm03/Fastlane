@@ -53,7 +53,7 @@ class LogoutLocally: Operation {
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
         VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         
         self.finishedExecuting()
     }

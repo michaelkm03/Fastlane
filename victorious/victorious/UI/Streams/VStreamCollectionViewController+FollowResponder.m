@@ -7,7 +7,6 @@
 //
 
 #import "VStreamCollectionViewController+FollowResponder.h"
-#import "VObjectManager.h"
 
 @implementation VStreamCollectionViewController (FollowResponder)
 
