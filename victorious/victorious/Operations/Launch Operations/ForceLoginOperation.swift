@@ -33,9 +33,6 @@ class ForceLoginOperation: Operation {
     }
     
     /// Initializes a new ForceLoginOperation with the provided parameters.
-    ///
-    /// - parameter dependencyManager: Passed to the internal VAuthorizedAction.
-    /// - returns: An ForceLoginOperation.
     required init( dependencyManager: VDependencyManager, delegate: ForceLoginOperationDelegate, context: VAuthorizationContext) {
         self.dependencyManager = dependencyManager
         self.delegate = delegate

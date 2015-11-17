@@ -15,7 +15,6 @@
 #import "UIImageView+Blurring.h"
 #import "UIView+AutoLayout.h"
 #import "VAbstractCommentHighlighter.h"
-#import "VAuthorizedAction.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewCommentHighlighter.h"
@@ -89,7 +88,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
@@ -326,9 +324,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [super viewDidLoad];
     
     self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
-
-    self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                           dependencyManager:self.dependencyManager];
     
     self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -1111,20 +1106,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-    __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
-     {
-         __strong typeof(self) strongSelf = welf;
-         if (!authorized)
-         {
-             return;
-         }
-         
-         [strongSelf submitCommentWithText:inputAccessoryView.composedText];
-         
-         [inputAccessoryView clearTextAndResign];
-         strongSelf.publishParameters.mediaToUploadURL = nil;
-     }];
+    [self submitCommentWithText:inputAccessoryView.composedText];
+    [inputAccessoryView clearTextAndResign];
+    self.publishParameters.mediaToUploadURL = nil;
 }
 
 - (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView
@@ -1154,16 +1138,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
             selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
     [inputAccessoryView stopEditing];
-    __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         __strong typeof(welf) strongSelf = welf;
-         [strongSelf addMediaToCommentWithAttachmentType:attachmentType];
-     }];
+    [self addMediaToCommentWithAttachmentType:attachmentType];
 }
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
@@ -1186,21 +1161,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     if ( self.viewModel.type == VContentViewTypeVideo )
     {
-        __weak typeof(self) welf = self;
-        [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 return;
-             }
-             
-             __strong typeof(welf) strongSelf = welf;
-             if (strongSelf != nil)
-             {
-                 strongSelf.enteringRealTimeComment = YES;
-                 strongSelf.realtimeCommentBeganTime = [strongSelf currentVideoTime];
-             }
-         }];
+        if (self != nil)
+        {
+            self.enteringRealTimeComment = YES;
+            self.realtimeCommentBeganTime = [self currentVideoTime];
+        }
     }
 }
 
@@ -1644,17 +1609,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)authorizeWithCompletion:(void(^)(BOOL))completion
-{
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
-     {
-         if ( completion != nil )
-         {
-             completion( authorized );
-         }
-     }];
-}
-
 #pragma mark - VSequencePreviewViewDetailDelegate
 
 - (void)previewView:(VSequencePreviewView *)previewView didSelectMediaURL:(NSURL *)mediaURL previewImage:(UIImage *)previewImage isVideo:(BOOL)isVideo sourceView:(UIView *)sourceView
@@ -1680,29 +1634,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)answerASelected
 {
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+    [self.viewModel answerPollWithAnswer:VPollAnswerA completion:^(BOOL succeeded, NSError *error)
      {
-         if (authorized)
-         {
-             [self.viewModel answerPollWithAnswer:VPollAnswerA completion:^(BOOL succeeded, NSError *error)
-              {
-                  [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
-              }];
-         }
+         [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
      }];
 }
 
 - (void)answerBSelected
 {
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
+    [self.viewModel answerPollWithAnswer:VPollAnswerB completion:^(BOOL succeeded, NSError *error)
      {
-         if (authorized)
-         {
-             [self.viewModel answerPollWithAnswer:VPollAnswerB completion:^(BOOL succeeded, NSError *error)
-              {
-                  [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
-              }];
-         }
+         [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
      }];
 }
 

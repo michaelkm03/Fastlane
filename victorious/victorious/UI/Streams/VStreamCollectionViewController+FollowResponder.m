@@ -7,7 +7,6 @@
 //
 
 #import "VStreamCollectionViewController+FollowResponder.h"
-#import "VAuthorizedAction.h"
 #import "VObjectManager.h"
 
 @implementation VStreamCollectionViewController (FollowResponder)
@@ -28,54 +27,21 @@
 
 - (void)followHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *))failure
 {
-    [self withAuthorizationDo:^(BOOL authorized) {
-        if ( authorized )
-        {
-            id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:nil];
-            NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
-            [hashtagResponder followHashtag:hashtag successBlock:success failureBlock:failure];
-        }
-        else if ( failure != nil )
-        {
-            failure(nil);
-        }
-    }];
-    
+    id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:nil];
+    NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
+    [hashtagResponder followHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 - (void)unfollowHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *))failure
 {
-    [self withAuthorizationDo:^(BOOL authorized) {
-        if ( authorized )
-        {
-            id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:nil];
-            NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
-            [hashtagResponder unfollowHashtag:hashtag successBlock:success failureBlock:failure];
-        }
-        else if ( failure != nil )
-        {
-            failure(nil);
-        }
-    }];
+    id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:nil];
+    NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
+    [hashtagResponder unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 - (NSString *)screenNameWithSubscreenName:(NSString *)subscreenName
 {
     return [NSString stringWithFormat:@"%@.%@", VFollowSourceScreenStream, subscreenName];
-}
-
-- (void)withAuthorizationDo:(void (^)(BOOL authorized))authorizationAction
-{
-    NSParameterAssert(authorizationAction != nil);
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self
-                                     context:VAuthorizationContextFollowUser
-                                  completion:^(BOOL authorized)
-     {
-         authorizationAction(authorized);
-     }];
 }
 
 @end

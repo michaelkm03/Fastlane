@@ -13,7 +13,7 @@ private let _defaultQueue = NSOperationQueue()
 
 class RequestOperation<T: RequestType> : NSOperation {
     
-    private var error: NSError?
+    private(set) var requestError: NSError?
     
     let request: T
     
@@ -46,9 +46,12 @@ class RequestOperation<T: RequestType> : NSOperation {
     
     final func queue( completionBlock:((NSError?)->())? = nil) {
         self.completionBlock = {
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.onComplete( self.error )
-                completionBlock?(nil)
+            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
+                guard let strongSelf = self where !strongSelf.cancelled else {
+                    return
+                }
+                strongSelf.onComplete( nil )
+                completionBlock?( nil )
             }
         }
         _defaultQueue.addOperation( self )
@@ -85,15 +88,14 @@ class RequestOperation<T: RequestType> : NSOperation {
             baseURL: self.baseURL,
             requestContext: self.requestContext,
             authenticationContext: self.authenticationContext,
-            callback: { (result, error) -> () in
-                guard !self.cancelled else {
+            callback: { [weak self] (result, error) -> () in
+                guard let strongSelf = self where !strongSelf.cancelled else {
                     return
                 }
                 if let result = result {
-                    self.onResponse( result )
-                } else {
-                    self.error = NSError(domain: "", code: 0, userInfo: nil )
+                    strongSelf.onResponse( result )
                 }
+                // strongSelf.requestError = error
                 dispatch_async( dispatch_get_main_queue() ) {
                     dispatch_semaphore_signal( semaphore )
                 }

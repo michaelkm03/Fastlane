@@ -77,17 +77,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
-    if (currentNetworkStatus == VNetworkStatusNotReachable)
-    {
-        [self showReachabilityNotice];
-    }
-    else
-    {
-        [self startLoading];
-    }
-    self.priorNetworkStatus = currentNetworkStatus;
+    
+    [self startLoading];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -144,7 +135,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    /*VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
     if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
@@ -154,7 +145,9 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         [self hideReachabilityNotice];
         [self startLoading];
     }
-    self.priorNetworkStatus = currentNetworkStatus;
+    self.priorNetworkStatus = currentNetworkStatus;*/
+    
+    [self startLoading];
 }
 
 #pragma mark - Loading

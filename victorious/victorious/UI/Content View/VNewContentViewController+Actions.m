@@ -32,7 +32,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VAuthorizedAction.h"
 
 // Download
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -144,32 +143,22 @@
                                                                   enabled:![self.viewModel.sequence.hasReposted boolValue]];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
-             {
-                 if (!authorized)
+            if ( !contentViewController.viewModel.hasReposted)
+            {
+                [actionSheetViewController setLoading:YES forItem:item];
+                
+                [self.sequenceActionController repostActionFromViewController:contentViewController
+                                                                         node:contentViewController.viewModel.currentNode
+                                                                   completion:^(BOOL didSucceed)
                  {
-                     return;
-                 }
-                 
-                 if ( !contentViewController.viewModel.hasReposted)
-                 {
-                     [actionSheetViewController setLoading:YES forItem:item];
+                     if ( didSucceed )
+                     {
+                         contentViewController.viewModel.hasReposted = YES;
+                     }
                      
-                     [self.sequenceActionController repostActionFromViewController:contentViewController
-                                                                              node:contentViewController.viewModel.currentNode
-                                                                        completion:^(BOOL didSucceed)
-                      {
-                          if ( didSucceed )
-                          {
-                              contentViewController.viewModel.hasReposted = YES;
-                          }
-                          
-                          [contentViewController dismissViewControllerAnimated:YES completion:nil];
-                      }];
-                 }
-             }];
+                     [contentViewController dismissViewControllerAnimated:YES completion:nil];
+                 }];
+            }
         };
         repostItem.detailSelectionHandler = ^(VActionItem *item)
         {
@@ -295,9 +284,8 @@
     [self setupRemixActionItem:gifItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^
+      withBlock:^
      {
-         
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
                                              andDependencyManager:self.dependencyManager
@@ -324,7 +312,7 @@
     [self setupRemixActionItem:memeItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^
+      withBlock:^
      {
          [self.sequenceActionController showRemixOnViewController:self
                                                      withSequence:self.viewModel.sequence
@@ -346,29 +334,20 @@
 - (void)setupRemixActionItem:(VActionItem *)remixItem
    withContentViewController:(UIViewController *)contentViewController
    actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
-    withAutorizedActionBlock:(void (^)(void))authorizedActionBlock
+                   withBlock:(void (^)(void))block
       dismissCompletionBlock:(void (^)(void))dismissCompletionBlock
 {
-    NSAssert(authorizedActionBlock != nil, @"autorized action block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
+    NSAssert(block != nil, @"block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
     NSAssert(dismissCompletionBlock != nil, @"dismiss completion block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
     
     remixItem.selectionHandler = ^(VActionItem *item)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
         
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                             dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
+        [contentViewController dismissViewControllerAnimated:YES
+                                                  completion:^
          {
-             if (!authorized)
-             {
-                 return;
-             }
-             [contentViewController dismissViewControllerAnimated:YES
-                                                       completion:^
-              {
-                  authorizedActionBlock();
-              }];
+             block();
          }];
     };
     remixItem.detailSelectionHandler = ^(VActionItem *item)

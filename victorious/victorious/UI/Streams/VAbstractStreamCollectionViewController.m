@@ -329,11 +329,7 @@
      {
          self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-         hud.mode = MBProgressHUDModeText;
-         hud.labelText = NSLocalizedString(@"RefreshError", @"");
-         hud.userInteractionEnabled = NO;
-         [hud hide:YES afterDelay:3.0];
+         // TODO: Show error in non-disruptive way
      }];
 }
 

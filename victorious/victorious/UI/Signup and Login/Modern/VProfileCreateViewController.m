@@ -53,8 +53,6 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
-@synthesize authorizedAction; //< VAuthorizationProvider
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -323,18 +321,7 @@
 
 - (void)exitWithSuccess:(BOOL)success
 {
-    BOOL wasPresentedStandalone = self.navigationController == nil;
-    if ( wasPresentedStandalone )
-    {
-        [self dismissViewControllerAnimated:YES completion:^
-         {  
-            if ( self.authorizedAction != nil && success )
-            {
-                self.authorizedAction(YES);
-            }
-        }];
-    }
-    else if ( self.registrationStepDelegate != nil )
+    if ( self.registrationStepDelegate != nil )
     {
         [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
     }

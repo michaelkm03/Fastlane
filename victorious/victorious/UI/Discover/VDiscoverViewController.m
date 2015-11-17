@@ -26,7 +26,6 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
-#import "VAuthorizedAction.h"
 #import <KVOController/FBKVOController.h>
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
@@ -374,29 +373,17 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                     return;
                 }
                 
-                // Check for authorization first
-                VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                            dependencyManager:self.dependencyManager];
-                [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
-                 {
-                     if (!authorized)
-                     {
-                         [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
-                         return;
-                     }
-                     
-                     [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
-                     
-                     // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                     if ([self isUserSubscribedToHashtag:hashtag.tag])
-                     {
-                         [self unsubscribeToTagAction:hashtag];
-                     }
-                     else
-                     {
-                         [self subscribeToTagAction:hashtag];
-                     }
-                 }];
+                [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
+                
+                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+                if ([self isUserSubscribedToHashtag:hashtag.tag])
+                {
+                    [self unsubscribeToTagAction:hashtag];
+                }
+                else
+                {
+                    [self subscribeToTagAction:hashtag];
+                }
             };
             customCell.dependencyManager = self.dependencyManager;
             cell = customCell;

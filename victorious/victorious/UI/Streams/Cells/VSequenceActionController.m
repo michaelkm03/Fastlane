@@ -47,7 +47,6 @@
 #import "VRemixPresenter.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-#import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
@@ -160,19 +159,10 @@
     }
     [addedDependencies setObject:@(editState) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
-                                                                  sequenceToRemix:sequence];
-         [self.remixPresenter presentOnViewController:viewController];
-         self.viewControllerPresentingWorkspace = viewController;
-     }];
+    self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
+                                                             sequenceToRemix:sequence];
+    [self.remixPresenter presentOnViewController:viewController];
+    self.viewControllerPresentingWorkspace = viewController;
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
@@ -213,33 +203,17 @@
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
+    CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
+    [[self.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
     
-    __weak typeof(self) welf = self;
-    [authorization performFromViewController:viewController context:VAuthorizationContextDefault
-                                  completion:^(BOOL authorized)
+    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         __strong typeof(self) strongSelf = welf;
-         if ( authorized )
-         {
-             CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
-             
-             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  completion( YES );
-                  
-              } failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  completion( NO );
-              }];
-         }
-         else
-         {
-             completion( NO );
-         }
+         completion( YES );
+         
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion( NO );
      }];
 }
 
@@ -261,56 +235,43 @@
         return;
     }
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
+    
+    // Optimistically update the data store for a successul repost
+    node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+    [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+    node.sequence.hasReposted = @(YES);
+    [node.sequence.managedObjectContext save:nil];
+    
+    [[VObjectManager sharedManager] repostNode:node
+                                      withName:nil
+                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         if (!authorized)
+         if ( completion != nil )
          {
-             if ( completion != nil )
-             {
-                 completion(NO);
-             }
-             return;
+             completion( YES );
+         }
+     }
+                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( error.code == kVSequenceAlreadyReposted )
+         {
+             [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+             node.sequence.hasReposted = @(YES);
+             [node.sequence.managedObjectContext save:nil];
+         }
+         else
+         {
+             // Undo the repost optimistically assumed successful in the data store
+             node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
+             [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+             node.sequence.hasReposted = @(NO);
+             [node.sequence.managedObjectContext save:nil];
          }
          
-         // Optimistically update the data store for a successul repost
-         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-         [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         node.sequence.hasReposted = @(YES);
-         [node.sequence.managedObjectContext save:nil];
-         
-         [[VObjectManager sharedManager] repostNode:node
-                                           withName:nil
-                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              if ( completion != nil )
-              {
-                  completion( YES );
-              }
-          }
-                                          failBlock:^(NSOperation *operation, NSError *error)
-          {
-              if ( error.code == kVSequenceAlreadyReposted )
-              {
-                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-                  node.sequence.hasReposted = @(YES);
-                  [node.sequence.managedObjectContext save:nil];
-              }
-              else
-              {
-                  // Undo the repost optimistically assumed successful in the data store
-                  node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
-                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-                  node.sequence.hasReposted = @(NO);
-                  [node.sequence.managedObjectContext save:nil];
-              }
-              
-              if ( completion != nil )
-              {
-                  completion( NO );
-              }
-          }];
+         if ( completion != nil )
+         {
+             completion( NO );
+         }
      }];
 }
 

@@ -117,7 +117,7 @@
 	<key>findFriends.screen</key>
 	<string>VFindFriendsViewController</string>
 	<key>currentUserProfile.screen</key>
-	<string>VUserProfileNavigationDestination</string>
+	<string>VUserProfileViewController</string>
 	<key>staticProfile.streamHeader</key>
 	<string>VStaticUserProfileHeaderViewController</string>
 	<key>floatingProfile.streamHeader</key>

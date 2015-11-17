@@ -80,7 +80,7 @@ extension NSOperation {
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
     func queueNext( operation: NSOperation, queue: NSOperationQueue ) {
-        for dependentOperation in dependentOperationsInQueue( queue ) {
+        for dependentOperation in self.dependentOperationsInQueue( queue ) {
             dependentOperation.addDependency( operation )
         }
         queue.addOperation( operation )

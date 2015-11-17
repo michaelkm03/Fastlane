@@ -17,7 +17,6 @@
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VAlertController.h"
-#import "VAuthorizedAction.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
@@ -463,21 +462,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
-    
-    __weak typeof(self) weakSelf = self;
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:strongSelf.dependencyManager];
-         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
-         [strongSelf.creationFlowPresenter presentOnViewController:strongSelf];
-     }];
+    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.creationFlowPresenter.showsCreationSheetFromTop = YES;
+    [self.creationFlowPresenter presentOnViewController:self];
 }
 
 #pragma mark - VMarqueeDataDelegate
@@ -736,33 +723,17 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
+    CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
+    [[self.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
     
-    __weak typeof(self) welf = self;
-    [authorization performFromViewController:self context:VAuthorizationContextDefault
-                                          completion:^(BOOL authorized)
+    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         __strong typeof(self) strongSelf = welf;
-         if ( authorized )
-         {
-             CGRect likeButtonFrame = [view convertRect:view.bounds toView:strongSelf.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:strongSelf atLocation:likeButtonFrame];
-             
-             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  completion( YES );
-                  
-              } failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  completion( NO );
-              }];
-         }
-         else
-         {
-             completion( NO );
-         }
+         completion( YES );
+         
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion( NO );
      }];
 }
 

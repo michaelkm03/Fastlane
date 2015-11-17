@@ -18,7 +18,6 @@
 #import "VObjectManager+Sequence.h"
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
@@ -186,24 +185,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)toggleFollowHashtag
 {
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         
-         if ( self.isFollowingSelectedHashtag )
-         {
-             [self unfollowHashtag];
-         }
-         else
-         {
-             [self followHashtag];
-         }
-     }];
+    if ( self.isFollowingSelectedHashtag )
+    {
+        [self unfollowHashtag];
+    }
+    else
+    {
+        [self followHashtag];
+    }
 }
 
 - (void)followHashtag

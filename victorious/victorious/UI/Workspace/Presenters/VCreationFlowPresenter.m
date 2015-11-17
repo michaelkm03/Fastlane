@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
 #import "VCreationFlowController.h"
-#import "VAuthorizedAction.h"
 #import "VAlertController.h"
 #import "VCreateSheetViewController.h"
 #import "VTrackingManager.h"

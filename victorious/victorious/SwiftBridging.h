@@ -36,7 +36,6 @@
 #import "VAsset+RestKit.h"
 #import "VAuthorizationContext.h"
 #import "VWorkspaceShimDestination.h"
-#import "VAuthorizedAction.h"
 #import "VCreateSheetViewController.h"
 #import "VAutomation.h"
 #import "VBackgroundContainer.h"

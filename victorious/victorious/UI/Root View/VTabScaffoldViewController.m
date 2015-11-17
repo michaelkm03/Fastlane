@@ -100,22 +100,6 @@ static NSString * const kMenuKey = @"menu";
     
     // Make sure we're listening for interstitial events
     [[InterstitialManager sharedInstance] setInterstitialListener:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *notification)
-     {
-         // TODO: Try to remove this shizzle
-         /*if (![VObjectManager sharedManager].mainUserLoggedIn)
-         {
-             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                  dependencyManager:self.dependencyManager];
-             [authorizedAction performFromViewController: self.rootNavigationController.innerNavigationController.visibleViewController
-                                                 context:VAuthorizationContextDefault
-                                              completion:^(BOOL authorized) { }];
-         }*/
-     }];
 }
 
 - (void)configureTabBar
@@ -213,51 +197,9 @@ static NSString * const kMenuKey = @"menu";
                      animated:(BOOL)animated
                    completion:(void(^)())completion
 {
-    /*[self checkAuthorizationOnNavigationDestination:navigationDestination
-                                         completion:^(BOOL shouldNavigate)
-     {
-         if (shouldNavigate)
-         {
-             [self _navigateToDestination:navigationDestination
-                                 animated:animated
-                               completion:completion];
-         }
-     }];*/
-    
-    // TODO: Replace above authorization check
     [self _navigateToDestination:navigationDestination
                         animated:animated
                       completion:completion];
-}
-
-- (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
-                                       completion:(void(^)(BOOL shouldNavigate))completion
-{
-    NSAssert(completion != nil, @"We need a completion to inform about the authorization check success!");
-
-    if ([navigationDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)])
-    {
-        id <VAuthorizationContextProvider> authorizationContextProvider = (id <VAuthorizationContextProvider>)navigationDestination;
-        BOOL requiresAuthoriztion = [authorizationContextProvider requiresAuthorization];
-        if (requiresAuthoriztion)
-        {
-            VAuthorizationContext context = [authorizationContextProvider authorizationContext];
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
-             {
-                 completion(authorized);
-             }];
-        }
-        else
-        {
-            completion(YES);
-        }
-    }
-    else
-    {
-        completion(YES);
-    }
 }
 
 - (void)_navigateToDestination:(id)navigationDestination

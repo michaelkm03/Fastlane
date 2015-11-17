@@ -13,7 +13,6 @@
 #import "VStream+Fetcher.h"
 #import "VInboxViewController.h"
 #import "VProfileHeaderCell.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
@@ -26,7 +25,6 @@
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
 #import "VBarButton.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProfileDeeplinkHandler.h"
@@ -55,7 +53,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate, VFollowResponder>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNavigationViewFloatingControllerDelegate, VFollowResponder>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 @property (nonatomic, assign) BOOL isMe;
@@ -127,7 +125,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
     }
     
-    return nil;
+    VUserProfileViewController *viewController = [self userProfileWithUser:[VUser currentUser] andDependencyManager:dependencyManager];
+    viewController.representsMainUser = @YES;
+    return viewController;
 }
 
 - (void)dealloc
@@ -316,7 +316,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)isCurrentUser
 {
-    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
+    const VUser *loggedInUser = [VUser currentUser];
     return loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
 }
 
@@ -359,7 +359,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    if ([VObjectManager sharedManager].mainUser)
+    if ( [VUser currentUser] != nil )
     {
         header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
@@ -388,7 +388,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.remoteId = remoteId;
     
     [self fetchUserInfoWithUserID:remoteId.integerValue completion:^(NSError *_Nullable error) {
-        if ( error == nil )
+        if ( error != nil )
         {
             //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
             self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
@@ -598,26 +598,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)primaryActionHandler
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-    
-    VAuthorizationContext context = self.isCurrentUser ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:context completion:^(BOOL authorized)
-     {
-         if ( !authorized )
-         {
-             return;
-         }
-         
-         if ( self.isCurrentUser )
-         {
-             [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
-         }
-         else
-         {
-             [self toggleFollowUser];
-         }
-     }];
+    if ( self.isCurrentUser )
+    {
+        [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
+    }
+    else
+    {
+        [self toggleFollowUser];
+    }
 }
 
 - (void)followerHandler
@@ -772,7 +760,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateCollectionViewDataSource
 {
-    if ( ![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser )
+    if ( [VUser currentUser] == nil && self.representsMainUser )
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
@@ -839,7 +827,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refresh:(UIRefreshControl *)sender
 {
-    NSNumber *mainUserId = [VObjectManager sharedManager].mainUser.remoteId;
+    NSNumber *mainUserId = [VUser currentUser].remoteId;
     const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
     const BOOL wasTriggeredByUIElement = sender != nil;
     if ( wasTriggeredByUIElement && hasUserData )
@@ -855,17 +843,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [super refresh:sender];
     }
-}
-
-#pragma mark - VNotAuthorizedDataSourceDelegate
-
-- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
-{
-    VAuthorizedAction *authorizationAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                            dependencyManager:self.dependencyManager];
-    [authorizationAction performFromViewController:self
-                                           context:VAuthorizationContextUserProfile
-                                        completion:^(BOOL authorized) { }];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate
@@ -890,8 +867,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     const BOOL didNavigateFromInbox = [self navigationHistoryContainsInbox];
-    const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
-    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    const BOOL isCurrentUserLoggedIn = [VUser currentUser] != nil;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VUser currentUser];
     
     if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
@@ -927,7 +904,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VUser currentUser];
     
     if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {

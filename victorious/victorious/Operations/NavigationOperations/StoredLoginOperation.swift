@@ -32,10 +32,6 @@ class StoredLoginOperation: Operation {
             
             let id = Int64(user.remoteId.integerValue)
             self.queueNext( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )
-            
-            // TODO: Maybe Fetch soem more user info by adding more operations. not sure if we still need this here
-            // api/follow/counts/%d
-            // api/sequence/users_interactions/%@/%@
         }
         else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let accountIdentifier = defaults.stringForKey(kAccountIdentifierDefaultsKey),

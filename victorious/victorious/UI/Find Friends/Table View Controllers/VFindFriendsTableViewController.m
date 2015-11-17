@@ -17,7 +17,6 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
 #import "VFindContactsTableViewController.h"

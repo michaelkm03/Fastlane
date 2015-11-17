@@ -403,17 +403,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
             return;
         }
         self.refreshRequest = nil;
-        UIView *viewForHUD = self.parentViewController.view;
-        
-        if (viewForHUD == nil )
-        {
-            viewForHUD = self.view;
-        }
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:viewForHUD animated:YES];
-        hud.mode = MBProgressHUDModeText;
-        hud.labelText = NSLocalizedString(@"RefreshError", @"");
-        [hud hide:YES afterDelay:3.0];
-        VLog(@"Failed to refresh conversation list: %@", [error localizedDescription]);
+        // TODO: Show error in non-disruptive way
     };
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
