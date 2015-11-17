@@ -90,19 +90,20 @@ module VAMS
       Screenshots.new(json['payload'])
     end
 
-    def submit_result(result:, environment:)
-      options = { body: result.to_json }
+    def submit_result(result)
+      endpoint = Endpoints::SUBMISSION_RESPONSE
       send_request(type:     :post,
                    host:     @env.host,
                    protocol: @env.protocol,
-                   path:     Endpoints::SUBMISSION_RESPONSE,
-                   options:  options)
+                   path:     endpoint,
+                   body:     result,
+                   headers:  construct_headers(endpoint: endpoint))
     end
 
     private
 
-    def send_request(type:, protocol: 'https', host:, path:, options:{}, headers: {})
-      HTTParty.send(type.to_sym, protocol + '://' + host + path, headers: headers, query: options)
+    def send_request(type:, protocol: 'https', host:, path:, options:{}, headers: {}, body: {})
+      HTTParty.send(type.to_sym, protocol + '://' + host + path, headers: headers, query: options, body: body)
     end
 
     def construct_headers(endpoint:)
