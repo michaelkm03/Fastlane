@@ -10,8 +10,6 @@ import XCTest
 import VictoriousIOSSDK
 import SwiftyJSON
 
-
-
 class UnreadMessageCountRequestTests: XCTestCase {
     
     func testRequest() {
