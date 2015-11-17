@@ -11,6 +11,8 @@
 #import "VDependencyManager.h"
 #import "VEditorializationItem.h"
 
+static const CGFloat kDesiredLabelSizeMultiplier = 1.25;
+
 @interface VMarqueeCaptionView ()
 
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *dividerLines;
@@ -20,6 +22,7 @@
 @property (nonatomic, readwrite) BOOL hasHeadline;
 @property (nonatomic, readwrite) VStreamItem *marqueeItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionLabelMinimumHeightConstraint;
 
 @end
 
@@ -82,6 +85,14 @@
 {
     UIFont *font = self.hasHeadline ? self.headlineFont : self.captionFont;
     [self.captionLabel setFont:font];
+    CGSize currentSize = [self.captionLabel.text sizeWithAttributes:
+                          @{NSFontAttributeName: self.captionFont}];
+    CGFloat desiredLabelHeight = currentSize.height * kDesiredLabelSizeMultiplier;
+    if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
+    {
+        self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 - (void)updateLabelText
