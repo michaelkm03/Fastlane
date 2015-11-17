@@ -50,8 +50,9 @@ class RequestOperation<T: RequestType> : NSOperation {
                 guard let strongSelf = self where !strongSelf.cancelled else {
                     return
                 }
-                strongSelf.onComplete( nil )
-                completionBlock?( nil )
+                let error = nil // NSError(domain: "We fucked", code: 0, userInfo: nil)
+                strongSelf.onComplete( error )
+                completionBlock?( error )
             }
         }
         _defaultQueue.addOperation( self )
@@ -95,7 +96,7 @@ class RequestOperation<T: RequestType> : NSOperation {
                 if let result = result {
                     strongSelf.onResponse( result )
                 }
-                // strongSelf.requestError = error
+                //strongSelf.requestError = (error as? NSError)?.copy() as? NSError
                 dispatch_async( dispatch_get_main_queue() ) {
                     dispatch_semaphore_signal( semaphore )
                 }
