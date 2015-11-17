@@ -81,11 +81,11 @@ module VAMS
 
     def get_screenshots(build_name)
       endpoint = Endpoints::SCREENSHOTS + '/' + build_name
-      response = send_request(type: :get,
-                              path: endpoint,
-                              host: @env.host,
+      response = send_request(type:     :get,
+                              path:     endpoint,
+                              host:     @env.host,
                               protocol: @env.protocol,
-                              headers: construct_headers(endpoint: endpoint))
+                              headers:  construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       Screenshots.new(json['payload'])
     end
