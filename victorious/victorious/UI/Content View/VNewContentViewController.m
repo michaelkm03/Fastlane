@@ -824,7 +824,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 self.videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:self.videoPlayer];
-                self.videoPlayer = self.videoPlayer;
                 
                 // If the end card is going to show after the video finishes,
                 // set this to make a clean transition in for the end card

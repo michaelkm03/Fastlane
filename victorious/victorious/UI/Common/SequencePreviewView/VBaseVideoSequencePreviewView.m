@@ -357,9 +357,12 @@
                 // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            [self.videoPlayer play];
             self.userInteractionEnabled = YES;
-            if ( !self.shouldAutoplay )
+            if ( self.shouldAutoplay )
+            {
+                [self.videoPlayer play];
+            }
+            else
             {
                 [self.videoPlayer playFromStart];
             }
