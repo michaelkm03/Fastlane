@@ -1,18 +1,18 @@
 //
-//  SendMessageRequest.swift
+//  PostCommentRequest.swift
 //  victorious
 //
-//  Created by Cody Kolodziejzyk on 11/11/15.
+//  Created by Cody Kolodziejzyk on 11/12/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 import SwiftyJSON
 
-/// Sends a message to a recipient.
-public class SendMessageRequest: RequestType {
+/// Adds a comment to a particular sequence
+public class PostCommentRequest: RequestType {
     
-    public let recipientID: Int64
+    public let sequenceID: Int64
     public let text: String?
     public let mediaURL: NSURL?
     public let mediaType: MediaAttachmentType?
@@ -26,7 +26,7 @@ public class SendMessageRequest: RequestType {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext(String(recipientID), withFieldName: "to_user_id")
+        try writer.appendPlaintext(String(sequenceID), withFieldName: "sequence_id")
         
         if let mediaURL = mediaURL,
             let mediaType = mediaType,
@@ -41,7 +41,7 @@ public class SendMessageRequest: RequestType {
         try writer.finishWriting()
         self.bodyTempFile = bodyTempFile
         
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/message/send")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
         request.HTTPMethod = "POST"
         request.HTTPBodyStream = NSInputStream(URL: bodyTempFile)
         return request
@@ -52,9 +52,9 @@ public class SendMessageRequest: RequestType {
         return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
     }
     
-    public init?(recipientID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
+    public init?(sequenceID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
         
-        self.recipientID = recipientID
+        self.sequenceID = sequenceID
         self.text = text
         self.mediaType = mediaAttachmentType
         self.mediaURL = mediaURL
@@ -72,12 +72,10 @@ public class SendMessageRequest: RequestType {
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int64, messageID: Int64) {
-        let payload = responseJSON["payload"]
-        guard let conversationID = Int64(payload["conversation_id"].string ?? ""),
-            let messageID = payload["message_id"].int64 else {
-                throw ResponseParsingError()
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
+        guard let comment = Comment(json: responseJSON["payload"]) else {
+            throw ResponseParsingError()
         }
-        return (conversationID, messageID)
+        return comment
     }
 }
