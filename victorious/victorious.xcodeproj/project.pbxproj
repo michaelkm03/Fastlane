@@ -438,8 +438,6 @@
 		67C210251BFA7A210074E40E /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210211BFA7A210074E40E /* ImageAsset.json */; };
 		67C210261BFA7A210074E40E /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210221BFA7A210074E40E /* LoginResponse.json */; };
 		67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */; };
-		67D9BFD61BFAA485002B1F17 /* FollowCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD51BFAA485002B1F17 /* FollowCount.swift */; };
-		67D9BFDA1BFAA97D002B1F17 /* FollowCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD91BFAA97D002B1F17 /* FollowCountTests.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
 		67FD54B71BF68D5300CF52F7 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */; };
@@ -2292,8 +2290,6 @@
 		67C210211BFA7A210074E40E /* ImageAsset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageAsset.json; sourceTree = "<group>"; };
 		67C210221BFA7A210074E40E /* LoginResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginResponse.json; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
-		67D9BFD51BFAA485002B1F17 /* FollowCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCount.swift; sourceTree = "<group>"; };
-		67D9BFD91BFAA97D002B1F17 /* FollowCountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountTests.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
 		67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
 		67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentRequest.swift; sourceTree = "<group>"; };
@@ -4924,7 +4920,6 @@
 			isa = PBXGroup;
 			children = (
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
-				67D9BFD91BFAA97D002B1F17 /* FollowCountTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
@@ -4992,7 +4987,6 @@
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
 				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
-				67D9BFD51BFAA485002B1F17 /* FollowCount.swift */,
 				C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				03314F5B1BE40F3200EE74FD /* ImageAsset.swift */,
@@ -9690,7 +9684,6 @@
 				C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */,
 				C3FEA7A31BF17583003446CC /* TrendingGIFsRequest.swift in Sources */,
 				6782EA831BF2D2A4000C7C0D /* RepostSequenceRequest.swift in Sources */,
-				67D9BFD61BFAA485002B1F17 /* FollowCount.swift in Sources */,
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
@@ -9802,7 +9795,6 @@
 				79D081B41BF19A2100E8A0C5 /* ConversationRequestTests.swift in Sources */,
 				6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */,
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
-				67D9BFDA1BFAA97D002B1F17 /* FollowCountTests.swift in Sources */,
 				678D944E1BF4399D009A1F93 /* PollAnswerTests.swift in Sources */,
 				67FD54BD1BF68F7100CF52F7 /* FlagCommentRequestTests.swift in Sources */,
 				A7EF1BD61BF275D400D429DE /* StreamTests.swift in Sources */,

@@ -19,15 +19,11 @@ class FollowCountRequestTests: XCTestCase {
     }
     
     func testValidResponseParsing() {
-        let mockJSON = JSON(["subscribed_to": "102", "followers": "103"])
+        let mockJSON = JSON(["payload": ["subscribed_to": "102", "followers": "103"]])
         do {
             let followCountRequest = FollowCountRequest(userID: 101)
-            guard let followCount = try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: mockJSON) else {
-                XCTFail("FollowCount should not be nil here")
-                return
-            }
-            
-            XCTAssertNotNil(followCount)
+            let followCount = try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: mockJSON)
+    
             XCTAssertEqual(followCount.followingCount, 102)
             XCTAssertEqual(followCount.followersCount, 103)
         } catch {
@@ -47,10 +43,12 @@ class FollowCountRequestTests: XCTestCase {
         for invalidMockJSON in invalidMockJSONArray {
             do {
                 let followCountRequest = FollowCountRequest(userID: 101)
-                let followCount = try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON)
-                XCTAssertNil(followCount)
+                let _ = try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON)
+                XCTFail("Every invalid initialization should throw and not reach this line")
+            } catch let error as ResponseParsingError {
+                XCTAssertNotNil(error)
             } catch {
-                XCTFail("Sorry, parseResponse should not throw here")
+                XCTFail("No generic error should be thrown")
             }
         }
     }

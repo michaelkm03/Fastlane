@@ -20,7 +20,16 @@ public struct FollowCountRequest: RequestType {
         return NSURLRequest(URL: NSURL(string: "/api/follow/counts/\(userID)")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> FollowCount? {
-        return FollowCount(json: responseJSON)
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> FollowCount {
+        guard let followingCount = Int64(responseJSON["payload"]["subscribed_to"].stringValue),
+            let followersCount = Int64(responseJSON["payload"]["followers"].stringValue) else {
+                throw ResponseParsingError()
+        }
+        return FollowCount(followingCount: followingCount, followersCount: followersCount)
     }
+}
+
+public struct FollowCount {
+    public let followingCount: Int64
+    public let followersCount: Int64
 }
