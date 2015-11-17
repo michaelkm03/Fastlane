@@ -15,4 +15,5 @@ group :test do
   gem 'guard-bundler'
   gem 'minitest-rg'
   gem 'webmock'
+  gem 'fakefs', require: false
 end
