@@ -12,10 +12,10 @@ import SwiftyJSON
 /// Adds a comment to a particular sequence
 public class PostCommentRequest: RequestType {
     
-    private let sequenceID: Int64
-    private let text: String?
-    private let mediaURL: NSURL?
-    private let mediaType: MediaAttachmentType?
+    public let sequenceID: Int64
+    public let text: String?
+    public let mediaURL: NSURL?
+    public let mediaType: MediaAttachmentType?
     
     public private(set) var urlRequest = NSURLRequest()
     
@@ -26,7 +26,7 @@ public class PostCommentRequest: RequestType {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext("\(sequenceID)", withFieldName: "sequence_id")
+        try writer.appendPlaintext(String(sequenceID), withFieldName: "sequence_id")
         
         if let mediaURL = mediaURL,
             let mediaType = mediaType,

@@ -12,10 +12,10 @@ import SwiftyJSON
 /// Sends a message to a recipient.
 public class SendMessageRequest: RequestType {
     
-    private let recipientID: Int64
-    private let text: String?
-    private let mediaURL: NSURL?
-    private let mediaType: MediaAttachmentType?
+    public let recipientID: Int64
+    public let text: String?
+    public let mediaURL: NSURL?
+    public let mediaType: MediaAttachmentType?
     
     public private(set) var urlRequest = NSURLRequest()
     
