@@ -208,7 +208,7 @@
     // Grab the preroll
     VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
-    self.monetizationPartner = adSystemPartner;
+    self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
     self.monetizationDetails = self.adChain;
 }
 
@@ -783,11 +783,6 @@
     }
 
     return totalVotes;
-}
-
-- (void)reloadPollData
-{
-    [self fetchPollData];
 }
 
 - (VPollAnswer)favoredAnswer

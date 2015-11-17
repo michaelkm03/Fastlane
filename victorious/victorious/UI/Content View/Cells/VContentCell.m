@@ -241,7 +241,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [self layoutIfNeeded];
     
     [self.sequencePreviewView.layer removeAllAnimations];
-    [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+
+    if ( self.adVideoPlayerViewController != nil )
+    {
+        [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+    }
     
     void (^animations)() = ^
     {
@@ -259,7 +263,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     if ( animated )
     {
         [self.sequencePreviewView.layer removeAllAnimations];
-        [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+        if ( self.adVideoPlayerViewController != nil )
+        {
+            [self.adVideoPlayerViewController.view.layer removeAllAnimations];
+        }
         [UIView animateWithDuration:0.5f animations:animations completion:completion];
     }
     else
@@ -303,13 +310,16 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
                                                                                                  details:details];
-    self.adVideoPlayerViewController.delegate = self;
-    self.adVideoPlayerViewController.view.frame = self.shrinkingContentView.bounds;
-    self.adVideoPlayerViewController.view.alpha = 0.0f;
-    [self.shrinkingContentView addSubview:self.adVideoPlayerViewController.view];
-    [self.shrinkingContentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
-    [self.activityIndicatorView startAnimating];
-    [self.adVideoPlayerViewController start];
+    if ( self.adVideoPlayerViewController != nil )
+    {
+        self.adVideoPlayerViewController.delegate = self;
+        self.adVideoPlayerViewController.view.frame = self.shrinkingContentView.bounds;
+        self.adVideoPlayerViewController.view.alpha = 0.0f;
+        [self.shrinkingContentView addSubview:self.adVideoPlayerViewController.view];
+        [self.shrinkingContentView v_addFitToParentConstraintsToSubview:self.adVideoPlayerViewController.view];
+        [self.activityIndicatorView startAnimating];
+        [self.adVideoPlayerViewController start];
+    }
     
     [self layoutIfNeeded];
     [UIView animateWithDuration:0.5f animations:^

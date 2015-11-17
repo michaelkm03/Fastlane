@@ -9,20 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-public struct Comment {}
-extension Comment {
-    public init?(json: JSON) {
-        return nil
-    }
-}
-
-public struct VoteResult {}
-extension VoteResult {
-    public init?(json: JSON) {
-        return nil
-    }
-}
-
 public struct Tracking {}
 extension Tracking {
     public init?(json: JSON) {

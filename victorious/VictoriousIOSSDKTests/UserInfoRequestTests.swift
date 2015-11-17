@@ -30,7 +30,7 @@ class UserInfoRequestTests: XCTestCase {
         
         let id: Int64 = 3694
         let request =  UserInfoRequest(userID: id)
-        var user: User
+        let user: User
         do {
             user = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
@@ -38,7 +38,6 @@ class UserInfoRequestTests: XCTestCase {
             return
         }
         
-        XCTAssertNotNil( user )
         XCTAssertEqual( user.userID, id )
     }
 }
