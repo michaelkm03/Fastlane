@@ -9,11 +9,36 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SeqyenceLikeOperation: RequestOperation<SequenceLikeRequest> {
+class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
-    let userIdentifier: AnyObject
+    init( sequenceID: Int64 ) {
+        super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
+    }
     
-    init( sequenceID: Int64, userIdentifier: AnyObject ) {
-        super.init( request: SequenceLikeRequest() )
+    override func onStart() {
+        super.onStart()
+        
+        let dataStore = PersistentStore.backgroundContext
+        let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
+        let sequence: VSequence = dataStore.findOrCreateObject( uniqueElements )
+        sequence.isLikedByMainUser = true
+        dataStore.saveChanges()
+    }
+}
+
+class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
+    
+    init( sequenceID: Int64 ) {
+        super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
+    }
+    
+    override func onStart() {
+        super.onStart()
+        
+        let dataStore = PersistentStore.backgroundContext
+        let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
+        let sequence: VSequence = dataStore.findOrCreateObject( uniqueElements )
+        sequence.isLikedByMainUser = true
+        dataStore.saveChanges()
     }
 }

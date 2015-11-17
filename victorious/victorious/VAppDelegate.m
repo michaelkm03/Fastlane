@@ -20,7 +20,6 @@
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 
-#import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
 #import "VPurchaseManager.h"
@@ -43,10 +42,6 @@
     
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
-    
-#ifndef DEBUG
-    [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
-#endif
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     

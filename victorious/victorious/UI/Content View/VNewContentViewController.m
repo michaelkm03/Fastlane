@@ -109,6 +109,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
 
 @end
 
@@ -226,6 +227,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.contentCell playAd:self.viewModel.monetizationPartner
                          details:self.viewModel.monetizationDetails];
     }
+    
+    [self.sequencePreviewView showLikeButton:YES];
 }
 
 - (void)didUpdatePollsData
@@ -593,6 +596,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCell prepareForDismissal];
     [self setAccessoryButtonsHidden:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.sequencePreviewView showLikeButton:NO];
 }
 
 #pragma mark - Private Mehods
@@ -800,6 +804,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
             
             previewView.detailDelegate = self;
+            self.sequencePreviewView = previewView;
             
             // Setup relationships for polls
             if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )

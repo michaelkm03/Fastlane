@@ -50,7 +50,7 @@ class RequestOperation<T: RequestType> : NSOperation {
                 guard let strongSelf = self where !strongSelf.cancelled else {
                     return
                 }
-                let error: NSError? = nil // NSError(domain: "We fucked", code: 0, userInfo: nil)
+                let error: NSError? = nil // FIXME
                 strongSelf.onComplete( error )
                 completionBlock?( error )
             }
@@ -65,6 +65,9 @@ class RequestOperation<T: RequestType> : NSOperation {
     }
     
     // MARK: - Subclassing
+    
+    /// Called on background thread, designed to be overriden in subclasses.
+    func onStart() {}
     
     /// Called on background thread, designed to be overriden in subclasses.
     func onResponse( response: T.ResultType ) {}
@@ -84,7 +87,7 @@ class RequestOperation<T: RequestType> : NSOperation {
     
     final override func main() {
         let semaphore = dispatch_semaphore_create(0)
-        
+        self.onStart()
         self.request.execute(
             baseURL: self.baseURL,
             requestContext: self.requestContext,

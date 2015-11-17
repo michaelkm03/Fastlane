@@ -28,7 +28,6 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
@@ -44,9 +43,6 @@
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
 #import "VSleekStreamCellFactory.h"
@@ -721,15 +717,26 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
     [[self.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
     
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
-     }];
+    if ( sequence.isLikedByMainUser.boolValue )
+    {
+        [self likeSequence:sequence completion:^void(BOOL success)
+         {
+             if ( completion != nil )
+             {
+                 completion( success );
+             }
+         }];
+    }
+    else
+    {
+        [self unlikeSequence:sequence completion:^void(BOOL success)
+         {
+             if ( completion != nil )
+             {
+                 completion( success );
+             }
+         }];
+    }
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
