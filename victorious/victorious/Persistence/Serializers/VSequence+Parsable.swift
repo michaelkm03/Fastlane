@@ -33,7 +33,6 @@ extension VSequence: PersistenceParsable {
         remoteId                = sequence.remoteID
         repostCount             = sequence.repostCount
         sequenceDescription     = sequence.sequenceDescription
-       
         
         user = dataStore.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
         user?.populate(fromSourceModel: sequence.user)
@@ -42,7 +41,7 @@ extension VSequence: PersistenceParsable {
             let imageAsset: VImageAsset = self.dataStore.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
             imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
-        })
+            })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
             let node: VNode = dataStore.findOrCreateObject([ "remoteId" : Int($0.nodeID)! ])

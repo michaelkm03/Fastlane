@@ -17,10 +17,11 @@ extension VNode: PersistenceParsable {
         }
         self.remoteId = NSNumber(integer: remoteID)
         
-        assets = Optional(assets) + node.assets.flatMap {
-            let asset: VAsset = self.dataStore.findOrCreateObject([ "remoteId" : Int($0.assetID) ])
+        assets = NSOrderedSet( array: node.assets.flatMap {
+            let uniqueElements = [ "data" : $0.data ]
+            let asset: VAsset = self.dataStore.findOrCreateObject( uniqueElements )
             asset.populate( fromSourceModel: $0 )
             return asset
-        }
+        })
     }
 }

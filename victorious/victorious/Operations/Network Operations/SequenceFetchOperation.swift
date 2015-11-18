@@ -14,4 +14,11 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
     init( sequenceID: Int64) {
         super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
     }
+    
+    override func onResponse(response: SequenceFetchRequest.ResultType) {
+        let dataStore = PersistentStore.backgroundContext
+        let sequence: VSequence = dataStore.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
+        sequence.populate(fromSourceModel: response )
+        dataStore.saveChanges()
+    }
 }
