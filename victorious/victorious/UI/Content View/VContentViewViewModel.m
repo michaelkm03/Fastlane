@@ -261,7 +261,7 @@
      }];
 }
 
-- (void)reloadData
+- (void)reloadData2
 {
     if (![self.sequence isPoll])
     {
@@ -309,28 +309,6 @@
              self.hasReposted = userInteractions.hasReposted;
          }];
     }
-    
-    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
-                                 inStreamWithStreamID:self.streamId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         // This is here to update the vote counts
-         [self.experienceEnhancerController updateData];
-         
-         // Sets up the monetization chain
-         if (self.sequence.adBreaks.count > 0)
-         {
-             [self setupAdChain];
-         }
-         
-         if ( self.endCardViewModel == nil )
-         {
-             [self updateEndcard];
-         }
-         
-         [self.delegate didUpdateContent];
-     }
-                                            failBlock:nil];
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize

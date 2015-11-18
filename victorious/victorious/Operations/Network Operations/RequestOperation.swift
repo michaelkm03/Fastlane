@@ -17,6 +17,8 @@ class RequestOperation<T: RequestType> : NSOperation {
     
     let request: T
     
+    var mainQueueCompletionBlock: ((NSError?)->())?
+    
     var defaultQueue: NSOperationQueue {
         return _defaultQueue
     }
@@ -26,6 +28,9 @@ class RequestOperation<T: RequestType> : NSOperation {
     }
     
     final func queue( completionBlock:((NSError?)->())? = nil) {
+        if let completionBlock = completionBlock {
+            self.mainQueueCompletionBlock = completionBlock
+        }
         self.completionBlock = {
             dispatch_async( dispatch_get_main_queue() ) { [weak self] in
                 guard let strongSelf = self where !strongSelf.cancelled else {
@@ -33,7 +38,7 @@ class RequestOperation<T: RequestType> : NSOperation {
                 }
                 let error: NSError? = nil // FIXME
                 strongSelf.onComplete( error )
-                completionBlock?( error )
+                strongSelf.mainQueueCompletionBlock?( error )
             }
         }
         _defaultQueue.addOperation( self )

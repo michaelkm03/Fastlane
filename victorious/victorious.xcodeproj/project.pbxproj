@@ -586,10 +586,11 @@
 		A7078CFA1BFBFCF0008FB7FF /* RepostSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF91BFBFCF0008FB7FF /* RepostSequenceOperation.swift */; };
 		A7078CFC1BFBFD08008FB7FF /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFB1BFBFD08008FB7FF /* FlagSequenceOperation.swift */; };
 		A7078CFE1BFC0725008FB7FF /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFD1BFC0725008FB7FF /* SequenceFetchOperation.swift */; };
-		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
 		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
+		A7078D071BFC1367008FB7FF /* VContentViewViewModel+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D061BFC1367008FB7FF /* VContentViewViewModel+Networking.swift */; };
+		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
@@ -2576,6 +2577,7 @@
 		A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequest.swift; sourceTree = "<group>"; };
 		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
 		A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceFetchResponse.json; sourceTree = "<group>"; };
+		A7078D061BFC1367008FB7FF /* VContentViewViewModel+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContentViewViewModel+Networking.swift"; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+CurrentUserCache.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
@@ -4618,6 +4620,7 @@
 				036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
 				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
+				A7078D061BFC1367008FB7FF /* VContentViewViewModel+Networking.swift */,
 				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
@@ -5028,9 +5031,6 @@
 				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
 				6782EA861BF2D40E000C7C0D /* RepostSequenceRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
-				A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */,
-				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
-				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
 				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
 				A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */,
@@ -11106,6 +11106,7 @@
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
+				A7078D071BFC1367008FB7FF /* VContentViewViewModel+Networking.swift in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
 				A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
