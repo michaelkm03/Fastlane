@@ -12,7 +12,7 @@
 #import "VEditorializationItem.h"
 #import "victorious-Swift.h"
 
-static const CGFloat kDesiredLabelSizeMultiplier = 1.5;
+static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
 
 @interface VMarqueeCaptionView ()
 
@@ -86,14 +86,6 @@ static const CGFloat kDesiredLabelSizeMultiplier = 1.5;
 {
     UIFont *font = self.hasHeadline ? self.headlineFont : self.captionFont;
     [self.captionLabel setFont:font];
-    
-    CGSize currentSize = [self.captionLabel.attributedText size];
-    CGFloat desiredLabelHeight = currentSize.height * kDesiredLabelSizeMultiplier;
-    if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
-    {
-        self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
-        [self setNeedsUpdateConstraints];
-    }
 }
 
 - (void)updateLabelText
@@ -102,9 +94,20 @@ static const CGFloat kDesiredLabelSizeMultiplier = 1.5;
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
+    NSMutableAttributedString *attributedCaptionString = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
     
-    self.captionLabel.attributedText = attributedText;
+    self.captionLabel.attributedText = attributedCaptionString;
+
+    
+    CGFloat currentHeight = CGRectGetHeight([attributedCaptionString boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)
+                                                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                  context:nil]);
+    CGFloat desiredLabelHeight = currentHeight + kPaddingForEmojiInLCaptionLabel;
+    if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
+    {
+        self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 - (void)updateDividerConstraints
