@@ -1,5 +1,5 @@
 //
-//  ContextDataStoreTests.swift
+//  PersistentStoreContextTests.swift
 //  VictoriousIOSSDK
 //
 //  Created by Patrick Lynch on 10/16/15.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class ContextDataStoreTests: XCTestCase {
+class PersistentStoreContextTests: XCTestCase {
     
     var coreDataManager: CoreDataManager!
     
@@ -48,40 +48,40 @@ class ContextDataStoreTests: XCTestCase {
     
     func testCreateConfiguration() {
         
-        let mainDataStore = self.coreDataManager.mainContext
+        let mainPersistentStoreContext = self.coreDataManager.mainContext
         
-        mainDataStore.createObjectAndSave() { (model: PersistentEntity) in
+        mainPersistentStoreContext.createObjectAndSave() { (model: PersistentEntity) in
             model.newStringAttribute = self.text
         }
         
-        let knownEntity: PersistentEntity = mainDataStore.findObjects( ["newStringAttribute" : text] ).first!
+        let knownEntity: PersistentEntity = mainPersistentStoreContext.findObjects( ["newStringAttribute" : text] ).first!
         XCTAssertNotNil( knownEntity )
         XCTAssertEqual( knownEntity.newStringAttribute, text )
         
-        let knownEntity2: PersistentEntity = mainDataStore.findObjects( ["newStringAttribute" : text] ).first!
+        let knownEntity2: PersistentEntity = mainPersistentStoreContext.findObjects( ["newStringAttribute" : text] ).first!
         XCTAssertNotNil( knownEntity2 )
         XCTAssertEqual( knownEntity2.newStringAttribute, text )
         
-        let unknownEntity: PersistentEntity? = mainDataStore.findObjects( ["newStringAttribute" : "Some other text"] ).first
+        let unknownEntity: PersistentEntity? = mainPersistentStoreContext.findObjects( ["newStringAttribute" : "Some other text"] ).first
         XCTAssertNil( unknownEntity )
     }
     
     func testFindAll() {
         
-        let mainDataStore = self.coreDataManager.mainContext
+        let mainPersistentStoreContext = self.coreDataManager.mainContext
         
         let count = 10
         for i in 0..<count {
-            mainDataStore.createObjectAndSave() { (model: PersistentEntity) in
+            mainPersistentStoreContext.createObjectAndSave() { (model: PersistentEntity) in
                 model.newStringAttribute = "value \(i)"
             }
         }
         
-        let allEntities: [PersistentEntity] = mainDataStore.findObjects( limit: 0 )
+        let allEntities: [PersistentEntity] = mainPersistentStoreContext.findObjects( limit: 0 )
         XCTAssertEqual( allEntities.count, count )
         
         let limit = 5
-        let someEntities: [PersistentEntity] = mainDataStore.findObjects( limit: limit )
+        let someEntities: [PersistentEntity] = mainPersistentStoreContext.findObjects( limit: limit )
         XCTAssertEqual( someEntities.count, limit )
     }
 }

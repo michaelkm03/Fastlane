@@ -147,7 +147,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    [persistentStore syncBasic:^void(id<DataStoreBasic> context) {
+    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
         stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         [context saveChanges];

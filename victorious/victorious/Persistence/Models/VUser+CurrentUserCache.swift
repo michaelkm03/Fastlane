@@ -32,15 +32,15 @@ public extension VUser {
         return nil
     }
     
-    public static func currentUser( inContext context: DataStoreBasic ) -> VUser? {
+    public static func currentUser( inContext context: PersistentStoreContextBasic ) -> VUser? {
         return context.cachedObjectForKey( VUser.cacheKey ) as? VUser
     }
     
-    public static func clearCurrentUser( inContext context: DataStoreBasic ) {
+    public static func clearCurrentUser( inContext context: PersistentStoreContextBasic ) {
         context.cacheObject( nil, forKey: VUser.cacheKey )
     }
     
-    public func setCurrentUser( inContext context: DataStoreBasic ) {
+    public func setCurrentUser( inContext context: PersistentStoreContextBasic ) {
         context.cacheObject( self, forKey: VUser.cacheKey )
     }
 }

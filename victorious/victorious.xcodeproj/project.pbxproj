@@ -853,10 +853,10 @@
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
 		A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = A78740A31BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m */; };
-		A789F7291BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */; };
-		A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */; };
+		A789F7291BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7161BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContext.swift */; };
+		A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContextBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7171BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContextBasic.swift */; };
 		A789F72B1BF11F4900F5C87B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7181BF11F4900F5C87B /* CoreDataManager.swift */; };
-		A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* DataStore.swift */; };
+		A789F72C1BF11F4900F5C87B /* PersistentStoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7191BF11F4900F5C87B /* PersistentStoreContext.swift */; };
 		A789F72F1BF11F4900F5C87B /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */; };
 		A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */; };
 		A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */; };
@@ -867,7 +867,7 @@
 		A789F7361BF11F4900F5C87B /* NSSet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */; };
 		A789F7371BF11F4900F5C87B /* Set+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7281BF11F4900F5C87B /* Set+Operators.swift */; };
 		A789F73B1BF1207F00F5C87B /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73A1BF1207F00F5C87B /* PersistentStore.swift */; };
-		A789F74C1BF1211D00F5C87B /* ContextDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */; };
+		A789F74C1BF1211D00F5C87B /* PersistentStoreContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */; };
 		A789F74E1BF1211D00F5C87B /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
 		A789F7541BF1211D00F5C87B /* CoreDataPathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74A1BF1211D00F5C87B /* CoreDataPathHelper.swift */; };
 		A789F7551BF1211D00F5C87B /* KVOHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74B1BF1211D00F5C87B /* KVOHelper.swift */; };
@@ -1008,7 +1008,7 @@
 		A7EF1BDD1BF2761E00D429DE /* Stream.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BDA1BF2761E00D429DE /* Stream.json */; };
 		A7EF1BDE1BF2761E00D429DE /* StreamResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BDB1BF2761E00D429DE /* StreamResponse.json */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
-		A7F2D0BD1BF19D4300490D7B /* DataStoreBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BC1BF19D4300490D7B /* DataStoreBasic.swift */; };
+		A7F2D0BD1BF19D4300490D7B /* PersistentStoreContextBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BC1BF19D4300490D7B /* PersistentStoreContextBasic.swift */; };
 		A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */; };
 		A7F2D0C21BF26D1B00490D7B /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A789F7431BF1211D00F5C87B /* PersistenceTests.xcdatamodeld */; };
 		A7F2D0C31BF26D2000490D7B /* 1.0-1.1.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */; };
@@ -3030,10 +3030,10 @@
 		A78740A31BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VImageAssetFinder+PollAssets.m"; sourceTree = "<group>"; };
 		A78740A41BA362E40093D1E0 /* VImageAssetFinder+PollAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VImageAssetFinder+PollAssets.h"; sourceTree = "<group>"; };
 		A789F7131BF11E3F00F5C87B /* victorious-4.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victorious-4.0.xcdatamodel"; sourceTree = "<group>"; };
-		A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStore.swift"; sourceTree = "<group>"; };
-		A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+DataStoreBasic.swift"; sourceTree = "<group>"; };
+		A789F7161BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PersistentStoreContext.swift"; sourceTree = "<group>"; };
+		A789F7171BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContextBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PersistentStoreContextBasic.swift"; sourceTree = "<group>"; };
 		A789F7181BF11F4900F5C87B /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		A789F7191BF11F4900F5C87B /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		A789F7191BF11F4900F5C87B /* PersistentStoreContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContext.swift; sourceTree = "<group>"; };
 		A789F71F1BF11F4900F5C87B /* VAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNode+Parsable.swift"; sourceTree = "<group>"; };
@@ -3044,7 +3044,7 @@
 		A789F7271BF11F4900F5C87B /* NSSet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extensions.swift"; sourceTree = "<group>"; };
 		A789F7281BF11F4900F5C87B /* Set+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+Operators.swift"; sourceTree = "<group>"; };
 		A789F73A1BF1207F00F5C87B /* PersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
-		A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDataStoreTests.swift; sourceTree = "<group>"; };
+		A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContextTests.swift; sourceTree = "<group>"; };
 		A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
 		A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.0-1.1.xcmappingmodel"; sourceTree = "<group>"; };
 		A789F7421BF1211D00F5C87B /* 1.1-2.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.1-2.0.xcmappingmodel"; sourceTree = "<group>"; };
@@ -3285,7 +3285,7 @@
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollPaginator.h; sourceTree = "<group>"; };
 		A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollPaginator.m; sourceTree = "<group>"; };
-		A7F2D0BC1BF19D4300490D7B /* DataStoreBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStoreBasic.swift; sourceTree = "<group>"; };
+		A7F2D0BC1BF19D4300490D7B /* PersistentStoreContextBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContextBasic.swift; sourceTree = "<group>"; };
 		A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceParsable.swift; sourceTree = "<group>"; };
 		A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTrackingHelper.h; sourceTree = "<group>"; };
 		A7F529521A9E66E000F7E41F /* VStreamTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamTrackingHelper.m; sourceTree = "<group>"; };
@@ -6966,11 +6966,11 @@
 		A789F7151BF11F4900F5C87B /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
-				A789F7161BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift */,
-				A789F7171BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift */,
+				A789F7161BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContext.swift */,
+				A789F7171BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContextBasic.swift */,
 				A789F7181BF11F4900F5C87B /* CoreDataManager.swift */,
-				A789F7191BF11F4900F5C87B /* DataStore.swift */,
-				A7F2D0BC1BF19D4300490D7B /* DataStoreBasic.swift */,
+				A789F7191BF11F4900F5C87B /* PersistentStoreContext.swift */,
+				A7F2D0BC1BF19D4300490D7B /* PersistentStoreContextBasic.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -6992,8 +6992,8 @@
 				A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */,
 				A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */,
 				A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */,
-				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
+				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 			);
 			name = Parsers;
 			path = Serializers;
@@ -7012,7 +7012,7 @@
 		A789F73C1BF1211D00F5C87B /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				A789F73D1BF1211D00F5C87B /* ContextDataStoreTests.swift */,
+				A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */,
 				A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */,
 				A789F7401BF1211D00F5C87B /* Sample Data */,
 				A789F7491BF1211D00F5C87B /* Test Helpers */,
@@ -10401,7 +10401,7 @@
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
-				A7F2D0BD1BF19D4300490D7B /* DataStoreBasic.swift in Sources */,
+				A7F2D0BD1BF19D4300490D7B /* PersistentStoreContextBasic.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -10768,7 +10768,7 @@
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
-				A789F72C1BF11F4900F5C87B /* DataStore.swift in Sources */,
+				A789F72C1BF11F4900F5C87B /* PersistentStoreContext.swift in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				A7F2D0C21BF26D1B00490D7B /* PersistenceTests.xcdatamodeld in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
@@ -10865,7 +10865,7 @@
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
-				A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+DataStoreBasic.swift in Sources */,
+				A789F72A1BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContextBasic.swift in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
@@ -11096,7 +11096,7 @@
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
-				A789F7291BF11F4900F5C87B /* NSManagedObjectContext+DataStore.swift in Sources */,
+				A789F7291BF11F4900F5C87B /* NSManagedObjectContext+PersistentStoreContext.swift in Sources */,
 				A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */,
 				7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
@@ -11225,7 +11225,7 @@
 				7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */,
 				F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */,
 				A7D378631AF2F369007FF197 /* VStoredLoginTests.m in Sources */,
-				A789F74C1BF1211D00F5C87B /* ContextDataStoreTests.swift in Sources */,
+				A789F74C1BF1211D00F5C87B /* PersistentStoreContextTests.swift in Sources */,
 				DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */,
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
 				F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,

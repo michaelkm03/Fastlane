@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: DataStoreObjectSwift {}
+extension VStream: PersistentStoreObjectSwift {}
 
 extension VStream: PersistenceParsable {
     
@@ -22,12 +22,12 @@ extension VStream: PersistenceParsable {
         
         streamItems += stream.items.flatMap {
             if let sequence = $0 as? Sequence {
-                let persistentSequence = self.dataStore.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
+                let persistentSequence = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
                 persistentSequence.populate( fromSourceModel: sequence )
                 return persistentSequence
             }
             else if let stream = $0 as? Stream {
-                let persistentStream = self.dataStore.findOrCreateObject([ "remoteId" : stream.streamID ]) as VStream
+                let persistentStream = self.persistentStoreContext.findOrCreateObject([ "remoteId" : stream.streamID ]) as VStream
                 persistentStream.populate( fromSourceModel: stream )
                 return persistentStream
             }

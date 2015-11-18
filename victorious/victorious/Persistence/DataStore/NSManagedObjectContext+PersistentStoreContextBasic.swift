@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+DataStoreBasic.swift
+//  NSManagedObjectContext+PersistentStoreContextBasic.swift
 //  Persistence
 //
 //  Created by Patrick Lynch on 10/15/15.
@@ -13,12 +13,12 @@ private let SingleObjectCacheKey = "SingleObjectCache"
 
 /// In implementation of the DataSource protocol that provides access to a single CoreData managed object context.
 ///
-/// Given the context-oriented design of CoreData, this DataStore implementation also requires
-/// that an unchangeable ContextDataStoreType value be provided to properly select the right CoreData context
-/// on which to operate.  In this way, this DataStore implementation provides a per-context interface
+/// Given the context-oriented design of CoreData, this PersistentStoreContext implementation also requires
+/// that an unchangeable ContextPersistentStoreContextType value be provided to properly select the right CoreData context
+/// on which to operate.  In this way, this PersistentStoreContext implementation provides a per-context interface
 /// into a single CoreData-managed persistent store.  So there is one store/database per CoreDataManager
-/// instance, and one DataStore imeplementation per context.
-extension NSManagedObjectContext: DataStoreBasic {
+/// instance, and one PersistentStoreContext imeplementation per context.
+extension NSManagedObjectContext: PersistentStoreContextBasic {
     
     public func saveChanges() -> Bool {
         do {
@@ -41,7 +41,7 @@ extension NSManagedObjectContext: DataStoreBasic {
         return false
     }
     
-    public func destroy( object: DataStoreObject ) -> Bool {
+    public func destroy( object: PersistentStoreObject ) -> Bool {
         self.deleteObject( object as! NSManagedObject )
         do {
             try self.save()
@@ -52,23 +52,23 @@ extension NSManagedObjectContext: DataStoreBasic {
         return false
     }
     
-    public func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: DataStoreObject -> Void ) -> DataStoreObject {
+    public func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: PersistentStoreObject -> Void ) -> PersistentStoreObject {
         let object = self.createObjectWithEntityName( entityName )
         configurations( object )
         self.saveChanges()
         return object
     }
     
-    public func createObjectWithEntityName( entityName: String ) -> DataStoreObject {
+    public func createObjectWithEntityName( entityName: String ) -> PersistentStoreObject {
 
         guard let entity = NSEntityDescription.entityForName( entityName, inManagedObjectContext: self ) else {
             fatalError( "Could not find entity for name: \(entityName).  Make sure the entity name configurated in the managed object object matches the expected class type." )
         }
         
-        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as DataStoreObject
+        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as PersistentStoreObject
     }
     
-    public func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject {
+    public func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> PersistentStoreObject {
         if let existingObject = self.findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, limit: 1).first {
             return existingObject
         }
@@ -81,7 +81,7 @@ extension NSManagedObjectContext: DataStoreBasic {
         }
     }
     
-    public func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [DataStoreObject] {
+    public func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [PersistentStoreObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
@@ -100,21 +100,21 @@ extension NSManagedObjectContext: DataStoreBasic {
         }
         
         do {
-            if let results = try self.executeFetchRequest( request ) as? [DataStoreObject] {
+            if let results = try self.executeFetchRequest( request ) as? [PersistentStoreObject] {
                 return results
             }
         } catch {
             print( "Error: \(error)" )
         }
-        return [DataStoreObject]()
+        return [PersistentStoreObject]()
     }
     
-    public func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject? {
-        return self.objectWithID( identifier as! NSManagedObjectID ) as DataStoreObject
+    public func getObjectWithIdentifier(identifier: AnyObject) -> PersistentStoreObject? {
+        return self.objectWithID( identifier as! NSManagedObjectID ) as PersistentStoreObject
     }
     
-    public func cacheObject(object: DataStoreObject?, forKey key: String) {
-        var cache = userInfo[SingleObjectCacheKey] as? [String : DataStoreObject] ?? [:]
+    public func cacheObject(object: PersistentStoreObject?, forKey key: String) {
+        var cache = userInfo[SingleObjectCacheKey] as? [String : PersistentStoreObject] ?? [:]
         if let object = object {
             cache[key] = object
         } else {
@@ -123,10 +123,10 @@ extension NSManagedObjectContext: DataStoreBasic {
         userInfo[SingleObjectCacheKey] = cache
     }
     
-    public func cachedObjectForKey(key: String) -> DataStoreObject? {
+    public func cachedObjectForKey(key: String) -> PersistentStoreObject? {
         guard let cache = userInfo[SingleObjectCacheKey] as? [String : NSManagedObject] else {
             return nil
         }
-        return cache[key] as? DataStoreObject
+        return cache[key] as? PersistentStoreObject
     }
 }

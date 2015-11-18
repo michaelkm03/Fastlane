@@ -19,7 +19,7 @@ extension VNode: PersistenceParsable {
         
         assets = NSOrderedSet( array: node.assets.flatMap {
             let uniqueElements = [ "data" : $0.data ]
-            let asset: VAsset = self.dataStore.findOrCreateObject( uniqueElements )
+            let asset: VAsset = self.persistentStoreContext.findOrCreateObject( uniqueElements )
             asset.populate( fromSourceModel: $0 )
             return asset
         })

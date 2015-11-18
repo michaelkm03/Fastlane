@@ -35,21 +35,21 @@ extension VSequence: PersistenceParsable {
         sequenceDescription     = sequence.sequenceDescription
         
         if let trackingModel = sequence.tracking {
-            tracking = dataStore.createObject() as VTracking
+            tracking = persistentStoreContextcreateObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
-        user = dataStore.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
+        user = persistentStoreContext.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
         user?.populate(fromSourceModel: sequence.user)
         
         previewImageAssets = Set<VImageAsset>(sequence.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = self.dataStore.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+            let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
             imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
             })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
-            let node: VNode = dataStore.findOrCreateObject([ "remoteId" : Int($0.nodeID)! ])
+            let node: VNode = persistentStoreContext.findOrCreateObject([ "remoteId" : Int($0.nodeID)! ])
             node.populate( fromSourceModel: $0 )
             return node
         })

@@ -567,7 +567,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     PersistentStore *persistentStore = [[PersistentStore alloc] init];
-    [persistentStore syncBasic:^void(id<DataStoreBasic> context) {
+    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
         self.currentStream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         [context saveChanges];
     }];
