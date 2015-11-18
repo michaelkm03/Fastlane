@@ -37,6 +37,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
 @property (nonatomic, strong) VTickerPickerViewController *toolPicker;
 @property (nonatomic, strong) VTextToolViewController *canvasToolViewController;
+@property (nonatomic, strong) VTextTypePickerDataSource *pickerDataSource;
 
 @end
 
@@ -50,13 +51,15 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    VLog(@"");
     self = [super init];
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _pickerDataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _toolPicker.dataSource = _pickerDataSource;
         _toolPicker.pickerDelegate = self;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [dependencyManager imageForKey:kIconKey];

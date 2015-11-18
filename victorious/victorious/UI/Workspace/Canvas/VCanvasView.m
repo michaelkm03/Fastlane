@@ -173,6 +173,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)setSourceURL:(NSURL *)URL
   withPreloadedImage:(UIImage *)preloadedImage
 {
+    
     __weak typeof(self) welf = self;
     void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
     {
@@ -211,9 +212,10 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                       placeholderImage:nil
                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (image)
         {
-            self.filteredImageView.inputImage = image;
+            strongSelf.filteredImageView.inputImage = image;
             imageFinishedLoadingBlock(image, YES);
         }
     }];
