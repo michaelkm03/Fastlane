@@ -143,11 +143,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                    inURLString:url];
     }
     NSString *apiPath = [url v_pathComponent];
-    id<DataStoreBasic> dataStore = [PersistentStore getMainContext];
+    PersistentStore *persistentStore = [[PersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
-    VStream *stream = (VStream *)[dataStore findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+    VStream *stream = (VStream *)[[persistentStore mainContextBasic] findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    [dataStore saveChanges];
+    [[persistentStore mainContextBasic] saveChanges];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;

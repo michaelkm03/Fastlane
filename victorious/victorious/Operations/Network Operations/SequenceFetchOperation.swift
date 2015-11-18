@@ -16,9 +16,9 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
     }
     
     override func onResponse(response: SequenceFetchRequest.ResultType) {
-        let dataStore = PersistentStore.backgroundContext
-        let sequence: VSequence = dataStore.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
+        let persistentStore = PersistentStore()
+        let sequence: VSequence = persistentStore.backgroundContext.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
         sequence.populate(fromSourceModel: response )
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
     }
 }

@@ -42,9 +42,17 @@ import CoreData
     /// and populates it with the data in the query dictionary.
     func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> DataStoreObject
     
+    /// Place the object in a cache the keeps it in memory and retrievable by the provided key
+    /// This improves performance and is convenient for objects that are accessed frequently, such as
+    /// the current user of an application.
     func cacheObject(object: DataStoreObject?, forKey key: String)
     
+    /// Retrieves a cached object using the provided key or nil if none is found.
     func cachedObjectForKey(key: String) -> DataStoreObject?
     
+    /// Returns an object from the persistent store that uses the peristent store-specific identifier.
+    /// Designed for quickly and easily retrieving objects between contexts.
+    ///
+    /// -parameter identifier Some identifying value used by the persistent store.
     func getObjectWithIdentifier(identifier: AnyObject) -> DataStoreObject?
 }

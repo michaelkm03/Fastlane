@@ -44,10 +44,10 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         }
         
         // Handle immediate asynchronous data updates
-        let dataStore = PersistentStore.backgroundContext
+        let persistentStore = PersistentStore()
         let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
-        let sequence: VSequence = dataStore.findOrCreateObject( uniqueElements )
+        let sequence: VSequence = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
         sequence.isLikedByMainUser = true
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
     }
 }

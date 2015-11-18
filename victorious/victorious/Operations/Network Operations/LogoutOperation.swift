@@ -23,21 +23,21 @@ class LogoutOperation: RequestOperation<LogoutRequest> {
     
     override func onResponse(result: LogoutRequest.ResultType) {
         
-        let dataStore = PersistentStore.backgroundContext
-        guard let loggedOutUser: VUser = dataStore.getObject(self.userIdentifier) else {
+        let persistentStore = PersistentStore()
+        guard let loggedOutUser: VUser = persistentStore.backgroundContext.getObject(self.userIdentifier) else {
             fatalError()
         }
         
-        let conversations: [VConversation] = dataStore.findObjects( [ "user" : loggedOutUser ])
+        let conversations: [VConversation] = persistentStore.backgroundContext.findObjects( [ "user" : loggedOutUser ])
         for object in conversations {
-            dataStore.destroy( object )
+            persistentStore.backgroundContext.destroy( object )
         }
         
-        let pollResults: [VPollResult] = dataStore.findObjects( [ "user" : loggedOutUser ])
+        let pollResults: [VPollResult] = persistentStore.backgroundContext.findObjects( [ "user" : loggedOutUser ])
         for object in pollResults {
-            dataStore.destroy( object )
+            persistentStore.backgroundContext.destroy( object )
         }
         
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
     }
 }

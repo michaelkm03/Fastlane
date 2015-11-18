@@ -23,15 +23,15 @@ class StoredLoginOperation: Operation {
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
             
-            let dataStore = PersistentStore.mainContext
-            let user: VUser = dataStore.findOrCreateObject([ "remoteId" : info.userRemoteId ])
+            let persistentStore = PersistentStore()
+            let user: VUser = persistentStore.mainContext.findOrCreateObject([ "remoteId" : info.userRemoteId ])
             user.loginType = info.lastLoginType.rawValue
             user.token = info.token
             if user.status == nil {
                 user.status = "stored"
             }
-            user.setCurrentUser(inContext: dataStore)
-            dataStore.saveChanges()
+            user.setCurrentUser(inContext: persistentStore.mainContext)
+            persistentStore.mainContext.saveChanges()
             
             let id = Int64(user.remoteId.integerValue)
             self.queueNext( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )

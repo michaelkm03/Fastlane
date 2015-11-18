@@ -66,7 +66,12 @@ class NetworkOperation<T: RequestType> : Operation {
             return
         }
         
-        guard let currentUser = VUser.currentUser(inContext: PersistentStore.backgroundContext) else {
+        var loadedUser: VUser?
+        dispatch_sync( dispatch_get_main_queue() ) {
+            loadedUser = VUser.currentUser()
+        }
+        
+        guard let currentUser = loadedUser else {
             finishedExecuting()
             return
         }

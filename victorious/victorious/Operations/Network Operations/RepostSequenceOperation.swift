@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
     
-    let dataStore = PersistentStore.backgroundContext
+    let persistentStore = PersistentStore()
     
     init( nodeID: Int64 ) {
         super.init(request: RepostSequenceRequest(nodeID: nodeID) )
@@ -26,7 +26,7 @@ class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
         node.sequence.hasReposted = true
         node.sequence.repostCount += 1
         currentUser.repostedSequences.insert( node.sequence )
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
         
         dispatch_sync( dispatch_get_main_queue() ) {
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidRepost)
@@ -37,7 +37,7 @@ class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
         node.sequence.hasReposted = false
         node.sequence.repostCount -= 1
         currentUser.repostedSequences.remove(node.sequence )
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
         
         dispatch_sync( dispatch_get_main_queue() ) {
             let params = [ VTrackingKeyErrorMessage : error?.localizedDescription ?? "" ]
@@ -46,11 +46,11 @@ class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
     }
     
     var currentUser: VUser {
-        return dataStore.getObject( VUser.currentUser()!.identifier )!
+        return persistentStore.backgroundContext.getObject( VUser.currentUser()!.identifier )!
     }
     
     var node: VNode {
         let uniqueElements = [ "remoteId" : Int(request.nodeID) ]
-        return dataStore.findOrCreateObject( uniqueElements )
+        return persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
     }
 }

@@ -16,10 +16,10 @@ class UserInfoOperation: RequestOperation<UserInfoRequest> {
     }
     
     override func onResponse( response: UserInfoRequest.ResultType ) {
-        let dataStore = PersistentStore.backgroundContext
-        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
+        let persistentStore = PersistentStore()
+        let persistentUser: VUser = persistentStore.backgroundContext.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
         persistentUser.populate(fromSourceModel: response)
-        guard dataStore.saveChanges() else {
+        guard persistentStore.backgroundContext.saveChanges() else {
             fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
         }
     }

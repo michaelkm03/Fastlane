@@ -23,10 +23,10 @@ class StreamOperation: RequestOperation<StreamRequest> {
     var previousPageOperation: StreamOperation?
     
     override func onResponse(response: StreamRequest.ResultType) {
-        let dataStore = PersistentStore.backgroundContext
+        let persistentStore = PersistentStore()
         let stream = response.results
         let uniqueElements = [ "apiPath" : request.apiPath ]
-        let persistentStream: VStream = dataStore.findOrCreateObject( uniqueElements )
+        let persistentStream: VStream = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
         persistentStream.populate( fromSourceModel: stream )
         
         dispatch_sync( dispatch_get_main_queue() ) {
@@ -37,6 +37,6 @@ class StreamOperation: RequestOperation<StreamRequest> {
                 self.previousPageOperation = StreamOperation( request: previousPageRequest )
             }
         }
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
     }
 }

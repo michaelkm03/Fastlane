@@ -133,7 +133,8 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 {
     self.stream.streamItems = [[NSOrderedSet alloc] init];
     self.stream.marqueeItems = [[NSOrderedSet alloc] init];
-    [[PersistentStore getMainContext] saveChanges];
+    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    [[persistentStore mainContextBasic] saveChanges];
 }
 
 - (NSInteger)sectionIndexForContent

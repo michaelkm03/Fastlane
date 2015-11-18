@@ -19,7 +19,8 @@ public extension VUser {
     }
     
     public static func currentUser() -> VUser? {
-        return currentUser(inContext: PersistentStore.mainContext)
+        let persistentStore = PersistentStore()
+        return currentUser(inContext: persistentStore.mainContext )
     }
     
     public static func currentUser( inContext context: DataStoreBasic ) -> VUser? {

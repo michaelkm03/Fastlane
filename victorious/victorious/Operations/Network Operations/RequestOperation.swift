@@ -77,12 +77,13 @@ class RequestOperation<T: RequestType> : NSOperation {
         let semaphore = dispatch_semaphore_create(0)
         self.onStart()
         
+        let persistentStore = PersistentStore()
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(v_environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
         let authenticationContext: AuthenticationContext? = {
             if let identifier = VUser.currentUser()?.identifier,
-                let currentUser: VUser = PersistentStore.backgroundContext.getObject( identifier ) {
+                let currentUser: VUser = persistentStore.backgroundContext.getObject( identifier ) {
                     return AuthenticationContext(v_currentUser: currentUser)
             }
             return nil

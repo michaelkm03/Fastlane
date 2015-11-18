@@ -27,13 +27,13 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     // MARK: - Operation overrides
     
     override func onResponse( response: AccountCreateRequest.ResultType ) {
-        let dataStore = PersistentStore.backgroundContext
-        let persistentUser: VUser = dataStore.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
+        let persistentStore = PersistentStore()
+        let persistentUser: VUser = persistentStore.mainContext.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
         persistentUser.populate(fromSourceModel: response.user)
         persistentUser.loginType = self.loginType.rawValue
         persistentUser.token = response.token
-        persistentUser.setCurrentUser(inContext: dataStore)
-        guard dataStore.saveChanges() else {
+        persistentUser.setCurrentUser(inContext: persistentStore.mainContext)
+        guard persistentStore.mainContext.saveChanges() else {
             fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
         }
         
@@ -43,13 +43,13 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     }
     
     override func onComplete( error: NSError? ) {
-        let dataStore = PersistentStore.mainContext
+        let persistentStore = PersistentStore()
         guard let identifier = userIdentifier,
-            let persistentUser: VUser = dataStore.getObject(identifier) else {
+            let persistentUser: VUser = persistentStore.mainContext.getObject(identifier) else {
                 fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
         }
         
-        persistentUser.setCurrentUser(inContext: dataStore)
+        persistentUser.setCurrentUser(inContext: persistentStore.mainContext)
         VStoredLogin().saveLoggedInUserToDisk( persistentUser )
         self.persistentUser = persistentUser
         

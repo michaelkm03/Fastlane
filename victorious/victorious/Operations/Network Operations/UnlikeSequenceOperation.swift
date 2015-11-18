@@ -22,10 +22,10 @@ class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
         }
         
-        let dataStore = PersistentStore.backgroundContext
+        let persistentStore = PersistentStore()
         let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
-        let sequence: VSequence = dataStore.findOrCreateObject( uniqueElements )
+        let sequence: VSequence = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
         sequence.isLikedByMainUser = false
-        dataStore.saveChanges()
+        persistentStore.backgroundContext.saveChanges()
     }
 }

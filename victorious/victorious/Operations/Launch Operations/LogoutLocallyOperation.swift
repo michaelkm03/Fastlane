@@ -27,8 +27,8 @@ class LogoutLocally: Operation {
         
         self.beganExecuting()
         
-        let dataStore = PersistentStore.mainContext
-        guard let currentUser = VUser.currentUser(inContext: dataStore) else {
+        let persistentStore = PersistentStore()
+        guard let currentUser = VUser.currentUser(inContext: persistentStore.mainContext) else {
             fatalError( "Cannot get current user." )
         }
         
@@ -40,7 +40,7 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
         self.queueNext( remoteLogoutOperation, queue: remoteLogoutOperation.defaultQueue )
         
-        VUser.clearCurrentUser(inContext: dataStore)
+        VUser.clearCurrentUser(inContext: persistentStore.mainContext)
         
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         
