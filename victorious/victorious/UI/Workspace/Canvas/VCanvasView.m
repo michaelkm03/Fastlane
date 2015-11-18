@@ -10,6 +10,7 @@
 #import "CIImage+VImage.h"
 #import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
+#import "Victorious-swift.h"
 
 @import SDWebImage;
 
@@ -18,6 +19,8 @@ NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasView
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
+
+@property (nonatomic, strong) VFilteredImageView *filteredImageView;
 
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImage *scaledImage;
@@ -86,8 +89,13 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_canvasScrollView];
     
+    _filteredImageView = [[VFilteredImageView alloc] initWithFrame:self.bounds];
+    _filteredImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [_canvasScrollView addSubview:_filteredImageView];
+    
     _imageView = [[UIImageView alloc] initWithImage:nil];
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _imageView.alpha = 0.1;
     [_canvasScrollView addSubview:_imageView];
     
     UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapCanvas:)];
@@ -154,6 +162,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     }
     
     self.imageView.frame = imageViewFrame;
+    self.filteredImageView.frame = imageViewFrame;
     self.canvasScrollView.contentSize = imageViewFrame.size;
     [self.canvasScrollView v_centerZoomedContentAnimated:NO];
     self.layedoutCanvasScrollView = YES;
@@ -204,6 +213,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     {
         if (image)
         {
+            self.filteredImageView.inputImage = image;
             imageFinishedLoadingBlock(image, YES);
         }
     }];
@@ -219,9 +229,10 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 {
     _sourceImage = sourceImage;
     
-    _scaledImage = [self scaledImageForCurrentFrameAndMaxZoomLevel];
+//    _scaledImage = [self scaledImageForCurrentFrameAndMaxZoomLevel];
     
-    self.imageView.image = _scaledImage;
+//    self.imageView.image = _scaledImage;
+    self.filteredImageView.inputImage = sourceImage;
     
     self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self layoutIfNeeded];
@@ -231,37 +242,41 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 {
     _filter = filter;
     
-    if (self.scaledImage == nil)
-    {
-        return;
-    }
-
-    if ([self.renderedImageCache objectForKey:filter.description] != nil)
-    {
-        self.imageView.image = [self.renderedImageCache objectForKey:filter.description];
-        return;
-    }
+                           self.filteredImageView.filter = filter;
     
-    dispatch_async(self.renderingQueue, ^
-                   {
+    
+//    if (self.scaledImage == nil)
+//    {
+//        return;
+//    }
+//
+//    if ([self.renderedImageCache objectForKey:filter.description] != nil)
+//    {
+//        self.imageView.image = [self.renderedImageCache objectForKey:filter.description];
+//        return;
+//    }
+//    
+//    dispatch_async(self.renderingQueue, ^
+//                   {
                        // Render
-                       UIImage *filteredImage = [filter imageByFilteringImage:self.scaledImage withCIContext:self.context];
-                       if ( filteredImage == nil )
-                       {
-                           //If filtering fails, don't update the image view.
-                           return;
-                       }
-                       dispatch_async(dispatch_get_main_queue(), ^
-                                      {
-                                          // Cache
-                                          [self.renderedImageCache setObject:filteredImage forKey:filter.description];
-                                          if (_filter.name == filter.name)
-                                          {
-                                              //Fallback to original image if filtering fails
-                                              self.imageView.image = filteredImage;
-                                          }
-                                      });
-                   });
+//                       UIImage *filteredImage = [filter imageByFilteringImage:self.scaledImage withCIContext:self.context];
+//                       if ( filteredImage == nil )
+//                       {
+//                           //If filtering fails, don't update the image view.
+//                           return;
+//                       }
+
+//                       dispatch_async(dispatch_get_main_queue(), ^
+//                                      {
+//                                          // Cache
+//                                          [self.renderedImageCache setObject:filteredImage forKey:filter.description];
+//                                          if (_filter.name == filter.name)
+//                                          {
+//                                              //Fallback to original image if filtering fails
+//                                              self.imageView.image = filteredImage;
+//                                          }
+//                                      });
+//                   });
 }
 
 - (CGSize)assetSize
@@ -327,7 +342,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.imageView;
+    return self.filteredImageView;
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale

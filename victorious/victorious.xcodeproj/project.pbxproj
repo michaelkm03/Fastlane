@@ -392,6 +392,8 @@
 		79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */; };
 		79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
+		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
+		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -2065,6 +2067,8 @@
 		79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRootViewController+UIAutomation.m"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
+		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
+		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5550,6 +5554,7 @@
 				A721E8D81B572453000B7901 /* UIColor+VBrightness.m */,
 				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
 				A721E8DA1B572453000B7901 /* UIColor+VHex.m */,
+				7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */,
 				F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */,
 				C3D4E83E1BBDCF39000AD70A /* UIFont+Layout.swift */,
 				A721E8DB1B572453000B7901 /* UIImage+Cropping.h */,
@@ -5564,6 +5569,7 @@
 				A721E8E61B572453000B7901 /* UIImage+VSolidColor.m */,
 				A721E8E71B572453000B7901 /* UIImage+VTint.h */,
 				A721E8E81B572453000B7901 /* UIImage+VTint.m */,
+				79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */,
 				A721E8E91B572453000B7901 /* UIImageView+Blurring.h */,
 				A721E8EA1B572453000B7901 /* UIImageView+Blurring.m */,
 				A721E8EB1B572453000B7901 /* UIImageView+VLoadingAnimations.h */,
@@ -5602,7 +5608,6 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
-				7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7320,6 +7325,7 @@
 		D87351851A3120DB006D97B2 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */,
 				D87351861A3120F5006D97B2 /* VCanvasView.h */,
 				D87351871A3120F5006D97B2 /* VCanvasView.m */,
 			);
@@ -9600,6 +9606,7 @@
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */,
 				F04D25D21BBA030800E9CDBA /* VObjectManager+ContentModeration.m in Sources */,
+				79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */,
 				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
@@ -9659,6 +9666,7 @@
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
+				79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,

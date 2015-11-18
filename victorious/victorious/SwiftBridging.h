@@ -161,3 +161,4 @@
 #import "VVideoLightboxViewController.h"
 #import "VVideoSequencePreviewView.h"
 #import "VVideoView.h"
+#import "VPhotoFilter.h"
