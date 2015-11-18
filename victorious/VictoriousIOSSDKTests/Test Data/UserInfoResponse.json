@@ -8,25 +8,16 @@
 	"login_id": 3719,
 	"page_number": 1,
 	"total_pages": 1,
-<<<<<<< HEAD
 	"experiment_ids": [],
-=======
->>>>>>> userInfo
 	"payload": [{
 		"id": "3694",
 		"name": "Patrick Lynch",
 		"status": "complete",
 		"am_following": false,
 		"autofollow": "no",
-<<<<<<< HEAD
-		"last_login_date": "2015-11-06 22:23:28",
-		"is_direct_message_disabled": false,
-		"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/80x80.jpg",
-=======
 		"last_login_date": "2015-11-13 02:37:13",
 		"is_direct_message_disabled": false,
 		"profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b8e3c6a46eb651f441db787269b31383\/320x320.jpg",
->>>>>>> userInfo
 		"profile_location": "",
 		"profile_tagline": "",
 		"preview": {
@@ -44,15 +35,9 @@
 		},
 		"isCreator": false,
 		"fanloyalty": {
-<<<<<<< HEAD
 			"points": 2889,
 			"level": 7,
 			"progress": 36
-=======
-			"points": 4812,
-			"level": 8,
-			"progress": 94
->>>>>>> userInfo
 		},
 		"email": "pdlynch@gmail.com",
 		"access_level": "api_user",

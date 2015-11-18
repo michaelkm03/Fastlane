@@ -102,15 +102,14 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         return;
     }
     
-    // FIXME: Uncomment
-    /*NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
+    NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,
                               VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
-                                          eventId:sequence.remoteId];*/
+                                          eventId:sequence.remoteId];
 }
 
 - (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info
@@ -122,14 +121,11 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     
-    // FIXME: Uncomment
-    /*NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyTimeStamp : [NSDate date],
-                                            VTrackingKeyUrls : sequence.tracking.cellClick,
-                                        VTrackingKeyStreamId : trackingID ?: @""};
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];*/
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
@@ -143,6 +139,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
             [self trackAutoplayEvent:event];
         }
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
 }
 
 #pragma mark - State management for StreamDidAppear event

@@ -19,7 +19,6 @@
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
 		030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 030E514E1AC35B5A0011C558 /* VPseudoProduct.m */; };
-		0310CB231BDF5DD8006ED6DD /* VObjectManager+ExecuteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0310CB221BDF5DD8006ED6DD /* VObjectManager+ExecuteRequest.swift */; };
 		0314D07919B4685C00FA363C /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D07819B4685C00FA363C /* VConstants.m */; };
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
@@ -1682,7 +1681,6 @@
 		030931921A184285004E9781 /* VNavigationMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationMenuItem.m; sourceTree = "<group>"; };
 		030E514D1AC35B5A0011C558 /* VPseudoProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPseudoProduct.h; sourceTree = "<group>"; };
 		030E514E1AC35B5A0011C558 /* VPseudoProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPseudoProduct.m; sourceTree = "<group>"; };
-		0310CB221BDF5DD8006ED6DD /* VObjectManager+ExecuteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+ExecuteRequest.swift"; sourceTree = "<group>"; };
 		0314D07719B4685C00FA363C /* VConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
 		0314D07819B4685C00FA363C /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
 		0314D07E19B4688E00FA363C /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29@2x.png"; sourceTree = "<group>"; };
@@ -4377,7 +4375,6 @@
 				0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */,
 				A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */,
 				A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */,
-				0310CB221BDF5DD8006ED6DD /* VObjectManager+ExecuteRequest.swift */,
 				A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */,
 				A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */,
 				0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */,
@@ -10925,7 +10922,6 @@
 				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */,
-				0310CB231BDF5DD8006ED6DD /* VObjectManager+ExecuteRequest.swift in Sources */,
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
