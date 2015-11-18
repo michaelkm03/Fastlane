@@ -88,7 +88,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     func setItem(item: VVideoPlayerItem) {
         if currentItem?.remoteContentId != item.remoteContentId {
-            playerView.clearVideo()
+            self.reset()
         }
         currentItem = item
     }
@@ -98,7 +98,7 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func reset() {
-        fatalError( "This ins't impelmented yet, and shouldn't be empty!" )
+        playerView.clearVideo()
     }
     
     func play() {
