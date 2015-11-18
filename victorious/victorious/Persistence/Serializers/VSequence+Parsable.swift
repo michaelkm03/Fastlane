@@ -34,6 +34,11 @@ extension VSequence: PersistenceParsable {
         repostCount             = sequence.repostCount
         sequenceDescription     = sequence.sequenceDescription
         
+        if let trackingModel = sequence.tracking {
+            tracking = dataStore.createObject() as VTracking
+            tracking?.populate(fromSourceModel: trackingModel)
+        }
+        
         user = dataStore.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
         user?.populate(fromSourceModel: sequence.user)
         

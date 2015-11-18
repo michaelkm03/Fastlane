@@ -1023,6 +1023,8 @@
 		A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711F61AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m */; };
 		A7F712041AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */; };
 		A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */; };
+		A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843611BFD0BFD004C3D55 /* Tracking.swift */; };
+		A7F843641BFD0ED0004C3D55 /* VTracking+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
@@ -3300,6 +3302,8 @@
 		A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotAuthorizedProfileCollectionViewCell.xib; sourceTree = "<group>"; };
 		A7F712191AE5A3B10086F729 /* VLinearGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinearGradientView.h; sourceTree = "<group>"; };
 		A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinearGradientView.m; sourceTree = "<group>"; };
+		A7F843611BFD0BFD004C3D55 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
+		A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VTracking+Parsable.swift"; sourceTree = "<group>"; };
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionControllerTests.m; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
@@ -5152,6 +5156,7 @@
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 				678D94471BF428AA009A1F93 /* VoteResult.swift */,
+				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6973,6 +6978,7 @@
 				A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */,
 				A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */,
 				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
+				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
 			);
 			name = Parsers;
 			path = Serializers;
@@ -10049,6 +10055,7 @@
 				6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */,
 				C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */,
 				678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */,
+				A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */,
 				A7EF1BD21BF2757B00D429DE /* StreamRequest.swift in Sources */,
 				C36C7F6F1BF27B6000B3174A /* FollowUserRequest.swift in Sources */,
 			);
@@ -10308,6 +10315,7 @@
 				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
 				A7078CDF1BFA7D2B008FB7FF /* AccountCreateOperation.swift in Sources */,
+				A7F843641BFD0ED0004C3D55 /* VTracking+Parsable.swift in Sources */,
 				A721E96B1B57617B000B7901 /* VEditorializationItem+RestKit.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				C32F6B111BD0658C00779FB1 /* ModernLoadingViewController.swift in Sources */,
