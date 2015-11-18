@@ -82,6 +82,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 @property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) BOOL isTransitionComplete;
+@property (nonatomic, assign) BOOL videoPlayerWasPlayingOnViewWillDisappear;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
@@ -464,6 +465,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self trackNonVideoViewStart];
     }
     
+    if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
+    {
+        [self.videoPlayer play];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
     
     // Update cell focus
@@ -488,9 +494,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.isVideoContent && self.videoPlayer != nil)
     {
-        if ([self.videoPlayer respondsToSelector:@selector(didExitFromContentView)])
+        self.videoPlayerWasPlayingOnViewWillDisappear = [self.videoPlayer isPlaying];
+        [self.videoPlayer pause];
+        if ( self.isBeingDismissed )
         {
-            [self.videoPlayer didExitFromContentView];
+            [self.videoPlayer reset];
         }
         
         if ( !self.videoPlayerDidFinishPlayingOnce )

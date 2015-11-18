@@ -97,6 +97,10 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
         playerView.seekToSeconds( Float(timeSeconds), allowSeekAhead: true)
     }
     
+    func reset() {
+        fatalError( "This ins't impelmented yet, and shouldn't be empty!" )
+    }
+    
     func play() {
         let wasPlaying = isPlaying
         if !wasPlaying {
