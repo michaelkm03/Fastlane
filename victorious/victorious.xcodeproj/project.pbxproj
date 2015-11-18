@@ -385,8 +385,8 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
-		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
 		6727B1381BFBBD310093AA0A /* AdditionalAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6727B1371BFBBD310093AA0A /* AdditionalAssertions.swift */; };
+		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
@@ -564,7 +564,6 @@
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
 		A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */; };
-		A7078CBD1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CBC1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift */; };
 		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
 		A7078CD91BFA7D2B008FB7FF /* LogoutLocallyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC51BFA7D2B008FB7FF /* LogoutLocallyOperation.swift */; };
@@ -2306,8 +2305,8 @@
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
-		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		6727B1371BFBBD310093AA0A /* AdditionalAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AdditionalAssertions.swift; path = Helpers/AdditionalAssertions.swift; sourceTree = "<group>"; };
+		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
@@ -2557,7 +2556,6 @@
 		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
 		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
 		A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserProfileViewController.swift; sourceTree = "<group>"; };
-		A7078CBC1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VWorkspaceShimDestination.swift; sourceTree = "<group>"; };
 		A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForceLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
 		A7078CC51BFA7D2B008FB7FF /* LogoutLocallyOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutLocallyOperation.swift; sourceTree = "<group>"; };
@@ -8289,7 +8287,6 @@
 				A7ECC1D01AD6178F0003E00A /* View Controllers */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
-				A7078CBC1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,
 			);
 			path = Workspace;
@@ -11060,7 +11057,6 @@
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
-				A7078CBD1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift in Sources */,
 				A7078CFC1BFBFD08008FB7FF /* FlagSequenceOperation.swift in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				A7F2D0C61BF26D4600490D7B /* SampleMigrationPolicies.swift in Sources */,
