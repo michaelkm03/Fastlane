@@ -56,6 +56,8 @@ class RequestOperation<T: RequestType> : NSOperation {
     /// Called on main thread, designed to be overriden in subclasses.
     func onComplete( error: NSError? ) {}
     
+    func onError( error: NSError? ) {}
+    
     // MARK: - NSOperation overrides
     
     final override func cancel() {
@@ -91,8 +93,10 @@ class RequestOperation<T: RequestType> : NSOperation {
                 }
                 if let theResult = result {
                     strongSelf.onResponse( theResult )
+                } else {
+                    //strongSelf.requestError = (error as? NSError)?.copy() as? NSError
+                    strongSelf.onError( nil )
                 }
-                //strongSelf.requestError = (error as? NSError)?.copy() as? NSError
                 dispatch_async( dispatch_get_main_queue() ) {
                     dispatch_semaphore_signal( semaphore )
                 }

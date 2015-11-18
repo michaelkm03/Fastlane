@@ -581,7 +581,11 @@
 		A7078CEE1BFAD531008FB7FF /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CED1BFAD531008FB7FF /* StreamOperation.swift */; };
 		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */; };
 		A7078CF21BFBD50B008FB7FF /* LikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */; };
-		A7078CF41BFBD969008FB7FF /* StreamLikeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */; };
+		A7078CF41BFBD969008FB7FF /* SequenceActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */; };
+		A7078CF81BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF71BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift */; };
+		A7078CFA1BFBFCF0008FB7FF /* RepostSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF91BFBFCF0008FB7FF /* RepostSequenceOperation.swift */; };
+		A7078CFC1BFBFD08008FB7FF /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFB1BFBFD08008FB7FF /* FlagSequenceOperation.swift */; };
+		A7078CFE1BFC0725008FB7FF /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFD1BFC0725008FB7FF /* SequenceFetchOperation.swift */; };
 		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
@@ -2561,7 +2565,11 @@
 		A7078CED1BFAD531008FB7FF /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamOperation.swift; sourceTree = "<group>"; };
 		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewDataSource+Networking.swift"; sourceTree = "<group>"; };
 		A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceOperation.swift; sourceTree = "<group>"; };
-		A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamLikeHelper.swift; sourceTree = "<group>"; };
+		A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceActionHelper.swift; sourceTree = "<group>"; };
+		A7078CF71BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceOperation.swift; sourceTree = "<group>"; };
+		A7078CF91BFBFCF0008FB7FF /* RepostSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostSequenceOperation.swift; sourceTree = "<group>"; };
+		A7078CFB1BFBFD08008FB7FF /* FlagSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceOperation.swift; sourceTree = "<group>"; };
+		A7078CFD1BFC0725008FB7FF /* SequenceFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchOperation.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+CurrentUserCache.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
@@ -4878,7 +4886,7 @@
 				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
-				A7078CF31BFBD969008FB7FF /* StreamLikeHelper.swift */,
+				A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */,
 				F06B41B01B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.h */,
 				F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */,
 				F0FC97D01B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.h */,
@@ -6205,14 +6213,18 @@
 			children = (
 				A7078CCD1BFA7D2B008FB7FF /* AccountCreateOperation.swift */,
 				A7078CCE1BFA7D2B008FB7FF /* ConversationListOperation.swift */,
+				A7078CFB1BFBFD08008FB7FF /* FlagSequenceOperation.swift */,
+				A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */,
 				A7078CD01BFA7D2B008FB7FF /* LogoutOperation.swift */,
 				A7078CD21BFA7D2B008FB7FF /* NetworkOperation.swift */,
+				A7078CF91BFBFCF0008FB7FF /* RepostSequenceOperation.swift */,
 				A7078CD31BFA7D2B008FB7FF /* RequestOperation.swift */,
+				A7078CFD1BFC0725008FB7FF /* SequenceFetchOperation.swift */,
 				A7078CED1BFAD531008FB7FF /* StreamOperation.swift */,
+				A7078CF71BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift */,
 				A7078CD41BFA7D2B008FB7FF /* UserInfoOperation.swift */,
 				A7078CD51BFA7D2B008FB7FF /* VLoginType+Credentials.swift */,
 				A7078CD61BFA7D2B008FB7FF /* VLoginType+Tracking.swift */,
-				A7078CF11BFBD50B008FB7FF /* LikeSequenceOperation.swift */,
 			);
 			path = "Network Operations";
 			sourceTree = "<group>";
@@ -9844,7 +9856,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\nTAGS=\"TODO:|FIXME:|WARNING:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\nfi";
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\nTAGS=\"TODO:|FIXME:|WARNING:|FIX ME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		A734A04F1A9BAAF300C3E86F /* Validate Tracking Constants Are Used */ = {
@@ -10437,6 +10449,7 @@
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
+				A7078CF81BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
 				B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
@@ -10619,6 +10632,7 @@
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
 				A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */,
+				A7078CFE1BFC0725008FB7FF /* SequenceFetchOperation.swift in Sources */,
 				A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */,
 				A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */,
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
@@ -10799,6 +10813,7 @@
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
+				A7078CFA1BFBFCF0008FB7FF /* RepostSequenceOperation.swift in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
@@ -11003,6 +11018,7 @@
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
 				A7078CBD1BFA79E7008FB7FF /* VWorkspaceShimDestination.swift in Sources */,
+				A7078CFC1BFBFD08008FB7FF /* FlagSequenceOperation.swift in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				A7F2D0C61BF26D4600490D7B /* SampleMigrationPolicies.swift in Sources */,
 				A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */,
@@ -11030,7 +11046,7 @@
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
 				F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
-				A7078CF41BFBD969008FB7FF /* StreamLikeHelper.swift in Sources */,
+				A7078CF41BFBD969008FB7FF /* SequenceActionHelper.swift in Sources */,
 				A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */,
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,

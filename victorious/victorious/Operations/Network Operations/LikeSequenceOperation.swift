@@ -51,24 +51,3 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         dataStore.saveChanges()
     }
 }
-
-class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
-    
-    init( sequenceID: Int64 ) {
-        super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
-    }
-    
-    override func onStart() {
-        super.onStart()
-        
-        dispatch_sync( dispatch_get_main_queue() ) {
-            VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
-        }
-        
-        let dataStore = PersistentStore.backgroundContext
-        let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
-        let sequence: VSequence = dataStore.findOrCreateObject( uniqueElements )
-        sequence.isLikedByMainUser = false
-        dataStore.saveChanges()
-    }
-}

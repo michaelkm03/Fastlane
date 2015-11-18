@@ -24,7 +24,7 @@ extension VModernLoginAndRegistrationFlowViewController {
             } else {
                 self.handleFacebookLoginError(error)
             }
-            self.completion?(error == nil)
+            self.onCompletionBlock?(error == nil)
         }
         return operation
     }
@@ -42,7 +42,7 @@ extension VModernLoginAndRegistrationFlowViewController {
             } else {
                 self.handleTwitterLoginError(error)
             }
-            self.completion?(error == nil)
+            self.onCompletionBlock?(error == nil)
         }
         return operation
     }

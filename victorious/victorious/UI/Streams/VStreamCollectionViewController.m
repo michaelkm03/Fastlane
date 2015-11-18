@@ -102,7 +102,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) SequenceLikeHelper *streamLikeHelper;
+@property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -187,7 +187,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
-    self.streamLikeHelper = [[SequenceLikeHelper alloc] init];
+    self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy

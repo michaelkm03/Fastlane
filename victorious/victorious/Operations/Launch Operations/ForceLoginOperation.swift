@@ -66,7 +66,7 @@ class ForceLoginOperation: Operation {
                 // User is not logged in, show login view
                 let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
                     forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
-                viewController.completion = { (finished) -> Void in
+                viewController.onCompletionBlock = { (finished) -> Void in
                     self.delegate?.hideLoginViewController() {
                         self.finishedExecuting()
                     }

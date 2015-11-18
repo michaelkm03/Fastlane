@@ -1,5 +1,5 @@
 //
-//  SequenceLikeHelper.swift
+//  SequenceActionHelper.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/17/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class SequenceLikeHelper: NSObject {
+@objc class SequenceActionHelper: NSObject {
     
     func likeSequence(sequence: VSequence, triggeringView: UIView, originViewController: UIViewController, dependencyManager: VDependencyManager, completion: ((Bool) -> Void)?) {
         
@@ -25,6 +25,18 @@ import UIKit
             LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!, context: context ).queue() { error in
                 completion?( error == nil )
             }
+        }
+    }
+    
+    func repostNode( node: VNode, completion: ((Bool) -> Void)?) {
+        RepostSequenceOperation(nodeID: Int64(node.remoteId.integerValue) ).queue { error in
+            completion?( error == nil )
+        }
+    }
+    
+    func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
+        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)!, originViewController: viewController ).queue() { error in
+            completion?( error == nil )
         }
     }
 }

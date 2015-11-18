@@ -122,11 +122,14 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     
-    NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    // FIXME: Uncomment
+    /*NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                                        VTrackingKeyTimeStamp : [NSDate date],
                                             VTrackingKeyUrls : sequence.tracking.cellClick,
                                         VTrackingKeyStreamId : trackingID ?: @""};
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];*/
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
@@ -140,8 +143,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
             [self trackAutoplayEvent:event];
         }
     }
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
 }
 
 #pragma mark - State management for StreamDidAppear event

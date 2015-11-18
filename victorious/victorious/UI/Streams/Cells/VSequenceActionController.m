@@ -40,7 +40,7 @@
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 @property (nonatomic, strong) VRemixPresenter *remixPresenter;
-@property (nonatomic, strong) SequenceLikeHelper *sequenceLikeHelper;
+@property (nonatomic, strong) SequenceActionHelper *sequenceActionHelper;
 
 @end
 
@@ -56,13 +56,13 @@
     [viewController.navigationController pushViewController:commentsViewController animated:YES];
 }
 
-- (SequenceLikeHelper *)sequenceLikeHelper
+- (SequenceActionHelper *)sequenceActionHelper
 {
-    if ( _sequenceLikeHelper == nil )
+    if ( _sequenceActionHelper == nil )
     {
-        _sequenceLikeHelper = [[SequenceLikeHelper alloc] init];
+        _sequenceActionHelper = [[SequenceActionHelper alloc] init];
     }
-    return _sequenceLikeHelper;
+    return _sequenceActionHelper;
 }
 
 #pragma mark - User
@@ -192,8 +192,7 @@
       withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
-    [self.sequenceLikeHelper likeSequence:sequence triggeringView:actionView originViewController:viewController dependencyManager:self.dependencyManager completion:completion];
-    
+    [self.sequenceActionHelper likeSequence:sequence triggeringView:actionView originViewController:viewController dependencyManager:self.dependencyManager completion:completion];
 }
 
 #pragma mark - Repost
@@ -205,53 +204,7 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
-    if ([node.sequence.hasReposted boolValue])
-    {
-        if ( completion != nil )
-        {
-            completion(YES);
-        }
-        return;
-    }
-    
-    
-    // Optimistically update the data store for a successul repost
-    node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-    [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-    node.sequence.hasReposted = @(YES);
-    [node.sequence.managedObjectContext save:nil];
-    
-    [[VObjectManager sharedManager] repostNode:node
-                                      withName:nil
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         if ( completion != nil )
-         {
-             completion( YES );
-         }
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( error.code == kVSequenceAlreadyReposted )
-         {
-             [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-             node.sequence.hasReposted = @(YES);
-             [node.sequence.managedObjectContext save:nil];
-         }
-         else
-         {
-             // Undo the repost optimistically assumed successful in the data store
-             node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
-             [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-             node.sequence.hasReposted = @(NO);
-             [node.sequence.managedObjectContext save:nil];
-         }
-         
-         if ( completion != nil )
-         {
-             completion( NO );
-         }
-     }];
+    [self.sequenceActionHelper repostNode:node completion:completion];
 }
 
 - (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
@@ -357,27 +310,8 @@
 
 - (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion
 {
-    [[VObjectManager sharedManager] flagSequence:sequence
-                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
-         
-         [viewController presentViewController:alert animated:YES completion:nil];
-     }
-                                       failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed to flag sequence %@", sequence);
-         UIAlertController *alert;
-         if ( error.code == kVCommentAlreadyFlaggedError )
-         {
-             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"") handler:completion];
-         }
-         else
-         {
-             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"WereSorry", @"") message:NSLocalizedString(@"ErrorOccured", @"")];
-         }
-         [viewController presentViewController:alert animated:YES completion:nil];
-     }];
+    // TODO: Implement callback, or ditch it for KVO
+    [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:nil];
 }
 
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message

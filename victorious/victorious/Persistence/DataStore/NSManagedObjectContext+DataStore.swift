@@ -46,7 +46,6 @@ extension NSManagedObjectContext: DataStore {
         return self.findObjectsWithEntityName( T.dataStoreEntityName(), queryDictionary:queryDictionary, limit: limit ) as? [T] ?? []
     }
     
-    
     public func cacheObject<T: DataStoreObject>(object: T?, forKey key: String) {
         self.cacheObject( object, forKey: key )
     }

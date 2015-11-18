@@ -84,8 +84,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)reloadData;
 
-- (void)fetchSequenceData;
-
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
 
 - (void)addCommentWidhText:(NSString *)text

@@ -70,7 +70,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @implementation VModernLoginAndRegistrationFlowViewController
 
-@synthesize completion;
+@synthesize onCompletionBlock;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -235,17 +235,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:^
          {
-             if (self.completion != nil)
+             if (self.onCompletionBlock != nil)
              {
-                 self.completion(NO);
+                 self.onCompletionBlock(NO);
              }
          }];
     }
     else
     {
-        if (self.completion != nil)
+        if (self.onCompletionBlock != nil)
         {
-            self.completion(NO);
+            self.onCompletionBlock(NO);
         }
     }
 }
@@ -649,17 +649,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:^
          {
-             if (self.completion != nil)
+             if (self.onCompletionBlock != nil)
              {
-                 self.completion(success);
+                 self.onCompletionBlock(success);
              }
          }];
     }
     else
     {
-        if (self.completion != nil)
+        if (self.onCompletionBlock != nil)
         {
-            self.completion(success);
+            self.onCompletionBlock(success);
         }
     }
 }
