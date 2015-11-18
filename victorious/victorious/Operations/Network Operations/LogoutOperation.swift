@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 class LogoutOperation: RequestOperation<LogoutRequest> {
     
     let userIdentifier: AnyObject
+    private let persistentStore = PersistentStore()
     
     init( userIdentifier: AnyObject ) {
         self.userIdentifier = userIdentifier
@@ -22,22 +23,22 @@ class LogoutOperation: RequestOperation<LogoutRequest> {
     }
     
     override func onResponse(result: LogoutRequest.ResultType) {
-        
-        let persistentStore = PersistentStore()
-        guard let loggedOutUser: VUser = persistentStore.backgroundContext.getObject(self.userIdentifier) else {
-            fatalError()
+        persistentStore.syncFromBackground() { context in
+            guard let loggedOutUser: VUser = context.getObject(self.userIdentifier) else {
+                fatalError()
+            }
+            
+            let conversations: [VConversation] = context.findObjects( [ "user" : loggedOutUser ])
+            for object in conversations {
+                context.destroy( object )
+            }
+            
+            let pollResults: [VPollResult] = context.findObjects( [ "user" : loggedOutUser ])
+            for object in pollResults {
+                context.destroy( object )
+            }
+            
+            context.saveChanges()
         }
-        
-        let conversations: [VConversation] = persistentStore.backgroundContext.findObjects( [ "user" : loggedOutUser ])
-        for object in conversations {
-            persistentStore.backgroundContext.destroy( object )
-        }
-        
-        let pollResults: [VPollResult] = persistentStore.backgroundContext.findObjects( [ "user" : loggedOutUser ])
-        for object in pollResults {
-            persistentStore.backgroundContext.destroy( object )
-        }
-        
-        persistentStore.backgroundContext.saveChanges()
     }
 }

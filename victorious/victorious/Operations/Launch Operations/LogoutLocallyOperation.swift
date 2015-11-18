@@ -13,6 +13,8 @@ class LogoutLocally: Operation {
     let fromViewController: UIViewController
     let dependencyManager: VDependencyManager
     
+    private let persistentStore = PersistentStore()
+    
     required init(fromViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.fromViewController = fromViewController
         self.dependencyManager = dependencyManager
@@ -27,8 +29,10 @@ class LogoutLocally: Operation {
         
         self.beganExecuting()
         
-        let persistentStore = PersistentStore()
-        guard let currentUser = VUser.currentUser(inContext: persistentStore.mainContext) else {
+        let loadedUser: VUser? = persistentStore.sync() { context in
+            return VUser.currentUser(inContext: context)
+        }
+        guard let currentUser = loadedUser else {
             fatalError( "Cannot get current user." )
         }
         
@@ -40,7 +44,9 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
         self.queueNext( remoteLogoutOperation, queue: remoteLogoutOperation.defaultQueue )
         
-        VUser.clearCurrentUser(inContext: persistentStore.mainContext)
+        persistentStore.sync() { context in
+            VUser.clearCurrentUser(inContext: context)
+        }
         
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         

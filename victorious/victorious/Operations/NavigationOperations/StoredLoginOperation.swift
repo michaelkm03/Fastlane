@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: Operation {
     
+    private let persistentStore = PersistentStore()
+    
     override func start() {
         super.start()
         
@@ -23,15 +25,17 @@ class StoredLoginOperation: Operation {
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
             
-            let persistentStore = PersistentStore()
-            let user: VUser = persistentStore.mainContext.findOrCreateObject([ "remoteId" : info.userRemoteId ])
-            user.loginType = info.lastLoginType.rawValue
-            user.token = info.token
-            if user.status == nil {
-                user.status = "stored"
+            let user: VUser = persistentStore.sync() { context in
+                let user: VUser = context.findOrCreateObject([ "remoteId" : info.userRemoteId ])
+                user.loginType = info.lastLoginType.rawValue
+                user.token = info.token
+                if user.status == nil {
+                    user.status = "stored"
+                }
+                user.setCurrentUser(inContext: context)
+                context.saveChanges()
+                return user
             }
-            user.setCurrentUser(inContext: persistentStore.mainContext)
-            persistentStore.mainContext.saveChanges()
             
             let id = Int64(user.remoteId.integerValue)
             self.queueNext( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )

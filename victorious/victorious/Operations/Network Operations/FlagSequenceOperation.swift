@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     
-    let originViewController: UIViewController
+    private let originViewController: UIViewController
+    private let persistentStore = PersistentStore()
     
     init( sequenceID: Int64, originViewController: UIViewController ) {
         self.originViewController = originViewController
@@ -19,14 +20,16 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     }
     
     override func onResponse(response: FlagSequenceRequest.ResultType) {
-        let persistentStore = PersistentStore()
-        guard let sequence: VSequence = persistentStore.backgroundContext.findObjects( [ "remoteId" : Int(request.sequenceID) ], limit: 1).first else  {
-            fatalError( "Cannot find sequence!" )
+        persistentStore.syncFromBackground() { context in
+            let uniqueElements = [ "remoteId" : Int(self.request.sequenceID) ]
+            guard let sequence: VSequence = context.findObjects( uniqueElements, limit: 1).first else  {
+                fatalError( "Cannot find sequence!" )
+            }
+            // TODO: Use this property to filter out flagged content
+            // TODO: See about using this class for Comments, too
+            sequence.isFlagged = true
+            context.saveChanges()
         }
-        // TODO: Use this property to filter out flagged content
-        // TODO: See about using this class for Comments, too
-        sequence.isFlagged = true
-        persistentStore.backgroundContext.saveChanges()
     }
     
     override func onComplete(error: NSError?) {

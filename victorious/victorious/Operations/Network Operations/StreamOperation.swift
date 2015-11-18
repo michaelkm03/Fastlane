@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class StreamOperation: RequestOperation<StreamRequest> {
     
+    private let persistentStore = PersistentStore()
+    
     init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         super.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)! )
     }
@@ -23,20 +25,22 @@ class StreamOperation: RequestOperation<StreamRequest> {
     var previousPageOperation: StreamOperation?
     
     override func onResponse(response: StreamRequest.ResultType) {
-        let persistentStore = PersistentStore()
         let stream = response.results
         let uniqueElements = [ "apiPath" : request.apiPath ]
-        let persistentStream: VStream = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
-        persistentStream.populate( fromSourceModel: stream )
         
-        dispatch_sync( dispatch_get_main_queue() ) {
-            if let nextPageRequest = response.nextPage {
-                self.nextPageOperation = StreamOperation( request: nextPageRequest )
+        persistentStore.syncFromBackground() { context in
+            let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
+            persistentStream.populate( fromSourceModel: stream )
+            
+            dispatch_sync( dispatch_get_main_queue() ) {
+                if let nextPageRequest = response.nextPage {
+                    self.nextPageOperation = StreamOperation( request: nextPageRequest )
+                }
+                if let previousPageRequest = response.previousPage {
+                    self.previousPageOperation = StreamOperation( request: previousPageRequest )
+                }
             }
-            if let previousPageRequest = response.previousPage {
-                self.previousPageOperation = StreamOperation( request: previousPageRequest )
-            }
+            context.saveChanges()
         }
-        persistentStore.backgroundContext.saveChanges()
     }
 }

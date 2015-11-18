@@ -40,19 +40,47 @@ public class PersistentStore: NSObject {
         )
     }()
     
-    public var mainContext: DataStore {
-        return PersistentStore.sharedManager.mainContext
+    /// Performs a closure synchronously using the main context of the persistent store, provided
+    /// as a `DataStoreBasic` type, which is designed to be used from Objective-C only.  From Swift,
+    /// use `sync(_:)`, which adds a generic type for a return value (which, keep in mind, can be Void).
+    public func syncBasic( closure: ((DataStoreBasic)->()) ) {
+        let context = PersistentStore.sharedManager.mainContext
+        context.performBlockAndWait {
+            closure( context )
+        }
     }
     
-    public var backgroundContext: DataStore {
-        return PersistentStore.sharedManager.backgroundContext
+    /// Performs a closure synchronously using the main context of the persistent store.
+    /// Keep in mind, the generic type can be Void if no result is desired.
+    public func sync<T>( closure: ((DataStore)->(T)) ) -> T {
+        let context = PersistentStore.sharedManager.mainContext
+        var result: T?
+        context.performBlockAndWait {
+            result = closure( context )
+        }
+        return result!
     }
     
-    public func mainContextBasic() -> DataStoreBasic {
-        return PersistentStore.sharedManager.mainContext
+    /// Performs a closure synchronously using the background context of the persistent store.
+    /// This method should be used for any concurrent data operations, such as
+    /// parsing a network response into the peristent store.
+    /// Keep in mind, the generic type can be Void if no result is desired.
+    public func syncFromBackground<T>( closure: ((DataStore)->(T)) ) -> T {
+        let context = PersistentStore.sharedManager.backgroundContext
+        var result: T?
+        context.performBlockAndWait {
+            result = closure( context )
+        }
+        return result!
     }
     
-    public func backgroundContextBasic() -> DataStoreBasic {
-        return PersistentStore.sharedManager.backgroundContext
+    /// Performs a closure asynchronously using the background context of the persistent store.
+    /// This method should be used for any asynchronous, concurrent data operations, such as
+    /// parsing a network response into the peristent store.
+    public func asyncFromBackground( closure: ((DataStore)->()) ) {
+        let context = PersistentStore.sharedManager.backgroundContext
+        context.performBlock {
+            closure( context )
+        }
     }
 }

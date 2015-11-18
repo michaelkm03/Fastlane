@@ -24,8 +24,7 @@ import UIKit
         // TODO: This is here to show login view contorller before this operation can occur
         super.init()
         
-        let persistentStore = PersistentStore()
-        if VUser.currentUser(inContext: persistentStore.mainContext) == nil {
+        if VUser.currentUser() == nil {
             let loginOperation = ShowLoginOperation(
                 originViewController: originViewController,
                 dependencyManager: dependencyManager,

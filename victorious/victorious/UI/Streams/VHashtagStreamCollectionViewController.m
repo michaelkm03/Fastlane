@@ -63,10 +63,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSString *apiPath = [streamURL v_pathComponent];
     PersistentStore *persistentStore = [[PersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
-    VStream *stream = (VStream *)[persistentStore.mainContextBasic findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    stream.name = [NSString stringWithFormat:@"#%@", hashtag];
-    [persistentStore.mainContextBasic saveChanges];
+    
+    __block VStream *stream = nil;
+    [persistentStore syncBasic:^void(id<DataStoreBasic> context) {
+        stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        stream.name = [NSString stringWithFormat:@"#%@", hashtag];
+        [context saveChanges];
+    }];
     
     VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:stream];
     streamCollection.selectedHashtag = hashtag;

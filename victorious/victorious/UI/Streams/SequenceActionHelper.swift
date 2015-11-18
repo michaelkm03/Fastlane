@@ -17,12 +17,12 @@ import UIKit
                 completion?( error == nil )
             }
         } else {
-            let context = LikeSequenceOperation.UIContext(
+            let uiContext = LikeSequenceOperation.UIContext(
                 originViewController: originViewController,
                 dependencyManager: dependencyManager,
                 triggeringView: triggeringView
             )
-            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!, context: context ).queue() { error in
+            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!, uiContext: uiContext ).queue() { error in
                 completion?( error == nil )
             }
         }

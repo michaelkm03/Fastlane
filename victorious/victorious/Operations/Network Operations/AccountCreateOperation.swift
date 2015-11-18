@@ -14,6 +14,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     private let loginType: VLoginType
     private let accountIdentifier: String?
     private var userIdentifier: AnyObject?
+    private let persistentStore = PersistentStore()
     
     var isNewUser = false
     var persistentUser: VUser?
@@ -27,31 +28,35 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     // MARK: - Operation overrides
     
     override func onResponse( response: AccountCreateRequest.ResultType ) {
-        let persistentStore = PersistentStore()
-        let persistentUser: VUser = persistentStore.mainContext.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
-        persistentUser.populate(fromSourceModel: response.user)
-        persistentUser.loginType = self.loginType.rawValue
-        persistentUser.token = response.token
-        persistentUser.setCurrentUser(inContext: persistentStore.mainContext)
-        guard persistentStore.mainContext.saveChanges() else {
-            fatalError( "Failed to create new user, something is wrong with the persistence stack!" )
+        
+        // Do this on the main thread so that changes are available immeidately in the `onComplete` method
+        let persistentUser: VUser = persistentStore.sync() { context in
+            let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
+            user.populate(fromSourceModel: response.user)
+            user.loginType = self.loginType.rawValue
+            user.token = response.token
+            user.setCurrentUser(inContext: context)
+            context.saveChanges()
+            return user
         }
         
-        // Set these to be accessed during completion on main thread
-        self.userIdentifier = persistentUser.identifier
-        self.isNewUser = response.newUser
+        dispatch_sync( dispatch_get_main_queue() ) {
+            self.userIdentifier = persistentUser.identifier
+            self.isNewUser = response.newUser
+        }
     }
     
     override func onComplete( error: NSError? ) {
-        let persistentStore = PersistentStore()
-        guard let identifier = userIdentifier,
-            let persistentUser: VUser = persistentStore.mainContext.getObject(identifier) else {
-                fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
-        }
         
-        persistentUser.setCurrentUser(inContext: persistentStore.mainContext)
-        VStoredLogin().saveLoggedInUserToDisk( persistentUser )
-        self.persistentUser = persistentUser
+        // The the current user in our cache
+        persistentStore.sync() { context in
+            guard let identifier = self.userIdentifier, let persistentUser: VUser = context.getObject(identifier) else {
+                fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
+            }
+            persistentUser.setCurrentUser(inContext: context)
+            VStoredLogin().saveLoggedInUserToDisk( persistentUser )
+            self.persistentUser = persistentUser
+        }
         
         NSUserDefaults.standardUserDefaults().setInteger( loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
         if let accountIdentifier = accountIdentifier {

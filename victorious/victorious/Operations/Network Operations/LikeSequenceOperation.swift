@@ -17,10 +17,11 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         let triggeringView: UIView
     }
     
-    let context: UIContext?
+    private let persistentStore = PersistentStore()
+    let uiContext: UIContext?
     
-    init( sequenceID: Int64, context: UIContext? = nil ) {
-        self.context = context
+    init( sequenceID: Int64, uiContext: UIContext? = nil ) {
+        self.uiContext = uiContext
         super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
     }
     
@@ -31,23 +32,24 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         dispatch_sync( dispatch_get_main_queue() ) {
             VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
             
-            if let context = self.context {
-                context.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
+            if let uiContext = self.uiContext {
+                uiContext.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,
-                    inViewController:context.originViewController,
-                    atLocation:context.triggeringView.convertRect(
-                        context.triggeringView.bounds,
-                        toView:context.originViewController.view
+                    inViewController:uiContext.originViewController,
+                    atLocation:uiContext.triggeringView.convertRect(
+                        uiContext.triggeringView.bounds,
+                        toView:uiContext.originViewController.view
                     )
                 )
             }
         }
         
         // Handle immediate asynchronous data updates
-        let persistentStore = PersistentStore()
-        let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
-        let sequence: VSequence = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
-        sequence.isLikedByMainUser = true
-        persistentStore.backgroundContext.saveChanges()
+        persistentStore.syncFromBackground() { context in
+            let uniqueElements = [ "remoteId" : Int(self.request.sequenceID) ]
+            let sequence: VSequence = context.findOrCreateObject( uniqueElements )
+            sequence.isLikedByMainUser = true
+            context.saveChanges()
+        }
     }
 }

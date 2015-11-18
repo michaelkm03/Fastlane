@@ -24,8 +24,11 @@ class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         
         let persistentStore = PersistentStore()
         let uniqueElements = [ "remoteId" : Int(request.sequenceID) ]
-        let sequence: VSequence = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
-        sequence.isLikedByMainUser = false
-        persistentStore.backgroundContext.saveChanges()
+        
+        persistentStore.syncFromBackground() { context in
+            let sequence: VSequence = context.findOrCreateObject( uniqueElements )
+            sequence.isLikedByMainUser = false
+            context.saveChanges()
+        }
     }
 }

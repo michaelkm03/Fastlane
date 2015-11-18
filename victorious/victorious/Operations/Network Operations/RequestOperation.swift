@@ -81,13 +81,15 @@ class RequestOperation<T: RequestType> : NSOperation {
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(v_environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
-        let authenticationContext: AuthenticationContext? = {
-            if let identifier = VUser.currentUser()?.identifier,
-                let currentUser: VUser = persistentStore.backgroundContext.getObject( identifier ) {
-                    return AuthenticationContext(v_currentUser: currentUser)
+        
+        
+        let currentUserID = VUser.currentUser()?.identifier
+        let authenticationContext: AuthenticationContext? = persistentStore.syncFromBackground() { context in
+            if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
+                return AuthenticationContext(v_currentUser: currentUser)
             }
             return nil
-        }()
+        }
         
         self.request.execute(
             baseURL: baseURL,

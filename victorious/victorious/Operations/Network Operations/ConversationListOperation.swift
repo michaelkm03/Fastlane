@@ -18,11 +18,13 @@ class ConversationListOperation: RequestOperation<ConversationListRequest> {
     override func onResponse( result: (results: [Conversation], nextPage: ConversationListRequest?, previousPage: ConversationListRequest?) ) {
         
         let persistentStore = PersistentStore()
-        for conversation in result.results {
-            let uniqueElements = [ "remoteId" : Int(conversation.conversationID) ]
-            let persistentConversation: VConversation = persistentStore.backgroundContext.findOrCreateObject( uniqueElements )
-            persistentConversation.populate( fromSourceModel: conversation )
+        persistentStore.syncFromBackground() { context in
+            for conversation in result.results {
+                let uniqueElements = [ "remoteId" : Int(conversation.conversationID) ]
+                let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
+                persistentConversation.populate( fromSourceModel: conversation )
+            }
+            context.saveChanges()
         }
-        persistentStore.backgroundContext.saveChanges()
     }
 }

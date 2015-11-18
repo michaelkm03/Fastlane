@@ -560,14 +560,17 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
-    PersistentStore *persistentStore = [[PersistentStore alloc] init];
     NSCharacterSet *charSet = [NSCharacterSet v_pathPartCharacterSet];
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSDictionary *query = @{ @"apiPath" : apiPath };
-    self.currentStream = (VStream *)[[persistentStore mainContextBasic] findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
-    [[persistentStore mainContextBasic] saveChanges];
+    
+    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    [persistentStore syncBasic:^void(id<DataStoreBasic> context) {
+        self.currentStream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        [context saveChanges];
+    }];
     
     [self updateProfileHeader];
     

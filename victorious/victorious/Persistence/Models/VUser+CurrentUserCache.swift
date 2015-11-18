@@ -20,7 +20,16 @@ public extension VUser {
     
     public static func currentUser() -> VUser? {
         let persistentStore = PersistentStore()
-        return currentUser(inContext: persistentStore.mainContext )
+        
+        if NSThread.currentThread().isMainThread {
+            return persistentStore.sync { VUser.currentUser( inContext: $0 ) }
+        }
+        else if let cachedUser = persistentStore.sync({ VUser.currentUser( inContext: $0 ) }) {
+            return persistentStore.syncFromBackground { context in
+                return context.getObject( cachedUser.identifier )
+            }
+        }
+        return nil
     }
     
     public static func currentUser( inContext context: DataStoreBasic ) -> VUser? {
