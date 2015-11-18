@@ -96,9 +96,6 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
     paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
     NSMutableAttributedString *attributedCaptionString = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
     
-    self.captionLabel.attributedText = attributedCaptionString;
-
-    
     CGFloat currentHeight = CGRectGetHeight([attributedCaptionString boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)
                                                                                   options:NSStringDrawingUsesLineFragmentOrigin
                                                                                   context:nil]);
@@ -108,6 +105,8 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
         self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
         [self setNeedsUpdateConstraints];
     }
+    
+    self.captionLabel.attributedText = attributedCaptionString;
 }
 
 - (void)updateDividerConstraints
