@@ -35,7 +35,7 @@ extension VSequence: PersistenceParsable {
         sequenceDescription     = sequence.sequenceDescription
         
         if let trackingModel = sequence.tracking {
-            tracking = persistentStoreContextcreateObject() as VTracking
+            tracking = persistentStoreContext.createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
