@@ -25,6 +25,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
+@property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL shouldPlayWhenReady;
 @property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
@@ -84,6 +86,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
         }
         return;
     }
+    
+    self.isReady = NO;
     
     self.itemURL = playerItem.url;
     self.loop = playerItem.loop;
@@ -246,6 +250,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
+        self.isReady = true;
+        if ( self.shouldPlayWhenReady )
+        {
+            [self play];
+            self.shouldPlayWhenReady = false;
+        }
     }
 }
 
@@ -296,6 +306,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)play
 {
+    if ( !self.isReady )
+    {
+        self.shouldPlayWhenReady = YES;
+        return;
+    }
     if ( !self.isPlaying )
     {
         if (self.player.currentItem != self.newestPlayerItem)
