@@ -565,6 +565,9 @@
 		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
+		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
+		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
+		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
@@ -2511,6 +2514,9 @@
 		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
 		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
 		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
+		A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequest.swift; sourceTree = "<group>"; };
+		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
+		A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceFetchResponse.json; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
@@ -4882,15 +4888,16 @@
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
-				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */,
 				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				C3D6FA911BF58399006DEE19 /* PostCommentRequest.swift */,
+				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
+				A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				A7EF1BD11BF2757B00D429DE /* StreamRequest.swift */,
@@ -4902,8 +4909,8 @@
 				C32D8BD11BF2D1A800AB5085 /* UnfollowUserRequest.swift */,
 				79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */,
 				C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */,
-				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				C323C3B61BF55F6600681059 /* UpdateCommentRequest.swift */,
+				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
 				0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */,
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
@@ -4948,16 +4955,16 @@
 				67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */,
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
-				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
 				6779A2121BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift */,
 				678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */,
 				678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */,
 				C3D6FA8F1BF582D0006DEE19 /* PostCommentRequestTests.swift */,
+				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
 				6782EA861BF2D40E000C7C0D /* RepostSequenceRequestTests.swift */,
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
-				A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */,
 				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
+				A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
 				03BC6FB11BE752D500CFCBEE /* StandardPaginatorTests.swift */,
 				A7EF1BD71BF275DA00D429DE /* StreamRequestTests.swift */,
@@ -4971,6 +4978,7 @@
 				79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */,
 				C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */,
 				C323C3B21BF55CFD00681059 /* UpdateCommentRequestTests.swift */,
+				A74679981BF6D8500026FD2E /* UserInfoRequestTests.swift */,
 				0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */,
 			);
 			path = VictoriousIOSSDKTests;
@@ -5023,12 +5031,13 @@
 				79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */,
 				C3E7C0EA1BF3CCF700AFE545 /* Notification.json */,
 				C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */,
-				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */,
 				678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */,
 				C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */,
+				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */,
+				A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
 				A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */,
@@ -9091,6 +9100,7 @@
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
 				67C210251BFA7A210074E40E /* ImageAsset.json in Resources */,
+				A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 				79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */,
 				790254751BF293E200D20AFE /* Hashtag.json in Resources */,
@@ -9785,6 +9795,7 @@
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				C32D8BDC1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift in Sources */,
 				79D081BA1BF1A0DF00E8A0C5 /* Message.swift in Sources */,
+				A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */,
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
@@ -9860,6 +9871,7 @@
 				79D081A41BF155BF00E8A0C5 /* ConversationListRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
+				A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */,
 				678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */,
 				67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */,
 				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,

@@ -16,20 +16,20 @@ public struct Sequence: StreamItemType {
     public let category: Category
     public let commentCount: Int
     public let gifCount: Int
+    public let likeCount: Int
+    public let memeCount: Int
+    public let repostCount: Int
     public let hasReposted: Bool
     public let isComplete: Bool
     public let isLikedByMainUser: Bool
     public let isRemix: Bool
     public let isRepost: Bool
-    public let likeCount: Int
-    public let memeCount: Int
     public let nameEmbeddedInContent: Bool
     public let parentUserID: Int64?
     public let permissionsMask: Int
     public let previewData: AnyObject?
     public let previewType: AssetType?
     public let releasedAt: NSDate?
-    public let repostCount: Int
     public let sequenceDescription: String?
     public let adBreaks: [AdBreak]
     public let comments: [Comment]
@@ -95,7 +95,7 @@ extension Sequence {
         repostCount             = json["sequence_counts"]["reposts"].int ?? 0
         likeCount               = json["sequence_counts"]["likes"].int ?? 0
         previewType             = AssetType(rawValue:json["preview"]["type"].stringValue)
-        previewData             = json["preview.data"].object
+        previewData             = json["preview"]["data"].object
         hasReposted             = json["has_reposted"].bool ?? false
         isGifStyle              = json["is_gif_style"].bool ?? false
         trendingTopicName       = json["trending_topic_name"].string
