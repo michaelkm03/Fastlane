@@ -14,7 +14,7 @@ static NSString * const kKeychainServiceName = @"com.getvictorious.VUserManager.
 
 - (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email
 {
-    if ( email == nil || password == nil )
+    if ( email.length == 0 || password.length == 0 )
     {
         return NO;
     }

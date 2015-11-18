@@ -191,8 +191,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
-         [exp resetCooldownTimer];
-         
+         XCTAssert([exp resetCooldownTimer]);
          
          exp.cooldownDuration = 10;
          
