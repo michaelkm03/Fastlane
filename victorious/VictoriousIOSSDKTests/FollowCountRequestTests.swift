@@ -42,7 +42,7 @@ class FollowCountRequestTests: XCTestCase {
         
         let followCountRequest = FollowCountRequest(userID: 101)
         for invalidMockJSON in invalidMockJSONArray {
-            AssertThrows(ResponseParsingError(), block: try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON))
+            AssertThrowsSpecific(try followCountRequest.parseResponse(NSURLResponse(), toRequest: followCountRequest.urlRequest, responseData: NSData(), responseJSON: invalidMockJSON), ResponseParsingError())
         }
     }
 }

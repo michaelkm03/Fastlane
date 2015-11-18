@@ -8,13 +8,27 @@
 
 import XCTest
 
-/// Asserts that the `block` throws an expected error
-func AssertThrows<T: ErrorType where T: Equatable>(error: T, @autoclosure block: () throws -> ()) {
+/// Asserts that the `expression` throws a specific error
+func AssertThrowsSpecific<T: ErrorType>(@autoclosure expression: () throws -> Any, _ error: T) {
+    var didThrow = false
     do {
-        try block()
-    } catch let e as T {
-        XCTAssertEqual(e, error)
+        try expression()
+    } catch _ as T {
+        didThrow = true
     } catch {
         XCTFail("Wrong type of error thrown")
+        didThrow = true
     }
+    XCTAssertTrue(didThrow)
+}
+
+/// Asserts that the `expression` throws any error
+func AssertThrows(@autoclosure expression: () throws -> Any) {
+    var didThrow = false
+    do {
+        try expression()
+    } catch {
+        didThrow = true
+    }
+    XCTAssertTrue(didThrow)
 }
