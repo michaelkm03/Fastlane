@@ -1218,18 +1218,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {
+    self.textEntryView.attachmentsBarHidden = YES;
+
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:searchTableView];
     
     UIWindow *ownWindow = self.view.window;
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
     CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
-    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
-    
-    self.textEntryView.attachmentsBarHidden = YES;
+    CGFloat obscuredBottom = CGRectGetHeight(self.view.bounds) - CGRectGetMinY( obscuredRectInOwnView);
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:obscuredBottom];
 }
 
 #pragma mark - Comment Text Helpers
