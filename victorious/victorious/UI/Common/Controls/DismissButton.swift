@@ -23,7 +23,6 @@ class DismissButton: UIButton {
     
     private struct LayoutConstants {
         static let buttonSize: CGFloat = 44.0
-        static let marginFromBorder: CGFloat = 8.0
     }
     
     private func sharedInit() {
