@@ -39,6 +39,11 @@ extension VSequence: PersistenceParsable {
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
+        if let endCardModel = sequence.endCard {
+            endCard = persistentStoreContext.createObject() as VEndCard
+            endCard?.populate(fromSourceModel: endCardModel)
+        }
+        
         user = persistentStoreContext.findOrCreateObject( [ "remoteId" : Int(sequence.user.userID) ] ) as VUser
         user?.populate(fromSourceModel: sequence.user)
         
@@ -46,7 +51,7 @@ extension VSequence: PersistenceParsable {
             let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
             imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
-            })
+        })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
             let node: VNode = persistentStoreContext.findOrCreateObject([ "remoteId" : Int($0.nodeID)! ])

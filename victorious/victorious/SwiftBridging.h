@@ -22,6 +22,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
+#import "VEndCard.h"
 #import "UIViewController+VRootNavigationController.h"
 #import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"

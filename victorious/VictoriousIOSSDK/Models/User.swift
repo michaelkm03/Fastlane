@@ -25,7 +25,6 @@ public struct User {
     public let status: ProfileStatus
     public let location: String?
     public let tagline: String?
-    public let previewAssets: [ImageAsset]
     public let fanLoyalty: FanLoyalty?
     public let isCreator: Bool
     public let isDirectMessagingDisabled: Bool
@@ -66,8 +65,6 @@ extension User {
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
-        previewAssets               = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
-        
         isCreator                   = json["isCreator"].bool ?? false
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool ?? false
         isFollowedByMainUser        = json["am_following"].bool ?? false
