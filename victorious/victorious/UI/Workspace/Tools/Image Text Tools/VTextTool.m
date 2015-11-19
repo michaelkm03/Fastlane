@@ -51,7 +51,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VLog(@"");
     self = [super init];
     if (self)
     {

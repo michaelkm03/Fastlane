@@ -15,6 +15,8 @@ import OpenGLES
 @objc(VFilteredImageView)
 class FilteredImageView: GLKView {
     
+    let glContext = EAGLContext(API: .OpenGLES2)
+    
     var filter: VPhotoFilter? {
         didSet {
             setNeedsDisplay()
@@ -39,16 +41,20 @@ class FilteredImageView: GLKView {
     //MARK: - Initializers
     
     override init(frame: CGRect) {
-        super.init(frame: frame, context: EAGLContext(API: .OpenGLES2))
-        clipsToBounds = true
-        self.ciContext = CIContext(EAGLContext: context, options: [kCIContextWorkingColorSpace: NSNull()])
+        super.init(frame: frame, context: glContext)
+        sharedSetup(context)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
+        context = glContext
+        sharedSetup(context)
+    }
+            
+    private func sharedSetup(context: EAGLContext) {
         clipsToBounds = true
-        context = EAGLContext(API: .OpenGLES2)
-        ciContext = CIContext(EAGLContext: context)
+        ciContext = CIContext(EAGLContext: context, options: [kCIContextWorkingColorSpace: NSNull()])
     }
     
     //MARK: - UIView
@@ -66,11 +72,6 @@ class FilteredImageView: GLKView {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.setNeedsDisplay()
-    }
-    
     // MARK: - Private
     
     private func clearBackground() {
@@ -84,8 +85,6 @@ class FilteredImageView: GLKView {
     }
     
     private func drawCIImage(image: CIImage) {
-        EAGLContext.setCurrentContext(self.context)
-        
         clearBackground()
 
         // Draw visible rect
@@ -93,8 +92,6 @@ class FilteredImageView: GLKView {
         let drawableBounds = CGRect(x: 0, y: 0, width: drawableWidth, height: drawableHeight)
         let targetBounds = imageBoundsForContentMode(inputBounds, toRect: drawableBounds)
         ciContext.drawImage(image, inRect: targetBounds, fromRect: inputBounds)
-        
-        print("drawable bounds: \(drawableBounds), targetBounds: \(targetBounds)")
     }
     
     private func imageBoundsForContentMode(fromRect: CGRect, toRect: CGRect) -> CGRect {

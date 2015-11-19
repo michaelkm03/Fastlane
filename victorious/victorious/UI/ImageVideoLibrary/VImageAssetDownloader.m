@@ -65,7 +65,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
 
     NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
     [[PHImageManager defaultManager] requestImageForAsset:self.asset
-                                               targetSize:CGSizeMake(500.0, 500.0)
+                                               targetSize:CGSizeMake(640.0, 640.0)
                                               contentMode:PHImageContentModeDefault
                                                   options:requestOptions
                                             resultHandler:^(UIImage *result, NSDictionary *info)
