@@ -27,7 +27,7 @@ class FilteredImageView: GLKView {
             }
         }
     }
-    var scaledImage: UIImage? {
+    private var scaledImage: UIImage? {
         didSet {
             // Get rid of the original image we no longer need it
             inputImage = nil
