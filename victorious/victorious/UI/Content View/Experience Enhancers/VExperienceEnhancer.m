@@ -124,11 +124,11 @@
     return [@"cooldown-" stringByAppendingString:self.voteType.voteTypeID];
 }
 
-- (void)resetCooldownTimer
+- (BOOL)resetCooldownTimer
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:[self coolDownPersistenceKey]];
-    [userDefaults synchronize];
+    return [userDefaults synchronize];
 }
 
 @end
