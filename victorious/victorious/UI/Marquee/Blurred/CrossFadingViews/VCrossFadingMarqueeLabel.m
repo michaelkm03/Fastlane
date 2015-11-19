@@ -51,6 +51,7 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     for ( VStreamItem *marqueeItem in self.marqueeItems )
     {
         VMarqueeCaptionView *captionView = [[[NSBundle mainBundle] loadNibNamed:kCaptionViewNibName owner:self options:nil] firstObject];
+        captionView.dependencyManager = self.dependencyManager;
         [captionView setupWithMarqueeItem:marqueeItem fromStreamWithApiPath:self.streamApiPath];
         [self addSubview:captionView];
         [self v_addPinToLeadingTrailingToSubview:captionView];
@@ -61,25 +62,7 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
         [captionViews addObject:captionView];
     }
     self.marqueeCaptionViews = [NSArray arrayWithArray:captionViews];
-    [self updateCaptionViewAppearance];
     [self refresh];
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    if ( dependencyManager != nil )
-    {
-        [self updateCaptionViewAppearance];
-    }
-}
-
-- (void)updateCaptionViewAppearance
-{
-    for ( VMarqueeCaptionView *marqueeCaptionView in self.marqueeCaptionViews )
-    {
-        marqueeCaptionView.dependencyManager = self.dependencyManager;
-    }
 }
 
 #pragma mark - Superclass overrides

@@ -10,6 +10,9 @@
 #import "VStreamItem+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VEditorializationItem.h"
+#import "victorious-Swift.h"
+
+static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
 
 @interface VMarqueeCaptionView ()
 
@@ -20,6 +23,7 @@
 @property (nonatomic, readwrite) BOOL hasHeadline;
 @property (nonatomic, readwrite) VStreamItem *marqueeItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionLabelMinimumHeightConstraint;
 
 @end
 
@@ -87,7 +91,22 @@
 - (void)updateLabelText
 {
     NSString *captionText = self.hasHeadline ? self.editorialization.marqueeHeadline : self.marqueeItem.name;
-    self.captionLabel.text = captionText;
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
+    NSMutableAttributedString *attributedCaptionString = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
+    
+    CGFloat currentHeight = CGRectGetHeight([attributedCaptionString boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)
+                                                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                  context:nil]);
+    CGFloat desiredLabelHeight = currentHeight + kPaddingForEmojiInLCaptionLabel;
+    if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
+    {
+        self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
+        [self setNeedsUpdateConstraints];
+    }
+    
+    self.captionLabel.attributedText = attributedCaptionString;
 }
 
 - (void)updateDividerConstraints
