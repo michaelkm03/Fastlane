@@ -1234,8 +1234,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:obscuredBottom];
     
     [self.view addSubview:self.userTaggingDismissButton];
-    [_userTaggingDismissButton pinToTopRightCornerOfView:self.view];
-    [_userTaggingDismissButton addTarget:self.textEntryView action:@selector(stopEditing) forControlEvents:UIControlEventTouchUpInside];
+    CGFloat dismissButtonMarginToBorder = 8.0f;
+    [self.view v_addPinToTopToSubview:self.userTaggingDismissButton topMargin:dismissButtonMarginToBorder];
+    [self.view v_addPinToTrailingEdgeToSubview:self.userTaggingDismissButton trailingMargin:dismissButtonMarginToBorder];
+    [self.userTaggingDismissButton addTarget:self.textEntryView action:@selector(stopEditing) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (VDismissButton *)userTaggingDismissButton

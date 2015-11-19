@@ -506,7 +506,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
         view.addSubview(userTaggingDismissButton)
-        userTaggingDismissButton.pinToTopRightCorner(ofView: view)
+        let dismissButtonMarginToBorder: CGFloat = 8.0
+        view.v_addPinToTopToSubview(userTaggingDismissButton, topMargin: dismissButtonMarginToBorder)
+        view.v_addPinToTrailingEdgeToSubview(userTaggingDismissButton, trailingMargin: dismissButtonMarginToBorder)
         userTaggingDismissButton.addTarget(keyboardBar, action: "stopEditing", forControlEvents: .TouchUpInside)
     }
     

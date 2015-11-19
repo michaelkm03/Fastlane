@@ -21,20 +21,15 @@ class DismissButton: UIButton {
         sharedInit()
     }
     
-    struct LayoutConstants {
+    private struct LayoutConstants {
         static let buttonSize: CGFloat = 44.0
         static let marginFromBorder: CGFloat = 8.0
     }
     
-    func sharedInit() {
+    private func sharedInit() {
         backgroundColor = UIColor.lightGrayColor()
         setImage(UIImage(named: "textClear"), forState: UIControlState.Normal)
         v_addWidthConstraint(LayoutConstants.buttonSize)
         v_addHeightConstraint(LayoutConstants.buttonSize)
-    }
-    
-    func pinToTopRightCorner(ofView view: UIView) {
-        view.v_addPinToTopToSubview(self, topMargin: LayoutConstants.marginFromBorder)
-        view.v_addPinToTrailingEdgeToSubview(self, trailingMargin: LayoutConstants.marginFromBorder)
     }
 }
