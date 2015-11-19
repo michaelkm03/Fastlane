@@ -27,7 +27,7 @@
  */
 @protocol VToolPicker <NSObject>
 
-@property (nonatomic, strong) id<VToolPickerDelegate> pickerDelegate;
+@property (nonatomic, weak) id<VToolPickerDelegate> pickerDelegate;
 
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 

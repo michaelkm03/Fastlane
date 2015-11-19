@@ -110,6 +110,7 @@
 		<string>PlayfairDisplay-Regular.ttf</string>
 		<string>PT_Sans-Web-Bold.ttf</string>
 		<string>PT_Sans-Web-Regular.ttf</string>
+		<string>PTSans-Narrow.ttf</string>
 		<string>PT_Serif-Web-Bold.ttf</string>
 		<string>PT_Serif-Web-Regular.ttf</string>
 		<string>Raleway-Medium.ttf</string>
@@ -130,6 +131,9 @@
 		<string>Quicksand-Bold.ttf</string>
 		<string>Quicksand-Light.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
+		<string>MuseoSans-100.otf</string>
+		<string>MuseoSans-300.otf</string>
+		<string>MuseoSans-500.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
