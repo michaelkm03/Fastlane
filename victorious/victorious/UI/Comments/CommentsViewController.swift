@@ -68,6 +68,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     private var firstAppearance = true
+    lazy private var userTaggingDismissButton: DismissButton = DismissButton()
     
     // MARK: Outlets
     
@@ -504,10 +505,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             let obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
+        view.addSubview(userTaggingDismissButton)
+        userTaggingDismissButton.pinToTopRightCorner(ofView: view)
+        userTaggingDismissButton.addTarget(keyboardBar, action: "stopEditing", forControlEvents: .TouchUpInside)
     }
     
     func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToDismissViewController viewController: UIViewController) {
         
+        userTaggingDismissButton.removeFromSuperview()
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
     }
