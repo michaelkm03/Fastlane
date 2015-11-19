@@ -97,46 +97,12 @@ class FilteredImageView: GLKView {
     private func imageBoundsForContentMode(fromRect: CGRect, toRect: CGRect) -> CGRect {
         switch contentMode {
         case .ScaleAspectFill:
-            return aspectFill(fromRect, toRect: toRect)
+            return fromRect.aspectFill(toRect)
         case .ScaleAspectFit:
-            return aspectFit(fromRect, toRect: toRect)
+            return fromRect.aspectFit(toRect)
         default:
             return fromRect
         }
     }
-    
-    private func aspectFit(fromRect: CGRect, toRect: CGRect) -> CGRect {
-        let fromAspectRatio = fromRect.size.width / fromRect.size.height;
-        let toAspectRatio = toRect.size.width / toRect.size.height;
-        
-        var fitRect = toRect
-        
-        if (fromAspectRatio > toAspectRatio) {
-            fitRect.size.height = toRect.size.width / fromAspectRatio;
-            fitRect.origin.y += (toRect.size.height - fitRect.size.height) * 0.5;
-        } else {
-            fitRect.size.width = toRect.size.height  * fromAspectRatio;
-            fitRect.origin.x += (toRect.size.width - fitRect.size.width) * 0.5;
-        }
-        
-        return CGRectIntegral(fitRect)
-    }
-    
-    private func aspectFill(fromRect: CGRect, toRect: CGRect) -> CGRect {
-        let fromAspectRatio = fromRect.size.width / fromRect.size.height;
-        let toAspectRatio = toRect.size.width / toRect.size.height;
-        
-        var fitRect = toRect
-        
-        if (fromAspectRatio > toAspectRatio) {
-            fitRect.size.width = toRect.size.height  * fromAspectRatio;
-            fitRect.origin.x += (toRect.size.width - fitRect.size.width) * 0.5;
-        } else {
-            fitRect.size.height = toRect.size.width / fromAspectRatio;
-            fitRect.origin.y += (toRect.size.height - fitRect.size.height) * 0.5;
-        }
-        
-        return CGRectIntegral(fitRect)
-    }
-    
+
 }
