@@ -17,7 +17,6 @@
 #import "VPageType.h"
 
 #import "NSCharacterSet+VURLParts.h"
-#import "VObjectManager+ContentModeration.h"
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
@@ -173,7 +172,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagPost];
-        [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
+        //FIXME: [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
         if ( success != nil )
         {
             success( operation, fullResponse, resultObjects );
@@ -189,7 +188,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         {
             //We've already flagged this sequence, perhaps before 3.4 when the on-system removal was introduced,
             //so add it to our local batch of flagged contents and show the success stuff to the user
-            [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
+            //FIXME: [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
             if ( success != nil )
             {
                 success( operation, nil, @[] );

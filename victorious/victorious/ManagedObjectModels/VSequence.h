@@ -30,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * memeCount;
-@property (nonatomic, retain) NSNumber * isFlaggedByMainUser;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain, nullable) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissionsMask;

@@ -155,7 +155,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         [layout calculateCatchAndLockPoints];
         
-        if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
+        if (self.viewModel.sequence.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
         {
             if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
             {
@@ -197,9 +197,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [self didUpdateCommentsWithPageType:VPageTypeFirst];
     
-    for ( NSUInteger i = 0; i < self.viewModel.comments.count; i++ )
+    for ( NSUInteger i = 0; i < self.viewModel.sequence.comments.count; i++ )
     {
-        VComment *comment = self.viewModel.comments[ i ];
+        VComment *comment = self.viewModel.sequence.comments[ i ];
         if ( [comment.remoteId isEqualToNumber:commentId] )
         {
             [self didUpdateCommentsWithPageType:VPageTypePrevious];
@@ -630,7 +630,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                    withIndex:(NSInteger)index
 {
     commentCell.dependencyManager = self.dependencyManager;
-    commentCell.comment = self.viewModel.comments[index];
+    commentCell.comment = self.viewModel.sequence.comments[index];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
     commentCell.commentsUtilitiesDelegate = self;
@@ -767,7 +767,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
         }
         case VContentViewSectionAllComments:
-            return (NSInteger)self.viewModel.comments.count;
+            return (NSInteger)self.viewModel.sequence.comments.count;
         case VContentViewSectionCount:
             return 0;
     }
@@ -882,7 +882,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
-            VComment *comment = self.viewModel.comments[indexPath.row];
+            VComment *comment = self.viewModel.sequence.comments[indexPath.row];
             NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
             
             if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
@@ -1043,7 +1043,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionAllComments:
         {
             const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
-            VComment *comment = self.viewModel.comments[indexPath.row];
+            VComment *comment = self.viewModel.sequence.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                           comment:comment
                                                          hasMedia:comment.commentMediaType != VCommentMediaTypeNoMedia
@@ -1074,7 +1074,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionAllComments:
         {
             CGSize sizeWithComments = [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-            return self.viewModel.comments.count > 0 ? sizeWithComments : CGSizeZero;
+            return self.viewModel.sequence.comments.count > 0 ? sizeWithComments : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;
@@ -1101,7 +1101,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    const BOOL hasComments = self.viewModel.comments.count > 0;
+    const BOOL hasComments = self.viewModel.sequence.comments.count > 0;
     if ( hasComments )
     {
         if ( !self.commentHighlighter.isAnimatingCellHighlight )
@@ -1337,7 +1337,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self.contentCollectionView performBatchUpdates:^void
      {
-         NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+         NSUInteger row = [self.viewModel.sequence.comments indexOfObject:comment];
          [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
@@ -1355,7 +1355,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replyToComment:(VComment *)comment
 {
-    NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+    NSUInteger row = [self.viewModel.sequence.comments indexOfObject:comment];
     NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     

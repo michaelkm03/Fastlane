@@ -1,26 +1,28 @@
 //
-//  VObjectManager+ContentModeration.h
+//  VFlaggedContent.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 9/28/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VObjectManager.h"
-
-// TODO: Remove this whole class in favor of `isFlaggedByMainUser` on `VSequence`
-
-//Describes a kind of flag-able content
+/**
+ Describes a kind of flag-able content
+ */
 typedef NS_ENUM(NSInteger, VFlaggedContentType)
 {
     VFlaggedContentTypeStreamItem,
     VFlaggedContentTypeComment
 };
 
-//Defines some helpful methods for managing the contents that a user has flagged
-@interface VObjectManager (ContentModeration)
+/**
+ Defines some helpful methods for managing the contents that a user has flagged
+ */
+@interface VFlaggedContent : NSObject
 
-//Removes contents that are sufficiently old from the flagged contents arrays
+/**
+ Removes contents that are sufficiently old from the flagged contents arrays
+ */
 - (void)refreshFlaggedContents;
 
 /**

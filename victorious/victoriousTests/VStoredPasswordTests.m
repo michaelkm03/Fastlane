@@ -57,4 +57,14 @@
     XCTAssertNil( [self.storedPassword passwordForEmail:self.email] );
 }
 
+- (void)testKeychainInvalidInput
+{
+    XCTAssertFalse( [self.storedPassword savePassword:@"" forEmail:self.email] );
+    XCTAssertFalse( [self.storedPassword savePassword:self.password forEmail:@""] );
+    XCTAssertFalse( [self.storedPassword savePassword:@"" forEmail:@""] );
+    
+    // Should be nothing saved with bad input
+    XCTAssertNil( [self.storedPassword passwordForEmail:self.email] );
+}
+
 @end

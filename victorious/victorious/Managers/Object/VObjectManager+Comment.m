@@ -13,7 +13,6 @@
 #import "VSequence.h"
 #import "VUser.h"
 #import "VComment+RestKit.h"
-#import "VObjectManager+ContentModeration.h"
 
 @implementation VObjectManager (Comment)
 

@@ -58,7 +58,6 @@
         <attribute name="assetOrientation" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="isFlaggedByMainUser" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
@@ -242,7 +241,6 @@
         <attribute name="hasBeenRepostedByMainUser" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hasReposted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isComplete" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isFlaggedByMainUser" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isGifStyle" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLikedByMainUser" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isRemix" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -372,7 +370,7 @@
         <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="270"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="360"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="150"/>
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
@@ -392,7 +390,7 @@
         <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="165"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Sequence" positionX="0" positionY="0" width="128" height="630"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="615"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="240"/>

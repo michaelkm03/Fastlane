@@ -9,7 +9,8 @@
 import Foundation
 
 public struct FlagCommentRequest: RequestType {
-    private let commentID: Int64
+    
+    public let commentID: Int64
     
     public init(commentID: Int64) {
         self.commentID = commentID

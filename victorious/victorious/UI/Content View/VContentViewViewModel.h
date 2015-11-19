@@ -178,15 +178,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 #pragma mark - Comments
 
-@property (nonatomic, readonly) NSArray *comments;
-
-/**
- *  Fetches comments and realtime comments for this viewModel's sequence.
- *  @param pageType An indicator to the internal VAbstractFilter instances that
- *  determines which page of comments to load, if that page exists.
- */
 - (void)loadComments:(VPageType)pageType;
-
 - (void)removeCommentAtIndex:(NSUInteger)index;
 
 #pragma mark - Actions

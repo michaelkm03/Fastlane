@@ -17,7 +17,6 @@
 #import "VConstants.h"
 #import "VSequence.h"
 #import "VSequencePermissions.h"
-#import "VObjectManager+ContentModeration.h"
 
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
@@ -94,7 +93,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                           handler:^(UIAlertAction *_Nonnull action)
           {
               [self.delegate commentRemoved:self.comment];
-              [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
               [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
           }];
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagComment];
@@ -123,7 +121,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                           handler:^(UIAlertAction *_Nonnull action)
           {
               [self.delegate commentRemoved:self.comment];
-              [[VObjectManager sharedManager] addRemoteId:self.comment.remoteId.stringValue toFlaggedItemsWithType:VFlaggedContentTypeComment];
               [[VObjectManager sharedManager] locallyRemoveComment:self.comment];
           }];
      }];

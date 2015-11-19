@@ -10,7 +10,8 @@ import Foundation
 
 class SequenceCommentsDataSource : CommentsDataSource {
     
-    let sequence : VSequence
+    let sequence: VSequence
+    let flaggedContent = VFlaggedContent()
     
     init(sequence: VSequence) {
         self.sequence = sequence
@@ -21,7 +22,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     func sortInternalComments() {
         if let comments = self.sequence.comments?.array as? [VComment],
-            var validComments = VObjectManager.sharedManager().commentsAfterStrippingFlaggedItems(comments) as? [VComment] {
+            var validComments = flaggedContent.commentsAfterStrippingFlaggedItems(comments) as? [VComment] {
             validComments.sortInPlace({ $0.postedAt > $1.postedAt })
             self.sortedInternalComments = validComments
         }

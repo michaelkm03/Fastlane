@@ -26,6 +26,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VTextCanvasToolViewController *canvasToolViewController;
 @property (nonatomic, readwrite) UIViewController <VCollectionToolPicker, VMultipleToolPicker> *toolPicker;
+@property (nonatomic, strong) VHashtagPickerDataSource *pickerDataSource;
 
 @end
 
@@ -43,13 +44,13 @@ static NSString * const kPickerKey = @"picker";
         
         // Create objects
         _toolPicker = (UIViewController<VCollectionToolPicker, VMultipleToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
-        VHashtagPickerDataSource *dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _pickerDataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         
         // Set up references
-        dataSource.toolPicker = _toolPicker;
-        _toolPicker.dataSource = dataSource;
+        _pickerDataSource.toolPicker = _toolPicker;
+        _toolPicker.dataSource = _pickerDataSource;
         
-        [dataSource reloadWithCompletion:^(NSArray *hashtagTools)
+        [_pickerDataSource reloadWithCompletion:^(NSArray *hashtagTools)
          {
              self.toolPicker.dataSource.tools = hashtagTools;
              [self.toolPicker reloadData];

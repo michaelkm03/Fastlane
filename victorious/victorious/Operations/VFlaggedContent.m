@@ -1,19 +1,19 @@
 //
-//  VObjectManager+ContentModeration.m
+//  VFlaggedContent.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 9/28/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+ContentModeration.h"
 #import "VComment.h"
 #import "VConversation.h"
 #import "VStreamItem.h"
+#import "VFlaggedContent.h"
 
 static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 60 * 24 * 30)
 
-@implementation VObjectManager (ContentModeration)
+@implementation VFlaggedContent
 
 - (void)refreshFlaggedContents
 {

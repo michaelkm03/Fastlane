@@ -44,3 +44,14 @@ public extension VUser {
         context.cacheObject( self, forKey: VUser.cacheKey )
     }
 }
+
+extension VSequence {
+    
+    /// Returns all comments for the sequnece that have not been previously flagged by the user.
+    /// Internally this filters based on `VFlaggedContext` using `NSUserDefaults`.
+    func unflaggedComments() -> [VComment] {
+        let flaggedContent = VFlaggedContent()
+        let commentsArray = comments?.array as? [VComment] ?? []
+        return flaggedContent.commentsAfterStrippingFlaggedItems(commentsArray) as? [VComment] ?? []
+    }
+}

@@ -16,7 +16,6 @@
 
 #import "VConversation+RestKit.h"
 #import "VConversation+UnreadMessageCount.h"
-#import "VObjectManager+ContentModeration.h"
 
 static NSString * const kUnreadCountKey = @"unread_count";
 

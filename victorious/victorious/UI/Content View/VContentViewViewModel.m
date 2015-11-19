@@ -55,8 +55,6 @@
 #import "VEndCardModelBuilder.h"
 #import "victorious-Swift.h"
 
-#import "VObjectManager+ContentModeration.h"
-
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -321,16 +319,6 @@
 {
     VAsset *imageAsset = [self.sequence.firstNode imageAsset];
     return [NSURL URLWithString:imageAsset.data];
-}
-
-- (void)setComments:(NSArray *)comments
-{
-    comments = [[VObjectManager sharedManager] commentsAfterStrippingFlaggedItems:comments];
-    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
-     {
-         return [comment2.postedAt compare:comment1.postedAt];
-     }];
-    _comments = sortedComments;
 }
 
 #pragma mark - Public Methods

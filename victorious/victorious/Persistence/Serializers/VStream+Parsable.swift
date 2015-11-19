@@ -18,7 +18,8 @@ extension VStream: PersistenceParsable {
         name            = stream.name
         count           = stream.postCount
         
-        streamItems += stream.items.flatMap {
+        let flaggedContent = VFlaggedContent()
+        let allStreamItems: [VStreamItem] = stream.items.flatMap {
             if let sequence = $0 as? Sequence {
                 let persistentSequence = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
                 persistentSequence.populate( fromSourceModel: sequence )
@@ -31,5 +32,6 @@ extension VStream: PersistenceParsable {
             }
             return nil
         }
+        streamItems += flaggedContent.commentsAfterStrippingFlaggedItems(allStreamItems) as? [VStreamItem] ?? []
     }
 }
