@@ -8,7 +8,8 @@
 
 import Foundation
 
-/// Adds implementations for the methods in the PersistentStoreContext extension
+/// A Swift-only generic implementation of the PersistentStoreContextBasic protocol that provides access to a single
+/// Core Data managed object context.
 extension NSManagedObjectContext: PersistentStoreContext {
     
     public func getObject<T: PersistentStoreObject>( identifier: AnyObject ) -> T? {

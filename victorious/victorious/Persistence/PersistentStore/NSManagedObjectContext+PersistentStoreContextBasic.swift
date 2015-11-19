@@ -11,13 +11,8 @@ import CoreData
 
 private let SingleObjectCacheKey = "SingleObjectCache"
 
-/// In implementation of the DataSource protocol that provides access to a single CoreData managed object context.
-///
-/// Given the context-oriented design of CoreData, this PersistentStoreContext implementation also requires
-/// that an unchangeable ContextPersistentStoreContextType value be provided to properly select the right CoreData context
-/// on which to operate.  In this way, this PersistentStoreContext implementation provides a per-context interface
-/// into a single CoreData-managed persistent store.  So there is one store/database per CoreDataManager
-/// instance, and one PersistentStoreContext imeplementation per context.
+/// An implementation of the PersistentStoreContextBasic protocol that provides access to a single
+/// Core Data managed object context.
 extension NSManagedObjectContext: PersistentStoreContextBasic {
     
     public func saveChanges() -> Bool {

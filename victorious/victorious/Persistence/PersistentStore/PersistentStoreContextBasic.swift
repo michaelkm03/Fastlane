@@ -9,7 +9,8 @@
 import Foundation
 import CoreData
 
-/// An interface that defines the basic behaviors of a persistent data store.
+/// Defines an object represents a context of a persistent store, intended to abstract a CoreDAta-based
+/// persistent store but abstract enough to allow for varied, independent implementations.
 @objc public protocol PersistentStoreContextBasic {
     
     /// Writes all changes from any modified objects to the persistent store
