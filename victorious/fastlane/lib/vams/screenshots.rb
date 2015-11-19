@@ -1,5 +1,6 @@
 require 'uri'
 require 'vams/http'
+require 'vams/file_helper'
 
 module VAMS
   class Screenshots < OpenStruct
@@ -24,9 +25,8 @@ module VAMS
         filename = File.basename(uri.path)
         response = HTTP.send_request_to_uri(type: :get, uri: uri)
 
-        File.open(File.join(dir, filename), File::WRONLY | File::CREAT) do |file|
-          file.write(response.body)
-        end
+        file_path = File.join(dir, filename)
+        FileHelper.save_text_into_file(text: response.body, path: file_path)
       end
     end
   end
