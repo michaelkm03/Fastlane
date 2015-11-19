@@ -11,8 +11,10 @@ import Foundation
 extension VContentViewViewModel {
     
     func reloadData() {
-        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: Int64(self.sequence.remoteId)! )
-        sequenceFetchOperation.mainQueueCompletionBlock = { error in
+        
+        let sequenceID = Int64(self.sequence.remoteId)!
+        
+        SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
             // This is here to update the vote counts
             self.experienceEnhancerController.updateData()
             
@@ -25,7 +27,39 @@ extension VContentViewViewModel {
             }
             self.delegate?.didUpdateContent()
         }
-        sequenceFetchOperation.queue()
+        
+        if self.sequence.isPoll() {
+            SequencePollResultsOperation( sequenceID: sequenceID ).queue() { error in
+                self.delegate?.didUpdatePollsData()
+            }
+        }
+        
+        if let deepLinkCommentId = self.deepLinkCommentId {
+            // TODO: /api/comments/find
+            // See `loadCommentsWithCommentId:`
+        } else {
+            SequenceCommentsOperation(sequenceID: sequenceID).queue() { error in
+                self.delegate?.didUpdateCommentsWithPageType(.First)
+            }
+        }
+        
+        SequenceCommentsOperation(sequenceID: sequenceID).queue() { error in
+            let followerCount = self.user.numberOfFollowers.integerValue
+            if followerCount > 0 {
+                // TODO: Change to KVO
+                let countString = self.largeNumberFormatter.stringForInteger(followerCount)
+                let labelString = NSLocalizedString("followers", comment:"")
+                self.followersText = "\(countString) \(labelString)"
+            } else {
+                self.followersText = ""
+            }
+        }
+        
+        if let currentUserID = VUser.currentUser()?.remoteId.integerValue {
+            SequenceUserInterationsOperation( sequenceID: sequenceID, userID: Int64(currentUserID) ).queue() { error in
+                self.hasReposted =  true // VSequenceUserInteractions.hasReposted
+            }
+        }
     }
     
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {

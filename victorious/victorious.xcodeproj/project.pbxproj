@@ -407,7 +407,7 @@
 		676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */; };
 		676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */; };
 		6779A2131BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2121BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift */; };
-		6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */; };
+		6779A2151BF55EF00024BBD0 /* PollResultsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2141BF55EF00024BBD0 /* PollResultsRequest.swift */; };
 		6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */; };
 		6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
@@ -422,7 +422,6 @@
 		678D944A1BF42E7A009A1F93 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94491BF42E7A009A1F93 /* VoteResultTests.swift */; };
 		678D944C1BF437C0009A1F93 /* PollAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944B1BF437C0009A1F93 /* PollAnswer.swift */; };
 		678D944E1BF4399D009A1F93 /* PollAnswerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944D1BF4399D009A1F93 /* PollAnswerTests.swift */; };
-		678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */; };
 		678D94541BF43D9C009A1F93 /* PollResultByUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */; };
 		678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */; };
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
@@ -1028,6 +1027,8 @@
 		A7F843751BFD5A0B004C3D55 /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436F1BFD5A0B004C3D55 /* PersistentStore.swift */; };
 		A7F843761BFD5A0B004C3D55 /* PersistentStoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843701BFD5A0B004C3D55 /* PersistentStoreContext.swift */; };
 		A7F843771BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843711BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift */; };
+		A7F843791BFD6F9C004C3D55 /* SequencePollResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843781BFD6F9C004C3D55 /* SequencePollResultsOperation.swift */; };
+		A7F8437B1BFD6FAC004C3D55 /* UserPollResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8437A1BFD6FAC004C3D55 /* UserPollResultsOperation.swift */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
@@ -2329,7 +2330,7 @@
 		676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6779A2121BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultBySequenceRequestTests.swift; sourceTree = "<group>"; };
-		6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultBySequenceRequest.swift; sourceTree = "<group>"; };
+		6779A2141BF55EF00024BBD0 /* PollResultsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultsRequest.swift; sourceTree = "<group>"; };
 		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
 		6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequest.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
@@ -2345,7 +2346,6 @@
 		678D94491BF42E7A009A1F93 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		678D944B1BF437C0009A1F93 /* PollAnswer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnswer.swift; sourceTree = "<group>"; };
 		678D944D1BF4399D009A1F93 /* PollAnswerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollAnswerTests.swift; sourceTree = "<group>"; };
-		678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultByUserRequest.swift; sourceTree = "<group>"; };
 		678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultByUserRequestTests.swift; sourceTree = "<group>"; };
 		678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultByUserResponse.json; sourceTree = "<group>"; };
 		678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultBySequenceResponse.json; sourceTree = "<group>"; };
@@ -3311,6 +3311,8 @@
 		A7F8436F1BFD5A0B004C3D55 /* PersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
 		A7F843701BFD5A0B004C3D55 /* PersistentStoreContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContext.swift; sourceTree = "<group>"; };
 		A7F843711BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContextBasic.swift; sourceTree = "<group>"; };
+		A7F843781BFD6F9C004C3D55 /* SequencePollResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencePollResultsOperation.swift; sourceTree = "<group>"; };
+		A7F8437A1BFD6FAC004C3D55 /* UserPollResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPollResultsOperation.swift; sourceTree = "<group>"; };
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionControllerTests.m; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
@@ -4968,8 +4970,7 @@
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
-				6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */,
-				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
+				6779A2141BF55EF00024BBD0 /* PollResultsRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				C3D6FA911BF58399006DEE19 /* PostCommentRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
@@ -6260,6 +6261,8 @@
 				A7078CD41BFA7D2B008FB7FF /* UserInfoOperation.swift */,
 				A7078CD51BFA7D2B008FB7FF /* VLoginType+Credentials.swift */,
 				A7078CD61BFA7D2B008FB7FF /* VLoginType+Tracking.swift */,
+				A7F843781BFD6F9C004C3D55 /* SequencePollResultsOperation.swift */,
+				A7F8437A1BFD6FAC004C3D55 /* UserPollResultsOperation.swift */,
 			);
 			path = "Network Operations";
 			sourceTree = "<group>";
@@ -10005,7 +10008,6 @@
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
-				678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */,
 				A7EF1BCF1BF2754D00D429DE /* Stream.swift in Sources */,
 				67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */,
 				A7EF1BCC1BF2754D00D429DE /* Node.swift in Sources */,
@@ -10073,7 +10075,7 @@
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
-				6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */,
+				6779A2151BF55EF00024BBD0 /* PollResultsRequest.swift in Sources */,
 				C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */,
 				678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */,
 				A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */,
@@ -10495,6 +10497,7 @@
 				A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
+				A7F8437B1BFD6FAC004C3D55 /* UserPollResultsOperation.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A7078CF81BFBFCDA008FB7FF /* UnlikeSequenceOperation.swift in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
@@ -11060,6 +11063,7 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
 				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,
+				A7F843791BFD6F9C004C3D55 /* SequencePollResultsOperation.swift in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,

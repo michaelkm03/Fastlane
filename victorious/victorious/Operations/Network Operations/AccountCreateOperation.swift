@@ -49,13 +49,14 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     override func onComplete( error: NSError? ) {
         
         // The the current user in our cache
-        persistentStore.sync() { context in
+        let persitentUser: VUser = persistentStore.sync() { context in
             guard let identifier = self.userIdentifier, let persistentUser: VUser = context.getObject(identifier) else {
                 fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
             }
             persistentUser.setCurrentUser(inContext: context)
             VStoredLogin().saveLoggedInUserToDisk( persistentUser )
             self.persistentUser = persistentUser
+            return persistentUser
         }
         
         NSUserDefaults.standardUserDefaults().setInteger( loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
@@ -67,9 +68,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         
         NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         
-        // TODO: (from object manager)
-        // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
-        
         self.queueNext( ConversationListOperation(), queue: Operation.defaultQueue )
+        self.queueNext( UserPollResultsOperation(userID: Int64(persitentUser.remoteId.integerValue)), queue: Operation.defaultQueue )
     }
 }

@@ -1,0 +1,51 @@
+//
+//  UserPollResultsOperation.swift
+//  victorious
+//
+//  Created by Patrick Lynch on 11/18/15.
+//  Copyright © 2015 Victorious. All rights reserved.
+//
+
+import Foundation
+import VictoriousIOSSDK
+
+class UserPollResultsOperation: RequestOperation<PollResultsRequest> {
+    
+    private let persistentStore = PersistentStore()
+    private let userID: Int64
+    
+    init( userID: Int64) {
+        self.userID = userID
+        super.init(request: PollResultsRequest(userID: userID))
+    }
+    
+    override func onResponse(response: PollResultsRequest.ResultType) {
+        persistentStore.syncFromBackground() { context in
+            let user: VUser = context.findObjects([ "remoteId" : Int(self.userID) ] ).first!
+            for result in response {
+                let pollResult = context.findOrCreateObject( [ "remoteId" : Int(result.answerID) ] ) as VPollResult
+                pollResult.populate( fromSourceModel: result )
+                user.pollResults.insert( pollResult )
+            }
+            context.saveChanges()
+        }
+    }
+}
+
+class FollowCountOperation: RequestOperation<FollowCountRequest> {
+    
+    private let persistentStore = PersistentStore()
+    
+    init (userID: Int64) {
+        super.init( request: FollowCountRequest(userID: userID) )
+    }
+    
+    override func onResponse(response: FollowCountRequest.ResultType) {
+        persistentStore.syncFromBackground() { context in
+            let user: VUser = context.findObjects([ "remoteId" : Int(self.request.userID) ] ).first!
+            user.numberOfFollowers = Int(response.followersCount)
+            user.numberOfFollowing = Int(response.followingCount)
+            context.saveChanges()
+        }
+    }
+}

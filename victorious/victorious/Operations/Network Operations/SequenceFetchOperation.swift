@@ -25,3 +25,20 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
         }
     }
 }
+
+class SequenceUserInterationsOperation: RequestOperation<SequenceFetchRequest> {
+    
+    private let persistentStore = PersistentStore()
+    
+    init( sequenceID: Int64, userID: Int64 ) {
+        super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
+    }
+    
+    override func onResponse(response: SequenceFetchRequest.ResultType) {
+        persistentStore.syncFromBackground() { context in
+            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
+            sequence.populate(fromSourceModel: response )
+            context.saveChanges()
+        }
+    }
+}

@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
-@class ContentViewContext;
+@class ContentViewContext, VLargeNumberFormatter;
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
@@ -101,6 +101,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) NSInteger nodeID;
 
+@property (nonatomic, strong) NSString *followersText;
+
 @property (nonatomic, readonly) VUser *user;
 
 @property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
@@ -155,6 +157,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *textContent;
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
 @property (nonatomic, readonly) NSInteger totalVotes;
+@property (nonatomic, strong, readonly) VLargeNumberFormatter *largeNumberFormatter;
 
 @property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readonly) NSArray *monetizationDetails;
@@ -213,5 +216,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  that comment when the content view loads.
  */
 @property (nonatomic, strong) NSNumber *deepLinkCommentId;
+
+- (void)reloadData2;
 
 @end

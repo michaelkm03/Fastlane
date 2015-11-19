@@ -26,9 +26,9 @@ class StreamOperation: RequestOperation<StreamRequest> {
     
     override func onResponse(response: StreamRequest.ResultType) {
         let stream = response.results
-        let uniqueElements = [ "apiPath" : request.apiPath ]
         
         persistentStore.syncFromBackground() { context in
+            let uniqueElements = [ "apiPath" : self.request.apiPath ]
             let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
             persistentStream.populate( fromSourceModel: stream )
             
@@ -40,6 +40,47 @@ class StreamOperation: RequestOperation<StreamRequest> {
                     self.previousPageOperation = StreamOperation( request: previousPageRequest )
                 }
             }
+            context.saveChanges()
+        }
+    }
+}
+
+class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
+    
+    private let persistentStore = PersistentStore()
+    
+    init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        super.init( request: SequenceCommentsRequest(sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage) )
+    }
+    
+    override init( request: SequenceCommentsRequest ) {
+        super.init(request: request)
+    }
+    
+    var nextPageOperation: SequenceCommentsOperation?
+    var previousPageOperation: SequenceCommentsOperation?
+    
+    override func onResponse(response: SequenceCommentsRequest.ResultType) {
+        
+        persistentStore.syncFromBackground() { context in
+            let sequence: VSequence = context.findObjects( [ "remoteId" : Int(self.request.sequenceID) ] ).first!
+            for comment in response.results {
+                let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
+                persistentComment.populate( fromSourceModel: comment )
+                persistentComment.sequence = sequence
+                persistentComment.sequenceId = sequence.remoteId
+                persistentComment.userId = sequence.user?.remoteId
+            }
+            
+            dispatch_sync( dispatch_get_main_queue() ) {
+                if let nextPageRequest = response.nextPage {
+                    self.nextPageOperation = SequenceCommentsOperation( request: nextPageRequest )
+                }
+                if let previousPageRequest = response.previousPage {
+                    self.previousPageOperation = SequenceCommentsOperation( request: previousPageRequest )
+                }
+            }
+            
             context.saveChanges()
         }
     }

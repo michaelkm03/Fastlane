@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct VoteResult {
-    public let voteID: Int64
+    public let answerID: Int64
     public let voteCount: Int64
 }
 
@@ -20,7 +20,7 @@ extension VoteResult {
             let count = json["count"].int64 ?? json["total_count"].int64 else {
                 return nil
         }
-        self.voteID = answerID
+        self.answerID = answerID
         self.voteCount = count
     }
 }

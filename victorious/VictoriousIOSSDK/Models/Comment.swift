@@ -15,7 +15,7 @@ public struct Comment {
         return NSDateFormatter(format: .Standard)
     }()
 
-    public let remoteID: Int64
+    public let commentID: Int64
     public let displayOrder: Int?
     public let userID: Int64
     public let shouldAutoplay: Bool?
@@ -32,14 +32,14 @@ extension Comment {
     
     public init?(json: JSON) {
         
-        guard let remoteID = Int64(json["id"].stringValue),
+        guard let commentID = Int64(json["id"].stringValue),
             let userID = Int64(json["user_id"].stringValue),
             let user = User(json: json["user"]),
             let postedAt = dateFormatter.dateFromString(json["posted_at"].stringValue) else {
                 return nil
         }
         
-        self.remoteID = remoteID
+        self.commentID = commentID
         self.userID = userID
         self.user = user
         self.postedAt = postedAt

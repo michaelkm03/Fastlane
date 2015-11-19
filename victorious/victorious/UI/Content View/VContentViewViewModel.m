@@ -66,17 +66,13 @@
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 @property (nonatomic, strong, readwrite) ContentViewContext *context;
-
-@property (nonatomic, strong) NSString *followersText;
-
 @property (nonatomic, strong) NSMutableArray *adChain;
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
-
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong, readwrite) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
@@ -209,44 +205,7 @@
 
 - (void)reloadData2 // TODO: Move all these into Swift
 {
-    if (![self.sequence isPoll])
-    {
-        return;
-    }
-    
-    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         [self.delegate didUpdatePollsData];
-     }
-                                                 failBlock:nil];
-    
-    if ( self.deepLinkCommentId != nil )
-    {
-        [self loadCommentsWithCommentId:self.deepLinkCommentId];
-    }
-    else
-    {
-        [self loadComments:VPageTypeFirst];
-    }
-    
     __weak typeof(self) welf = self;
-    [[VObjectManager sharedManager] countOfFollowsForUser:self.user
-                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         NSInteger followerCount = self.user.numberOfFollowers.integerValue;
-         if ( followerCount > 0 )
-         {
-             welf.followersText = [NSString stringWithFormat:@"%@ %@",
-                                   [self.largeNumberFormatter stringForInteger:followerCount],
-                                   NSLocalizedString(@"followers", @"")];
-         }
-         else
-         {
-             welf.followersText = @"";  //< To prevent showing "0 Followers"
-         }
-     }
-                                                failBlock:nil];
     if ( [VObjectManager sharedManager].mainUserLoggedIn )
     {
         [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
