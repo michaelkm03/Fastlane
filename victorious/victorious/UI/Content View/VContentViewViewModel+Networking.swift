@@ -56,8 +56,9 @@ extension VContentViewViewModel {
         }
         
         if let currentUserID = VUser.currentUser()?.remoteId.integerValue {
-            SequenceUserInterationsOperation( sequenceID: sequenceID, userID: Int64(currentUserID) ).queue() { error in
-                self.hasReposted =  true // VSequenceUserInteractions.hasReposted
+            SequenceUserInterationsOperation(sequenceID: sequenceID, userID: Int64(currentUserID) ).queue() { error in
+                // TODO: Change to KVO
+                self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
         }
     }

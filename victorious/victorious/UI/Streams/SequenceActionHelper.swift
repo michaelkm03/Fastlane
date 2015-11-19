@@ -12,7 +12,7 @@ import UIKit
     
     func likeSequence(sequence: VSequence, triggeringView: UIView, originViewController: UIViewController, dependencyManager: VDependencyManager, completion: ((Bool) -> Void)?) {
         
-        if sequence.isLikedByMainUser?.boolValue ?? false {
+        if sequence.isLikedByMainUser.boolValue {
             UnlikeSequenceOperation( sequenceID: Int64(sequence.remoteId)! ).queue() { error in
                 completion?( error == nil )
             }

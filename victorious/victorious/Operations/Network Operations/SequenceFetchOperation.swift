@@ -26,18 +26,18 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
     }
 }
 
-class SequenceUserInterationsOperation: RequestOperation<SequenceFetchRequest> {
+class SequenceUserInterationsOperation: RequestOperation<UserInteractionsOnSequenceRequest> {
     
     private let persistentStore = PersistentStore()
     
     init( sequenceID: Int64, userID: Int64 ) {
-        super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
+        super.init(request: UserInteractionsOnSequenceRequest(sequenceID: sequenceID, userID:userID) )
     }
     
-    override func onResponse(response: SequenceFetchRequest.ResultType) {
+    override func onResponse(response: UserInteractionsOnSequenceRequest.ResultType) {
         persistentStore.syncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
-            sequence.populate(fromSourceModel: response )
+            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(self.request.sequenceID) ])
+            sequence.hasBeenRepostedByMainUser = response
             context.saveChanges()
         }
     }

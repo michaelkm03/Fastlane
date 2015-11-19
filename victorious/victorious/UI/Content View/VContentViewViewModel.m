@@ -203,19 +203,6 @@
     self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
-- (void)reloadData2 // TODO: Move all these into Swift
-{
-    __weak typeof(self) welf = self;
-    if ( [VObjectManager sharedManager].mainUserLoggedIn )
-    {
-        [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
-                                                          withCompletion:^(VSequenceUserInteractions *userInteractions, NSError *error)
-         {
-             self.hasReposted = userInteractions.hasReposted;
-         }];
-    }
-}
-
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize
 {
     CGFloat maxAspect = 16.0f/9.0f;
@@ -427,27 +414,6 @@
                                                     failBlock:nil];
 }
 
-- (void)loadComments:(VPageType)pageType
-{
-    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence];
-    const BOOL isFilterAlreadyLoading = [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
-    if ( isFilterAlreadyLoading || ![filter canLoadPageType:pageType] )
-    {
-        return;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                  pageType:pageType
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.comments = [strongSelf.sequence.comments array];
-         [strongSelf.delegate didUpdateCommentsWithPageType:pageType];
-     }
-                                                 failBlock:nil];
-}
-
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {
     VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
@@ -577,7 +543,7 @@
 
 - (BOOL)votingEnabled
 {
-    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    for (VPollResult *result in [VUser currentUser].pollResults)
     {
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
@@ -658,7 +624,7 @@
     }
     else
     {
-        for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+        for (VPollResult *result in [VUser currentUser].pollResults)
         {
             NSNumber *answerARemoteID = [self answerA].remoteId;
             if ([result.sequenceId isEqualToString:self.sequence.remoteId] && answerARemoteID != nil)

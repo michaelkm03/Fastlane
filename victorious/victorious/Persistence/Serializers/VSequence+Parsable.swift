@@ -21,7 +21,6 @@ extension VSequence: PersistenceParsable {
         gifCount                = sequence.gifCount
         hasReposted             = sequence.hasReposted
         isComplete              = sequence.isComplete
-        isLikedByMainUser       = sequence.isLikedByMainUser
         isRemix                 = sequence.isRemix
         isRepost                = sequence.isRepost
         likeCount               = sequence.likeCount

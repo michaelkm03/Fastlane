@@ -217,6 +217,4 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, strong) NSNumber *deepLinkCommentId;
 
-- (void)reloadData2;
-
 @end

@@ -23,8 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * hasReposted;
-@property (nonatomic, retain, nullable) NSNumber * isComplete;
-@property (nonatomic, retain, nullable) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSNumber * isComplete;
+@property (nonatomic, retain) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSNumber * hasBeenRepostedByMainUser;
 @property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * likeCount;
