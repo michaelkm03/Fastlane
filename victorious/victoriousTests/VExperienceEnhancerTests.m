@@ -191,8 +191,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
-         [exp resetCooldownTimer];
-         
+         XCTAssert([exp resetCooldownTimer]);
          
          exp.cooldownDuration = 10;
          
@@ -209,7 +208,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
-         [exp resetCooldownTimer];
+         XCTAssert([exp resetCooldownTimer]);
 
          NSInteger startingVotes = exp.voteCount;
          NSTimeInterval cooldown = 0.2;

@@ -88,13 +88,17 @@ class YouTubeVideoPlayer : NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     func setItem(item: VVideoPlayerItem) {
         if currentItem?.remoteContentId != item.remoteContentId {
-            playerView.clearVideo()
+            self.reset()
         }
         currentItem = item
     }
     
     func seekToTimeSeconds(timeSeconds: NSTimeInterval) {
         playerView.seekToSeconds( Float(timeSeconds), allowSeekAhead: true)
+    }
+    
+    func reset() {
+        playerView.clearVideo()
     }
     
     func play() {
