@@ -9,8 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: PersistentStoreObjectSwift {}
-
 extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel stream: Stream ) {
