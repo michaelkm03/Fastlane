@@ -82,8 +82,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithContext:(ContentViewContext *)context;
 
-- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
-
 - (void)addCommentWidhText:(NSString *)text
          publishParameters:(VPublishParameters *)publishParameters
                 completion:(void (^)(BOOL succeeded))completion;
@@ -189,8 +187,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 - (void)removeCommentAtIndex:(NSUInteger)index;
 
 #pragma mark - Actions
-
-- (void)repost;
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
 

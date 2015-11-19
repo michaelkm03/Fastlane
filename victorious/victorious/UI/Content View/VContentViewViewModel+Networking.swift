@@ -27,4 +27,24 @@ extension VContentViewViewModel {
         }
         sequenceFetchOperation.queue()
     }
+    
+    func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
+        guard let nextSequenceId = self.endCardViewModel.nextSequenceId,
+            let nextSeuqneceIntegerId = Int64(nextSequenceId) else {
+                failure(nil)
+                return
+        }
+        
+        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSeuqneceIntegerId )
+        sequenceFetchOperation.queue() { error in
+            
+            if let sequence: VSequence? = PersistentStore().sync({ context in
+                return context.findObjects( [ "remoteId" : nextSequenceId ] ).first
+            }) where error == nil {
+                success( sequence )
+            } else {
+                failure(error)
+            }
+        }
+    }
 }

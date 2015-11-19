@@ -172,19 +172,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)repost
-{
-    // FIXME:
-    /*[[VObjectManager sharedManager] repostNode:self.currentNode
-                                      withName:nil
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.hasReposted = YES;
-         self.sequence.repostCount = @(self.sequence.repostCount.integerValue + 1);
-     }
-                                     failBlock:nil];*/
-}
-
 #pragma mark - Create the ad chain
 
 - (void)setupAdChain
@@ -220,48 +207,7 @@
     self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
-- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure
-{
-    NSString *nextSequenceId = self.endCardViewModel.nextSequenceId;
-    if ( nextSequenceId == nil )
-    {
-        if ( failure != nil )
-        {
-            NSString *message = @"Unable to load next sequence beacuse the ID is invalid.";
-            failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
-        }
-        return;
-    }
-    
-    [[VObjectManager sharedManager] fetchSequenceByID:nextSequenceId
-                                 inStreamWithStreamID:self.streamId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         VSequence *nextSequence = resultObjects.firstObject;
-         if ( nextSequence == nil || ![nextSequence isKindOfClass:[VSequence class]] )
-         {
-             if ( failure != nil )
-             {
-                 NSString *message = @"Response did not contain a valid sequence.";
-                 failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
-             }
-         }
-         
-         if ( success != nil )
-         {
-             success( nextSequence );
-         }
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( failure != nil )
-         {
-             failure( error );
-         }
-     }];
-}
-
-- (void)reloadData2
+- (void)reloadData2 // TODO: Move all these into Swift
 {
     if (![self.sequence isPoll])
     {

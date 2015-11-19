@@ -1434,7 +1434,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [endCardViewController transitionOutAllWithBackground:NO completion:nil];
     
-    [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
+    [self.viewModel loadNextSequenceWithSuccess:^(VSequence *sequence)
      {
          [self showNextSequence:sequence];
          
