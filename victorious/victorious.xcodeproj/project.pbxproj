@@ -472,8 +472,8 @@
 		797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */; };
 		7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */; };
 		797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */; };
-		797FD25D1BFA9D6000BFFB08 /* UserInteractionsOnSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* UserInteractionsOnSequenceRequestTests.swift */; };
-		797FD25F1BFA9E4000BFFB08 /* UserInteractionsOnSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25E1BFA9E4000BFFB08 /* UserInteractionsOnSequenceRequest.swift */; };
+		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
+		797FD25F1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
@@ -2349,8 +2349,8 @@
 		7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCommentsDataSource.swift; sourceTree = "<group>"; };
 		797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCommmentsDataSource.h; sourceTree = "<group>"; };
 		797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCommmentsDataSource.m; sourceTree = "<group>"; };
-		797FD25C1BFA9D6000BFFB08 /* UserInteractionsOnSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInteractionsOnSequenceRequestTests.swift; sourceTree = "<group>"; };
-		797FD25E1BFA9E4000BFFB08 /* UserInteractionsOnSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInteractionsOnSequenceRequest.swift; sourceTree = "<group>"; };
+		797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequestTests.swift; sourceTree = "<group>"; };
+		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
 		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
 		79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
@@ -4897,7 +4897,7 @@
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
-				797FD25E1BFA9E4000BFFB08 /* UserInteractionsOnSequenceRequest.swift */,
+				797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -4959,7 +4959,7 @@
 				C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */,
 				C323C3B21BF55CFD00681059 /* UpdateCommentRequestTests.swift */,
 				0300AA5C1BF17C76000A121D /* VMultipartFormDataWriterTests.m */,
-				797FD25C1BFA9D6000BFFB08 /* UserInteractionsOnSequenceRequestTests.swift */,
+				797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */,
 			);
 			path = VictoriousIOSSDKTests;
 			sourceTree = "<group>";
@@ -4986,11 +4986,6 @@
 			isa = PBXGroup;
 			children = (
 				797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */,
-				67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */,
-				67C210201BFA7A210074E40E /* HashtagSearchResponse.json */,
-				67C210211BFA7A210074E40E /* ImageAsset.json */,
-				67C210221BFA7A210074E40E /* LoginResponse.json */,
-				67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */,
 				03314F4B1BE40F0100EE74FD /* AccountCreateResponse.json */,
 				0300AA7B1BF2999D000A121D /* AccountUpdateResponse.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
@@ -9759,7 +9754,7 @@
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
 				678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */,
 				A7EF1BCF1BF2754D00D429DE /* Stream.swift in Sources */,
-				797FD25F1BFA9E4000BFFB08 /* UserInteractionsOnSequenceRequest.swift in Sources */,
+				797FD25F1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift in Sources */,
 				A7EF1BCC1BF2754D00D429DE /* Node.swift in Sources */,
 				C323C3B71BF55F6600681059 /* UpdateCommentRequest.swift in Sources */,
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
@@ -9845,7 +9840,7 @@
 				C32D8BD61BF2D36200AB5085 /* FollowHashtagRequestTests.swift in Sources */,
 				C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
-				797FD25D1BFA9D6000BFFB08 /* UserInteractionsOnSequenceRequestTests.swift in Sources */,
+				797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */,
 				67FD54C71BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift in Sources */,
 				6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */,
 				C3348B231BF53FAA004183A1 /* Bool+InitializersTests.swift in Sources */,

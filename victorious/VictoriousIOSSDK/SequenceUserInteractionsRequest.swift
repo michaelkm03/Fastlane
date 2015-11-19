@@ -1,6 +1,6 @@
 
 //
-//  UserInteractionsOnSequenceRequest.swift
+//  SequenceUserInteractionsRequest
 //  victorious
 //
 //  Created by Michael Sena on 11/16/15.
@@ -9,7 +9,7 @@
 
 import SwiftyJSON
 
-public struct UserInteractionsOnSequenceRequest: RequestType {
+public struct SequenceUserInteractionsRequest: RequestType {
     
     let sequenceID: Int64
     let userID: Int64
