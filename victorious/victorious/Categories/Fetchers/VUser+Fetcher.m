@@ -84,4 +84,9 @@
     return YES;
 }
 
+- (Float64)maxUploadDurationFloat
+{
+    return self.maxUploadDuration ? self.maxUploadDuration.floatValue : 15.0f;
+}
+
 @end
