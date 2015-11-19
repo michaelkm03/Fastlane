@@ -4,7 +4,7 @@ require 'digest/sha1'
 require 'vams/app'
 require 'vams/environment'
 require 'vams/screenshots'
-require 'httparty'
+require 'vams/http'
 
 module VAMS
   class Client
@@ -35,12 +35,12 @@ module VAMS
         'Date'       => @date.to_s
       }
 
-      response = send_request(type:     :post,
-                              path:     Endpoints::LOGIN,
-                              protocol: @env.protocol,
-                              host:     @env.host,
-                              headers:  headers,
-                              options:  post_data)
+      response = HTTP.send_request(type:     :post,
+                                   path:     Endpoints::LOGIN,
+                                   protocol: @env.protocol,
+                                   host:     @env.host,
+                                   headers:  headers,
+                                   options:  post_data)
 
       json    = JSON.parse(response.body)
       payload = json['payload']
@@ -52,11 +52,11 @@ module VAMS
 
     def apps_to_build
       endpoint          = Endpoints::APPS_LIST
-      response          = send_request(type:     :get,
-                                       path:     endpoint,
-                                       host:     @env.host,
-                                       protocol: @env.protocol,
-                                       headers:  construct_headers(endpoint: endpoint))
+      response          = HTTP.send_request(type:     :get,
+                                            path:     endpoint,
+                                            host:     @env.host,
+                                            protocol: @env.protocol,
+                                            headers:  construct_headers(endpoint: endpoint))
       json              = JSON.parse(response.body)
 
       # HACK: Temporarily submit only the leachypeachy app.
@@ -71,41 +71,37 @@ module VAMS
 
     def app_by_build_name(build_name)
       endpoint = Endpoints::APP_BY_BUILD_NAME + '/' + build_name
-      response = send_request(type:     :get,
-                              path:     endpoint,
-                              host:     @env.host,
-                              protocol: @env.protocol,
-                              headers:  construct_headers(endpoint: endpoint))
+      response = HTTP.send_request(type:     :get,
+                                   path:     endpoint,
+                                   host:     @env.host,
+                                   protocol: @env.protocol,
+                                   headers:  construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       App.new(json['payload'])
     end
 
     def get_screenshots(build_name)
       endpoint = Endpoints::SCREENSHOTS + '/' + build_name
-      response = send_request(type:     :get,
-                              path:     endpoint,
-                              host:     @env.host,
-                              protocol: @env.protocol,
-                              headers:  construct_headers(endpoint: endpoint))
+      response = HTTP.send_request(type:     :get,
+                                   path:     endpoint,
+                                   host:     @env.host,
+                                   protocol: @env.protocol,
+                                   headers:  construct_headers(endpoint: endpoint))
       json     = JSON.parse(response.body)
       Screenshots.new(json['payload'])
     end
 
     def submit_result(result)
       endpoint = Endpoints::SUBMISSION_RESPONSE
-      send_request(type:     :post,
-                   host:     @env.host,
-                   protocol: @env.protocol,
-                   path:     endpoint,
-                   body:     result,
-                   headers:  construct_headers(endpoint: endpoint))
+      HTTP.send_request(type:     :post,
+                        host:     @env.host,
+                        protocol: @env.protocol,
+                        path:     endpoint,
+                        body:     result,
+                        headers:  construct_headers(endpoint: endpoint))
     end
 
     private
-
-    def send_request(type:, protocol: 'https', host:, path:, options:{}, headers: {}, body: {})
-      HTTParty.send(type.to_sym, protocol + '://' + host + path, headers: headers, query: options, body: body)
-    end
 
     def construct_headers(endpoint:)
       {
