@@ -393,6 +393,7 @@
 		79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */; };
 		79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
+		79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -2067,6 +2068,7 @@
 		79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRootViewController+UIAutomation.m"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
+		79C624961BFE43090086AF9E /* VUser+FetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+FetcherTests.m"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6748,6 +6750,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				79C624961BFE43090086AF9E /* VUser+FetcherTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9909,6 +9912,7 @@
 				F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
+				79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */,
 				0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
