@@ -15,18 +15,18 @@ class CGRect_AspectTests: XCTestCase {
     let destRect = CGRect(x: 0, y: 0, width: 32, height: 32)
     
     func testAspectFitFunction() {
-        let tallFitRect = tallRect.aspectFit(destRect)
+        let tallFitRect = tallRect.v_aspectFit(destRect)
         XCTAssertEqual(tallFitRect, CGRect(x: 8, y: 0, width: 16, height: 32))
         
-        let wideFitRect = wideRect.aspectFit(destRect)
+        let wideFitRect = wideRect.v_aspectFit(destRect)
         XCTAssertEqual(wideFitRect, CGRect(x: 0, y: 8, width: 32, height: 16))
     }
     
     func testApectFillFunction() {
-        let tallFillRect = tallRect.aspectFill(destRect)
+        let tallFillRect = tallRect.v_aspectFill(destRect)
         XCTAssertEqual(tallFillRect, CGRect(x: 0, y: -16, width: 32, height: 64))
         
-        let wideFillRect = wideRect.aspectFill(destRect)
+        let wideFillRect = wideRect.v_aspectFill(destRect)
         XCTAssertEqual(wideFillRect, CGRect(x: -16, y: 0, width: 64, height: 32))
     }
 

@@ -97,9 +97,9 @@ class FilteredImageView: GLKView {
     private func imageBoundsForContentMode(fromRect: CGRect, toRect: CGRect) -> CGRect {
         switch contentMode {
         case .ScaleAspectFill:
-            return fromRect.aspectFill(toRect)
+            return fromRect.v_aspectFill(toRect)
         case .ScaleAspectFit:
-            return fromRect.aspectFit(toRect)
+            return fromRect.v_aspectFit(toRect)
         default:
             return fromRect
         }

@@ -10,7 +10,7 @@ import Foundation
 
 extension CGRect {
     
-    public func aspectFit(toRect: CGRect) -> CGRect {
+    public func v_aspectFit(toRect: CGRect) -> CGRect {
         let fromAspectRatio = self.size.width / self.size.height;
         let toAspectRatio = toRect.size.width / toRect.size.height;
         
@@ -27,7 +27,7 @@ extension CGRect {
         return CGRectIntegral(fitRect)
     }
     
-    public func aspectFill(toRect: CGRect) -> CGRect {
+    public func v_aspectFill(toRect: CGRect) -> CGRect {
         let fromAspectRatio = self.size.width / self.size.height;
         let toAspectRatio = toRect.size.width / toRect.size.height;
         
