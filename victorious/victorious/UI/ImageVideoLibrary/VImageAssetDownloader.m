@@ -65,7 +65,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
 
     NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
     [[PHImageManager defaultManager] requestImageForAsset:self.asset
-                                               targetSize:CGSizeMake(600.0, 600.0)
+                                               targetSize:CGSizeMake(640.0, 640.0)
                                               contentMode:PHImageContentModeDefault
                                                   options:requestOptions
                                             resultHandler:^(UIImage *result, NSDictionary *info)
@@ -77,7 +77,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
                                progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
                            });
                             NSError *error;
-                            NSData *imageData = UIImageJPEGRepresentation(result, 1.0f);
+                            NSData *imageData = UIImageJPEGRepresentation(result, 0.7f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
                             
                             dispatch_async(dispatch_get_main_queue(), ^

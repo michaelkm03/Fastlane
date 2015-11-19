@@ -46,7 +46,7 @@
  The collection view data source that loads and manages the data to display
  as well as configuring and supplying cells to display.
  */
-@property (nonatomic, strong) id<VCollectionToolPickerDataSource> dataSource;
+@property (nonatomic, weak) id<VCollectionToolPickerDataSource> dataSource;
 
 /**
  Reloads the collection view, which asks its data source for a fresh batch
