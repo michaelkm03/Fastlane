@@ -27,7 +27,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
             }
             // TODO: Use this property to filter out flagged content
             // TODO: See about using this class for Comments, too
-            sequence.isFlagged = true
+            sequence.isFlaggedByMainUser = true
             context.saveChanges()
         }
     }

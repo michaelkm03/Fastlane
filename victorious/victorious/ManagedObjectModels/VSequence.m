@@ -31,7 +31,7 @@
 @dynamic isLikedByMainUser;
 @dynamic hasBeenRepostedByMainUser;
 @dynamic isRemix;
-@dynamic isFlagged;
+@dynamic isFlaggedByMainUser;
 @dynamic isRepost;
 @dynamic likeCount;
 @dynamic memeCount;

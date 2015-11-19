@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+// TODO: Remove this whole class in favor of `isFlaggedByMainUser` on `VSequence`
+
 //Describes a kind of flag-able content
 typedef NS_ENUM(NSInteger, VFlaggedContentType)
 {
