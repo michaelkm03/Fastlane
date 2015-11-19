@@ -8,8 +8,8 @@
 
 import Foundation
 
-/// An interface that defines a object object used by the PersistentStoreContext protocol.  Model types that will
-/// be managed using a PersistentStoreContext object must implement PersistentStoreObject.
+/// Defines a object object used by the PersistentStoreContext protocol.  Model types that will
+/// be managed using a PersistentStoreContext must implement PersistentStoreObject.
 @objc public protocol PersistentStoreObject : class {
     
     /// Identifies the type of the object to the store for operations such as loading, saving, etc.

@@ -9,10 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// An object that can be instantiated to provide access to this application's primary peristent store.
-/// It has internally configured a singleton instance of the concrete persistence implementation, which all
-/// instances of `PersistentStore` will interact with.  When the needs of this application expand beyond using
-/// a single persistent store, this class will need to be modified to support that.
+/// An object that provides access to this application's primary peristent store.
+/// It has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
+/// This allows calling code to instantiate a new `PersistentStore` instance wherever needed.
 public class PersistentStore: NSObject {
     
     static let persistentStorePath          = "victoriOS.sqlite"
@@ -40,7 +39,7 @@ public class PersistentStore: NSObject {
         )
     }()
     
-    /// Performs a closure synchronously using the main context of the persistent store, provided
+    /// Executes a closure synchronously using the main context of the persistent store, provided
     /// as a `PersistentStoreContextBasic` type, which is designed to be used from Objective-C only.  From Swift,
     /// use `sync(_:)`, which adds a generic type for a return value (which, keep in mind, can be Void).
     public func syncBasic( closure: ((PersistentStoreContextBasic)->()) ) {
@@ -50,7 +49,7 @@ public class PersistentStore: NSObject {
         }
     }
     
-    /// Performs a closure synchronously using the main context of the persistent store.
+    /// Executes a closure synchronously using the main context of the persistent store.
     /// Keep in mind, the generic type can be Void if no result is desired.
     public func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
         let context = PersistentStore.sharedManager.mainContext
@@ -61,7 +60,7 @@ public class PersistentStore: NSObject {
         return result!
     }
     
-    /// Performs a closure synchronously using the background context of the persistent store.
+    /// Executes a closure synchronously using the background context of the persistent store.
     /// This method should be used for any concurrent data operations, such as
     /// parsing a network response into the peristent store.
     /// Keep in mind, the generic type can be Void if no result is desired.
@@ -74,7 +73,7 @@ public class PersistentStore: NSObject {
         return result!
     }
     
-    /// Performs a closure asynchronously using the background context of the persistent store.
+    /// Executes a closure asynchronously using the background context of the persistent store.
     /// This method should be used for any asynchronous, concurrent data operations, such as
     /// parsing a network response into the peristent store.
     public func asyncFromBackground( closure: ((PersistentStoreContext)->()) ) {
