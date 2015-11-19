@@ -351,6 +351,7 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
+		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
@@ -2019,6 +2020,7 @@
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
+		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
@@ -7380,16 +7382,17 @@
 		D89A50071A000D540010D050 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				671B01B41BFD5AB800E47902 /* DismissButton.swift */,
+				A7724FEB1B33422B00B1BBB3 /* VActionButton.h */,
+				A7724FEC1B33422B00B1BBB3 /* VActionButton.m */,
 				F065A4081B433C7B00F0281B /* VFollowControl.h */,
 				F065A4091B433C7B00F0281B /* VFollowControl.m */,
 				D89F1CD81ABE747000AF14A5 /* VRoundedBackgroundButton.h */,
 				D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */,
-				D8FFB8E01B0272540022A491 /* VStreamLabel.h */,
-				D8FFB8E11B0272540022A491 /* VStreamLabel.m */,
-				A7724FEB1B33422B00B1BBB3 /* VActionButton.h */,
-				A7724FEC1B33422B00B1BBB3 /* VActionButton.m */,
 				A76567121B3B1DAA002721F3 /* VSleekActionButton.h */,
 				A76567131B3B1DAA002721F3 /* VSleekActionButton.m */,
+				D8FFB8E01B0272540022A491 /* VStreamLabel.h */,
+				D8FFB8E11B0272540022A491 /* VStreamLabel.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -9387,6 +9390,7 @@
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */,
 				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
+				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
