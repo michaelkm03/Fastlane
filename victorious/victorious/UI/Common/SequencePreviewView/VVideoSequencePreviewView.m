@@ -367,7 +367,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     else
     {
         self.state = VVideoStateEnded;
-        [self.videoPlayer pause];
         [super videoPlayerDidReachEnd:videoPlayer];
     }
 }
@@ -381,7 +380,10 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStopBuffering:videoPlayer];
-    self.state = VVideoStatePlaying;
+    if ( self.state != VVideoStateEnded )
+    {
+        self.state = VVideoStatePlaying;
+    }
 }
 
 - (void)videoPlayer:(VVideoView *__nonnull)videoPlayer didPlayToTime:(Float64)time
