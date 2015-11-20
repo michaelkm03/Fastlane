@@ -42,7 +42,7 @@
         VCreationType creationType = ((ShowCreateSheetOperation *)op).chosenCreationType;
         [self.creationFlowPresenter presentWorkspaceOnViewController:originVC creationType:creationType];
     };
-    [operation queue];
+    [operation queueOn:[Operation sharedQueue] completionBlock:nil];
     return NO;
 }
 

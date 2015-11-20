@@ -330,14 +330,14 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         // Logout
         Operation *operation = [[LogoutLocally alloc] initFromViewController:self dependencyManager:self.dependencyManager];
-        [operation queueOn:[NSOperationQueue mainQueue] mainQueueCompletionBlock:^void(Operation *op){
+        [operation queueOn:[NSOperationQueue mainQueue] completionBlock:^void(Operation *op){
             [self updateLogoutButtonState];
         }];
     }
     else
     {
         // Show login prompt
-        [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queue];
+        [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queueOn:[Operation sharedQueue] completionBlock:nil];
         [self updateLogoutButtonState];
     }
 }

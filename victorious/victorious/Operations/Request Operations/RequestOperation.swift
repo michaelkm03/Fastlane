@@ -11,13 +11,15 @@ import VictoriousIOSSDK
 
 private let _defaultQueue = NSOperationQueue()
 
-class RequestOperation<T: RequestType> : NSOperation {
+class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     private(set) var requestError: NSError?
     
-    let request: T
+    static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
     var mainQueueCompletionBlock: ((NSError?)->())?
+    
+    let request: T
     
     var defaultQueue: NSOperationQueue {
         return _defaultQueue
@@ -27,40 +29,24 @@ class RequestOperation<T: RequestType> : NSOperation {
         self.request = request
     }
     
-    final func queue( completionBlock:((NSError?)->())? = nil) {
-        if let completionBlock = completionBlock {
-            self.mainQueueCompletionBlock = completionBlock
-        }
-        self.completionBlock = {
-            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                let error: NSError? = nil // FIXME
-                strongSelf.onComplete( error )
-                strongSelf.mainQueueCompletionBlock?( error )
-            }
-        }
-        _defaultQueue.addOperation( self )
-    }
-    
     func cancelAllOperations() {
         for operation in _defaultQueue.operations {
             operation.cancel()
         }
     }
     
-    // MARK: - Subclassing
+    // MARK: - Lifecycle Subclassing
     
-    /// Called on background thread, designed to be overriden in subclasses.
+    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onStart() {}
     
-    /// Called on background thread, designed to be overriden in subclasses.
+    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onResponse( response: T.ResultType ) {}
     
-    /// Called on main thread, designed to be overriden in subclasses.
+    /// Called on main thread before `completionBlcok` of NSOperation is called, designed to be overriden in subclasses.
     func onComplete( error: NSError? ) {}
     
+    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onError( error: NSError? ) {}
     
     // MARK: - NSOperation overrides
@@ -111,6 +97,23 @@ class RequestOperation<T: RequestType> : NSOperation {
             }
         )
         dispatch_semaphore_wait( semaphore, DISPATCH_TIME_FOREVER )
+    }
+    
+    func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
+        if let completionBlock = completionBlock {
+            self.mainQueueCompletionBlock = completionBlock
+        }
+        self.completionBlock = {
+            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
+                guard let strongSelf = self where !strongSelf.cancelled else {
+                    return
+                }
+                let error: NSError? = nil // FIXME
+                strongSelf.onComplete( error )
+                strongSelf.mainQueueCompletionBlock?( error )
+            }
+        }
+        _defaultQueue.addOperation( self )
     }
 }
 
