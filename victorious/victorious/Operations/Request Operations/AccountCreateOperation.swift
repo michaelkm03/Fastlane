@@ -70,6 +70,6 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         // TODO: (from object manager)
         // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
         
-        self.queueAfter( ConversationListOperation(), queue: Operation.defaultQueue )
+        ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }

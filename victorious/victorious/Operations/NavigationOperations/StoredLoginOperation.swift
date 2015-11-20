@@ -38,7 +38,7 @@ class StoredLoginOperation: Operation {
             }
             
             let id = Int64(user.remoteId.integerValue)
-            self.queueAfter( UserInfoOperation( userID: id ), queue: Operation.defaultQueue )
+            UserInfoOperation( userID: id ).queueAfter( self, queue: Operation.defaultQueue )
         }
         else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let accountIdentifier = defaults.stringForKey(kAccountIdentifierDefaultsKey),
@@ -50,7 +50,7 @@ class StoredLoginOperation: Operation {
                     loginType: loginType,
                     accountIdentifier: accountIdentifier
                 )
-                self.queueAfter( operation, queue: Operation.defaultQueue )
+                operation.queueAfter( self, queue: Operation.defaultQueue )
         }
         else {
             // Nothing to do here without a stored token or credentials to log in.
