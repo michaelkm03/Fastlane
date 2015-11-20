@@ -2,11 +2,12 @@ require 'test_helper'
 require 'vams/client'
 require 'vams/metadata'
 require 'vams/app'
-require 'fakefs/safe'
 
 module VAMS
   class MetadataTest < Minitest::Test
     def setup
+      @tmp_dir = File.join(TEST_DIR_PATH, 'tmp')
+      clean_tmp_dir
       @copyright              = 'Victorious Inc'
       @ios_primary_category   = 'Entertainment'
       @ios_secondary_category = 'Education'
@@ -30,32 +31,25 @@ module VAMS
       @metadata = Metadata.new(app)
     end
 
-    def test_extraction
-      assert_equal(@copyright,              @metadata.copyright)
-      assert_equal(@ios_primary_category,   @metadata.ios_primary_category)
-      assert_equal(@ios_secondary_category, @metadata.ios_secondary_category)
-      assert_equal(@ios_description,        @metadata.ios_description)
-      assert_equal(@ios_keywords,           @metadata.ios_keywords)
-      assert_equal(@app_name,               @metadata.app_name)
-      assert_equal(@privacy_policy_url,     @metadata.privacy_policy_url)
-      assert_equal(@support_url,            @metadata.support_url)
+    def test_saving
+      location = @tmp_dir
+      @metadata.save(location: location)
+      assert_file_exists(location, 'copyright.txt')
     end
 
-    def test_saving
-      FakeFS do
-        begin
-          location = File.join(TEST_DIR_PATH, 'tmp')
-          @metadata.save(location: location)
-          assert_file_exists(location, 'copyright.txt')
-        rescue Errno::ENOENT
-          # HACK: work around an intermittent no file error
-        end
-      end
+    def teardown
+      clean_tmp_dir
     end
+
+    private
 
     def assert_file_exists(*paths)
       file_location = File.join(paths)
       assert(File.exists?(file_location))
+    end
+
+    def clean_tmp_dir
+      FileUtils.rm_rf(Dir["#{@tmp_dir.to_s}/*.txt"])
     end
   end
 end
