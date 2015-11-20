@@ -848,6 +848,10 @@
 		A76AEAA51BFED31B00E8A26F /* VVoteSettingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */; };
 		A76AEAA61BFED31B00E8A26F /* VVoteTypeFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */; };
 		A76AEAA71BFED31B00E8A26F /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
+		A76AEAA91BFFAD8000E8A26F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAA81BFFAD8000E8A26F /* AccountUpdateOperation.swift */; };
+		A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */; };
+		A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */; };
+		A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */; };
 		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
 		A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */; };
@@ -2942,6 +2946,10 @@
 		A76AEA411BFEBA0500E8A26F /* UnlikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEA421BFEBA0500E8A26F /* UserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoOperation.swift; sourceTree = "<group>"; };
 		A76AEA511BFEBB8B00E8A26F /* QueueableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueableTests.swift; sourceTree = "<group>"; };
+		A76AEAA81BFFAD8000E8A26F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
+		A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileEditViewController.swift; sourceTree = "<group>"; };
+		A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VChangePasswordViewController.swift; sourceTree = "<group>"; };
+		A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileCreateViewController.swift; sourceTree = "<group>"; };
 		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
 		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
@@ -4851,6 +4859,7 @@
 				A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */,
 				0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */,
 				0314D3F519B46B5E00FA363C /* VChangePasswordViewController.m */,
+				A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */,
 				0314D3F819B46B5E00FA363C /* VPrivacyPoliciesViewController.h */,
 				0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */,
 				0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */,
@@ -6774,6 +6783,7 @@
 			isa = PBXGroup;
 			children = (
 				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
+				A76AEAA81BFFAD8000E8A26F /* AccountUpdateOperation.swift */,
 				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
@@ -7386,6 +7396,7 @@
 				A7F711DC1AE1D5A00086F729 /* VAbstractProfileEditViewController.h */,
 				A7F711DD1AE1D5A00086F729 /* VAbstractProfileEditViewController.m */,
 				A7F711DE1AE1D5A00086F729 /* VProfileEditViewController.h */,
+				A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */,
 				A7F711DF1AE1D5A00086F729 /* VProfileEditViewController.m */,
 			);
 			path = "Edit Profile";
@@ -8121,6 +8132,7 @@
 				D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */,
 				D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */,
 				D85B70651B0EAF3F0038CA5B /* VProfileCreateViewController.h */,
+				A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */,
 				D85B70661B0EAF3F0038CA5B /* VProfileCreateViewController.m */,
 				D85B702D1B0EAF3F0038CA5B /* VProfileCreateViewController.storyboard */,
 				D80536221B17B4310049B77A /* VPromptCarouselViewController.h */,
@@ -10421,6 +10433,7 @@
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
+				A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
 				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
@@ -10687,6 +10700,7 @@
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
 				A76AEA4A1BFEBA0500E8A26F /* SequenceFetchOperation.swift in Sources */,
+				A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */,
 				DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */,
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
@@ -10798,6 +10812,7 @@
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
+				A76AEAA91BFFAD8000E8A26F /* AccountUpdateOperation.swift in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
@@ -10875,6 +10890,7 @@
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
+				A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */,
 				C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,

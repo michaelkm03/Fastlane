@@ -1,15 +1,15 @@
 //
-//  VLoginFlowAPIHelper.swift
+//  VProfileCreateViewController.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/12/15.
+//  Created by Patrick Lynch on 11/20/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-extension VLoginFlowAPIHelper {
+extension VProfileCreateViewController {
     
     func queueLoginOperationWithEmail(email: String, password: String, completion:(NSError?)->() ) -> NSOperation {
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
@@ -18,12 +18,12 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, completion: ((NSError?)->())? ) -> NSOperation? {
+    func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?)->())? ) -> NSOperation? {
         let operation = AccountUpdateOperation(
             profileUpdate: User.ProfileUpdate(
                 email: nil,
                 name: username,
-                location: nil,
+                location: location,
                 tagline: nil,
                 profileImageURL: profileImageURL
             )

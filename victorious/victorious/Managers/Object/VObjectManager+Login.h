@@ -31,20 +31,6 @@ extern NSString * const kLoggedInChangedNotification;
 - (RKManagedObjectRequestOperation *)templateWithSuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
 
-- (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
-                                             password:(NSString *)password
-                                                 name:(NSString *)name
-                                      profileImageURL:(NSURL *)profileImageURL
-                                             location:(NSString *)location
-                                              tagline:(NSString *)tagline
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail;
-
-- (AFHTTPRequestOperation *)updatePasswordWithCurrentPassword:(NSString *)currentPassword
-                                                  newPassword:(NSString *)newPassword
-                                                 successBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;

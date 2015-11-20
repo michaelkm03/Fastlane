@@ -31,16 +31,14 @@ class StreamOperation: RequestOperation<StreamRequest> {
         persistentStore.syncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
             persistentStream.populate( fromSourceModel: stream )
-            
-            dispatch_sync( dispatch_get_main_queue() ) {
-                if let nextPageRequest = response.nextPage {
-                    self.nextPageOperation = StreamOperation( request: nextPageRequest )
-                }
-                if let previousPageRequest = response.previousPage {
-                    self.previousPageOperation = StreamOperation( request: previousPageRequest )
-                }
-            }
             context.saveChanges()
+        }
+        
+        if let nextPageRequest = response.nextPage {
+            self.nextPageOperation = StreamOperation( request: nextPageRequest )
+        }
+        if let previousPageRequest = response.previousPage {
+            self.previousPageOperation = StreamOperation( request: previousPageRequest )
         }
     }
 }

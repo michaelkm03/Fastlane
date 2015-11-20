@@ -30,28 +30,27 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     override func onResponse( response: AccountCreateRequest.ResultType ) {
         
         // Do this on the main thread so that changes are available immeidately in the `onComplete` method
-        let persistentUser: VUser = persistentStore.sync() { context in
+        let identifier: AnyObject = persistentStore.sync() { context in
             let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
             user.setCurrentUser(inContext: context)
             context.saveChanges()
-            return user
+            return user.identifier
         }
         
-        dispatch_sync( dispatch_get_main_queue() ) {
-            self.userIdentifier = persistentUser.identifier
-            self.isNewUser = response.newUser
-        }
+        self.userIdentifier = identifier
+        self.isNewUser = response.newUser
     }
     
     override func onComplete( error: NSError? ) {
         
         // The the current user in our cache
         persistentStore.sync() { context in
-            guard let identifier = self.userIdentifier, let persistentUser: VUser = context.getObject(identifier) else {
-                fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
+            guard let identifier = self.userIdentifier,
+                let persistentUser: VUser = context.getObject(identifier) else {
+                    fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
             }
             persistentUser.setCurrentUser(inContext: context)
             VStoredLogin().saveLoggedInUserToDisk( persistentUser )

@@ -80,27 +80,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:username
-                                              profileImageURL:nil
-                                                     location:nil
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    
+    [self queueUpdateProfileOperationWithUsername:username profileImageURL: nil completion:^(NSError *error)
      {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(YES, nil);
-                        });
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(NO, error);
-                        });
+         [hud hide:YES];
+         completion( error == nil, error);
      }];
 }
 
@@ -303,25 +287,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:nil
-                                              profileImageURL:filePath
-                                                     location:nil
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [self queueUpdateProfileOperationWithUsername:nil profileImageURL:filePath completion:^(NSError *error)
      {
-         if (completion != nil)
-         {
-             completion(YES, nil);
-         }
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (completion != nil)
-         {
-             completion(NO, error);
-         }
+         completion(error == nil, error);
      }];
 }
 

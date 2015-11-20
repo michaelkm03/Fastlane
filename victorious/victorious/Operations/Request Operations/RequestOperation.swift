@@ -37,16 +37,12 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     // MARK: - Lifecycle Subclassing
     
-    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onStart() {}
     
-    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onResponse( response: T.ResultType ) {}
     
-    /// Called on main thread before `completionBlcok` of NSOperation is called, designed to be overriden in subclasses.
     func onComplete( error: NSError? ) {}
     
-    /// Called on queue on which operation is added, designed to be overriden in subclasses.
     func onError( error: NSError? ) {}
     
     // MARK: - NSOperation overrides
@@ -61,41 +57,43 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     final override func main() {
         let semaphore = dispatch_semaphore_create(0)
-        self.onStart()
-        
-        let persistentStore = PersistentStore()
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(v_environment: currentEnvironment)
-        let baseURL = currentEnvironment.baseURL
-        
-        
-        let currentUserID = VUser.currentUser()?.identifier
-        let authenticationContext: AuthenticationContext? = persistentStore.syncFromBackground() { context in
-            if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
-                return AuthenticationContext(v_currentUser: currentUser)
+        dispatch_async( dispatch_get_main_queue() ) {
+            
+            self.onStart()
+            
+            let persistentStore = PersistentStore()
+            let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+            let requestContext = RequestContext(v_environment: currentEnvironment)
+            let baseURL = currentEnvironment.baseURL
+            
+            let currentUserID = VUser.currentUser()?.identifier
+            let authenticationContext: AuthenticationContext? = persistentStore.syncFromBackground() { context in
+                if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
+                    return AuthenticationContext(v_currentUser: currentUser)
+                }
+                return nil
             }
-            return nil
+            
+            self.request.execute(
+                baseURL: baseURL,
+                requestContext: requestContext,
+                authenticationContext: authenticationContext,
+                callback: { [weak self] (result, error) -> () in
+                    dispatch_async( dispatch_get_main_queue() ) {
+                        guard let strongSelf = self where !strongSelf.cancelled else {
+                            return
+                        }
+                        if let theResult = result {
+                            strongSelf.onResponse( theResult )
+                        } else {
+                            strongSelf.requestError = (error as? NSError)?.copy() as? NSError
+                            strongSelf.onError( nil )
+                        }
+                        dispatch_semaphore_signal( semaphore )
+                    }
+                }
+            )
         }
-        
-        self.request.execute(
-            baseURL: baseURL,
-            requestContext: requestContext,
-            authenticationContext: authenticationContext,
-            callback: { [weak self] (result, error) -> () in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                if let theResult = result {
-                    strongSelf.onResponse( theResult )
-                } else {
-                    //strongSelf.requestError = (error as? NSError)?.copy() as? NSError
-                    strongSelf.onError( nil )
-                }
-                dispatch_async( dispatch_get_main_queue() ) {
-                    dispatch_semaphore_signal( semaphore )
-                }
-            }
-        )
         dispatch_semaphore_wait( semaphore, DISPATCH_TIME_FOREVER )
     }
     
@@ -108,9 +106,8 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
                 guard let strongSelf = self where !strongSelf.cancelled else {
                     return
                 }
-                let error: NSError? = nil // FIXME
-                strongSelf.onComplete( error )
-                strongSelf.mainQueueCompletionBlock?( error )
+                strongSelf.onComplete( strongSelf.requestError )
+                strongSelf.mainQueueCompletionBlock?( strongSelf.requestError )
             }
         }
         _defaultQueue.addOperation( self )

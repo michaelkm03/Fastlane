@@ -9,10 +9,10 @@
 #import "VProfileEditViewController.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
-
 #import "VObjectManager+Login.h"
 #import "VDependencyManager.h"
 #import "VUserProfileViewController.h"
+#import "victorious-Swift.h"
 
 @interface VProfileEditViewController ()
 
@@ -79,29 +79,30 @@
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"ProfileSave", @"");
 
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:self.usernameTextField.text
-                                              profileImageURL:self.updatedProfileImage
-                                                     location:self.locationTextField.text
-                                                      tagline:self.taglineTextView.text
-                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    [self updateProfileWithName:self.usernameTextField.text
+                 profileImageURL:self.updatedProfileImage
+                        location:self.locationTextField.text
+                         tagline:self.taglineTextView.text
+                      completion:^(NSError *error)
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
-        
-        [progressHUD hide:YES];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-    {   
-        [progressHUD hide:YES];
-        sender.enabled = YES;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:NSLocalizedString(@"ProfileSaveFail", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
+        if ( error == nil )
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
+            
+            [progressHUD hide:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [progressHUD hide:YES];
+            sender.enabled = YES;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:NSLocalizedString(@"ProfileSaveFail", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
     }];
 }
 
