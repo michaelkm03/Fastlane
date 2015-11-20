@@ -15,7 +15,7 @@ module VAMS
 
     def create_language_dir_if_needed(location:, language:)
       language_dir_path = File.join(location.to_s, language.to_s)
-      FileUtils.mkdir_p(language_dir_path) unless File.directory?(language_dir_path)
+      FileHelper.make_directory_if_needed(path: language_dir_path)
       language_dir_path
     end
 

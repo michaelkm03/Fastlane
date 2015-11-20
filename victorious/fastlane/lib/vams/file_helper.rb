@@ -7,5 +7,9 @@ module VAMS
         file.write(text)
       end
     end
+
+    def make_directory_if_needed(path:)
+      FileUtils.mkdir_p(path) unless File.directory?(path)
+    end
   end
 end

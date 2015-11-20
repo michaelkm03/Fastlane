@@ -33,9 +33,15 @@ module VAMS
 
     def test_saving
       location = @tmp_dir
-      @metadata.save(location: location)
+      language = 'en_US'
+      @metadata.save(location: location, language: 'en_US')
       assert_file_exists(location, 'copyright.txt')
       assert_file_exists(location, 'secondary_category.txt')
+      assert_file_exists(location, language, 'description.txt')
+      assert_file_exists(location, language, 'keywords.txt')
+      assert_file_exists(location, language, 'privacy_url.txt')
+      assert_file_exists(location, language, 'support_url.txt')
+      assert_file_exists(location, language, 'name.txt')
     end
 
     def teardown
@@ -50,7 +56,7 @@ module VAMS
     end
 
     def clean_tmp_dir
-      FileUtils.rm_rf(Dir["#{@tmp_dir.to_s}/*.txt"])
+      FileUtils.rm_rf(Dir["#{@tmp_dir.to_s}/*"])
     end
   end
 end

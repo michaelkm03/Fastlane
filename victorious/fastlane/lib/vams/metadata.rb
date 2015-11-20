@@ -1,15 +1,14 @@
 module VAMS
   class Metadata
-    ATTRIBUTES = [:copyright,
-                       :primary_category,
-                       :secondary_category,
-                       :description,
-                       :keywords,
-                       :privacy_url,
-                       :support_url,
-                       :name]
-
-    attr_reader(*ATTRIBUTES)
+    CORE_ATTRIBUTES              = [:copyright,
+                                    :primary_category,
+                                    :secondary_category]
+    LANGUAGE_SPECIFIC_ATTRIBUTES = [:description,
+                                    :keywords,
+                                    :privacy_url,
+                                    :support_url,
+                                    :name]
+    attr_reader(*(CORE_ATTRIBUTES + LANGUAGE_SPECIFIC_ATTRIBUTES))
 
     def initialize(app)
       @copyright          = app.copyright
@@ -22,9 +21,15 @@ module VAMS
       @name               = app.app_name
     end
 
-    def save(location:)
-      ATTRIBUTES.each do |attribute|
+    def save(location:, language:)
+      CORE_ATTRIBUTES.each do |attribute|
         file_path = File.join(location, "#{attribute}.txt")
+        save_text_into_file(text: self.send(attribute), path: file_path)
+      end
+
+      FileHelper.make_directory_if_needed(path: File.join(location, language))
+      LANGUAGE_SPECIFIC_ATTRIBUTES.each do |attribute|
+        file_path = File.join(location, language, "#{attribute}.txt")
         save_text_into_file(text: self.send(attribute), path: file_path)
       end
     end
