@@ -64,23 +64,14 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @end
 
 /**
- * The VContentViewViewModel is the interface between the UI layer for a given sequenceand the model layer for that same sequence. The ContentViewViewModel provides a convenient API for accesing the important information from model layer while hiding many implementation details from the UI.
- * 
- * The VContentViewViewModel arranges the comments associated with a given sequence into an ordered list sorted by most recent. Use the "___ForCommentIndex:" methods to gain access to this list.
- *
- 
-NOTE: Currently this VContentViewViewModel only supports single node, single asset sequences.
+ * The VContentViewViewModel is the interface between the UI layer for a given sequenceand
+ the model layer for that same sequence. The ContentViewViewModel provides a convenient API
+ for accesing the important information from model layer while hiding many implementation
+ details from the UI.
  */
 @interface VContentViewViewModel : NSObject
 
-/**
- *  The designated initializer for VContentViewViewModel. Will interrogate the sequence object for content type and prepare for a contentView to be displayed.
- *
- *  @param sequence The sequence that this viewModel corresponds to.
- *
- *  @return An initialized VContentViewModel.
- */
-- (instancetype)initWithContext:(ContentViewContext *)context;
+- (instancetype)initWithContext:(ContentViewContext *)context NS_DESIGNATED_INITIALIZER;
 
 - (void)addCommentWidhText:(NSString *)text
          publishParameters:(VPublishParameters *)publishParameters
@@ -95,16 +86,18 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)setupAdChain;
 
+- (void)removeCommentAtIndex:(NSUInteger)index;
+
+- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
+
+- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
+                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
+
 @property (nonatomic, readonly) ContentViewContext *context;
-
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
-
 @property (nonatomic, readonly) NSInteger nodeID;
-
 @property (nonatomic, strong) NSString *followersText;
-
 @property (nonatomic, readonly) VUser *user;
-
 @property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
 /**
@@ -129,17 +122,12 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, strong, readonly) VExperienceEnhancerController *experienceEnhancerController;
 
-#pragma mark - Interface Properties
-
 /**
  *  For content type image this will be a convenient url request for setting the image.
  */
 @property (nonatomic, readonly) NSURLRequest *imageURLRequest;
 
-/**
- *  The name of the sequence.
- */
-@property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) NSString *name; //< The name of the sequence.
 @property (nonatomic, readonly) BOOL shouldShowTitle;
 @property (nonatomic, strong, readonly) VNode *currentNode;
 @property (nonatomic, readonly) BOOL isCurrentUserOwner;
@@ -158,34 +146,13 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
 @property (nonatomic, readonly) NSInteger totalVotes;
 @property (nonatomic, strong, readonly) VLargeNumberFormatter *largeNumberFormatter;
-
 @property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readonly) NSArray *monetizationDetails;
-
-#pragma mark - Videos
-
-/**
- All the data necessary to display and populate the end card
- after a video has finished playing.  If this is `nil`, then there is
- no end card for this video and it should not be displayed.
- */
 @property (nonatomic, strong, readwrite) VEndCardModel *endCardViewModel;
-
 @property (nonatomic, readonly) float speed;
 @property (nonatomic, readonly) BOOL loop;
 @property (nonatomic, readonly) BOOL playerControlsDisabled; //< Determines whether the video player will show its toolbar with play controls.
 @property (nonatomic, readonly) BOOL audioMuted; //< Determines whether the video will play with audio.
-
-#pragma mark - Comments
-
-- (void)loadComments:(VPageType)pageType;
-- (void)removeCommentAtIndex:(NSUInteger)index;
-
-#pragma mark - Actions
-
-- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
-
-#pragma mark - Polls
 
 @property (nonatomic, readonly) NSString *answerALabelText;
 @property (nonatomic, readonly) NSString *answerBLabelText;
@@ -199,10 +166,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
 @property (nonatomic, readonly) NSString *numberOfVotersText;
+@property (nonatomic, strong) NSOperation *loadCommentsOperation;
 @property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
 
-- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
-                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
 /**
  Set a comment ID using this property after initializtion to scroll to and highlight
  that comment when the content view loads.

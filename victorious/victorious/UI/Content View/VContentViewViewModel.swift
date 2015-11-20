@@ -29,7 +29,7 @@ extension VContentViewViewModel {
         }
         
         if self.sequence.isPoll() {
-            SequencePollResultsOperation( sequenceID: sequenceID ).queue() { error in
+            SequencePollResultsOperation(sequenceID: sequenceID).queue() { error in
                 self.delegate?.didUpdatePollsData()
             }
         }
@@ -38,21 +38,7 @@ extension VContentViewViewModel {
             // TODO: /api/comments/find
             // See `loadCommentsWithCommentId:`
         } else {
-            SequenceCommentsOperation(sequenceID: sequenceID).queue() { error in
-                self.delegate?.didUpdateCommentsWithPageType(.First)
-            }
-        }
-        
-        SequenceCommentsOperation(sequenceID: sequenceID).queue() { error in
-            let followerCount = self.user.numberOfFollowers.integerValue
-            if followerCount > 0 {
-                // TODO: Change to KVO
-                let countString = self.largeNumberFormatter.stringForInteger(followerCount)
-                let labelString = NSLocalizedString("followers", comment:"")
-                self.followersText = "\(countString) \(labelString)"
-            } else {
-                self.followersText = ""
-            }
+            self.loadComments(.First)
         }
         
         if let currentUserID = VUser.currentUser()?.remoteId.integerValue {
@@ -60,6 +46,38 @@ extension VContentViewViewModel {
                 // TODO: Change to KVO
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
+            
+            FollowCountOperation(userID: Int64(currentUserID)).queue() { error in
+                let followerCount = self.user.numberOfFollowers.integerValue
+                if followerCount > 0 {
+                    // TODO: Change to KVO
+                    let countString = self.largeNumberFormatter.stringForInteger(followerCount)
+                    let labelString = NSLocalizedString("followers", comment:"")
+                    self.followersText = "\(countString) \(labelString)"
+                } else {
+                    self.followersText = ""
+                }
+            }
+        }
+    }
+    
+    func loadComments( pageType: VPageType ) {
+        let sequenceID = Int64(self.sequence.remoteId)!
+        let operation: SequenceCommentsOperation?
+        switch pageType {
+        case .First:
+            operation = SequenceCommentsOperation(sequenceID: sequenceID)
+        case .Next:
+            operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.nextPageOperation
+        case .Previous:
+            operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.previousPageOperation
+        }
+        
+        if let currentOperation = operation {
+            currentOperation.queue() { error in
+                self.delegate?.didUpdateCommentsWithPageType( pageType )
+            }
+            self.loadCommentsOperation = currentOperation
         }
     }
     

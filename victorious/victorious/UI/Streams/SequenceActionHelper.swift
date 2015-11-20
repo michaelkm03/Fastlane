@@ -35,8 +35,41 @@ import UIKit
     }
     
     func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
-        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)!, originViewController: viewController ).queue() { error in
-            completion?( error == nil )
+        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)! ).queue() { error in
+            
+            defer {
+                completion?( error == nil )
+            }
+            
+            if let error = error {
+                let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
+                
+                if error.code == Int(kVCommentAlreadyFlaggedError) {
+                    self.showAlert( onViewController: viewController,
+                        title: NSLocalizedString( "ReportedTitle", comment: "" ),
+                        message: NSLocalizedString( "ReportContentMessage", comment: "" )
+                    )
+                } else {
+                    self.showAlert( onViewController: viewController,
+                        title: NSLocalizedString( "WereSorry", comment: "" ),
+                        message: NSLocalizedString( "ErrorOccured", comment: "" )
+                    )
+                }
+            } else {
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
+                
+                self.showAlert( onViewController: viewController,
+                    title: NSLocalizedString( "ReportedTitle", comment: "" ),
+                    message: NSLocalizedString( "ReportContentMessage", comment: "" )
+                )
+            }
         }
+    }
+    
+    func showAlert( onViewController viewController: UIViewController, title: String, message: String ) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: nil))
+        viewController.presentViewController( alertController, animated: true, completion: nil)
     }
 }

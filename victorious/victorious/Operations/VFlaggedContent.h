@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger, VFlaggedContentType)
     VFlaggedContentTypeComment
 };
 
+#warning TODO: Write unit tests
+
 /**
  Defines some helpful methods for managing the contents that a user has flagged
  */

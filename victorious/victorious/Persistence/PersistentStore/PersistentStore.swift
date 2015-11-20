@@ -9,6 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
+
 /// An object that provides access to this application's primary peristent store.
 /// It has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
 /// This allows calling code to instantiate a new `PersistentStore` instance wherever needed.

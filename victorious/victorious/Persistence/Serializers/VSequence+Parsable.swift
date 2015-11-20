@@ -58,13 +58,14 @@ extension VSequence: PersistenceParsable {
             return node
         })
         
-        let flaggedContent = VFlaggedContent()
-        let allComments: [VComment] = sequence.comments.flatMap {
+        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
+        let allComments: [VComment] = sequence.comments.filter {
+            flaggedCommentIds.contains($0.commentID) == false
+        }.flatMap {
             let comment: VComment = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String($0.commentID) ])
             comment.populate(fromSourceModel: $0)
             return comment
         }
-        let unflaggedComments = flaggedContent.commentsAfterStrippingFlaggedItems(allComments) as? [VComment] ?? []
-        comments = NSOrderedSet(array: unflaggedComments)
+        comments = NSOrderedSet(array: allComments)
     }
 }

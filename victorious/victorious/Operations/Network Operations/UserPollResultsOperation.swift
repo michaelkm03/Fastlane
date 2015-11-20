@@ -31,21 +31,3 @@ class UserPollResultsOperation: RequestOperation<PollResultsRequest> {
         }
     }
 }
-
-class FollowCountOperation: RequestOperation<FollowCountRequest> {
-    
-    private let persistentStore = PersistentStore()
-    
-    init (userID: Int64) {
-        super.init( request: FollowCountRequest(userID: userID) )
-    }
-    
-    override func onResponse(response: FollowCountRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
-            let user: VUser = context.findObjects([ "remoteId" : Int(self.request.userID) ] ).first!
-            user.numberOfFollowers = Int(response.followersCount)
-            user.numberOfFollowing = Int(response.followingCount)
-            context.saveChanges()
-        }
-    }
-}

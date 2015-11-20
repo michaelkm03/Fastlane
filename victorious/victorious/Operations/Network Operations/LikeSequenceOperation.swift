@@ -47,8 +47,10 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         // Handle immediate asynchronous data updates
         persistentStore.syncFromBackground() { context in
             let uniqueElements = [ "remoteId" : Int(self.request.sequenceID) ]
-            let sequence: VSequence = context.findOrCreateObject( uniqueElements )
-            sequence.isLikedByMainUser = true
+            let sequences: [VSequence] = context.findObjects( uniqueElements )
+            for sequence in sequences {
+                sequence.isLikedByMainUser = true
+            }
             context.saveChanges()
         }
     }

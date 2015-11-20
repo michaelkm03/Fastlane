@@ -9,20 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
+class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
     
-    private let originViewController: UIViewController
+    private let sequenceID: Int64
     private let persistentStore = PersistentStore()
     private let flaggedContent = VFlaggedContent()
     
-    init( sequenceID: Int64, originViewController: UIViewController ) {
-        self.originViewController = originViewController
-        super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
+    init( sequenceID: Int64 ) {
+        self.sequenceID = sequenceID
+        super.init( request: FlagContentRequest(sequenceID: sequenceID) )
     }
     
-    override func onResponse(response: FlagCommentRequest.ResultType) {
+    override func onResponse(response: FlagContentRequest.ResultType) {
         persistentStore.syncFromBackground() { context in
-            if let sequence: VSequence = context.findObjects([ "remoteId" : String(self.request.sequenceID) ]).first {
+            if let sequence: VSequence = context.findObjects([ "remoteId" : String(self.sequenceID) ]).first {
                 context.destroy( sequence )
                 context.saveChanges()
             }
@@ -30,55 +30,24 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     }
     
     override func onComplete(error: NSError?) {
-        flaggedContent.addRemoteId( String(request.sequenceID), toFlaggedItemsWithType: .StreamItem)
-        
-        if let error = error {
-            let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-            VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-            
-            if error.code == Int(kVCommentAlreadyFlaggedError) {
-                self.showAlert(
-                    title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                    message: NSLocalizedString( "ReportContentMessage", comment: "" )
-                )
-            } else {
-                self.showAlert(
-                    title: NSLocalizedString( "WereSorry", comment: "" ),
-                    message: NSLocalizedString( "ErrorOccured", comment: "" )
-                )
-            }
-        } else {
-            VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-            
-            self.showAlert(
-                title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                message: NSLocalizedString( "ReportContentMessage", comment: "" )
-            )
-        }
-    }
-    
-    func showAlert( title title: String, message: String ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: nil))
-        originViewController.presentViewController( alertController, animated: true, completion: nil)
+        flaggedContent.addRemoteId( String(self.sequenceID), toFlaggedItemsWithType: .StreamItem)
     }
 }
 
-
-class FlagCommentOperation: RequestOperation<FlagCommentRequest> {
+class FlagCommentOperation: RequestOperation<FlagContentRequest> {
     
-    private let originViewController: UIViewController
+    private let commentID: Int64
     private let persistentStore = PersistentStore()
     private let flaggedContent = VFlaggedContent()
     
-    init( commentID: Int64, originViewController: UIViewController ) {
-        self.originViewController = originViewController
-        super.init( request: FlagCommentRequest(commentID: commentID) )
+    init( commentID: Int64 ) {
+        self.commentID = commentID
+        super.init( request: FlagContentRequest(commentID: commentID) )
     }
     
-    override func onResponse(response: FlagCommentRequest.ResultType) {
+    override func onResponse(response: FlagContentRequest.ResultType) {
         persistentStore.syncFromBackground() { context in
-            if let comment: VComment = context.findObjects([ "remoteId" : String(self.request.commentID) ]).first {
+            if let comment: VComment = context.findObjects([ "remoteId" : String(self.commentID) ]).first {
                 context.destroy( comment )
                 context.saveChanges()
             }
@@ -86,6 +55,6 @@ class FlagCommentOperation: RequestOperation<FlagCommentRequest> {
     }
     
     override func onComplete(error: NSError?) {
-        flaggedContent.addRemoteId( String(request.commentID), toFlaggedItemsWithType: .Comment)
+        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
     }
 }

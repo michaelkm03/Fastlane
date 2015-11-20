@@ -52,7 +52,7 @@ class RequestOperation<T: RequestType> : NSOperation {
     
     // MARK: - Subclassing
     
-    /// Called on background thread, designed to be overriden in subclasses.
+    /// Called on the thread of the operation queue thread, designed to be overriden in subclasses.
     func onStart() {}
     
     /// Called on background thread, designed to be overriden in subclasses.
