@@ -35,6 +35,7 @@ module VAMS
       location = @tmp_dir
       @metadata.save(location: location)
       assert_file_exists(location, 'copyright.txt')
+      assert_file_exists(location, 'secondary_category.txt')
     end
 
     def teardown
