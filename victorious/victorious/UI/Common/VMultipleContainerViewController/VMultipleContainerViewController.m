@@ -59,10 +59,6 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
-        _selector.viewControllers = _viewControllers;
-        _selector.delegate = self;
-        self.navigationItem.v_supplementaryHeaderView = _selector;
     }
     return self;
 }
@@ -102,6 +98,11 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.selector = [self.dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
+    self.selector.viewControllers = _viewControllers;
+    self.selector.delegate = self;
+    self.navigationItem.v_supplementaryHeaderView = self.selector;
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
