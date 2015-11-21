@@ -95,14 +95,19 @@ static NSString * const kInitialKey = @"initial";
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.selector = [self.dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
+    self.selector.viewControllers = self.viewControllers;
+    self.selector.delegate = self;
+    self.navigationItem.v_supplementaryHeaderView = self.selector;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.selector = [self.dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
-    self.selector.viewControllers = _viewControllers;
-    self.selector.delegate = self;
-    self.navigationItem.v_supplementaryHeaderView = self.selector;
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     
