@@ -17,11 +17,13 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
         super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
     }
     
-    override func onResponse(response: SequenceFetchRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
-            sequence.populate(fromSourceModel: response )
+    override func onComplete(result: SequenceFetchRequest.ResultType, completion:()->() ) {
+        let sequence = result
+        persistentStore.asyncFromBackground() { context in
+            let persistentSequence: VSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
+            persistentSequence.populate(fromSourceModel: sequence)
             context.saveChanges()
+            completion()
         }
     }
 }

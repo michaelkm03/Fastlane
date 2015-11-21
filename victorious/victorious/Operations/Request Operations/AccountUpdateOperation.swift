@@ -13,50 +13,58 @@ class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
     
     private let persistentStore = PersistentStore()
     private let storedPassword = VStoredPassword()
+    private let profileUpdate: User.ProfileUpdate?
+    private let passwordUpdate: User.PasswordUpdate?
     
     init(passwordUpdate: User.PasswordUpdate) {
+        self.profileUpdate = nil
+        self.passwordUpdate = passwordUpdate
         super.init( request: AccountUpdateRequest(passwordUpdate: passwordUpdate)! )
     }
     
     init(profileUpdate: User.ProfileUpdate) {
+        self.profileUpdate = profileUpdate
+        self.passwordUpdate = nil
         super.init( request: AccountUpdateRequest(profileUpdate: profileUpdate)! )
     }
     
-    override func onStart() {
+    override func onStart( completion:()->() ) {
         
-        print( self.request.profileUpdate )
-        
-        // Optimistically update everything right away
-        if let profileUpdate = self.request.profileUpdate {
+        // For profile updates, optimistically update everything right away
+        if let profileUpdate = self.profileUpdate {
             persistentStore.asyncFromBackground() { context in
-                if let user = VUser.currentUser(inContext: context) {
-                    user.name = profileUpdate.name ?? user.name
-                    user.email = profileUpdate.email ?? user.email
-                    user.location = profileUpdate.location ?? user.location
-                    user.tagline = profileUpdate.tagline ?? user.tagline
-                    context.saveChanges()
+                guard let user = VUser.currentUser() else {
+                    fatalError( "Expecting a current user to be set before now." )
                 }
+                user.name = profileUpdate.name ?? user.name
+                user.email = profileUpdate.email ?? user.email
+                user.location = profileUpdate.location ?? user.location
+                user.tagline = profileUpdate.tagline ?? user.tagline
+                context.saveChanges()
+                completion()
             }
+        }
+        else {
+            completion()
         }
     }
     
-    override func onResponse(response: AccountUpdateRequest.ResultType) {
-        guard let user = response else {
-            fatalError( "Could not parse user from response." )
+    override func onComplete( response: AccountUpdateRequest.ResultType, completion:()->() ) {
+        
+        if let passwordUpdate = self.passwordUpdate {
+            self.storedPassword.savePassword(passwordUpdate.passwordNew, forEmail: passwordUpdate.email)
         }
+        
+        let user = response
         
         // Update current user based on response from endpoint
         persistentStore.asyncFromBackground() { context in
-            guard let persistentUser = VUser.currentUser(inContext: context) else {
+            guard let persistentUser = VUser.currentUser() else {
                 fatalError( "Could not locate current user." )
             }
             persistentUser.populate(fromSourceModel: user)
-        }
-        
-        if let passwordUpdate = self.request.passwordUpdate {
-            dispatch_sync( dispatch_get_main_queue() ) {
-                self.storedPassword.savePassword(passwordUpdate.passwordNew, forEmail: passwordUpdate.email)
-            }
+            context.saveChanges()
+            completion()
         }
     }
 }

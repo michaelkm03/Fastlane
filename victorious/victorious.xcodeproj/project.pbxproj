@@ -852,6 +852,7 @@
 		A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */; };
 		A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */; };
 		A76AEAAF1BFFCFB200E8A26F /* VProfileCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */; };
+		A76AEACF1BFFFF3800E8A26F /* RequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* RequestBodyWriter.swift */; };
 		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
 		A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */; };
@@ -2950,6 +2951,7 @@
 		A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileEditViewController.swift; sourceTree = "<group>"; };
 		A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VChangePasswordViewController.swift; sourceTree = "<group>"; };
 		A76AEAAE1BFFCFB200E8A26F /* VProfileCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VProfileCreateViewController.swift; sourceTree = "<group>"; };
+		A76AEACE1BFFFF3800E8A26F /* RequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBodyWriter.swift; sourceTree = "<group>"; };
 		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
 		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
@@ -5008,6 +5010,7 @@
 				C323C3B61BF55F6600681059 /* UpdateCommentRequest.swift */,
 				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
+				A76AEACE1BFFFF3800E8A26F /* RequestBodyWriter.swift */,
 				0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */,
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
@@ -10055,6 +10058,7 @@
 				0300AA551BF15CDE000A121D /* TODO.swift in Sources */,
 				C314E6B91BF13AD800FB9591 /* TrendingHashtagRequest.swift in Sources */,
 				03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */,
+				A76AEACF1BFFFF3800E8A26F /* RequestBodyWriter.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */,
 				A74679771BF6D01A0026FD2E /* UserInfoRequest.swift in Sources */,

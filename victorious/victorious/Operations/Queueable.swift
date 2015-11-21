@@ -70,10 +70,6 @@ protocol Queuable {
 /// An NSOperation subclass need only to implemennt `queueOn(_:completionBlock:)` to support
 /// all other methods in the Qeueuable protocol
 extension Queuable where Self : NSOperation {
-
-    static var sharedQueue: NSOperationQueue {
-        return NSOperationQueue()
-    }
     
     func queueAfter( operation: NSOperation ) {
         queueAfter( operation, queue: Self.sharedQueue )

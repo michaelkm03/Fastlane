@@ -29,10 +29,7 @@ class LogoutLocally: Operation {
         
         self.beganExecuting()
         
-        let loadedUser: VUser? = persistentStore.sync() { context in
-            return VUser.currentUser(inContext: context)
-        }
-        guard let currentUser = loadedUser else {
+        guard let currentUser = VUser.currentUser() else {
             fatalError( "Cannot get current user." )
         }
         

@@ -19,7 +19,7 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     
-    let request: T
+    private let request: T
     
     var defaultQueue: NSOperationQueue {
         return _defaultQueue
@@ -37,13 +37,15 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     // MARK: - Lifecycle Subclassing
     
-    func onStart() {}
+    func onStart( completion:()->() ) {
+        completion()
+    }
     
-    func onResponse( response: T.ResultType ) {}
+    func onComplete( result: T.ResultType, completion:()->() ) {
+        completion()
+    }
     
-    func onComplete( error: NSError? ) {}
-    
-    func onError( error: NSError? ) {}
+    func onError( error: NSError ) {}
     
     // MARK: - NSOperation overrides
     
@@ -57,43 +59,49 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     final override func main() {
         let semaphore = dispatch_semaphore_create(0)
+        
+        let startSemaphore = dispatch_semaphore_create(0)
         dispatch_async( dispatch_get_main_queue() ) {
-            
-            self.onStart()
-            
-            let persistentStore = PersistentStore()
-            let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-            let requestContext = RequestContext(v_environment: currentEnvironment)
-            let baseURL = currentEnvironment.baseURL
-            
-            let currentUserID = VUser.currentUser()?.identifier
-            let authenticationContext: AuthenticationContext? = persistentStore.syncFromBackground() { context in
-                if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
-                    return AuthenticationContext(v_currentUser: currentUser)
-                }
-                return nil
+            self.onStart() {
+                dispatch_semaphore_signal( startSemaphore )
             }
-            
-            self.request.execute(
-                baseURL: baseURL,
-                requestContext: requestContext,
-                authenticationContext: authenticationContext,
-                callback: { [weak self] (result, error) -> () in
-                    dispatch_async( dispatch_get_main_queue() ) {
-                        guard let strongSelf = self where !strongSelf.cancelled else {
-                            return
-                        }
-                        if let theResult = result {
-                            strongSelf.onResponse( theResult )
-                        } else {
-                            strongSelf.requestError = (error as? NSError)?.copy() as? NSError
-                            strongSelf.onError( nil )
-                        }
+        }
+        dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
+        
+        let persistentStore = PersistentStore()
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(v_environment: currentEnvironment)
+        let baseURL = currentEnvironment.baseURL
+        
+        let currentUserID = VUser.currentUser()?.identifier
+        let authenticationContext: AuthenticationContext? = persistentStore.sync() { context in
+            if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
+                return AuthenticationContext(v_currentUser: currentUser)
+            }
+            return nil
+        }
+        
+        self.request.execute(
+            baseURL: baseURL,
+            requestContext: requestContext,
+            authenticationContext: authenticationContext,
+            callback: { [weak self] (result, error) -> () in
+                dispatch_async( dispatch_get_main_queue() ) {
+                    guard let strongSelf = self where !strongSelf.cancelled else {
+                        return
+                    }
+                    if let requestError = error as? NSError {
+                        strongSelf.requestError = requestError
+                        strongSelf.onError( requestError )
                         dispatch_semaphore_signal( semaphore )
+                    } else if let requestResult = result {
+                        strongSelf.onComplete( requestResult ) {
+                            dispatch_semaphore_signal( semaphore )
+                        }
                     }
                 }
-            )
-        }
+            }
+        )
         dispatch_semaphore_wait( semaphore, DISPATCH_TIME_FOREVER )
     }
     
@@ -106,7 +114,6 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
                 guard let strongSelf = self where !strongSelf.cancelled else {
                     return
                 }
-                strongSelf.onComplete( strongSelf.requestError )
                 strongSelf.mainQueueCompletionBlock?( strongSelf.requestError )
             }
         }

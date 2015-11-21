@@ -13,7 +13,6 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
     private let loginType: VLoginType
     private let accountIdentifier: String?
-    private var userIdentifier: AnyObject?
     private let persistentStore = PersistentStore()
     
     var isNewUser = false
@@ -27,48 +26,41 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
     // MARK: - Operation overrides
     
-    override func onResponse( response: AccountCreateRequest.ResultType ) {
+    override func onComplete( response: AccountCreateRequest.ResultType, completion:()->() ) {
+        self.isNewUser = response.newUser
         
-        // Do this on the main thread so that changes are available immeidately in the `onComplete` method
-        let identifier: AnyObject = persistentStore.sync() { context in
+        persistentStore.asyncFromBackground() { context in
             let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
-            user.setCurrentUser(inContext: context)
             context.saveChanges()
-            return user.identifier
-        }
-        
-        self.userIdentifier = identifier
-        self.isNewUser = response.newUser
-    }
-    
-    override func onComplete( error: NSError? ) {
-        
-        // The the current user in our cache
-        persistentStore.sync() { context in
-            guard let identifier = self.userIdentifier,
-                let persistentUser: VUser = context.getObject(identifier) else {
-                    fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
+            
+            let identifier = user.identifier
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.persistentStore.sync() { context in
+                    guard let persistentUser: VUser = context.getObject(identifier) else {
+                        fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
+                    }
+                    persistentUser.setCurrentUser(inContext: context)
+                    
+                    VStoredLogin().saveLoggedInUserToDisk( persistentUser )
+                    NSUserDefaults.standardUserDefaults().setInteger( persistentUser.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)
+                    if let accountIdentifier = self.accountIdentifier {
+                        NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
+                    }
+                    
+                    VLoginType(rawValue: persistentUser.loginType.integerValue )?.trackSuccess( response.newUser )
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
+                    
+                    // TODO: (from object manager)
+                    // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
+                    ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
+                    
+                    completion()
+                }
             }
-            persistentUser.setCurrentUser(inContext: context)
-            VStoredLogin().saveLoggedInUserToDisk( persistentUser )
-            self.persistentUser = persistentUser
         }
-        
-        NSUserDefaults.standardUserDefaults().setInteger( loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
-        if let accountIdentifier = accountIdentifier {
-            NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
-        }
-        
-        loginType.trackSuccess( isNewUser )
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
-        
-        // TODO: (from object manager)
-        // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
-        
-        ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }
