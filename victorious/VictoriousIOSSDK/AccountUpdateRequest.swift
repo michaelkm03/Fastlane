@@ -55,7 +55,7 @@ public struct AccountUpdateRequest: RequestType {
     public let passwordUpdate: User.PasswordUpdate?
     public let urlRequest: NSURLRequest
     
-    private let bodyWriter = RequestBodyWriter()
+    private let requestBodyWriter = AccountUpdateRequestBody()
     
     public init?(passwordUpdate: User.PasswordUpdate) {
         self.init( passwordUpdate:passwordUpdate, profileUpdate:nil )
@@ -69,12 +69,13 @@ public struct AccountUpdateRequest: RequestType {
         self.profileUpdate = profileUpdate
         self.passwordUpdate = nil
         do {
-            let bodyTempFileURL = try bodyWriter.write(profileUpdate, passwordUpdate: passwordUpdate)
+            let requestBody = try requestBodyWriter.write(profileUpdate, passwordUpdate: passwordUpdate)
             
             let request = NSMutableURLRequest(URL: NSURL(string: "/api/account/update")!)
             request.HTTPMethod = "POST"
-            request.HTTPBodyStream = NSInputStream(URL: bodyTempFileURL)
-            self.urlRequest = request
+            request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+            request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
+            self.urlRequest = request.copy() as! NSURLRequest
         } catch {
             return nil
         }
