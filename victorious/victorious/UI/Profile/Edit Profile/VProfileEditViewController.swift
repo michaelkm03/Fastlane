@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VProfileEditViewController {
     
-    func updateProfile( name name: String?, profileImageURL: NSURL?, location: String?, tagline: String?, completion: ((NSError?)->())? ) -> NSOperation? {
+    func updateProfile( name name: String?, profileImageURL: NSURL?, location: String?, tagline: String? ) -> NSOperation? {
         let operation = AccountUpdateOperation(
             profileUpdate: User.ProfileUpdate(
                 email: VUser.currentUser()!.email!,
@@ -21,9 +21,7 @@ extension VProfileEditViewController {
                 profileImageURL: profileImageURL
             )
         )
-        operation.queue() { error in
-            completion?( error )
-        }
+        operation.queue()
         return operation
     }
 }

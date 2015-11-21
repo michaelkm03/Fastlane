@@ -20,9 +20,6 @@ class StoredLoginOperation: Operation {
             self.finishedExecuting()
         }
         
-        // WARNING: Testing only, prevents auto-login
-        return;
-        
         let defaults = NSUserDefaults.standardUserDefaults()
         
         let storedLogin = VStoredLogin()

@@ -47,6 +47,9 @@ class AccountUpdateRequestBody: NSObject {
         if let location = profileUpdate?.location {
             try writer.appendPlaintext(location, withFieldName: "profile_location")
         }
+        if let tagline = profileUpdate?.tagline {
+            try writer.appendPlaintext(tagline, withFieldName: "profile_tagline")
+        }
         if let profileImageURL = profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,
             let mimeType = profileImageURL.vsdk_mimeType {
