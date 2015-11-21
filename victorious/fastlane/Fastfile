@@ -24,24 +24,15 @@ fastlane_version "1.36.0"
 
 default_platform :ios
 
-FASTLANE_METADATA_PATHS = {
-  description: FASTLANE_DIRECTORY + '/metadata/en-US/description.txt'
-}
-
 def apply_config(build_name:)
   sh "cd ../../ && ./build-scripts/apply-config.sh #{build_name}"
 end
 
-def prepare_metadata_for_submission(build_name:, client:)
+def prepare_metadata(client:, build_name:)
   app_with_meta = client.app_by_build_name(build_name)
   metadata      = VAMS::Metadata.new(app_with_meta)
-  save_text_into_file(text: metadata.ios_description, path: FASTLANE_METADATA_PATHS[:description])
-end
-
-def save_text_into_file(text:, path:)
-  File.open(path, File::WRONLY) do |file|
-    file.write(text)
-  end
+  metadata_path = File.join(FASTLANE_DIRECTORY, 'metadata')
+  metadata.save(location: metadata_path, language: 'en-US')
 end
 
 platform :ios do
@@ -59,7 +50,7 @@ platform :ios do
     client = VAMS::Client.new(environment: :production)
     client.apps_to_build.each do |app|
       apply_config(build_name: app.build_name)
-      prepare_metadata_for_submission(build_name: app.build_name, client: client)
+      prepare_metadata(client: client, build_name: app.build_name)
       sigh
       gym(
         scheme: 'release-victorious',
