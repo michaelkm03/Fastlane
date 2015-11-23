@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class ConversationListOperation: RequestOperation<ConversationListRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     init() {
         super.init( request: ConversationListRequest() )
     }

@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class UserInfoOperation: RequestOperation<UserInfoRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     init( userID: Int64 ) {
         super.init( request: UserInfoRequest(userID: userID) )
     }

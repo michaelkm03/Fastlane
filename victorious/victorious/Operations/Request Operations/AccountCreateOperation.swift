@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let loginType: VLoginType
     private let accountIdentifier: String?
     

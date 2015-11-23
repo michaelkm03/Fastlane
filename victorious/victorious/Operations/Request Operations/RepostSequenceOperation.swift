@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let nodeID: Int64
     
     init( nodeID: Int64 ) {

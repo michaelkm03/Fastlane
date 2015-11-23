@@ -67,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateToBackgroundColor:(UIColor *)backgroundColor;
 
 /**
+ Clears any populated data and performs appropriate cleanup.
+ */
+- (void)reset;
+
+/**
  The time of the current position of the video in milliseconds.
  */
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;
@@ -111,14 +116,6 @@ NS_ASSUME_NONNULL_BEGIN
  Aspect ratio of the playing video asset.  If no asset is loaded, will return 1.0f
  */
 @property (nonatomic, assign, readonly) CGFloat aspectRatio;
-
-@optional
-
-/**
- When user exits a content view with a video, call this method in - viewWillDisappear:
- to give the VVideoPlayer instance a chance to cleanup.
- */
-- (void)didExitFromContentView;
 
 @end
 

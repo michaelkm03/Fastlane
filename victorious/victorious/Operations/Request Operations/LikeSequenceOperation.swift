@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 
 class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     struct UIContext {
         let originViewController: UIViewController
         let dependencyManager: VDependencyManager
