@@ -16,6 +16,7 @@ class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
     init( sequenceID: Int64 ) {
         self.sequenceID = sequenceID
+        // TODO: This should be changed to UnlikeSequenceRequest when that is merged in
         super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
     }
     

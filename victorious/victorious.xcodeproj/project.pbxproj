@@ -424,6 +424,7 @@
 		67C210241BFA7A210074E40E /* HashtagSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210201BFA7A210074E40E /* HashtagSearchResponse.json */; };
 		67C210251BFA7A210074E40E /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210211BFA7A210074E40E /* ImageAsset.json */; };
 		67C210261BFA7A210074E40E /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210221BFA7A210074E40E /* LoginResponse.json */; };
+		67C5C53F1C03A8A000F99C8C /* SuggestedUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */; };
 		67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
@@ -2369,6 +2370,7 @@
 		67C210201BFA7A210074E40E /* HashtagSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HashtagSearchResponse.json; sourceTree = "<group>"; };
 		67C210211BFA7A210074E40E /* ImageAsset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageAsset.json; sourceTree = "<group>"; };
 		67C210221BFA7A210074E40E /* LoginResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginResponse.json; sourceTree = "<group>"; };
+		67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersOperation.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
 		67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
@@ -6795,6 +6797,7 @@
 				A76AEA3E1BFEBA0500E8A26F /* RequestOperation.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A76AEA401BFEBA0500E8A26F /* StreamOperation.swift */,
+				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
 				A76AEA411BFEBA0500E8A26F /* UnlikeSequenceOperation.swift */,
 				A76AEA421BFEBA0500E8A26F /* UserInfoOperation.swift */,
 			);
@@ -10638,6 +10641,7 @@
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
 				797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */,
+				67C5C53F1C03A8A000F99C8C /* SuggestedUsersOperation.swift in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
