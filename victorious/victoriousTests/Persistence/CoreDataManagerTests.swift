@@ -8,6 +8,7 @@
 
 import XCTest
 import CoreData
+import KVOController
 @testable import victorious
 
 class CoreDataManagerTests: XCTestCase {
@@ -157,7 +158,7 @@ class CoreDataManagerTests: XCTestCase {
             }
         }
         
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testConcurrentUpdate() {
@@ -178,16 +179,20 @@ class CoreDataManagerTests: XCTestCase {
         // Observe changes to an attribute of that entity
         // See `observeValueForKeyPath(_:ofObject:change:context:)` for assertions
         let observationExpectation = self.expectationWithDescription("callback")
-        let observer = KVOHelper { (keyPath, object, change, context) in
-            XCTAssert( NSThread.currentThread().isMainThread )
-            
-            let updatedEntity = object as! PersistentEntity
-            XCTAssertEqual( updatedEntity.newStringAttribute, self.updatedText )
-            XCTAssertEqual( persistentEntity, updatedEntity )
-            
-            observationExpectation.fulfill()
-        }
-        persistentEntity.addObserver( observer, forKeyPath: "newStringAttribute", options: [], context: &kvoContext)
+        
+        self.KVOController.observe( persistentEntity,
+            keyPath: "newStringAttribute",
+            options: [],
+            block: { [weak self] (observer, object, change) in
+                
+                XCTAssert( NSThread.currentThread().isMainThread )
+                
+                let updatedEntity = object as! PersistentEntity
+                XCTAssertEqual( updatedEntity.newStringAttribute, self?.updatedText )
+                XCTAssertEqual( persistentEntity, updatedEntity )
+                
+                observationExpectation.fulfill()
+        })
         
         // Update the existing object in the background context, as if from a network response 
         self.coreDataManager.backgroundContext.performBlock {
@@ -201,6 +206,6 @@ class CoreDataManagerTests: XCTestCase {
             try! moc.save()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 }
