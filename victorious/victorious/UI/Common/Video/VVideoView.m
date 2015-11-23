@@ -112,7 +112,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              VVideoView *strongSelf = weakSelf;
              if ( strongSelf != nil )
              {
-                 self.playerLayer.opacity = 1.0f;
+                 strongSelf.playerLayer.opacity = 1.0f;
              }
          }];
         
