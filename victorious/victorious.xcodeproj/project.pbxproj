@@ -425,6 +425,7 @@
 		67C210251BFA7A210074E40E /* ImageAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210211BFA7A210074E40E /* ImageAsset.json */; };
 		67C210261BFA7A210074E40E /* LoginResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C210221BFA7A210074E40E /* LoginResponse.json */; };
 		67C5C53F1C03A8A000F99C8C /* SuggestedUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */; };
+		67C5C5411C03C1E700F99C8C /* VSuggestedUsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */; };
 		67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
@@ -2371,6 +2372,7 @@
 		67C210211BFA7A210074E40E /* ImageAsset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageAsset.json; sourceTree = "<group>"; };
 		67C210221BFA7A210074E40E /* LoginResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginResponse.json; sourceTree = "<group>"; };
 		67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersOperation.swift; sourceTree = "<group>"; };
+		67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUsersDataSource.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
 		67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
@@ -6907,6 +6909,7 @@
 				F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */,
 				A779510C1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.h */,
 				A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */,
+				67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */,
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
 				6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */,
@@ -10440,6 +10443,7 @@
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
+				67C5C5411C03C1E700F99C8C /* VSuggestedUsersDataSource.swift in Sources */,
 				A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
