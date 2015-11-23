@@ -62,8 +62,10 @@ class MainPersistentStoreTests: XCTestCase {
         let expectation = self.expectationWithDescription("testAsyncFromBackground")
         persistentStore.asyncFromBackground() { context in
             XCTAssertFalse( NSThread.currentThread().isMainThread )
-            expectation.fulfill()
+            dispatch_async( dispatch_get_main_queue() ) {
+                expectation.fulfill()
+            }
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectationsWithTimeout(50, handler: nil)
     }
 }

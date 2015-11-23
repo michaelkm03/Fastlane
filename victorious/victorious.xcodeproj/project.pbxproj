@@ -464,7 +464,6 @@
 		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
 		797FD25F1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
-		7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */; };
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
@@ -680,6 +679,7 @@
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
+		A72EDF831C03BA1E003D6177 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
@@ -700,6 +700,8 @@
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
+		A74FBC221C03B47300375A78 /* PersistentStoreContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */; };
+		A74FBC271C03B6F400375A78 /* AccountCreateOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74FBC261C03B6F400375A78 /* AccountCreateOperationTests.swift */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
@@ -2828,6 +2830,7 @@
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
 		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
+		A74FBC261C03B6F400375A78 /* AccountCreateOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountCreateOperationTests.swift; path = RequestOperations/AccountCreateOperationTests.swift; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstInstallManager.h; sourceTree = "<group>"; };
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallManager.m; sourceTree = "<group>"; };
 		A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -6575,6 +6578,14 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		A74FBC231C03B68300375A78 /* RequestOperations */ = {
+			isa = PBXGroup;
+			children = (
+				A74FBC261C03B6F400375A78 /* AccountCreateOperationTests.swift */,
+			);
+			name = RequestOperations;
+			sourceTree = "<group>";
+		};
 		A75C64851AD78DCA00245125 /* TextPost */ = {
 			isa = PBXGroup;
 			children = (
@@ -7616,6 +7627,7 @@
 				A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
+				A74FBC231C03B68300375A78 /* RequestOperations */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				A789F73C1BF1211D00F5C87B /* Persistence */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -11236,6 +11248,7 @@
 				A76AEA711BFED31B00E8A26F /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
 				A76AEA6E1BFED31B00E8A26F /* VCommentMediaTypeHelperTests.m in Sources */,
 				A76AEA851BFED31B00E8A26F /* VLaunchScreenProviderTests.m in Sources */,
+				A74FBC271C03B6F400375A78 /* AccountCreateOperationTests.swift in Sources */,
 				A76AEAA21BFED31B00E8A26F /* VURLDetectorTests.m in Sources */,
 				A76AEA901BFED31B00E8A26F /* VSequenceWebContentTests.m in Sources */,
 				A76AEAA31BFED31B00E8A26F /* VUserTaggingTextStorageTests.m in Sources */,
@@ -11247,6 +11260,7 @@
 				A76AEA8F1BFED31B00E8A26F /* VSequencePermissionsTests.m in Sources */,
 				A76AEA781BFED31B00E8A26F /* VFirstInstallTests.m in Sources */,
 				A76AEA581BFED31B00E8A26F /* NSData+AESTests.m in Sources */,
+				A72EDF831C03BA1E003D6177 /* CoreDataManagerTests.swift in Sources */,
 				A76AEAA41BFED31B00E8A26F /* VVideoTrackingTests.m in Sources */,
 				A76AEA971BFED31B00E8A26F /* VTagStringFormatterTests.m in Sources */,
 				A76AEA731BFED31B00E8A26F /* VDependencyManagerTests.m in Sources */,
@@ -11274,6 +11288,7 @@
 				A76AEA631BFED31B00E8A26F /* VAbstractMarqueeControllerTests.m in Sources */,
 				A76AEA641BFED31B00E8A26F /* VAbstractMediaLinkViewControllerTests.m in Sources */,
 				A76AEA7B1BFED31B00E8A26F /* VFollowersTextFormatterTests.m in Sources */,
+				A74FBC221C03B47300375A78 /* PersistentStoreContextTests.swift in Sources */,
 				A76AEA7D1BFED31B00E8A26F /* VHashTagTextViewTests.m in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
 				A76AEA601BFED31B00E8A26F /* MainPersistentStoreTests.swift in Sources */,
@@ -11290,9 +11305,6 @@
 				A76AEA6D1BFED31B00E8A26F /* VCoachmarkViewTests.m in Sources */,
 				A76AEA6A1BFED31B00E8A26F /* VApplicationTrackingTests.m in Sources */,
 				A76AEA821BFED31B00E8A26F /* VKeyboardBarViewControllerTests.m in Sources */,
-				A7EB574F1AF841CC006AA1CF /* VURLDetectorTests.m in Sources */,
-				0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */,
-				0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */,
 				79C593531BFD5D1700EC76ED /* CGRect+AspectTests.swift in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
 				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
