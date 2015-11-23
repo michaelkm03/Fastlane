@@ -19,7 +19,7 @@ class SequencePollResultsOperation: RequestOperation<PollResultsRequest> {
         super.init(request: PollResultsRequest(sequenceID: sequenceID))
     }
     
-    override func onResponse(response: PollResultsRequest.ResultType) {
+    override func onComplete(response: PollResultsRequest.ResultType, completion:()->() ) {
         persistentStore.syncFromBackground() { context in
             let sequence: VSequence = context.findObjects( [ "remoteId" : Int(self.sequenceID) ] ).first!
             for result in response {
@@ -27,6 +27,7 @@ class SequencePollResultsOperation: RequestOperation<PollResultsRequest> {
                 pollResult.sequence = sequence
             }
             context.saveChanges()
+            completion()
         }
     }
 }

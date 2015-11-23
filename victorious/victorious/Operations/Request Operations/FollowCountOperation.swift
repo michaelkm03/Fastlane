@@ -12,17 +12,20 @@ import VictoriousIOSSDK
 class FollowCountOperation: RequestOperation<FollowCountRequest> {
     
     private let persistentStore = PersistentStore()
+    private let userID: Int64
     
     init( userID: Int64 ) {
+        self.userID = userID
         super.init( request: FollowCountRequest(userID: userID) )
     }
     
-    override func onResponse(response: FollowCountRequest.ResultType) {
+    override func onComplete(response: FollowCountRequest.ResultType, completion:()->() ) {
         persistentStore.syncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.request.userID) ])
+            let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.userID) ])
             user.numberOfFollowers = response.followersCount
             user.numberOfFollowing = response.followingCount
             context.saveChanges()
+            completion()
         }
     }
 }

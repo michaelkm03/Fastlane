@@ -189,7 +189,8 @@
     __weak UINavigationController *navigationController = self.navigationController;
 
     // Save and show alert only if there was an error
-    [[VObjectManager sharedManager] setDeviceSettings:self.settings successBlock:nil failBlock:^(NSOperation *operation, NSError *error)
+#warning FIXME
+    /*[[VObjectManager sharedManager] setDeviceSettings:self.settings successBlock:nil failBlock:^(NSOperation *operation, NSError *error)
     {
         // The navigationController could be nil if the user exits this view and then exists the previous
         // view in the nav stack fast enough (or with a network connection slow enough) that navigationController
@@ -203,7 +204,7 @@
             [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
             [alertConroller presentInViewController:navigationController animated:YES completion:nil];
         }
-    }];
+    }];*/
 }
 
 - (void)settingsDidLoadWithResults:(NSArray *)resultObjects

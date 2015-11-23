@@ -17,11 +17,13 @@ class UserInfoOperation: RequestOperation<UserInfoRequest> {
         super.init( request: UserInfoRequest(userID: userID) )
     }
     
-    override func onResponse( response: UserInfoRequest.ResultType ) {
-        persistentStore.syncFromBackground() { context in
+    override func onComplete( response: UserInfoRequest.ResultType, completion:()->() ) {
+        
+        persistentStore.asyncFromBackground() { context in
             let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
             persistentUser.populate(fromSourceModel: response)
             context.saveChanges()
+            completion()
         }
     }
 }

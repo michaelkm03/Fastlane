@@ -11,13 +11,15 @@ import VictoriousIOSSDK
 
 private let _defaultQueue = NSOperationQueue()
 
-class RequestOperation<T: RequestType> : NSOperation {
+class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     private(set) var requestError: NSError?
     
-    let request: T
+    static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
     var mainQueueCompletionBlock: ((NSError?)->())?
+    
+    private let request: T
     
     var defaultQueue: NSOperationQueue {
         return _defaultQueue
@@ -27,41 +29,23 @@ class RequestOperation<T: RequestType> : NSOperation {
         self.request = request
     }
     
-    final func queue( completionBlock:((NSError?)->())? = nil) {
-        if let completionBlock = completionBlock {
-            self.mainQueueCompletionBlock = completionBlock
-        }
-        self.completionBlock = {
-            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                let error: NSError? = nil // FIXME
-                strongSelf.onComplete( error )
-                strongSelf.mainQueueCompletionBlock?( error )
-            }
-        }
-        _defaultQueue.addOperation( self )
-    }
-    
     func cancelAllOperations() {
         for operation in _defaultQueue.operations {
             operation.cancel()
         }
     }
     
-    // MARK: - Subclassing
+    // MARK: - Lifecycle Subclassing
     
-    /// Called on the thread of the operation queue thread, designed to be overriden in subclasses.
-    func onStart() {}
+    func onStart( completion:()->() ) {
+        completion()
+    }
     
-    /// Called on background thread, designed to be overriden in subclasses.
-    func onResponse( response: T.ResultType ) {}
+    func onComplete( result: T.ResultType, completion:()->() ) {
+        completion()
+    }
     
-    /// Called on main thread, designed to be overriden in subclasses.
-    func onComplete( error: NSError? ) {}
-    
-    func onError( error: NSError? ) {}
+    func onError( error: NSError ) {}
     
     // MARK: - NSOperation overrides
     
@@ -75,16 +59,22 @@ class RequestOperation<T: RequestType> : NSOperation {
     
     final override func main() {
         let semaphore = dispatch_semaphore_create(0)
-        self.onStart()
+        
+        let startSemaphore = dispatch_semaphore_create(0)
+        dispatch_async( dispatch_get_main_queue() ) {
+            self.onStart() {
+                dispatch_semaphore_signal( startSemaphore )
+            }
+        }
+        dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
         let persistentStore = PersistentStore()
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(v_environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
         
-        
         let currentUserID = VUser.currentUser()?.identifier
-        let authenticationContext: AuthenticationContext? = persistentStore.syncFromBackground() { context in
+        let authenticationContext: AuthenticationContext? = persistentStore.sync() { context in
             if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
                 return AuthenticationContext(v_currentUser: currentUser)
             }
@@ -96,21 +86,38 @@ class RequestOperation<T: RequestType> : NSOperation {
             requestContext: requestContext,
             authenticationContext: authenticationContext,
             callback: { [weak self] (result, error) -> () in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                if let theResult = result {
-                    strongSelf.onResponse( theResult )
-                } else {
-                    //strongSelf.requestError = (error as? NSError)?.copy() as? NSError
-                    strongSelf.onError( nil )
-                }
                 dispatch_async( dispatch_get_main_queue() ) {
-                    dispatch_semaphore_signal( semaphore )
+                    guard let strongSelf = self where !strongSelf.cancelled else {
+                        return
+                    }
+                    if let requestError = error as? NSError {
+                        strongSelf.requestError = requestError
+                        strongSelf.onError( requestError )
+                        dispatch_semaphore_signal( semaphore )
+                    } else if let requestResult = result {
+                        strongSelf.onComplete( requestResult ) {
+                            dispatch_semaphore_signal( semaphore )
+                        }
+                    }
                 }
             }
         )
         dispatch_semaphore_wait( semaphore, DISPATCH_TIME_FOREVER )
+    }
+    
+    func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
+        if let completionBlock = completionBlock {
+            self.mainQueueCompletionBlock = completionBlock
+        }
+        self.completionBlock = {
+            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
+                guard let strongSelf = self where !strongSelf.cancelled else {
+                    return
+                }
+                strongSelf.mainQueueCompletionBlock?( strongSelf.requestError )
+            }
+        }
+        _defaultQueue.addOperation( self )
     }
 }
 

@@ -17,11 +17,13 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
         super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
     }
     
-    override func onResponse(response: SequenceFetchRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(response.sequenceID) ])
-            sequence.populate(fromSourceModel: response )
+    override func onComplete(result: SequenceFetchRequest.ResultType, completion:()->() ) {
+        let sequence = result
+        persistentStore.asyncFromBackground() { context in
+            let persistentSequence: VSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
+            persistentSequence.populate(fromSourceModel: sequence)
             context.saveChanges()
+            completion()
         }
     }
 }
@@ -30,15 +32,19 @@ class SequenceUserInterationsOperation: RequestOperation<UserInteractionsOnSeque
     
     private let persistentStore = PersistentStore()
     
+    private let sequenceID: Int64
+    
     init( sequenceID: Int64, userID: Int64 ) {
+        self.sequenceID = sequenceID
         super.init(request: UserInteractionsOnSequenceRequest(sequenceID: sequenceID, userID:userID) )
     }
     
-    override func onResponse(response: UserInteractionsOnSequenceRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(self.request.sequenceID) ])
-            sequence.hasBeenRepostedByMainUser = response
+    override func onComplete(result:UserInteractionsOnSequenceRequest.ResultType, completion: () -> ()) {
+        persistentStore.asyncFromBackground() { context in
+            let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(self.sequenceID) ])
+            sequence.hasBeenRepostedByMainUser = result
             context.saveChanges()
+            completion()
         }
     }
 }

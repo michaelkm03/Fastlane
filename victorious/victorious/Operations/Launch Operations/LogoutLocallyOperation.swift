@@ -29,20 +29,17 @@ class LogoutLocally: Operation {
         
         self.beganExecuting()
         
-        let loadedUser: VUser? = persistentStore.sync() { context in
-            return VUser.currentUser(inContext: context)
-        }
-        guard let currentUser = loadedUser else {
+        guard let currentUser = VUser.currentUser() else {
             fatalError( "Cannot get current user." )
         }
         
         // Show the login again once we're logged out
         let loginOperation = ShowLoginOperation(originViewController: fromViewController, dependencyManager: dependencyManager)
-        self.queueNext( loginOperation, queue: Operation.defaultQueue )
+        loginOperation.queueAfter( self, queue: Operation.defaultQueue )
         
         // Perform a fire-and-forget remote log out with the server
         let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
-        self.queueNext( remoteLogoutOperation, queue: remoteLogoutOperation.defaultQueue )
+        remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
         persistentStore.sync() { context in
             VUser.clearCurrentUser(inContext: context)

@@ -22,8 +22,9 @@ class LogoutOperation: RequestOperation<LogoutRequest> {
         qualityOfService = .UserInitiated
     }
     
-    override func onResponse(result: LogoutRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
+    override func onComplete(result: LogoutRequest.ResultType, completion:()->() ) {
+        
+        persistentStore.asyncFromBackground() { context in
             guard let loggedOutUser: VUser = context.getObject(self.userIdentifier) else {
                 fatalError()
             }
@@ -39,6 +40,7 @@ class LogoutOperation: RequestOperation<LogoutRequest> {
             }
             
             context.saveChanges()
+            completion()
         }
     }
 }

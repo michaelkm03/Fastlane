@@ -20,17 +20,15 @@ class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
         super.init( request: FlagContentRequest(sequenceID: sequenceID) )
     }
     
-    override func onResponse(response: FlagContentRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
+    override func onComplete(result:FlagContentRequest.ResultType, completion: () -> ()) {
+        flaggedContent.addRemoteId( String(self.sequenceID), toFlaggedItemsWithType: .StreamItem)
+        
+        persistentStore.asyncFromBackground() { context in
             if let sequence: VSequence = context.findObjects([ "remoteId" : String(self.sequenceID) ]).first {
                 context.destroy( sequence )
                 context.saveChanges()
             }
         }
-    }
-    
-    override func onComplete(error: NSError?) {
-        flaggedContent.addRemoteId( String(self.sequenceID), toFlaggedItemsWithType: .StreamItem)
     }
 }
 
@@ -45,16 +43,15 @@ class FlagCommentOperation: RequestOperation<FlagContentRequest> {
         super.init( request: FlagContentRequest(commentID: commentID) )
     }
     
-    override func onResponse(response: FlagContentRequest.ResultType) {
-        persistentStore.syncFromBackground() { context in
+    override func onComplete(result:FlagContentRequest.ResultType, completion: () -> ()) {
+        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
+        
+        persistentStore.asyncFromBackground() { context in
             if let comment: VComment = context.findObjects([ "remoteId" : String(self.commentID) ]).first {
                 context.destroy( comment )
                 context.saveChanges()
             }
+            completion()
         }
-    }
-    
-    override func onComplete(error: NSError?) {
-        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
     }
 }

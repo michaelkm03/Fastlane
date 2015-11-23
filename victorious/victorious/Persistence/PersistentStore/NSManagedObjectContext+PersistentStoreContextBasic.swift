@@ -20,7 +20,6 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
             try self.save()
             return true
         } catch {
-            print( "Failed to save entity:" )
             if let object = (error as NSError).userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
                 print( "\t- Validation failed on object \(object.dynamicType)." )
             }
@@ -32,6 +31,7 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
                     }
                 }
             }
+            fatalError( "Failed to save." )
         }
         return false
     }

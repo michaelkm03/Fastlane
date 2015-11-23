@@ -19,7 +19,7 @@ class UserPollResultsOperation: RequestOperation<PollResultsRequest> {
         super.init(request: PollResultsRequest(userID: userID))
     }
     
-    override func onResponse(response: PollResultsRequest.ResultType) {
+    override func onComplete(response: PollResultsRequest.ResultType, completion:()->() ) {
         persistentStore.syncFromBackground() { context in
             let user: VUser = context.findObjects([ "remoteId" : Int(self.userID) ] ).first!
             for result in response {
@@ -28,6 +28,7 @@ class UserPollResultsOperation: RequestOperation<PollResultsRequest> {
                 user.pollResults.insert( pollResult )
             }
             context.saveChanges()
+            completion()
         }
     }
 }

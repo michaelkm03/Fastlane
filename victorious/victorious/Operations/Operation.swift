@@ -8,11 +8,14 @@
 
 import Foundation
 
-class Operation: NSOperation {
-    
-    static let defaultQueue = NSOperationQueue()
+class Operation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((Operation)->())?
+    
+    static let defaultQueue = NSOperationQueue()
+    static var sharedQueue: NSOperationQueue {
+        return Operation.defaultQueue
+    }
     
     private var _executing = false
     private var _finished = false
@@ -49,53 +52,17 @@ class Operation: NSOperation {
         }
     }
     
-    class func sharedQueue() -> NSOperationQueue {
-        return Operation.defaultQueue
-    }
+    // MARK: - Queuable
     
-    final func queue() {
-        self.queue(nil)
-    }
-    
-    final func queueOn( queue: NSOperationQueue, mainQueueCompletionBlock:((Operation)->())?) {
+    func queueOn( queue: NSOperationQueue, completionBlock:((Operation)->())?) {
         self.completionBlock = {
-            if mainQueueCompletionBlock != nil {
-                self.mainQueueCompletionBlock = mainQueueCompletionBlock
+            if completionBlock != nil {
+                self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
                 self.mainQueueCompletionBlock?( self )
             }
         }
         queue.addOperation( self )
-    }
-    
-    final func queue( completion:((Operation)->())?) {
-        self.queueOn( Operation.defaultQueue, mainQueueCompletionBlock: completion )
-    }
-}
-
-extension NSOperation {
-    
-    /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
-    /// effectively "cutting in line" all the dependency operations.  This allows operations to
-    /// instantiate and queue a follow-up operation.
-    func queueNext( operation: NSOperation, queue: NSOperationQueue ) {
-        for dependentOperation in self.dependentOperationsInQueue( queue ) {
-            dependentOperation.addDependency( operation )
-        }
-        queue.addOperation( operation )
-    }
-    
-    /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
-    /// effectively "cutting in line" all the dependency operations.  This allows operations to
-    /// instantiate and queue a follow-up operation.
-    func queueBefore( operation: NSOperation, queue: NSOperationQueue ) {
-        self.addDependency( operation )
-        queue.addOperation( operation )
-    }
-    
-    /// Returns an array of operations which are dependencies of the receiver
-    func dependentOperationsInQueue( queue: NSOperationQueue) -> [NSOperation] {
-        return queue.operations.filter { $0.dependencies.contains(self) }
     }
 }

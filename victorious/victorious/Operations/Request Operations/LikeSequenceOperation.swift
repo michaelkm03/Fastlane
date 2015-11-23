@@ -18,15 +18,16 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     }
     
     private let persistentStore = PersistentStore()
-    let uiContext: UIContext?
+    private let sequenceID: Int64
+    private let uiContext: UIContext?
     
     init( sequenceID: Int64, uiContext: UIContext? = nil ) {
         self.uiContext = uiContext
+        self.sequenceID = sequenceID
         super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onStart() {
-        super.onStart()
+    override func onStart( completion:()->() ) {
         
         // Handle some immediate synchronous UI updates
         dispatch_sync( dispatch_get_main_queue() ) {
@@ -46,7 +47,7 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         
         // Handle immediate asynchronous data updates
         persistentStore.syncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : Int(self.request.sequenceID) ]
+            let uniqueElements = [ "remoteId" : Int(self.sequenceID) ]
             let sequences: [VSequence] = context.findObjects( uniqueElements )
             for sequence in sequences {
                 sequence.isLikedByMainUser = true
