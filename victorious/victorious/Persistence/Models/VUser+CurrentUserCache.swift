@@ -22,7 +22,8 @@ public extension VUser {
     /// a fetch request or relationship.  This method is thread safe, and will handle loading
     /// the user from the proper context depending on which thread it is invoked.
     public static func currentUser() -> VUser? {
-        let persistentStore = PersistentStore()
+        
+        let persistentStore: PersistentStoreType = MainPersistentStore()
         
         if NSThread.currentThread().isMainThread {
             return persistentStore.sync { context in

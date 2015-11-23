@@ -1,5 +1,5 @@
 //
-//  PersistentStoreTests.swift
+//  MainPersistentStoreTests.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/19/15.
@@ -7,11 +7,11 @@
 //
 
 import XCTest
-import victorious
+@testable import victorious
 
-class PersistentStoreTests: XCTestCase {
+class MainPersistentStoreTests: XCTestCase {
     
-    let persistentStore = PersistentStore()
+    let persistentStore: PersistentStoreType = MainPersistentStore()
     
     func testSyncBasic() {
         persistentStore.syncBasic() { context in

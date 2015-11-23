@@ -11,7 +11,6 @@ import VictoriousIOSSDK
 
 class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
     
-    private let persistentStore = PersistentStore()
     private let storedPassword = VStoredPassword()
     private let profileUpdate: User.ProfileUpdate?
     private let passwordUpdate: User.PasswordUpdate?

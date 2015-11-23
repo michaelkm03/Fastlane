@@ -13,7 +13,6 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
     private let loginType: VLoginType
     private let accountIdentifier: String?
-    private let persistentStore = PersistentStore()
     
     var isNewUser = false
     var persistentUser: VUser?

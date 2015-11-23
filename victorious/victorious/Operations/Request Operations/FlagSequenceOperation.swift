@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     
     private let originViewController: UIViewController
-    private let persistentStore = PersistentStore()
     private let sequenceID: Int64
     
     init( sequenceID: Int64, originViewController: UIViewController ) {

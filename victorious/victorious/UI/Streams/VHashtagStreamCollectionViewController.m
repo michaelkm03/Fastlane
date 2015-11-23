@@ -61,7 +61,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     
     NSString *apiPath = [streamURL v_pathComponent];
-    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;

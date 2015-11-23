@@ -14,8 +14,6 @@
 #import "VStream+Fetcher.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
-#import "VObjectManager.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"

@@ -82,7 +82,7 @@ class CoreDataManager: NSObject {
         }
     }
 
-    func deletePersistentStore() {
+    func deleteAllData() {
         do {
             try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
         } catch {

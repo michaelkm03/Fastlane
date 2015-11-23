@@ -11,7 +11,6 @@ import VictoriousIOSSDK
 
 class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
-    private let persistentStore = PersistentStore()
     private let sequenceID: Int64
     
     init( sequenceID: Int64 ) {

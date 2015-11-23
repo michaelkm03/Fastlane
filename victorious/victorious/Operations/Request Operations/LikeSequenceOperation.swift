@@ -17,7 +17,6 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         let triggeringView: UIView
     }
     
-    private let persistentStore = PersistentStore()
     private let sequenceID: Int64
     private let uiContext: UIContext?
     

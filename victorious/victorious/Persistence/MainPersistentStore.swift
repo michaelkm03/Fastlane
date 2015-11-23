@@ -1,18 +1,19 @@
 //
-//  Persistence.swift
+//  MainPersistentStore.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/5/15.
+//  Created by Patrick Lynch on 11/23/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
-import VictoriousIOSSDK
 
-/// An object that provides access to this application's primary peristent store.
-/// It has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
-/// This allows calling code to instantiate a new `PersistentStore` instance wherever needed.
-public class PersistentStore: NSObject {
+/// An object that provides access to this application's primary and only peristent store by
+/// providing an implementation of `PersistentStoreType`, the interface against which all application code
+/// is programmed.  See `PersistentStoreType` protocol for more information.
+/// This class has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
+/// This allows calling code to instantiate a new `MainPersistentStore` instance wherever needed.
+public class MainPersistentStore: NSObject, PersistentStoreType {
     
     static let persistentStorePath          = "victoriOS.sqlite"
     static let managedObjectModelName       = "victoriOS"
@@ -39,20 +40,17 @@ public class PersistentStore: NSObject {
         )
     }()
     
-    /// Executes a closure synchronously using the main context of the persistent store, provided
-    /// as a `PersistentStoreContextBasic` type, which is designed to be used from Objective-C only.  From Swift,
-    /// use `sync(_:)`, which adds a generic type for a return value (which, keep in mind, can be Void).
+    // MARK: - PersistentStoreType
+    
     public func syncBasic( closure: ((PersistentStoreContextBasic)->()) ) {
-        let context = PersistentStore.sharedManager.mainContext
+        let context = MainPersistentStore.sharedManager.mainContext
         context.performBlockAndWait {
             closure( context )
         }
     }
     
-    /// Executes a closure synchronously using the main context of the persistent store.
-    /// Keep in mind, the generic type can be Void if no result is desired.
     public func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
-        let context = PersistentStore.sharedManager.mainContext
+        let context = MainPersistentStore.sharedManager.mainContext
         var result: T?
         context.performBlockAndWait {
             result = closure( context )
@@ -60,12 +58,8 @@ public class PersistentStore: NSObject {
         return result!
     }
     
-    /// Executes a closure synchronously using the background context of the persistent store.
-    /// This method should be used for any concurrent data operations, such as
-    /// parsing a network response into the peristent store.
-    /// Keep in mind, the generic type can be Void if no result is desired.
     public func syncFromBackground<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
-        let context = PersistentStore.sharedManager.backgroundContext
+        let context = MainPersistentStore.sharedManager.backgroundContext
         var result: T?
         context.performBlockAndWait {
             result = closure( context )
@@ -73,11 +67,15 @@ public class PersistentStore: NSObject {
         return result!
     }
     
-    /// Executes a closure asynchronously using the background context of the persistent store.
-    /// This method should be used for any asynchronous, concurrent data operations, such as
-    /// parsing a network response into the peristent store.
     public func asyncFromBackground( closure: ((PersistentStoreContext)->()) ) {
-        let context = PersistentStore.sharedManager.backgroundContext
+        let context = MainPersistentStore.sharedManager.backgroundContext
+        context.performBlock {
+            closure( context )
+        }
+    }
+    
+    public func asyncFromBackgroundBasic( closure: ((PersistentStoreContextBasic)->()) ) {
+        let context = MainPersistentStore.sharedManager.backgroundContext
         context.performBlock {
             closure( context )
         }

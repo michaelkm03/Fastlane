@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: Operation {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     override func start() {
         super.start()

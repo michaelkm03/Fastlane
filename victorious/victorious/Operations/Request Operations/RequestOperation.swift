@@ -13,13 +13,13 @@ private let _defaultQueue = NSOperationQueue()
 
 class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
-    private(set) var requestError: NSError?
-    
     static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
     var mainQueueCompletionBlock: ((NSError?)->())?
+    let persistentStore: PersistentStoreType = MainPersistentStore()
     
     private let request: T
+    private(set) var requestError: NSError?
     
     var defaultQueue: NSOperationQueue {
         return _defaultQueue
@@ -68,7 +68,6 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         }
         dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
-        let persistentStore = PersistentStore()
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(v_environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
