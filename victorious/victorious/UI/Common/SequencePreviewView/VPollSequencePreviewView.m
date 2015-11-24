@@ -99,6 +99,7 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
+    [self clearResults];
     
     __weak typeof(self) weakSelf = self;
     [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL
@@ -331,6 +332,18 @@ static NSString *kOrIconKey = @"orIcon";
             [self setResultViewsHidden:YES animated:YES];
             self.voterCountLabelContainer.alpha = 0.0f;
     }
+}
+
+#pragma mark - Private
+
+- (void)clearResults
+{
+    [self setResultViewsHidden:YES animated:NO];
+    self.haveResultsBeenSet = NO;
+    [self setAnswerAIsFavored:NO];
+    [self setAnswerBIsFavored:NO];
+    [self setAnswerAPercentage:0.0 animated:NO];
+    [self setAnswerBPercentage:0.0 animated:NO];
 }
 
 @end
