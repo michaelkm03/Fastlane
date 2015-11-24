@@ -36,8 +36,9 @@ extension VUser: PersistenceParsable {
     
     func populate(fromSuggestedUserSourceModel suggestedUser: SuggestedUser) {
         self.populate(fromSourceModel: suggestedUser.user)
-        let sequences = (suggestedUser.recentSequences.flatMap {
+        let sequences: [VSequence] = (suggestedUser.recentSequences.flatMap { 
             VSequence().populate(fromSourceModel: $0)
         })
+        self.addObjects(sequences, to: "recentSequences")
     }
 }
