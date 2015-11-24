@@ -98,8 +98,13 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setSequence:(VSequence *)sequence
 {
+    // Clear any view state when we are getting a different sequence.
+    if (self.sequence != sequence)
+    {
+        [self clearResults];
+    }
+    
     [super setSequence:sequence];
-    [self clearResults];
     
     __weak typeof(self) weakSelf = self;
     [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL
