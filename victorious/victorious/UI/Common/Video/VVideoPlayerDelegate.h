@@ -53,11 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayer:(id<VVideoPlayer>)videoPlayer didPlayToTime:(Float64)time;
 
-/**
- This video is loaded and ready to display its first frame.
- */
-- (void)videoPlayerIsReadyForDisplay:(id<VVideoPlayer>)videoPlayer;
-
 @end
 
 NS_ASSUME_NONNULL_END
