@@ -34,23 +34,6 @@ extension RequestType {
     }
 }
 
-/// ErrorType thrown when an endpoint request succeeds on an TCP/IP and HTTP level, but for some reason the response couldn't be parsed.
-public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDebugStringConvertible {
-    public let localizedDescription: String?
-    
-    public var description: String {
-        return localizedDescription ?? "ResponseParsingError"
-    }
-    
-    public var debugDescription: String {
-        return description
-    }
-    
-    public init(localizedDescription: String? = nil) {
-        self.localizedDescription = localizedDescription
-    }
-}
-
 /// An asynchronous task that can be canceled
 @objc(VSDKCancelable)
 public protocol Cancelable: class {
@@ -90,7 +73,9 @@ extension RequestType {
             if let response = response,
                let data = data {
                 do {
-                    result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: JSON(data: data))
+                    let responseJSON = JSON(data: data)
+                    try self.parseError(responseJSON)
+                    result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: responseJSON)
                     error = requestError
                 }
                 catch let e {
@@ -107,5 +92,12 @@ extension RequestType {
         }
         dataTask.resume()
         return dataTask
+    }
+    
+    private func parseError( responseJSON: JSON ) throws {
+        if let errorCode = responseJSON["error"].int,
+            let errorMessage = responseJSON["message"].string {
+            throw APIError(localizedDescription: errorMessage, code: errorCode)
+        }
     }
 }
