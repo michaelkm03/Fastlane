@@ -40,8 +40,7 @@ public protocol Cancelable: class {
     func cancel() -> ()
 }
 
-extension NSURLSessionTask: Cancelable {
-}
+extension NSURLSessionTask: Cancelable {}
 
 extension RequestType {
     /// A closure to be called when the request finishes executing.
