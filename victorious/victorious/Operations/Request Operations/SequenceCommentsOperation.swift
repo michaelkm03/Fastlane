@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore = MainPersistentStore()
     private let flaggedContent = VFlaggedContent()
     private let sequenceID: Int64
     

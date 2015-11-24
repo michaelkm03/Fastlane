@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let sequenceID: Int64
     
     init( sequenceID: Int64 ) {
@@ -22,7 +23,7 @@ class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     override func onStart( completion:()->() ) {
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
         
-        let uniqueElements = [ "remoteId" : Int(self.sequenceID) ]
+        let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
         persistentStore.asyncFromBackground() { context in
             let sequence: VSequence = context.findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = false

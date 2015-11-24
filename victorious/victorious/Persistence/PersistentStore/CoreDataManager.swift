@@ -61,14 +61,14 @@ class CoreDataManager: NSObject {
             )
         }
         catch {
-            print( "Failed to create persistent store.  Either the managed object model and persistent store URLs provided are invalid, or a migration failed between a current and previous mapping model failed.  If you are using a mapping model, double check that all attributes and relationships are being migrated properly.  Caught error: \(error)" )
+            fatalError( "Failed to create persistent store.  Either the managed object model and persistent store URLs provided are invalid, or a migration failed between a current and previous mapping model failed.  If you are using a mapping model, double check that all attributes and relationships are being migrated properly.  Caught error: \(error)" )
         }
         
         self.mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         self.mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         
         self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        self.backgroundContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        self.backgroundContext.parentContext = self.mainContext
         
         super.init()
         
@@ -82,7 +82,7 @@ class CoreDataManager: NSObject {
         }
     }
 
-    func deletePersistentStore() {
+    func deleteAllData() {
         do {
             try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
         } catch {

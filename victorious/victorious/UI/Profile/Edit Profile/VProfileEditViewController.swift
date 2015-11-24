@@ -13,7 +13,7 @@ extension VProfileEditViewController {
     
     func updateProfile( name name: String?, profileImageURL: NSURL?, location: String?, tagline: String? ) -> NSOperation? {
         let operation = AccountUpdateOperation(
-            profileUpdate: User.ProfileUpdate(
+            profileUpdate: ProfileUpdate(
                 email: VUser.currentUser()!.email!,
                 name: name,
                 location: location,

@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: Operation {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     override func start() {
         super.start()
@@ -32,7 +32,7 @@ class StoredLoginOperation: Operation {
                 if user.status == nil {
                     user.status = "stored"
                 }
-                user.setCurrentUser(inContext: context)
+                user.setAsCurrentUser(inContext: context)
                 context.saveChanges()
                 return user
             }

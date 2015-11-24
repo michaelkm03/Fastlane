@@ -11,8 +11,8 @@ import VictoriousIOSSDK
 
 class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let sequenceID: Int64
-    private let persistentStore = PersistentStore()
     private let flaggedContent = VFlaggedContent()
     
     init( sequenceID: Int64 ) {
@@ -34,8 +34,8 @@ class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
 
 class FlagCommentOperation: RequestOperation<FlagContentRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let commentID: Int64
-    private let persistentStore = PersistentStore()
     private let flaggedContent = VFlaggedContent()
     
     init( commentID: Int64 ) {
@@ -47,7 +47,8 @@ class FlagCommentOperation: RequestOperation<FlagContentRequest> {
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         persistentStore.asyncFromBackground() { context in
-            if let comment: VComment = context.findObjects([ "remoteId" : String(self.commentID) ]).first {
+            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
+            if let comment: VComment = context.findObjects( uniqueElements ).first {
                 context.destroy( comment )
                 context.saveChanges()
             }

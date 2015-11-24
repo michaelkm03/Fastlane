@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class UserPollResultsOperation: RequestOperation<PollResultsRequest> {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore = MainPersistentStore()
     private let userID: Int64
     
     init( userID: Int64) {

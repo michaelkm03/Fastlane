@@ -29,8 +29,8 @@ public struct User {
     public let isCreator: Bool
     public let isDirectMessagingDisabled: Bool
     public let isFollowedByMainUser: Bool
-    public let numberOfFollowers: Int64
-    public let numberOfFollowing: Int64
+    public let numberOfFollowers: Int64?
+    public let numberOfFollowing: Int64?
     public let profileImageURL: String
     public let tokenUpdatedAt: NSDate?
     public let previewImageAssets: [ImageAsset]
@@ -68,8 +68,8 @@ extension User {
         isCreator                   = json["isCreator"].bool ?? false
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool ?? false
         isFollowedByMainUser        = json["am_following"].bool ?? false
-        numberOfFollowers           = Int64(json["number_of_followers"].stringValue) ?? 0
-        numberOfFollowing           = Int64(json["number_of_following"].stringValue) ?? 0
+        numberOfFollowers           = Int64(json["number_of_followers"].stringValue)
+        numberOfFollowing           = Int64(json["number_of_following"].stringValue)
         profileImageURL             = json["profile_image"].string ?? ""
         tokenUpdatedAt              = dateFormatter.dateFromString(json["token_updated_at"].stringValue)
         previewImageAssets          = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }

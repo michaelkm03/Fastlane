@@ -52,8 +52,8 @@ public struct Sequence: StreamItemType {
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
     public let previewImageAssets: [ImageAsset]
-    public let type: StreamContentType
-    public let subtype: StreamContentType
+    public let type: StreamContentType?
+    public let subtype: StreamContentType?
 }
 
 extension Sequence {
@@ -66,8 +66,6 @@ extension Sequence {
         guard let category      = Category(rawValue: json["category"].stringValue),
             let sequenceID      = Int64(json["id"].stringValue),
             let user            = User(json: json["user"]),
-            let type            = StreamContentType(rawValue: json["type"].stringValue),
-            let subtype         = StreamContentType(rawValue: json["subtype"].stringValue),
             let releasedAt      = dateFormatter.dateFromString(json["released_at"].stringValue) else {
                 return nil
         }
@@ -75,11 +73,11 @@ extension Sequence {
         self.sequenceID         = sequenceID
         self.releasedAt         = releasedAt
         self.user               = user
-        self.type               = type
-        self.subtype            = subtype
     
         // MARK: - Optional data
         
+        type                    = StreamContentType(rawValue: json["type"].stringValue)
+        subtype                 = StreamContentType(rawValue: json["subtype"].stringValue)
         headline                = json["entry_label"].string
         name                    = json["name"].string ?? ""
         sequenceDescription     = json["description"].string ?? ""

@@ -20,7 +20,7 @@ extension VProfileCreateViewController {
     
     func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?)->())? ) -> NSOperation? {
         let operation = AccountUpdateOperation(
-            profileUpdate: User.ProfileUpdate(
+            profileUpdate: ProfileUpdate(
                 email: nil,
                 name: username,
                 location: location,

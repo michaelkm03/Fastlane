@@ -1,5 +1,5 @@
 //
-//  UserInteractionsOnSequenceRequestTests.swift
+//  SequenceUserInteractionsRequestTests.swift
 //  victorious
 //
 //  Created by Michael Sena on 11/16/15.
@@ -11,7 +11,7 @@ import SwiftyJSON
 
 @testable import VictoriousIOSSDK
 
-class UserInteractionsOnSequenceRequestTests: XCTestCase {
+class SequenceUserInteractionsRequestTests: XCTestCase {
 
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("UserInteractionsTest", withExtension: "json"),
@@ -20,7 +20,7 @@ class UserInteractionsOnSequenceRequestTests: XCTestCase {
                 return
         }
         do {
-            let userInteractionsRequest = UserInteractionsOnSequenceRequest(sequenceID: 16435, userID:5121)
+            let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: 16435, userID:5121)
             let result = try userInteractionsRequest.parseResponse(NSURLResponse(), toRequest: userInteractionsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertTrue(result)
         } catch {
@@ -29,7 +29,7 @@ class UserInteractionsOnSequenceRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let userInteractionsRequest = UserInteractionsOnSequenceRequest(sequenceID: 16435, userID:5121)
+        let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: 16435, userID:5121)
         XCTAssertEqual(userInteractionsRequest.urlRequest.URL?.absoluteString, "/api/sequence/users_interactions/16435/5121")
     }
 

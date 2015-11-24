@@ -566,7 +566,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
         self.currentStream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         [context saveChanges];

@@ -10,7 +10,7 @@ import Foundation
 
 /// Defines a object object used by the PersistentStoreContext protocol.  Model types that will
 /// be managed using a PersistentStoreContext must implement PersistentStoreObject.
-@objc public protocol PersistentStoreObject : class {
+@objc protocol PersistentStoreObject : class {
     
     /// Identifies the type of the object to the store for operations such as loading, saving, etc.
     static func dataStoreEntityName() -> String
@@ -20,7 +20,7 @@ import Foundation
 
 extension NSManagedObject: PersistentStoreObject {
     
-    public class func dataStoreEntityName() -> String {
+    class func dataStoreEntityName() -> String {
         let className = (NSStringFromClass(self) as NSString)
         if className.pathExtension.characters.count > 0 {
             return className.pathExtension
@@ -33,18 +33,18 @@ extension NSManagedObject: PersistentStoreObject {
         }
     }
     
-    public var identifier: AnyObject {
+    var identifier: AnyObject {
         return self.objectID
     }
 }
 
-public protocol PersistentStoreObjectSwift: PersistentStoreObject {
+protocol PersistentStoreObjectSwift: PersistentStoreObject {
     var persistentStoreContext: PersistentStoreContext { get }
 }
 
 extension NSManagedObject: PersistentStoreObjectSwift {
     
-    public var persistentStoreContext: PersistentStoreContext {
+    var persistentStoreContext: PersistentStoreContext {
         guard let persistentStoreContext = self.managedObjectContext as? PersistentStoreContext else {
             fatalError( "There is no managed object context associated with this managed object." +
                 "Most likely you are trying to perform an operation on an object that has been deleted." )
@@ -54,7 +54,7 @@ extension NSManagedObject: PersistentStoreObjectSwift {
 }
 
 /// Adapts methods of the PersistentStoreContext protocol to use generics
-public protocol PersistentStoreContext: PersistentStoreContextBasic {
+protocol PersistentStoreContext: PersistentStoreContextBasic {
     
     func getObject<T: PersistentStoreObjectSwift>( identifier: AnyObject ) -> T?
     

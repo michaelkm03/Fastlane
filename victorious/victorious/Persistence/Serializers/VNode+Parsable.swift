@@ -11,10 +11,10 @@ import VictoriousIOSSDK
 
 extension VNode: PersistenceParsable {
     func populate( fromSourceModel node: Node ) {
-        guard let remoteID = Int(node.nodeID) else {
+        guard let remoteID = Int64(node.nodeID) else {
             return
         }
-        self.remoteId = NSNumber(integer: remoteID)
+        self.remoteId = NSNumber(longLong: remoteID)
         
         assets = NSOrderedSet( array: node.assets.flatMap {
             let uniqueElements = [ "data" : $0.data ]
@@ -27,13 +27,13 @@ extension VNode: PersistenceParsable {
 
 extension VPollResult: PersistenceParsable {
     func populate( fromSourceModel voteResult: VoteResult ) {
-        self.count = Int(voteResult.voteCount)
+        self.count = NSNumber(longLong: voteResult.voteCount)
     }
 }
 
 extension VComment: PersistenceParsable {
     func populate( fromSourceModel comment: Comment ) {
-        remoteId = Int(comment.commentID)
+        remoteId = NSNumber(longLong: comment.commentID)
         shouldAutoplay = comment.shouldAutoplay
         text = comment.text
         mediaType = comment.mediaType?.rawValue
@@ -42,7 +42,7 @@ extension VComment: PersistenceParsable {
         flags = comment.flags
         postedAt = comment.postedAt
         
-        user = persistentStoreContext.findOrCreateObject([ "remoteId" : Int(comment.user.userID) ]) as VUser
+        user = persistentStoreContext.findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
         user.populate( fromSourceModel: comment.user )
     }
 }

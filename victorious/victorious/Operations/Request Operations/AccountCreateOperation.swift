@@ -11,9 +11,10 @@ import VictoriousIOSSDK
 
 class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let loginType: VLoginType
     private let accountIdentifier: String?
-    private let persistentStore = PersistentStore()
     
     var isNewUser = false
     var persistentUser: VUser?
@@ -30,7 +31,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
         self.isNewUser = response.newUser
         
         persistentStore.asyncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.user.userID) ])
+            let user: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
@@ -42,7 +43,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
                     guard let persistentUser: VUser = context.getObject(identifier) else {
                         fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
                     }
-                    persistentUser.setCurrentUser(inContext: context)
+                    persistentUser.setAsCurrentUser(inContext: context)
                     
                     VStoredLogin().saveLoggedInUserToDisk( persistentUser )
                     NSUserDefaults.standardUserDefaults().setInteger( persistentUser.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)

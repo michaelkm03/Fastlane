@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 @testable import victorious
 
-let _testQueue = NSOperationQueue()
+private let _testQueue = NSOperationQueue()
 
 class MockOperation: NSOperation, Queuable {
 

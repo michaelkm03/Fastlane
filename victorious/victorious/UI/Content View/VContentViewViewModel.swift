@@ -91,7 +91,7 @@ extension VContentViewViewModel {
         let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSeuqneceIntegerId )
         sequenceFetchOperation.queue() { error in
             
-            if let sequence: VSequence? = PersistentStore().sync({ context in
+            if let sequence: VSequence? = MainPersistentStore().sync({ context in
                 return context.findObjects( [ "remoteId" : nextSequenceId ] ).first
             }) where error == nil {
                 success( sequence )

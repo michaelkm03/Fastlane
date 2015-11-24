@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class SequencePollResultsOperation: RequestOperation<PollResultsRequest> {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let sequenceID: Int64
     
     init( sequenceID: Int64) {

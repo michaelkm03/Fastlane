@@ -13,7 +13,7 @@ class LogoutLocally: Operation {
     let fromViewController: UIViewController
     let dependencyManager: VDependencyManager
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     required init(fromViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.fromViewController = fromViewController

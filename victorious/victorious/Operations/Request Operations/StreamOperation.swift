@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 class StreamOperation: RequestOperation<StreamRequest> {
     
-    private let persistentStore = PersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let apiPath: String
     
     init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
