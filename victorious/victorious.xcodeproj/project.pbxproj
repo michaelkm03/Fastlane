@@ -10504,7 +10504,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
