@@ -11,7 +11,7 @@ import SwiftyJSON
 
 public struct Node {
     public let nodeID: String
-    public let shareUrlPath: String
+    public let shareUrlPath: NSURL?
     public let assets: [Asset]
     public let interactions: [Interaction]
 }
@@ -23,7 +23,7 @@ extension Node {
         }
         self.nodeID     = nodeID
         
-        shareUrlPath    = json["share_url"].string!
+        shareUrlPath    = NSURL(string: json["share_url"].stringValue)
         assets          = (json["assets"].array ?? []).flatMap { Asset( json:$0 ) }
         interactions    = (json["interactions"].array ?? []).flatMap { Interaction( json:$0 ) }
     }
