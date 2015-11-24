@@ -34,7 +34,7 @@ public struct SequenceDetailListByUserRequest: RequestType {
         guard let sequenceListJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        let results = sequenceListJSON.flatMap{Sequence(json: $0)}
+        let results = sequenceListJSON.flatMap { Sequence(json: $0) }
         
         let nextPageRequest: SequenceDetailListByUserRequest? = sequenceListJSON.count > 0 ? SequenceDetailListByUserRequest(userID: userID, paginator: paginator.nextPage) : nil
         
