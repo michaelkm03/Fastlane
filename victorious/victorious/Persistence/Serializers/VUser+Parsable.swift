@@ -34,25 +34,14 @@ extension VUser: PersistenceParsable {
         })
     }
     
-//    func populate(fromSuggestedUserSourceModel suggestedUser: SuggestedUser) {
-//        self.populate(fromSourceModel: suggestedUser.user)
-//        let sequences: [VSequence] = (suggestedUser.recentSequences.flatMap {
-//            let sequence: VSequence = VSequence()
-//            sequence.populate(fromSourceModel: $0)
-//            return sequence
-//        })
-//        
-//        let relationshipName = "recentSequences"
-//        assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
-//            "Could not find a relationship for key '\(relationshipName)'" )
-//        
-//        for (name, relationship) in self.entity.relationshipsByName where name == relationshipName {
-//            assert( relationship.toMany,
-//                "Relationship with name '\(relationshipName)' is now a to-many relationship." )
-//            
-//            if relationship.ordered {
-//                self.mutableOrderedSetValueForKey(relationshipName)
-//            }
-//        }
-//    }
+    func populate(fromSuggestedUserSourceModel suggestedUser: SuggestedUser) {
+        self.populate(fromSourceModel: suggestedUser.user)
+        let sequences: [VSequence] = (suggestedUser.recentSequences.flatMap {
+            let sequence: VSequence = VSequence()
+            sequence.populate(fromSourceModel: $0)
+            return sequence
+        })
+        self.removeObjects(sequences, from: "recentSequences")
+        self.addObjects(sequences, to: "recentSequences")
+    }
 }

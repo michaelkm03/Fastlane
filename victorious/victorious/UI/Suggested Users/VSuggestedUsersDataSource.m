@@ -13,6 +13,7 @@
 #import "VUser.h"
 #import "VFollowResponder.h"
 #import "VSuggestedUserRetryCell.h"
+#import "victorious-Swift.h"
 
 static NSString * const kPromptTextKey = @"prompt";
 
@@ -56,25 +57,41 @@ static NSString * const kPromptTextKey = @"prompt";
     
     self.isLoadingSuggestedUsers = YES;
     
-    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
+    __weak typeof(self) weakSelf = self;
+    [self queueSuggestedUsersOperation: ^(NSArray *suggestedUsers)
      {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         self.suggestedUsers = resultObjects;
-         if ( completion != nil )
+         __strong typeof(self) strongSelf = weakSelf;
+         if (strongSelf != nil)
          {
-             completion();
-         }
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         if ( completion != nil )
-         {
-             completion();
+             self.loadedOnce = YES;
+             self.isLoadingSuggestedUsers = NO;
+             self.suggestedUsers = suggestedUsers;
+             if ( completion != nil )
+             {
+                 completion();
+             }
          }
      }];
+    
+//    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
+//     {
+//         self.loadedOnce = YES;
+//         self.isLoadingSuggestedUsers = NO;
+//         self.suggestedUsers = resultObjects;
+//         if ( completion != nil )
+//         {
+//             completion();
+//         }
+//     }
+//                                            failBlock:^(NSOperation *operation, NSError *error)
+//     {
+//         self.loadedOnce = YES;
+//         self.isLoadingSuggestedUsers = NO;
+//         if ( completion != nil )
+//         {
+//             completion();
+//         }
+//     }];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath

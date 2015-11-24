@@ -11,8 +11,10 @@ import VictoriousIOSSDK
 
 extension VSuggestedUsersDataSource {
     
-    func queueSuggestedUsersOperation(completion: ([VUser]?) -> Void) {
+    func queueSuggestedUsersOperation(completion: ([VUser]) -> Void) {
         let operation = SuggestedUsersOperation()
-        completion(operation.suggestedUsers)
+        operation.queue() { _ in
+            completion(operation.suggestedUsers)
+        }
     }
 }
