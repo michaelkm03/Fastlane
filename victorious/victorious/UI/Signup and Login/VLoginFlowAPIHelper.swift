@@ -20,7 +20,7 @@ extension VLoginFlowAPIHelper {
     
     func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, completion: ((NSError?)->())? ) -> NSOperation? {
         let operation = AccountUpdateOperation(
-            profileUpdate: User.ProfileUpdate(
+            profileUpdate: ProfileUpdate(
                 email: nil,
                 name: username,
                 location: nil,

@@ -21,7 +21,7 @@ class ConversationListOperation: RequestOperation<ConversationListRequest> {
         
         persistentStore.asyncFromBackground() { context in
             for conversation in result.results {
-                let uniqueElements = [ "remoteId" : Int(conversation.conversationID) ]
+                let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
                 let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )
             }

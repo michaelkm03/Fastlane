@@ -26,17 +26,17 @@ public struct Tracking {
 
 extension Tracking {
     public init(json: JSON) {
-        viewStart           = json["view-start"].arrayValue.flatMap { String($0) }
-        viewStop            = json["view-stop"].arrayValue.flatMap { String($0) }
-        videoComplete25     = json["view-25-complete"].arrayValue.flatMap { String($0) }
-        videoComplete50     = json["view-50-complete"].arrayValue.flatMap { String($0) }
-        videoComplete75     = json["view-75-complete"].arrayValue.flatMap { String($0) }
-        videoComplete100    = json["view-100-complete"].arrayValue.flatMap { String($0) }
-        videoError          = json["view-error"].arrayValue.flatMap { String($0) }
-        videoStall          = json["view-stall"].arrayValue.flatMap { String($0) }
-        videoSkip           = json["view-skip"].arrayValue.flatMap { String($0) }
-        cellView            = json["cell-view"].arrayValue.flatMap { String($0) }
-        cellClick           = json["cell-click"].arrayValue.flatMap { String($0) }
-        share               = json["share"].arrayValue.flatMap { String($0) }
+        viewStart           = json["view-start"].arrayValue.map { $0.stringValue }
+        viewStop            = json["view-stop"].arrayValue.map { $0.stringValue }
+        videoComplete25     = json["view-25-complete"].arrayValue.map { $0.stringValue }
+        videoComplete50     = json["view-50-complete"].arrayValue.map { $0.stringValue }
+        videoComplete75     = json["view-75-complete"].arrayValue.map { $0.stringValue }
+        videoComplete100    = json["view-100-complete"].arrayValue.map { $0.stringValue }
+        videoError          = json["view-error"].arrayValue.map { $0.stringValue }
+        videoStall          = json["view-stall"].arrayValue.map { $0.stringValue }
+        videoSkip           = json["view-skip"].arrayValue.map { $0.stringValue }
+        cellView            = json["cell-view"].arrayValue.map { $0.stringValue }
+        cellClick           = json["cell-click"].arrayValue.map { $0.stringValue }
+        share               = json["share"].arrayValue.map { $0.stringValue }
     }
 }

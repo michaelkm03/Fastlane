@@ -29,12 +29,6 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         self.request = request
     }
     
-    func cancelAllOperations() {
-        for operation in _defaultQueue.operations {
-            operation.cancel()
-        }
-    }
-    
     // MARK: - Lifecycle Subclassing
     
     func onStart( completion:()->() ) {

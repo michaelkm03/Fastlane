@@ -24,7 +24,7 @@ class UserInfoOperation: RequestOperation<UserInfoRequest> {
     override func onComplete( response: UserInfoRequest.ResultType, completion:()->() ) {
         
         persistentStore.asyncFromBackground() { context in
-            let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : Int(response.userID) ])
+            let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.userID) ])
             persistentUser.populate(fromSourceModel: response)
             context.saveChanges()
             completion()

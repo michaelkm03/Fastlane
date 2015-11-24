@@ -11,7 +11,7 @@ import Foundation
 /// Defines an object that can be used to interact with a persistent store stack that provides implementations
 /// for `PersistentStoreContext(Basic)`, such as CoreData.
 /// Application code will program to this interface, allowing the concrete implementation to change.
-@objc public protocol PersistentStoreTypeBasic {
+@objc protocol PersistentStoreTypeBasic {
     
     /// Designed for main-thread reads, which blocks the thread to ensure a result can be generated
     /// through the `PersistentStoreContextBasic` instance provided when the `closure` parameter is called.

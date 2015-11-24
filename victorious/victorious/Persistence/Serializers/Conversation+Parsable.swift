@@ -14,7 +14,7 @@ extension VConversation: PersistenceParsable {
     func populate( fromSourceModel conversation: Conversation ) {
         isRead                      = conversation.isRead
         postedAt                    = conversation.postedAt
-        remoteId                    = Int(conversation.conversationID)
+        remoteId                    = NSNumber( longLong: conversation.conversationID)
         messages                    = NSOrderedSet()
     }
 }

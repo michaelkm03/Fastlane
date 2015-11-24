@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
-        remoteId                    = Int(user.userID)
+        remoteId                    = NSNumber( longLong: user.userID)
         email                       = user.email
         name                        = user.name
         status                      = user.status.rawValue
@@ -21,11 +21,11 @@ extension VUser: PersistenceParsable {
         isCreator                   = user.isCreator
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled
         isFollowedByMainUser        = user.isFollowedByMainUser
-        numberOfFollowers           = Int(user.numberOfFollowers)
-        numberOfFollowing           = Int(user.numberOfFollowing)
+        numberOfFollowers           = NSNumber( v_longLong: user.numberOfFollowers )
+        numberOfFollowing           = NSNumber( v_longLong: user.numberOfFollowing )
         pictureUrl                  = user.profileImageURL
         tokenUpdatedAt              = user.tokenUpdatedAt
-        maxUploadDuration           = Int(user.maxVideoUploadDuration)
+        maxUploadDuration           = NSNumber( longLong: user.maxVideoUploadDuration)
         
         previewAssets = Set<VImageAsset>(user.previewImageAssets.flatMap {
             let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])

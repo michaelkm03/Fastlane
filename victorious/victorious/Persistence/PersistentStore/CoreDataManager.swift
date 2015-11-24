@@ -68,7 +68,7 @@ class CoreDataManager: NSObject {
         self.mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         
         self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        self.backgroundContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        self.backgroundContext.parentContext = self.mainContext
         
         super.init()
         

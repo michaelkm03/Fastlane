@@ -14,7 +14,7 @@ extension VMessage: PersistenceParsable {
     func populate( fromSourceModel message: Message ) {
         mediaPath                   = message.mediaURL?.absoluteString ?? ""
         postedAt                    = message.postedAt
-        remoteId                    = Int(message.messageID)
+        remoteId                    = NSNumber( longLong: message.messageID)
         //senderUserId                = message.senderUserId
         text                        = message.text
         //thumbnailPath               = message.thumbnailPath

@@ -50,7 +50,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
         )
         
         persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : Int(self.sequenceID) ]
+            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
             guard let sequence: VSequence = context.findObjects( uniqueElements, limit: 1).first else  {
                 fatalError( "Cannot find sequence!" )
             }

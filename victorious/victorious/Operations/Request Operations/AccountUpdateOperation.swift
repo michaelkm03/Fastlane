@@ -14,16 +14,16 @@ class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
     private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     private let storedPassword = VStoredPassword()
-    private let profileUpdate: User.ProfileUpdate?
-    private let passwordUpdate: User.PasswordUpdate?
+    private let profileUpdate: ProfileUpdate?
+    private let passwordUpdate: PasswordUpdate?
     
-    init(passwordUpdate: User.PasswordUpdate) {
+    init(passwordUpdate: PasswordUpdate) {
         self.profileUpdate = nil
         self.passwordUpdate = passwordUpdate
         super.init( request: AccountUpdateRequest(passwordUpdate: passwordUpdate)! )
     }
     
-    init(profileUpdate: User.ProfileUpdate) {
+    init(profileUpdate: ProfileUpdate) {
         self.profileUpdate = profileUpdate
         self.passwordUpdate = nil
         super.init( request: AccountUpdateRequest(profileUpdate: profileUpdate)! )
