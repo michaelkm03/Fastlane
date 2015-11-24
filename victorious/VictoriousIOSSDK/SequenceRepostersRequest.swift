@@ -36,7 +36,7 @@ public struct SequenceRepostersRequest: Pageable {
         }
         
         let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: SequenceRepostersRequest? = usersJSON.count > 0 ? SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator.nextPage) : nil
+        let nextPageRequest: SequenceRepostersRequest? = !usersJSON.isEmpty ? SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator.nextPage) : nil
         let previousPageRequest: SequenceRepostersRequest?
         
         if let previousPage = paginator.previousPage {
