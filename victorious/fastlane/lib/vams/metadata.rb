@@ -11,12 +11,13 @@ module VAMS
     attr_reader(*(CORE_ATTRIBUTES + LANGUAGE_SPECIFIC_ATTRIBUTES))
 
     def initialize(app)
+      @ios_app_categories = app.ios_app_categories
       @copyright          = app.copyright
-      @primary_category   = app.ios_primary_category
-      @secondary_category = app.ios_secondary_category
+      @primary_category   = find_category_string(categories: app.ios_app_categories, number: app.ios_primary_category)
+      @secondary_category = find_category_string(categories: app.ios_app_categories, number: app.ios_secondary_category)
       @description        = app.ios_description
       @keywords           = app.ios_keywords
-      @privacy_policy_url = app.privacy_policy_url
+      @privacy_url = app.privacy_policy_url
       @support_url        = app.support_url
       @name               = app.app_name
     end
@@ -35,6 +36,13 @@ module VAMS
     end
 
     private
+
+    def find_category_string(categories:, number:)
+      category_pair = categories.detect { |string, number_in_hash|
+        number_in_hash.to_i == number.to_i
+      }
+      category_pair.first if category_pair
+    end
 
     def save_text_into_file(text:, path:)
       File.open(path, File::WRONLY | File::CREAT) do |file|
