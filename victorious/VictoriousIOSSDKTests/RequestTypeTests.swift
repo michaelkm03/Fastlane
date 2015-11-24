@@ -238,6 +238,7 @@ class EndpointRequestTests: XCTestCase {
             }
             XCTAssertEqual(apiError.localizedDescription, errorMessage)
             XCTAssertEqual(apiError.code, errorCode)
+            
             callbackExpectation.fulfill()
         }
         

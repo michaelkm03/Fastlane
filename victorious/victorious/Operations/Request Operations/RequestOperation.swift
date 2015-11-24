@@ -91,7 +91,7 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
                         return
                     }
                     
-                    if let requestError = requestError as? RequestError {
+                    if let requestError = requestError as? RequestErrorType {
                         let nsError = NSError( requestError )
                         strongSelf.requestError = nsError
                         strongSelf.onError( nsError ) {
