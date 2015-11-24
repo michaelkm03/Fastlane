@@ -218,4 +218,50 @@ class EndpointRequestTests: XCTestCase {
         
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    func testAPIErrorParsing() {
+        let errorCode = 89732
+        let errorMessage = "TEST ERROR"
+        let mockRequestURL = NSURL(string: "http://api.example.com/api/test")!
+        let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
+        let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
+        stubRequest("GET", mockRequestURL.absoluteString).andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
+        let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in
+            return 2
+        }
+        
+        let callbackExpectation = expectationWithDescription("callback")
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+            guard let apiError = actualError as? APIError else {
+                XCTFail( "Expecting a valid error" )
+                return
+            }
+            XCTAssertEqual(apiError.localizedDescription, errorMessage)
+            XCTAssertEqual(apiError.code, errorCode)
+            
+            callbackExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testAPIErrorParsingNoError() {
+        let errorCode = 0
+        let errorMessage = ""
+        let mockRequestURL = NSURL(string: "http://api.example.com/api/test")!
+        let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
+        let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
+        stubRequest("GET", mockRequestURL.absoluteString).andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
+        let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in
+            return 2
+        }
+        
+        let callbackExpectation = expectationWithDescription("callback")
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+            XCTAssertNil( actualError )
+            callbackExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }
