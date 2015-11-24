@@ -28,6 +28,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
                 context.destroy( sequence )
                 context.saveChanges()
             }
+            completion()
         }
     }
 }

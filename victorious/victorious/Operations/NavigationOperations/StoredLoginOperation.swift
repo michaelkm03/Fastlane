@@ -54,8 +54,8 @@ class StoredLoginOperation: Operation {
         }
         else {
             // Nothing to do here without a stored token or credentials to log in.
-            // Subsequence operations in the queue will handle logging in the user
-            // after this one completes without creating a valid user object.
+            // Subsequent operations in the queue will handle logging in the user
+            // after this operation completes without creating a valid user object.
         }
     }
 }
