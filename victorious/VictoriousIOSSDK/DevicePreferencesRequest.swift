@@ -9,76 +9,82 @@
 import Foundation
 import SwiftyJSON
 
-public struct NotificationPreference: OptionSetType {
+public struct NotificationPreference: OptionSetType, Hashable {
     public let rawValue: Int
+    private let stringValue: String
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
+        self.stringValue = ""
     }
     
-    public static let CreatorPost = NotificationPreference(rawValue: 1 << 0)
-    public static let FollowPost = NotificationPreference(rawValue: 1 << 1)
-    public static let CommentPost = NotificationPreference(rawValue: 1 << 2)
-    public static let PrivateMessage = NotificationPreference(rawValue: 1 << 3)
-    public static let NewFollower = NotificationPreference(rawValue: 1 << 4)
-    public static let TagPost = NotificationPreference(rawValue: 1 << 5)
-    public static let Mention = NotificationPreference(rawValue: 1 << 6)
-    public static let LikePost = NotificationPreference(rawValue: 1 << 7)
-    public static let Announcement = NotificationPreference(rawValue: 1 << 8)
-    public static let NextDay = NotificationPreference(rawValue: 1 << 9)
-    public static let LapsedUser = NotificationPreference(rawValue: 1 << 10)
-    public static let EmotiveBallistic = NotificationPreference(rawValue: 1 << 11)
+    private init(rawValue: Int, stringValue: String) {
+        self.rawValue = rawValue
+        self.stringValue = stringValue
+    }
+    
+    public var hashValue: Int {
+        return rawValue
+    }
+    
+    // When new preferences are added to this list, make sure to also add them to the "all" collection!
+    public static let CreatorPost       = NotificationPreference(rawValue: 1 << 0,  stringValue: "notification_creator_post")
+    public static let FollowPost        = NotificationPreference(rawValue: 1 << 1,  stringValue: "notification_follow_post")
+    public static let CommentPost       = NotificationPreference(rawValue: 1 << 2,  stringValue: "notification_comment_post")
+    public static let PrivateMessage    = NotificationPreference(rawValue: 1 << 3,  stringValue: "notification_private_message")
+    public static let NewFollower       = NotificationPreference(rawValue: 1 << 4,  stringValue: "notification_new_follower")
+    public static let TagPost           = NotificationPreference(rawValue: 1 << 5,  stringValue: "notification_tag_post")
+    public static let Mention           = NotificationPreference(rawValue: 1 << 6,  stringValue: "notification_mention")
+    public static let LikePost          = NotificationPreference(rawValue: 1 << 7,  stringValue: "notification_like_post")
+    public static let Announcement      = NotificationPreference(rawValue: 1 << 8,  stringValue: "notification_announcement")
+    public static let NextDay           = NotificationPreference(rawValue: 1 << 9,  stringValue: "notification_next_day")
+    public static let LapsedUser        = NotificationPreference(rawValue: 1 << 10, stringValue: "notification_lapsed_user")
+    public static let EmotiveBallistic  = NotificationPreference(rawValue: 1 << 11, stringValue: "notification_emotive_ballistic")
+    
+    public static let all = [CreatorPost, FollowPost, CommentPost, PrivateMessage, NewFollower, TagPost, Mention, LikePost, Announcement, NextDay, LapsedUser, EmotiveBallistic]
 }
 
 public struct DevicePreferencesRequest: RequestType {
     public let urlRequest: NSURLRequest
     
+    private let url = NSURL(string: "/api/device/preferences")!
+    
+    /// The value that this endpoint considers "true"
+    private let trueValue = "1"
+    
+    /// The value that this endpoint considers "false"
+    private let falseValue = "0"
+    
+    /// Use this initializer to retrieve the current list of preferences without making any changes
     public init() {
-        urlRequest = NSURLRequest(URL: NSURL(string: "/api/device/preferences")!)
+        urlRequest = NSURLRequest(URL: url)
+    }
+    
+    /// Use this initializer to change the values of these preferences for the current user.
+    public init(preferences: [NotificationPreference: Bool]) {
+        var formpost: [String: String] = [:]
+        for preference in NotificationPreference.all {
+            if let shouldEnable = preferences[preference] {
+                formpost[preference.stringValue] = shouldEnable ? trueValue : falseValue
+            }
+        }
+        let mutableURLRequest = NSMutableURLRequest(URL: url)
+        mutableURLRequest.vsdk_addURLEncodedFormPost(formpost)
+        urlRequest = mutableURLRequest
+    }
+    
+    private func preferencesFromJSON(json: JSON) -> NotificationPreference {
+        var returnValue: NotificationPreference = []
+        for preference in NotificationPreference.all {
+            if json[preference.stringValue].stringValue == trueValue {
+                returnValue.insert(preference)
+            }
+        }
+        return returnValue
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
-        let affirmativeValue = "1"
         let payload = responseJSON["payload"]
-        var preferences: NotificationPreference = []
-        
-        if payload["notification_creator_post"].stringValue == affirmativeValue {
-            preferences.insert(.CreatorPost)
-        }
-        if payload["notification_follow_post"].stringValue == affirmativeValue {
-            preferences.insert(.FollowPost)
-        }
-        if payload["notification_comment_post"].stringValue == affirmativeValue {
-            preferences.insert(.CommentPost)
-        }
-        if payload["notification_private_message"].stringValue == affirmativeValue {
-            preferences.insert(.PrivateMessage)
-        }
-        if payload["notification_new_follower"].stringValue == affirmativeValue {
-            preferences.insert(.NewFollower)
-        }
-        if payload["notification_tag_post"].stringValue == affirmativeValue {
-            preferences.insert(.TagPost)
-        }
-        if payload["notification_mention"].stringValue == affirmativeValue {
-            preferences.insert(.Mention)
-        }
-        if payload["notification_like_post"].stringValue == affirmativeValue {
-            preferences.insert(.LikePost)
-        }
-        if payload["notification_announcement"].stringValue == affirmativeValue {
-            preferences.insert(.Announcement)
-        }
-        if payload["notification_next_day"].stringValue == affirmativeValue {
-            preferences.insert(.NextDay)
-        }
-        if payload["notification_lapsed_user"].stringValue == affirmativeValue {
-            preferences.insert(.LapsedUser)
-        }
-        if payload["notification_emotive_ballistic"].stringValue == affirmativeValue {
-            preferences.insert(.EmotiveBallistic)
-        }
-        
-        return preferences
+        return preferencesFromJSON(payload)
     }
 }
