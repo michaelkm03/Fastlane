@@ -129,7 +129,7 @@
       buildConfiguration = "Stable">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Stable"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
