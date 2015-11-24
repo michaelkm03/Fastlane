@@ -584,6 +584,9 @@
 		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
+		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
+		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
+		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
@@ -721,6 +724,9 @@
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
 		A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */; };
 		A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */; };
+		A72EDF9B1C03FF3C003D6177 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF9A1C03FF3C003D6177 /* SequenceTests.swift */; };
+		A72EDF9D1C03FFC9003D6177 /* SimpleSequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9C1C03FFC9003D6177 /* SimpleSequence.json */; };
+		A72EDF9F1C040172003D6177 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
@@ -2553,6 +2559,9 @@
 		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
 		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
 		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
+		A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequest.swift; sourceTree = "<group>"; };
+		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
+		A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceFetchResponse.json; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
@@ -2768,6 +2777,9 @@
 		A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizedAction.h; sourceTree = "<group>"; };
 		A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedAction.m; sourceTree = "<group>"; };
 		A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewReceiver.swift; sourceTree = "<group>"; };
+		A72EDF9A1C03FF3C003D6177 /* SequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		A72EDF9C1C03FFC9003D6177 /* SimpleSequence.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SimpleSequence.json; sourceTree = "<group>"; };
+		A72EDF9E1C040172003D6177 /* Sequence.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Sequence.json; sourceTree = "<group>"; };
 		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
 		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
 		A734A04A1A98018800C3E86F /* VMultipleContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainer.h; sourceTree = "<group>"; };
@@ -4939,6 +4951,7 @@
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
+				A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
 				797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
@@ -5011,6 +5024,7 @@
 				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
 				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
+				A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
 				A71F41F41C040A1A00131BE6 /* SequenceRepostersRequestTests.swift */,
 				797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */,
@@ -5044,6 +5058,7 @@
 				C32D8BDF1BF2E08900AB5085 /* ImageSearchResultTests.swift */,
 				C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */,
 				678D944D1BF4399D009A1F93 /* PollAnswerTests.swift */,
+				A72EDF9A1C03FF3C003D6177 /* SequenceTests.swift */,
 				A7EF1BD51BF275D400D429DE /* StreamTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
 				678D94491BF42E7A009A1F93 /* VoteResultTests.swift */,
@@ -5083,12 +5098,15 @@
 				79D9FC551BF2812F00445D2D /* NoDataConverationResponse.json */,
 				C3E7C0EA1BF3CCF700AFE545 /* Notification.json */,
 				C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */,
-				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */,
 				678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */,
 				C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */,
+				795B75991BFA81DC00227647 /* PrivacyPolicy.html */,
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */,
+				A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */,
+				A72EDF9C1C03FFC9003D6177 /* SimpleSequence.json */,
+				A72EDF9E1C040172003D6177 /* Sequence.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
 				03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */,
 				A71F41F61C040AC500131BE6 /* SequenceRepostersEmptyResponse.json */,
@@ -9151,6 +9169,7 @@
 				C3FEA79D1BF17307003446CC /* TrendingGIFsResponse.json in Resources */,
 				C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */,
 				03314F561BE40F0100EE74FD /* User.json in Resources */,
+				A72EDF9F1C040172003D6177 /* Sequence.json in Resources */,
 				79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */,
 				795B75921BFA6A8400227647 /* tos.html in Resources */,
 				79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */,
@@ -9163,6 +9182,7 @@
 				A71F41F91C040AC500131BE6 /* SequenceRepostersResponse.json in Resources */,
 				797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */,
 				67C210231BFA7A210074E40E /* FollowingHashtagsResponse.json in Resources */,
+				A72EDF9D1C03FFC9003D6177 /* SimpleSequence.json in Resources */,
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
 				C32D8BE41BF2E0EE00AB5085 /* ImageSearchResult.json in Resources */,
 				795B759A1BFA81DC00227647 /* PrivacyPolicy.html in Resources */,
@@ -9171,6 +9191,7 @@
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
 				67C210251BFA7A210074E40E /* ImageAsset.json in Resources */,
+				A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
 				79D081B81BF19EE100E8A0C5 /* ConversationResponse.json in Resources */,
 				790254751BF293E200D20AFE /* Hashtag.json in Resources */,
@@ -9870,6 +9891,7 @@
 				03314F641BE40F3200EE74FD /* ImageAsset.swift in Sources */,
 				C32D8BDC1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift in Sources */,
 				79D081BA1BF1A0DF00E8A0C5 /* Message.swift in Sources */,
+				A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */,
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
@@ -9949,6 +9971,7 @@
 				79D081A41BF155BF00E8A0C5 /* ConversationListRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
+				A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */,
 				678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */,
 				67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */,
 				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,
@@ -10003,6 +10026,7 @@
 				C32D8BDA1BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift in Sources */,
 				0315EAD51BED8C3100645071 /* LoginRequestTests.swift in Sources */,
 				C3E7C0F51BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift in Sources */,
+				A72EDF9B1C03FF3C003D6177 /* SequenceTests.swift in Sources */,
 				C3E7C0F91BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift in Sources */,
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,

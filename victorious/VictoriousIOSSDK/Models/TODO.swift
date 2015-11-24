@@ -12,20 +12,20 @@ import SwiftyJSON
 public struct Tracking {}
 extension Tracking {
     public init?(json: JSON) {
-        return nil
+        self.init()
     }
 }
 
 public struct EndCard {}
 extension EndCard {
     public init?(json: JSON) {
-        return nil
+        self.init()
     }
 }
 
 public struct AdBreak {}
 extension AdBreak {
     public init?(json: JSON) {
-        return nil
+        self.init()
     }
 }
