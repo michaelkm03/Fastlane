@@ -11,7 +11,7 @@ import CoreData
 
 /// Defines an object represents a context of a persistent store, intended to abstract a CoreDAta-based
 /// persistent store but abstract enough to allow for varied, independent implementations.
-@objc public protocol PersistentStoreContextBasic {
+@objc protocol PersistentStoreContextBasic {
     
     /// Writes all changes from any modified objects to the persistent store
     func saveChanges() -> Bool

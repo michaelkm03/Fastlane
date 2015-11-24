@@ -13,7 +13,7 @@ import Foundation
 /// is programmed.  See `PersistentStoreType` protocol for more information.
 /// This class has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
 /// This allows calling code to instantiate a new `MainPersistentStore` instance wherever needed.
-public class MainPersistentStore: NSObject, PersistentStoreType {
+class MainPersistentStore: NSObject, PersistentStoreType {
     
     static let persistentStorePath          = "victoriOS.sqlite"
     static let managedObjectModelName       = "victoriOS"
@@ -42,14 +42,14 @@ public class MainPersistentStore: NSObject, PersistentStoreType {
     
     // MARK: - PersistentStoreType
     
-    public func syncBasic( closure: ((PersistentStoreContextBasic)->()) ) {
+    func syncBasic( closure: ((PersistentStoreContextBasic)->()) ) {
         let context = MainPersistentStore.sharedManager.mainContext
         context.performBlockAndWait {
             closure( context )
         }
     }
     
-    public func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
+    func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
         let context = MainPersistentStore.sharedManager.mainContext
         var result: T?
         context.performBlockAndWait {
@@ -58,7 +58,7 @@ public class MainPersistentStore: NSObject, PersistentStoreType {
         return result!
     }
     
-    public func syncFromBackground<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
+    func syncFromBackground<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
         let context = MainPersistentStore.sharedManager.backgroundContext
         var result: T?
         context.performBlockAndWait {
@@ -67,14 +67,14 @@ public class MainPersistentStore: NSObject, PersistentStoreType {
         return result!
     }
     
-    public func asyncFromBackground( closure: ((PersistentStoreContext)->()) ) {
+    func asyncFromBackground( closure: ((PersistentStoreContext)->()) ) {
         let context = MainPersistentStore.sharedManager.backgroundContext
         context.performBlock {
             closure( context )
         }
     }
     
-    public func asyncFromBackgroundBasic( closure: ((PersistentStoreContextBasic)->()) ) {
+    func asyncFromBackgroundBasic( closure: ((PersistentStoreContextBasic)->()) ) {
         let context = MainPersistentStore.sharedManager.backgroundContext
         context.performBlock {
             closure( context )
