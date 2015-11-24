@@ -222,22 +222,22 @@ class EndpointRequestTests: XCTestCase {
     func testAPIErrorParsing() {
         let errorCode = 89732
         let errorMessage = "TEST ERROR"
-        
+        let mockRequestURL = NSURL(string: "http://api.example.com/api/test")!
         let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
         let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
-        stubRequest("GET", "http://api.example.com/api/test").andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
-        
-        let expectedError = NSError(domain: errorMessage, code: errorCode, userInfo: nil)
-        let parseResponseExpectation = expectationWithDescription("parseResponse")
+        stubRequest("GET", mockRequestURL.absoluteString).andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
         let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in
-            parseResponseExpectation.fulfill()
-            throw expectedError
+            return 2
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, actualError) in
-            XCTAssertNil(actualResult)
-            XCTAssertEqual(actualError as? NSError, expectedError)
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+            guard let apiError = actualError as? APIError else {
+                XCTFail( "Expecting a valid error" )
+                return
+            }
+            XCTAssertEqual( apiError.localizedDescription, errorMessage)
+            XCTAssertEqual( apiError.code, errorCode)
             callbackExpectation.fulfill()
         }
         
