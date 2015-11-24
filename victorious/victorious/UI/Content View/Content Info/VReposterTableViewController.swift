@@ -15,6 +15,14 @@ extension VReposterTableViewController {
             return
         }
         
-        SequenceRepostersOperation(sequenceID: sequenceID ).queue()
+        switch pageType {
+        case .First:
+            self.repostersOperation = SequenceRepostersOperation(sequenceID: sequenceID )
+        case .Next:
+            self.repostersOperation = self.repostersOperation?.nextPageOperation
+        case .Previous:
+            self.repostersOperation = self.repostersOperation?.previousPageOperation
+        }
+        self.repostersOperation?.queue()
     }
 }

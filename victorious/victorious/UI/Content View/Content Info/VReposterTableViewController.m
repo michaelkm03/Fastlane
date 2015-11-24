@@ -18,6 +18,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "victorious-Swift.h"
 #import "VFollowResponder.h"
+#import <KVOController/FBKVOController.h>
 
 @interface VReposterTableViewController () <VFollowResponder>
 
@@ -53,6 +54,21 @@
     self.reposters = [[NSArray alloc] init];
     
     [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell] forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    
+    typeof(self) __weak welf = self;
+    [self.KVOController observe:sequence
+                        keyPath:NSStringFromSelector(@selector(reposters))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf setHasReposters:self.sequence.reposters.count > 0];
+         [welf.tableView reloadData];
+     }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,41 +125,6 @@
         [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
     }
 }
-
-/*- (void)refreshRepostersList
-{
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.reposters = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self setHasReposters:(self.reposters.count>0)];
-        
-        [self.tableView reloadData];
-    };
-    
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        [self.tableView reloadData];
-        [self setHasReposters:NO];
-    };
-    
-    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
-}
-
-- (void)loadMoreReposters
-{
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet *uniqueReposters = [NSSet setWithArray:[self.reposters arrayByAddingObjectsFromArray:resultObjects]];
-        self.reposters = [[uniqueReposters allObjects] sortedArrayUsingDescriptors:@[sort]];
-        [self setHasReposters:self.reposters.count];
-        
-        [self.tableView reloadData];
-    };
-    
-    [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
-}*/
 
 - (void)setHasReposters:(BOOL)hasReposters
 {

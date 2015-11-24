@@ -9,6 +9,8 @@
 import Foundation
 import VictoriousIOSSDK
 
+// TODO: See about a `PageableOperationType` protocol that can abstract some of the nextPage and previousPage stuff for calling code
+
 class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
     
     private let persistentStore: PersistentStoreType = MainPersistentStore()
@@ -32,10 +34,9 @@ class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
         let users: [User] = response.results
         
         persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : NSNumber(longLong: self.sequenceID) ]
-            let sequence: VSequence = context.findOrCreateObject(uniqueElements)
             
-            let reposters = [VUser]()
+            // Load the persistent models (VUser) from the provided networking models (User)
+            var reposters = [VUser]()
             let sortedUsers = users.sort {
                 return ($0.name ?? "").localizedCaseInsensitiveCompare($1.name ?? "") == NSComparisonResult.OrderedAscending
             }
@@ -51,6 +52,10 @@ class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
                 reposters.append( reposter )
             }
             
+            // Add the loaded persistent models to the sequence as `reposters`
+            let uniqueElements = [ "remoteId" : NSNumber(longLong: self.sequenceID) ]
+            let sequence: VSequence = context.findOrCreateObject(uniqueElements)
+            sequence.addObjects( reposters, to: "reposters" )
             context.saveChanges()
         }
         
