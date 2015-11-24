@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "Đã Theo dõi";
 "FacebookFollowingSectionHeader"    =   "Theo dõi Bạn bè Facebook của bạn";
-"TwitterFollowingSectionHeader"     =   "Theo dõi Bạn bè Twitter của Bạn";
 "AddressBookFollowingSectionHeader" =   "Theo dõi các Liên lạc của Bạn";
 
 "ConversationLoadError" =   "Không thể nạp hội thoại";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Tìm thấy bạn bè từ Facebook";
 "Connect to Facebook"   =   "Kết nối đến Facebook";
 "FBSafety"              =   "Chúng tôi không lưu lại mật khẩu của bạn và sẽ không bao giờ đăng bất kỳ thứ gì mà không được bạn cho phép.";
-
-"FindTwitterFriends"    =   "Tìm bạn bè từ Twitter";
-"Connect to Twitter"    =   "Kết nối đến Twitter";
-"TwitterSafety"         =   "Chúng tôi không lưu lại mật khẩu của bạn và sẽ không bao giờ đăng bất kỳ thứ gì mà không được bạn cho phép.";
-
-"FindInstagramFriends"  =   "Tìm kiếm bạn bè từ Instagram";
-"Connect to Instagram"  =   "Kết nối đến Instagram";
 
 "Logout"                =   "Đăng xuất";
 "Login"                 =   "Đăng nhập";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "MỨC %@";
 "LEVEL" = "MỨC";
+"TestAlertsViewControllerFooter" = "Sau khi bạn đăng ký một cảnh báo, hãy quay trở lại luồng thông tin hoặc hồ sơ và kéo để làm mới. Cảnh báo sẽ xuất hiện.";

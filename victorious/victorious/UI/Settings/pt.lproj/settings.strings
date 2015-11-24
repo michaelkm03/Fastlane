@@ -1,5 +1,5 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "0nf-aa-3V6"; */
-"0nf-aa-3V6.title" = "Ambiente de Servidor";
+"0nf-aa-3V6.title" = "Ambiente de servidor";
 
 /* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
 "2cC-vU-QEc.title" = "Notificações por Push";
@@ -14,7 +14,7 @@
 "5FP-jo-7Mh.title" = "Compras no Aplicativo";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
-"6fa-Sd-wUR.title" = "Ambiente de Servidor";
+"6fa-Sd-wUR.title" = "Ambiente de servidor";
 
 /* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
 "6nd-lx-w31.title" = "Experiências";
@@ -71,7 +71,7 @@
 "N5S-6f-jb6.normalTitle" = "Ação";
 
 /* Class = "UINavigationItem"; title = "Server Environment"; ObjectID = "Pog-vT-DdP"; */
-"Pog-vT-DdP.title" = "Ambiente de Servidor";
+"Pog-vT-DdP.title" = "Ambiente de servidor";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "T6U-i1-p3F"; */
 "T6U-i1-p3F.placeholder" = "Nome";
@@ -101,7 +101,7 @@
 "ab7-E6-f3T.title" = "Novo ambiente";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
-"bDt-FM-3G4.title" = "Ambiente de Servidor";
+"bDt-FM-3G4.title" = "Ambiente de servidor";
 
 /* Class = "UILabel"; text = "Push Notifications"; ObjectID = "c84-Tn-JWi"; */
 "c84-Tn-JWi.text" = "Notificações por Push";
@@ -125,7 +125,7 @@
 "jfn-8g-oUa.text" = "Registrar alertas de teste";
 
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
-"jjo-ti-snK.text" = "Ambiente de Servidor";
+"jjo-ti-snK.text" = "Ambiente de servidor";
 
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "kYh-dZ-t7J"; */
 "kYh-dZ-t7J.title" = "Configurações";
@@ -143,7 +143,7 @@
 "mrn-LJ-NES.text" = "Termos do Serviço";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "p5c-fI-FBT"; */
-"p5c-fI-FBT.title" = "Ambiente de Servidor";
+"p5c-fI-FBT.title" = "Ambiente de servidor";
 
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "Sobre";

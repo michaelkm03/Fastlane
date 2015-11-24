@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "已關注";
 "FacebookFollowingSectionHeader"    =   "關注你的 Facebook 好友";
-"TwitterFollowingSectionHeader"     =   "關注你的 Twitter 好友";
 "AddressBookFollowingSectionHeader" =   "追蹤你的聯絡人";
 
 "ConversationLoadError" =   "無法載入對話";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "尋找 Facebook 上的好友";
 "Connect to Facebook"   =   "連線至 Facebook";
 "FBSafety"              =   "我們不會儲存你的密碼，且未經你的允許下絕不會擅自發文。";
-
-"FindTwitterFriends"    =   "尋找 Twitter 上的好友";
-"Connect to Twitter"    =   "連線至 Twitter";
-"TwitterSafety"         =   "我們不會儲存你的密碼，且未經你的允許下絕不會擅自發文。";
-
-"FindInstagramFriends"  =   "尋找 Instagram 上的好友";
-"Connect to Instagram"  =   "連線至 Instagram";
 
 "Logout"                =   "登出";
 "Login"                 =   "登入";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "等級 %@";
 "LEVEL" = "等級";
+"TestAlertsViewControllerFooter" = "登錄警告後，請回到資料流或設定檔，並拖拉以重新整理。警告應該會隨即出現。";

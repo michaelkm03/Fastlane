@@ -111,6 +111,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
+@property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 
 @end
 
@@ -1185,24 +1186,43 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
+    [self.userTaggingDismissButton removeFromSuperview];
     [tableViewController.view removeFromSuperview];
     self.textEntryView.attachmentsBarHidden = NO;
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {
+    self.textEntryView.attachmentsBarHidden = YES;
+
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:searchTableView];
     
     UIWindow *ownWindow = self.view.window;
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
     CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
-    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
+    CGFloat obscuredBottom = CGRectGetHeight(self.view.bounds) - CGRectGetMinY( obscuredRectInOwnView);
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:obscuredBottom];
     
-    self.textEntryView.attachmentsBarHidden = YES;
+    [self.view addSubview:self.userTaggingDismissButton];
+    CGFloat dismissButtonMarginToBorder = 8.0f;
+    [self.view v_addPinToTopToSubview:self.userTaggingDismissButton topMargin:dismissButtonMarginToBorder];
+    [self.view v_addPinToTrailingEdgeToSubview:self.userTaggingDismissButton trailingMargin:dismissButtonMarginToBorder];
+    [self.userTaggingDismissButton addTarget:self.textEntryView action:@selector(stopEditing) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (VDismissButton *)userTaggingDismissButton
+{
+    if (_userTaggingDismissButton != nil)
+    {
+        return _userTaggingDismissButton;
+    }
+    
+    _userTaggingDismissButton = [[VDismissButton alloc] init];
+    
+    return _userTaggingDismissButton;
 }
 
 #pragma mark - Comment Text Helpers

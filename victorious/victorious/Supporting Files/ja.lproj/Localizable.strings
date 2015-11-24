@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "すでにフォロー中です";
 "FacebookFollowingSectionHeader"    =   "Facebookフレンドをフォロー";
-"TwitterFollowingSectionHeader"     =   "Twitterフレンドをフォロー";
 "AddressBookFollowingSectionHeader" =   "連絡先に登録している人をフォロー";
 
 "ConversationLoadError" =   "会話を読み込めませんでした";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Facebookからフレンドを探す";
 "Connect to Facebook"   =   "Facebookに接続する";
 "FBSafety"              =   "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
-
-"FindTwitterFriends"    =   "Twitterからフレンドを探す";
-"Connect to Twitter"    =   "Twitterに接続する";
-"TwitterSafety"         =   "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
-
-"FindInstagramFriends"  =   "Instagramでフレンドを探す";
-"Connect to Instagram"  =   "Instagramに接続する";
 
 "Logout"                =   "ログアウト";
 "Login"                 =   "ログイン";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "レベル%@";
 "LEVEL" = "レベル";
+"TestAlertsViewControllerFooter" = "アラート登録後、ストリームまたはプロフィールに戻り、引っ張ってリフレッシュします。これでアラートが表示されるはずです。";

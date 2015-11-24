@@ -209,6 +209,42 @@
                                                                    views:NSDictionaryOfVariableBindings(subview)]];
 }
 
+- (void)v_addPinToLeadingEdgeToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    [self v_addPinToLeadingEdgeToSubview:subview leadingMargin:0.0f];
+}
+
+- (void)v_addPinToLeadingEdgeToSubview:(UIView *)subview leadingMargin:(CGFloat)margin
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-margin-[subview]"
+                                                                 options:kNilOptions
+                                                                 metrics:@{ @"margin" : @(margin) }
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
+}
+
+- (void)v_addPinToTrailingEdgeToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    [self v_addPinToTrailingEdgeToSubview:subview trailingMargin:0.0f];
+}
+
+- (void)v_addPinToTrailingEdgeToSubview:(UIView *)subview trailingMargin:(CGFloat)margin
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[subview]-margin-|"
+                                                                 options:kNilOptions
+                                                                 metrics:@{ @"margin" : @(margin) }
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
+}
+
 - (NSLayoutConstraint *)v_internalWidthConstraint
 {
     __block NSLayoutConstraint *internalWidthConstraint;

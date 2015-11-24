@@ -318,6 +318,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     supplementaryHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     supplementaryHeaderView.transform = CGAffineTransformIdentity;
     supplementaryHeaderView.hidden = NO;
+    supplementaryHeaderView.alpha = 1;
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.innerNavigationController.navigationBar
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual

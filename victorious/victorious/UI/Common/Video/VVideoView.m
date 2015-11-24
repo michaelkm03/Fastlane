@@ -80,9 +80,9 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     if ( self.itemURL != nil && [self.itemURL isEqual:playerItem.url] )
     {
-        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)] )
         {
-            [self.delegate videoPlayerIsReadyForDisplay:self];
+            [self.delegate videoPlayerDidBecomeReady:self];
         }
         return;
     }
@@ -112,7 +112,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              VVideoView *strongSelf = weakSelf;
              if ( strongSelf != nil )
              {
-                 [strongSelf onReadyForDisplay];
+                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
+                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
+                 {
+                     strongSelf.playerLayer.opacity = 1.0f;
+                 }
              }
          }];
         
@@ -149,19 +153,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 - (void)updateToBackgroundColor:(UIColor *)backgroundColor
 {
     self.playerLayer.backgroundColor = backgroundColor.CGColor;
-}
-
-- (void)onReadyForDisplay
-{
-    AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
-    if ([self.playerLayer.player.currentItem isEqual:newestPlayerItem] && self.playerLayer.isReadyForDisplay)
-    {
-        self.playerLayer.opacity = 1.0f;
-        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
-        {
-            [self.delegate videoPlayerIsReadyForDisplay:self];
-        }
-    }
 }
 
 - (UIView *)view
@@ -250,12 +241,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
-        self.isReady = true;
-        if ( self.shouldPlayWhenReady )
-        {
-            [self play];
-            self.shouldPlayWhenReady = false;
-        }
+    }
+    self.isReady = true;
+    if ( self.shouldPlayWhenReady )
+    {
+        [self play];
+        self.shouldPlayWhenReady = false;
     }
 }
 
