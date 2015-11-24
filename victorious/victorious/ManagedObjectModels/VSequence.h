@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) VUser * parentUser;
 @property (nonatomic, retain, nullable) NSSet * pollResults;
 @property (nonatomic, retain, nullable) VUser * recentUser;
-@property (nonatomic, retain, nullable) NSSet * reposters;
+@property (nonatomic, retain) NSOrderedSet * reposters;
 @property (nonatomic, retain, nullable) VTracking * tracking;
 @property (nonatomic, retain, nullable) VUser * user;
 @property (nonatomic, retain, nullable) NSSet * voteResults;
@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addRepostersObject:(VUser *)value;
 - (void)removeRepostersObject:(VUser *)value;
-- (void)addReposters:(NSSet *)values;
-- (void)removeReposters:(NSSet *)values;
+- (void)addReposters:(NSOrderedSet *)values;
+- (void)removeReposters:(NSOrderedSet *)values;
 
 - (void)addVoteResultsObject:(VVoteResult *)value;
 - (void)removeVoteResultsObject:(VVoteResult *)value;

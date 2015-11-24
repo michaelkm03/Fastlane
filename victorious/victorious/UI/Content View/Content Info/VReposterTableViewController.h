@@ -14,6 +14,8 @@
 
 - (id)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)setHasReposters:(BOOL)hasReposters;
+
 @property (nonatomic, strong) VSequence *sequence;
 
 @end

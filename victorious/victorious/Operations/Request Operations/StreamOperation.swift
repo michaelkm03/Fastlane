@@ -44,5 +44,7 @@ class StreamOperation: RequestOperation<StreamRequest> {
         if let previousPageRequest = response.previousPage {
             self.previousPageOperation = StreamOperation( request: previousPageRequest )
         }
+        
+        completion()
     }
 }

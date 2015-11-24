@@ -7,10 +7,8 @@
 //
 
 #import "VReposterTableViewController.h"
-
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
-
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -18,7 +16,7 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDependencyManager+VUserProfile.h"
-
+#import "victorious-Swift.h"
 #import "VFollowResponder.h"
 
 @interface VReposterTableViewController () <VFollowResponder>
@@ -61,7 +59,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self refreshRepostersList];
+    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -108,11 +106,11 @@
 {
     if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
-        [self loadMoreReposters];
+        [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
     }
 }
 
-- (void)refreshRepostersList
+/*- (void)refreshRepostersList
 {
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -129,10 +127,7 @@
         [self setHasReposters:NO];
     };
     
-    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
-                                                    pageType:VPageTypeFirst
-                                                   successBlock:success
-                                                      failBlock:fail];
+    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
 }
 
 - (void)loadMoreReposters
@@ -147,11 +142,8 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
-                                                    pageType:VPageTypeNext
-                                                successBlock:success
-                                                   failBlock:nil];
-}
+    [self loadRepostersWithPageType:VPageTypeNext sequence:self.sequence];
+}*/
 
 - (void)setHasReposters:(BOOL)hasReposters
 {

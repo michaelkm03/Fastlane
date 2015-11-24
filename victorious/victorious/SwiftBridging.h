@@ -95,6 +95,7 @@
 #import "VHashTagTextView.h"
 #import "VHashTags.h"
 #import "VHashtagResponder.h"
+#import "VReposterTableViewController.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VImageAsset.h"
