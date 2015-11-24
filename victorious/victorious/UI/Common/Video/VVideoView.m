@@ -354,14 +354,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     }
 }
 
-- (void)didExitFromContentView
-{
-    if (!self.loop)
-    {
-        [self.player replaceCurrentItemWithPlayerItem:nil];
-    }
-}
-
 - (Float64)durationSeconds
 {
     return CMTimeGetSeconds( self.player.currentItem.duration );

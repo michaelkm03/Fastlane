@@ -11,8 +11,9 @@ import VictoriousIOSSDK
 
 class LogoutOperation: RequestOperation<LogoutRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     let userIdentifier: AnyObject
-    private let persistentStore = PersistentStore()
     
     init( userIdentifier: AnyObject ) {
         self.userIdentifier = userIdentifier

@@ -19,16 +19,3 @@ public struct OneWayRequest: RequestType {
         urlRequest = NSURLRequest(URL: url)
     }
 }
-
-public struct LogoutRequest: RequestType {
-    
-    public init() {}
-    
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/logout")!)
-    }
-    
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {
-        
-    }
-}

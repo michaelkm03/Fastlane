@@ -182,3 +182,5 @@
 #import "VVideoSequencePreviewView.h"
 #import "VVideoView.h"
 #import "VWorkspaceShimDestination.h"
+#import "VPhotoFilter.h"
+#import "UIImage+Resize.h"

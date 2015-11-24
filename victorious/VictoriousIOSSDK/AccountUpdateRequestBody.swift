@@ -27,7 +27,7 @@ class AccountUpdateRequestBody: NSObject {
     }
     
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write( profileUpdate: User.ProfileUpdate?, passwordUpdate: User.PasswordUpdate?) throws -> Output {
+    func write( profileUpdate: ProfileUpdate?, passwordUpdate: PasswordUpdate?) throws -> Output {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         // Write params for a password update

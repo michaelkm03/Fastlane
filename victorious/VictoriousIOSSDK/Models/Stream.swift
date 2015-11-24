@@ -23,8 +23,8 @@ public struct Stream: StreamItemType {
     public var remoteID: String {
         return self.streamID
     }
-    public let type: StreamContentType
-    public let subtype: StreamContentType
+    public let type: StreamContentType?
+    public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
     public let previewImageAssets: [ImageAsset]
@@ -37,8 +37,8 @@ extension Stream {
         }
         self.streamID               = streamID
         
-        type                        = StreamContentType( rawValue: json["type"].stringValue ) ?? .None
-        subtype                     = StreamContentType( rawValue: json["subtype"].stringValue ) ?? .None
+        type                        = StreamContentType( rawValue: json["type"].stringValue )
+        subtype                     = StreamContentType( rawValue: json["subtype"].stringValue )
         streamContentType           = StreamContentType( rawValue: json["stream_content_type"].stringValue ) ?? .None
         name                        = json["name"].string ?? ""
         title                       = json["title"].string ?? ""

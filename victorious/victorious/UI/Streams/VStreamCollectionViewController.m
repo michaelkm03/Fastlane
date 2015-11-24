@@ -143,7 +143,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                    inURLString:url];
     }
     NSString *apiPath = [url v_pathComponent];
-    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;

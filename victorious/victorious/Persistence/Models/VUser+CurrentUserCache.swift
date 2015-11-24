@@ -12,7 +12,7 @@ import CoreData
 let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
-public extension VUser {
+extension VUser {
     
     private static var cacheKey: String {
         return "com.victorious.Persstence.CurrentUser"
@@ -21,8 +21,9 @@ public extension VUser {
     /// Returns a `VUser` object from the context memory cache, which is more performant than
     /// a fetch request or relationship.  This method is thread safe, and will handle loading
     /// the user from the proper context depending on which thread it is invoked.
-    public static func currentUser() -> VUser? {
-        let persistentStore = PersistentStore()
+    static func currentUser() -> VUser? {
+        
+        let persistentStore: PersistentStoreType = MainPersistentStore()
         
         if NSThread.currentThread().isMainThread {
             return persistentStore.sync { context in
@@ -39,11 +40,15 @@ public extension VUser {
         return nil
     }
     
-    public static func clearCurrentUser( inContext context: PersistentStoreContextBasic ) {
+    /// Strips the current user of its "current" status.  `currentUser()` method will
+    /// now return nil until a new user has been set as current using method `setAsCurrent()`.
+    static func clearCurrentUser( inContext context: PersistentStoreContextBasic ) {
         context.cacheObject( nil, forKey: VUser.cacheKey )
     }
     
-    public func setCurrentUser( inContext context: PersistentStoreContextBasic ) {
+    /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
+    /// current user will lose its current status, as their can be only one.
+    func setAsCurrentUser( inContext context: PersistentStoreContextBasic ) {
         context.cacheObject( self, forKey: VUser.cacheKey )
     }
     

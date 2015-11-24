@@ -7,8 +7,9 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
 import SwiftyJSON
+
+@testable import VictoriousIOSSDK
 
 class UnreadMessageCountRequestTests: XCTestCase {
     

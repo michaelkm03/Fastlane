@@ -29,7 +29,6 @@ class PersistentStoreContextTests: XCTestCase {
         
         // SETUP: Delete any persistent stores created from previous test sequences
         pathHelper.deleteFilesInDirectory( pathHelper.applicationDocumentsDirectory )
-        
         XCTAssertFalse( NSFileManager.defaultManager().fileExistsAtPath( persistentStoreURL.absoluteString ) )
         
         self.coreDataManager = CoreDataManager(

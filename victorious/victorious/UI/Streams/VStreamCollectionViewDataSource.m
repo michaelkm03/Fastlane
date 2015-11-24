@@ -131,7 +131,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)unloadStream
 {
-    PersistentStore *persistentStore = [[PersistentStore alloc] init];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
         self.stream.streamItems = [[NSOrderedSet alloc] init];
         self.stream.marqueeItems = [[NSOrderedSet alloc] init];

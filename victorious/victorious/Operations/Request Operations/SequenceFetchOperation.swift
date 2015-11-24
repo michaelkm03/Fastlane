@@ -10,8 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
-  
-    private let persistentStore = PersistentStore()
+    
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     init( sequenceID: Int64) {
         super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )

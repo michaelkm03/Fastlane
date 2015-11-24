@@ -11,13 +11,14 @@ import VictoriousIOSSDK
 
 class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     struct UIContext {
         let originViewController: UIViewController
         let dependencyManager: VDependencyManager
         let triggeringView: UIView
     }
     
-    private let persistentStore = PersistentStore()
     private let sequenceID: Int64
     private let uiContext: UIContext?
     
@@ -47,7 +48,7 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
         
         // Handle immediate asynchronous data updates
         persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : Int(self.sequenceID) ]
+            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
             let sequence: VSequence = context.findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = true
             context.saveChanges()

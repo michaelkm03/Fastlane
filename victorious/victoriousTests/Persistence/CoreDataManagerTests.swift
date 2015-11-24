@@ -8,6 +8,7 @@
 
 import XCTest
 import CoreData
+import KVOController
 @testable import victorious
 
 class CoreDataManagerTests: XCTestCase {
@@ -17,7 +18,7 @@ class CoreDataManagerTests: XCTestCase {
     var coreDataManager: CoreDataManager!
     
     let testModelCount = 10
-    let textModelEntityName = "PersistentEntity"
+    let testModelEntityName = "PersistentEntity"
     var modelVersions: [String : CoreDataManager.ModelVersion]!
     var persistentStoreURL: NSURL!
     
@@ -27,11 +28,12 @@ class CoreDataManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+
+        self.persistentStoreURL = self.pathHelper.applicationDocumentsDirectory.URLByAppendingPathComponent( "\(self.versionedModelName).sqlite" )
         
         // SETUP: Delete any persistent stores created from previous test sequences
-        self.pathHelper.deleteFilesInDirectory( self.pathHelper.applicationDocumentsDirectory )
+        self.pathHelper.deleteFilesInDirectory( self.persistentStoreURL )
         
-        self.persistentStoreURL = self.pathHelper.applicationDocumentsDirectory.URLByAppendingPathComponent( "\(self.versionedModelName).sqlite" )
         self.modelVersions = [
             "1.0" : CoreDataManager.ModelVersion(
                 identifier: "1.0" ,
@@ -61,16 +63,15 @@ class CoreDataManagerTests: XCTestCase {
             previousModelVersion: nil
         )
         // Create some records to read later on
-        let moc = coreDataManager.mainContext
         for i in 0..<testModelCount {
-            let entity = NSEntityDescription.entityForName( textModelEntityName, inManagedObjectContext: moc)
-            let model = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
+            let entity = NSEntityDescription.entityForName( testModelEntityName, inManagedObjectContext:coreDataManager.mainContext)
+            let model = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: coreDataManager.mainContext) as! PersistentEntity
             model.numberAttribute = NSNumber(integer: i)
             // Set the `stringAttribute` attribute in version 1.0
             model.setValue( "\(i)", forKey: "stringAttribute" )
         }
         do {
-            try moc.save()
+            try coreDataManager.mainContext.save()
         }
         catch {
             XCTFail( "Failed to save." )
@@ -84,13 +85,13 @@ class CoreDataManagerTests: XCTestCase {
         )
         
         // Load the records we are expecting
-        request = NSFetchRequest(entityName: textModelEntityName)
+        request = NSFetchRequest(entityName: testModelEntityName)
         request.returnsObjectsAsFaults = false
         request.fetchLimit = testModelCount
         request.sortDescriptors = [ NSSortDescriptor(key: "numberAttribute", ascending: true) ]
         
-        // Ensure that the lightweight migration was successful
-        let models = try! moc.executeFetchRequest( request ) as! [PersistentEntity]
+        // Ensure that the lightweight migration was successful by loading models with schema changes
+        let models = try! coreDataManager.mainContext.executeFetchRequest( request ) as! [PersistentEntity]
         XCTAssertEqual( models.count, testModelCount )
         for i in 0..<models.count {
             let model = models[i]
@@ -108,7 +109,7 @@ class CoreDataManagerTests: XCTestCase {
         )
         
         // Load the records we are expecting
-        request = NSFetchRequest(entityName: textModelEntityName)
+        request = NSFetchRequest(entityName: testModelEntityName)
         request.returnsObjectsAsFaults = false
         request.fetchLimit = testModelCount
         request.sortDescriptors = [ NSSortDescriptor(key: "numberAttribute", ascending: true) ]
@@ -178,16 +179,20 @@ class CoreDataManagerTests: XCTestCase {
         // Observe changes to an attribute of that entity
         // See `observeValueForKeyPath(_:ofObject:change:context:)` for assertions
         let observationExpectation = self.expectationWithDescription("callback")
-        let observer = KVOHelper { (keyPath, object, change, context) in
-            XCTAssert( NSThread.currentThread().isMainThread )
-            
-            let updatedEntity = object as! PersistentEntity
-            XCTAssertEqual( updatedEntity.newStringAttribute, self.updatedText )
-            XCTAssertEqual( persistentEntity, updatedEntity )
-            
-            observationExpectation.fulfill()
-        }
-        persistentEntity.addObserver( observer, forKeyPath: "newStringAttribute", options: [], context: &kvoContext)
+        
+        self.KVOController.observe( persistentEntity,
+            keyPath: "newStringAttribute",
+            options: [],
+            block: { [weak self] (observer, object, change) in
+                
+                XCTAssert( NSThread.currentThread().isMainThread )
+                
+                let updatedEntity = object as! PersistentEntity
+                XCTAssertEqual( updatedEntity.newStringAttribute, self?.updatedText )
+                XCTAssertEqual( persistentEntity, updatedEntity )
+                
+                observationExpectation.fulfill()
+        })
         
         // Update the existing object in the background context, as if from a network response 
         self.coreDataManager.backgroundContext.performBlock {

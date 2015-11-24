@@ -12,10 +12,10 @@ import VictoriousIOSSDK
 extension VNode: PersistenceParsable {
     
     func populate( fromSourceModel node: Node ) {
-        guard let remoteID = Int(node.nodeID) else {
+        guard let remoteID = Int64(node.nodeID) else {
                 return
         }
-        self.remoteId = NSNumber(integer: remoteID)
+        self.remoteId = NSNumber(longLong: remoteID)
         
         assets = NSOrderedSet( array: node.assets.flatMap {
             let uniqueElements = [ "data" : $0.data ]

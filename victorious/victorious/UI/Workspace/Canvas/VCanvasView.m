@@ -10,6 +10,7 @@
 #import "CIImage+VImage.h"
 #import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
+#import "Victorious-swift.h"
 
 @import SDWebImage;
 
@@ -19,10 +20,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
 
+@property (nonatomic, strong) VFilteredImageView *filteredImageView;
+
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImage *scaledImage;
 @property (nonatomic, strong, readwrite) UIImage *sourceImage;
-@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
 @property (nonatomic, assign, readwrite) BOOL didZoomFromDoubleTap;
 @property (nonatomic, assign, readwrite) BOOL didCropZoom;
@@ -86,9 +88,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_canvasScrollView];
     
-    _imageView = [[UIImageView alloc] initWithImage:nil];
-    _imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [_canvasScrollView addSubview:_imageView];
+    _filteredImageView = [[VFilteredImageView alloc] initWithFrame:self.bounds];
+    _filteredImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [_canvasScrollView addSubview:_filteredImageView];
     
     UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapCanvas:)];
     doubleTapGestureRecognizer.numberOfTapsRequired = 2;
@@ -153,7 +155,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                                     CGRectGetHeight(self.bounds));
     }
     
-    self.imageView.frame = imageViewFrame;
+    self.filteredImageView.frame = imageViewFrame;
     self.canvasScrollView.contentSize = imageViewFrame.size;
     [self.canvasScrollView v_centerZoomedContentAnimated:NO];
     self.layedoutCanvasScrollView = YES;
@@ -164,6 +166,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)setSourceURL:(NSURL *)URL
   withPreloadedImage:(UIImage *)preloadedImage
 {
+    
     __weak typeof(self) welf = self;
     void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
     {
@@ -179,7 +182,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
             return;
         }
         
-        strongSelf.imageView.alpha = 0.0f;
+        strongSelf.filteredImageView.alpha = 0.0f;
         [UIView animateWithDuration:1.75f
                               delay:0.0f
              usingSpringWithDamping:1.0f
@@ -187,7 +190,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                             options:kNilOptions
                          animations:^
          {
-             strongSelf.imageView.alpha = 1.0f;
+             strongSelf.filteredImageView.alpha = 1.0f;
          }
                          completion:nil];
     };
@@ -198,15 +201,17 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
-    [self.imageView sd_setImageWithURL:URL
-                      placeholderImage:nil
-                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-    {
-        if (image)
-        {
-            imageFinishedLoadingBlock(image, YES);
-        }
-    }];
+    [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:URL
+                                                          options:kNilOptions
+                                                         progress:nil completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         if (image)
+         {
+             strongSelf.filteredImageView.inputImage = image;
+             imageFinishedLoadingBlock(image, YES);
+         }
+     }];
 }
 
 - (void)setSourceURL:(NSURL *)URL
@@ -219,9 +224,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 {
     _sourceImage = sourceImage;
     
-    _scaledImage = [self scaledImageForCurrentFrameAndMaxZoomLevel];
-    
-    self.imageView.image = _scaledImage;
+    self.filteredImageView.inputImage = sourceImage;
     
     self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self layoutIfNeeded];
@@ -230,55 +233,24 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)setFilter:(VPhotoFilter *)filter
 {
     _filter = filter;
-    
-    if (self.scaledImage == nil)
-    {
-        return;
-    }
-
-    if ([self.renderedImageCache objectForKey:filter.description] != nil)
-    {
-        self.imageView.image = [self.renderedImageCache objectForKey:filter.description];
-        return;
-    }
-    
-    dispatch_async(self.renderingQueue, ^
-                   {
-                       // Render
-                       UIImage *filteredImage = [filter imageByFilteringImage:self.scaledImage withCIContext:self.context];
-                       if ( filteredImage == nil )
-                       {
-                           //If filtering fails, don't update the image view.
-                           return;
-                       }
-                       dispatch_async(dispatch_get_main_queue(), ^
-                                      {
-                                          // Cache
-                                          [self.renderedImageCache setObject:filteredImage forKey:filter.description];
-                                          if (_filter.name == filter.name)
-                                          {
-                                              //Fallback to original image if filtering fails
-                                              self.imageView.image = filteredImage;
-                                          }
-                                      });
-                   });
+    self.filteredImageView.filter = filter;
 }
 
 - (CGSize)assetSize
 {
-    return self.imageView.image.size;
+    return self.filteredImageView.inputImage.size;
 }
 
 - (UIImage *)asset
 {
-    return self.imageView.image;
+    return self.filteredImageView.inputImage;
 }
 
 #pragma mark - Target/Action
 
 - (void)doubleTapCanvas:(UITapGestureRecognizer *)sender
 {
-    CGPoint locationInView = [sender locationInView:self.imageView];
+    CGPoint locationInView = [sender locationInView:self.filteredImageView];
 
     if (self.canvasScrollView.zoomScale > self.canvasScrollView.minimumZoomScale)
     {
@@ -327,7 +299,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.imageView;
+    return self.filteredImageView;
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale

@@ -11,8 +11,9 @@ import VictoriousIOSSDK
 
 class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    
     private let originViewController: UIViewController
-    private let persistentStore = PersistentStore()
     private let sequenceID: Int64
     
     init( sequenceID: Int64, originViewController: UIViewController ) {
@@ -49,7 +50,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
         )
         
         persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : Int(self.sequenceID) ]
+            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
             guard let sequence: VSequence = context.findObjects( uniqueElements, limit: 1).first else  {
                 fatalError( "Cannot find sequence!" )
             }

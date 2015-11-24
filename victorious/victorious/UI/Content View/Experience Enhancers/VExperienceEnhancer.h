@@ -71,7 +71,9 @@
 /**
  Removes the cached last vote date for this experience enhancer
  which will void the current cooldown period if there is one
+ 
+ @returns YES if cooldown timer was successfully reset
  */
-- (void)resetCooldownTimer;
+- (BOOL)resetCooldownTimer;
 
 @end
