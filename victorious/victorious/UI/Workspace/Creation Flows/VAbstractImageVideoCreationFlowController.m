@@ -302,7 +302,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    if ( shouldSkipTrimmerForContext || [self shouldSkipTrimmerForUser] )
+    if ( shouldSkipTrimmerForContext || [self shouldSkipTrimmerForVideoLength] )
     {
         [self afterEditingFinishedUseCapturedMediaURL:YES];
         
@@ -326,7 +326,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     }
 }
 
-- (BOOL)shouldSkipTrimmerForUser
+- (BOOL)shouldSkipTrimmerForVideoLength
 {
     return NO;
 }
