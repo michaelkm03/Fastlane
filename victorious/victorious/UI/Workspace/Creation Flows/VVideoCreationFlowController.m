@@ -18,6 +18,10 @@
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
 
+// User
+#import "VObjectManager+Users.h"
+#import "VUser.h"
+
 // Publish
 #import "VPublishParameters.h"
 
@@ -37,6 +41,7 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVideoCameraViewController *videoCameraViewController;
+@property (nonatomic, assign) Float64 currentVideoLength;
 
 @end
 
@@ -120,7 +125,23 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
 
 - (BOOL)shouldSkipTrimmerForVideoLength
 {
-    return self.videoCameraViewController.totalTimeRecorded > kMaxVideoLengthForEditing;
+    if ([VObjectManager sharedManager].mainUser.isCreator)
+    {
+        return self.currentVideoLength > kMaxVideoLengthForEditing;
+    }
+    else
+    {
+        return NO;
+    }
+
+}
+
+#pragma mark - VAssetCollectionGridViewControllerDelegate
+
+- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController selectedAsset:(PHAsset *)asset
+{
+    [super gridViewController:gridViewController selectedAsset:asset];
+    self.currentVideoLength = asset.duration;
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate
@@ -132,6 +153,7 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
     // We only care if it's the top of the stack.
     if ([self.viewControllers lastObject] == videoCamera)
     {
+        self.currentVideoLength = videoCamera.totalTimeRecorded;
         [self captureFinishedWithMediaURL:url
                              previewImage:previewImage];
     }
