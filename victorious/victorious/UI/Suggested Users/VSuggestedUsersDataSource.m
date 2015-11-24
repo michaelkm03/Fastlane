@@ -58,6 +58,7 @@ static NSString * const kPromptTextKey = @"prompt";
     self.isLoadingSuggestedUsers = YES;
     
     __weak typeof(self) weakSelf = self;
+    
     [self queueSuggestedUsersOperation: ^(NSArray *suggestedUsers)
      {
          __strong typeof(self) strongSelf = weakSelf;

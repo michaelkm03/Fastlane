@@ -10,18 +10,17 @@ import Foundation
 import VictoriousIOSSDK
 
 class SuggestedUsersOperation: RequestOperation<SuggestedUsersRequest> {
-    private let persistenceStore: PersistentStoreType = MainPersistentStore()
-    private(set) var suggestedUsers: [VUser] = []
+    private(set) var suggestedUsers: [VSuggestedUser] = []
     
     init() {
         super.init(request: SuggestedUsersRequest())
     }
     
     override func onComplete(result: SuggestedUsersRequest.ResultType, completion: () -> ()) {
-        for user in result {
-            let persistentUser = VUser()
-            persistentUser.populate(fromSuggestedUserSourceModel: user)
-            suggestedUsers.append(persistentUser)
+        suggestedUsers = result.flatMap() {
+            let suggestedUser = VSuggestedUser()
+            suggestedUser.populate(fromSourceModel: $0)
+            return suggestedUser
         }
         completion()
     }

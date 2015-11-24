@@ -386,6 +386,7 @@
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
+		673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */; };
 		67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
@@ -2346,6 +2347,7 @@
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
+		673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUser.swift; sourceTree = "<group>"; };
 		67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestScheduler.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
@@ -8407,6 +8409,7 @@
 				03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */,
 				F0F04AF21B29E8FE00F6F401 /* VShareMenuItem.h */,
 				F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */,
+				673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */,
 			);
 			path = "Simple Models";
 			sourceTree = "<group>";
@@ -10705,6 +10708,7 @@
 				676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
+				673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */,
 				F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */,
 				A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
