@@ -175,7 +175,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 - (BOOL)hasValidLayout
 {
-    return !CGRectEqualToRect(CGRectZero, self.bounds);
+    return [UIScreen mainScreen].bounds.size.width ==  self.bounds.size.width;
 }
 
 - (void)resetSubviews

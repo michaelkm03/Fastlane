@@ -192,6 +192,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 
 - (BOOL)stopEditing
 {
+    [self.textStorage dismissButtonWasPressedInTableView:nil];
     return [self.editingTextView resignFirstResponder];
 }
 

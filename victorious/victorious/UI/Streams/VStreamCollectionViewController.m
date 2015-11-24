@@ -519,7 +519,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [stream isSingleStream] || isShelf )
     {
         VStreamCollectionViewController *streamCollection = nil;
-        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId,
+                                                                                                    VDependencyManagerTitleKey: stream.name,
+                                                                                                    VDependencyManagerAccessoryScreensKey : @[],
+                                                                                                    @"titleImage": [NSNull null]}];
         
         if ( isShelf )
         {

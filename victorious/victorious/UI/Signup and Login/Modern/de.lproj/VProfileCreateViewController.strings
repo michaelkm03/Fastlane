@@ -2,7 +2,7 @@
 "9Wi-As-OwD.normalTitle" = "Fertig";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
-"pDv-b6-X4m.placeholder" = "Ort";
+"pDv-b6-X4m.placeholder" = "Standort";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
 "qGa-ti-Owy.placeholder" = "Name";

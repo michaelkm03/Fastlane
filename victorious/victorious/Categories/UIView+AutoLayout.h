@@ -101,6 +101,27 @@
 - (void)v_addPinToBottomToSubview:(UIView *)subview bottomMargin:(CGFloat)margin;
 
 /**
+ Applies Leading to Leading constraint with no margin from the container to the passed in subview
+ */
+- (void)v_addPinToLeadingEdgeToSubview:(UIView *)subview;
+
+/**
+ Applies Leading to Leading constraint with margin from the container to the passed in subview
+ */
+- (void)v_addPinToLeadingEdgeToSubview:(UIView *)subview leadingMargin:(CGFloat)margin;
+
+
+/**
+ Applies Trailing to Trailing constraint with no margin from the container to the passed in subview
+ */
+- (void)v_addPinToTrailingEdgeToSubview:(UIView *)subview;
+
+/**
+ Applies Trailing to Trailing constraint with margin from the container to the passed in subview
+ */
+- (void)v_addPinToTrailingEdgeToSubview:(UIView *)subview trailingMargin:(CGFloat)margin;
+
+/**
  Applies minimum horizontal spacing with the container border to the passed in subview
  */
 - (void)v_addHorizontalMinimumSpacingToSubview:(UIView *)subview spacing:(CGFloat)space;
