@@ -28,6 +28,10 @@ class StreamOperation: RequestOperation<StreamRequest> {
     var nextPageOperation: StreamOperation?
     var previousPageOperation: StreamOperation?
     
+    override func onError(error: NSError) {
+        print( error )
+    }
+    
     override func onComplete(response: StreamRequest.ResultType, completion:()->() ) {
         let stream = response.results
         let uniqueElements = [ "apiPath" : self.apiPath ]

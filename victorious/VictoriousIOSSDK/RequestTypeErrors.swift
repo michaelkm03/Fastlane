@@ -8,6 +8,10 @@
 
 import Foundation
 
+
+
+
+
 /// ErrorType thrown when an endpoint request succeeds on an TCP/IP and HTTP level, but for some reason the response couldn't be parsed.
 public struct ResponseParsingError: ErrorType, CustomStringConvertible, CustomDebugStringConvertible {
     
