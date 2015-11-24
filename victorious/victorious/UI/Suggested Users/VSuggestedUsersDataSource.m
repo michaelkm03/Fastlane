@@ -132,8 +132,8 @@ static NSString * const kPromptTextKey = @"prompt";
         VSuggestedUserCell *suggestedUserCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         suggestedUserCell.dependencyManager = self.dependencyManager;
-        VUser *user = self.suggestedUsers[ indexPath.row ];
-        suggestedUserCell.user = user;
+        VSuggestedUser *suggestedUser = self.suggestedUsers[ indexPath.row ];
+        [suggestedUserCell configureWithSuggestedUser:suggestedUser];
         cell = suggestedUserCell;
     }
     return cell;

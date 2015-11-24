@@ -17,11 +17,14 @@
 #import "VContentThumbnailsViewController.h"
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence.h"
+#import "victorious-Swift.h"
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 @interface VSuggestedUserCell ()
 
+@property (nonatomic, strong) VUser *user;
+@property (nonatomic, strong) NSArray *recentSequences;
 @property (nonatomic, strong) VFollowControl *followButton;
 @property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
@@ -75,13 +78,19 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     self.thumbnailsDataSource.dependencyManager = dependencyManager;
 }
 
+- (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser
+{
+    self.user = suggestedUser.user;
+    self.recentSequences = suggestedUser.recentSequences;
+}
+
 - (void)setUser:(VUser *)user
 {
     _user = user;
     
     self.usernameTextView.text = _user.name;
     
-    self.thumbnailsDataSource.sequences = user.recentSequences.array;
+    self.thumbnailsDataSource.sequences = self.recentSequences;
     [self.thumbnailsViewController.collectionView reloadData];
     
     if ( _user.pictureUrl != nil )
