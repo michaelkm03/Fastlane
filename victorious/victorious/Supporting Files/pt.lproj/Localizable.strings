@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "Já Seguindo";
 "FacebookFollowingSectionHeader"    =   "Siga seus Amigos do Facebook";
-"TwitterFollowingSectionHeader"     =   "Siga seus Amigos do Twitter";
 "AddressBookFollowingSectionHeader" =   "Siga Seus Contatos";
 
 "ConversationLoadError" =   "Não é possível carregar a conversa";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Encontre amigos do Facebook";
 "Connect to Facebook"   =   "Conectar-se ao Facebook";
 "FBSafety"              =   "Não armazenamos suas senhas e nunca postaremos nada sem a sua permissão.";
-
-"FindTwitterFriends"    =   "Encontre amigos do Twitter";
-"Connect to Twitter"    =   "Conectar-se ao Twitter";
-"TwitterSafety"         =   "Não armazenamos suas senhas e nunca postaremos nada sem a sua permissão.";
-
-"FindInstagramFriends"  =   "Encontre amigos do Instagram";
-"Connect to Instagram"  =   "Conectar-se ao Instagram";
 
 "Logout"                =   "Fazer Logout";
 "Login"                 =   "Fazer login";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "NÍVEL %@";
 "LEVEL" = "NÍVEL";
+"TestAlertsViewControllerFooter" = "Depois de registrar um alerta, volte ao fluxo ou perfil e arraste para atualizar. O alerta deve aparecer.";

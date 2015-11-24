@@ -43,7 +43,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
                     guard let persistentUser: VUser = context.getObject(identifier) else {
                         fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
                     }
-                    persistentUser.setCurrentUser(inContext: context)
+                    persistentUser.setAsCurrentUser(inContext: context)
                     
                     VStoredLogin().saveLoggedInUserToDisk( persistentUser )
                     NSUserDefaults.standardUserDefaults().setInteger( persistentUser.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)

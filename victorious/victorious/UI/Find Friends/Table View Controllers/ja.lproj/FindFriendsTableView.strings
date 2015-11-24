@@ -10,7 +10,7 @@
 /* Class = "UIButton"; normalTitle = "Add All"; ObjectID = "hcw-4q-StV"; */
 "hcw-4q-StV.normalTitle" = "すべて追加";
 
-/* Class = "UILabel"; text = "Your Contacts Are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection."; ObjectID = "hgn-BR-Oom"; */
+/* Class = "UILabel"; text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis accumsan arcu, ut sagittis metus accumsan ut. Aliquam enim diam, scelerisque ut neque eget, ultrices laoreet orci. Sed tincidunt est odio, et egestas augue maximus in. "; ObjectID = "hgn-BR-Oom"; */
 "hgn-BR-Oom.text" = "ご心配なく、ご連絡先の情報は安全です！フレンドを探すにはご連絡先情報を当社サーバーまで安全性の高い接続を介して送信する必要があります。";
 
 /* Class = "UILabel"; text = "Sorry, there was a problem accessing your friends list!"; ObjectID = "mIW-p6-1ZK"; */

@@ -28,4 +28,9 @@
  */
 - (void)addFollowedHashtag:(NSString *)hashtag;
 
+/**
+ *  Provides the users max upload duration with a default value of 15.0f;
+ */
+- (Float64)maxUploadDurationFloat;
+
 @end

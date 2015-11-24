@@ -98,6 +98,12 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setSequence:(VSequence *)sequence
 {
+    // Clear any view state when we are getting a different sequence.
+    if (self.sequence != sequence)
+    {
+        [self clearResults];
+    }
+    
     [super setSequence:sequence];
     
     __weak typeof(self) weakSelf = self;
@@ -331,6 +337,18 @@ static NSString *kOrIconKey = @"orIcon";
             [self setResultViewsHidden:YES animated:YES];
             self.voterCountLabelContainer.alpha = 0.0f;
     }
+}
+
+#pragma mark - Private
+
+- (void)clearResults
+{
+    [self setResultViewsHidden:YES animated:NO];
+    self.haveResultsBeenSet = NO;
+    [self setAnswerAIsFavored:NO];
+    [self setAnswerBIsFavored:NO];
+    [self setAnswerAPercentage:0.0 animated:NO];
+    [self setAnswerBPercentage:0.0 animated:NO];
 }
 
 @end

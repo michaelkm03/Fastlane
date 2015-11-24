@@ -12,13 +12,6 @@ import SwiftyJSON
 /// Updates the user's profile and/or password information
 public struct AccountUpdateRequest: RequestType {
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
-        guard let user = User(json: responseJSON["payload"]) else {
-            throw ResponseParsingError()
-        }
-        return user
-    }
-    
     public let profileUpdate: ProfileUpdate?
     public let passwordUpdate: PasswordUpdate?
     public let urlRequest: NSURLRequest
@@ -47,5 +40,12 @@ public struct AccountUpdateRequest: RequestType {
         } catch {
             return nil
         }
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
+        guard let user = User(json: responseJSON["payload"]) else {
+            throw ResponseParsingError()
+        }
+        return user
     }
 }
