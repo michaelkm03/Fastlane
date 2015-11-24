@@ -128,6 +128,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     if (self.sourceImage == nil)
     {
+        self.filteredImageView.frame = self.canvasScrollView.bounds;
         return;
     }
     
