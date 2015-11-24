@@ -49,13 +49,13 @@ protocol Queuable {
     /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
-    /// Uses the queue provided.
+    /// Uses the shared queue for the type of the receiver.
     func queueBefore( operation: NSOperation )
     
     /// Queues the operation and sets it as a dependency of the receiver's dependent operations,
     /// effectively "cutting in line" all the dependency operations.  This allows operations to
     /// instantiate and queue a follow-up operation.
-    /// Uses the shared queue for the type of the receiver.
+    /// Uses the queue provided.
     func queueBefore( operation: NSOperation, queue: NSOperationQueue )
     
     /// Returns an array of operations which are dependencies of the receiver on the provided queue.
