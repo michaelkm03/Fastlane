@@ -7,16 +7,12 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension VSuggestedUsersDataSource {
-    func refresh(completion: () -> Void) {
+    
+    func queueSuggestedUsersOperation(completion: ([VUser]?) -> Void) {
         let operation = SuggestedUsersOperation()
-        operation.queue() { error in
-            if let e = error {
-                
-            } else {
-                
-            }
-        }
+        completion(operation.suggestedUsers)
     }
 }

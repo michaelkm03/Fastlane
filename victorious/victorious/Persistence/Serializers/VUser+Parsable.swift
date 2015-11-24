@@ -33,4 +33,11 @@ extension VUser: PersistenceParsable {
             return imageAsset
         })
     }
+    
+    func populate(fromSuggestedUserSourceModel suggestedUser: SuggestedUser) {
+        self.populate(fromSourceModel: suggestedUser.user)
+        let sequences = (suggestedUser.recentSequences.flatMap {
+            VSequence().populate(fromSourceModel: $0)
+        })
+    }
 }
