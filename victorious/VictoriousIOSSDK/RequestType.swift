@@ -95,9 +95,8 @@ extension RequestType {
     }
     
     private func parseError( responseJSON: JSON ) throws {
-        if let errorCode = responseJSON["error"].int,
-            let errorMessage = responseJSON["message"].string {
-            throw APIError(localizedDescription: errorMessage, code: errorCode)
+        if let errorCode = responseJSON["error"].int where errorCode != 0  {
+            throw APIError(localizedDescription: responseJSON["message"].stringValue, code: errorCode)
         }
     }
 }
