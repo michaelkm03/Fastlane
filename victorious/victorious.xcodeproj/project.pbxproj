@@ -594,6 +594,7 @@
 		A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC10F1A2D619300F5BBDE /* VProduct.m */; };
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
+		A716F3E71C04EE9B003068A2 /* RequestTypeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
@@ -2578,6 +2579,7 @@
 		A70FC1231A31207400F5BBDE /* VVoteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteSettings.h; sourceTree = "<group>"; };
 		A70FC1241A31207400F5BBDE /* VVoteSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettings.m; sourceTree = "<group>"; };
 		A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTypeErrors.swift; sourceTree = "<group>"; };
 		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
@@ -4949,6 +4951,7 @@
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
+				A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */,
 				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
 				A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */,
@@ -9954,6 +9957,7 @@
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
+				A716F3E71C04EE9B003068A2 /* RequestTypeErrors.swift in Sources */,
 				6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */,
 				C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */,
 				678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */,

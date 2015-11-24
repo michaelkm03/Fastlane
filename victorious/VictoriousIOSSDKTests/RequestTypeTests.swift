@@ -218,4 +218,29 @@ class EndpointRequestTests: XCTestCase {
         
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    func testAPIErrorParsing() {
+        let errorCode = 89732
+        let errorMessage = "TEST ERROR"
+        
+        let mockJSONDictionary = [ "message" : errorMessage, "error" : errorCode ]
+        let mockJSONData = try! NSJSONSerialization.dataWithJSONObject(mockJSONDictionary, options: [])
+        stubRequest("GET", "http://api.example.com/api/test").andReturn(200).withHeader("Content-Type", "application/json").withBody(mockJSONData)
+        
+        let expectedError = NSError(domain: errorMessage, code: errorCode, userInfo: nil)
+        let parseResponseExpectation = expectationWithDescription("parseResponse")
+        let mockRequest = MockRequest(requestURL: mockRequestURL) { (_) -> Int in
+            parseResponseExpectation.fulfill()
+            throw expectedError
+        }
+        
+        let callbackExpectation = expectationWithDescription("callback")
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, actualError) in
+            XCTAssertNil(actualResult)
+            XCTAssertEqual(actualError as? NSError, expectedError)
+            callbackExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }
