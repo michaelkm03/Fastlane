@@ -4968,6 +4968,7 @@
 			children = (
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
+				A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */,
 				79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */,
 				C352CF3B1BF2957000790921 /* BatchFollowUsersRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
@@ -4994,6 +4995,7 @@
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
+				A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */,
 				C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */,
 				79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */,
 				C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */,
@@ -5001,7 +5003,6 @@
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
-				A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
@@ -5016,6 +5017,7 @@
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
 				A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */,
 				03BC6FB31BE83D5200CFCBEE /* SequenceLikersRequest.swift */,
+				797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */,
 				03BC6FAF1BE74E9B00CFCBEE /* StandardPaginator.swift */,
 				A7EF1BD11BF2757B00D429DE /* StreamRequest.swift */,
 				6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */,
@@ -5029,12 +5031,10 @@
 				C323C3B61BF55F6600681059 /* UpdateCommentRequest.swift */,
 				A74679761BF6D01A0026FD2E /* UserInfoRequest.swift */,
 				03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */,
-				A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */,
 				0300AA581BF17C20000A121D /* VMultipartFormDataWriter.h */,
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
-				797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";

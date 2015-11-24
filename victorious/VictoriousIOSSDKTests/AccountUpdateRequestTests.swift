@@ -24,7 +24,7 @@ class AccountUpdateRequestTests: XCTestCase {
     
     func testRequestWithProfile() {
         let updateRequest = AccountUpdateRequest(
-            profileUpdate: User.ProfileUpdate(
+            profileUpdate: ProfileUpdate(
                 email: "joe@example.com",
                 name: "Joe Victorious",
                 location: "Bethesda, MD",
@@ -37,7 +37,7 @@ class AccountUpdateRequestTests: XCTestCase {
     
     func testRequestWithPassword() {
         let updateRequest = AccountUpdateRequest(
-            passwordUpdate: User.PasswordUpdate(
+            passwordUpdate: PasswordUpdate(
                 email: "joe@example.com",
                 passwordCurrent: "password",
                 passwordNew: "password_new"
@@ -53,7 +53,7 @@ class AccountUpdateRequestTests: XCTestCase {
                 return
         }
         
-        guard let updateRequest = AccountUpdateRequest( profileUpdate: User.ProfileUpdate(
+        guard let updateRequest = AccountUpdateRequest( profileUpdate: ProfileUpdate(
             email: "joe@example.com",
             name: "Joe Victorious",
             location: "Bethesda, MD",
@@ -71,7 +71,7 @@ class AccountUpdateRequestTests: XCTestCase {
             XCTFail("parseResponse is not supposed to throw")
         }
         
-        guard let updatePasswordRequest = AccountUpdateRequest( passwordUpdate: User.PasswordUpdate(
+        guard let updatePasswordRequest = AccountUpdateRequest( passwordUpdate: PasswordUpdate(
             email: "joe@example.com",
             passwordCurrent: "password",
             passwordNew: "password_new"
@@ -81,7 +81,7 @@ class AccountUpdateRequestTests: XCTestCase {
         }
         
         do {
-            let user = try updateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let user = try updatePasswordRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual( user.userID, 156)
             XCTAssertEqual( user.name, "Joe Victorious")
         } catch {
