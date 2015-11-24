@@ -39,7 +39,9 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         completion()
     }
     
-    func onError( error: NSError ) {}
+    func onError( error: NSError, completion: ()->() ) {
+        completion()
+    }
     
     // MARK: - NSOperation overrides
     
@@ -83,16 +85,20 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
             baseURL: baseURL!,
             requestContext: requestContext!,
             authenticationContext: authenticationContext,
-            callback: { [weak self] (result, error) -> () in
+            callback: { [weak self] (result, requestError) -> () in
                 dispatch_async( dispatch_get_main_queue() ) {
                     guard let strongSelf = self where !strongSelf.cancelled else {
                         return
                     }
-                    if let requestError = error as? NSError {
-                        strongSelf.requestError = requestError
-                        strongSelf.onError( requestError )
-                        dispatch_semaphore_signal( mainSemaphore )
-                    } else if let requestResult = result {
+                    
+                    if let requestError = requestError as? RequestError {
+                        let nsError = NSError( requestError )
+                        strongSelf.requestError = nsError
+                        strongSelf.onError( nsError ) {
+                            dispatch_semaphore_signal( mainSemaphore )
+                        }
+                    }
+                    else if let requestResult = result {
                         strongSelf.onComplete( requestResult ) {
                             dispatch_semaphore_signal( mainSemaphore )
                         }

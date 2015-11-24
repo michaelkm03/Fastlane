@@ -17,10 +17,6 @@ class UserInfoOperation: RequestOperation<UserInfoRequest> {
         super.init( request: UserInfoRequest(userID: userID) )
     }
     
-    override func onError(error: NSError) {
-        
-    }
-    
     override func onComplete( response: UserInfoRequest.ResultType, completion:()->() ) {
         
         persistentStore.asyncFromBackground() { context in

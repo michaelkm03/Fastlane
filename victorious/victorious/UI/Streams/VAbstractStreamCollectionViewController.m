@@ -457,7 +457,7 @@
                         });
      }
                             failure:^(NSError *_Nullable error) {
-                                
+                                // TODO: Show error in non-disruptive way
                             }];
 }
 

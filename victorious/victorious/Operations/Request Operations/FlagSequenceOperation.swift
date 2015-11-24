@@ -22,7 +22,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
         super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onError(error: NSError) {
+    override func onError(error: NSError, completion: ()->() ) {
         
         let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
@@ -38,6 +38,8 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
                 message: NSLocalizedString( "ErrorOccured", comment: "" )
             )
         }
+        
+        completion()
     }
     
     override func onComplete( response: FlagSequenceRequest.ResultType, completion:()->() ) {

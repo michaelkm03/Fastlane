@@ -19,7 +19,6 @@
 		0300AA7E1BF2BC8B000A121D /* DevicePreferencesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */; };
 		0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */; };
 		0300AA821BF2E465000A121D /* DevicePreferencesResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 0300AA811BF2E465000A121D /* DevicePreferencesResponse.json */; };
-		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
 		030C827D1BF32F8500E9F14C /* DevicePreferencesAllOnResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 030C827C1BF32F8500E9F14C /* DevicePreferencesAllOnResponse.json */; };
@@ -573,7 +572,7 @@
 		A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */; };
 		A7078CDE1BFA7D2B008FB7FF /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */; };
 		A7078CEA1BFA8852008FB7FF /* ShowWorkspaceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */; };
-		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */; };
+		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */; };
 		A7078CF41BFBD969008FB7FF /* SequenceActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */; };
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
@@ -587,8 +586,7 @@
 		A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC10F1A2D619300F5BBDE /* VProduct.m */; };
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
-		A716F3E71C04EE9B003068A2 /* RequestTypeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */; };
-		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
+		A716F3E71C04EE9B003068A2 /* ResponseParsingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3E61C04EE9B003068A2 /* ResponseParsingError.swift */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
@@ -2615,7 +2613,7 @@
 		A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowWorkspaceOperation.swift; sourceTree = "<group>"; };
-		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewDataSource+Networking.swift"; sourceTree = "<group>"; };
+		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceActionHelper.swift; sourceTree = "<group>"; };
 		A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequest.swift; sourceTree = "<group>"; };
 		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
@@ -2638,8 +2636,7 @@
 		A70FC1231A31207400F5BBDE /* VVoteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteSettings.h; sourceTree = "<group>"; };
 		A70FC1241A31207400F5BBDE /* VVoteSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettings.m; sourceTree = "<group>"; };
 		A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTypeErrors.swift; sourceTree = "<group>"; };
-		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
+		A716F3E61C04EE9B003068A2 /* ResponseParsingError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseParsingError.swift; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
 		A71DAF231B695FC200E0BE53 /* AutomationId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationId.swift; sourceTree = "<group>"; };
@@ -4983,8 +4980,8 @@
 				F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
+				A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */,
 				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
-				A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -5049,7 +5046,7 @@
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
-				A716F3E61C04EE9B003068A2 /* RequestTypeErrors.swift */,
+				A716F3E61C04EE9B003068A2 /* ResponseParsingError.swift */,
 				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
 				A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */,
@@ -10200,7 +10197,7 @@
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
 				67FD54C31BF6939400CF52F7 /* DeleteCommentRequest.swift in Sources */,
 				03314F401BE3E6E800EE74FD /* RequestType.swift in Sources */,
-				A716F3E71C04EE9B003068A2 /* RequestTypeErrors.swift in Sources */,
+				A716F3E71C04EE9B003068A2 /* ResponseParsingError.swift in Sources */,
 				6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */,
 				C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */,
 				678D94441BF41BE3009A1F93 /* PollVoteRequest.swift in Sources */,
@@ -11000,7 +10997,7 @@
 				A76AEA481BFEBA0500E8A26F /* RepostSequenceOperation.swift in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
-				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource+Networking.swift in Sources */,
+				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
@@ -11388,9 +11385,7 @@
 				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
 				A76AEA811BFED31B00E8A26F /* VInStreamMediaLinkTests.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
-				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
 				79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */,
-				0EAB5EA71BC441910055DA79 /* VPushNotificationManagerTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				A76AEA651BFED31B00E8A26F /* VActionBarTests.m in Sources */,
 				A76AEA981BFED31B00E8A26F /* VTagTests.m in Sources */,
