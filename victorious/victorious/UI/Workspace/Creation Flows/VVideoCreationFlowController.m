@@ -133,7 +133,6 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
     {
         return NO;
     }
-
 }
 
 #pragma mark - VAssetCollectionGridViewControllerDelegate
