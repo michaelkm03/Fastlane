@@ -2,10 +2,10 @@
 "YXm-O2-nI2.text" = "Stelle eine Frage...";
 
 /* Class = "UILabel"; text = "Vote that"; ObjectID = "bEL-Dg-FBP"; */
-"bEL-Dg-FBP.text" = "Wähle für das";
+"bEL-Dg-FBP.text" = "Wähle das";
 
 /* Class = "UILabel"; text = "Vote this"; ObjectID = "kIg-QZ-oeo"; */
-"kIg-QZ-oeo.text" = "Wähle für dieses";
+"kIg-QZ-oeo.text" = "Wähle dies";
 
 /* Class = "UINavigationItem"; title = "New Poll"; ObjectID = "vcX-pq-4nF"; */
 "vcX-pq-4nF.title" = "Neue Umfrage";
