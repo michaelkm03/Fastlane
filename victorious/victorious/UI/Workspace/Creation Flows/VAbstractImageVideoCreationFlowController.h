@@ -87,6 +87,11 @@
 
 - (UIViewController *)initialViewController;
 
+/**
+ *  Determines whether trimmer should be skipped. Default to NO.
+ */
+- (BOOL)shouldSkipTrimmerForUser;
+
 @property (nonatomic, strong, readonly) VAssetCollectionGridViewController *gridViewController;
 
 @property (nonatomic, assign) BOOL shouldShowPublishScreen;

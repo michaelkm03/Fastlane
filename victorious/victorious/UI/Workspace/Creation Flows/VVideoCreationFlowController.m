@@ -31,9 +31,12 @@ NSString * const VVideoCreationFlowControllerKey = @"videoCreateFlow";
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
+static Float64 const kMaxVideoLengthForEditing = 15.0f;
+
 @interface VVideoCreationFlowController () <VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VVideoCameraViewController *videoCameraViewController;
 
 @end
 
@@ -99,12 +102,25 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 - (void)showCamera
 {
-    // Camera
-    VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
-                                                                                             cameraContext:self.context];
-    videoCamera.delegate = self;
-    [self pushViewController:videoCamera
+    [self pushViewController:self.videoCameraViewController
                     animated:YES];
+}
+
+- (VVideoCameraViewController *)videoCameraViewController
+{
+    if (_videoCameraViewController == nil)
+    {
+        _videoCameraViewController = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
+                                                                                    cameraContext:self.context];
+        _videoCameraViewController.delegate = self;
+    }
+    
+    return _videoCameraViewController;
+}
+
+- (BOOL)shouldSkipTrimmerForUser
+{
+    return self.videoCameraViewController.totalTimeRecorded > kMaxVideoLengthForEditing;
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate

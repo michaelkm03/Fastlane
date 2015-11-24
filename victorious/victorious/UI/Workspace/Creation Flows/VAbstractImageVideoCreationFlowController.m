@@ -302,8 +302,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
-    if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
+    if ( shouldSkipTrimmerForContext || [self shouldSkipTrimmerForUser] )
     {
         [self afterEditingFinishedUseCapturedMediaURL:YES];
         
@@ -325,6 +324,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                            andPreviewImage:previewImage];
         [self pushViewController:self.workspaceViewController animated:YES];
     }
+}
+
+- (BOOL)shouldSkipTrimmerForUser
+{
+    return NO;
 }
 
 - (void)showAlertForBadMediaFileSelected
