@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "이미 팔로우 중";
 "FacebookFollowingSectionHeader"    =   "페이스북 친구 팔로우";
-"TwitterFollowingSectionHeader"     =   "트위터 친구 팔로우";
 "AddressBookFollowingSectionHeader" =   "연락처 팔로우";
 
 "ConversationLoadError" =   "대화를 불러올 수 없습니다.";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "페이스북 친구 찾기";
 "Connect to Facebook"   =   "페이스북 연결하기";
 "FBSafety"              =   "저희는 비밀번호를 저장하지 않으며 허락 없이는 아무 것도 올리지 않습니다.";
-
-"FindTwitterFriends"    =   "트위터 친구 찾기";
-"Connect to Twitter"    =   "트위터에 연결하기";
-"TwitterSafety"         =   "저희는 비밀번호를 저장하지 않으며 허락 없이는 아무 것도 올리지 않습니다.";
-
-"FindInstagramFriends"  =   "인스타그램 친구 찾기";
-"Connect to Instagram"  =   "인스타그램에 연결하기";
 
 "Logout"                =   "로그아웃";
 "Login"                 =   "로그인";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "레벨 %@";
 "LEVEL" = "레벨";
+"TestAlertsViewControllerFooter" = "알림을 등록한 후에, 스트림이나 프로필로 돌아가서 화면을 당겨서 새로고침을 하세요. 알림이 나타납니다.";

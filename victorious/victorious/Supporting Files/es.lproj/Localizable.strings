@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "Ya lo estás siguiendo";
 "FacebookFollowingSectionHeader"    =   "Sigue a tus amigos de Facebook";
-"TwitterFollowingSectionHeader"     =   "Sigue a tus amigos de Twitter";
 "AddressBookFollowingSectionHeader" =   "Sigue a tus contacots";
 
 "ConversationLoadError" =   "No se puede cargar la conversación";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Encontrar amigos de Facebook";
 "Connect to Facebook"   =   "Conectar con Facebook";
 "FBSafety"              =   "No guardamos tus contraseñas y nunca publicaremos algo sin tu permiso.";
-
-"FindTwitterFriends"    =   "Amigos de Twitter";
-"Connect to Twitter"    =   "Conectar con Twitter";
-"TwitterSafety"         =   "No guardamos tus contraseñas y nunca publicaremos algo sin tu permiso.";
-
-"FindInstagramFriends"  =   "Encuentra amigos de Instagram";
-"Connect to Instagram"  =   "Connectar con Instagram";
 
 "Logout"                =   "Salir";
 "Login"                 =   "Iniciar sesión";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "Nivel %@";
 "LEVEL" = "NIVEL";
+"TestAlertsViewControllerFooter" = "Después de que registres una alerta, regresa a la transmisión o perfil y jala para actualizar. La alerta debe aparecer.";

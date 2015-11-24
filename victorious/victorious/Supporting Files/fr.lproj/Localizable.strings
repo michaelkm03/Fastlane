@@ -175,7 +175,6 @@
 
 "FollowingSectionHeader"            =   "Vous êtes déjà abonné à cet utilisateur";
 "FacebookFollowingSectionHeader"    =   "Suivez vos amis Facebook";
-"TwitterFollowingSectionHeader"     =   "Suivez vos amis de Twitter";
 "AddressBookFollowingSectionHeader" =   "Suivez vos contacts";
 
 "ConversationLoadError" =   "Le chargement de la conversation a échoué";
@@ -257,13 +256,6 @@
 "FindFBFriends"         =   "Trouver des amis sur Facebook";
 "Connect to Facebook"   =   "Se connecter à Facebook";
 "FBSafety"              =   "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
-
-"FindTwitterFriends"    =   "Trouvez des amis sur Twitter";
-"Connect to Twitter"    =   "Se connecter à Twitter";
-"TwitterSafety"         =   "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
-
-"FindInstagramFriends"  =   "Trouvez des amis sur Instagram";
-"Connect to Instagram"  =   "Se connecter à Instagram";
 
 "Logout"                =   "Déconnexion";
 "Login"                 =   "Se connecter";
@@ -453,3 +445,4 @@
 
 "LevelFormat" = "NIVEAU %@";
 "LEVEL" = "NIVEAU";
+"TestAlertsViewControllerFooter" = "Après vous être inscrit à une alerte, retournez sur le stream ou sur le profil et tirez pour actualiser. L'alerte devrait apparaître.";

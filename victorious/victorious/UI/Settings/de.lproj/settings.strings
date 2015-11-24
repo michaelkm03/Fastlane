@@ -29,19 +29,19 @@
 "32G-4D-L9h.headerTitle" = "Video";
 
 /* Class = "UILabel"; text = "Tracking"; ObjectID = "A70-cw-6uE"; */
-"A70-cw-6uE.text" = "Tracken";
+"A70-cw-6uE.text" = "Tracking";
 
 /* Class = "UITextField"; placeholder = "Base URL"; ObjectID = "EhD-iU-YcX"; */
-"EhD-iU-YcX.placeholder" = "Basis-URL";
+"EhD-iU-YcX.placeholder" = "Base URL";
 
 /* Class = "UINavigationItem"; title = "Tracking"; ObjectID = "Er4-Xd-8gm"; */
-"Er4-Xd-8gm.title" = "Tracken";
+"Er4-Xd-8gm.title" = "Tracking";
 
 /* Class = "UITextField"; placeholder = "New Password"; ObjectID = "FC0-A4-y0n"; */
 "FC0-A4-y0n.placeholder" = "Neues Passwort";
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
-"FNb-Ni-uJN.text" = "Coachmarks zurücksetzen";
+"FNb-Ni-uJN.text" = "Tutorial zurücksetzen";
 
 /* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
 "HQs-Ej-k6O.title" = "Experimente";
@@ -65,7 +65,7 @@
 "LgC-0q-Axl.placeholder" = "Dein aktuelles Passwort";
 
 /* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
-"MMO-h3-iOL.title" = "Autoplay";
+"MMO-h3-iOL.title" = "Automatische Wiedergabe";
 
 /* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
 "N5S-6f-jb6.normalTitle" = "Action";
@@ -113,7 +113,7 @@
 "dAg-zH-vd2.title" = "Datenschutzbestimmungen";
 
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
-"f7G-BC-zp9.text" = "Experiemente";
+"f7G-BC-zp9.text" = "Experimente";
 
 /* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
 "gY1-3u-QH1.text" = "Testbenachrichtigung zu Levelaufstiegen registrieren";
@@ -131,7 +131,7 @@
 "jjo-ti-snK.text" = "Server-Umgebung";
 
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "kYh-dZ-t7J"; */
-"kYh-dZ-t7J.title" = "Einstellung";
+"kYh-dZ-t7J.title" = "Einstellungen";
 
 /* Class = "UILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
 "krN-Xu-bYv.text" = "Nicht verbunden";
@@ -158,7 +158,7 @@
 "sgT-oS-cdk.normalTitle" = "Speichern";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "udt-VU-0Rh"; */
-"udt-VU-0Rh.title" = "Einstellung";
+"udt-VU-0Rh.title" = "Einstellungen";
 
 /* Class = "UILabel"; text = "Privacy Policy"; ObjectID = "vRt-M4-9nW"; */
 "vRt-M4-9nW.text" = "Datenschutzbestimmungen";

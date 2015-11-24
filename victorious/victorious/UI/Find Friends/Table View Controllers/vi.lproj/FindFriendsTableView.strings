@@ -10,7 +10,7 @@
 /* Class = "UIButton"; normalTitle = "Add All"; ObjectID = "hcw-4q-StV"; */
 "hcw-4q-StV.normalTitle" = "Thêm Tất cả";
 
-/* Class = "UILabel"; text = "Your Contacts Are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection."; ObjectID = "hgn-BR-Oom"; */
+/* Class = "UILabel"; text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis accumsan arcu, ut sagittis metus accumsan ut. Aliquam enim diam, scelerisque ut neque eget, ultrices laoreet orci. Sed tincidunt est odio, et egestas augue maximus in. "; ObjectID = "hgn-BR-Oom"; */
 "hgn-BR-Oom.text" = "Danh bạ của bạn sẽ an toàn trong tay chúng tôi! Để có thể tìm thấy bạn bè của bạn, chúng tôi cần gửi thông tin danh bạ của bạn đến máy chủ của chúng tôi sử dụng một kết nối bảo mật.";
 
 /* Class = "UILabel"; text = "Sorry, there was a problem accessing your friends list!"; ObjectID = "mIW-p6-1ZK"; */

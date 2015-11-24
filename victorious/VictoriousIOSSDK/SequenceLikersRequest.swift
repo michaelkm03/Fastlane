@@ -11,8 +11,10 @@ import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
 public struct SequenceLikersRequest: Pageable {
+    
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64
+    private let paginator: StandardPaginator
     
     public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
@@ -22,8 +24,6 @@ public struct SequenceLikersRequest: Pageable {
         self.sequenceID = sequenceID
         self.paginator = paginator
     }
-    
-    private let paginator: StandardPaginator
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/sequence/liked_by_users/\(sequenceID)")!
