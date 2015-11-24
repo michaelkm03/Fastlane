@@ -15,7 +15,7 @@ class SuggestedUsersOperationTests: XCTestCase {
     
     func testOnComplete() {
         // Generate valid suggested users data
-        var results: SuggestedUsersRequest.ResultType = []
+        var requestResults: SuggestedUsersRequest.ResultType = []
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("SuggestedUsersResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
@@ -24,14 +24,15 @@ class SuggestedUsersOperationTests: XCTestCase {
         
         do {
             let suggestedUsersRequest = SuggestedUsersRequest()
-            results = try suggestedUsersRequest.parseResponse(NSURLResponse(), toRequest: suggestedUsersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            requestResults = try suggestedUsersRequest.parseResponse(NSURLResponse(), toRequest: suggestedUsersRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
 
+        // Feed the request results to operation's onComplete function
         let operation = SuggestedUsersOperation()
 
-        operation.onComplete(results){ }
+        operation.onComplete(requestResults){ }
         let suggestedUsers = operation.suggestedUsers
         XCTAssertEqual(suggestedUsers.count, 5)
         

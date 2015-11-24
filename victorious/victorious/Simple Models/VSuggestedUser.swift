@@ -10,8 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 @objc class VSuggestedUser: NSObject, PersistenceParsable {
-    var user = VUser()
-    var recentSequences: [VSequence] = []
+    private(set) var user = VUser()
+    private(set) var recentSequences: [VSequence] = []
     
     func populate(fromSourceModel suggestedUser: SuggestedUser) {
         user.populate(fromSourceModel: suggestedUser.user)

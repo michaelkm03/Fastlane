@@ -58,41 +58,20 @@ static NSString * const kPromptTextKey = @"prompt";
     self.isLoadingSuggestedUsers = YES;
     
     __weak typeof(self) weakSelf = self;
-    
     [self queueSuggestedUsersOperation: ^(NSArray *suggestedUsers)
      {
-         __strong typeof(self) strongSelf = weakSelf;
+         __strong typeof(weakSelf) strongSelf = weakSelf;
          if (strongSelf != nil)
          {
-             self.loadedOnce = YES;
-             self.isLoadingSuggestedUsers = NO;
-             self.suggestedUsers = suggestedUsers;
+             strongSelf.loadedOnce = YES;
+             strongSelf.isLoadingSuggestedUsers = NO;
+             strongSelf.suggestedUsers = suggestedUsers;
              if ( completion != nil )
              {
                  completion();
              }
          }
      }];
-    
-//    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
-//     {
-//         self.loadedOnce = YES;
-//         self.isLoadingSuggestedUsers = NO;
-//         self.suggestedUsers = resultObjects;
-//         if ( completion != nil )
-//         {
-//             completion();
-//         }
-//     }
-//                                            failBlock:^(NSOperation *operation, NSError *error)
-//     {
-//         self.loadedOnce = YES;
-//         self.isLoadingSuggestedUsers = NO;
-//         if ( completion != nil )
-//         {
-//             completion();
-//         }
-//     }];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
