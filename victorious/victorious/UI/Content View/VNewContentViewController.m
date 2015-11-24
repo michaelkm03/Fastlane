@@ -49,8 +49,6 @@
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 #import "VNode+Fetcher.h"
-#import "VObjectManager+ContentCreation.h"
-#import "VObjectManager+Login.h"
 #import "VPurchaseViewController.h"
 #import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"

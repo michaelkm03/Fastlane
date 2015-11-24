@@ -10,8 +10,6 @@
 #import "VExperienceEnhancer.h"
 #import "VSequence.h"
 #import "VVoteType.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Private.h"
 #import "VVoteType.h"
 #import "VVoteResult.h"
 #import "VTracking.h"

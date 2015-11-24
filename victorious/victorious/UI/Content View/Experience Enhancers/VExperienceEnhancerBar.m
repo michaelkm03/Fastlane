@@ -10,13 +10,12 @@
 #import "VExperienceEnhancer.h"
 #import "VExperienceEnhancerCell.h"
 #import "VLargeNumberFormatter.h"
-#import "VObjectManager+Login.h"
 #import "VPurchaseManager.h"
 #import "VVoteType.h"
 #import "VExperienceEnhancerResponder.h"
 #import "UIResponder+VResponderChain.h"
 #import "VUser.h"
-
+#import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
 @import AudioToolbox;
@@ -146,7 +145,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.requiresPurchase = enhancerForIndexPath.requiresPurchase;
     
     NSNumber *unlockLevel = enhancerForIndexPath.voteType.unlockLevel ?: [NSNumber numberWithInt:0];
-    NSInteger userLevel = [[VObjectManager sharedManager] mainUser].level.integerValue;
+    NSInteger userLevel = [VUser currentUser].level.integerValue;
     [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel.integerValue andUserLevel:userLevel];
     
     experienceEnhancerCell.enabled = self.enabled;
@@ -207,23 +206,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         return;
     }
-    
-    if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
-    {
-        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
-        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
-        [responder authorizeWithCompletion:^(BOOL authorized)
-        {
-            if ( authorized )
-            {
-                [self selectExperienceEnhancerAtIndexPath:indexPath];
-            }
-        }];
-    }
-    else
-    {
-        [self selectExperienceEnhancerAtIndexPath:indexPath];
-    }
+    [self selectExperienceEnhancerAtIndexPath:indexPath];
 }
 
 - (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
