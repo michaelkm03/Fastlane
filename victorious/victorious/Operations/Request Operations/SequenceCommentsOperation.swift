@@ -32,7 +32,7 @@ class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
         
         // TODO: Unit test the flagged content stuff
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
-        persistentStore.syncFromBackground() { context in
+        persistentStore.asyncFromBackground() { context in
             let sequences: [VSequence] = context.findObjects( [ "remoteId" : Int(self.sequenceID) ] )
             for comment in response.results.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
                 let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )

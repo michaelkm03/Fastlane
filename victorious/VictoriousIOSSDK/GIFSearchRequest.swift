@@ -15,7 +15,12 @@ public struct GIFSearchRequest: Pageable {
     // A term to use when searching for GIFs
     public let searchTerm: String
     
-    public let urlRequest: NSURLRequest
+    public var urlRequest: NSURLRequest {
+        let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
+        let mutableURLRequest = NSMutableURLRequest(URL: url)
+        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
+        return mutableURLRequest
+    }
     
     private let paginator: StandardPaginator
     
@@ -24,12 +29,6 @@ public struct GIFSearchRequest: Pageable {
     }
     
     private init(searchTerm: String, paginator: StandardPaginator) {
-        
-        let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
-        let mutableURLRequest = NSMutableURLRequest(URL: url)
-        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
-        urlRequest = mutableURLRequest
-        
         self.searchTerm = searchTerm
         self.paginator = paginator
     }

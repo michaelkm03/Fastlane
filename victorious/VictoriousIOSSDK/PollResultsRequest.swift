@@ -11,14 +11,18 @@ import SwiftyJSON
 
 public struct PollResultsRequest: RequestType {
     
-    public let urlRequest: NSURLRequest
+    private let url: NSURL
+    
+    public var urlRequest: NSURLRequest {
+        return NSURLRequest(URL: url)
+    }
     
     public init(sequenceID: Int64) {
-        self.urlRequest = NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!)
+        self.url = NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!
     }
     
     public init(userID: Int64) {
-        self.urlRequest = NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!)
+        self.url = NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [VoteResult] {

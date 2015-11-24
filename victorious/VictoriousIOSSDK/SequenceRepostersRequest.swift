@@ -14,7 +14,12 @@ public struct SequenceRepostersRequest: Pageable {
     public let sequenceID: Int64
     private let paginator: StandardPaginator
     
-    public let urlRequest: NSURLRequest
+    public var urlRequest: NSURLRequest {
+        let url = NSURL(string: "/api/repost/all/\(String(self.sequenceID))")!
+        let request = NSMutableURLRequest(URL: url)
+        paginator.addPaginationArgumentsToRequest(request)
+        return request
+    }
     
     public init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
@@ -23,11 +28,6 @@ public struct SequenceRepostersRequest: Pageable {
     private init(sequenceID: Int64, paginator: StandardPaginator) {
         self.sequenceID = sequenceID
         self.paginator = paginator
-        
-        let url = NSURL(string: "/api/repost/all/\(String(self.sequenceID))")!
-        let request = NSMutableURLRequest(URL: url)
-        paginator.addPaginationArgumentsToRequest(request)
-        self.urlRequest = request
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: SequenceRepostersRequest?, previousPage: SequenceRepostersRequest?) {

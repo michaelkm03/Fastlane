@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
+class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
     
     private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let sequenceID: Int64
@@ -17,10 +17,10 @@ class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
     
     init( sequenceID: Int64 ) {
         self.sequenceID = sequenceID
-        super.init( request: FlagContentRequest(sequenceID: sequenceID) )
+        super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onComplete(result:FlagContentRequest.ResultType, completion: () -> ()) {
+    override func onComplete(result:FlagSequenceRequest.ResultType, completion: () -> ()) {
         flaggedContent.addRemoteId( String(self.sequenceID), toFlaggedItemsWithType: .StreamItem)
         
         persistentStore.asyncFromBackground() { context in
@@ -28,31 +28,6 @@ class FlagSequenceOperation: RequestOperation<FlagContentRequest> {
                 context.destroy( sequence )
                 context.saveChanges()
             }
-        }
-    }
-}
-
-class FlagCommentOperation: RequestOperation<FlagContentRequest> {
-    
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
-    private let commentID: Int64
-    private let flaggedContent = VFlaggedContent()
-    
-    init( commentID: Int64 ) {
-        self.commentID = commentID
-        super.init( request: FlagContentRequest(commentID: commentID) )
-    }
-    
-    override func onComplete(result:FlagContentRequest.ResultType, completion: () -> ()) {
-        flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
-        
-        persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
-            if let comment: VComment = context.findObjects( uniqueElements ).first {
-                context.destroy( comment )
-                context.saveChanges()
-            }
-            completion()
         }
     }
 }

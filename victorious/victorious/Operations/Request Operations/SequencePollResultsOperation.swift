@@ -20,7 +20,7 @@ class SequencePollResultsOperation: RequestOperation<PollResultsRequest> {
     }
     
     override func onComplete(response: PollResultsRequest.ResultType, completion:()->() ) {
-        persistentStore.syncFromBackground() { context in
+        persistentStore.asyncFromBackground() { context in
             let sequence: VSequence = context.findObjects( [ "remoteId" : Int(self.sequenceID) ] ).first!
             for result in response {
                 let pollResult = context.findOrCreateObject( [ "remoteId" : Int(result.answerID) ] ) as VPollResult

@@ -56,21 +56,6 @@
     [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell] forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
 }
 
-- (void)setSequence:(VSequence *)sequence
-{
-    _sequence = sequence;
-    
-    typeof(self) __weak welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(reposters))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         [welf setHasReposters:self.sequence.reposters.count > 0];
-         [welf.tableView reloadData];
-     }];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

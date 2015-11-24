@@ -23,6 +23,10 @@ extension VReposterTableViewController {
         case .Previous:
             self.repostersOperation = self.repostersOperation?.previousPageOperation
         }
-        self.repostersOperation?.queue()
+        self.repostersOperation?.queue() { error in
+            let hasReposters: Bool = self.sequence.reposters.count > 0 || error != nil
+            self.setHasReposters( hasReposters )
+            self.tableView.reloadData()
+        }
     }
 }

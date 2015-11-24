@@ -20,7 +20,7 @@ class FollowCountOperation: RequestOperation<FollowCountRequest> {
     }
     
     override func onComplete(response: FollowCountRequest.ResultType, completion:()->() ) {
-        persistentStore.syncFromBackground() { context in
+        persistentStore.asyncFromBackground() { context in
             let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.userID) ])
             user.numberOfFollowers = response.followersCount
             user.numberOfFollowing = response.followingCount

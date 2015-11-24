@@ -17,21 +17,20 @@ public struct StreamRequest: Pageable {
     public let apiPath: String
     public let sequenceID: String?
     
-    public let urlRequest: NSURLRequest
+    public var urlRequest: NSURLRequest {
+        let streamURL = StreamURLMacros.urlWithMacrosReplaced( apiPath,
+            sequenceID: sequenceID,
+            pageNumber: pageNumber,
+            itemsPerPage: itemsPerPage
+        )
+        return NSURLRequest(URL: streamURL)
+    }
     
     public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.apiPath = apiPath
         self.sequenceID = sequenceID
         self.pageNumber = pageNumber
         self.itemsPerPage = itemsPerPage
-        
-        guard let streamURL = StreamURLMacros.urlWithMacrosReplaced( apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber,
-            itemsPerPage: itemsPerPage) else {
-                return nil
-        }
-        self.urlRequest = NSMutableURLRequest(URL: streamURL)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: Stream, nextPage: StreamRequest?, previousPage: StreamRequest?) {
@@ -72,25 +71,23 @@ private enum StreamURLMacros: String {
     case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
     case SequenceID     = "%%SEQUENCE_ID%%"
     
-    static var all: [StreamURLMacros] {
+    static var allCases: [StreamURLMacros] {
         return [ .PageNumber, .ItemsPerPage, .SequenceID ]
     }
     
-    static func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
+    static func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL {
         var apiPathWithMacrosReplaced = apiPath
-        for macro in StreamURLMacros.all where apiPath.containsString(macro.rawValue) {
+        for macro in StreamURLMacros.allCases where apiPath.containsString(macro.rawValue) {
             switch macro {
             case .PageNumber:
                 apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(pageNumber))
             case .ItemsPerPage:
                 apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(itemsPerPage))
             case .SequenceID:
-                guard let sequenceID = sequenceID else {
-                    return nil
-                }
+                let sequenceID = sequenceID ?? String(0)
                 apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: sequenceID)
             }
         }
-        return NSURL(string: apiPathWithMacrosReplaced)
+        return NSURL(string: apiPathWithMacrosReplaced)!
     }
 }
