@@ -22,8 +22,6 @@ const CGFloat VTrimmerTopPadding = 42.0f;
 
 @interface VTrimControl ()
 
-@property (nonatomic, readwrite) CMTime selectedDuration;
-
 @property (nonatomic, strong) UIView *topBar;
 @property (nonatomic, strong) UIView *bottomBar;
 @property (nonatomic, strong) UIView *leftHandle;
@@ -60,6 +58,8 @@ const CGFloat VTrimmerTopPadding = 42.0f;
 {
     self.trimThumbBody = [[UIView alloc] init];
     self.leftHandle = [[UIView alloc] init];
+    self.leftHandle.backgroundColor = [UIColor whiteColor];
+    self.leftHandle.userInteractionEnabled = NO;
     
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
@@ -121,9 +121,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
     CGRect leftHandleFrame = thumbBodyFrame;
     leftHandleFrame.size.width = kTrimBodyWidth;
     self.leftHandle.frame = leftHandleFrame;
-    self.leftHandle.backgroundColor = [UIColor whiteColor];
-    self.leftHandle.userInteractionEnabled = NO;
-    
+
     [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetWidth(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
 }
 
