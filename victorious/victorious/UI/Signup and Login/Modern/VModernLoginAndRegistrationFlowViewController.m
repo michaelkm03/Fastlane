@@ -182,6 +182,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
+- (void)registrationDidFinishedWithSuccess:(BOOL)success
+{
+    if ( self.completionBlock != nil )
+    {
+        self.completionBlock( success );
+    }
+}
+
 #pragma mark - Gesture Target
 
 - (void)pannedFromLeftSideOfScreen:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer
@@ -234,21 +242,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
     if (self.presentingViewController != nil)
     {
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:^
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
          {
-             if (self.completionBlock != nil)
-             {
-                 self.completionBlock(NO);
-             }
+             [self registrationDidFinishedWithSuccess:NO];
          }];
     }
     else
     {
-        if (self.completionBlock != nil)
-        {
-            self.completionBlock(NO);
-        }
+        [self registrationDidFinishedWithSuccess:NO];
     }
 }
 
@@ -690,21 +691,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.view endEditing:YES];
     if (self.presentingViewController != nil)
     {
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:^
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
          {
-             if (self.completionBlock != nil)
-             {
-                 self.completionBlock(success);
-             }
+             [self registrationDidFinishedWithSuccess:success];
          }];
     }
     else
     {
-        if (self.completionBlock != nil)
-        {
-            self.completionBlock(success);
-        }
+        [self registrationDidFinishedWithSuccess:success];
     }
 }
 

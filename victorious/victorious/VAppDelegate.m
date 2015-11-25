@@ -64,6 +64,10 @@
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
+    PerformanceTimer *performanceTimer = [[PerformanceTimer alloc] init];
+    [performanceTimer startEvent:VPerformanceEventLaunch subtype:nil];
+    [performanceTimer startEvent:VPerformanceEventRegistration subtype:nil];
+    
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
