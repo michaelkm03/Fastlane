@@ -52,12 +52,12 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     }
     
     override func main() {
-        let startSemaphore = dispatch_semaphore_create(0)
         
         var baseURL: NSURL?
         var requestContext: RequestContext?
         var authenticationContext: AuthenticationContext?
         
+        let startSemaphore = dispatch_semaphore_create(0)
         dispatch_async( dispatch_get_main_queue() ) {
             
             let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
@@ -85,8 +85,9 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
             authenticationContext: authenticationContext,
             callback: { (result, error) -> () in
                 dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                    
-                    guard let strongSelf = self else { return }
+                    guard let strongSelf = self where !strongSelf.cancelled else {
+                        return
+                    }
                     
                     if let error = error as? RequestErrorType {
                         let nsError = NSError( error )
