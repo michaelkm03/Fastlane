@@ -124,7 +124,6 @@ const CGFloat VTrimmerTopPadding = 42.0f;
     self.leftHandle.backgroundColor = [UIColor whiteColor];
     self.leftHandle.userInteractionEnabled = NO;
     
-    [self layoutIfNeeded];
     [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetWidth(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
 }
 
