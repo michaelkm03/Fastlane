@@ -58,6 +58,13 @@ class MainPersistentStore: NSObject, PersistentStoreType {
         return result!
     }
     
+    func async( closure: ((PersistentStoreContext)->()) ) {
+        let context = MainPersistentStore.sharedManager.mainContext
+        context.performBlock {
+            closure( context )
+        }
+    }
+    
     func syncFromBackground<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
         let context = MainPersistentStore.sharedManager.backgroundContext
         var result: T?
