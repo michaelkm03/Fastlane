@@ -14,7 +14,6 @@ public struct PollResultBySequenceRequest: RequestType {
     public let urlRequest: NSURLRequest
     
     public init(sequenceID: Int64) {
-        self.sequenceID = sequenceID
         self.urlRequest = NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!)
     }
     

@@ -45,6 +45,7 @@ public struct NotificationPreference: OptionSetType, Hashable {
 }
 
 public struct DevicePreferencesRequest: RequestType {
+    
     public let urlRequest: NSURLRequest
     
     private let url = NSURL(string: "/api/device/preferences")!
