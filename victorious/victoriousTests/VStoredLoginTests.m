@@ -81,6 +81,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     XCTAssertEqualObjects( storedLoginInfo.token, loggedInUser.token );
     
     XCTAssert( [self.storedLogin clearLoggedInUserFromDisk] );
+    storedLoginInfo = [self.storedLogin storedLoginInfo];
     XCTAssertNil( storedLoginInfo, @"Should return nil after a call to `clearLoggedInUserFromDisk`" );
     
     XCTAssertFalse( [self.storedLogin clearLoggedInUserFromDisk], @"Shouldn't clear if already cleared." );
@@ -168,8 +169,8 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
          }
                          executeBlock:^
          {
-             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
              [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
+             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
              XCTAssertNotNil( storedLoginInfo );
              XCTAssertEqual( storedLoginInfo.lastLoginType, (VLoginType)loggedInUser.loginType.integerValue );
              [self.storedLogin clearLoggedInUserFromDisk];
@@ -185,10 +186,9 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
          }
                          executeBlock:^
          {
-             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
              [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
-             XCTAssertNotNil( storedLoginInfo );
-             XCTAssertEqual( storedLoginInfo.lastLoginType, (VLoginType)loggedInUser.loginType.integerValue );
+             VStoredLoginInfo *storedLoginInfo = [self.storedLogin storedLoginInfo];
+             XCTAssertNil( storedLoginInfo );
          }];
     }
 }

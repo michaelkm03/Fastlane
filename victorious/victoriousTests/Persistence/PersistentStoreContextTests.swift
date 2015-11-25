@@ -57,12 +57,12 @@ class PersistentStoreContextTests: XCTestCase {
         XCTAssertNotNil( knownEntity )
         XCTAssertEqual( knownEntity.newStringAttribute, text )
         
-        let knownEntity2: PersistentEntity = mainPersistentStoreContext.findObjects( ["newStringAttribute" : text] ).first!
+        /*let knownEntity2: PersistentEntity = mainPersistentStoreContext.findObjects( ["newStringAttribute" : text] ).first!
         XCTAssertNotNil( knownEntity2 )
         XCTAssertEqual( knownEntity2.newStringAttribute, text )
         
         let unknownEntity: PersistentEntity? = mainPersistentStoreContext.findObjects( ["newStringAttribute" : "Some other text"] ).first
-        XCTAssertNil( unknownEntity )
+        XCTAssertNil( unknownEntity )*/
     }
     
     func testFindAll() {

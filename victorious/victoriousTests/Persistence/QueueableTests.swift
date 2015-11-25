@@ -20,13 +20,6 @@ class MockOperation: NSOperation, Queuable {
     
     var label: String = ""
     var operationBlock: ((MockOperation)->())? = nil
-    var testCompletionBlock: ((MockOperation)->())? = nil {
-        didSet {
-            self.completionBlock = {
-                self.testCompletionBlock?(self)
-            }
-        }
-    }
     
     override init() {
         super.init()

@@ -13,8 +13,7 @@ class MainPersistentStoreTests: XCTestCase {
     
     let persistentStore: PersistentStoreType = MainPersistentStore()
     
-    
-    /*func testSyncBasic() {
+    func testSyncBasic() {
         persistentStore.syncBasic() { context in
             XCTAssert( NSThread.currentThread().isMainThread )
         }
@@ -68,5 +67,5 @@ class MainPersistentStoreTests: XCTestCase {
             }
         }
         waitForExpectationsWithTimeout(2) { error in }
-    }*/
+    }
 }
