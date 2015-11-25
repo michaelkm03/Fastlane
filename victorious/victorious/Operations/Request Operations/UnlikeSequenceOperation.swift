@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
+class UnlikeSequenceOperation: RequestOperation<UnlikeSequenceRequest> {
     
     private let persistentStore: PersistentStoreType = MainPersistentStore()
     
@@ -17,8 +17,7 @@ class UnlikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
     
     init( sequenceID: Int64 ) {
         self.sequenceID = sequenceID
-        // TODO: This should be changed to UnlikeSequenceRequest when that is merged in
-        super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
+        super.init( request: UnlikeSequenceRequest(sequenceID: sequenceID) )
     }
     
     override func onStart( completion:()->() ) {
