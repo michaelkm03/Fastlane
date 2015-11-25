@@ -143,27 +143,21 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (void)login
 {
     [self.delegate selectedLogin];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventLogin subtype:@"email"];
 }
 
 - (IBAction)toRegsiter:(id)sender
 {
     [self.delegate selectedRegister];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventSignup subtype:@"email"];
 }
 
 - (IBAction)loginWithTwitter:(id)sender
 {
     [self.delegate selectedTwitterAuthorization];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventLogin subtype:@"twitter"];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventSignup subtype:@"twitter"];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
 {
     [self.delegate selectedFacebookAuthorization];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventLogin subtype:@"facebook"];
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventSignup subtype:@"facebook"];
 }
 
 - (IBAction)showTermsOfService:(id)sender

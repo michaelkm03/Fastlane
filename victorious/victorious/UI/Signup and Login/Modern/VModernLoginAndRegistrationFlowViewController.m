@@ -69,6 +69,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *currentRequest;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
+@property (nonatomic, strong) PerformanceTimer *performanceTimer;
 
 @end
 
@@ -105,6 +106,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _animator = [[VModernFlowControllerAnimationController alloc] init];
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
+        
+        _performanceTimer = [[PerformanceTimer alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
@@ -259,13 +262,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"email"];
         
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     UIViewController<VLoginFlowScreen> *firstLoginScreen = [self.loginScreens firstObject];
     self.currentScreen = firstLoginScreen;
-    [self pushViewController:firstLoginScreen
-                    animated:YES];
+    [self pushViewController:firstLoginScreen animated:YES];
 }
 
 - (void)selectedRegister
@@ -275,10 +279,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
+    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"email"];
+    
     UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
     self.currentScreen = firstRegistrationScreen;
-    [self pushViewController:firstRegistrationScreen
-                    animated:YES];
+    [self pushViewController:firstRegistrationScreen animated:YES];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -290,6 +295,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"twitter"];
+    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"twitter"];
     
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     
@@ -324,6 +332,15 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      {
          self.currentRequest = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onSuccess:^(VUser *user, BOOL isNewUser)
                                 {
+                                    if ( isNewUser )
+                                    {
+                                        [self.performanceTimer endEvent:VPerformanceEventSignup subtype:@"twitter"];
+                                    }
+                                    else
+                                    {
+                                        [self.performanceTimer endEvent:VPerformanceEventLogin subtype:@"twitter"];
+                                    }
+                                    
                                     self.isRegisteredAsNewUser = isNewUser;
                                     [self continueRegistrationFlowAfterSocialRegistration];
                                 }
@@ -355,6 +372,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"facebook"];
+    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"facebook"];
     
     FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
     if ( currentToken == nil ||
@@ -414,8 +434,16 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          
          weakSelf.currentRequest = [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        weakSelf.actionsDisabled = NO;
+                                        if ( isNewUser )
+                                        {
+                                            [weakSelf.performanceTimer endEvent:VPerformanceEventSignup subtype:@"facebook"];
+                                        }
+                                        else
+                                        {
+                                            [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"facebook"];
+                                        }
                                         
+                                        weakSelf.actionsDisabled = NO;
                                         weakSelf.isRegisteredAsNewUser = isNewUser;
                                         [weakSelf continueRegistrationFlowAfterSocialRegistration];
                                     }
@@ -458,6 +486,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                      password:password
                                                  onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
+                                        [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"email"];
                                         completion(YES, nil);
                                         [weakSelf onAuthenticationFinishedWithSuccess:YES];
                                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
@@ -493,6 +522,15 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                           userName:nil
                                                       onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
+                                        if ( isNewUser )
+                                        {
+                                            [weakSelf.performanceTimer endEvent:VPerformanceEventSignup subtype:@"email"];
+                                        }
+                                        else
+                                        {
+                                            [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"email"];
+                                        }
+                                        
                                         BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
                                         completion(YES, completeProfile, nil);
                                         if (completeProfile)

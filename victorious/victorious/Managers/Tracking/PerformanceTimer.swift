@@ -69,6 +69,17 @@ class PerformanceTimer: NSObject {
         }
     }
     
+    func cancelEvent( type: String, subtype: String? = nil ) {
+        dispatch_async( PerformanceTimer.queue ) {
+            var events = NSKeyedUnarchiver.unarchiveObjectWithFile( self.filepath ) as? [PerformanceEvent] ?? []
+            if let index = events.indexOf({ $0.type == type && $0.subtype == subtype }) {
+                events.removeAtIndex( Int(index) )
+                NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )
+                print( "\n\n >>>> PerformanceTimer :: cancelEvent :: \(type) \(subtype) <<<< \n\n" )
+            }
+        }
+    }
+    
     func endEvent( type: String, subtype: String? = nil ) {
         let dateEnded = NSDate()
         dispatch_async( PerformanceTimer.queue ) {
