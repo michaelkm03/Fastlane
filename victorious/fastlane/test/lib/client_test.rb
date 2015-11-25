@@ -55,7 +55,7 @@ module VAMS
 
     def test_response_submission
       timestamp     = Time.parse("2015-03-10 01:39:34")
-      result        = SubmissionResult.new(id: 1, status: 'All good', datetime: timestamp)
+      result        = SubmissionResult.new(app_id: 1, status: 'All good', datetime: timestamp)
       response_code = 404
       stub_login(date: @date)
       stub_submit_result(status: response_code)
@@ -92,8 +92,8 @@ module VAMS
 
     def stub_submit_result(status:)
       stub_request(:post, "https://staging.getvictorious.com/api/app/app_submission_response").
-        with(:body => "id=1&status=All%20good&datetime=2015-03-10%2001%3A39%3A34%20-0700&platform=iOS",
-             :headers => {'Authorization'=>'BASIC 634159:1420f60d07eaa264a4718e4ce2b2d650052c5086', 'Date'=>'2015-11-14 12:39:40 -0800', 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
+        with(:body => "app_id=1&status=All%20good&datetime=2015-03-10%2001%3A39%3A34%20-0700&platform=iOS&build=3.4.2",
+             :headers => {'Authorization'=>'BASIC 634159:25f3c916048a9b545548a850337af0ea2075a4ed', 'Date'=>'2015-11-14 12:39:40 -0800', 'User-Agent'=>'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'}).
         to_return(:status => status, :body => "", :headers => {})
     end
   end

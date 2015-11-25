@@ -5,8 +5,8 @@ module VAMS
   class SubmissionResultTest < Minitest::Test
     def setup
       timestamp = Time.parse("2015-03-10 01:39:34")
-      @result   = SubmissionResult.new(id: 1, status: 'All good', datetime: timestamp)
-      @request_json = "{\"id\":1,\"status\":\"All good\",\"datetime\":\"2015-03-10T01:39:34.000-07:00\",\"platform\":\"iOS\"}"
+      @result   = SubmissionResult.new(app_id: 1, status: 'All good', datetime: timestamp)
+      @request_json = "{\"app_id\":1,\"status\":\"All good\",\"datetime\":\"2015-03-10T01:39:34.000-07:00\",\"platform\":\"iOS\",\"build\":\"3.4.2\"}"
     end
 
     def test_json_payload

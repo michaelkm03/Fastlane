@@ -11,11 +11,12 @@ module VAMS
                 :datetime,
                 :platform
 
-    def initialize(id:, status:, datetime:, platform: Platform::IOS)
-      self['id']       = id
+    def initialize(app_id:, status:, datetime:, platform: Platform::IOS, build: '3.4.2')
+      self['app_id']   = app_id
       self['status']   = status
       self['datetime'] = datetime
       self['platform'] = platform
+      self['build']    = build
     end
   end
 end

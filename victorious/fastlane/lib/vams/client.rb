@@ -52,11 +52,12 @@ module VAMS
 
     def apps_to_build
       endpoint          = Endpoints::APPS_LIST
-      response          = HTTP.send_request(type:     :get,
+      method            = :get
+      response          = HTTP.send_request(type:     method,
                                             path:     endpoint,
                                             host:     @env.host,
                                             protocol: @env.protocol,
-                                            headers:  construct_headers(endpoint: endpoint))
+                                            headers:  construct_headers(endpoint: endpoint, method: method))
       json              = JSON.parse(response.body)
 
       # HACK: Temporarily submit only the leachypeachy app.
@@ -71,41 +72,44 @@ module VAMS
 
     def app_by_build_name(build_name)
       endpoint = Endpoints::APP_BY_BUILD_NAME + '/' + build_name
-      response = HTTP.send_request(type:     :get,
+      method   = :get
+      response = HTTP.send_request(type:     method,
                                    path:     endpoint,
                                    host:     @env.host,
                                    protocol: @env.protocol,
-                                   headers:  construct_headers(endpoint: endpoint))
+                                   headers:  construct_headers(endpoint: endpoint, method: method))
       json     = JSON.parse(response.body)
       App.new(json['payload'])
     end
 
     def get_screenshots(build_name)
       endpoint = Endpoints::SCREENSHOTS + '/' + build_name
-      response = HTTP.send_request(type:     :get,
+      method   = :get
+      response = HTTP.send_request(type:     method,
                                    path:     endpoint,
                                    host:     @env.host,
                                    protocol: @env.protocol,
-                                   headers:  construct_headers(endpoint: endpoint))
+                                   headers:  construct_headers(endpoint: endpoint, method: method))
       json     = JSON.parse(response.body)
       Screenshots.new(json['payload'])
     end
 
     def submit_result(result)
       endpoint = Endpoints::SUBMISSION_RESPONSE
-      HTTP.send_request(type:     :post,
+      method   = :post
+      HTTP.send_request(type:     method,
                         host:     @env.host,
                         protocol: @env.protocol,
                         path:     endpoint,
                         body:     result,
-                        headers:  construct_headers(endpoint: endpoint))
+                        headers:  construct_headers(endpoint: endpoint, method: method))
     end
 
     private
 
-    def construct_headers(endpoint:)
+    def construct_headers(endpoint:, method:)
       {
-        'Authorization' => construct_auth_header(endpoint: endpoint),
+        'Authorization' => construct_auth_header(endpoint: endpoint, method: method),
         'User-Agent'    => @env.useragent,
         'Date'          => @date.to_s
       }
@@ -115,9 +119,9 @@ module VAMS
       (@token && @user_id) ? [@token, @user_id] : authenticate
     end
 
-    def construct_auth_header(endpoint:)
+    def construct_auth_header(endpoint:, method:)
       token, user_id = auth_data
-      hash_data      = "#{@date}#{endpoint}#{@env.useragent}#{token}GET"
+      hash_data      = "#{@date}#{endpoint}#{@env.useragent}#{token}#{method.to_s.upcase}"
       auth_hash      = Digest::SHA1.hexdigest(hash_data)
       "BASIC #{user_id}:#{auth_hash}"
     end
