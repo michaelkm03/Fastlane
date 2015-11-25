@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
     
-    private let persistentStore = MainPersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let flaggedContent = VFlaggedContent()
     private let sequenceID: Int64
     
@@ -33,28 +33,25 @@ class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
         // TODO: Unit test the flagged content stuff
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
         persistentStore.asyncFromBackground() { context in
-            let sequences: [VSequence] = context.findObjects( [ "remoteId" : Int(self.sequenceID) ] )
+            let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
             for comment in response.results.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
                 let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                 persistentComment.populate( fromSourceModel: comment )
-                for sequence in sequences {
-                    persistentComment.sequence = sequence
-                    persistentComment.sequenceId = sequence.remoteId
-                    persistentComment.userId = sequence.user?.remoteId
-                }
+                persistentComment.sequence = sequence
+                persistentComment.sequenceId = sequence.remoteId
+                persistentComment.userId = sequence.user?.remoteId
             }
-            
-            dispatch_sync( dispatch_get_main_queue() ) {
-                if let nextPageRequest = response.nextPage {
-                    self.nextPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: nextPageRequest )
-                }
-                if let previousPageRequest = response.previousPage {
-                    self.previousPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: previousPageRequest )
-                }
-            }
-            
             context.saveChanges()
             completion()
+        }
+        
+        dispatch_async( dispatch_get_main_queue() ) {
+            if let nextPageRequest = response.nextPage {
+                self.nextPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: nextPageRequest )
+            }
+            if let previousPageRequest = response.previousPage {
+                self.previousPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: previousPageRequest )
+            }
         }
     }
 }

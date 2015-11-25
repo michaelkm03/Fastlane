@@ -48,7 +48,7 @@ extension VContentViewViewModel {
             }
             
             FollowCountOperation(userID: Int64(currentUserID)).queue() { error in
-                let followerCount = self.user.numberOfFollowers.integerValue
+                let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     // TODO: Change to KVO
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)

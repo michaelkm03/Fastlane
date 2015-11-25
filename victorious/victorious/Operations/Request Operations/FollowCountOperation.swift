@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class FollowCountOperation: RequestOperation<FollowCountRequest> {
     
-    private let persistentStore = MainPersistentStore()
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let userID: Int64
     
     init( userID: Int64 ) {
