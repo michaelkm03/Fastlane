@@ -74,7 +74,7 @@ class PerformanceTimer: NSObject {
             var events = NSKeyedUnarchiver.unarchiveObjectWithFile( self.filepath ) as? [PerformanceEvent] ?? []
             if let index = events.indexOf({ $0.type == type && $0.subtype == subtype }) {
                 events.removeAtIndex( Int(index) )
-                NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )
+                NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )g
                 print( "\n\n >>>> PerformanceTimer :: cancelEvent :: \(type) \(subtype) <<<< \n\n" )
             }
         }
