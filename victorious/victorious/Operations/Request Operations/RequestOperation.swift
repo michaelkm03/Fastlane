@@ -16,8 +16,6 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
-    var mainQueueCompletionBlock: ((NSError?)->())?
-    
     private let request: T
     private(set) var requestError: NSError?
     
@@ -53,8 +51,7 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         }
     }
     
-    final override func main() {
-        let mainSemaphore = dispatch_semaphore_create(0)
+    override func main() {
         let startSemaphore = dispatch_semaphore_create(0)
         
         var baseURL: NSURL?
@@ -81,18 +78,18 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         }
         dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
+        let mainSemaphore = dispatch_semaphore_create(0)
         self.request.execute(
             baseURL: baseURL!,
             requestContext: requestContext!,
             authenticationContext: authenticationContext,
-            callback: { [weak self] (result, requestError) -> () in
-                dispatch_async( dispatch_get_main_queue() ) {
-                    guard let strongSelf = self where !strongSelf.cancelled else {
-                        return
-                    }
+            callback: { (result, error) -> () in
+                dispatch_async( dispatch_get_main_queue() ) { [weak self] in
                     
-                    if let requestError = requestError as? RequestErrorType {
-                        let nsError = NSError( requestError )
+                    guard let strongSelf = self else { return }
+                    
+                    if let error = error as? RequestErrorType {
+                        let nsError = NSError( error )
                         strongSelf.requestError = nsError
                         strongSelf.onError( nsError ) {
                             dispatch_semaphore_signal( mainSemaphore )
@@ -110,18 +107,13 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     }
     
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
-        if let completionBlock = completionBlock {
-            self.mainQueueCompletionBlock = completionBlock
-        }
-        self.completionBlock = {
+        self.completionBlock = { [weak self] in
             dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                strongSelf.mainQueueCompletionBlock?( strongSelf.requestError )
+                guard let strongSelf = self else { return }
+                completionBlock?( strongSelf.requestError )
             }
         }
-        _defaultQueue.addOperation( self )
+        RequestOperation.sharedQueue.addOperation( self )
     }
 }
 
