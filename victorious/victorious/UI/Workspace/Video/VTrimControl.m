@@ -66,7 +66,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
     [self addSubview:self.trimThumbBody];
     [self addSubview:self.leftHandle];
     
-    self.thumbInnerView = [[UIView alloc] initWithFrame:self.bounds];
+    self.thumbInnerView = [[UIView alloc] initWithFrame:CGRectZero];
     self.thumbInnerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
     [self.trimThumbBody addSubview:self.thumbInnerView];
     
