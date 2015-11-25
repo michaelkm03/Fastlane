@@ -24,7 +24,7 @@ extension VReposterTableViewController {
             self.repostersOperation = self.repostersOperation?.previousPageOperation
         }
         self.repostersOperation?.queue() { error in
-            let hasReposters: Bool = self.sequence.reposters.count > 0 || error != nil
+            let hasReposters: Bool = self.sequence.reposters.count > 0 && error == nil
             self.setHasReposters( hasReposters )
             self.tableView.reloadData()
         }

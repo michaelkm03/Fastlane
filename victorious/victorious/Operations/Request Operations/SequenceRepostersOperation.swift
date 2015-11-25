@@ -53,10 +53,12 @@ class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
             }
             
             // Add the loaded persistent models to the sequence as `reposters`
-            let uniqueElements = [ "remoteId" : NSNumber(longLong: self.sequenceID) ]
+            let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
             let sequence: VSequence = context.findOrCreateObject(uniqueElements)
             sequence.addObjects( reposters, to: "reposters" )
             context.saveChanges()
+            
+            completion()
         }
         
         if let nextPageRequest = response.nextPage {
