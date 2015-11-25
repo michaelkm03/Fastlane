@@ -32,7 +32,7 @@ protocol PersistentStoreType: PersistentStoreTypeBasic {
     func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T
     
 
-    /// Executes a closure synchronously using the main context of the persistent store.
+    /// Executes a closure asynchronously using the main context of the persistent store.
     func async( closure: ((PersistentStoreContext)->()) )
     
     /// Executes a closure synchronously using the background context of the persistent store.

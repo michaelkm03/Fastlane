@@ -19,11 +19,11 @@ import VictoriousIOSSDK
             let user: VUser = context.findOrCreateObject(["remoteId": NSNumber(longLong: suggestedUser.user.userID)])
             user.populate(fromSourceModel: suggestedUser.user)
             self.user = user
-            self.recentSequences = (suggestedUser.recentSequences.flatMap {
+            self.recentSequences = suggestedUser.recentSequences.flatMap {
                 let sequence: VSequence = context.findOrCreateObject(["remoteId": String($0.sequenceID)])
                 sequence.populate(fromSourceModel: $0)
                 return sequence
-                })
+            }
         }
     }
 }
