@@ -20,7 +20,7 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 
 const CGFloat VTrimmerTopPadding = 42.0f;
 
-@interface VTrimControl () <UICollisionBehaviorDelegate>
+@interface VTrimControl ()
 
 @property (nonatomic, readwrite) CMTime selectedDuration;
 
