@@ -81,22 +81,15 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 - (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser
 {
     self.user = suggestedUser.user;
-    self.recentSequences = suggestedUser.recentSequences;
-}
-
-- (void)setUser:(VUser *)user
-{
-    _user = user;
-    
-    self.usernameTextView.text = _user.name;
-    
-    self.thumbnailsDataSource.sequences = self.recentSequences;
-    [self.thumbnailsViewController.collectionView reloadData];
-    
-    if ( _user.pictureUrl != nil )
+    self.usernameTextView.text = self.user.name;
+    if ( self.user.pictureUrl != nil )
     {
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
     }
+    
+    self.recentSequences = suggestedUser.recentSequences;
+    self.thumbnailsDataSource.sequences = self.recentSequences;
+    [self.thumbnailsViewController.collectionView reloadData];
     
     [self updateFollowingStateAnimated:NO];
 }
