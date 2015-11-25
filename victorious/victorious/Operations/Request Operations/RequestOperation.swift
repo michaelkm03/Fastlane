@@ -16,8 +16,6 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     
     static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
-    var mainQueueCompletionBlock: ((NSError?)->())?
-    
     private let request: T
     private(set) var requestError: NSError?
     
@@ -53,14 +51,13 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         }
     }
     
-    final override func main() {
-        let mainSemaphore = dispatch_semaphore_create(0)
-        let startSemaphore = dispatch_semaphore_create(0)
+    override func main() {
         
         var baseURL: NSURL?
         var requestContext: RequestContext?
         var authenticationContext: AuthenticationContext?
         
+        let startSemaphore = dispatch_semaphore_create(0)
         dispatch_async( dispatch_get_main_queue() ) {
             
             let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
@@ -81,18 +78,19 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         }
         dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
+        let mainSemaphore = dispatch_semaphore_create(0)
         self.request.execute(
             baseURL: baseURL!,
             requestContext: requestContext!,
             authenticationContext: authenticationContext,
-            callback: { [weak self] (result, requestError) -> () in
-                dispatch_async( dispatch_get_main_queue() ) {
+            callback: { (result, error) -> () in
+                dispatch_async( dispatch_get_main_queue() ) { [weak self] in
                     guard let strongSelf = self where !strongSelf.cancelled else {
                         return
                     }
                     
-                    if let requestError = requestError as? RequestErrorType {
-                        let nsError = NSError( requestError )
+                    if let error = error as? RequestErrorType {
+                        let nsError = NSError( error )
                         strongSelf.requestError = nsError
                         strongSelf.onError( nsError ) {
                             dispatch_semaphore_signal( mainSemaphore )
@@ -110,18 +108,13 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
     }
     
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
-        if let completionBlock = completionBlock {
-            self.mainQueueCompletionBlock = completionBlock
-        }
-        self.completionBlock = {
+        self.completionBlock = { [weak self] in
             dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                guard let strongSelf = self where !strongSelf.cancelled else {
-                    return
-                }
-                strongSelf.mainQueueCompletionBlock?( strongSelf.requestError )
+                guard let strongSelf = self else { return }
+                completionBlock?( strongSelf.requestError )
             }
         }
-        _defaultQueue.addOperation( self )
+        RequestOperation.sharedQueue.addOperation( self )
     }
 }
 

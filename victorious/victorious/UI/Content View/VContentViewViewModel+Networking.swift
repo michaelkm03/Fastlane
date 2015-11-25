@@ -12,7 +12,7 @@ extension VContentViewViewModel {
     
     func reloadData() {
         let sequenceFetchOperation = SequenceFetchOperation( sequenceID: Int64(self.sequence.remoteId)! )
-        sequenceFetchOperation.mainQueueCompletionBlock = { error in
+        sequenceFetchOperation.queue(){ error in
             // This is here to update the vote counts
             self.experienceEnhancerController.updateData()
             
@@ -25,6 +25,5 @@ extension VContentViewViewModel {
             }
             self.delegate?.didUpdateContent()
         }
-        sequenceFetchOperation.queue()
     }
 }

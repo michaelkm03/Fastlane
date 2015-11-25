@@ -11,15 +11,11 @@ import SwiftyJSON
 
 public struct SequenceFetchRequest: RequestType {
     
-    let sequenceID: Int64
+    public let urlRequest: NSURLRequest
     
     public init( sequenceID: Int64 ) {
-        self.sequenceID = sequenceID
-    }
-    
-    public var urlRequest: NSURLRequest {
-        let url = NSURL(string:"/api/sequence/fetch")!.URLByAppendingPathComponent( String(self.sequenceID) )
-        return NSURLRequest(URL: url)
+        let url = NSURL(string:"/api/sequence/fetch")!.URLByAppendingPathComponent( String(sequenceID) )
+        self.urlRequest = NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Sequence {
