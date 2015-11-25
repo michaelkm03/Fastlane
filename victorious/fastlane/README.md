@@ -26,6 +26,8 @@ STAGING_VAMS_USER = '<staging_username>'
 STAGING_VAMS_PASSWORD = '<staging_password>'
 DEVELOPMENT_VAMS_USER = '<development_username>'
 DEVELOPMENT_VAMS_PASSWORD = '<development_password>'
+LOCAL_VAMS_USER = '<local_username>'
+LOCAL_VAMS_PASSWORD = '<local_password>'
 ```
 
 ### Build and Push
