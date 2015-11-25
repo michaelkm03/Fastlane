@@ -10,14 +10,11 @@ import Foundation
 import SwiftyJSON
 
 public struct PollResultByUserRequest: RequestType {
-    public let userID: Int64
+    
+    public let urlRequest: NSURLRequest
     
     public init(userID: Int64) {
-        self.userID = userID
-    }
-    
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!)
+        self.urlRequest = NSURLRequest(URL: NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [PollAnswer] {
