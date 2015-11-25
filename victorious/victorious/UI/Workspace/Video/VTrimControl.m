@@ -7,7 +7,6 @@
 //
 
 #import "VTrimControl.h"
-#import "UIView+VDynamicsHelpers.h"
 
 @import AVFoundation;
 
