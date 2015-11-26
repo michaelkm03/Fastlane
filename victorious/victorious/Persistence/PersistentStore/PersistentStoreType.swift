@@ -31,6 +31,10 @@ protocol PersistentStoreType: PersistentStoreTypeBasic {
     /// Keep in mind, the generic type can be Void if no result is desired.
     func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T
     
+
+    /// Executes a closure asynchronously using the main context of the persistent store.
+    func async( closure: ((PersistentStoreContext)->()) )
+    
     /// Executes a closure synchronously using the background context of the persistent store.
     /// This method should be used for any concurrent data operations, such as
     /// parsing a network response into the peristent store.
