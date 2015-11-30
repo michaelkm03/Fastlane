@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.
 private extension NSIndexPath {
@@ -122,31 +123,47 @@ class GIFSearchDataSource: NSObject {
         }
         
         self.state = .Loading
-        VObjectManager.sharedManager().searchForGIF( searchText,
-            pageType: pageType,
-            success: { (results, isLastPage) in
-                self.state = .Content
-                self.isLastPage = isLastPage
-                self.mostRecentSearchText = searchText
-                let result = self.updateDataSource( results, pageType: pageType )
-                completion?( result )
-            },
-            failure: { (error, isLastPage) in
-                var result = ChangeResult()
-                if isLastPage {
-                    self.isLastPage = isLastPage
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
-                    }
-                    self.state = .Error
-                    result.error = error
-                }
-                completion?( result )
-            }
-        )
+//        VObjectManager.sharedManager().searchForGIF( searchText,
+//            pageType: pageType,
+//            success: { (results, isLastPage) in
+//                self.state = .Content
+//                self.isLastPage = isLastPage
+//                self.mostRecentSearchText = searchText
+//                let result = self.updateDataSource( results, pageType: pageType )
+//                completion?( result )
+//            },
+//            failure: { (error, isLastPage) in
+//                var result = ChangeResult()
+//                if isLastPage {
+//                    self.isLastPage = isLastPage
+//                    self.state = .Content
+//                }
+//                else {
+//                    if pageType == .First {
+//                        self.clear()
+//                    }
+//                    self.state = .Error
+//                    result.error = error
+//                }
+//                completion?( result )
+//            }
+//        )
+        
+        let successClosure: ([GIFSearchResult]) -> Void = { results in
+            self.state = .Content
+            self.mostRecentSearchText = searchText
+            let result = self.updateDataSource(results, pageType: pageType)
+            completion?(result)
+        }
+        
+        let failClosure: (NSError) -> Void = { error in
+            var result = ChangeResult()
+            self.state = .Error
+            result.error = error
+            completion?(result)
+        }
+        
+        searchForGIF(searchText, onSuccess: successClosure, onFail: failClosure)
     }
     
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
@@ -236,5 +253,18 @@ class GIFSearchDataSource: NSObject {
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
         result.insertedSections = NSIndexSet(indexesInRange: range)
         return result
+    }
+}
+
+extension GIFSearchDataSource {
+    func searchForGIF(searchText: String, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+        let operation = GIFSearchRequestOperation(searchText: searchText)
+        operation.queue() { error in
+            if let e = error {
+                onFail(e)
+            } else {
+                onSuccess(operation.searchResults)
+            }
+        }
     }
 }

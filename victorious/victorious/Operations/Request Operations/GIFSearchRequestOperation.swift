@@ -10,8 +10,15 @@ import Foundation
 import VictoriousIOSSDK
 
 class GIFSearchRequestOperation: RequestOperation<GIFSearchRequest> {
-    
+    private(set) var searchResults: [GIFSearchResult] = []
     init(searchText: String) {
         super.init(request: GIFSearchRequest(searchTerm: searchText))
+    }
+    
+    override func onComplete(result: GIFSearchRequest.ResultType, completion: () -> ()) {
+        searchResults = result.results.flatMap() {
+            
+        }
+        completion()
     }
 }
