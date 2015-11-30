@@ -12,11 +12,11 @@ extension GIFSearchResult {
     
     /// The aspect ratio of the assets
     var aspectRatio: CGFloat {
-        return CGFloat(self.width.integerValue) / CGFloat(self.height.integerValue)
+        return CGFloat(width) / CGFloat(height)
     }
     
     /// A `CGSize` value created using the assets width and height
     var assetSize: CGSize {
-        return CGSize(width: CGFloat(self.width.integerValue), height: CGFloat(self.height.integerValue) )
+        return CGSize(width: CGFloat(width), height: CGFloat(height))
     }
 }

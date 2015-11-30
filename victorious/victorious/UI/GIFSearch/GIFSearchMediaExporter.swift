@@ -28,10 +28,10 @@ struct GIFSearchMediaExporter {
     /// - parameter completion: A completion closure called wehn all opeartions are complete
     func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
-        if let searchResultURL = NSURL(string: gifSearchResult.mp4Url) {
+        if let searchResultURL = NSURL(string: gifSearchResult.mp4URL) {
             let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
-            if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
-                let videoURL = NSURL(string: gifSearchResult.mp4Url ),
+            if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillURL),
+                let videoURL = NSURL(string: gifSearchResult.mp4URL),
                 let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
                     
                     let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))

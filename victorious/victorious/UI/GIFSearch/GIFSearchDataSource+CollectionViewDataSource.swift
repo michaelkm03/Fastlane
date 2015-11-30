@@ -30,13 +30,13 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         let result = section.results[ indexPath.row ]
         if section.isFullSize {
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
-                cell.previewAssetUrl = NSURL(string: result.thumbnailStillUrl)
-                cell.assetUrl = NSURL(string: result.mp4Url)
+                cell.previewAssetUrl = NSURL(string: result.thumbnailStillURL)
+                cell.assetUrl = NSURL(string: result.mp4URL)
                 return cell
             }
         }
         else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
-            cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
+            cell.assetUrl = NSURL(string: result.thumbnailStillURL)
             
             if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
                 cell.selected = indexPathsForSelectedItems.contains( indexPath )

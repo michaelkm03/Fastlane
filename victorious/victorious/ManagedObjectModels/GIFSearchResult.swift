@@ -7,17 +7,30 @@
 //
 
 import Foundation
-import CoreData
+import VictoriousIOSSDK
 
-@objc class GIFSearchResult: NSManagedObject {
-    @NSManaged var gifUrl: String
-    @NSManaged var gifSize: NSNumber
-    @NSManaged var mp4Url: String
-    @NSManaged var mp4Size: NSNumber
-    @NSManaged var frames: NSNumber
-    @NSManaged var width: NSNumber
-    @NSManaged var height: NSNumber
-    @NSManaged var thumbnailUrl: String
-    @NSManaged var thumbnailStillUrl: String
-    @NSManaged var remoteId: String?
+@objc class GIFSearchResult: NSObject {
+    let gifURL: String
+    let gifSize: Int64?
+    let mp4URL: String
+    let mp4Size: Int64?
+    let frames: Int?
+    let width: Int
+    let height: Int
+    let thumbnailURL: String?
+    let thumbnailStillURL: String
+    let remoteID: String
+    
+    init(networkingSearchResultModel searchResult: VictoriousIOSSDK.GIFSearchResult) {
+        self.gifURL = searchResult.gifURL
+        self.gifSize = searchResult.gifSize
+        self.mp4URL = searchResult.mp4URL
+        self.mp4Size = searchResult.mp4Size
+        self.frames = searchResult.frames
+        self.width = searchResult.width
+        self.height = searchResult.height
+        self.thumbnailURL = searchResult.thumbnailURL
+        self.thumbnailStillURL = searchResult.thumbnailStillURL
+        self.remoteID = searchResult.remoteID
+    }
 }

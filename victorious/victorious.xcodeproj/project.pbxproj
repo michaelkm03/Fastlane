@@ -627,7 +627,6 @@
 		A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8761B572452000B7901 /* VSequence+Fetcher.m */; };
 		A721E91B1B572454000B7901 /* VStream+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8781B572452000B7901 /* VStream+Fetcher.m */; };
 		A721E91C1B572454000B7901 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E87A1B572452000B7901 /* VStreamItem+Fetcher.m */; };
-		A721E91D1B572454000B7901 /* GIFSearchResult+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E87C1B572452000B7901 /* GIFSearchResult+RestKit.swift */; };
 		A721E91E1B572454000B7901 /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */; };
 		A721E91F1B572454000B7901 /* VAdBreak+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8801B572452000B7901 /* VAdBreak+RestKit.m */; };
 		A721E9201B572454000B7901 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8821B572452000B7901 /* VAdBreakFallback+RestKit.m */; };
@@ -2700,7 +2699,6 @@
 		A721E8781B572452000B7901 /* VStream+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStream+Fetcher.m"; sourceTree = "<group>"; };
 		A721E8791B572452000B7901 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		A721E87A1B572452000B7901 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
-		A721E87C1B572452000B7901 /* GIFSearchResult+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+RestKit.swift"; sourceTree = "<group>"; };
 		A721E87D1B572452000B7901 /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
 		A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
 		A721E87F1B572452000B7901 /* VAdBreak+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreak+RestKit.h"; sourceTree = "<group>"; };
@@ -6549,7 +6547,6 @@
 			isa = PBXGroup;
 			children = (
 				A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */,
-				A721E87C1B572452000B7901 /* GIFSearchResult+RestKit.swift */,
 				F06B41A81B7C3D8F008709E8 /* HashtagShelf+RestKit.swift */,
 				F0EBAAB41B80F90000515D4C /* ListShelf+RestKit.swift */,
 				F059A0041B852DC100037BC8 /* Shelf+RestKit.swift */,
@@ -10986,7 +10983,6 @@
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
-				A721E91D1B572454000B7901 /* GIFSearchResult+RestKit.swift in Sources */,
 				C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
 				A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */,

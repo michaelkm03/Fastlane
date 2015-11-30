@@ -132,9 +132,9 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 - (void)GIFSearchResultSelected:(GIFSearchResult *)result previewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     self.source = VCreationFlowSourceSearch;
-    self.publishParameters.width = result.width.integerValue;
-    self.publishParameters.height = result.height.integerValue;
-    self.publishParameters.assetRemoteId = result.remoteId;
+    self.publishParameters.width = result.width;
+    self.publishParameters.height = result.height;
+    self.publishParameters.assetRemoteId = result.remoteID;
     [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
 }
 

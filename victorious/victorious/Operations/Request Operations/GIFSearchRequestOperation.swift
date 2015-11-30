@@ -17,7 +17,7 @@ class GIFSearchRequestOperation: RequestOperation<GIFSearchRequest> {
     
     override func onComplete(result: GIFSearchRequest.ResultType, completion: () -> ()) {
         searchResults = result.results.flatMap() {
-            
+            GIFSearchResult(networkingSearchResultModel: $0)
         }
         completion()
     }
