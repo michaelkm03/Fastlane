@@ -809,7 +809,6 @@
 		A76AEA5B1BFED31B00E8A26F /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A76AEA5C1BFED31B00E8A26F /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
 		A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */; };
-		A76AEA601BFED31B00E8A26F /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4BF6C1BFEA41300CD0338 /* MainPersistentStoreTests.swift */; };
 		A76AEA631BFED31B00E8A26F /* VAbstractMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F919E335060072E87A /* VAbstractMarqueeControllerTests.m */; };
 		A76AEA641BFED31B00E8A26F /* VAbstractMediaLinkViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */; };
 		A76AEA651BFED31B00E8A26F /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
@@ -1016,10 +1015,7 @@
 		A7D7ED541B5D6A6300FA346A /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */; };
 		A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
-		A7D920431C05546F002A6503 /* QueueableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA511BFEBB8B00E8A26F /* QueueableTests.swift */; };
 		A7D920441C055589002A6503 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
-		A7D920451C05560A002A6503 /* RequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4BF6E1BFEA42000CD0338 /* RequestOperationTests.swift */; };
-		A7D920461C0558DD002A6503 /* PersistentStoreContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
@@ -11362,7 +11358,6 @@
 				A76AEA881BFED31B00E8A26F /* VNotificationSettingsStateManagerTests.m in Sources */,
 				A76AEA9C1BFED31B00E8A26F /* VUIAlertView+VBlocksTests.m in Sources */,
 				A76AEA701BFED31B00E8A26F /* VDefaultTemplateTests.m in Sources */,
-				A7D920431C05546F002A6503 /* QueueableTests.swift in Sources */,
 				A76AEA6C1BFED31B00E8A26F /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A76AEA6F1BFED31B00E8A26F /* VContentViewFactoryTests.m in Sources */,
 				A76AEAA01BFED31B00E8A26F /* VUploadTaskInformationTests.m in Sources */,
@@ -11372,13 +11367,11 @@
 				A76AEA671BFED31B00E8A26F /* VAlertControllerBasicTests.m in Sources */,
 				A76AEA921BFED31B00E8A26F /* VStoredPasswordTests.m in Sources */,
 				A76AEA631BFED31B00E8A26F /* VAbstractMarqueeControllerTests.m in Sources */,
-				A7D920461C0558DD002A6503 /* PersistentStoreContextTests.swift in Sources */,
 				A76AEA641BFED31B00E8A26F /* VAbstractMediaLinkViewControllerTests.m in Sources */,
 				A72EDF851C03DB60003D6177 /* VExperienceEnhancerTests.m in Sources */,
 				A76AEA7B1BFED31B00E8A26F /* VFollowersTextFormatterTests.m in Sources */,
 				A76AEA7D1BFED31B00E8A26F /* VHashTagTextViewTests.m in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
-				A76AEA601BFED31B00E8A26F /* MainPersistentStoreTests.swift in Sources */,
 				A72EDF871C03DB60003D6177 /* VStoredLoginTests.m in Sources */,
 				A76AEA7C1BFED31B00E8A26F /* VHashTagsTest.m in Sources */,
 				A76AEA791BFED31B00E8A26F /* VFirstTimeInstallHelperTests.m in Sources */,
@@ -11411,7 +11404,6 @@
 				A76AEA9B1BFED31B00E8A26F /* VTrackingManagerTests.m in Sources */,
 				A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */,
 				A76AEA801BFED31B00E8A26F /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
-				A7D920451C05560A002A6503 /* RequestOperationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
