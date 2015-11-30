@@ -9,6 +9,8 @@
 import SwiftyJSON
 
 public struct SuggestedUsersRequest: RequestType {
+    public init() { }
+    
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/discover/suggested_users")!)
     }

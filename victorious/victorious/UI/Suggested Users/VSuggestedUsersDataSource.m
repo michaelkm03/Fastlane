@@ -13,6 +13,7 @@
 #import "VUser.h"
 #import "VFollowResponder.h"
 #import "VSuggestedUserRetryCell.h"
+#import "victorious-Swift.h"
 
 static NSString * const kPromptTextKey = @"prompt";
 
@@ -56,23 +57,19 @@ static NSString * const kPromptTextKey = @"prompt";
     
     self.isLoadingSuggestedUsers = YES;
     
-    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
+    __weak typeof(self) weakSelf = self;
+    [self loadSuggestedUsersWithCompletion: ^(NSArray *suggestedUsers)
      {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         self.suggestedUsers = resultObjects;
-         if ( completion != nil )
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         if (strongSelf != nil)
          {
-             completion();
-         }
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.loadedOnce = YES;
-         self.isLoadingSuggestedUsers = NO;
-         if ( completion != nil )
-         {
-             completion();
+             strongSelf.loadedOnce = YES;
+             strongSelf.isLoadingSuggestedUsers = NO;
+             strongSelf.suggestedUsers = suggestedUsers;
+             if ( completion != nil )
+             {
+                 completion();
+             }
          }
      }];
 }
@@ -114,8 +111,8 @@ static NSString * const kPromptTextKey = @"prompt";
         VSuggestedUserCell *suggestedUserCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         suggestedUserCell.dependencyManager = self.dependencyManager;
-        VUser *user = self.suggestedUsers[ indexPath.row ];
-        suggestedUserCell.user = user;
+        VSuggestedUser *suggestedUser = self.suggestedUsers[ indexPath.row ];
+        [suggestedUserCell configureWithSuggestedUser:suggestedUser];
         cell = suggestedUserCell;
     }
     return cell;
