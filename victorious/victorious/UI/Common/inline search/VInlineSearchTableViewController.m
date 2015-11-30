@@ -30,6 +30,7 @@
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
 
 static NSString * const kVInlineUserCellIdentifier = @"VInlineUserTableViewCell";
+static NSInteger const kUserSearchResultLimit = 100;
 
 typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
@@ -100,7 +101,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         
         self.searchOperation = [[VObjectManager sharedManager] findUsersBySearchString:searchText
                                                                             sequenceID:sequenceId
-                                                                              pageType:VPageTypeFirst
+                                                                                 limit:kUserSearchResultLimit
                                                                                context:VObjectManagerSearchContextUserTag
                                                                       withSuccessBlock:searchSuccess
                                                                              failBlock:nil];

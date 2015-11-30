@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Displays a view with a lightbox effect on top of a
  background view, which is usually a snapshot of 
@@ -18,7 +20,7 @@
  */
 @interface VLightboxViewController : UIViewController
 
-@property (nonatomic, copy) void (^onCloseButtonTapped)(void);
+@property (nonatomic, copy, nullable) void (^onCloseButtonTapped)(void);
 
 /**
  This is the background view that is displayed behind the contentView.
@@ -38,3 +40,5 @@
 @property (nonatomic, readonly) UIView *contentView;
 
 @end
+
+NS_ASSUME_NONNULL_END

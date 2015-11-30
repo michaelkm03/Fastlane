@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 @interface VVideoSequencePreviewView () <VideoToolbarDelegate>
 
 @property (nonatomic, strong) VPassthroughContainerView *videoUIContainer;
-@property (nonatomic, strong) VideoToolbarView *toolbar;
+@property (nonatomic, strong, readwrite, nullable) VideoToolbarView *toolbar;
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 
 @property (nonatomic, assign) VVideoState state;
@@ -65,15 +65,15 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 
 - (void)setupVideoUI
 {
-    self.soundIndicator = [[SoundBarView alloc] init];
+    self.soundIndicator = [[SoundBarView alloc] initWithNumberOfBars:3 distanceBetweenBars:1.0];
     self.soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    self.soundIndicator.hidden = YES;
+    self.soundIndicator.alpha = 0;
     [self.videoUIContainer addSubview:self.soundIndicator];
     NSDictionary *views = @{ @"soundIndicator" : self.soundIndicator };
     NSDictionary *metrics = @{ @"left" : @(10.0),
                                @"right" : @(10.0),
                                @"width" : @(16.0),
-                               @"height" : @(20.0) };
+                               @"height" : @(14.0) };
     [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-left-[soundIndicator(height)]"
                                                                                   options:0
                                                                                   metrics:metrics
@@ -91,14 +91,15 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     [self.videoUIContainer addSubview:self.largePlayButton];
     [self.videoUIContainer v_addCenterToParentContraintsToSubview:self.largePlayButton];
     self.largePlayButton.userInteractionEnabled = NO;
+    self.largePlayButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset) };
+    NSDictionary *constraintMetrics = @{ @"minInset" : @(kMinimumPlayButtonInset), @"priority" : @(990) };
     NSDictionary *constraintViews = @{ @"playButton" : self.largePlayButton };
-    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset)-[playButton]-(>=minInset)-|"
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=minInset@priority)-[playButton]-(>=minInset@priority)-|"
                                                                                   options:kNilOptions
                                                                                   metrics:constraintMetrics
                                                                                     views:constraintViews]];
-    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset)-[playButton]-(>=minInset)-|"
+    [self.videoUIContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=minInset@priority)-[playButton]-(>=minInset@priority)-|"
                                                                                   options:kNilOptions
                                                                                   metrics:constraintMetrics
                                                                                     views:constraintViews]];
@@ -177,6 +178,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     
     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:[NSURL URLWithString:self.videoAsset.data]];
     item.muted = self.videoAsset.audioMuted.boolValue;
+    item.remoteContentId = self.videoAsset.remoteContentId;
     [self.videoPlayer setItem:item];
     
     [self updateUIState];
@@ -206,12 +208,12 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     // Tap/Double Tap gestures
     [self setGesturesEnabled:self.focusType == VFocusTypeDetail];
     
-    // Aspect ratio
-    self.videoPlayer.useAspectFit = YES;
-    
     // Play button and preview image
     if ( self.focusType == VFocusTypeDetail )
     {
+        // Aspect ratio
+        self.videoPlayer.useAspectFit = YES;
+        
         self.largePlayButton.userInteractionEnabled = YES;
         if ( self.state == VVideoStateNotStarted )
         {
@@ -228,12 +230,23 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     else
     {
+        // Set proper aspect ratio for stream focus type
+        self.videoPlayer.useAspectFit = self.streamContentModeIsAspectFit;
+        
         self.largePlayButton.userInteractionEnabled = NO;
-        if ( self.shouldAutoplay && self.state != VVideoStateNotStarted )
+        if ( self.shouldAutoplay )
         {
-            self.largePlayButton.hidden = YES;
-            self.previewImageView.hidden = YES;
-            self.videoPlayer.view.hidden = NO;
+            if (self.state == VVideoStateNotStarted)
+            {
+                self.largePlayButton.hidden = YES;
+                self.previewImageView.hidden = NO;
+                self.videoPlayer.view.hidden = YES;
+            }
+            else
+            {
+                self.largePlayButton.hidden = YES;
+                self.videoPlayer.view.hidden = NO;
+            }
         }
         else
         {
@@ -244,11 +257,18 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     }
     
     // Sound indicator
-    self.soundIndicator.hidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
-    if ( !self.soundIndicator.hidden )
+    BOOL soundIdicatorHidden = !([self shouldAutoplay] && self.state == VVideoStatePlaying && self.focusType == VFocusTypeStream);
+    soundIdicatorHidden ? [self.soundIndicator stopAnimating] : [self.soundIndicator startAnimating];
+    CGFloat newAlpha = soundIdicatorHidden ? 0 : 1;
+    if (self.soundIndicator.alpha == newAlpha)
     {
-        [self.soundIndicator startAnimating];
+        return;
     }
+    
+    [UIView animateWithDuration:0.2 animations:^
+    {
+        self.soundIndicator.alpha = newAlpha;
+    }];
 }
 
 #pragma mark - Focus
@@ -328,6 +348,7 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidBecomeReady:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidBecomeReady:videoPlayer];
+    self.state = VVideoStatePlaying;
 }
 
 - (void)videoPlayerDidReachEnd:(id<VVideoPlayer>)videoPlayer
@@ -346,7 +367,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     else
     {
         self.state = VVideoStateEnded;
-        [self.videoPlayer pause];
         [super videoPlayerDidReachEnd:videoPlayer];
     }
 }
@@ -360,6 +380,10 @@ typedef NS_ENUM(NSUInteger, VVideoState)
 - (void)videoPlayerDidStopBuffering:(id<VVideoPlayer>)videoPlayer
 {
     [super videoPlayerDidStopBuffering:videoPlayer];
+    if ( self.state != VVideoStateEnded )
+    {
+        self.state = VVideoStatePlaying;
+    }
 }
 
 - (void)videoPlayer:(VVideoView *__nonnull)videoPlayer didPlayToTime:(Float64)time

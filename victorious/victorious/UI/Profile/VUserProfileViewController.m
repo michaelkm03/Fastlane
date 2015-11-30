@@ -397,6 +397,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
          self.user = [resultObjects lastObject];
+         
+         // Reload follow counts when user pulls to refresh
+         [self reloadUserFollowCounts];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -882,6 +885,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(location))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
 }
 
 #pragma mark - VAccessoryNavigationSource

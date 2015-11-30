@@ -31,8 +31,9 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIViewController <VCollectionToolPicker, VToolPicker> *toolPicker;
-@property (nonatomic, strong) VFilterTypeTool *selectedFilter;
-@property (nonatomic, strong) VCanvasView *canvasView;
+@property (nonatomic, weak) VFilterTypeTool *selectedFilter;
+@property (nonatomic, weak) VCanvasView *canvasView;
+@property (nonatomic, strong) id <VCollectionToolPickerDataSource> pickerDataSource;
 
 @end
 
@@ -78,10 +79,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
-        
-        id<VCollectionToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
-        dataSource.tools = filterTools;
-        _toolPicker.dataSource = dataSource;
+
+        self.pickerDataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        self.pickerDataSource.tools = filterTools;
+        _toolPicker.dataSource = self.pickerDataSource;
         _toolPicker.pickerDelegate = self;
     }
     return self;

@@ -45,5 +45,6 @@
 @property (nonatomic, strong) UIFont *defaultFont;
 
 - (void)repliedToUser:(VUser *)user;
+- (void)dismissButtonWasPressedInTableView:(VInlineSearchTableViewController *)vInlineSearch;
 
 @end

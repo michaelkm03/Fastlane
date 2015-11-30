@@ -73,6 +73,7 @@
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
+@property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -207,7 +208,7 @@
     // Grab the preroll
     VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
-    self.monetizationPartner = adSystemPartner;
+    self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
     self.monetizationDetails = self.adChain;
 }
 
@@ -549,12 +550,14 @@
 
 - (void)loadCommentsWithCommentId:(NSNumber *)commentId
 {
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
                                                 withCommentId:self.deepLinkCommentId
                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
-         [self.delegate didUpdateCommentsWithDeepLink:commentId];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithDeepLink:commentId];
      }
                                                     failBlock:nil];
 }
@@ -568,12 +571,14 @@
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                   pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
-         [self.delegate didUpdateCommentsWithPageType:pageType];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.comments = [strongSelf.sequence.comments array];
+         [strongSelf.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }
@@ -667,12 +672,12 @@
 
 - (NSString *)answerALabelText
 {
-    return [self answerA].label;
+    return [self answerA].label ?: @"";
 }
 
 - (NSString *)answerBLabelText
 {
-    return [self answerB].label;
+    return [self answerB].label ?: @"";
 }
 
 - (NSURL *)answerAThumbnailMediaURL
@@ -787,14 +792,23 @@
 
 - (VPollAnswer)favoredAnswer
 {
-    for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+    if (_favoredAnswer != VPollAnswerInvalid)
     {
-        if ([result.sequenceId isEqualToString:self.sequence.remoteId])
-        {
-            return [result.answerId isEqualToNumber:[self answerA].remoteId] ? VPollAnswerA : VPollAnswerB;
-        }
+        return _favoredAnswer;
     }
-    return VPollAnswerInvalid;
+    else
+    {
+        for (VPollResult *result in [VObjectManager sharedManager].mainUser.pollResults)
+        {
+            NSNumber *answerARemoteID = [self answerA].remoteId;
+            if ([result.sequenceId isEqualToString:self.sequence.remoteId] && answerARemoteID != nil)
+            {
+                _favoredAnswer = [result.answerId isEqualToNumber:answerARemoteID] ? VPollAnswerA : VPollAnswerB;
+                break;
+            }
+        }
+        return _favoredAnswer;
+    }
 }
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer

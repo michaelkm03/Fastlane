@@ -59,10 +59,6 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
-        _selector.viewControllers = _viewControllers;
-        _selector.delegate = self;
-        self.navigationItem.v_supplementaryHeaderView = _selector;
     }
     return self;
 }
@@ -97,6 +93,16 @@ static NSString * const kInitialKey = @"initial";
                                                                         views:NSDictionaryOfVariableBindings(collectionView)]];
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.selector = [self.dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
+    self.selector.viewControllers = self.viewControllers;
+    self.selector.delegate = self;
+    self.navigationItem.v_supplementaryHeaderView = self.selector;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -158,7 +164,6 @@ static NSString * const kInitialKey = @"initial";
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
-    [self updateBadge];
 }
 
 #pragma mark - Rotation

@@ -82,6 +82,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 @property (nonatomic, assign) BOOL videoPlayerDidFinishPlayingOnce;
 @property (nonatomic, assign) BOOL isTransitionComplete;
+@property (nonatomic, assign) BOOL videoPlayerWasPlayingOnViewWillDisappear;
 @property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, assign) Float64 realtimeCommentBeganTime;
@@ -111,6 +112,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak) VSequencePreviewView *sequencePreviewView;
+@property (nonatomic, strong) VDismissButton *userTaggingDismissButton;
 
 @end
 
@@ -150,26 +153,26 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
-    
-    if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        [layout calculateCatchAndLockPoints];
+        
+        if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
         {
-            CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
-            
-            if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
+            if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
             {
-                dispatch_async(dispatch_get_main_queue(), ^
+                CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                
+                if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
                 {
                     [self refreshAllCommentsSection:pageType];
                     
                     __weak typeof(self) welf = self;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [welf.contentCollectionView flashScrollIndicators];
-                                   });
+                    {
+                        [welf.contentCollectionView flashScrollIndicators];
+                    });
                     
                     // If we're prepending new comments, we must adjust the scroll view's offset
                     if ( pageType == VPageTypePrevious )
@@ -181,18 +184,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                         contentOffset.y += diff.y;
                         self.contentCollectionView.contentOffset = contentOffset;
                     }
-                    
                     [self.focusHelper updateFocus];
-                });
+                }
+            }
+            else
+            {
+                [self refreshAllCommentsSection:pageType];
             }
         }
-        else
-        {
-            [self refreshAllCommentsSection:pageType];
-        }
-        
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
+    });
 }
 
 - (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
@@ -230,6 +231,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.contentCell playAd:self.viewModel.monetizationPartner
                          details:self.viewModel.monetizationDetails];
     }
+    
+    [self.sequencePreviewView showLikeButton:YES];
 }
 
 - (void)didUpdatePollsData
@@ -418,15 +421,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              tintColor:nil];
     }
     
-    if ([self.viewModel.sequence isPoll])
-    {
-        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
-        {
-            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
-            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
-        }
-    }
-    
     if ( self.navigationController != nil )
     {
         [self.dependencyManager applyStyleToNavigationBar:self.navigationController.navigationBar];
@@ -472,6 +466,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self trackNonVideoViewStart];
     }
     
+    if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
+    {
+        [self.videoPlayer play];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
     
     // Update cell focus
@@ -494,12 +493,22 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
-    if (self.isVideoContent && self.videoPlayer != nil && !self.videoPlayerDidFinishPlayingOnce)
+    if (self.isVideoContent && self.videoPlayer != nil)
     {
-        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
-                                  VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+        self.videoPlayerWasPlayingOnViewWillDisappear = [self.videoPlayer isPlaying];
+        [self.videoPlayer pause];
+        if ( self.isBeingDismissed )
+        {
+            [self.videoPlayer reset];
+        }
+        
+        if ( !self.videoPlayerDidFinishPlayingOnce )
+        {
+            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
+                                      VTrackingKeyStreamId : self.viewModel.streamId,
+                                      VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+        }
     }
 
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
@@ -601,6 +610,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCell prepareForDismissal];
     [self setAccessoryButtonsHidden:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.sequencePreviewView showLikeButton:NO];
 }
 
 #pragma mark - Private Mehods
@@ -635,6 +645,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     __weak typeof(self) welf = self;
     [commentCell.commentAndMediaView setOnMediaTapped:^(UIImage *previewImage)
      {
+         // Preview image hasn't loaded yet, do not try and show lightbox
+         if (previewImage == nil)
+         {
+             return;
+         }
+         
          [welf showLightBoxWithMediaURL:[wCommentCell.comment properMediaURLGivenContentType]
                            previewImage:previewImage
                                 isVideo:wCommentCell.mediaIsVideo
@@ -802,6 +818,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
             
             previewView.detailDelegate = self;
+            self.sequencePreviewView = previewView;
             
             // Setup relationships for polls
             if ( [previewView conformsToProtocol:@protocol(VPollResultReceiver)] )
@@ -816,7 +833,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 self.videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:self.videoPlayer];
-                self.videoPlayer = self.videoPlayer;
                 
                 // If the end card is going to show after the video finishes,
                 // set this to make a clean transition in for the end card
@@ -828,7 +844,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionPollQuestion:
         {
             VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier] forIndexPath:indexPath];
-            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name ?: @""
                                                                     attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
             return questionCell;
         }
@@ -1205,24 +1221,43 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
+    [self.userTaggingDismissButton removeFromSuperview];
     [tableViewController.view removeFromSuperview];
     self.textEntryView.attachmentsBarHidden = NO;
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {
+    self.textEntryView.attachmentsBarHidden = YES;
+
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:searchTableView];
     
     UIWindow *ownWindow = self.view.window;
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
     CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
-    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
+    CGFloat obscuredBottom = CGRectGetHeight(self.view.bounds) - CGRectGetMinY( obscuredRectInOwnView);
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:obscuredBottom];
     
-    self.textEntryView.attachmentsBarHidden = YES;
+    [self.view addSubview:self.userTaggingDismissButton];
+    CGFloat dismissButtonMarginToBorder = 8.0f;
+    [self.view v_addPinToTopToSubview:self.userTaggingDismissButton topMargin:dismissButtonMarginToBorder];
+    [self.view v_addPinToTrailingEdgeToSubview:self.userTaggingDismissButton trailingMargin:dismissButtonMarginToBorder];
+    [self.userTaggingDismissButton addTarget:self.textEntryView action:@selector(stopEditing) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (VDismissButton *)userTaggingDismissButton
+{
+    if (_userTaggingDismissButton != nil)
+    {
+        return _userTaggingDismissButton;
+    }
+    
+    _userTaggingDismissButton = [[VDismissButton alloc] init];
+    
+    return _userTaggingDismissButton;
 }
 
 #pragma mark - Comment Text Helpers

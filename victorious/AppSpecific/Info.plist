@@ -23,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4.1</string>
+	<string>3.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -74,10 +74,8 @@
 		<string>Roboto-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Black.ttf</string>
-		<string>MuseoSans-100.otf</string>
-		<string>MuseoSans-300.otf</string>
-		<string>MuseoSans-500.otf</string>
-		<string>PTSans-Narrow.ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Thin.ttf</string>
 		<string>Impact.ttf</string>
 		<string>HelveticaNeueLightItalic.ttf</string>
 		<string>Arimo-Bold.ttf</string>
@@ -86,8 +84,6 @@
 		<string>Arvo-Regular.ttf</string>
 		<string>Bitter-Bold.ttf</string>
 		<string>Bitter-Regular.ttf</string>
-		<string>DeliusUnicase-Bold.ttf</string>
-		<string>DeliusUnicase-Regular.ttf</string>
 		<string>DroidSans-Bold.ttf</string>
 		<string>DroidSans.ttf</string>
 		<string>JosefinSans-Bold.ttf</string>
@@ -100,7 +96,6 @@
 		<string>Kreon-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
 		<string>Lato-Regular.ttf</string>
-		<string>LeagueGothic-Regular.otf</string>
 		<string>MavenPro-Bold.ttf</string>
 		<string>MavenPro-Regular.ttf</string>
 		<string>Merriweather-Bold.ttf</string>
@@ -115,6 +110,7 @@
 		<string>PlayfairDisplay-Regular.ttf</string>
 		<string>PT_Sans-Web-Bold.ttf</string>
 		<string>PT_Sans-Web-Regular.ttf</string>
+		<string>PTSans-Narrow.ttf</string>
 		<string>PT_Serif-Web-Bold.ttf</string>
 		<string>PT_Serif-Web-Regular.ttf</string>
 		<string>Raleway-Medium.ttf</string>
@@ -135,6 +131,9 @@
 		<string>Quicksand-Bold.ttf</string>
 		<string>Quicksand-Light.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
+		<string>MuseoSans-100.otf</string>
+		<string>MuseoSans-300.otf</string>
+		<string>MuseoSans-500.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>

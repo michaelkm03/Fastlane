@@ -98,9 +98,28 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setSequence:(VSequence *)sequence
 {
+    // Clear any view state when we are getting a different sequence.
+    if (self.sequence != sequence)
+    {
+        [self clearResults];
+    }
+    
     [super setSequence:sequence];
-    [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL];
-    [self.pollView.answerBImageView sd_setImageWithURL:self.answerB.previewMediaURL];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.pollView.answerAImageView sd_setImageWithURL:self.answerA.previewMediaURL
+                                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __weak typeof(self) weakSelf = strongSelf;
+        
+        [strongSelf.pollView.answerBImageView sd_setImageWithURL:strongSelf.answerB.previewMediaURL
+                                                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+         {
+             __strong typeof(weakSelf) strongSelf = weakSelf;
+             strongSelf.readyForDisplay = YES;
+         }];
+    }];
     
     self.pollView.playIconA.hidden = ![self.answerA.mediaUrl v_hasVideoExtension];
     self.pollView.playIconB.hidden = ![self.answerB.mediaUrl v_hasVideoExtension];
@@ -173,7 +192,7 @@ static NSString *kOrIconKey = @"orIcon";
         return;
     }
     
-    NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f) };
+    NSDictionary *metrics = @{ @"width" : @(36.0f), @"top" : @(90.0f), @"priority" : @(UILayoutPriorityDefaultHigh) };
     
     self.answerAResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
     self.answerBResultView = [[VResultView alloc] initWithFrame:self.pollView.bounds];
@@ -181,11 +200,11 @@ static NSString *kOrIconKey = @"orIcon";
     self.answerAResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerAResultView];
     self.answerAResultView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top@priority-[view]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsA]];
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(width)]"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view(width@priority)]"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsA]];
@@ -195,11 +214,11 @@ static NSString *kOrIconKey = @"orIcon";
     self.answerBResultView.color = self.unfavoredColor;
     [self.pollView addSubview:self.answerBResultView];
     self.answerBResultView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[view]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top@priority-[view]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsB]];
-    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(width)]|"
+    [self.pollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[view(width@priority)]|"
                                                                           options:kNilOptions
                                                                           metrics:metrics
                                                                             views:viewsB]];
@@ -318,6 +337,18 @@ static NSString *kOrIconKey = @"orIcon";
             [self setResultViewsHidden:YES animated:YES];
             self.voterCountLabelContainer.alpha = 0.0f;
     }
+}
+
+#pragma mark - Private
+
+- (void)clearResults
+{
+    [self setResultViewsHidden:YES animated:NO];
+    self.haveResultsBeenSet = NO;
+    [self setAnswerAIsFavored:NO];
+    [self setAnswerBIsFavored:NO];
+    [self setAnswerAPercentage:0.0 animated:NO];
+    [self setAnswerBPercentage:0.0 animated:NO];
 }
 
 @end

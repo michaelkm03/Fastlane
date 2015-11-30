@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) VAsset *asset;
 @property (nonatomic, strong, readwrite) UIView *videoContainer;
+@property (nonatomic, assign, readwrite) BOOL shouldAutoplay;
+@property (nonatomic, assign, readwrite) BOOL streamContentModeIsAspectFit;
 
 @end
 
@@ -108,16 +110,6 @@
     }
 }
 
-- (BOOL)shouldAutoplayAssetFromSequence:(VSequence *)sequence
-{
-    return sequence.firstNode.mp4Asset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
-}
-
-- (BOOL)shouldAutoplay
-{
-    return [self shouldAutoplayAssetFromSequence:self.sequence];
-}
-
 - (BOOL)shouldLoop
 {
     switch (self.focusType)
@@ -139,8 +131,9 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    BOOL hidden = ![self shouldAutoplayAssetFromSequence:sequence];
-    self.videoPlayer.view.hidden = hidden;
+    self.shouldAutoplay = sequence.firstNode.mp4Asset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled];
+    self.videoPlayer.view.hidden = !self.shouldAutoplay;
+    
     if ( self.sequence != nil && [self.sequence.remoteId isEqualToString:sequence.remoteId] )
     {
         return;
@@ -364,9 +357,12 @@
                 // now we need to load the video asset for detail focus (content view)
                 [self loadVideoAsset];
             }
-            [self.videoPlayer play];
             self.userInteractionEnabled = YES;
-            if ( !self.shouldAutoplay )
+            if ( self.shouldAutoplay )
+            {
+                [self.videoPlayer play];
+            }
+            else
             {
                 [self.videoPlayer playFromStart];
             }
@@ -379,6 +375,7 @@
 - (void)updateToFitContent:(BOOL)fit
 {
     self.videoPlayer.useAspectFit = fit;
+    self.streamContentModeIsAspectFit = fit;
     self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 

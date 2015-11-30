@@ -32,7 +32,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @interface VTextAndMediaView : UIView
 
 @property (nonatomic) CGFloat preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
-@property (nonatomic, copy, nullable) void (^onMediaTapped)(UIImage *previewImage); ///< Called when the user taps the media icon
+@property (nonatomic, copy, nullable) void (^onMediaTapped)(UIImage *_Nullable previewImage); ///< Called when the user taps the media icon
 
 @property (nonatomic, weak, nullable) id<VCommentMediaTapDelegate> mediaTapDelegate;
 

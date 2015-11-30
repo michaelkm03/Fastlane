@@ -14,13 +14,6 @@ extern NSString * const VObjectManagerSearchContextMessage; ///< A search contex
 extern NSString * const VObjectManagerSearchContextUserTag; ///< A search context for finding taggable users
 extern NSString * const VObjectManagerSearchContextDiscover; ///< A search context for the discover user search
 
-typedef NS_ENUM(NSUInteger, VSocialSelector)
-{
-    kVFacebookSocialSelector,
-    kVTwitterSocialSelector,
-    kVInstagramSocialSelector
-};
-
 @interface VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
@@ -74,11 +67,10 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
-                                                   token:(NSString *)token
-                                                  secret:(NSString *)secret
-                                        withSuccessBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)findFriendsBySocialWithToken:(NSString *)token
+                                                           secret:(NSString *)secret
+                                                 withSuccessBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)followUsers:(NSArray /* VUser */ *)users
                                 withSuccessBlock:(VSuccessBlock)success

@@ -43,7 +43,11 @@
     }
     else if ([sequence isVideo])
     {
-        if ( [sequence isGIFVideo] )
+        if ( [sequence isRemoteVideoWithSource:[YouTubeVideoSequencePreviewView remoteSourceName]] )
+        {
+            classType = [YouTubeVideoSequencePreviewView class];
+        }
+        else if ( [sequence isGIFVideo] )
         {
             classType = [VBaseVideoSequencePreviewView class];
         }
@@ -114,6 +118,7 @@
                                                         multiplier:1.0
                                                           constant:-3.0f]];
         [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        _likeButton.hidden = YES;
         
         [self setGesturesEnabled:NO];
     }
@@ -135,11 +140,6 @@
     }
 }
 
-- (BOOL)shouldHideLikeButton
-{
-    return NO; //< By default, but can be overriden in subclasses
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     if ( sequence != self.sequence )
@@ -148,8 +148,7 @@
     }
     
     [super setStreamItem:sequence];
-    
-    [self configureLikeButtonForSequence:sequence];
+    [self layoutIfNeeded];
 }
 
 - (VSequence *)sequence
@@ -252,18 +251,20 @@
 
 #pragma mark - Like button
 
-- (void)configureLikeButtonForSequence:(VSequence *)sequence
+- (void)showLikeButton:(BOOL)shouldShowLikeButton
 {
     const BOOL isLikeButtonTemplateEnabled = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
-    if ( isLikeButtonTemplateEnabled && !self.shouldHideLikeButton )
+    BOOL willShowLikeButton = isLikeButtonTemplateEnabled && shouldShowLikeButton;
+    
+    if (willShowLikeButton)
     {
         __weak typeof(self) welf = self;
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
          {
              __strong typeof(welf) strongSelf = welf;
-             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
+             [strongSelf.likeButton setActive:strongSelf.sequence.isLikedByMainUser.boolValue];
+             [strongSelf.likeButton setCount:strongSelf.sequence.likeCount.integerValue];
          }];
         self.likeButton.hidden = NO;
     }
@@ -272,17 +273,11 @@
         self.expressionsObserver = nil;
         self.likeButton.hidden = YES;
     }
-    
-    [self layoutIfNeeded];
 }
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    likeButton.enabled = NO;
-    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion:^(BOOL success)
-     {
-         likeButton.enabled = YES;
-     }];
+    [self.detailDelegate previewView:self didLikeSequence:self.sequence completion: nil];
 }
 
 @end

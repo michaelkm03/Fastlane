@@ -178,8 +178,13 @@ static NSString * const kVAPIParamContext = @"context";
         {
             user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         }
+        
+        if ( self.mainUser.numberOfFollowing != nil )
+        {
+            self.mainUser.numberOfFollowing = @(self.mainUser.numberOfFollowing.integerValue + 1);
+        }
+        
         [self.mainUser addFollowingObject:user];
-        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.isFollowedByMainUser = @YES;
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
@@ -222,8 +227,13 @@ static NSString * const kVAPIParamContext = @"context";
         {
             user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
         }
+        
+        if ( self.mainUser.numberOfFollowing != nil )
+        {
+            self.mainUser.numberOfFollowing = @(self.mainUser.numberOfFollowing.integerValue - 1);
+        }
+        
         [self.mainUser removeFollowingObject:user];
-        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.isFollowedByMainUser = @NO;
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
@@ -381,39 +391,14 @@ static NSString * const kVAPIParamContext = @"context";
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
-                                                   token:(NSString *)token
-                                                  secret:(NSString *)secret
-                                        withSuccessBlock:(VSuccessBlock)success
-                                               failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)findFriendsBySocialWithToken:(NSString *)token
+                                                           secret:(NSString *)secret
+                                                 withSuccessBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail
 {
-    NSString *path;
-    NSString *eventNameFailure;
-    NSString *eventNameSuccess;
-    
-    switch (selector)
-    {
-        case kVFacebookSocialSelector:
-            path = [@"/api/friend/find/facebook" stringByAppendingPathComponent:token];
-            eventNameSuccess = VTrackingEventUserDidImportFacebookContacts;
-            eventNameFailure = VTrackingEventImportFacebookContactsDidFail;
-            break;
-            
-        case kVTwitterSocialSelector:
-            path = [[@"/api/friend/find/twitter" stringByAppendingPathComponent:token] stringByAppendingPathComponent:secret];
-            eventNameSuccess = VTrackingEventUserDidImportTwitterContacts;
-            eventNameFailure = VTrackingEventImportTwitterContactsDidFail;
-            break;
-            
-        case kVInstagramSocialSelector:
-            path = [@"/api/friend/find/instagram" stringByAppendingPathComponent:token];
-            eventNameSuccess = VTrackingEventUserDidImportInstagramContacts;
-            eventNameFailure = VTrackingEventImportInstagramContactsDidFail;
-            break;
-            
-        default:
-            break;
-    }
+    NSString *path = [@"/api/friend/find/facebook" stringByAppendingPathComponent:token];
+    NSString *eventNameFailure = VTrackingEventImportFacebookContactsDidFail;
+    NSString *eventNameSuccess = VTrackingEventUserDidImportFacebookContacts;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -471,7 +456,12 @@ static NSString * const kVAPIParamContext = @"context";
             user.isFollowedByMainUser = @YES;
             user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         }
-        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
+        
+        if ( self.mainUser.numberOfFollowing != nil )
+        {
+            self.mainUser.numberOfFollowing = @(self.mainUser.numberOfFollowing.integerValue + users.count);
+        }
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);

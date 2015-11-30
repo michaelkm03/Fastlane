@@ -7,7 +7,9 @@
 //
 
 @class VUser;
+@class RKManagedObjectRequestOperation;
 
+typedef void (^VTwitterAuthenticationCompletionBlock)(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId);
 typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL isNewUser);
 typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFailure);
 
@@ -16,21 +18,25 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 /**
  Log in using the current Facebook session (make sure you use the Facebook SDK to establish a session before calling this)
  */
-- (void)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                                            onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (RKManagedObjectRequestOperation *)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                                                                         onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Log in using Twitter credentials
+ Log in using Twitter oauth data.
  */
-- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                            onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
+                                                 accessSecret:(NSString *)tokenSecret
+                                                    twitterID:(NSString *)twitterId
+                                                   identifier:(NSString *)identifier
+                                                    onSuccess:(VUserManagerLoginCompletionBlock)completion
+                                                      onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
- Log in with a specific Twitter credential
+ Retrieve Twitter oauth data for a certain Twitter account.
  */
-- (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
-                        onCompletion:(VUserManagerLoginCompletionBlock)completion
-                             onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)retrieveTwitterTokenWithAccountIdentifier:(NSString *)identifier
+                                     onCompletion:(VTwitterAuthenticationCompletionBlock)completion
+                                          onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Create a new account with the specified e-mail and password. 
@@ -38,19 +44,19 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
  an error will occur, unless the specified password matches the password on
  that account. In that case, the existing account will be logged in.
  */
-- (void)createEmailAccount:(NSString *)email
-                  password:(NSString *)password
-                  userName:(NSString *)userName
-              onCompletion:(VUserManagerLoginCompletionBlock)completion
-                   onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (RKManagedObjectRequestOperation *)createEmailAccount:(NSString *)email
+                                               password:(NSString *)password
+                                               userName:(NSString *)userName
+                                           onCompletion:(VUserManagerLoginCompletionBlock)completion
+                                                onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Log in using an e-mail address and password
  */
-- (void)loginViaEmail:(NSString *)email
-             password:(NSString *)password
-         onCompletion:(VUserManagerLoginCompletionBlock)completion
-              onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
+                                          password:(NSString *)password
+                                      onCompletion:(VUserManagerLoginCompletionBlock)completion
+                                           onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Re-login to whatever service the user last logged in with
@@ -61,10 +67,5 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
  Performs any cleanup necessary after user has logged out through the server (i.e. VObjectManager).
  */
 - (void)userDidLogout;
-
-/**
- Saves the user's password in the keychain for automatic login in the future
- */
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email;
 
 @end

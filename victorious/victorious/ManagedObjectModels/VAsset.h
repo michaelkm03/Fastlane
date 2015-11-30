@@ -27,5 +27,8 @@
 @property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) VNode *node;
+@property (nonatomic, retain) NSNumber *remotePlayback;
+@property (nonatomic, retain) NSString *remoteSource;
+@property (nonatomic, retain) NSString *remoteContentId;
 
 @end

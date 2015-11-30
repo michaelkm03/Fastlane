@@ -13,12 +13,6 @@
 
 @implementation VUser (Fetcher)
 
-- (BOOL)shouldSkipTrimmer
-{
-    NSInteger trimmerDuration = [self.maxUploadDuration integerValue];
-    return (trimmerDuration > 15);
-}
-
 - (BOOL)isFollowingHashtagString:(NSString *)hashtag
 {
     for (VHashtag *tag in self.hashtags)
@@ -82,6 +76,11 @@
     }
     //Different count of hashtags, need to update
     return YES;
+}
+
+- (Float64)maxUploadDurationFloat
+{
+    return self.maxUploadDuration.floatValue;
 }
 
 @end

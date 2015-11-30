@@ -46,6 +46,11 @@
  */
 @property (nonatomic, readonly) UIImage *previewImage;
 
+/**
+ * The total recorded time of the current video
+ */
+@property (nonatomic, readonly) Float64 totalTimeRecorded;
+
 @end
 
 /**

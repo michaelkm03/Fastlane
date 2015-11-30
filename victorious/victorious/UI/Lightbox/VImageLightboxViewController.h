@@ -8,6 +8,8 @@
 
 #import "VLightboxViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  VLightboxViewController subclass that light boxes an image view.
  */
@@ -23,3 +25,5 @@
 - (instancetype)initWithImage:(UIImage *)image;
 
 @end
+
+NS_ASSUME_NONNULL_END

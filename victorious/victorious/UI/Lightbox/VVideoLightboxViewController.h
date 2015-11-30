@@ -8,6 +8,8 @@
 
 #import "VLightboxViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  VLightboxViewController subclass that light boxes a video player.
  */
@@ -15,8 +17,8 @@
 
 @property (nonatomic, readonly) UIImage   *previewImage;
 @property (nonatomic, readonly) NSURL     *videoURL;
-@property (nonatomic, copy)     void     (^onVideoFinished)(void); ///< Called when the video plays through to the end
-@property (nonatomic, copy)     NSString  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
+@property (nonatomic, copy, nullable)     void     (^onVideoFinished)(void); ///< Called when the video plays through to the end
+@property (nonatomic, copy, nullable)     NSString  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
 @property (nonatomic)           BOOL       shouldFireAnalytics; ///< Set to NO to disable analytics. YES by default.
 
 /**
@@ -28,3 +30,5 @@
 - (instancetype)initWithPreviewImage:(UIImage *)previewImage videoURL:(NSURL *)videoURL;
 
 @end
+
+NS_ASSUME_NONNULL_END

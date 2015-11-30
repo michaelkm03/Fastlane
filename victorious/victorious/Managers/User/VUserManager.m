@@ -9,6 +9,7 @@
 #import "TWAPIManager.h"
 #import "victorious-Swift.h"
 #import "VObjectManager+Login.h"
+#import "VStoredPassword.h"
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VConstants.h"
@@ -29,7 +30,6 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
 
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
 static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
-static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
 @implementation VUserManager
@@ -39,18 +39,31 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
     NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
     
-    if ( loginType == VLastLoginTypeFacebook && [FBSDKAccessToken currentAccessToken] != nil )
+    if ( loginType == VLastLoginTypeFacebook )
     {
-        [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
+        FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
+        if ( currentToken != nil && [currentToken.expirationDate timeIntervalSinceNow] > 0 )
+        {
+            [self loginViaFacebookWithStoredTokenOnCompletion:completion onError:errorBlock];
+        }
+        else
+        {
+            // Current access token is invalid, logout to clear
+            [[[FBSDKLoginManager alloc] init] logOut];
+            if ( errorBlock != nil )
+            {
+                errorBlock ( nil, NO );
+            }
+        }
     }
     else if ( loginType == VLastLoginTypeTwitter )
     {
-        [self loginViaTwitterAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
+        [self loginViaTwitterWithTwitterID:identifier onCompletion:completion onError:errorBlock];
     }
     else if ( loginType == VLastLoginTypeEmail )
     {
         NSString *email = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-        NSString *password = [self passwordForEmail:email];
+        NSString *password = [[[VStoredPassword alloc] init] passwordForEmail:email];
         [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
     }
     else if ( errorBlock != nil )
@@ -59,8 +72,8 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     }
 }
 
-- (void)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
-                                            onError:(VUserManagerLoginErrorBlock)errorBlock
+- (RKManagedObjectRequestOperation *)loginViaFacebookWithStoredTokenOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                                                                         onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     __block BOOL isNewUser = YES;
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -95,35 +108,109 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     };
     VFailBlock failed = ^(NSOperation *operation, NSError *error)
     {
+        // Do nothing if we've cancelled the request
+        if (operation.isCancelled)
+        {
+            return;
+        }
+        
         if ( errorBlock != nil )
         {
             errorBlock(error, NO);
         }
     };
-    [[VObjectManager sharedManager] createFacebookWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
-                                               successBlock:success
-                                                  failBlock:failed];
+    return [[VObjectManager sharedManager] createFacebookWithToken:[[FBSDKAccessToken currentAccessToken] tokenString]
+                                                      successBlock:success
+                                                         failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)loginViaTwitterWithToken:(NSString *)oauthToken
+                                                 accessSecret:(NSString *)tokenSecret
+                                                    twitterID:(NSString *)twitterId
+                                                   identifier:(NSString *)identifier
+                                                    onSuccess:(VUserManagerLoginCompletionBlock)completion
+                                                      onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VUser *user = [resultObjects firstObject];
+        if (![user isKindOfClass:[VUser class]])
+        {
+            if (errorBlock)
+            {
+                errorBlock(nil, NO);
+            }
+        }
+        else
+        {
+            BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
+            
+            [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setObject:identifier forKey:kAccountIdentifierDefaultsKey];
+            
+            if (completion)
+            {
+                completion(user, isNewUser);
+            }
+            
+            [[VTrackingManager sharedInstance] trackEvent:isNewUser ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
+        }
+    };
+    VFailBlock failed = ^(NSOperation *operation, NSError *error)
+    {
+        // Do nothing if we've cancelled the request
+        if (operation.isCancelled)
+        {
+            return;
+        }
+        
+        if (errorBlock)
+        {
+            errorBlock(error, NO);
+        }
+    };
+    
+    return [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                     accessSecret:tokenSecret
+                                                        twitterId:twitterId
+                                                     successBlock:success
+                                                        failBlock:failed];
 }
 
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
                         onCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaTwitterAccountWithIdentifier:twitterID
-                                  onCompletion:completion
-                                       onError:errorBlock];
+    [self retrieveTwitterTokenWithAccountIdentifier:twitterID
+                                       onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
+    {
+        [self loginViaTwitterWithToken:token
+                          accessSecret:secret
+                             twitterID:twitterId
+                            identifier:identifier
+                             onSuccess:completion onError:errorBlock];
+    }
+                                            onError:errorBlock];
 }
 
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion
                             onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaTwitterAccountWithIdentifier:nil
-                                  onCompletion:completion
-                                       onError:errorBlock];
+    [self retrieveTwitterTokenWithAccountIdentifier:nil
+                                       onCompletion:^(NSString *identifier, NSString *token, NSString *secret, NSString *twitterId)
+     {
+         [self loginViaTwitterWithToken:token
+                           accessSecret:secret
+                              twitterID:twitterId
+                             identifier:identifier
+                              onSuccess:completion onError:errorBlock];
+     }
+                                            onError:errorBlock];
 }
 
-- (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier
-                                onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)retrieveTwitterTokenWithAccountIdentifier:(NSString *)identifier
+                                     onCompletion:(VTwitterAuthenticationCompletionBlock)completion
+                                     onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
     ACAccountStore *account = [[ACAccountStore alloc] init];
@@ -169,48 +256,14 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         NSString *tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
         NSString *twitterId = [parsedData objectForKey:@"user_id"];
         
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        if (completion)
         {
-            VUser *user = [resultObjects firstObject];
-            if (![user isKindOfClass:[VUser class]])
-            {
-                if (errorBlock)
-                {
-                    errorBlock(nil, NO);
-                }
-            }
-            else
-            {
-                BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
-                
-                [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeTwitter forKey:kLastLoginTypeUserDefaultsKey];
-                [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
-                
-                if (completion)
-                {
-                    completion(user, isNewUser);
-                }
-                
-                [[VTrackingManager sharedInstance] trackEvent:isNewUser ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
-            }
-        };
-        VFailBlock failed = ^(NSOperation *operation, NSError *error)
-        {
-            if (errorBlock)
-            {
-                errorBlock(error, NO);
-            }
-        };
-        
-        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                  accessSecret:tokenSecret
-                                                     twitterId:twitterId
-                                                  successBlock:success
-                                                     failBlock:failed];
+            completion(twitterAccount.identifier, oauthToken, tokenSecret, twitterId);
+        }
     }];
 }
 
-- (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (RKManagedObjectRequestOperation *)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     if (email == nil || password == nil)
     {
@@ -218,7 +271,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             errorBlock(nil, NO);
         }
-        return;
+        return nil;
     }
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -236,7 +289,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forEmail:email];
+            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -246,6 +299,12 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     };
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
+        // Do nothing if we've cancelled the request
+        if (operation.isCancelled)
+        {
+            return;
+        }
+        
         if (errorBlock)
         {
             errorBlock(error, NO);
@@ -253,10 +312,13 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         VLog(@"Error in victorious Login: %@", error);
     };
     
-    [[VObjectManager sharedManager] createVictoriousWithEmail:email password:password username:userName successBlock:success failBlock:fail];
+    return [[VObjectManager sharedManager] createVictoriousWithEmail:email password:password username:userName successBlock:success failBlock:fail];
 }
 
-- (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (RKManagedObjectRequestOperation *)loginViaEmail:(NSString *)email
+                                          password:(NSString *)password
+                                      onCompletion:(VUserManagerLoginCompletionBlock)completion
+                                           onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     if (email == nil || password == nil)
     {
@@ -264,7 +326,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             errorBlock(nil, NO);
         }
-        return;
+        return nil;
     }
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -281,7 +343,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             [[NSUserDefaults standardUserDefaults] setInteger:VLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
-            [self savePassword:password forEmail:email];
+            [[[VStoredPassword alloc] init] savePassword:password forEmail:email];
             
             if (completion)
             {
@@ -291,6 +353,12 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     };
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
+        // Do nothing if we've cancelled the request
+        if (operation.isCancelled)
+        {
+            return;
+        }
+        
         if (errorBlock)
         {
             errorBlock(error, NO);
@@ -298,10 +366,10 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         VLog(@"Error in victorious Login: %@", error);
     };
     
-    [[VObjectManager sharedManager] loginToVictoriousWithEmail:email
-                                                      password:password
-                                                  successBlock:success
-                                                     failBlock:fail];
+    return [[VObjectManager sharedManager] loginToVictoriousWithEmail:email
+                                                             password:password
+                                                         successBlock:success
+                                                            failBlock:fail];
 }
 
 - (void)userDidLogout
@@ -309,7 +377,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
     
-    [self clearSavedPassword];
+    [[[VStoredPassword alloc] init] clearSavedPassword];
     
     //Delete all conversations / pollresults for the user!
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
@@ -341,68 +409,6 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
      }];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
-}
-
-#pragma mark - Keychain
-
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email
-{
-    if ( email == nil || password == nil )
-    {
-        return NO;
-    }
-    
-    if ( [self passwordForEmail:email] != nil )
-    {
-        [self clearSavedPassword];
-    }
-    
-    CFTypeRef result;
-    OSStatus err = SecItemAdd((__bridge CFDictionaryRef)(@{
-                                                           (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                           (__bridge id)kSecAttrAccount: email,
-                                                           (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                           (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
-                                                           }), &result);
-    return err == errSecSuccess;
-}
-
-- (NSString *)passwordForEmail:(NSString *)email
-{
-    if ( email == nil )
-    {
-        return nil;
-    }
-    
-    CFTypeRef result;
-    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)(@{
-                                                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                                    (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                                    (__bridge id)kSecAttrAccount: email,
-                                                                    (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
-                                                                    (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
-                                                                    (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue
-                                                                    }), &result);
-    if (err == errSecSuccess)
-    {
-        NSDictionary *keychainItem = (__bridge_transfer NSDictionary *)result;
-        NSData *keychainData = (NSData *)keychainItem[(__bridge id)(kSecValueData)];
-        NSString *password = [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
-        return password;
-    }
-    else
-    {
-        return nil;
-    }
-}
-
-- (BOOL)clearSavedPassword
-{
-    OSStatus err = SecItemDelete((__bridge CFDictionaryRef)(@{
-                                                              (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                              (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                              }));
-    return err == errSecSuccess;
 }
 
 @end

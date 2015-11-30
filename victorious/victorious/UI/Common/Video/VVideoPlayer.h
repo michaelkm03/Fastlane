@@ -67,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateToBackgroundColor:(UIColor *)backgroundColor;
 
 /**
+ Clears any populated data and performs appropriate cleanup.
+ */
+- (void)reset;
+
+/**
  The time of the current position of the video in milliseconds.
  */
 @property (nonatomic, readonly, assign) NSUInteger currentTimeMilliseconds;

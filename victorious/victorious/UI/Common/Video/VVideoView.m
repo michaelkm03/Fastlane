@@ -25,6 +25,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
+@property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL shouldPlayWhenReady;
 @property (nonatomic, assign) BOOL wasPlayingBeforeEnteringBackground;
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
@@ -78,12 +80,14 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 {
     if ( self.itemURL != nil && [self.itemURL isEqual:playerItem.url] )
     {
-        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
+        if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)] )
         {
-            [self.delegate videoPlayerIsReadyForDisplay:self];
+            [self.delegate videoPlayerDidBecomeReady:self];
         }
         return;
     }
+    
+    self.isReady = NO;
     
     self.itemURL = playerItem.url;
     self.loop = playerItem.loop;
@@ -108,7 +112,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              VVideoView *strongSelf = weakSelf;
              if ( strongSelf != nil )
              {
-                 [strongSelf onReadyForDisplay];
+                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
+                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
+                 {
+                     strongSelf.playerLayer.opacity = 1.0f;
+                 }
              }
          }];
         
@@ -145,19 +153,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 - (void)updateToBackgroundColor:(UIColor *)backgroundColor
 {
     self.playerLayer.backgroundColor = backgroundColor.CGColor;
-}
-
-- (void)onReadyForDisplay
-{
-    AVPlayerItem *newestPlayerItem = self.newestPlayerItem;
-    if ([self.playerLayer.player.currentItem isEqual:newestPlayerItem] && self.playerLayer.isReadyForDisplay)
-    {
-        self.playerLayer.opacity = 1.0f;
-        if ( [self.delegate respondsToSelector:@selector(videoPlayerIsReadyForDisplay:)] )
-        {
-            [self.delegate videoPlayerIsReadyForDisplay:self];
-        }
-    }
 }
 
 - (UIView *)view
@@ -229,8 +224,10 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                              [strongSelf didPlayToTime:time];
                          }];
     
-    
-    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    if ( self.loop )
+    {
+        [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AVPlayerItemDidPlayToEndTimeNotification
@@ -244,6 +241,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
+    }
+    self.isReady = true;
+    if ( self.shouldPlayWhenReady )
+    {
+        [self play];
+        self.shouldPlayWhenReady = false;
     }
 }
 
@@ -294,8 +297,18 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)play
 {
+    if ( !self.isReady )
+    {
+        self.shouldPlayWhenReady = YES;
+        return;
+    }
     if ( !self.isPlaying )
     {
+        if (self.player.currentItem != self.newestPlayerItem)
+        {
+            [self.player replaceCurrentItemWithPlayerItem:self.newestPlayerItem];
+        }
+        
         [self.player play];
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
         {

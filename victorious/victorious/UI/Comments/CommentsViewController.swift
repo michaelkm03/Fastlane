@@ -68,6 +68,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     private var firstAppearance = true
+    lazy private var userTaggingDismissButton: DismissButton = DismissButton()
     
     // MARK: Outlets
     
@@ -311,13 +312,16 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
                 }
             }
-            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in
-                if let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView {
-                    strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
-                            previewImage: previewImage,
-                            isVideo: strongCell.mediaIsVideo,
-                            sourceView: commentAndMediaView)
+            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
+                
+                guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView, previewImage = previewImage else {
+                    return
                 }
+                
+                strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
+                    previewImage: previewImage,
+                    isVideo: strongCell.mediaIsVideo,
+                    sourceView: commentAndMediaView)
             }
             return cell
         }
@@ -350,28 +354,29 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        
-        if dataSource.numberOfComments == 0 {
-            noContentView?.animateTransitionIn()
-        }
-        else {
-            noContentView?.resetInitialAnimationState()
-        }
-        
-        if collectionView.numberOfItemsInSection(0) == 0 {
-            // First load 
-            collectionView.reloadData()
-        }
-        else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
-            // We only need to update if things have changed
-            collectionView.reloadData()
-            dispatch_after(0.1) {
-                self.collectionView.flashScrollIndicators()
+        dispatch_async(dispatch_get_main_queue()) {
+            if dataSource.numberOfComments == 0 {
+                self.noContentView?.animateTransitionIn()
             }
-        }
-        dispatch_after(0.1) {
-            self.focusHelper?.updateFocus()
-            self.updateInsetForKeyboardBarState()
+            else {
+                self.noContentView?.resetInitialAnimationState()
+            }
+            
+            switch self.collectionView.numberOfItemsInSection(0) {
+            case 0: // First load
+                self.collectionView.reloadData()
+            case dataSource.numberOfComments: // No change, no need to update
+                break
+            default: // There are changes that we need to update
+                self.collectionView.reloadData()
+                dispatch_after(0.1) {
+                    self.collectionView.flashScrollIndicators()
+                }
+            }
+            dispatch_after(0.1) {
+                self.focusHelper?.updateFocus()
+                self.updateInsetForKeyboardBarState()
+            }
         }
     }
     
@@ -500,10 +505,16 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             let obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
+        view.addSubview(userTaggingDismissButton)
+        let dismissButtonMarginToBorder: CGFloat = 8.0
+        view.v_addPinToTopToSubview(userTaggingDismissButton, topMargin: dismissButtonMarginToBorder)
+        view.v_addPinToTrailingEdgeToSubview(userTaggingDismissButton, trailingMargin: dismissButtonMarginToBorder)
+        userTaggingDismissButton.addTarget(keyboardBar, action: "stopEditing", forControlEvents: .TouchUpInside)
     }
     
     func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToDismissViewController viewController: UIViewController) {
         
+        userTaggingDismissButton.removeFromSuperview()
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
     }

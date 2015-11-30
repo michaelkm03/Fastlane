@@ -156,7 +156,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        XCTAssert(foundSubview, @"The coachmarkManager should add a coachmark passthrough container view to the view controller's view after the animation delay");
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 - (void)testDisplayCoachmarkInViewControllerTooltip
@@ -205,7 +205,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        XCTAssert(foundSubview, @"The coachmarkManager should add a coachmark passthrough container view to the navigation controller's view after the animation delay");
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 #pragma mark - Display order and uniqueness tests
@@ -274,7 +274,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        }
                        [expectation fulfill];
                     });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 - (void)testDisplayCoachmarkInViewControllerViewUniqueness
@@ -290,7 +290,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        XCTAssertFalse(added, @"displayCoachmarkViewInViewController: should not re-add the same coachmark view multiple times");
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 #pragma mark - Display location tests
@@ -329,7 +329,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            }
                        });
     }
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 - (void)testTooltipLocation
@@ -403,7 +403,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        XCTAssertFalse(foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view if hide is called before it can display");
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 - (void)testHideCoachmarkViewInViewController
@@ -442,7 +442,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        }
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 @end

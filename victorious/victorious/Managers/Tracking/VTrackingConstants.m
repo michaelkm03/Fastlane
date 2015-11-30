@@ -176,10 +176,6 @@ NSString * const VTrackingEventUserDidSelectFindFriends = @"UserDidSelectFindFri
 NSString * const VTrackingEventUserDidImportDeviceContacts = @"UserDidImportDeviceContacts";
 NSString * const VTrackingEventUserDidImportFacebookContacts = @"UserDidImportFacebookContacts";
 NSString * const VTrackingEventImportFacebookContactsDidFail = @"ImportFacebookContactsDidFail";
-NSString * const VTrackingEventUserDidImportTwitterContacts = @"UserDidImportTwitterContacts";
-NSString * const VTrackingEventImportTwitterContactsDidFail = @"ImportTwitterContactsDidFail";
-NSString * const VTrackingEventUserDidImportInstagramContacts = @"UserDidImportInstagramContacts";
-NSString * const VTrackingEventImportInstagramContactsDidFail = @"ImportInstagramContactsDidFail";
 NSString * const VTrackingEventUserDidSelectInvite = @"UserDidSelectInvite";
 NSString * const VTrackingEventUserDidInviteFiendsWithEmail = @"UserDidInviteFiendsWithEmail";
 NSString * const VTrackingEventUserDidInviteFiendsWithSMS = @"UserDidInviteFiendsWithSMS";
@@ -285,6 +281,8 @@ NSString * const VTrackingKeyPermissionState = @"PermissionState";
 NSString * const VTrackingKeyAutoplay = @"Autoplay";
 NSString * const VTrackingKeyConnectivity = @"Connectivity";
 NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
+NSString * const VTrackingKeyErrorType = @"Type";
+NSString * const VTrackingKeyErrorDetails = @"Details";
 
 // Tracking Event Values
 // ContentType values

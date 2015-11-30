@@ -330,9 +330,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [super viewDidDisappear:animated];
     
-    // Stop any video cells
+    // Stop any video cells, including marquee cell, which handles stopping its own video cells
     [self.focusHelper endFocusOnAllCells];
-    [self.marqueeCellController endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
@@ -520,7 +519,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [stream isSingleStream] || isShelf )
     {
         VStreamCollectionViewController *streamCollection = nil;
-        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId,
+                                                                                                    VDependencyManagerTitleKey: stream.name,
+                                                                                                    VDependencyManagerAccessoryScreensKey : @[],
+                                                                                                    @"titleImage": [NSNull null]}];
         
         if ( isShelf )
         {
@@ -741,6 +743,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                       dependencyManager:self.dependencyManager];
     
     __weak typeof(self) welf = self;
+    void (^completionBlock)(BOOL success) = ^void(BOOL success)
+    {
+        if (completion != nil)
+        {
+            completion(success);
+        }
+        
+    };
     [authorization performFromViewController:self context:VAuthorizationContextDefault
                                           completion:^(BOOL authorized)
      {
@@ -753,16 +763,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {
-                  completion( YES );
+                  completionBlock( YES );
                   
               } failBlock:^(NSOperation *operation, NSError *error)
               {
-                  completion( NO );
+                  completionBlock( NO );
               }];
          }
          else
          {
-             completion( NO );
+             completionBlock( NO );
          }
      }];
 }

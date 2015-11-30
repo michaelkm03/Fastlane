@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -31,6 +31,20 @@
                BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
                BuildableName = "UIAutomationTests.xctest"
                BlueprintName = "UIAutomationTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EBEA19B51BC4A76C00878B18"
+               BuildableName = "victoriousUITests.xctest"
+               BlueprintName = "victoriousUITests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,6 +83,16 @@
                BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
                BuildableName = "UIAutomationTests.xctest"
                BlueprintName = "UIAutomationTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EBEA19B51BC4A76C00878B18"
+               BuildableName = "victoriousUITests.xctest"
+               BlueprintName = "victoriousUITests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -13,9 +13,10 @@
 
 NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
 
+static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNotificationTokenDefaultsKey";
+
 @interface VPushNotificationManager ()
 
-@property (nonatomic, strong) NSData *apnsToken;
 @property (nonatomic, readwrite) BOOL started;
 
 @end
@@ -46,18 +47,46 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
     self.started = YES;
 }
 
+- (NSData *)storedToken
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *storedToken = [userDefaults dataForKey:kPushNotificationTokenDefaultsKey];
+    return storedToken;
+}
+
+// Returns false if we already have that token stored.
+- (BOOL)storeNewToken:(NSData *)token
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *storedToken = [userDefaults dataForKey:kPushNotificationTokenDefaultsKey];
+    
+    if ( ![storedToken isEqualToData:token] )
+    {
+        [userDefaults setObject:token forKey:kPushNotificationTokenDefaultsKey];
+        [userDefaults synchronize];
+        
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
-    self.apnsToken = deviceToken;
-    [self sendAPNStokenToServer];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+
+    if ( [self storeNewToken:deviceToken] )
+    {
+        [self sendTokenWithSuccessBlock:nil failBlock:nil];
+    }
 }
 
 - (void)sendTokenWithSuccessBlock:(void(^)())success failBlock:(void(^)(NSError *error))failure
 {
-    // If, for whatever reason, we still do not have the token, the user is unforunately out of luck:
-    if ( self.apnsToken == nil )
+    NSData *storedToken = [self storedToken];
+    if (storedToken.length == 0)
     {
         NSString *domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
         
@@ -67,9 +96,9 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
         }
         return;
     }
-    
-    // If we've got the token, send it to the server:
-    [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+
+    [[VObjectManager sharedManager] registerAPNSToken:storedToken
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          if ( success != nil )
          {
@@ -89,19 +118,6 @@ NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
-}
-
-- (void)sendAPNStokenToServer
-{
-    [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:nil failBlock:nil];
-}
-
-- (void)loggedInChanged:(NSNotification *)notification
-{
-    if ([[VObjectManager sharedManager] mainUserLoggedIn])
-    {
-        [self sendAPNStokenToServer];
-    }
 }
 
 - (BOOL)isRegisteredForPushNotifications
