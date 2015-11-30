@@ -420,6 +420,7 @@
 		678D94541BF43D9C009A1F93 /* PollResultByUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */; };
 		678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */; };
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
+		6794E6071C0CE1A900791CA0 /* GIFSearchRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
@@ -2398,6 +2399,7 @@
 		678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultByUserRequestTests.swift; sourceTree = "<group>"; };
 		678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultByUserResponse.json; sourceTree = "<group>"; };
 		678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultBySequenceResponse.json; sourceTree = "<group>"; };
+		6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequestOperation.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersRequest.swift; sourceTree = "<group>"; };
@@ -6891,6 +6893,7 @@
 				A76AEAA81BFFAD8000E8A26F /* AccountUpdateOperation.swift */,
 				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
+				6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
@@ -10439,6 +10442,7 @@
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
+				6794E6071C0CE1A900791CA0 /* GIFSearchRequestOperation.swift in Sources */,
 				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
 				A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
