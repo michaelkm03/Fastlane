@@ -48,7 +48,14 @@ class PerformanceEvent: NSObject, NSCoding {
 
 class PerformanceTimer: NSObject {
     
+    private static let instance = PerformanceTimer()
+    
+    private var sharedSelf: PerformanceTimer {
+        return PerformanceTimer.instance
+    }
+    
     private static let queue = dispatch_queue_create( "com.getvictorious.PerformanceTimer", DISPATCH_QUEUE_SERIAL )
+    private var events = Set<PerformanceEvent>()
     
     private var filepath: String {
         let basePath = NSSearchPathForDirectoriesInDomains( .DocumentDirectory, .UserDomainMask, true).first!
@@ -58,23 +65,18 @@ class PerformanceTimer: NSObject {
     func startEvent( type: String, subtype: String? ) {
         let dateStarted = NSDate()
         dispatch_async( PerformanceTimer.queue ) {
-            var events = NSKeyedUnarchiver.unarchiveObjectWithFile( self.filepath ) as? [PerformanceEvent] ?? []
             let event = PerformanceEvent(type: type, subtype: subtype, dateStarted: dateStarted)
-            if let index = events.indexOf(event) {
-                events.removeAtIndex( Int(index) )
+            if let index = self.sharedSelf.events.indexOf(event) {
+                self.sharedSelf.events.removeAtIndex( index )
             }
-            events.append( event )
-            NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )
-            //print( "\n\n >>>> PerformanceTimer :: startEvent :: \(event.type) \(event.subtype) <<<< \n\n" )
+            self.sharedSelf.events.insert( event )
         }
     }
     
     func cancelEvent( type: String, subtype: String? = nil ) {
         dispatch_async( PerformanceTimer.queue ) {
-            var events = NSKeyedUnarchiver.unarchiveObjectWithFile( self.filepath ) as? [PerformanceEvent] ?? []
-            if let index = events.indexOf({ $0.type == type && $0.subtype == subtype }) {
-                events.removeAtIndex( Int(index) )
-                NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )g
+            if let index = self.sharedSelf.events.indexOf({ $0.type == type && $0.subtype == subtype }) {
+                self.sharedSelf.events.removeAtIndex( index )
                 print( "\n\n >>>> PerformanceTimer :: cancelEvent :: \(type) \(subtype) <<<< \n\n" )
             }
         }
@@ -83,12 +85,10 @@ class PerformanceTimer: NSObject {
     func endEvent( type: String, subtype: String? = nil ) {
         let dateEnded = NSDate()
         dispatch_async( PerformanceTimer.queue ) {
-            var events = NSKeyedUnarchiver.unarchiveObjectWithFile( self.filepath ) as? [PerformanceEvent] ?? []
-            if let index = events.indexOf({ $0.type == type && $0.subtype == subtype }) {
-                let event = events[ Int(index) ]
-                events.removeAtIndex( Int(index) )
+            if let index = self.sharedSelf.events.indexOf({ $0.type == type && $0.subtype == subtype }) {
+                let event = self.sharedSelf.events[ index ]
+                self.sharedSelf.events.removeAtIndex( index )
                 let duration = dateEnded.timeIntervalSinceDate(event.dateStarted)
-                NSKeyedArchiver.archiveRootObject( events, toFile: self.filepath )
                 print( "\n\n >>>> PerformanceTimer :: endEvent :: \(event.type) \(event.subtype) \(Int(duration * 1000.0)) <<<< \n\n" )
             }
         }

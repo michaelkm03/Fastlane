@@ -279,7 +279,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"email"];
+    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"email"];
     
     UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
     self.currentScreen = firstRegistrationScreen;
@@ -434,15 +434,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          
          weakSelf.currentRequest = [userManager loginViaFacebookWithStoredTokenOnCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        if ( isNewUser )
-                                        {
-                                            [weakSelf.performanceTimer endEvent:VPerformanceEventSignup subtype:@"facebook"];
-                                        }
-                                        else
-                                        {
-                                            [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"facebook"];
-                                        }
-                                        
                                         weakSelf.actionsDisabled = NO;
                                         weakSelf.isRegisteredAsNewUser = isNewUser;
                                         [weakSelf continueRegistrationFlowAfterSocialRegistration];
@@ -486,7 +477,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                      password:password
                                                  onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"email"];
                                         completion(YES, nil);
                                         [weakSelf onAuthenticationFinishedWithSuccess:YES];
                                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
@@ -522,15 +512,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                           userName:nil
                                                       onCompletion:^(VUser *user, BOOL isNewUser)
                                     {
-                                        if ( isNewUser )
-                                        {
-                                            [weakSelf.performanceTimer endEvent:VPerformanceEventSignup subtype:@"email"];
-                                        }
-                                        else
-                                        {
-                                            [weakSelf.performanceTimer endEvent:VPerformanceEventLogin subtype:@"email"];
-                                        }
-                                        
                                         BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
                                         completion(YES, completeProfile, nil);
                                         if (completeProfile)
