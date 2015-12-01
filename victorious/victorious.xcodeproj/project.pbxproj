@@ -779,6 +779,9 @@
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
 		A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047931B97AE140091F366 /* ContentViewPresenter.swift */; };
 		A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */; };
+		A7D0AC8D1C0D3A150018C63E /* PerformanceTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0AC8C1C0D3A150018C63E /* PerformanceTracker.swift */; };
+		A7D0AC8F1C0D3A2B0018C63E /* PerformanceMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0AC8E1C0D3A2B0018C63E /* PerformanceMetric.swift */; };
+		A7D0AC911C0D3A430018C63E /* PerformanceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D0AC901C0D3A430018C63E /* PerformanceEvent.swift */; };
 		A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
 		A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */; };
 		A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378351AEF4ED5007FF197 /* VProfileHeaderCell.m */; };
@@ -810,7 +813,6 @@
 		A7D7ED541B5D6A6300FA346A /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */; };
 		A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
-		A7D920531C064154002A6503 /* PerformanceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D920521C064154002A6503 /* PerformanceTimer.swift */; };
 		A7D9205A1C0670D6002A6503 /* VPerformanceTrackingEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
@@ -2757,6 +2759,9 @@
 		A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VRenderablePreviewView.h; sourceTree = "<group>"; };
 		A7D047931B97AE140091F366 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
 		A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewStreamTransition.swift; sourceTree = "<group>"; };
+		A7D0AC8C1C0D3A150018C63E /* PerformanceTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceTracker.swift; path = Performance/PerformanceTracker.swift; sourceTree = "<group>"; };
+		A7D0AC8E1C0D3A2B0018C63E /* PerformanceMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceMetric.swift; path = Performance/PerformanceMetric.swift; sourceTree = "<group>"; };
+		A7D0AC901C0D3A430018C63E /* PerformanceEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PerformanceEvent.swift; path = Performance/PerformanceEvent.swift; sourceTree = "<group>"; };
 		A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewControllerTests.m; sourceTree = "<group>"; };
 		A7D3782D1AEF39FC007FF197 /* VHashtagSelectionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagSelectionResponder.h; sourceTree = "<group>"; };
 		A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPassthroughContainerView.h; sourceTree = "<group>"; };
@@ -2812,7 +2817,6 @@
 		A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaleAnimator.m; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
-		A7D920521C064154002A6503 /* PerformanceTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTimer.swift; sourceTree = "<group>"; };
 		A7D920581C0670D6002A6503 /* VPerformanceTrackingEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPerformanceTrackingEvents.h; sourceTree = "<group>"; };
 		A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPerformanceTrackingEvents.m; sourceTree = "<group>"; };
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
@@ -6182,10 +6186,10 @@
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				A7D0AC891C0D39C10018C63E /* Performance */,
 				A72005571A030E4700285A9C /* Delegates */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
 				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
-				A7D920521C064154002A6503 /* PerformanceTimer.swift */,
 				A7D920581C0670D6002A6503 /* VPerformanceTrackingEvents.h */,
 				A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
@@ -6396,6 +6400,16 @@
 				A78740A41BA362E40093D1E0 /* VImageAssetFinder+PollAssets.h */,
 			);
 			path = ImageAssetFinder;
+			sourceTree = "<group>";
+		};
+		A7D0AC891C0D39C10018C63E /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				A7D0AC8C1C0D3A150018C63E /* PerformanceTracker.swift */,
+				A7D0AC8E1C0D3A2B0018C63E /* PerformanceMetric.swift */,
+				A7D0AC901C0D3A430018C63E /* PerformanceEvent.swift */,
+			);
+			name = Performance;
 			sourceTree = "<group>";
 		};
 		A7D378331AEF4ED5007FF197 /* Cell Container */ = {
@@ -9110,6 +9124,7 @@
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
+				A7D0AC8F1C0D3A2B0018C63E /* PerformanceMetric.swift in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
@@ -9151,6 +9166,7 @@
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
+				A7D0AC8D1C0D3A150018C63E /* PerformanceTracker.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A721E9311B572454000B7901 /* VRule+RestKit.m in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
@@ -9183,6 +9199,7 @@
 				F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				A7F711FD1AE1D5A00086F729 /* VHashtagFollowingTableViewController.m in Sources */,
+				A7D0AC911C0D3A430018C63E /* PerformanceEvent.swift in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
 				A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
@@ -9703,7 +9720,6 @@
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,
 				C38211421B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
-				A7D920531C064154002A6503 /* PerformanceTimer.swift in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,

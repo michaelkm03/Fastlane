@@ -122,9 +122,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    // Force registration has been shown and is now complete (event started on app launch)
-    [[[PerformanceTimer alloc] init] endEvent:VPerformanceEventRegistration subtype:nil];
 }
 
 #pragma mark - Storyboard

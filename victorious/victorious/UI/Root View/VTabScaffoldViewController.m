@@ -412,30 +412,12 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.coachmarkManager.allowCoachmarks = YES;
-            [self trackingLandingPagePresented];
+            
+            PerformanceTracker *performanceTracker = [[PerformanceTracker alloc] init];
+            [performanceTracker eventOccurred:VPerformanceEventLandingPagePresented];
         });
     }];
     [self.launchOperationQueue addOperation:allLaunchOperationFinishedBlockOperation];
-}
-
-- (void)trackingLandingPagePresented
-{
-    PerformanceTimer *performanceTimer = [[PerformanceTimer alloc] init];
-    [performanceTimer endEvent:VPerformanceEventLaunch subtype:nil];
-    [performanceTimer endEvent:VPerformanceEventLogin subtype:nil];
-    
-    if ( /*mainUser.isNewUser*/ YES )
-    {
-        [performanceTimer endEvent:VPerformanceEventSignup subtype:@"email"];
-        [performanceTimer endEvent:VPerformanceEventSignup subtype:@"facebook"];
-        [performanceTimer endEvent:VPerformanceEventSignup subtype:@"twitter"];
-    }
-    else
-    {
-        [performanceTimer endEvent:VPerformanceEventLogin subtype:@"email"];
-        [performanceTimer endEvent:VPerformanceEventSignup subtype:@"facebook"];
-        [performanceTimer endEvent:VPerformanceEventSignup subtype:@"twitter"];
-    }
 }
 
 - (void)queueLoginOperation

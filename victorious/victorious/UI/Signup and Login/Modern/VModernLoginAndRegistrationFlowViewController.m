@@ -69,7 +69,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *currentRequest;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
-@property (nonatomic, strong) PerformanceTimer *performanceTimer;
+@property (nonatomic, strong) PerformanceTracker *performanceTracker;
 
 @end
 
@@ -107,7 +107,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
         
-        _performanceTimer = [[PerformanceTimer alloc] init];
+        _performanceTracker = [[PerformanceTracker alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
@@ -140,6 +140,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    [self.performanceTracker eventOccurred:VPerformanceEventRegistrationPresented];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -190,6 +192,15 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if ( self.completionBlock != nil )
     {
         self.completionBlock( success );
+    }
+    
+    if ( self.isRegisteredAsNewUser )
+    {
+        [self.performanceTracker eventOccurred:VPerformanceEventSignupCompleted];
+    }
+    else
+    {
+        [self.performanceTracker eventOccurred:VPerformanceEventLoginCompleted];
     }
 }
 
@@ -263,7 +274,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"email"];
+    [self.performanceTracker eventOccurred:VPerformanceEventRegstrationOptionSelected userInfo:@"email"];
         
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
@@ -279,7 +290,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"email"];
+    [self.performanceTracker eventOccurred:VPerformanceEventRegstrationOptionSelected userInfo:@"email"];
     
     UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
     self.currentScreen = firstRegistrationScreen;
@@ -296,8 +307,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"twitter"];
-    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"twitter"];
+    [self.performanceTracker eventOccurred:VPerformanceEventRegstrationOptionSelected userInfo:@"twitter"];
+    
     
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     
@@ -332,15 +343,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      {
          self.currentRequest = [userManager loginViaTwitterWithToken:token accessSecret:secret twitterID:twitterId identifier:identifier onSuccess:^(VUser *user, BOOL isNewUser)
                                 {
-                                    if ( isNewUser )
-                                    {
-                                        [self.performanceTimer endEvent:VPerformanceEventSignup subtype:@"twitter"];
-                                    }
-                                    else
-                                    {
-                                        [self.performanceTimer endEvent:VPerformanceEventLogin subtype:@"twitter"];
-                                    }
-                                    
                                     self.isRegisteredAsNewUser = isNewUser;
                                     [self continueRegistrationFlowAfterSocialRegistration];
                                 }
@@ -373,8 +375,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self.performanceTimer startEvent:VPerformanceEventLogin subtype:@"facebook"];
-    [self.performanceTimer startEvent:VPerformanceEventSignup subtype:@"facebook"];
+    [self.performanceTracker eventOccurred:VPerformanceEventRegstrationOptionSelected userInfo:@"facebook"];
     
     FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
     if ( currentToken == nil ||

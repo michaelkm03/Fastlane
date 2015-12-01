@@ -166,8 +166,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.emailField clearValidation];
     [self.passwordField clearValidation];
     [self.emailField becomeFirstResponder];
-    
-    [[[PerformanceTimer alloc] init] startEvent:VPerformanceEventLogin subtype:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
