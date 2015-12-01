@@ -22,34 +22,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
         super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onError(error: NSError, completion: ()->() ) {
-        
-        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
-        VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )
-        
-        if error.code == Int(kVCommentAlreadyFlaggedError) {
-            self.showAlert(
-                title: NSLocalizedString( "ReportedTitle", comment: "" ),
-                message: NSLocalizedString( "ReportContentMessage", comment: "" )
-            )
-        } else {
-            self.showAlert(
-                title: NSLocalizedString( "WereSorry", comment: "" ),
-                message: NSLocalizedString( "ErrorOccured", comment: "" )
-            )
-        }
-        
-        completion()
-    }
-    
     override func onComplete( response: FlagSequenceRequest.ResultType, completion:()->() ) {
-        
-        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagPost )
-        
-        self.showAlert(
-            title: NSLocalizedString( "ReportedTitle", comment: "" ),
-            message: NSLocalizedString( "ReportContentMessage", comment: "" )
-        )
         
         persistentStore.asyncFromBackground() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
@@ -62,12 +35,5 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
             context.saveChanges()
             completion()
         }
-    }
-    
-    // TODO: Remove the alert and tracking stuff
-    func showAlert( title title: String, message: String ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alertController.addAction( UIAlertAction(title: NSLocalizedString( "OK", comment: ""), style: .Cancel, handler: nil))
-        originViewController.presentViewController( alertController, animated: true, completion: nil)
     }
 }

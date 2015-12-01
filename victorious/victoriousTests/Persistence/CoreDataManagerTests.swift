@@ -50,7 +50,7 @@ class CoreDataManagerTests: XCTestCase {
         ]
     }
     
-    /*func testMigrations() {
+    func testMigrations() {
         
         // Reuable variables for this test
         var request: NSFetchRequest!
@@ -124,7 +124,7 @@ class CoreDataManagerTests: XCTestCase {
             XCTAssertEqual( model.transientEntity!.stringAttribute, "\(i)" )
             XCTAssertEqual( model.numberAttribute!.integerValue, i )
         }
-    }*/
+    }
     
     func testConcurrentInsertion() {
         
