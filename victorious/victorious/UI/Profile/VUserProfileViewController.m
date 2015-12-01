@@ -770,18 +770,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateCollectionViewDataSource
 {
-    if ( [VUser currentUser] == nil && self.representsMainUser )
-    {
-        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
-        self.notLoggedInDataSource.delegate = self;
-        self.collectionView.dataSource = self.notLoggedInDataSource;
-        [self.refreshControl removeFromSuperview];
-    }
-    else
-    {
-        self.collectionView.dataSource = self.streamDataSource;
-        [self.collectionView addSubview:self.refreshControl];
-    }
+    self.collectionView.dataSource = self.streamDataSource;
+    [self.collectionView addSubview:self.refreshControl];
 }
 
 - (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass

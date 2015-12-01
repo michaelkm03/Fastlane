@@ -25,12 +25,6 @@ extension VNode: PersistenceParsable {
     }
 }
 
-extension VPollResult: PersistenceParsable {
-    func populate( fromSourceModel voteResult: VoteResult ) {
-        self.count = NSNumber(longLong: voteResult.voteCount)
-    }
-}
-
 extension VComment: PersistenceParsable {
     func populate( fromSourceModel comment: Comment ) {
         remoteId = NSNumber(longLong: comment.commentID)

@@ -24,6 +24,9 @@ class RequestErrorTypeTests: XCTestCase {
         let code = 9999
         let error = APIError(localizedDescription: message, code: code)
         let nsError = NSError(error)
+        XCTAssertEqual( error.domain, APIError.errorTypeDomain )
+        XCTAssertEqual( error.localizedDescription, message )
+        XCTAssertEqual( error.description, message )
         XCTAssertEqual( nsError.localizedDescription, message )
         XCTAssertEqual( nsError.code, code )
     }
@@ -31,7 +34,10 @@ class RequestErrorTypeTests: XCTestCase {
     func testAPIErrorDefaults() {
         let error = APIError()
         let nsError = NSError(error)
-        XCTAssertEqual( nsError.localizedDescription, "" )
+        XCTAssertEqual( error.domain, APIError.errorTypeDomain )
+        XCTAssertEqual( error.localizedDescription, APIError.errorTypeDomain )
+        XCTAssertEqual( error.description, APIError.errorTypeDomain )
+        XCTAssertEqual( nsError.localizedDescription, APIError.errorTypeDomain )
         XCTAssertEqual( nsError.code, -1 )
     }
 }

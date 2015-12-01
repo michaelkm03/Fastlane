@@ -21,9 +21,9 @@ import UIKit
         self.dependencyManager = dependencyManager
         self.showCreationSheetFromTop = showCreationSheetFromTop
         
-        // TODO: This is here to show login view contorller before this operation can occur
         super.init()
         
+        // If required, first queue a login operation upon which this operation will depenend
         if VUser.currentUser() == nil {
             let loginOperation = ShowLoginOperation(
                 originViewController: originViewController,

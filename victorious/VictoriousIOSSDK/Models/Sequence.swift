@@ -34,12 +34,10 @@ public struct Sequence: StreamItemType {
     public let adBreaks: [AdBreak]
     public let comments: [Comment]
     public let endCard: EndCard?
-    public let likers: [User]
     public let nodes: [Node]
     public let parentUser: User?
     public let tracking: Tracking?
     public let user: User
-    public let voteResults: [VoteResult]
     public let recentComments: [Comment]
     public let isGifStyle: Bool
     public let trendingTopicName: String?
@@ -101,11 +99,9 @@ extension Sequence {
         adBreaks                = (json["ad_breaks"].array ?? []).flatMap { AdBreak(json: $0) }
         comments                = (json["comments"].array ?? []).flatMap { Comment(json: $0) }
         endCard                 = EndCard(json: json["endcard"])
-        likers                  = (json["comments"].array ?? []).flatMap { User(json: $0) }
         nodes                   = (json["nodes"].array ?? []).flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])
-        voteResults             = (json["sequence_counts"]["pollresponses"].array ?? []).flatMap { VoteResult(json: $0) }
         recentComments          = (json["recent_comments"].array ?? []).flatMap { Comment(json: $0) }
         
         // MARK: - StreamItemType

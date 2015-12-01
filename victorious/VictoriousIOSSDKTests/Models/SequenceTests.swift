@@ -54,13 +54,8 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.nameEmbeddedInContent, true)
         XCTAssertEqual( sequence.previewType, AssetType.Media )
         XCTAssertEqual( sequence.trendingTopicName, "Trending Topic!!")
-        
-        // TODO: When other models are done
-        /*XCTAssertEqual( sequence.comments, )
-        XCTAssertEqual( sequence.likers, )
-        XCTAssertEqual( sequence.voteResults, )
-        XCTAssertEqual( sequence.recentComments, )
-        XCTAssertEqual( sequence.adBreaks, )*/
+        XCTAssertEqual( sequence.comments.count, 1 )
+        XCTAssertEqual( sequence.recentComments.count, 1 )
     }
     
     func testDefaults() {

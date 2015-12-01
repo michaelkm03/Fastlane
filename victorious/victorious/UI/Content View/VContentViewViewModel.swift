@@ -29,7 +29,7 @@ extension VContentViewViewModel {
         }
         
         if self.sequence.isPoll() {
-            SequencePollResultsOperation(sequenceID: sequenceID).queue() { error in
+            PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
                 self.delegate?.didUpdatePollsData()
             }
         }

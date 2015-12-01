@@ -1,5 +1,5 @@
 //
-//  PollResultBySequenceRequest.swift
+//  PollResultSummaryRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/12/15.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct PollResultsRequest: RequestType {
+public struct PollResultSummaryRequest: RequestType {
     
     private let url: NSURL
     
@@ -17,19 +17,19 @@ public struct PollResultsRequest: RequestType {
         return NSURLRequest(URL: url)
     }
     
-    public init(sequenceID: Int64) {
-        self.url = NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!
-    }
-    
     public init(userID: Int64) {
         self.url = NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [VoteResult] {
+    public init(sequenceID: Int64) {
+        self.url = NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [PollResult] {
         guard let voteResultsJSONArray = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        return voteResultsJSONArray.flatMap { VoteResult(json: $0) }
+        return voteResultsJSONArray.flatMap { PollResult(json: $0) }
     }
 }

@@ -45,7 +45,7 @@ class UpdateCommentRequestTests: XCTestCase {
         
         do {
             let response = try updateCommentRequest.parseResponse(NSURLResponse(), toRequest: updateCommentRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(response.remoteID, 28593)
+            XCTAssertEqual(response.commentID, 28593)
             XCTAssertEqual(response.text, "ttrttefefef")
             XCTAssertEqual(response.user.userID, 2956)
         } catch {

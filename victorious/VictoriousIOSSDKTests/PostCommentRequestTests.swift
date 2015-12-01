@@ -31,7 +31,7 @@ class PostCommentRequestTests: XCTestCase {
         
         do {
             let comment = try postCommentRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(comment.remoteID, 28612)
+            XCTAssertEqual(comment.commentID, 28612)
             XCTAssertEqual(comment.text, "test")
         } catch {
             XCTFail("parseResponse is not supposed to throw")

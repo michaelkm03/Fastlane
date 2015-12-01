@@ -22,7 +22,7 @@ class CommentTests: XCTestCase {
             XCTFail("Hashtag initializer failed")
             return
         }
-        XCTAssertEqual(comment.remoteID, 28543)
+        XCTAssertEqual(comment.commentID, 28543)
         XCTAssertEqual(comment.displayOrder, 1)
         XCTAssertEqual(comment.userID, 5160)
         XCTAssertEqual(comment.shouldAutoplay, false)

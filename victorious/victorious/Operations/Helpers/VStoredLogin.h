@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VStoredLoginInfo: NSObject
+@interface VStoredLoginInfo : NSObject
 
 @property (nonatomic, strong, readonly) NSString *token;
 @property (nonatomic, strong, readonly) NSNumber *userRemoteId;
