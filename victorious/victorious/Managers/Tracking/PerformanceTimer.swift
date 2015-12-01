@@ -8,47 +8,41 @@
 
 import Foundation
 
-class PerformanceEvent: NSObject, NSCoding {
-    
-    let kTypeKey = "type"
-    let kSubtypeKey = "subtype"
-    let kDateStartedKey = "dateStarted"
-    
+func ==(lhs: PerformanceEvent, rhs: PerformanceEvent) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+struct PerformanceEvent: Hashable {
     let type: String
     let subtype: String?
-    let dateStarted: NSDate
+    let date = NSDate()
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject( self.type, forKey: kTypeKey)
-        aCoder.encodeObject( self.subtype, forKey: kSubtypeKey)
-        aCoder.encodeObject( self.dateStarted, forKey: kDateStartedKey)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        guard let type = aDecoder.decodeObjectForKey(kTypeKey) as? String,
-            let dateStarted = aDecoder.decodeObjectForKey(kDateStartedKey) as? NSDate else {
-                self.type = ""
-                self.dateStarted = NSDate()
-                self.subtype = nil
-                super.init()
-                return nil
-        }
-        self.type = type
-        self.dateStarted = dateStarted
-        self.subtype = aDecoder.decodeObjectForKey(kSubtypeKey) as? String
-        super.init()
-    }
-    
-    init( type: String, subtype: String?, dateStarted: NSDate ) {
+    init( type: String, subtype: String? ) {
         self.type = type
         self.subtype = subtype
-        self.dateStarted = dateStarted
     }
+    
+    var hashValue: Int {
+        return self.type.hashValue
+    }
+}
+
+struct PerformanceMetric {
+    let startEvent: String
+    let endEvent: String
 }
 
 class PerformanceTimer: NSObject {
     
     private static let instance = PerformanceTimer()
+    
+    let metrics = [
+        PerformanceMetric(
+            startEvent: VPerformanceEventAppLaunch,
+            endEvent: VPerformanceEventLandingPagePresented,
+            type: "app_start"
+        )
+    ]
     
     private var sharedSelf: PerformanceTimer {
         return PerformanceTimer.instance
@@ -57,15 +51,9 @@ class PerformanceTimer: NSObject {
     private static let queue = dispatch_queue_create( "com.getvictorious.PerformanceTimer", DISPATCH_QUEUE_SERIAL )
     private var events = Set<PerformanceEvent>()
     
-    private var filepath: String {
-        let basePath = NSSearchPathForDirectoriesInDomains( .DocumentDirectory, .UserDomainMask, true).first!
-        return (basePath as NSString).stringByAppendingPathComponent("performance_tracking.plist")
-    }
-    
     func startEvent( type: String, subtype: String? ) {
-        let dateStarted = NSDate()
         dispatch_async( PerformanceTimer.queue ) {
-            let event = PerformanceEvent(type: type, subtype: subtype, dateStarted: dateStarted)
+            let event = PerformanceEvent(type: type, subtype: subtype)
             if let index = self.sharedSelf.events.indexOf(event) {
                 self.sharedSelf.events.removeAtIndex( index )
             }
@@ -88,7 +76,7 @@ class PerformanceTimer: NSObject {
             if let index = self.sharedSelf.events.indexOf({ $0.type == type && $0.subtype == subtype }) {
                 let event = self.sharedSelf.events[ index ]
                 self.sharedSelf.events.removeAtIndex( index )
-                let duration = dateEnded.timeIntervalSinceDate(event.dateStarted)
+                let duration = dateEnded.timeIntervalSinceDate(event.date)
                 print( "\n\n >>>> PerformanceTimer :: endEvent :: \(event.type) \(event.subtype) \(Int(duration * 1000.0)) <<<< \n\n" )
             }
         }
