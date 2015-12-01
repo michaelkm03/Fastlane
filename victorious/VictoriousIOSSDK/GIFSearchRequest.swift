@@ -41,7 +41,7 @@ public struct GIFSearchRequest: Pageable {
         }
         
         let results = gifsJSON.flatMap { GIFSearchResult(json: $0) }
-        let nextPageRequest: GIFSearchRequest? = gifsJSON.count > 0 ? GIFSearchRequest(searchTerm: searchTerm, paginator: paginator.nextPage) : nil
+        let nextPageRequest: GIFSearchRequest? = gifsJSON.count == paginator.itemsPerPage ? GIFSearchRequest(searchTerm: searchTerm, paginator: paginator.nextPage) : nil
         let previousPageRequest: GIFSearchRequest?
         
         if let previousPage = paginator.previousPage {

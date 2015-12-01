@@ -123,33 +123,7 @@ class GIFSearchDataSource: NSObject {
             completion?( nil )
             return
         }
-        
         self.state = .Loading
-//        VObjectManager.sharedManager().searchForGIF( searchText,
-//            pageType: pageType,
-//            success: { (results, isLastPage) in
-//                self.state = .Content
-//                self.isLastPage = isLastPage
-//                self.mostRecentSearchText = searchText
-//                let result = self.updateDataSource( results, pageType: pageType )
-//                completion?( result )
-//            },
-//            failure: { (error, isLastPage) in
-//                var result = ChangeResult()
-//                if isLastPage {
-//                    self.isLastPage = isLastPage
-//                    self.state = .Content
-//                }
-//                else {
-//                    if pageType == .First {
-//                        self.clear()
-//                    }
-//                    self.state = .Error
-//                    result.error = error
-//                }
-//                completion?( result )
-//            }
-//        )
         
         let successClosure: ([GIFSearchResult]) -> Void = { results in
             self.state = .Content
@@ -160,9 +134,17 @@ class GIFSearchDataSource: NSObject {
         
         let failClosure: (NSError) -> Void = { error in
             var result = ChangeResult()
-            self.state = .Error
-            result.error = error
-            completion?(result)
+            if self.isLastPage {
+                self.state = .Content
+            }
+            else {
+                if pageType == .First {
+                    self.clear()
+                }
+                self.state = .Error
+                result.error = error
+            }
+            completion?( result )
         }
         
         searchForGIF(searchText, pageType: pageType, onSuccess: successClosure, onFail: failClosure)
@@ -276,12 +258,14 @@ extension GIFSearchDataSource {
         }
         
         currentOperation.queue() { error in
+            self.mostRecentSearchOperation = currentOperation
+            self.isLastPage = (self.mostRecentSearchOperation?.nextPageOperation == nil)
+
             if let e = error {
                 onFail(e)
             } else {
                 onSuccess(currentOperation.searchResults)
             }
-            self.mostRecentSearchOperation = currentOperation
         }
     }
 }
