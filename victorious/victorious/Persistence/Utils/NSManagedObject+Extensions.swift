@@ -50,7 +50,7 @@ extension NSManagedObject {
     
     func addObjects( objects: [NSManagedObject], to relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
-            "Could not find a relationship for key '\(relationshipName)'" )
+            "Could not find a relationship on entity of type '\(self.entity.name)' for key '\(relationshipName)'" )
         
         for (name, relationship) in self.entity.relationshipsByName where name == relationshipName {
             assert( relationship.toMany,

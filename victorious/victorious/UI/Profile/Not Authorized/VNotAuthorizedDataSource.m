@@ -9,7 +9,7 @@
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 
-@interface VNotAuthorizedDataSource () <VNotAuthorizedProfileCollectionViewCellDelegate>
+@interface VNotAuthorizedDataSource ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
@@ -45,18 +45,9 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VNotAuthorizedProfileCollectionViewCell *notAuthorizedCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier]
-                                                                                                           forIndexPath:indexPath];
-    notAuthorizedCell.delegate = self;
+    VNotAuthorizedProfileCollectionViewCell *notAuthorizedCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
     notAuthorizedCell.dependencyManager = self.dependencyManager;
     return notAuthorizedCell;
-}
-
-#pragma mark - VNotAuthorizedProfileCollectionViewCellDelegate
-
-- (void)notAuthorizedProfileCellWantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell
-{
-    [self.delegate dataSourceWantsAuthorization:self];
 }
 
 @end

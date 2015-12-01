@@ -117,5 +117,4 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 - (NSInteger)sectionIndexForContent; ///< Returns either 0 or 1 depending on whether a header cell is present
 - (void)unloadStream;
 
-
 @end

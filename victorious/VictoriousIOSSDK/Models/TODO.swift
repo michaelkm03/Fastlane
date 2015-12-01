@@ -22,10 +22,3 @@ extension AdBreak {
         self.init()
     }
 }
-
-public struct PollResult {}
-extension PollResult {
-    public init?(json: JSON) {
-        return nil
-    }
-}
