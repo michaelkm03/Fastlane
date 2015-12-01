@@ -16,7 +16,6 @@ class SequenceFetchRequestTests: XCTestCase {
         let id: Int64 = 3694
         let request =  SequenceFetchRequest(sequenceID: id )
         XCTAssertEqual( request.urlRequest.URL, NSURL(string: "/api/sequence/fetch/\(id)") )
-        XCTAssertEqual( request.sequenceID, id )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
     }
     
