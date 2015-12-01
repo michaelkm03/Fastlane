@@ -66,6 +66,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 @property (nonatomic, readwrite) NSURL *savedVideoURL;
 @property (nonatomic, readwrite) UIImage *previewImage;
+@property (nonatomic, readwrite) Float64 totalTimeRecorded;
 
 @end
 
@@ -366,6 +367,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
+    self.totalTimeRecorded = totalRecorded;
+    
     Float64 maxUploadDuration = [VObjectManager sharedManager].mainUser.maxUploadDurationFloat;
     CGFloat progress = ABS( totalRecorded / maxUploadDuration);
     [self.cameraControl setRecordingProgress:progress

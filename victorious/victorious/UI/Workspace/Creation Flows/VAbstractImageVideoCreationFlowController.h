@@ -87,6 +87,11 @@
 
 - (UIViewController *)initialViewController;
 
+/**
+ *  Determines whether trimmer should be skipped based on the length of current video. Default to NO.
+ */
+- (BOOL)shouldSkipTrimmerForVideoLength;
+
 @property (nonatomic, strong, readonly) VAssetCollectionGridViewController *gridViewController;
 
 @property (nonatomic, assign) BOOL shouldShowPublishScreen;

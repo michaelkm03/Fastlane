@@ -13237,16 +13237,8 @@
 				DefaultEnvironment = Production;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
-				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
+				EnvironmentsConfigurationFile = AppSpecific/environments.prod.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
-					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
-					"V_SWITCH_ENVIRONMENTS=1",
-					"V_SHOW_EXPERIMENT_SETTINGS=1",
-					"V_SHOW_TEST_ALERT_SETTINGS=1",
-				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -13262,7 +13254,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS";
+				OTHER_SWIFT_FLAGS = "";
 				ProductPrefix = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
