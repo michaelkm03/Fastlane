@@ -15,6 +15,7 @@ public struct SequenceLikersRequest: Pageable {
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64
     private let paginator: StandardPaginator
+    public let urlRequest: NSURLRequest
     
     public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
@@ -23,13 +24,11 @@ public struct SequenceLikersRequest: Pageable {
     private init(sequenceID: Int64, paginator: StandardPaginator) {
         self.sequenceID = sequenceID
         self.paginator = paginator
-    }
-    
-    public var urlRequest: NSURLRequest {
+        
         let url = NSURL(string: "/api/sequence/liked_by_users/\(sequenceID)")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
-        return request
+        self.urlRequest = request
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: SequenceLikersRequest?, previousPage: SequenceLikersRequest?) {

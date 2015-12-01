@@ -73,5 +73,6 @@ class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
         if let passwordUpdate = self.passwordUpdate {
             self.storedPassword.savePassword(passwordUpdate.passwordNew, forEmail: passwordUpdate.email)
         }
+        completion()
     }
 }

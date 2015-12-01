@@ -10,66 +10,16 @@ import XCTest
 import Foundation
 @testable import victorious
 
-private let _testQueue = NSOperationQueue()
-
-class MockOperation: NSOperation, Queuable {
-
-    static var sharedQueue: NSOperationQueue {
-        return _testQueue
-    }
-    
-    var label: String = ""
-    var operationBlock: (@convention(block) (MockOperation)->())? = nil
-    var testCompletionBlock: (@convention(block) (MockOperation)->())? = nil
-    
-    override init() {
-        super.init()
-    }
-    
-    init( _ label: String, block: (@convention(block) (MockOperation)->())? = nil ) {
-        self.label = label
-        self.operationBlock = block
-    }
-    
-    private var result: Bool = false
-
-    func queueOn( queue: NSOperationQueue, completionBlock: (@convention(block) (MockOperation)->())? ) {
-        if let completionBlock = completionBlock {
-            self.testCompletionBlock = completionBlock
-        }
-        self.completionBlock = {
-            dispatch_async( dispatch_get_main_queue() ) {
-                print( "\t\t >>>> >>> Completing operation: \(self.label) :: \(self.testCompletionBlock)")
-                self.testCompletionBlock?( self )
-            }
-        }
-        queue.addOperation(self)
-    }
-    
-    override func main() {
-        print( "\t\t >>>> >>> Performing operation: \(self.label)")
-        dispatch_async( dispatch_get_main_queue() ) {
-            self.operationBlock?(self)
-            self.result = true
-        }
-    }
-}
-
 class QueueableTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        MockOperation.sharedQueue.cancelAllOperations()
-    }
-    
-    func testQueueOn() {
+    /*func testQueueOn() {
         let expectation = self.expectationWithDescription("testQueueOn")
         
         let operation = MockOperation("test") { op in
             XCTAssert( NSThread.currentThread().isMainThread )
         }
         operation.queueOn( NSOperationQueue.mainQueue() ) { op in
-            XCTAssert( op.result )
+            XCTAssert( op.finished )
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -80,8 +30,7 @@ class QueueableTests: XCTestCase {
         
         let operation = MockOperation()
         operation.queue() { op in
-            XCTAssert( NSThread.currentThread().isMainThread )
-            XCTAssert( op.result )
+            XCTAssert( op.finished )
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -93,7 +42,7 @@ class QueueableTests: XCTestCase {
         let operation = MockOperation()
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             while !operation.finished {}
-            XCTAssert( operation.result )
+            XCTAssert( operation.finished )
             expectation.fulfill()
         }
         operation.queue()
@@ -105,7 +54,7 @@ class QueueableTests: XCTestCase {
         var completedOperations = [MockOperation]()
 
         let completionBlock: (MockOperation)->() = { op in
-            XCTAssert( op.result )
+            XCTAssert( op.finished )
             dispatch_async( dispatch_get_main_queue() ) {
                 completedOperations.append( op )
                 if completedOperations.count == 5 {
@@ -117,10 +66,7 @@ class QueueableTests: XCTestCase {
         let queue = NSOperationQueue()
         
         let operationB = MockOperation("B")
-        let operationA = MockOperation("A") { op in
-            operationB.testCompletionBlock = completionBlock
-            operationB.queueAfter( op, queue: queue )
-        }
+        let operationA = MockOperation("A")
         let operationC = MockOperation("C")
         let operationD = MockOperation("D")
         let operationE = MockOperation("E")
@@ -128,17 +74,19 @@ class QueueableTests: XCTestCase {
         operationE.addDependency( operationC )
         operationC.addDependency( operationA )
         
-        for op in [ operationA, operationC, operationE ] {
+        for op in [ operationC, operationE ] {
             op.queueOn( queue, completionBlock: completionBlock )
+        }
+
+        operationA.queue() { op in
+            operationB.queueAfter( op, queue: queue, completionBlock: completionBlock )
+            completionBlock(op)
         }
         
         operationD.addDependency( operationC )
-        operationD.testCompletionBlock = completionBlock
-        operationD.queueBefore( operationE )
+        operationD.queueBefore( operationE, completionBlock: completionBlock )
         
         waitForExpectationsWithTimeout(2, handler: nil)
-
-        XCTAssertEqual( completedOperations.count, 5 )
         
         XCTAssertEqual( completedOperations[0].label, operationA.label )
         XCTAssertEqual( completedOperations[1].label, operationB.label )
@@ -150,7 +98,7 @@ class QueueableTests: XCTestCase {
     func testDependentOperationsInQueue() {
         
         let queue = NSOperationQueue()
-        let expectation = self.expectationWithDescription("testDependentOperationsInQueue")
+        let expectation = self.expectationWithDescription("test_dependentOperationsInQueue")
         
         let operationB = MockOperation("B")
         let operationC = MockOperation("C")
@@ -170,8 +118,8 @@ class QueueableTests: XCTestCase {
         XCTAssert( dependentOperationsBefore.isEmpty )
 
         for op in [ operationA, operationB, operationC ] {
-            op.queueOn( queue )
+            op.queueOn( queue, completionBlock: nil )
         }
         waitForExpectationsWithTimeout(2, handler: nil)
-    }
+    }*/
 }

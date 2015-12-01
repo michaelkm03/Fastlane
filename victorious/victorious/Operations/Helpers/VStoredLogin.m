@@ -20,6 +20,7 @@
 @end
 
 @implementation VStoredLoginInfo
+
 @end
 
 static const NSTimeInterval kTokenExpirationTotalDuration           = 60 * 60 * 24 * 30; ///< 30 days in seconds
