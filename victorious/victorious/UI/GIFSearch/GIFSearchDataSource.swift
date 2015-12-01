@@ -86,7 +86,6 @@ class GIFSearchDataSource: NSObject {
             completion?( nil )
             return
         }
-        
         self.state = .Loading
         
         let successClosure: ([GIFSearchResult]) -> Void = { results in
@@ -241,8 +240,8 @@ class GIFSearchDataSource: NSObject {
     }
 }
 
-extension GIFSearchDataSource {
-    func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+private extension GIFSearchDataSource {
+    private func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
         var operation: GIFSearchOperation?
         
         switch pageType {
@@ -270,7 +269,7 @@ extension GIFSearchDataSource {
         }
     }
     
-    func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+    private func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
         var operation: TrendingGIFsOperation?
         
         switch pageType {
