@@ -11,11 +11,6 @@
 @interface VUser (Fetcher)
 
 /**
- *  If the receiving user should be allowed to skip the video trimmer.
- */
-- (BOOL)shouldSkipTrimmer;
-
-/**
  *  Returns YES when this user is following the hashtag identified by the hashtag string.
  *
  *  The hashtag's string value, without the leading #
