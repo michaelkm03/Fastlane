@@ -52,7 +52,7 @@ class MockRequestOperation<T: RequestType>: RequestOperation<T> {
 
 class RequestOperationTests: XCTestCase {
     
-    func testBasic() {
+    /*func testBasic() {
         let expectation = self.expectationWithDescription( "testBasic" )
         let operation = MockRequestOperation( request: MockRequest() )
         operation.queue() { error in
@@ -78,5 +78,5 @@ class RequestOperationTests: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(2) { error in }
-    }
+    }*/
 }
