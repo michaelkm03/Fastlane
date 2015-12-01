@@ -6,6 +6,11 @@ module VAMS
       IOS = 'iOS'
     end
 
+    module Status
+      GOOD = 'App submission completed successfully'
+      BAD  = 'App submission failed'
+    end
+
     attr_reader :id,
                 :status,
                 :datetime,

@@ -52,12 +52,22 @@ platform :ios do
       apply_config(build_name: app.build_name)
       prepare_metadata(client: client, build_name: app.build_name)
       sigh
+
       gym(
         scheme: 'release-victorious',
         codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
       )
+      version      = get_version_number(xcodeproj: "victorious.xcodeproj")
+      build_number = get_build_number(xcodeproj: "victorious.xcodeproj")
 
       deliver(force: true)
+      result = SubmissionResult.new(
+        app_id:   app.app_id,
+        datetime: Time.now,
+        build:    "#{version} (#{build_number})",
+        status:   SubmissionResult::Status::GOOD
+      )
+      client.submit_result(result)
     end
   end
 
