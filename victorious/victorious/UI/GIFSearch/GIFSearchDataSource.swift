@@ -30,7 +30,7 @@ private extension NSIndexPath {
 class GIFSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
-    private var mostRecentSearchOperation: GIFSearchRequestOperation?
+    private var mostRecentSearchOperation: GIFSearchOperation?
     
     enum State: Int {
         case None, Loading, Content, Error, NoResults
@@ -242,11 +242,11 @@ class GIFSearchDataSource: NSObject {
 
 extension GIFSearchDataSource {
     func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        var operation: GIFSearchRequestOperation?
+        var operation: GIFSearchOperation?
         
         switch pageType {
         case .First:
-            operation = GIFSearchRequestOperation(searchText: searchText)
+            operation = GIFSearchOperation(searchText: searchText)
         case .Next:
             operation = mostRecentSearchOperation?.nextPageOperation
         case .Previous:

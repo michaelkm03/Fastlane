@@ -420,7 +420,7 @@
 		678D94541BF43D9C009A1F93 /* PollResultByUserRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */; };
 		678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */; };
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
-		6794E6071C0CE1A900791CA0 /* GIFSearchRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */; };
+		6794E6071C0CE1A900791CA0 /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
@@ -442,6 +442,8 @@
 		67C5C5411C03C1E700F99C8C /* VSuggestedUsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */; };
 		67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
+		67E3A9251C0D48E200F69EE7 /* GIFSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E3A9241C0D48E200F69EE7 /* GIFSearchOperationTests.swift */; };
+		67E3A9261C0D491E00F69EE7 /* GIFSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA79A1BF172FA003446CC /* GIFSearchResponse.json */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
 		67FD54B71BF68D5300CF52F7 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */; };
 		67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */; };
@@ -2398,7 +2400,7 @@
 		678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultByUserRequestTests.swift; sourceTree = "<group>"; };
 		678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultByUserResponse.json; sourceTree = "<group>"; };
 		678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultBySequenceResponse.json; sourceTree = "<group>"; };
-		6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequestOperation.swift; sourceTree = "<group>"; };
+		6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersRequest.swift; sourceTree = "<group>"; };
@@ -2419,6 +2421,7 @@
 		67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUsersDataSource.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
+		67E3A9241C0D48E200F69EE7 /* GIFSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperationTests.swift; sourceTree = "<group>"; };
 		67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
 		67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentRequest.swift; sourceTree = "<group>"; };
 		67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequestTests.swift; sourceTree = "<group>"; };
@@ -6658,6 +6661,7 @@
 			children = (
 				A74FBC261C03B6F400375A78 /* AccountCreateOperationTests.swift */,
 				673CBBD31C0514CD00703932 /* SuggestedUsersOperationTests.swift */,
+				67E3A9241C0D48E200F69EE7 /* GIFSearchOperationTests.swift */,
 			);
 			name = RequestOperations;
 			sourceTree = "<group>";
@@ -6890,7 +6894,7 @@
 				A76AEAA81BFFAD8000E8A26F /* AccountUpdateOperation.swift */,
 				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
-				6794E6061C0CE1A900791CA0 /* GIFSearchRequestOperation.swift */,
+				6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
@@ -9720,6 +9724,7 @@
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */,
+				67E3A9261C0D491E00F69EE7 /* GIFSearchResponse.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
@@ -10439,7 +10444,7 @@
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
-				6794E6071C0CE1A900791CA0 /* GIFSearchRequestOperation.swift in Sources */,
+				6794E6071C0CE1A900791CA0 /* GIFSearchOperation.swift in Sources */,
 				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
 				A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
@@ -11377,6 +11382,7 @@
 				A76AEA8C1BFED31B00E8A26F /* VPurchaseRecordTests.m in Sources */,
 				A789F7541BF1211D00F5C87B /* CoreDataPathHelper.swift in Sources */,
 				A76AEAA61BFED31B00E8A26F /* VVoteTypeFetcherTests.m in Sources */,
+				67E3A9251C0D48E200F69EE7 /* GIFSearchOperationTests.swift in Sources */,
 				A76AEA721BFED31B00E8A26F /* VDependencyManagerImageTests.m in Sources */,
 				A76AEA681BFED31B00E8A26F /* VAlertControllerTests.m in Sources */,
 				A76AEA831BFED31B00E8A26F /* VKeyboardInputAccessoryViewTests.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  GIFSearchRequestOperation.swift
+//  GIFSearchOperation.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/30/15.
@@ -9,10 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class GIFSearchRequestOperation: RequestOperation<GIFSearchRequest> {
+class GIFSearchOperation: RequestOperation<GIFSearchRequest> {
     private(set) var searchResults: [GIFSearchResult] = []
-    private(set) var nextPageOperation: GIFSearchRequestOperation?
-    private(set) var previousPageOperation: GIFSearchRequestOperation?
+    private(set) var nextPageOperation: GIFSearchOperation?
+    private(set) var previousPageOperation: GIFSearchOperation?
     
     init(searchText: String) {
         super.init(request: GIFSearchRequest(searchTerm: searchText))
@@ -27,10 +27,10 @@ class GIFSearchRequestOperation: RequestOperation<GIFSearchRequest> {
             GIFSearchResult(networkingSearchResultModel: $0)
         }
         if let nextPageRequest = result.nextPage {
-            nextPageOperation = GIFSearchRequestOperation(request: nextPageRequest)
+            nextPageOperation = GIFSearchOperation(request: nextPageRequest)
         }
         if let previousPageRequest = result.previousPage {
-            previousPageOperation = GIFSearchRequestOperation(request: previousPageRequest)
+            previousPageOperation = GIFSearchOperation(request: previousPageRequest)
         }
         completion()
     }
