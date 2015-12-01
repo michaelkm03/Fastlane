@@ -34,21 +34,33 @@ class MockOperation: NSOperation, Queuable {
     private var result: Bool = false
 
     func queueOn( queue: NSOperationQueue, completionBlock: (@convention(block) (MockOperation)->())? ) {
-        self.testCompletionBlock = completionBlock
+        if let completionBlock = completionBlock {
+            self.testCompletionBlock = completionBlock
+        }
         self.completionBlock = {
-            self.testCompletionBlock?( self )
+            dispatch_async( dispatch_get_main_queue() ) {
+                print( "\t\t >>>> >>> Completing operation: \(self.label) :: \(self.testCompletionBlock)")
+                self.testCompletionBlock?( self )
+            }
         }
         queue.addOperation(self)
     }
     
     override func main() {
         print( "\t\t >>>> >>> Performing operation: \(self.label)")
-        self.operationBlock?(self)
-        self.result = true
+        dispatch_async( dispatch_get_main_queue() ) {
+            self.operationBlock?(self)
+            self.result = true
+        }
     }
 }
 
 class QueueableTests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        MockOperation.sharedQueue.cancelAllOperations()
+    }
     
     func testQueueOn() {
         let expectation = self.expectationWithDescription("testQueueOn")
@@ -68,7 +80,7 @@ class QueueableTests: XCTestCase {
         
         let operation = MockOperation()
         operation.queue() { op in
-            XCTAssertFalse( NSThread.currentThread().isMainThread )
+            XCTAssert( NSThread.currentThread().isMainThread )
             XCTAssert( op.result )
             expectation.fulfill()
         }
@@ -88,7 +100,7 @@ class QueueableTests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    /*func testQueueAfterQueueBefore() {
+    func testQueueAfterQueueBefore() {
         let expectation = self.expectationWithDescription("testQueueAfterQueueBefore")
         var completedOperations = [MockOperation]()
 
@@ -96,7 +108,6 @@ class QueueableTests: XCTestCase {
             XCTAssert( op.result )
             dispatch_async( dispatch_get_main_queue() ) {
                 completedOperations.append( op )
-                print( "\t\t >>>> >>> Completed operation: \(op.label)")
                 if completedOperations.count == 5 {
                     expectation.fulfill()
                 }
@@ -134,7 +145,7 @@ class QueueableTests: XCTestCase {
         XCTAssertEqual( completedOperations[2].label, operationC.label )
         XCTAssertEqual( completedOperations[3].label, operationD.label )
         XCTAssertEqual( completedOperations[4].label, operationE.label )
-    }*/
+    }
     
     func testDependentOperationsInQueue() {
         
