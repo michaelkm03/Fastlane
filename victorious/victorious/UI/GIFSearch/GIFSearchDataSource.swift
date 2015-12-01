@@ -30,6 +30,8 @@ private extension NSIndexPath {
 class GIFSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
+    private var mostRecentSearchOperation: GIFSearchRequestOperation?
+    
     enum State: Int {
         case None, Loading, Content, Error, NoResults
     }
@@ -163,7 +165,7 @@ class GIFSearchDataSource: NSObject {
             completion?(result)
         }
         
-        searchForGIF(searchText, onSuccess: successClosure, onFail: failClosure)
+        searchForGIF(searchText, pageType: pageType, onSuccess: successClosure, onFail: failClosure)
     }
     
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
@@ -257,14 +259,29 @@ class GIFSearchDataSource: NSObject {
 }
 
 extension GIFSearchDataSource {
-    func searchForGIF(searchText: String, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        let operation = GIFSearchRequestOperation(searchText: searchText)
-        operation.queue() { error in
+    func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+        var operation: GIFSearchRequestOperation?
+        
+        switch pageType {
+        case .First:
+            operation = GIFSearchRequestOperation(searchText: searchText)
+        case .Next:
+            operation = mostRecentSearchOperation?.nextPageOperation
+        case .Previous:
+            operation = mostRecentSearchOperation?.previousPageOperation
+        }
+    
+        guard let currentOperation = operation else {
+            return
+        }
+        
+        currentOperation.queue() { error in
             if let e = error {
                 onFail(e)
             } else {
-                onSuccess(operation.searchResults)
+                onSuccess(currentOperation.searchResults)
             }
+            self.mostRecentSearchOperation = currentOperation
         }
     }
 }
