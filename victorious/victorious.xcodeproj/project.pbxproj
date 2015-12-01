@@ -388,6 +388,7 @@
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */; };
 		673CBBD41C0514CD00703932 /* SuggestedUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBD31C0514CD00703932 /* SuggestedUsersOperationTests.swift */; };
+		673CFA7C1C0E314000523B97 /* TrendingGIFsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */; };
 		67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
@@ -2363,6 +2364,7 @@
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
 		673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUser.swift; sourceTree = "<group>"; };
 		673CBBD31C0514CD00703932 /* SuggestedUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestedUsersOperationTests.swift; path = RequestOperations/SuggestedUsersOperationTests.swift; sourceTree = "<group>"; };
+		673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingGIFsOperation.swift; sourceTree = "<group>"; };
 		67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestScheduler.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
@@ -6901,6 +6903,7 @@
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A76AEA401BFEBA0500E8A26F /* StreamOperation.swift */,
 				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
+				673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */,
 				A76AEA411BFEBA0500E8A26F /* UnlikeSequenceOperation.swift */,
 				A76AEA421BFEBA0500E8A26F /* UserInfoOperation.swift */,
 			);
@@ -10538,6 +10541,7 @@
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
+				673CFA7C1C0E314000523B97 /* TrendingGIFsOperation.swift in Sources */,
 				F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,

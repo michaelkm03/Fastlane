@@ -31,6 +31,7 @@ class GIFSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
     private var mostRecentSearchOperation: GIFSearchOperation?
+    private var mostRecentTrendingOperation: TrendingGIFsOperation?
     
     enum State: Int {
         case None, Loading, Content, Error, NoResults
@@ -87,29 +88,29 @@ class GIFSearchDataSource: NSObject {
         }
         
         self.state = .Loading
-        VObjectManager.sharedManager().loadTrendingGIFs( pageType,
-            success: { (results, isLastPage) in
+        
+        let successClosure: ([GIFSearchResult]) -> Void = { results in
+            self.state = .Content
+            let result = self.updateDataSource( results, pageType: pageType )
+            completion?( result )
+        }
+        
+        let failClosure: (NSError) -> Void = { error in
+            var result = ChangeResult()
+            if self.isLastPage {
                 self.state = .Content
-                self.isLastPage = isLastPage
-                let result = self.updateDataSource( results, pageType: pageType )
-                completion?( result )
-            },
-            failure: { (error, isLastPage) in
-                var result = ChangeResult()
-                if isLastPage {
-                    self.isLastPage = isLastPage
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
-                    }
-                    self.state = .Error
-                    result.error = error
-                }
-                completion?( result )
             }
-        )
+            else {
+                if pageType == .First {
+                    self.clear()
+                }
+                self.state = .Error
+                result.error = error
+            }
+            completion?( result )
+        }
+        
+        loadTrendingGIFs(pageType, onSuccess: successClosure, onFail: failClosure)
     }
     
     /// Fetches data from the server and repopulates its backing model collection
@@ -265,6 +266,34 @@ extension GIFSearchDataSource {
                 onFail(e)
             } else {
                 onSuccess(currentOperation.searchResults)
+            }
+        }
+    }
+    
+    func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+        var operation: TrendingGIFsOperation?
+        
+        switch pageType {
+        case .First:
+            operation = TrendingGIFsOperation()
+        case .Next:
+            operation = mostRecentTrendingOperation?.nextPageOperation
+        case .Previous:
+            operation = mostRecentTrendingOperation?.previousPageOperation
+        }
+        
+        guard let currentOperation = operation else {
+            return
+        }
+        
+        currentOperation.queue() { error in
+            self.mostRecentTrendingOperation = currentOperation
+            self.isLastPage = (self.mostRecentTrendingOperation?.nextPageOperation == nil)
+            
+            if let e = error {
+                onFail(e)
+            } else {
+                onSuccess(currentOperation.trendingGIFsResults)
             }
         }
     }
