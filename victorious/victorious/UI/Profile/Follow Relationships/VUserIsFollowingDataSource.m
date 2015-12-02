@@ -13,7 +13,6 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizedAction.h"
 
 @interface VUserIsFollowingDataSource ()
 

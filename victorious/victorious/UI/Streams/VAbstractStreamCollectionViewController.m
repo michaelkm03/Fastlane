@@ -15,7 +15,6 @@
 
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VObjectManager+Login.h"
 
 //View Controllers
 #import "VNavigationController.h"
@@ -122,7 +121,7 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [[VObjectManager sharedManager] mainUser] != nil;
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VUser currentUser] != nil;
     if ( shouldRefresh )
     {
         [self refreshWithCompletion:nil];
@@ -292,7 +291,7 @@
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
 {
-    if (self.streamDataSource.isFilterLoading)
+    if (self.streamDataSource.isLoading)
     {
         if ( !self.isRefreshingFirstPage )
         {
@@ -324,16 +323,13 @@
          }
          self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
+         [self.collectionView reloadData];
      }
                             failure:^(NSError *error)
      {
          self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-         hud.mode = MBProgressHUDModeText;
-         hud.labelText = NSLocalizedString(@"RefreshError", @"");
-         hud.userInteractionEnabled = NO;
-         [hud hide:YES afterDelay:3.0];
+         // TODO: Show error in non-disruptive way
      }];
 }
 
@@ -416,10 +412,11 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
+    // FIXME:
+    /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }
+    }*/
     
     return CGSizeZero;
 }
@@ -444,7 +441,7 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
+    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isLoading || !self.streamDataSource.canLoadNextPage)
     {
         return;
     }
@@ -459,7 +456,9 @@
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                            failure:nil];
+                            failure:^(NSError *_Nullable error) {
+                                // TODO: Show error in non-disruptive way
+                            }];
 }
 
 #pragma mark - UIScrollViewDelegate

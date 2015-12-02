@@ -14,7 +14,6 @@
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
-#import "VAuthorizedAction.h"
 
 @interface VDiscoverSuggestedPersonCell()
 

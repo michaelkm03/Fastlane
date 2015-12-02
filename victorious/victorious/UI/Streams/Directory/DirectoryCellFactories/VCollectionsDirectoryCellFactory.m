@@ -11,8 +11,6 @@
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
-#import "VDependencyManager+VObjectManager.h"
-#import "VObjectManager.h"
 #import "VStream+Fetcher.h"
 #import "VDirectoryCollectionFlowLayout.h"
 

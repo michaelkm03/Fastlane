@@ -37,7 +37,6 @@
               @"preview_image"  :   VSelectorName(previewImagesObject),
               @"released_at"    :   VSelectorName(releasedAt),
               @"description"    :   VSelectorName(sequenceDescription),
-              @"status"         :   VSelectorName(status),
               @"stream_id"      :   VSelectorName(streamId),
               @"is_complete"    :   VSelectorName(isComplete),
               @"is_remix"       :   VSelectorName(isRemix),

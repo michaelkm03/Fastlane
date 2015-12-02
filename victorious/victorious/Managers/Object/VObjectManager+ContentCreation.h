@@ -111,11 +111,6 @@ Creates a new realtime comment
                            successBlock:(nullable VSuccessBlock)success
                               failBlock:(nullable VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
-                                       withName:(nullable NSString *)name
-                                   successBlock:(nullable VSuccessBlock)success
-                                      failBlock:(nullable VFailBlock)fail;
-
 /**
  Creates a text post with supplied text, background color and image.
  */

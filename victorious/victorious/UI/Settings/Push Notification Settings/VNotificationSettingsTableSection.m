@@ -23,6 +23,10 @@
 
 - (VNotificationSettingsTableRow *)rowAtIndex:(NSUInteger)index
 {
+    if ( index >= self.rows.count )
+    {
+        NSParameterAssert( NO );
+    }
     NSParameterAssert( index < self.rows.count );
     id object = self.rows[ index ];
     NSParameterAssert( [object isKindOfClass:[VNotificationSettingsTableRow class]] );

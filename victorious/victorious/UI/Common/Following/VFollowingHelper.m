@@ -9,7 +9,6 @@
 #import "VFollowingHelper.h"
 
 // Authorization
-#import "VAuthorizedAction.h"
 
 // Models + Helpers
 #import "VConstants.h"
@@ -56,47 +55,44 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
-    [self withAuthorizationDo:^(BOOL authorized)
-     {
-         BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
-         
-         if ( !authorized || tryingToFollowSelf )
-         {
-             completion(user);
-             return;
-         }
-         
-         if ( authorizedBlock != nil )
-         {
-             authorizedBlock();
-         }
-         
-         VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             completion(user);
-         };
-         
-         VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-         {
-             if (error.code != kVFollowsRelationshipAlreadyExistsError)
-             {
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                                 message:error.localizedDescription
-                                                                delegate:nil
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                       otherButtonTitles:nil];
-                 [alert show];
-             }
-             completion(user);
-         };
-         
-         // Add user at backend
-         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
-         [[VObjectManager sharedManager] followUser:user
-                                       successBlock:successBlock
-                                          failBlock:failureBlock
-                                         fromScreen:sourceScreen];
-     }];
+    BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
+    
+    if ( tryingToFollowSelf )
+    {
+        completion(user);
+        return;
+    }
+    
+    if ( authorizedBlock != nil )
+    {
+        authorizedBlock();
+    }
+    
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        completion(user);
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        if (error.code != kVFollowsRelationshipAlreadyExistsError)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                            message:error.localizedDescription
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        completion(user);
+    };
+    
+    // Add user at backend
+    NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+    [[VObjectManager sharedManager] followUser:user
+                                  successBlock:successBlock
+                                     failBlock:failureBlock
+                                    fromScreen:sourceScreen];
 }
 
 - (void)unfollowUser:(VUser *)user
@@ -110,58 +106,40 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
-    [self withAuthorizationDo:^(BOOL authorized)
-     {
-         BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
-         
-         if ( !authorized || tryingToFollowSelf )
-         {
-             completion(user);
-             return;
-         }
-         
-         if ( authorizedBlock != nil )
-         {
-             authorizedBlock();
-         }
-         
-         VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             completion(user);
-         };
-         
-         VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-         {
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                                    message:error.localizedDescription
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-             completion(user);
-         };
-         
-         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
-         [[VObjectManager sharedManager] unfollowUser:user
-                                         successBlock:successBlock
-                                            failBlock:failureBlock
-                                           fromScreen:sourceScreen];
-     }];
-}
-
-- (void)withAuthorizationDo:(void (^)(BOOL authorized))authorizationAction
-{
-    NSParameterAssert(authorizationAction != nil);
-    NSParameterAssert(self.viewControllerToPresentAuthorizationOn != nil);
+    BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self.viewControllerToPresentAuthorizationOn
-                                     context:VAuthorizationContextFollowUser
-                                  completion:^(BOOL authorized)
-     {
-         authorizationAction(authorized);
-     }];
+    if ( tryingToFollowSelf )
+    {
+        completion(user);
+        return;
+    }
+    
+    if ( authorizedBlock != nil )
+    {
+        authorizedBlock();
+    }
+    
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        completion(user);
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        completion(user);
+    };
+    
+    NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+    [[VObjectManager sharedManager] unfollowUser:user
+                                    successBlock:successBlock
+                                       failBlock:failureBlock
+                                      fromScreen:sourceScreen];
 }
 
 @end

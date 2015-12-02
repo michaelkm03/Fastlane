@@ -76,6 +76,8 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
 @property (nonatomic, readonly) NSArray *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
+@property (nonatomic, strong) NSOperation *streamLoadOperation;
+@property (nonatomic, assign) BOOL isLoading;
 
 /**
  *  Initializes the data source with a default stream.
@@ -111,16 +113,7 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
  */
 - (void)removeStreamItem:(VStreamItem *)streamItem;
 
-/**
- *  The primary way to load a stream.
- *
- *  @param pageType Which page of this paginatined method should be loaded.  @see VPageType
- */
-- (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
-
 - (NSUInteger)count; ///< Number of VStreamItems in self.stream
-- (BOOL)isFilterLoading; ///< Returns YES if the filter is currently being loaded from the server
-- (BOOL)canLoadNextPage; ///< Returns whether or not there is a nother page to load, i.e. we are not already at the end of the stream.
 - (NSInteger)sectionIndexForContent; ///< Returns either 0 or 1 depending on whether a header cell is present
 - (void)unloadStream;
 

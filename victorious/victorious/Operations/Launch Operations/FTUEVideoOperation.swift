@@ -23,6 +23,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     private let sessionTimer: VSessionTimer
     
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
+        
         self.dependencyManager = dependencyManager
         self.sessionTimer = sessionTimer
         self.viewControllerToPresentOn = viewControllerToPresentOn
@@ -36,21 +37,28 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     
     override func start() {
         super.start()
-
-        // Bail early if we have already seen the FTUE Video
-        if firstTimeInstallHelper.hasBeenShown() {
-            finishedExecuting()
-            return
-        }
         
-        beganExecuting()
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            if let lightWeightContentVC = self.dependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController {
-                lightWeightContentVC.delegate = self;
-                self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
-                    self.firstTimeInstallHelper.savePlaybackDefaults()
-                }
+        dispatch_async( dispatch_get_main_queue() ) {
+            
+            self.beganExecuting()
+            
+            // Bail early if we have already seen the FTUE Video
+            guard self.firstTimeInstallHelper.hasBeenShown() == false else {
+                self.finishedExecuting()
+                return
+            }
+            
+            guard let config = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: self.kFirstTimeContentKey) as? [NSObject : AnyObject],
+                let firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(config),
+                let lightWeightContentVC = firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self,
+                    forKey: self.kFirstTimeContentKey) as? VLightweightContentViewController else {
+                        self.finishedExecuting()
+                        return
+            }
+            
+            lightWeightContentVC.delegate = self;
+            self.viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
+                self.firstTimeInstallHelper.savePlaybackDefaults()
             }
         }
     }

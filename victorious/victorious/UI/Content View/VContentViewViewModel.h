@@ -82,10 +82,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 - (instancetype)initWithContext:(ContentViewContext *)context;
 
-- (void)reloadData;
-
-- (void)fetchSequenceData;
-
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
 
 - (void)addCommentWidhText:(NSString *)text
@@ -98,6 +94,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
                 completion:(void (^)(BOOL succeeded))completion;
 
 - (void)updateEndcard;
+
+- (void)setupAdChain;
 
 @property (nonatomic, readonly) ContentViewContext *context;
 

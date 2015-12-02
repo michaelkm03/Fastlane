@@ -17,7 +17,6 @@
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VAlertController.h"
-#import "VAuthorizedAction.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
@@ -29,7 +28,6 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
@@ -45,9 +43,6 @@
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionController.h"
 #import "VSleekStreamCellFactory.h"
@@ -107,6 +102,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) SequenceActionHelper *streamLikeHelper;
 @property (nonatomic, strong) UICollectionViewCell <VContentPreviewViewProvider> *cellPresentingContentView;
 
 @end
@@ -146,10 +142,16 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }
-    NSString *path = [url v_pathComponent];
+    NSString *apiPath = [url v_pathComponent];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    __block VStream *stream = nil;
+    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
+        stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        [context saveChanges];
+    }];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
@@ -189,6 +191,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     self.canShowMarquee = YES;
     self.contentViewPresenter = [[ContentViewPresenter alloc] init];
+    self.streamLikeHelper = [[SequenceActionHelper alloc] init];
 }
 
 #pragma mark - View Heirarchy
@@ -463,21 +466,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
-    
-    __weak typeof(self) weakSelf = self;
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:strongSelf.dependencyManager];
-         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
-         [strongSelf.creationFlowPresenter presentOnViewController:strongSelf];
-     }];
+    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.creationFlowPresenter.showsCreationSheetFromTop = YES;
+    [self.creationFlowPresenter presentOnViewController:self];
 }
 
 #pragma mark - VMarqueeDataDelegate
@@ -651,13 +642,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.focusHelper endFocusOnCell:cell];
 }
 
-#pragma mark - Activity indivator footer
-
-- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
-{
-    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
-}
-
 #pragma mark - VStreamCollectionDataDelegate
 
 - (void)dataSource:(VStreamCollectionViewDataSource *)dataSource hasNewStreamItems:(NSArray *)streamItems
@@ -737,42 +721,15 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    
-    __weak typeof(self) welf = self;
-    void (^completionBlock)(BOOL success) = ^void(BOOL success)
-    {
-        if (completion != nil)
-        {
-            completion(success);
-        }
-        
-    };
-    [authorization performFromViewController:self context:VAuthorizationContextDefault
-                                          completion:^(BOOL authorized)
+    [self.streamLikeHelper likeSequence:sequence
+                         triggeringView:view
+                   originViewController:self
+                      dependencyManager:self.dependencyManager
+                             completion:^void(BOOL success)
      {
-         __strong typeof(self) strongSelf = welf;
-         if ( authorized )
+         if ( completion != nil )
          {
-             CGRect likeButtonFrame = [view convertRect:view.bounds toView:strongSelf.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:strongSelf atLocation:likeButtonFrame];
-             
-             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  completionBlock( YES );
-                  
-              } failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  completionBlock( NO );
-              }];
-         }
-         else
-         {
-             completionBlock( NO );
+             completion( success );
          }
      }];
 }
@@ -789,7 +746,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && ([VObjectManager sharedManager].mainUser != nil) )
+    if ( sequence.permissions.canRepost && [VUser currentUser] != nil )
     {
         return YES;
     }

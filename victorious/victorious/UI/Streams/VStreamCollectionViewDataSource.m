@@ -7,20 +7,14 @@
 //
 
 #import "VStreamCollectionViewDataSource.h"
-
-//UI
 #import "VCardDirectoryCell.h"
 #import "VFooterActivityIndicatorView.h"
-
-//Managers
-#import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
-
-//Data Models
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
+#import "victorious-Swift.h"
 
 static char KVOContext;
 
@@ -28,7 +22,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 @interface VStreamCollectionViewDataSource()
 
-@property (nonatomic) BOOL isLoading;
 @property (nonatomic, strong) NSArray *visibleStreamItems;
 
 @end
@@ -138,43 +131,12 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)unloadStream
 {
-    self.stream.streamItems = [[NSOrderedSet alloc] init];
-    self.stream.marqueeItems = [[NSOrderedSet alloc] init];
-}
-
-- (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
-{
-    self.isLoading = YES;
-    [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:pageType
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         if ( successBlock != nil )
-         {
-             successBlock();
-         }
-         self.isLoading = NO;
-     }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( failureBlock != nil )
-         {
-             failureBlock( error );
-         }
-         self.isLoading = NO;
-     }];
-}
-
-- (BOOL)isFilterLoading
-{
-    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
-    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
-}
-
-- (BOOL)canLoadNextPage
-{
-    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
-    return [filter canLoadPageType:VPageTypeNext];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
+        self.stream.streamItems = [[NSOrderedSet alloc] init];
+        self.stream.marqueeItems = [[NSOrderedSet alloc] init];
+        [context saveChanges];
+    }];
 }
 
 - (NSInteger)sectionIndexForContent
@@ -239,8 +201,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
-    if ( isFooter && [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
-        [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
+    if ( isFooter && [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]

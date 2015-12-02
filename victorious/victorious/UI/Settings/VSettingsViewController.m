@@ -13,7 +13,6 @@
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
 #import "VObjectManager+Login.h"
-#import "VUserManager.h"
 #import "VUser.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
@@ -26,7 +25,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
@@ -58,7 +56,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
-@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate, ForceLoginOperationDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
@@ -246,7 +244,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ([VUser currentUser] != nil)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
         self.logoutButton.style = VButtonStyleSecondary;
@@ -258,6 +256,10 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         self.logoutButton.style = VButtonStylePrimary;
         self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
     }
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadData];
+    [self.tableView endUpdates];
 }
 
 - (void)pushLikedContent
@@ -270,12 +272,21 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-    return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
+    return [VUser currentUser] != nil && likeButtonOn;
 }
 
 - (BOOL)showChangePassword
 {
-    return [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
+    VUser *currentUer = [VUser currentUser];
+    if ( currentUer == nil )
+    {
+        return NO;
+    }
+    else
+    {
+        VLoginType loginType = (VLoginType)currentUer.loginType.integerValue;
+        return loginType != VLoginTypeFacebook && loginType != VLoginTypeTwitter;
+    }
 }
 
 #pragma mark - TableView Delegate
@@ -315,15 +326,32 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (IBAction)logout:(id)sender
 {
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    if ( [VUser currentUser] != nil )
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        [[VObjectManager sharedManager] logout];
+        // Logout
+        Operation *operation = [[LogoutLocally alloc] initFromViewController:self dependencyManager:self.dependencyManager];
+        [operation queueOn:[NSOperationQueue mainQueue] completionBlock:^void(Operation *op){
+            [self updateLogoutButtonState];
+        }];
+    }
+    else
+    {
+        // Show login prompt
+        [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queueOn:[Operation sharedQueue] completionBlock:nil];
         [self updateLogoutButtonState];
     }
-    
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+}
+
+#pragma mark - ForceLoginOperationDelegate
+
+- (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
+{
+    [self presentViewController:loginViewController animated:true completion:nil];
+}
+
+- (void)hideLoginViewController:(void (^ __nonnull)(void))completion
+{
+    [self dismissViewControllerAnimated:YES completion:completion];
 }
 
 #pragma mark - Navigation
@@ -358,7 +386,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        BOOL shouldShow = self.showTestAlertCell && [VObjectManager sharedManager].mainUserLoggedIn;
+        BOOL shouldShow = self.showTestAlertCell && [VUser currentUser] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
@@ -367,7 +395,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        BOOL shouldShow = self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn;
+        BOOL shouldShow = self.showPushNotificationSettings && [VUser currentUser] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)

@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * memeCount;
+@property (nonatomic, retain) NSNumber * isFlagged;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain, nullable) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissionsMask;
@@ -37,7 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
-@property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
 @property (nonatomic, retain, nullable) NSOrderedSet * comments;
 @property (nonatomic, retain, nullable) VEndCard * endCard;

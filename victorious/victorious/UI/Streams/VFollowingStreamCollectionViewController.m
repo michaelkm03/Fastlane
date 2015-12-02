@@ -7,10 +7,9 @@
 //
 
 #import "VFollowingStreamCollectionViewController.h"
-#import "VObjectManager+Login.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VNoContentView.h"
+#import "victorious-Swift.h"
 
 @interface VFollowingStreamCollectionViewController ()
 
@@ -34,20 +33,20 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
-                                               object:[VObjectManager sharedManager]];
+                                               object:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLoggedInChangedNotification
-                                                  object:[VObjectManager sharedManager]];
+                                                  object:nil];
 }
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.streamDataSource unloadStream];
-    if ( [VObjectManager sharedManager].mainUserLoggedIn )
+    if ( [VUser currentUser] != nil )
     {
         [self refreshWithCompletion:nil];
     }

@@ -174,14 +174,15 @@
 
 - (void)repost
 {
-    [[VObjectManager sharedManager] repostNode:self.currentNode
+    // FIXME:
+    /*[[VObjectManager sharedManager] repostNode:self.currentNode
                                       withName:nil
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.hasReposted = YES;
          self.sequence.repostCount = @(self.sequence.repostCount.integerValue + 1);
      }
-                                     failBlock:nil];
+                                     failBlock:nil];*/
 }
 
 #pragma mark - Create the ad chain
@@ -210,33 +211,6 @@
     int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
     self.monetizationDetails = self.adChain;
-}
-
-#pragma mark - Sequence data fetching methods
-
-- (void)fetchSequenceData
-{
-    [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
-                                 inStreamWithStreamID:self.streamId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         // This is here to update the vote counts
-         [self.experienceEnhancerController updateData];
-         
-         // Sets up the monetization chain
-         if (self.sequence.adBreaks.count > 0)
-         {
-             [self setupAdChain];
-         }
-         
-         if ( self.endCardViewModel == nil )
-         {
-             [self updateEndcard];
-         }
-         
-         [self.delegate didUpdateContent];
-     }
-                                            failBlock:nil];
 }
 
 - (void)updateEndcard
@@ -287,34 +261,29 @@
      }];
 }
 
-- (void)reloadData
+- (void)reloadData2
 {
-    [self fetchPollData];
-    [self fetchComments];
-    [self fetchUserinfo];
-    [self fetchSequenceData];
-}
-
-- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize
-{
-    CGFloat maxAspect = 16.0f/9.0f;
-    CGFloat minAspect = 1.0;
-    CGFloat aspectRatio = CLAMP( minAspect, maxAspect, self.sequence.previewAssetAspectRatio );
-    CGFloat height = containerSize.width / aspectRatio;
-    return CGSizeMake( containerSize.width, height );
-}
-
-- (VLargeNumberFormatter *)largeNumberFormatter
-{
-    if ( _largeNumberFormatter == nil )
+    if (![self.sequence isPoll])
     {
-        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+        return;
     }
-    return _largeNumberFormatter;
-}
-
-- (void)fetchUserinfo
-{
+    
+    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         [self.delegate didUpdatePollsData];
+     }
+                                                 failBlock:nil];
+    
+    if ( self.deepLinkCommentId != nil )
+    {
+        [self loadCommentsWithCommentId:self.deepLinkCommentId];
+    }
+    else
+    {
+        [self loadComments:VPageTypeFirst];
+    }
+    
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -342,19 +311,22 @@
     }
 }
 
-- (void)fetchPollData
+- (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize
 {
-    if (![self.sequence isPoll])
+    CGFloat maxAspect = 16.0f/9.0f;
+    CGFloat minAspect = 1.0;
+    CGFloat aspectRatio = CLAMP( minAspect, maxAspect, self.sequence.previewAssetAspectRatio );
+    CGFloat height = containerSize.width / aspectRatio;
+    return CGSizeMake( containerSize.width, height );
+}
+
+- (VLargeNumberFormatter *)largeNumberFormatter
+{
+    if ( _largeNumberFormatter == nil )
     {
-        return;
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     }
-    
-    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         [self.delegate didUpdatePollsData];
-     }
-                                                 failBlock:nil];
+    return _largeNumberFormatter;
 }
 
 #pragma mark - Property Accessors
@@ -534,18 +506,6 @@
              completion(NO);
          }
      }];
-}
-
-- (void)fetchComments
-{
-    if ( self.deepLinkCommentId != nil )
-    {
-        [self loadCommentsWithCommentId:self.deepLinkCommentId];
-    }
-    else
-    {
-        [self loadComments:VPageTypeFirst];
-    }
 }
 
 - (void)loadCommentsWithCommentId:(NSNumber *)commentId

@@ -21,7 +21,6 @@
 
 // API
 #import "VTwitterAccountsHelper.h"
-#import "VUserManager.h"
 #import "VUser.h"
 #import "VObjectManager+Login.h"
 #import "VConstants.h"
@@ -29,6 +28,9 @@
 // Validation
 #import "VEmailValidator.h"
 #import "UIAlertController+VSimpleAlert.h"
+
+// Swift
+#import "victorious-Swift.h"
 
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
@@ -78,27 +80,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:username
-                                              profileImageURL:nil
-                                                     location:nil
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    
+    [self queueUpdateProfileOperationWithUsername:username profileImageURL: nil completion:^(NSError *error)
      {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(YES, nil);
-                        });
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(NO, error);
-                        });
+         [hud hide:YES];
+         completion( error == nil, error);
      }];
 }
 
@@ -265,26 +251,30 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)updatePassword:(NSString *)password
-           completion:(void (^)(BOOL success, NSError *error))completion
+- (void)updatePassword:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
+    __weak typeof(self) weakSelf = self;
+    
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                    deviceToken:self.deviceToken
                                                    newPassword:password
-                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                  successBlock:^(NSOperation *restKitOperation, id result, NSArray *resultObjects)
      {
          [hud hide:YES];
-         VUserManager *userManager = [[VUserManager alloc] init];
-         [userManager loginViaEmail:self.resetPasswordEmail password:password onCompletion:^(VUser *user, BOOL isNewUser)
-          {
-              completion(YES, nil);
-          } onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-          {
-              completion(NO, error);
+         
+         [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSError *_Nullable error) {
+              if ( error == nil )
+              {
+                  completion(YES, nil);
+              }
+              else
+              {
+                  completion(NO, error);
+              }
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)
@@ -297,25 +287,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:nil
-                                              profileImageURL:filePath
-                                                     location:nil
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [self queueUpdateProfileOperationWithUsername:nil profileImageURL:filePath completion:^(NSError *error)
      {
-         if (completion != nil)
-         {
-             completion(YES, nil);
-         }
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (completion != nil)
-         {
-             completion(NO, error);
-         }
+         completion(error == nil, error);
      }];
 }
 

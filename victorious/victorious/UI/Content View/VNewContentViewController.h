@@ -15,7 +15,7 @@
 #import "VRenderablePreviewView.h"
 #import "VVideoPreviewView.h"
 
-@class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
+@class VDependencyManager, VSequenceActionController, VContentCell, VExperienceEnhancerBarCell;
 
 /**
  *  The content view controller.

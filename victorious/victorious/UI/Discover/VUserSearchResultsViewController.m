@@ -15,7 +15,6 @@
 #import "VUserProfileViewController.h"
 #import "VDependencyManager.h"
 #import "VConstants.h"
-#import "VAuthorizedAction.h"
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"

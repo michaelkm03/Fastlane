@@ -7,11 +7,7 @@
 //
 
 #import "VStreamCellHeader.h"
-
-// Dependencies
 #import "VDependencyManager.h"
-
-// Views + Helpers
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
@@ -22,14 +18,10 @@
 #import "UIView+AutoLayout.h"
 #import "VTimeSinceWidget.h"
 #import "VFollowControl.h"
-#import "VFollowResponder.h"
-
-// Models
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VObjectManager.h"
+#import "victorious-Swift.h"
 
-// Frameworks
 @import KVOController;
 
 static const CGFloat kLeadingHeaderSpace = 11.0f;
@@ -138,7 +130,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     _sequence = sequence;
     
-    BOOL shouldShowFollowControl = ![self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]] && !self.sequence.user.isFollowedByMainUser.boolValue;
+    BOOL shouldShowFollowControl = ![self.sequence.user isEqual:[VUser currentUser]] && !self.sequence.user.isFollowedByMainUser.boolValue;
     if ( self.shouldShowFollowControl != shouldShowFollowControl )
     {
         self.shouldShowFollowControl = shouldShowFollowControl;

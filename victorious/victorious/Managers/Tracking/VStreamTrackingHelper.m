@@ -123,9 +123,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyTimeStamp : [NSDate date],
-                                            VTrackingKeyUrls : sequence.tracking.cellClick,
-                                        VTrackingKeyStreamId : trackingID ?: @""};
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)

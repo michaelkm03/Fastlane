@@ -34,6 +34,6 @@ public protocol StreamItemType {
     var previewImagesObject: AnyObject? { get }
     var previewTextPostAsset: String? { get }
     var previewImageAssets: [ImageAsset] { get }
-    var type: StreamContentType { get }
-    var subtype: StreamContentType { get }
+    var type: StreamContentType? { get }
+    var subtype: StreamContentType? { get }
 }

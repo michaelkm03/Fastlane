@@ -9,16 +9,12 @@
 #import "NSString+VParseHelp.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Login.h"
 #import "VURLMacroReplacement.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "MBProgressHUD.h"
-#import "VObjectManager+Sequence.h"
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
-#import "VAuthorizedAction.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
@@ -28,6 +24,7 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VUser+Fetcher.h"
 #import "VHashtag+RestKit.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -62,9 +59,18 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         streamURL = [macroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kHashtagURLMacro: hashtag } inURLString:streamURL];
     }
     
-    VStream *stream = [VStream streamForPath:[streamURL v_pathComponent] inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    stream.hashtag = hashtag;
-    stream.name = [NSString stringWithFormat:@"#%@", hashtag];
+    
+    NSString *apiPath = [streamURL v_pathComponent];
+    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
+    NSDictionary *query = @{ @"apiPath" : apiPath };
+    
+    __block VStream *stream = nil;
+    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
+        stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        stream.name = [NSString stringWithFormat:@"#%@", hashtag];
+        [context saveChanges];
+    }];
     
     VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:stream];
     streamCollection.selectedHashtag = hashtag;
@@ -94,7 +100,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     self.followingEnabled = NO;
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:[VUser currentUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
@@ -146,9 +152,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSAssert( self.selectedHashtag != nil, @"To present this view controller, there must be a selected hashtag." );
     NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
     
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
-    VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    VHashtag *hashtag = [[VUser currentUser].hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     BOOL followingHashtag = hashtag != nil;
     if ( followingHashtag != self.followingSelectedHashtag)
     {
@@ -186,24 +191,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)toggleFollowHashtag
 {
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                      dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         
-         if ( self.isFollowingSelectedHashtag )
-         {
-             [self unfollowHashtag];
-         }
-         else
-         {
-             [self followHashtag];
-         }
-     }];
+    if ( self.isFollowingSelectedHashtag )
+    {
+        [self unfollowHashtag];
+    }
+    else
+    {
+        [self followHashtag];
+    }
 }
 
 - (void)followHashtag

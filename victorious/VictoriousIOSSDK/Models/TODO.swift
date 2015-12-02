@@ -9,13 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-public struct Tracking {}
-extension Tracking {
-    public init?(json: JSON) {
-        self.init()
-    }
-}
-
 public struct EndCard {}
 extension EndCard {
     public init?(json: JSON) {

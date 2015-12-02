@@ -32,7 +32,6 @@
 
 #import "MBProgressHUD.h"
 
-#import "VAuthorizedAction.h"
 #import "VNavigationController.h"
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"

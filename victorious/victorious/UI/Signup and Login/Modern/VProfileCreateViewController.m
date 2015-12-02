@@ -12,7 +12,6 @@
 #import "VDependencyManager.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VUserManager.h"
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"
@@ -22,8 +21,8 @@
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
 #import "VLocationManager.h"
-
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "victorious-Swift.h"
 
 @import CoreLocation;
 @import AddressBookUI;
@@ -54,8 +53,6 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
-@synthesize authorizedAction; //< VAuthorizationProvider
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -71,6 +68,14 @@
     VProfileCreateViewController *viewController = (VProfileCreateViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
     return viewController;
+}
+
+- (void)setProfile:(VUser *)profile
+{
+    _profile = profile;
+    
+    self.registrationModel = [[VRegistrationModel alloc] init];
+    self.registrationModel.username = profile.name;
 }
 
 #pragma mark - UIViewController
@@ -316,18 +321,7 @@
 
 - (void)exitWithSuccess:(BOOL)success
 {
-    BOOL wasPresentedStandalone = self.navigationController == nil;
-    if ( wasPresentedStandalone )
-    {
-        [self dismissViewControllerAnimated:YES completion:^
-         {  
-            if ( self.authorizedAction != nil && success )
-            {
-                self.authorizedAction(YES);
-            }
-        }];
-    }
-    else if ( self.registrationStepDelegate != nil )
+    if ( self.registrationStepDelegate != nil )
     {
         [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
     }
@@ -356,27 +350,21 @@
     if ([self shouldCreateProfile])
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
-        
-        [self performProfileCreationWithRegistrationModel:self.registrationModel];
+        [self queueUpdateProfileOperationWithUsername:self.registrationModel.username
+                                      profileImageURL:self.registrationModel.profileImageURL
+                                             location:self.registrationModel.locationText
+                                           completion:^(NSError *error)
+         {
+             if ( error == nil )
+             {
+                 [self didCreateProfile];
+             }
+             else
+             {
+                 [self didFailWithError:error];
+             }
+         }];
     }
-}
-
-- (void)performProfileCreationWithRegistrationModel:(VRegistrationModel *)registrationModel
-{
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:registrationModel.username
-                                              profileImageURL:registrationModel.profileImageURL
-                                                     location:registrationModel.locationText
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self didCreateProfile];
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self didFailWithError:error];
-     }];
 }
 
 - (IBAction)takePicture:(id)sender

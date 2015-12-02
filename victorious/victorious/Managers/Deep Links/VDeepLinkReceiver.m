@@ -7,7 +7,6 @@
 //
 
 #import "VDeeplinkReceiver.h"
-#import "VAuthorizedAction.h"
 #import "VMultipleContainer.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -21,7 +20,6 @@
 
 @interface VDeeplinkReceiver()
 
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, readonly) VTabScaffoldViewController *scaffold;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deep link URL that came in before we were ready for it
 
@@ -107,19 +105,7 @@
     {
         if ( handler.requiresAuthorization )
         {
-            VAuthorizationContext context = VAuthorizationContextDefault;
-            if ( [handler respondsToSelector:@selector(authorizationContext)] )
-            {
-                context = handler.authorizationContext;
-            }
-            typeof(self) __weak welf = self;
-            [self.authorizedAction performFromViewController:self.scaffold context:context completion:^(BOOL authorized)
-             {
-                 if ( authorized )
-                 {
-                     [welf executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
-                 }
-             }];
+            [self executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
         }
         else
         {
@@ -244,18 +230,6 @@
                                           cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                           otherButtonTitles:nil];
     [alert show];
-}
-
-#pragma mark - Authorized actions
-
-- (VAuthorizedAction *)authorizedAction
-{
-    if ( _authorizedAction == nil )
-    {
-        _authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[self.dependencyManager objectManager]
-                                                           dependencyManager:self.dependencyManager];
-    }
-    return _authorizedAction;
 }
 
 @end

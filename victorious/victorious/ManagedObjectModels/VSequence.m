@@ -30,6 +30,7 @@
 @dynamic isComplete;
 @dynamic isLikedByMainUser;
 @dynamic isRemix;
+@dynamic isFlagged;
 @dynamic isRepost;
 @dynamic likeCount;
 @dynamic memeCount;
@@ -41,7 +42,6 @@
 @dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;
-@dynamic status;
 @dynamic adBreaks;
 @dynamic comments;
 @dynamic endCard;

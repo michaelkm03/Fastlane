@@ -79,7 +79,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("loginStatusDidChange"), name: kLoggedInChangedNotification, object: VObjectManager.sharedManager())
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("loginStatusDidChange"), name: kLoggedInChangedNotification, object: nil)
     }
     
     /// Nils out shelf to respond to changes in login, should not be called except in response to a login change.

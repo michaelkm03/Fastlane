@@ -36,7 +36,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                authorizedAction = VAuthorizedAction(objectManager: VObjectManager.sharedManager(), dependencyManager: dependencyManager)
                 navigationItem.title = dependencyManager.stringForKey(VDependencyManagerTitleKey)
             }
         }
@@ -52,7 +51,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private let commentsDataSourceSwitcher = CommentsDataSourceSwitchter()
     private var registeredCommentReuseIdentifiers = Set<String>()
     private let scrollPaginator = VScrollPaginator()
-    private var authorizedAction: VAuthorizedAction!
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     private var focusHelper: VCollectionViewStreamFocusHelper?
@@ -389,44 +387,34 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
-        authorizedAction?.performFromViewController(self,
-            context: .AddComment,
-            completion: { [weak self](authorized: Bool) in
-                if authorized, let strongSelf = self, let sequence = strongSelf.sequence {
-                    VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
-                        publishParameters: strongSelf.publishParameters,
-                        toSequence: sequence,
-                        andParent: nil,
-                        successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                            dispatch_async(dispatch_get_main_queue(), { () in
-                                strongSelf.collectionView.performBatchUpdates({ () in
-                                        if let seqdataSource = strongSelf.commentsDataSourceSwitcher.dataSource as? SequenceCommentsDataSource {
-                                            seqdataSource.sortInternalComments()
-                                        }
-                                        strongSelf.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-                                        strongSelf.noContentView?.resetInitialAnimationState()
-                                    }, completion: { (finished: Bool) -> Void in
-                                        strongSelf.updateInsetForKeyboardBarState()
-                                        strongSelf.focusHelper?.updateFocus()
-                                })
-                            })
-                        }, failBlock: nil)
-                    
-                    strongSelf.keyboardBar?.clearTextAndResign()
-                    strongSelf.publishParameters?.mediaToUploadURL = nil
-                }
-        })
+        if let sequence = self.sequence {
+            VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
+                publishParameters: self.publishParameters,
+                toSequence: sequence,
+                andParent: nil,
+                successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
+                    dispatch_async(dispatch_get_main_queue(), { () in
+                        self.collectionView.performBatchUpdates({ () in
+                            if let seqdataSource = self.commentsDataSourceSwitcher.dataSource as? SequenceCommentsDataSource {
+                                seqdataSource.sortInternalComments()
+                            }
+                            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+                            self.noContentView?.resetInitialAnimationState()
+                            }, completion: { (finished: Bool) -> Void in
+                                self.updateInsetForKeyboardBarState()
+                                self.focusHelper?.updateFocus()
+                        })
+                    })
+                }, failBlock: nil)
+            
+            self.keyboardBar?.clearTextAndResign()
+            self.publishParameters?.mediaToUploadURL = nil
+        }
     }
     
     func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {
-        
         inputAccessoryView.stopEditing()
-        
-        self.authorizedAction.performFromViewController(self, context: .AddComment) { [weak self](authorized: Bool) in
-            if authorized, let strongSelf = self {
-                strongSelf.addMediaToCommentWithAttachmentType(attachmentType)
-            }
-        }
+        self.addMediaToCommentWithAttachmentType(attachmentType)
     }
     
     func keyboardInputAccessoryViewWantsToClearMedia(inputAccessoryView: VKeyboardInputAccessoryView) {

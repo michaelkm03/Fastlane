@@ -11,18 +11,6 @@
 @class VDependencyManager, VNotAuthorizedDataSource;
 
 /**
- *  A delegate informing about a request for login.
- */
-@protocol VNotAuthorizedDataSourceDelegate <NSObject>
-
-/**
- *  Informs the receiver that the user requested a login.
- */
-- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource;
-
-@end
-
-/**
  A simple UICollectionViewDataSource that populates the collectionview
  provided in its initializer with a single cell to inform the user they 
  are not currently authorized. Provides a block-based callback when the
@@ -43,10 +31,5 @@
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
-
-/**
- *  A delegate conforming to VNotAuthorizedDataSourceDelegate.
- */
-@property (nonatomic, weak) id <VNotAuthorizedDataSourceDelegate> delegate;
 
 @end

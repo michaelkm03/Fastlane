@@ -14,7 +14,6 @@
 #import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
-#import "VAuthorizedAction.h"
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VDiscoverSuggestedPersonCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";

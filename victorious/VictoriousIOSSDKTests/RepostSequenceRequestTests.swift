@@ -12,8 +12,8 @@ import VictoriousIOSSDK
 class RepostSequenceRequestTests: XCTestCase {
     
     func testRequest() {
-        let mockSequenceID: Int64 = 101
-        let repostRequest = RepostSequenceRequest(sequenceID: mockSequenceID)
+        let mockNodeID: Int64 = 101
+        let repostRequest = RepostSequenceRequest(nodeID: mockNodeID)
         let urlRequest = repostRequest.urlRequest
         
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/repost/create")
@@ -24,6 +24,6 @@ class RepostSequenceRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("parent_node_id=\(mockSequenceID)"))
+        XCTAssertNotNil(bodyString.rangeOfString("parent_node_id=\(mockNodeID)"))
     }
 }

@@ -302,46 +302,6 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
 }
 
-- (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
-                                       withName:(NSString *)name
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
-{
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    parameters[@"parent_node_id"] = node.remoteId ?: [NSNull null];
-    if (name)
-    {
-        parameters[@"name"] = name;
-    }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidRepost];
-        
-        if ( success != nil )
-        {
-            success( operation, fullResponse, resultObjects );
-        }
-    };
-    
-    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
-    {
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRepostDidFail parameters:params];
-        
-        if ( fail != nil )
-        {
-            fail( operation, error );
-        }
-    };
-    
-    return [self POST:@"/api/repost/create"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:fullFail];
-}
-
 - (NSString *)stringForLoopType:(VLoopType)type
 {
     if (type == VLoopRepeat)

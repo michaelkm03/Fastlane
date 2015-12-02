@@ -17,7 +17,6 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-#import "VAuthorizedAction.h"
 #import "VTrendingTagCell.h"
 #import "VNoContentView.h"
 #import "VFollowControl.h"
@@ -203,29 +202,17 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         {
             return;
         }
+        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
         
-        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                          dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
-                 return;
-             }
-             
-             [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
-             
-             // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-             if (weakCell.isSubscribedToTag)
-             {
-                 [self unsubscribeToTagAction:hashtag];
-             }
-             else
-             {
-                 [self subscribeToTagAction:hashtag];
-             }
-         }];
+        // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+        if (weakCell.isSubscribedToTag)
+        {
+            [self unsubscribeToTagAction:hashtag];
+        }
+        else
+        {
+            [self subscribeToTagAction:hashtag];
+        }
     };
     customCell.dependencyManager = self.dependencyManager;
     

@@ -22,12 +22,11 @@
 #import "VSessionTimer.h"
 #import "VTemplateDecorator.h"
 #import "VTemplateDownloadOperation.h"
-#import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
-#import "VLoginOperation.h"
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
+#import "victorious-Swift.h"
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
@@ -37,9 +36,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadOperation;
-@property (nonatomic, strong) VLoginOperation *loginOperation;
+@property (nonatomic, strong) StoredLoginOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, assign) BOOL isLoading;
@@ -73,25 +71,14 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.backgroundContainer addSubview:launchScreen];
     [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreen];
     
-    self.operationQueue = [[NSOperationQueue alloc] init];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
-    if (currentNetworkStatus == VNetworkStatusNotReachable)
-    {
-        [self showReachabilityNotice];
-    }
-    else
-    {
-        [self startLoading];
-    }
-    self.priorNetworkStatus = currentNetworkStatus;
+    
+    [self startLoading];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -148,7 +135,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    /*VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
     if (currentNetworkStatus == VNetworkStatusNotReachable)
     {
         [self showReachabilityNotice];
@@ -158,7 +145,9 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         [self hideReachabilityNotice];
         [self startLoading];
     }
-    self.priorNetworkStatus = currentNetworkStatus;
+    self.priorNetworkStatus = currentNetworkStatus;*/
+    
+    [self startLoading];
 }
 
 #pragma mark - Loading
@@ -172,15 +161,13 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     self.isLoading = YES;
     
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
+   
+    self.loginOperation = [[StoredLoginOperation alloc] init];
     
-    self.loginOperation = [[VLoginOperation alloc] init];
-    [self.operationQueue addOperation:self.loginOperation];
-    
-    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
+    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager]
+                                                                                andDelegate:self];
     self.templateDownloadOperation.buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
-    [self.templateDownloadOperation addDependency:self.loginOperation];
-    [self.operationQueue addOperation:self.templateDownloadOperation];
     
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
@@ -188,18 +175,20 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-                           {
-                               strongSelf.isLoading = NO;
-                               strongSelf.progressHUD.taskInProgress = NO;
-                               [strongSelf.progressHUD hide:YES];
-                               [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
-                           });
+            strongSelf.isLoading = NO;
+            strongSelf.progressHUD.taskInProgress = NO;
+            [strongSelf.progressHUD hide:YES];
+            [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
         }
     }];
     [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
-    [self.operationQueue addOperation:self.finishLoadingOperation];
+    [self.templateDownloadOperation addDependency:self.loginOperation];
+    
+    [[Operation defaultQueue] addOperation:self.templateDownloadOperation];
+    [[Operation defaultQueue] addOperation:self.loginOperation];
+    [[NSOperationQueue mainQueue] addOperation:self.finishLoadingOperation];
+    
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     self.progressHUD.graceTime = 2.0f;

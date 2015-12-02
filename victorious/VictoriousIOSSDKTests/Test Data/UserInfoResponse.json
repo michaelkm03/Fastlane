@@ -8,6 +8,7 @@
 	"login_id": 3719,
 	"page_number": 1,
 	"total_pages": 1,
+	"experiment_ids": [],
 	"payload": [{
 		"id": "3694",
 		"name": "Patrick Lynch",
@@ -34,9 +35,9 @@
 		},
 		"isCreator": false,
 		"fanloyalty": {
-			"points": 4812,
-			"level": 8,
-			"progress": 94
+			"points": 2889,
+			"level": 7,
+			"progress": 36
 		},
 		"email": "pdlynch@gmail.com",
 		"access_level": "api_user",
