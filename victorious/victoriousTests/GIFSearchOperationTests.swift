@@ -7,32 +7,18 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
 import SwiftyJSON
+import VictoriousIOSSDK
 @testable import victorious
 
 class GIFSearchOperationTests: XCTestCase {
-    
-    func testOnComplete() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("GIFSearchResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
-                XCTFail("Error reading mock json data")
-                return
-        }
-        
-        do {
-            let request = GIFSearchRequest(searchTerm: "lol")
-            let result: GIFSearchRequest.ResultType = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            
-            let gifSearchOperation = GIFSearchOperation(request: request)
-            gifSearchOperation.onComplete(result, completion: { () -> () in
-            })
-            
-            XCTAssertEqual(gifSearchOperation.searchResults.count, 15)
-            XCTAssertNotNil(gifSearchOperation.nextPageOperation)
-            XCTAssertNil(gifSearchOperation.previousPageOperation)
-        } catch {
-            XCTFail("Sorry, parseResponse should not throw here")
-        }
+
+    func testEmptyResult() {
+        let result: GIFSearchRequest.ResultType = ([], nil, nil)
+        let operation = GIFSearchOperation(searchText: "fun")
+        operation.onComplete(result){ }
+        XCTAssertTrue(operation.searchResults.isEmpty)
+        XCTAssertNil(operation.nextPageOperation)
+        XCTAssertNil(operation.previousPageOperation)
     }
 }
