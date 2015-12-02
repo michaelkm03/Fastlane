@@ -59,7 +59,7 @@ class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
                     }
                 }
                 
-                //context.saveChanges()
+                context.saveChanges()
                 completion()
             }
         }

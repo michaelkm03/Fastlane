@@ -159,7 +159,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
             {
-                [self refreshAllCommentsSection:pageType];
+                [self commentsDidLoad];
                 
                 __weak typeof(self) welf = self;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -182,7 +182,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         else
         {
-            [self refreshAllCommentsSection:pageType];
+            [self commentsDidLoad];
         }
     }
     self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
@@ -698,16 +698,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         ((VVideoLightboxViewController *) lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
     }
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:sourceView];
     
-    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox
-                                                                      referenceView:sourceView];
-    
-    [welf presentViewController:lightbox
-                       animated:YES
-                     completion:nil];
+    [welf presentViewController:lightbox  animated:YES completion:nil];
 }
 
-- (void)refreshAllCommentsSection:(VPageType)pageType
+- (void)commentsDidLoad
 {
     void (^batchUpdates)() = ^
     {
@@ -715,7 +711,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [self.contentCollectionView reloadSections:commentsIndexSet];
     };
     
-    if ( pageType == VPageTypeFirst )
+    if ( self.viewModel.sequence.comments.count == 0 || [self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] == 0 )
     {
         batchUpdates();
     }

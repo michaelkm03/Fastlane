@@ -28,6 +28,10 @@ class StreamOperation: RequestOperation<StreamRequest> {
     var nextPageOperation: StreamOperation?
     var previousPageOperation: StreamOperation?
     
+    override func onError(error: NSError, completion: () -> ()) {
+        completion()
+    }
+    
     override func onComplete(response: StreamRequest.ResultType, completion:()->() ) {
         let stream = response.results
         let uniqueElements = [ "apiPath" : self.apiPath ]
@@ -35,7 +39,7 @@ class StreamOperation: RequestOperation<StreamRequest> {
         persistentStore.asyncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
             persistentStream.populate( fromSourceModel: stream )
-            //context.saveChanges()
+            context.saveChanges()
         }
         
         if let nextPageRequest = response.nextPage {

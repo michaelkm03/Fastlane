@@ -24,7 +24,7 @@ class FollowCountOperation: RequestOperation<FollowCountRequest> {
             let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.userID) ])
             user.numberOfFollowers = response.followersCount
             user.numberOfFollowing = response.followingCount
-            //context.saveChanges()
+            context.saveChanges()
             completion()
         }
     }

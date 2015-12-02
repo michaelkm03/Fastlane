@@ -24,7 +24,7 @@ class SequenceUserInterationsOperation: RequestOperation<SequenceUserInteraction
         persistentStore.asyncFromBackground() { context in
             let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(self.sequenceID) ])
             sequence.hasBeenRepostedByMainUser = result
-            //context.saveChanges()
+            context.saveChanges()
             completion()
         }
     }

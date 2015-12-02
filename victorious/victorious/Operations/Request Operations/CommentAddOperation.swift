@@ -61,7 +61,7 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
             comment.mediaUrl = self.publishParameters?.mediaToUploadURL.absoluteString
             comment.userId = currentUserId
             
-            //context.saveChanges()
+            context.saveChanges()
             completion()
         }
     }
@@ -72,7 +72,7 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
             // Repopulate the comment after created on server to provide remoteId and other properties
             if let commentCreated: VComment = context.findObjects( [ "sequenceId" : String(comment.commentID)] ).first {
                 commentCreated.populate( fromSourceModel: comment )
-                //context.saveChanges()
+                context.saveChanges()
             }
             
             completion()

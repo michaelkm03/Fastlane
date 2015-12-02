@@ -17,13 +17,12 @@ extension VStream: PersistenceParsable {
         itemSubType     = stream.subtype?.rawValue ?? ""
         name            = stream.name
         count           = stream.postCount
-        
 
         // TODO: Unit test the flagged content stuff
         let flaggedStreamItemIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem) ?? []
         let flaggedStreamIds: [String] = flaggedStreamItemIds.flatMap { $0 as? String }
         let flaggedSequenceIds: [Int64] = flaggedStreamItemIds.flatMap { $0 as? Int64 }
-        self.addObjects( stream.items.flatMap {
+        let newStreamItems: [VStreamItem] = stream.items.flatMap {
             if let sequence = $0 as? Sequence where !flaggedSequenceIds.contains( sequence.sequenceID ) {
                 let persistentSequence = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
                 persistentSequence.populate( fromSourceModel: sequence )
@@ -35,6 +34,7 @@ extension VStream: PersistenceParsable {
                 return persistentStream
             }
             return nil
-        }, to: "streamItems" )
+        }
+        self.addObjects( newStreamItems, to: "streamItems" )
     }
 }

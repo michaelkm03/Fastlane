@@ -30,7 +30,7 @@ class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.repostedSequences.insert( node.sequence )
-            //context.saveChanges()
+            context.saveChanges()
             
             completion()
         }

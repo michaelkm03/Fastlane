@@ -35,7 +35,7 @@ class PollResultSummaryBySequenceOperation: RequestOperation<PollResultSummaryRe
                 persistentResult.sequence = sequence
             }
             
-            //context.saveChanges()
+            context.saveChanges()
             completion()
         }
     }
@@ -72,7 +72,7 @@ class PollResultSummaryByUserOperation: RequestOperation<PollResultSummaryReques
                 persistentResult.user = user
             }
             
-            //context.saveChanges()
+            context.saveChanges()
         }
     }
 }

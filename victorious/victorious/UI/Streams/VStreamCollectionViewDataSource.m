@@ -15,8 +15,7 @@
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "victorious-Swift.h"
-
-static char KVOContext;
+#import <KVOController/FBKVOController.h>
 
 NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
 
@@ -27,11 +26,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 @end
 
 @implementation VStreamCollectionViewDataSource
-
-- (void)dealloc
-{
-    [self removeKVOObservers];
-}
 
 - (instancetype)initWithStream:(VStream *)stream
 {
@@ -51,17 +45,17 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return;
     }
     
-    [self removeKVOObservers];
-    
     _stream = stream;
     
-    if ( stream != nil )
-    {
-        [stream addObserver:self
-                 forKeyPath:NSStringFromSelector(@selector(streamItems))
-                    options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                    context:&KVOContext];
-    }
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:_stream keyPath:@"streamItems" options:kNilOptions block:^(id observer, id object, NSDictionary *change)
+     {
+         NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
+         if ( kind == NSKeyValueChangeSetting )
+         {
+             [welf updateVisibleStreamItems];
+         }
+     }];
 }
 
 - (void)setSuppressShelves:(BOOL)suppressShelves
@@ -93,11 +87,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
     }];
     return [self.stream.streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate];
-}
-
-- (void)removeKVOObservers
-{
-    [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
 }
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
@@ -213,16 +202,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     }
     
     return nil;
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
-    {
-        [self updateVisibleStreamItems];
-    }
 }
 
 @end

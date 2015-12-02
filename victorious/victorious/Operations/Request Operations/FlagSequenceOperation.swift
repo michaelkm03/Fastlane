@@ -26,7 +26,7 @@ class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
         persistentStore.asyncFromBackground() { context in
             if let sequence: VSequence = context.findObjects([ "remoteId" : String(self.sequenceID) ]).first {
                 context.destroy( sequence )
-                //context.saveChanges()
+                context.saveChanges()
             }
             completion()
         }

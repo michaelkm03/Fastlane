@@ -234,6 +234,7 @@
 {
     _delegate = delegate;
     
+    __weak typeof(self) welf = self;
     [self.KVOController observe:_sequence
                         keyPath:@"comments"
                         options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
@@ -242,7 +243,7 @@
          NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
          if ( kind == NSKeyValueChangeSetting )
          {
-             [_delegate didUpdateCommentsWithPageType:VPageTypeFirst];
+             [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
          }
      }];
 }

@@ -34,7 +34,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
-            //context.saveChanges()
+            context.saveChanges()
             
             let identifier = user.identifier
             dispatch_async( dispatch_get_main_queue() ) {

@@ -53,7 +53,7 @@ class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
             for sequence in sequences {
                 sequence.isLikedByMainUser = true
             }
-            //context.saveChanges()
+            context.saveChanges()
         }
     }
 }

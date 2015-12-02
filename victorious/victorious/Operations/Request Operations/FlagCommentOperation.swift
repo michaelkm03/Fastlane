@@ -27,7 +27,7 @@ class FlagCommentOperation: RequestOperation<FlagCommentRequest> {
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
             if let comment: VComment = context.findObjects( uniqueElements ).first {
                 context.destroy( comment )
-                //context.saveChanges()
+                context.saveChanges()
             }
             completion()
         }
