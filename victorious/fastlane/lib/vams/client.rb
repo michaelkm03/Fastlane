@@ -60,13 +60,7 @@ module VAMS
                                             headers:  construct_headers(endpoint: endpoint, method: method))
       json              = JSON.parse(response.body)
 
-      # HACK: Temporarily submit only the leachypeachy app.
-      #       Even if app is pretty awesome 😃, we'll need to submit apps
-      #       with the unlocked app state when it becomes available in
-      #       production VAMS api.
-      #
-      # unlocked_app_data = json['payload'].select { |data| data['build_name'] == 'leachypeachy99' }
-      unlocked_app_data = json['payload'].select { |data| data['app_state'] == 'unlocked' }
+      unlocked_app_data = json['payload'].select { |data| data['ios_release_state'] == App::STATE::ON_DECK }
       unlocked_app_data.map { |data| App.new(data) }
     end
 
