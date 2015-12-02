@@ -22,9 +22,12 @@ class GIFSearchOperationTests: XCTestCase {
         
         do {
             let request = GIFSearchRequest(searchTerm: "lol")
-            let result: ([VictoriousIOSSDK.GIFSearchResult], GIFSearchRequest?, GIFSearchRequest?) = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let result: GIFSearchRequest.ResultType = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            
             let gifSearchOperation = GIFSearchOperation(request: request)
-            gifSearchOperation.onComplete(result){ }
+            gifSearchOperation.onComplete(result, completion: { () -> () in
+            })
+            
             XCTAssertEqual(gifSearchOperation.searchResults.count, 15)
             XCTAssertNotNil(gifSearchOperation.nextPageOperation)
             XCTAssertNil(gifSearchOperation.previousPageOperation)
