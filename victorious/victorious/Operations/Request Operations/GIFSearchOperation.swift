@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 class GIFSearchOperation: RequestOperation<GIFSearchRequest> {
-    private(set) var searchResults: [GIFSearchResult] = []
+    private(set) var searchResults: [VGIFSearchResult] = []
     private(set) var nextPageOperation: GIFSearchOperation?
     private(set) var previousPageOperation: GIFSearchOperation?
     
@@ -24,7 +24,7 @@ class GIFSearchOperation: RequestOperation<GIFSearchRequest> {
     
     override func onComplete(result: GIFSearchRequest.ResultType, completion: () -> ()) {
         searchResults = result.results.flatMap() {
-            GIFSearchResult(networkingSearchResultModel: $0)
+            VGIFSearchResult(networkingSearchResultModel: $0)
         }
         if let nextPageRequest = result.nextPage {
             nextPageOperation = GIFSearchOperation(request: nextPageRequest)

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-@objc class GIFSearchResult: NSObject {
+@objc class VGIFSearchResult: NSObject {
     let gifURL: String
     let gifSize: Int64?
     let mp4URL: String

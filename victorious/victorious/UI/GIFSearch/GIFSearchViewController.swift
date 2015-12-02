@@ -17,7 +17,7 @@ import UIKit
     /// - parameter `gifSearchResult`: The GIFSearchResult model selected.
     /// - parameter `previewImage`: A small, still image that is loaded into memory and ready to display
     /// - parameter `capturedMediaURL`: The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
-    func GIFSearchResultSelected( gifSearchResult: GIFSearchResult, previewImage: UIImage, capturedMediaURL: NSURL )
+    func GIFSearchResultSelected( gifSearchResult: VGIFSearchResult, previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API

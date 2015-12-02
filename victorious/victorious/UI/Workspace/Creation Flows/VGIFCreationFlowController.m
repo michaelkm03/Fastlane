@@ -129,7 +129,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - GIFSearchViewControllerDelegate
 
-- (void)GIFSearchResultSelected:(GIFSearchResult *)result previewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+- (void)GIFSearchResultSelected:(VGIFSearchResult *)result previewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     self.source = VCreationFlowSourceSearch;
     self.publishParameters.width = result.width;

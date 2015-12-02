@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 class TrendingGIFsOperation: RequestOperation<TrendingGIFsRequest> {
-    private(set) var trendingGIFsResults: [GIFSearchResult] = []
+    private(set) var trendingGIFsResults: [VGIFSearchResult] = []
     private(set) var nextPageOperation: TrendingGIFsOperation?
     private(set) var previousPageOperation: TrendingGIFsOperation?
     
@@ -24,7 +24,7 @@ class TrendingGIFsOperation: RequestOperation<TrendingGIFsRequest> {
     
     override func onComplete(result: TrendingGIFsRequest.ResultType, completion: () -> ()) {
         trendingGIFsResults = result.results.flatMap() {
-            GIFSearchResult(networkingSearchResultModel: $0)
+            VGIFSearchResult(networkingSearchResultModel: $0)
         }
         if let nextPageRequest = result.nextPage {
             nextPageOperation = TrendingGIFsOperation(request: nextPageRequest)

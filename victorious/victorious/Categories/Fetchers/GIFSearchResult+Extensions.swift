@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension GIFSearchResult {
+extension VGIFSearchResult {
     
     /// The aspect ratio of the assets
     var aspectRatio: CGFloat {

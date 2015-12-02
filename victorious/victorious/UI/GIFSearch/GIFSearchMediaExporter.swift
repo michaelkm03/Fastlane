@@ -26,7 +26,7 @@ struct GIFSearchMediaExporter {
     ///
     /// - parameter gifSearchResult: The GIFSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
+    func loadMedia( gifSearchResult: VGIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
         if let searchResultURL = NSURL(string: gifSearchResult.mp4URL) {
             let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
