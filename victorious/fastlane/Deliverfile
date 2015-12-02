@@ -6,5 +6,5 @@
 ###################### Automatically generated ######################
 # Feel free to remove the following line if you use fastlane (which you should)
 
-app_identifier "com.getvictorious.leachypeachy99" # The bundle identifier of your app
+app_identifier ENV['BUNDLE_ID'] # The bundle identifier of your app
 username "alextamoykin@getvictorious.com" # your Apple ID user

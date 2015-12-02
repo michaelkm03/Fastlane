@@ -33,6 +33,14 @@ def prepare_metadata(client:, build_name:)
   metadata      = VAMS::Metadata.new(app_with_meta)
   metadata_path = File.join(FASTLANE_DIRECTORY, 'metadata')
   metadata.save(location: metadata_path, language: 'en-US')
+  app_with_meta
+end
+
+def with_bundle_id(bundle_id:)
+  old_bundle_id = ENV['BUNDLE_ID']
+  ENV['BUNDLE_ID'] = bundle_id
+  yield
+  ENV['BUNDLE_ID'] = old_bundle_id
 end
 
 platform :ios do
@@ -50,24 +58,28 @@ platform :ios do
     client = VAMS::Client.new(environment: :production)
     client.apps_to_build.each do |app|
       apply_config(build_name: app.build_name)
-      prepare_metadata(client: client, build_name: app.build_name)
-      sigh
+      app_with_meta = prepare_metadata(client: client, build_name: app.build_name)
 
-      gym(
-        scheme: 'release-victorious',
-        codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
-      )
-      version      = get_version_number(xcodeproj: "victorious.xcodeproj")
-      build_number = get_build_number(xcodeproj: "victorious.xcodeproj")
+      with_bundle_id(bundle_id: app_with_meta.sanitized_bundle_id) do
+        sigh
 
-      deliver(force: true)
-      result = VAMS::SubmissionResult.new(
-        app_id:   app.app_id,
-        datetime: Time.now,
-        build:    "#{version} (#{build_number})",
-        status:   SubmissionResult::Status::GOOD
-      )
-      client.submit_result(result)
+        gym(
+          scheme: 'release-victorious',
+          codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
+        )
+        version      = get_version_number(xcodeproj: "victorious.xcodeproj")
+        build_number = get_build_number(xcodeproj: "victorious.xcodeproj")
+
+        deliver(force: true)
+
+        result = VAMS::SubmissionResult.new(
+          app_id:   app.app_id,
+          datetime: Time.now,
+          build:    "#{version} (#{build_number})",
+          status:   VAMS::SubmissionResult::Status::GOOD
+        )
+        client.submit_result(result)
+      end
     end
   end
 

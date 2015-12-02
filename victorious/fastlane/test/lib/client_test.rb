@@ -38,6 +38,7 @@ module VAMS
       assert_equal("75", app.app_id)
       assert_equal(1, app.ios_app_categories['Books'])
       assert_equal('com.getvictorious.${ProductPrefix}leachypeachy', app.bundle_id)
+      assert_equal('com.getvictorious.leachypeachy',                 app.sanitized_bundle_id)
     end
 
     def test_gets_screenshots
