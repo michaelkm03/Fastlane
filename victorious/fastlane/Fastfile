@@ -61,7 +61,7 @@ platform :ios do
       build_number = get_build_number(xcodeproj: "victorious.xcodeproj")
 
       deliver(force: true)
-      result = SubmissionResult.new(
+      result = VAMS::SubmissionResult.new(
         app_id:   app.app_id,
         datetime: Time.now,
         build:    "#{version} (#{build_number})",
