@@ -14,9 +14,7 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// - parameter `gifSearchResult`: The GIFSearchResult model selected.
-    /// - parameter `previewImage`: A small, still image that is loaded into memory and ready to display
-    /// - parameter `capturedMediaURL`: The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    /// - parameter `selectedGIFSearchResult`: The selected GIF search result object
     func GIFSearchResultSelected( selectedGIFSearchResult: SelectedGIFSearchResult)
 }
 
