@@ -17,7 +17,7 @@ import UIKit
     /// - parameter `gifSearchResult`: The GIFSearchResult model selected.
     /// - parameter `previewImage`: A small, still image that is loaded into memory and ready to display
     /// - parameter `capturedMediaURL`: The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
-    func GIFSearchResultSelected( gifSearchResult: VGIFSearchResult, previewImage: UIImage, capturedMediaURL: NSURL )
+    func GIFSearchResultSelected( selectedGIFSearchResult: SelectedGIFSearchResult)
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API
@@ -87,19 +87,18 @@ class GIFSearchViewController: UIViewController {
     func exportSelectedItem( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
-            let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
+            let networkGIFSearchResult = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
             let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
             
-            self.mediaExporter.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
-                
+            self.mediaExporter.loadMedia( networkGIFSearchResult ) { (previewImage, mediaURL, error) in
+
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    self.delegate?.GIFSearchResultSelected( selectedGIF,
-                        previewImage: previewImage,
-                        capturedMediaURL: mediaURL )
+                    let selectedGIFResult = SelectedGIFSearchResult(networkingSearchResultModel: networkGIFSearchResult, previewImage: previewImage, mediaURL: mediaURL)
+                    self.delegate?.GIFSearchResultSelected( selectedGIFResult )
                 }
                 else {
                     let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )

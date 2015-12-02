@@ -45,11 +45,11 @@ class GIFSearchDataSource: NSObject {
         /// search result and the colleciton view bounds
         static let MinCollectionContainerMargin: CGFloat = 50.0
         
-        let results: [VGIFSearchResult]
+        let results: [GIFSearchResult]
         
         let isFullSize: Bool
         
-        subscript( index: Int ) -> VGIFSearchResult {
+        subscript( index: Int ) -> GIFSearchResult {
             return self.results[ index ]
         }
         
@@ -89,7 +89,7 @@ class GIFSearchDataSource: NSObject {
         
         self.state = .Loading
         
-        let successClosure: ([VGIFSearchResult]) -> Void = { results in
+        let successClosure: ([GIFSearchResult]) -> Void = { results in
             self.state = .Content
             let result = self.updateDataSource( results, pageType: pageType )
             completion?( result )
@@ -126,7 +126,7 @@ class GIFSearchDataSource: NSObject {
         }
         self.state = .Loading
         
-        let successClosure: ([VGIFSearchResult]) -> Void = { results in
+        let successClosure: ([GIFSearchResult]) -> Void = { results in
             self.state = .Content
             self.mostRecentSearchText = searchText
             let result = self.updateDataSource(results, pageType: pageType)
@@ -209,7 +209,7 @@ class GIFSearchDataSource: NSObject {
     
     // MARK: - Private
     
-    private func updateDataSource( results: [VGIFSearchResult], pageType: VPageType ) -> ChangeResult {
+    private func updateDataSource( results: [GIFSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
             if self.sections.count == 0 && results.count > 0 {
@@ -223,7 +223,7 @@ class GIFSearchDataSource: NSObject {
         }
         let prevSectionCount = self.sections.count
         for var i = 0; i < results.count; i+=2 {
-            let resultsForSection: [VGIFSearchResult] = {
+            let resultsForSection: [GIFSearchResult] = {
                 if i + 1 < results.count {
                     return [results[i], results[i+1]]
                 }
@@ -242,7 +242,7 @@ class GIFSearchDataSource: NSObject {
 }
 
 private extension GIFSearchDataSource {
-    private func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([VGIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+    private func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
         var operation: GIFSearchOperation?
         
         switch pageType {
@@ -270,7 +270,7 @@ private extension GIFSearchDataSource {
         }
     }
     
-    private func loadTrendingGIFs(pageType: VPageType, onSuccess: ([VGIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
+    private func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
         var operation: TrendingGIFsOperation?
         
         switch pageType {

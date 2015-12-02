@@ -1028,7 +1028,7 @@
 		A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D9204C1C0636CC002A6503 /* APIError.swift */; };
 		A7D920501C063705002A6503 /* VRequestErrorConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = A7D9204E1C063705002A6503 /* VRequestErrorConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D9204F1C063705002A6503 /* VRequestErrorConstants.m */; };
-		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
+		A7DAFCA91B4EDACE00B51C92 /* SelectedGIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* SelectedGIFSearchResult.swift */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DC00D51BF2BBC100E24A2F /* SimpleStream.json in Resources */ = {isa = PBXBuildFile; fileRef = A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */; };
 		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
@@ -3305,7 +3305,7 @@
 		A7D9204C1C0636CC002A6503 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = Errors/APIError.swift; sourceTree = "<group>"; };
 		A7D9204E1C063705002A6503 /* VRequestErrorConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRequestErrorConstants.h; path = Errors/VRequestErrorConstants.h; sourceTree = "<group>"; };
 		A7D9204F1C063705002A6503 /* VRequestErrorConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRequestErrorConstants.m; path = Errors/VRequestErrorConstants.m; sourceTree = "<group>"; };
-		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
+		A7DAFCA81B4EDACE00B51C92 /* SelectedGIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectedGIFSearchResult.swift; path = ../ManagedObjectModels/SelectedGIFSearchResult.swift; sourceTree = "<group>"; };
 		A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIAutomationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DB4D2D1B7AB1D400199D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
@@ -7851,7 +7851,6 @@
 			isa = PBXGroup;
 			children = (
 				A7DDA6A91B5F0018005CE55E /* Experiment.swift */,
-				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
 				F06B418E1B7C30BC008709E8 /* HashtagShelf.swift */,
 				F05AD66C1B828EF300500CCF /* ListShelf.swift */,
 				F059A0021B852D1800037BC8 /* Shelf.swift */,
@@ -8453,6 +8452,7 @@
 			isa = PBXGroup;
 			children = (
 				F0FC97F41B5D50390098AFCB /* In Stream Comments */,
+				A7DAFCA81B4EDACE00B51C92 /* SelectedGIFSearchResult.swift */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
 				0314D2E719B46B2200FA363C /* VErrorMessage.h */,
@@ -10831,7 +10831,7 @@
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
 				A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */,
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
-				A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */,
+				A7DAFCA91B4EDACE00B51C92 /* SelectedGIFSearchResult.swift in Sources */,
 				F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */,
 				A7078CDC1BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,

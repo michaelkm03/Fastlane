@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
-extension VGIFSearchResult {
+extension GIFSearchResult {
     
     /// The aspect ratio of the assets
     var aspectRatio: CGFloat {
