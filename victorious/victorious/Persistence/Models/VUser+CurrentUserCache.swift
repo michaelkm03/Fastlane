@@ -63,7 +63,7 @@ extension VSequence {
     /// Internally this filters based on `VFlaggedContext` using `NSUserDefaults`.
     func unflaggedComments() -> [VComment] {
         let flaggedContent = VFlaggedContent()
-        let commentsArray = comments?.array as? [VComment] ?? []
+        let commentsArray = comments.array as? [VComment] ?? []
         return flaggedContent.commentsAfterStrippingFlaggedItems(commentsArray) as? [VComment] ?? []
     }
 }

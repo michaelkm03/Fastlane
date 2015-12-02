@@ -24,19 +24,3 @@ extension VNode: PersistenceParsable {
         })
     }
 }
-
-extension VComment: PersistenceParsable {
-    func populate( fromSourceModel comment: Comment ) {
-        remoteId = NSNumber(longLong: comment.commentID)
-        shouldAutoplay = comment.shouldAutoplay
-        text = comment.text
-        mediaType = comment.mediaType?.rawValue
-        mediaUrl = comment.mediaURL?.absoluteString
-        thumbnailUrl = comment.thumbnailURL?.absoluteString
-        flags = comment.flags
-        postedAt = comment.postedAt
-        
-        user = persistentStoreContext.findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
-        user.populate( fromSourceModel: comment.user )
-    }
-}

@@ -40,7 +40,7 @@ class LogoutOperation: RequestOperation<LogoutRequest> {
                 context.destroy( object )
             }
             
-            context.saveChanges()
+            //context.saveChanges()
             completion()
         }
     }

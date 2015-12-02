@@ -73,15 +73,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 
 - (instancetype)initWithContext:(ContentViewContext *)context NS_DESIGNATED_INITIALIZER;
 
-- (void)addCommentWidhText:(NSString *)text
-         publishParameters:(VPublishParameters *)publishParameters
-                completion:(void (^)(BOOL succeeded))completion;
-
-- (void)addCommentWithText:(NSString *)text
-         publishParameters:(VPublishParameters *)publishParameters
-               currentTime:(Float64)currentTime
-                completion:(void (^)(BOOL succeeded))completion;
-
 - (void)updateEndcard;
 
 - (void)setupAdChain;
@@ -89,9 +80,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 - (void)removeCommentAtIndex:(NSUInteger)index;
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
-
-- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
-                  completion:(void (^)(BOOL succeeded, NSError *error))completion;
 
 @property (nonatomic, readonly) ContentViewContext *context;
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;

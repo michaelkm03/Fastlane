@@ -25,7 +25,7 @@ class ConversationListOperation: RequestOperation<ConversationListRequest> {
                 let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )
             }
-            context.saveChanges()
+            //context.saveChanges()
             completion()
         }
     }

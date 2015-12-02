@@ -32,16 +32,18 @@ class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
         
         // TODO: Unit test the flagged content stuff
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
-        persistentStore.asyncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
-            for comment in response.results.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
-                let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
-                persistentComment.populate( fromSourceModel: comment )
-                persistentComment.sequence = sequence
-                persistentComment.sequenceId = sequence.remoteId
-                persistentComment.userId = sequence.user?.remoteId
+        if response.results.count > 0 {
+            persistentStore.asyncFromBackground() { context in
+                var comments = [VComment]()
+                for comment in response.results.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
+                    let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
+                    persistentComment.populate( fromSourceModel: comment )
+                    comments.append( persistentComment )
+                }
+                let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+                sequence.comments = NSOrderedSet( array: sequence.comments.array + comments )
+                context.saveChanges()
             }
-            context.saveChanges()
             completion()
         }
         

@@ -33,8 +33,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
-@property (nonatomic, strong) NSMutableSet *observedExperienceEnhancers;
-
 @end
 
 @implementation VExperienceEnhancerBar
@@ -94,9 +92,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
+    self.collectionView.alpha = enabled ? 1.0f : 0.0f;
     for ( VExperienceEnhancerCell *cell in self.collectionView.visibleCells)
     {
-        cell.enabled = _enabled;
         [cell startCooldown];
     }
 }
@@ -105,12 +103,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     
 - (void)reloadData
 {
-    for (id observedEnhancer in self.observedExperienceEnhancers)
-    {
-        [self.KVOController unobserve:observedEnhancer];
-    }
-    self.observedExperienceEnhancers = [[NSMutableSet alloc] init];
-    
     NSInteger enhancerCount = [self.dataSource numberOfExperienceEnhancers];
     
     NSMutableArray *enhancers = [[NSMutableArray alloc] init];
@@ -120,7 +112,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         VExperienceEnhancer *enhancerForIndex = [self.dataSource experienceEnhancerForIndex:enhancerIndex];
         [enhancers addObject:enhancerForIndex];
         [self setupKVOControllerWithExperienceEnhancer:enhancerForIndex atIndex:enhancerIndex];
-        [self.observedExperienceEnhancers addObject:enhancerForIndex];
     }
     
     self.enhancers = [NSArray arrayWithArray:enhancers];
@@ -148,7 +139,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     NSInteger userLevel = [VUser currentUser].level.integerValue;
     [experienceEnhancerCell updateLevelLockingStatusWithUnlockLevel:unlockLevel.integerValue andUserLevel:userLevel];
     
-    experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
     
     // Update cooldown values
@@ -201,8 +191,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if ( experienceEnhancerCell.enabled )
+    if ( !self.enabled )
     {
         return;
     }

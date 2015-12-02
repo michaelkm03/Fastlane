@@ -257,7 +257,7 @@
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trendingTopicName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
-        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="comments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="endCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="parentSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="likers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="likedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>

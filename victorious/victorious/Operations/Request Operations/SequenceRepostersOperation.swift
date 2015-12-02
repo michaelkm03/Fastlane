@@ -56,7 +56,7 @@ class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
             let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
             let sequence: VSequence = context.findOrCreateObject(uniqueElements)
             sequence.addObjects( reposters, to: "reposters" )
-            context.saveChanges()
+            //context.saveChanges()
             
             completion()
         }

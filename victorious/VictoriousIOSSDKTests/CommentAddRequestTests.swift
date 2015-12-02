@@ -1,5 +1,5 @@
 //
-//  PostCommentRequestTests.swift
+//  CommentAddRequestTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/12/15.
@@ -10,10 +10,10 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class PostCommentRequestTests: XCTestCase {
+class CommentAddRequestTests: XCTestCase {
     
     func testRequest() {
-        let postCommentRequest = PostCommentRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil)
+        let postCommentRequest = CommentAddRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil)
         XCTAssertEqual(postCommentRequest?.urlRequest.URL?.absoluteString, "/api/comment/add")
     }
     
@@ -24,7 +24,7 @@ class PostCommentRequestTests: XCTestCase {
                 return
         }
         
-        guard let postCommentRequest = PostCommentRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil) else {
+        guard let postCommentRequest = CommentAddRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil) else {
             XCTFail("Could not instantiate AccountUpdateRequest")
             return
         }

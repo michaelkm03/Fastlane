@@ -15,7 +15,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "victorious-Swift.h"
 #import "VFollowResponder.h"
-#import <KVOController/FBKVOController.h>
 
 @interface VReposterTableViewController () <VFollowResponder>
 

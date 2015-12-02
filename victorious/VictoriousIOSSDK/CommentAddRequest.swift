@@ -1,5 +1,5 @@
 //
-//  PostCommentRequest.swift
+//  CommentAddRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/12/15.
@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Adds a comment to a particular sequence
-public class PostCommentRequest: RequestType {
+public class CommentAddRequest: RequestType {
     
     public let sequenceID: Int64
     public let text: String?
@@ -20,6 +20,32 @@ public class PostCommentRequest: RequestType {
     public private(set) var urlRequest = NSURLRequest()
     
     private var bodyTempFile: NSURL?
+    
+    public init?(sequenceID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
+        self.sequenceID = sequenceID
+        self.text = text
+        self.mediaType = mediaAttachmentType
+        self.mediaURL = mediaURL
+        
+        do {
+            self.urlRequest = try makeRequest()
+        } catch {
+            return nil
+        }
+    }
+    
+    deinit {
+        if let bodyTempFile = bodyTempFile {
+            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+        }
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
+        guard let comment = Comment(json: responseJSON["payload"]) else {
+            throw ResponseParsingError()
+        }
+        return comment
+    }
     
     private func makeRequest() throws -> NSURLRequest {
         let bodyTempFile = self.tempFile()
@@ -50,32 +76,5 @@ public class PostCommentRequest: RequestType {
     private func tempFile() -> NSURL {
         let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }
-    
-    public init?(sequenceID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
-        
-        self.sequenceID = sequenceID
-        self.text = text
-        self.mediaType = mediaAttachmentType
-        self.mediaURL = mediaURL
-        
-        do {
-            self.urlRequest = try makeRequest()
-        } catch {
-            return nil
-        }
-    }
-    
-    deinit {
-        if let bodyTempFile = bodyTempFile {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
-        }
-    }
-    
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
-        guard let comment = Comment(json: responseJSON["payload"]) else {
-            throw ResponseParsingError()
-        }
-        return comment
     }
 }

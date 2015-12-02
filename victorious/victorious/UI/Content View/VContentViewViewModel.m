@@ -7,8 +7,6 @@
 //
 
 #import "VContentViewViewModel.h"
-
-// Models
 #import "VComment.h"
 #import "VUser.h"
 #import "VAsset.h"
@@ -16,36 +14,20 @@
 #import "VPollResult.h"
 #import "VVoteType.h"
 #import "VNode+Fetcher.h"
-
-// Model Categories
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VObjectManager+Comment.h"
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+ContentCreation.h"
-#import "VObjectManager+Sequence.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser.h"
 #import "VPaginationManager.h"
 #import "VAsset+VCachedData.h"
-
-// Formatters
 #import "NSDate+timeSince.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
-
-// Media
 #import "NSURL+MediaType.h"
 #import "VAsset+VAssetCache.h"
-
-// Monetization
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
-
-// End Card
 #import "VEndCard.h"
 #import "VStream.h"
 #import "VEndCardModel.h"
@@ -54,12 +36,12 @@
 #import "UIColor+VHex.h"
 #import "VEndCardModelBuilder.h"
 #import "victorious-Swift.h"
+#import <KVOController/FBKVOController.h>
 
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 
-@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
@@ -82,7 +64,7 @@
 {
     self = [super init];
     if ( self != nil )
-    {
+    {   
         _context = context;
         
         _sequence = context.sequence;
@@ -248,6 +230,23 @@
 }
 */
 
+- (void)setDelegate:(id<VContentViewViewModelDelegate>)delegate
+{
+    _delegate = delegate;
+    
+    [self.KVOController observe:_sequence
+                        keyPath:@"comments"
+                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
+         if ( kind == NSKeyValueChangeSetting )
+         {
+             [_delegate didUpdateCommentsWithPageType:VPageTypeFirst];
+         }
+     }];
+}
+
 - (VUser *)user
 {
     return self.sequence.user;
@@ -325,92 +324,18 @@
 
 - (void)removeCommentAtIndex:(NSUInteger)index
 {
-    NSMutableArray *updatedComments = [self.comments mutableCopy];
-    [updatedComments removeObjectAtIndex:index];
-    self.comments = [NSArray arrayWithArray:updatedComments];
-    [self.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-}
-
-- (void)addCommentWithText:(NSString *)text
-         publishParameters:(VPublishParameters *)publishParameters
-               currentTime:(Float64)currentTime
-                completion:(void (^)(BOOL succeeded))completion
-{
-    __weak typeof(self) weakSelf = self;
-    [[VObjectManager sharedManager] addRealtimeCommentWithText:text
-                                             publishParameters:publishParameters
-                                                       toAsset:self.currentAsset
-                                                        atTime:@(currentTime)
-                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.comments = [strongSelf.sequence.comments array];
-         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-         if (completion)
-         {
-             completion(YES);
-         }
-     }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (completion)
-         {
-             completion(NO);
-         }
-     }];
-}
-
-- (void)addCommentWidhText:(NSString *)text
-         publishParameters:(VPublishParameters *)publishParameters
-                completion:(void (^)(BOOL succeeded))completion
-{
-    __weak typeof(self) weakSelf = self;
-    [[VObjectManager sharedManager] addCommentWithText:text
-                                     publishParameters:publishParameters
-                                            toSequence:self.sequence
-                                             andParent:nil
-                                          successBlock:^(NSOperation *_Nullable operation, id  _Nullable result, NSArray *_Nonnull resultObjects)
-     {
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.comments = [strongSelf.sequence.comments array];
-         [strongSelf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-         if (completion)
-         {
-             completion(YES);
-         }
-     }
-                                             failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (completion)
-         {
-             completion(NO);
-         }
-     }];
-}
-
-- (void)loadCommentsWithCommentId:(NSNumber *)commentId
-{
-    __weak typeof(self) weakSelf = self;
-    [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
-                                                withCommentId:self.deepLinkCommentId
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         __strong typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.comments = [strongSelf.sequence.comments array];
-         [strongSelf.delegate didUpdateCommentsWithDeepLink:commentId];
-     }
-                                                    failBlock:nil];
+    // TODO
 }
 
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    VComment *commentForIndex = [self.sequence.comments objectAtIndex:commentIndex];
     return [commentForIndex.postedAt timeSince];
 }
 
 - (VUser *)userForCommentIndex:(NSInteger)commentIndex
 {
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    VComment *commentForIndex = [self.sequence.comments objectAtIndex:commentIndex];
     return commentForIndex.user;
 }
 
@@ -475,7 +400,7 @@
 
 - (NSURL *)mediaURLForCommentIndex:(NSInteger)commentIndex
 {
-    VComment *commentForIndex = [self.comments objectAtIndex:commentIndex];
+    VComment *commentForIndex = [self.sequence.comments objectAtIndex:commentIndex];
     return [NSURL URLWithString:commentForIndex.mediaUrl];
 }
 
@@ -623,26 +548,6 @@
         }
         return _favoredAnswer;
     }
-}
-
-- (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
-                  completion:(void (^)(BOOL succeeded, NSError *error))completion
-{
-    [[VObjectManager sharedManager] answerPoll:self.sequence
-                                    withAnswer:(selectedAnswer == VPollAnswerA) ? [self answerA] : [self answerB]
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self.delegate didUpdatePollsData];
-         
-         NSDictionary *params = @{ VTrackingKeyIndex : selectedAnswer == VPollAnswerB ? @1 : @0 };
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollAnswer parameters:params];
-         
-         completion(YES, nil);
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion(NO, error);
-     }];
 }
 
 - (NSString *)numberOfVotersText

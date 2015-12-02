@@ -19,4 +19,18 @@ protocol PersistenceParsable {
     /// - parameter dataStore An object that provides access to the persistent store so that new objects
     ///   may be created or existing objects retrieved during serialization
     func populate( fromSourceModel sourceModel: SourceModelType )
+    
+    //func populateAttributes( fromSourceModel sourceModel: SourceModelType )
+    
+    //func populateRelationships( fromSourceModel sourceModel: SourceModelType )
+}
+
+extension NSNumber {
+    convenience init?( longLong value: Int64? ) {
+        if let value = value {
+            self.init( longLong: value )
+        } else {
+            return nil
+        }
+    }
 }

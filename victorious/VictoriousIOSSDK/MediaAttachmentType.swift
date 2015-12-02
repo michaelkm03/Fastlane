@@ -10,8 +10,9 @@ import Foundation
 
 /// Describes the different types of media that can be attached to a comment or a direct message.
 public enum MediaAttachmentType: String {
-    case Image = "image"
-    case Video = "video"
-    case GIF = "gif"
-    case VoteType = "voteType"
+    case Image
+    case Video
+    case Ballistic
+    case GIF
+    case NoMedia
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 // Views can implement this protocol to properly prepare
 // themselves for cell reuse
@@ -67,12 +68,12 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     // Returns an cell reuse identifer for the proper concrete subclass
     class func reuseIdentifierForComment(comment: VComment) -> String {
-        return MediaAttachmentType.attachmentType(comment).description
+        return MediaAttachmentType.attachmentType(comment).rawValue
     }
     
     // Returns an cell reuse identifer for the proper concrete subclass
     class func reuseIdentifierForMessage(message: VMessage) -> String {
-        return MediaAttachmentType.attachmentType(message).description
+        return MediaAttachmentType.attachmentType(message).rawValue
     }
     
     func prepareForReuse() {
@@ -85,5 +86,38 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     func contentArea() -> CGRect {
         return CGRect.zero
+    }
+}
+
+private extension MediaAttachmentType {
+    
+    static func attachmentType(comment: VComment) -> MediaAttachmentType {
+        let commentMediaType = comment.commentMediaType()
+        switch (commentMediaType) {
+        case .Image:
+            return .Image
+        case .Video:
+            return .Video
+        case .GIF:
+            return .GIF
+        case .Ballistic:
+            return .Ballistic
+        default:
+            return .NoMedia
+        }
+    }
+    
+    static func attachmentType(message: VMessage) -> MediaAttachmentType {
+        let messageMediaType = message.messageMediaType()
+        switch (messageMediaType) {
+        case .Image:
+            return .Image
+        case .GIF:
+            return .GIF
+        case .Video:
+            return .Video
+        default:
+            return .NoMedia
+        }
     }
 }

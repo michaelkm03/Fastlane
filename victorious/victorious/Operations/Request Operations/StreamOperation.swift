@@ -35,7 +35,7 @@ class StreamOperation: RequestOperation<StreamRequest> {
         persistentStore.asyncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
             persistentStream.populate( fromSourceModel: stream )
-            context.saveChanges()
+            //context.saveChanges()
         }
         
         if let nextPageRequest = response.nextPage {

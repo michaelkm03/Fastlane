@@ -33,7 +33,7 @@ class StoredLoginOperation: Operation {
                     user.status = "stored"
                 }
                 user.setAsCurrentUser(inContext: context)
-                context.saveChanges()
+                //context.saveChanges()
                 return user
             }
             

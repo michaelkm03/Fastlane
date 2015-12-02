@@ -21,7 +21,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     private var sortedInternalComments = [VComment]()
     
     func sortInternalComments() {
-        if let comments = self.sequence.comments?.array as? [VComment],
+        if let comments = self.sequence.comments.array as? [VComment],
             var validComments = flaggedContent.commentsAfterStrippingFlaggedItems(comments) as? [VComment] {
             validComments.sortInPlace({ $0.postedAt > $1.postedAt })
             self.sortedInternalComments = validComments

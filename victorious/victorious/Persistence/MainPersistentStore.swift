@@ -13,7 +13,7 @@ import Foundation
 /// is programmed.  See `PersistentStoreType` protocol for more information.
 /// This class has an internally configured a singleton object that mediates access to CoreData through managed object contexts.
 /// This allows calling code to instantiate a new `MainPersistentStore` instance wherever needed.
-class MainPersistentStore: NSObject, PersistentStoreType {
+class MainPersistentStore: NSObject, PersistentStoreTypeBasic {
     
     static let persistentStorePath          = "victoriOS.sqlite"
     static let managedObjectModelName       = "victoriOS"
@@ -40,22 +40,13 @@ class MainPersistentStore: NSObject, PersistentStoreType {
         )
     }()
     
-    // MARK: - PersistentStoreType
+    // MARK: - PersistentStoreTypeBasic
     
     func syncBasic( closure: ((PersistentStoreContextBasic)->()) ) {
         let context = MainPersistentStore.sharedManager.mainContext
         context.performBlockAndWait {
             closure( context )
         }
-    }
-    
-    func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
-        let context = MainPersistentStore.sharedManager.mainContext
-        var result: T?
-        context.performBlockAndWait {
-            result = closure( context )
-        }
-        return result!
     }
     
     func async( closure: ((PersistentStoreContext)->()) ) {
@@ -86,5 +77,17 @@ class MainPersistentStore: NSObject, PersistentStoreType {
         context.performBlock {
             closure( context )
         }
+    }
+}
+
+extension MainPersistentStore: PersistentStoreType {
+    
+    func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T {
+        let context = MainPersistentStore.sharedManager.mainContext
+        var result: T?
+        context.performBlockAndWait {
+            result = closure( context )
+        }
+        return result!
     }
 }

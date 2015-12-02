@@ -69,6 +69,7 @@ class CoreDataManager: NSObject {
         
         self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         self.backgroundContext.parentContext = self.mainContext
+        self.backgroundContext.mergePolicy = NSOverwriteMergePolicy
         
         super.init()
         

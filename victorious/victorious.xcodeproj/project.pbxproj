@@ -568,7 +568,6 @@
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
 		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
-		A7078D071BFC1367008FB7FF /* VContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */; };
 		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
@@ -1022,6 +1021,10 @@
 		A7D69C611C0E51A000B462C3 /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		A7D69C621C0E51A000B462C3 /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
 		A7D69C6A1C0E575B00B462C3 /* PollResultSummaryRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */; };
+		A7D69C6E1C0E68BF00B462C3 /* CommentAddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */; };
+		A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */; };
+		A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */; };
+		A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -1251,8 +1254,8 @@
 		C3D4E83F1BBDCF39000AD70A /* UIFont+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E83E1BBDCF39000AD70A /* UIFont+Layout.swift */; };
 		C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6CCB11B7D175B008644DD /* VideoTrackingEvent.swift */; };
 		C3D6FA8E1BF581B6006DEE19 /* PostCommentResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */; };
-		C3D6FA901BF582D0006DEE19 /* PostCommentRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6FA8F1BF582D0006DEE19 /* PostCommentRequestTests.swift */; };
-		C3D6FA921BF58399006DEE19 /* PostCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6FA911BF58399006DEE19 /* PostCommentRequest.swift */; };
+		C3D6FA901BF582D0006DEE19 /* CommentAddRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6FA8F1BF582D0006DEE19 /* CommentAddRequestTests.swift */; };
+		C3D6FA921BF58399006DEE19 /* CommentAddRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */; };
 		C3D9560F1BF4307A00069FD6 /* Comment.json in Resources */ = {isa = PBXBuildFile; fileRef = C3D9560E1BF4307A00069FD6 /* Comment.json */; };
 		C3D956131BF431AF00069FD6 /* SequenceCommentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */; };
 		C3D956151BF4321100069FD6 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D956141BF4321100069FD6 /* CommentTests.swift */; };
@@ -1263,7 +1266,6 @@
 		C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */; };
 		C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */; };
 		C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */; };
-		C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */; };
 		C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */; };
 		C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */; };
 		C3E47F7D1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */; };
@@ -1420,7 +1422,6 @@
 		D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */; };
 		D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
-		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
 		D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC319CB7C80007FD86A /* VContentCell.m */; };
 		D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BC619CB7C80007FD86A /* VContentCommentsCell.m */; };
@@ -3299,6 +3300,8 @@
 		A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPollResult+Parsable.swift"; sourceTree = "<group>"; };
 		A7D69C1B1C0E510800B462C3 /* PollResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultsOperation.swift; sourceTree = "<group>"; };
 		A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequestTests.swift; sourceTree = "<group>"; };
+		A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddOperation.swift; sourceTree = "<group>"; };
+		A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VComment+Parsable.swift"; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -3651,8 +3654,8 @@
 		C3D4E83E1BBDCF39000AD70A /* UIFont+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Layout.swift"; sourceTree = "<group>"; };
 		C3D6CCB11B7D175B008644DD /* VideoTrackingEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTrackingEvent.swift; sourceTree = "<group>"; };
 		C3D6FA8D1BF581B6006DEE19 /* PostCommentResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PostCommentResponse.json; sourceTree = "<group>"; };
-		C3D6FA8F1BF582D0006DEE19 /* PostCommentRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentRequestTests.swift; sourceTree = "<group>"; };
-		C3D6FA911BF58399006DEE19 /* PostCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCommentRequest.swift; sourceTree = "<group>"; };
+		C3D6FA8F1BF582D0006DEE19 /* CommentAddRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestTests.swift; sourceTree = "<group>"; };
+		C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequest.swift; sourceTree = "<group>"; };
 		C3D9560E1BF4307A00069FD6 /* Comment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Comment.json; sourceTree = "<group>"; };
 		C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceCommentsResponse.json; sourceTree = "<group>"; };
 		C3D956141BF4321100069FD6 /* CommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTests.swift; sourceTree = "<group>"; };
@@ -3666,7 +3669,6 @@
 		C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageTextAndMediaView.m; sourceTree = "<group>"; };
 		C3E47F731B6ABB3F0084FF65 /* VMessage+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMessage+Fetcher.h"; sourceTree = "<group>"; };
 		C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMessage+Fetcher.m"; sourceTree = "<group>"; };
-		C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentType.swift; sourceTree = "<group>"; };
 		C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentImageView.swift; sourceTree = "<group>"; };
 		C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentVideoView.swift; sourceTree = "<group>"; };
 		C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentGIFView.swift; sourceTree = "<group>"; };
@@ -4619,7 +4621,6 @@
 				C3E47F7E1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift */,
 				C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */,
 				C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */,
-				C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */,
 				C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */,
 				C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */,
 				03C82F1D1A81DDA400190C7D /* User Tagging */,
@@ -5100,7 +5101,7 @@
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
-				C3D6FA911BF58399006DEE19 /* PostCommentRequest.swift */,
+				C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
@@ -5173,7 +5174,7 @@
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */,
-				C3D6FA8F1BF582D0006DEE19 /* PostCommentRequestTests.swift */,
+				C3D6FA8F1BF582D0006DEE19 /* CommentAddRequestTests.swift */,
 				A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */,
 				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
 				6782EA861BF2D40E000C7C0D /* RepostSequenceRequestTests.swift */,
@@ -6931,6 +6932,7 @@
 				A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */,
 				A76AEAD21C038E0000E8A26F /* ConversationListOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
+				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A76AEAD51C038E0000E8A26F /* LikeSequenceOperation.swift */,
@@ -7159,6 +7161,7 @@
 				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
 				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 				A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */,
+				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
 			);
 			name = Parsers;
 			path = Serializers;
@@ -10246,7 +10249,7 @@
 				79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */,
 				C3209CAA1BF1520900EA229D /* FollowingHashtagsRequest.swift in Sources */,
 				C32D8BEC1BF2E75B00AB5085 /* ImageSearchRequest.swift in Sources */,
-				C3D6FA921BF58399006DEE19 /* PostCommentRequest.swift in Sources */,
+				C3D6FA921BF58399006DEE19 /* CommentAddRequest.swift in Sources */,
 				C3FEA7A31BF17583003446CC /* TrendingGIFsRequest.swift in Sources */,
 				6782EA831BF2D2A4000C7C0D /* RepostSequenceRequest.swift in Sources */,
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
@@ -10409,7 +10412,7 @@
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
 				6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */,
-				C3D6FA901BF582D0006DEE19 /* PostCommentRequestTests.swift in Sources */,
+				C3D6FA901BF582D0006DEE19 /* CommentAddRequestTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 				67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */,
 				C3209CA41BF148DD00EA229D /* TrendingHashtagRequestTests.swift in Sources */,
@@ -10666,6 +10669,7 @@
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
+				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
@@ -10843,6 +10847,7 @@
 				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
+				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
@@ -10993,6 +10998,7 @@
 				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
+				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				A7245F0B1C04E69A00187825 /* FlagCommentOperation.swift in Sources */,
 				67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */,
@@ -11112,7 +11118,6 @@
 				C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */,
 				F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
-				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
 				A6EED6A91B5EE4210074052E /* VAlongsideTransitioner.m in Sources */,
@@ -11150,7 +11155,6 @@
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */,
-				C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
@@ -11325,6 +11329,7 @@
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				03199B031B9125B600B6B247 /* VDependencyManager+VShareMenuItem.m in Sources */,
 				A7F843681BFD44EE004C3D55 /* VMessage+Parsable.swift in Sources */,
+				A7D69C6E1C0E68BF00B462C3 /* CommentAddOperation.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */,
 				A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */,
@@ -11426,7 +11431,6 @@
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
-				A7078D071BFC1367008FB7FF /* VContentViewViewModel.swift in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
 				A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,

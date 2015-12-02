@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
 @property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
-@property (nonatomic, retain, nullable) NSOrderedSet * comments;
+@property (nonatomic, retain) NSOrderedSet * comments;
 @property (nonatomic, retain, nullable) VEndCard * endCard;
 @property (nonatomic, retain, nullable) NSSet * likers;
 @property (nonatomic, retain, nullable) NSOrderedSet * nodes;

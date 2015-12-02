@@ -27,7 +27,7 @@ class UnlikeSequenceOperation: RequestOperation<UnlikeSequenceRequest> {
         persistentStore.asyncFromBackground() { context in
             let sequence: VSequence = context.findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = false
-            context.saveChanges()
+            //context.saveChanges()
             completion()
         }
     }

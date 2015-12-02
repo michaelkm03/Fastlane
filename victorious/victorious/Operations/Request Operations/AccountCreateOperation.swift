@@ -17,7 +17,6 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     private let accountIdentifier: String?
     
     var isNewUser = false
-    var persistentUser: VUser?
     
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
         self.loginType = loginType
@@ -35,7 +34,7 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
-            context.saveChanges()
+            //context.saveChanges()
             
             let identifier = user.identifier
             dispatch_async( dispatch_get_main_queue() ) {
