@@ -28,6 +28,6 @@
 
 @property (nonatomic, copy) void (^templateConfigurationBlock)(VTemplateDecorator *decoratorToConfigureOrReplace); ///< Provide a block to the loadingViewController to configure the template befor loading completes
 
-+ (VLoadingViewController *)loadingViewController; ///< Instantiates VLoadingViewController from the storyboard
++ (VLoadingViewController *)loadingViewControllerFromStoryboard; ///< Instantiates VLoadingViewController from the storyboard
 
 @end

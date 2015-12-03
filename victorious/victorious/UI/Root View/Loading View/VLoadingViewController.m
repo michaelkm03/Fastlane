@@ -52,7 +52,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     NSTimer *_retryTimer;
 }
 
-+ (VLoadingViewController *)loadingViewController
++ (VLoadingViewController *)loadingViewControllerFromStroyboard
 {
     UIStoryboard *storyboard = [UIStoryboard v_mainStoryboard];
     VLoadingViewController *loadingViewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VLoadingViewController class])];

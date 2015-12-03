@@ -230,7 +230,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showLoadingViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    self.loadingViewController = [VLoadingViewController loadingViewController];
+    self.loadingViewController = [VLoadingViewController loadingViewControllerFromStoryboard];
     self.loadingViewController.delegate = self;
     self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
     [self showViewController:self.loadingViewController animated:NO completion:nil];

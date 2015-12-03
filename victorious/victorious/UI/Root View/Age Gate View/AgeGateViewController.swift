@@ -15,6 +15,8 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var datePicker: UIDatePicker!
     @IBOutlet private weak var continueButton: UIButton!
     
+    private var dependencyManager: VDependencyManager?
+    
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
     }
@@ -24,7 +26,7 @@ class AgeGateViewController: UIViewController {
         guard let ageGateViewController = storyboard.instantiateViewControllerWithIdentifier(StringFromClass(AgeGateViewController)) as? AgeGateViewController else {
             fatalError("Could not instantiate an AgeGateViewController from Storyboard")
         }
-        
+        ageGateViewController.dependencyManager = dependencyManager
         return ageGateViewController
     }
     
@@ -36,6 +38,9 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
+        let loadingVC = VLoadingViewController.loadingViewControllerFromStoryboard()
+        loadingVC.parentDependencyManager = dependencyManager
+        presentViewController(loadingVC, animated: false, completion: nil)
     }
     
     //MARK: - Private helpers
