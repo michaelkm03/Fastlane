@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class TrendingGIFsOperation: RequestOperation<TrendingGIFsRequest> {
+final class TrendingGIFsOperation: RequestOperation<TrendingGIFsRequest>, PageableOperation {
     private(set) var trendingGIFsResults: [GIFSearchResult] = []
     private(set) var nextPageOperation: TrendingGIFsOperation?
     private(set) var previousPageOperation: TrendingGIFsOperation?
