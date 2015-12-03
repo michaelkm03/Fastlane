@@ -86,31 +86,34 @@ class GIFSearchDataSource: NSObject {
             completion?( nil )
             return
         }
-        
         self.state = .Loading
         
-        let successClosure: ([GIFSearchResult]) -> Void = { results in
-            self.state = .Content
-            let result = self.updateDataSource( results, pageType: pageType )
-            completion?( result )
-        }
+        let operation = mostRecentTrendingOperation?.adjacentOperation(forPageType: pageType) ?? TrendingGIFsOperation()
         
-        let failClosure: (NSError) -> Void = { error in
+        operation.queue() { operationError in
+            self.mostRecentTrendingOperation = operation
+            self.isLastPage = (self.mostRecentTrendingOperation?.nextPageOperation == nil)
+            
             var result = ChangeResult()
-            if self.isLastPage {
-                self.state = .Content
-            }
-            else {
-                if pageType == .First {
-                    self.clear()
+            if let error = operationError {
+                // Operation failed
+                if self.isLastPage {
+                    self.state = .Content
                 }
-                self.state = .Error
-                result.error = error
+                else {
+                    if pageType == .First {
+                        self.clear()
+                    }
+                    self.state = .Error
+                    result.error = error
+                }
+            } else {
+                // Operation succeeded
+                self.state = .Content
+                result = self.updateDataSource( operation.trendingGIFsResults, pageType: pageType )
             }
             completion?( result )
         }
-        
-        loadTrendingGIFs(pageType, onSuccess: successClosure, onFail: failClosure)
     }
     
     /// Fetches data from the server and repopulates its backing model collection
@@ -126,31 +129,35 @@ class GIFSearchDataSource: NSObject {
         }
         self.state = .Loading
         
-        let successClosure: ([GIFSearchResult]) -> Void = { results in
-            self.state = .Content
-            self.mostRecentSearchText = searchText
-            let result = self.updateDataSource(results, pageType: pageType)
+        let operation = mostRecentSearchOperation?.adjacentOperation(forPageType: pageType) ?? GIFSearchOperation(searchText: searchText)
+        
+        operation.queue() { operationError in
+            self.mostRecentSearchOperation = operation
+            self.isLastPage = (self.mostRecentSearchOperation?.nextPageOperation == nil)
+            
+            var result = ChangeResult()
+            if let error = operationError {
+                // Operation failed
+                if self.isLastPage {
+                    self.state = .Content
+                }
+                else {
+                    if pageType == .First {
+                        self.clear()
+                    }
+                    self.state = .Error
+                    result.error = error
+                }
+            } else {
+                // Operation succeeded
+                self.state = .Content
+                self.mostRecentSearchText = searchText
+                result = self.updateDataSource(operation.searchResults, pageType: pageType)
+            }
             completion?(result)
         }
-        
-        let failClosure: (NSError) -> Void = { error in
-            var result = ChangeResult()
-            if self.isLastPage {
-                self.state = .Content
-            }
-            else {
-                if pageType == .First {
-                    self.clear()
-                }
-                self.state = .Error
-                result.error = error
-            }
-            completion?( result )
-        }
-        
-        searchForGIF(searchText, pageType: pageType, onSuccess: successClosure, onFail: failClosure)
     }
-    
+
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() -> ChangeResult {
         var result = ChangeResult()
@@ -238,37 +245,5 @@ class GIFSearchDataSource: NSObject {
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
         result.insertedSections = NSIndexSet(indexesInRange: range)
         return result
-    }
-}
-
-private extension GIFSearchDataSource {
-    private func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        let operation = mostRecentSearchOperation?.adjacentOperation(forPageType: pageType) ?? GIFSearchOperation(searchText: searchText)
-        
-        operation.queue() { error in
-            self.mostRecentSearchOperation = operation
-            self.isLastPage = (self.mostRecentSearchOperation?.nextPageOperation == nil)
-
-            if let e = error {
-                onFail(e)
-            } else {
-                onSuccess(operation.searchResults)
-            }
-        }
-    }
-    
-    private func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        let operation = mostRecentTrendingOperation?.adjacentOperation(forPageType: pageType) ?? TrendingGIFsOperation()
-        
-        operation.queue() { error in
-            self.mostRecentTrendingOperation = operation
-            self.isLastPage = (self.mostRecentTrendingOperation?.nextPageOperation == nil)
-            
-            if let e = error {
-                onFail(e)
-            } else {
-                onSuccess(operation.trendingGIFsResults)
-            }
-        }
     }
 }
