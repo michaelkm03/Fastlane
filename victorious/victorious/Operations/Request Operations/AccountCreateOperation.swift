@@ -51,12 +51,12 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
                         NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
                     }
                     
+                    // Respond to the login
                     VLoginType(rawValue: persistentUser.loginType.integerValue )?.trackSuccess( response.newUser )
-                    
                     NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
                     
-                    // TODO: (from object manager)
-                    // [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil]
+                    // Load more data from the network about the user
+                    PollResultByUserOperation( userID: persistentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
                     ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
                     
                     completion()

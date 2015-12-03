@@ -10,21 +10,22 @@ import Foundation
 
 /// The request for creating user's answer to a poll
 public struct PollVoteRequest: RequestType {
-    public let pollAnswer: PollAnswer
+    public let sequenceID: Int64
+    public let answerID: Int64
     
     public init(sequenceID: Int64, answerID: Int64) {
-        self.pollAnswer = PollAnswer(sequenceID: sequenceID, answerID: answerID)
+        self.sequenceID = sequenceID
+        self.answerID = answerID
     }
     
     public var urlRequest: NSURLRequest {
         let pollAnswerInfo = [
-            "answer_id": NSNumber(longLong: pollAnswer.answerID),
-            "sequence_id": NSNumber(longLong: pollAnswer.sequenceID)
+            "answer_id" : NSNumber(longLong: self.answerID),
+            "sequence_id" : NSNumber(longLong: self.sequenceID)
         ]
         
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/pollresult/create")!)
         request.vsdk_addURLEncodedFormPost(pollAnswerInfo)
-        
         return request
     }
 }

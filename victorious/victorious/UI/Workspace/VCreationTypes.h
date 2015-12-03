@@ -12,7 +12,6 @@
 /**
  *  The creaiton types that the app is prepared to handle.
  */
-#warning Merge this wtih other content type enums?
 typedef NS_ENUM(NSInteger, VCreationType)
 {
     VCreationTypeImage,

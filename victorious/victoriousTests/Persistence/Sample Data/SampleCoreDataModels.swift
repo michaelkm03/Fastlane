@@ -16,6 +16,9 @@ public class PersistentEntity: NSManagedObject {
     @NSManaged public var newStringAttribute: String?
     @NSManaged public var transientEntity: TransientEntity?
     
+    @NSManaged public var children: NSOrderedSet
+    @NSManaged public var parent: PersistentEntity?
+    
     public static override func entityName() -> String { return "PersistentEntity" }
 }
 

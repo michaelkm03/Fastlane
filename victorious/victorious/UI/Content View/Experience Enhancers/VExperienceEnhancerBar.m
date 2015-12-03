@@ -208,22 +208,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         return;
     }
     
-    if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
-    {
-        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
-        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
-        [responder authorizeWithCompletion:^(BOOL authorized)
-        {
-            if ( authorized )
-            {
-                [self selectExperienceEnhancerAtIndexPath:indexPath];
-            }
-        }];
-    }
-    else
-    {
-        [self selectExperienceEnhancerAtIndexPath:indexPath];
-    }
+    [self selectExperienceEnhancerAtIndexPath:indexPath];
 }
 
 - (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath

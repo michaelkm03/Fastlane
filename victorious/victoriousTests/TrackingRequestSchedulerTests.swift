@@ -45,7 +45,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
         for index in 0..<trackingRequestRecords.count {
             let record = trackingRequestRecords[index]
             stubRequest("GET", record.urlString).andDo{ [unowned self] (_: AutoreleasingUnsafeMutablePointer<NSDictionary?>, _: UnsafeMutablePointer<Int>, _: AutoreleasingUnsafeMutablePointer<LSHTTPBody?>) in
-//                firedRequestsCount++
+                firedRequestsCount++
                 if index == self.trackingRequestRecords.count - 1 {
                     expectation.fulfill()
                 }

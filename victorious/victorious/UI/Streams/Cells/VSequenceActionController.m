@@ -310,7 +310,6 @@
 
 - (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion
 {
-    // TODO: Implement callback, or ditch it for KVO
     [self.sequenceActionHelper flagSequence:sequence fromViewController:viewController completion:nil];
 }
 

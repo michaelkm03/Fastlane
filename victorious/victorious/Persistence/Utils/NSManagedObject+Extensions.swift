@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-// TODO: Unit tests
 extension NSManagedObject {
     
     /// Returns the class name as a string, intended to match that which is configured in the MOM file.
@@ -30,8 +29,8 @@ extension NSManagedObject {
                     destination.addObject( value.deepCopy(context) )
                 }
             }
-            else if let value = self.valueForKey(key) {
-                copy.setValue( value.deepCopy( context ), forKey: key)
+            else if let object = self.valueForKey(key) as? NSManagedObject where object != self {
+                copy.setValue( object.shallowCopy( context ), forKey: key)
             }
         }
         return copy
@@ -51,7 +50,7 @@ extension NSManagedObject {
     
     func addObjects( objects: [NSManagedObject], to relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
-            "Could not find a relationship for key '\(relationshipName)'" )
+            "Could not find a relationship on entity of type '\(self.entity.name)' for key '\(relationshipName)'" )
         
         for (name, relationship) in self.entity.relationshipsByName where name == relationshipName {
             assert( relationship.toMany,
