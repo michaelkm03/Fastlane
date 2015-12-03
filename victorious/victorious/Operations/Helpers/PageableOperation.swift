@@ -14,6 +14,7 @@ protocol PageableOperation {
 }
 
 extension PageableOperation {
+    
     func adjacentOperation(forPageType pageType: VPageType) -> Self?{
         switch pageType {
         case .First:
@@ -25,3 +26,5 @@ extension PageableOperation {
         }
     }
 }
+
+
