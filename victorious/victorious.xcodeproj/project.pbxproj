@@ -863,6 +863,7 @@
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
+		A79825A41C0FD94C00C53A07 /* PageableOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825A31C0FD94C00C53A07 /* PageableOperation.swift */; };
 		A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */; };
 		A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */; };
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
@@ -3144,6 +3145,7 @@
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
+		A79825A31C0FD94C00C53A07 /* PageableOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageableOperation.swift; path = Helpers/PageableOperation.swift; sourceTree = "<group>"; };
 		A79869E01AD7124D00F2564A /* VContentDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeepLinkHandler.h; sourceTree = "<group>"; };
@@ -6649,6 +6651,7 @@
 		A746796D1BF6CC7B0026FD2E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A79825A31C0FD94C00C53A07 /* PageableOperation.swift */,
 				A76AEA331BFEB9EC00E8A26F /* VLoginType+Credentials.swift */,
 				A76AEA341BFEB9EC00E8A26F /* VLoginType+Tracking.swift */,
 				A746796E1BF6CC9B0026FD2E /* VStoredLogin.h */,
@@ -10573,6 +10576,7 @@
 				F06B41CF1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift in Sources */,
 				A776EF661AD45A760093992F /* VEndCardModelBuilder.m in Sources */,
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
+				A79825A41C0FD94C00C53A07 /* PageableOperation.swift in Sources */,
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,

@@ -243,57 +243,31 @@ class GIFSearchDataSource: NSObject {
 
 private extension GIFSearchDataSource {
     private func searchForGIF(searchText: String, pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        var operation: GIFSearchOperation?
+        let operation = mostRecentSearchOperation?.adjacentOperation(forPageType: pageType) ?? GIFSearchOperation(searchText: searchText)
         
-        switch pageType {
-        case .First:
-            operation = GIFSearchOperation(searchText: searchText)
-        case .Next:
-            operation = mostRecentSearchOperation?.nextPageOperation
-        case .Previous:
-            operation = mostRecentSearchOperation?.previousPageOperation
-        }
-    
-        guard let currentOperation = operation else {
-            return
-        }
-        
-        currentOperation.queue() { error in
-            self.mostRecentSearchOperation = currentOperation
+        operation.queue() { error in
+            self.mostRecentSearchOperation = operation
             self.isLastPage = (self.mostRecentSearchOperation?.nextPageOperation == nil)
 
             if let e = error {
                 onFail(e)
             } else {
-                onSuccess(currentOperation.searchResults)
+                onSuccess(operation.searchResults)
             }
         }
     }
     
     private func loadTrendingGIFs(pageType: VPageType, onSuccess: ([GIFSearchResult]) -> Void, onFail: (NSError) -> Void) {
-        var operation: TrendingGIFsOperation?
+        let operation = mostRecentTrendingOperation?.adjacentOperation(forPageType: pageType) ?? TrendingGIFsOperation()
         
-        switch pageType {
-        case .First:
-            operation = TrendingGIFsOperation()
-        case .Next:
-            operation = mostRecentTrendingOperation?.nextPageOperation
-        case .Previous:
-            operation = mostRecentTrendingOperation?.previousPageOperation
-        }
-        
-        guard let currentOperation = operation else {
-            return
-        }
-        
-        currentOperation.queue() { error in
-            self.mostRecentTrendingOperation = currentOperation
+        operation.queue() { error in
+            self.mostRecentTrendingOperation = operation
             self.isLastPage = (self.mostRecentTrendingOperation?.nextPageOperation == nil)
             
             if let e = error {
                 onFail(e)
             } else {
-                onSuccess(currentOperation.trendingGIFsResults)
+                onSuccess(operation.trendingGIFsResults)
             }
         }
     }
