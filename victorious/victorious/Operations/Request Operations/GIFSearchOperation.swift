@@ -9,8 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class GIFSearchOperation: RequestOperation<GIFSearchRequest> {
+final class GIFSearchOperation: RequestOperation<GIFSearchRequest>, PageableOperation {
     private(set) var searchResults: [GIFSearchResult] = []
+    
     private(set) var nextPageOperation: GIFSearchOperation?
     private(set) var previousPageOperation: GIFSearchOperation?
     
