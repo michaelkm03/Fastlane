@@ -28,6 +28,8 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
     private let currentTime: Float64?
     private let text: String?
     
+    private var optimisticCommentIdentifier: AnyObject?
+    
     init( sequenceID: Int64, text: String?, publishParameters: VPublishParameters?, currentTime: Float64? ) {
         self.sequenceID = sequenceID
         self.currentTime = currentTime
@@ -48,32 +50,39 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
             return
         }
         
+        // TODO: Finish add comment
         persistentStore.asyncFromBackground() { context in
             // Optimistically create a comment before sending request
             let comment: VComment = context.createObject()
+            comment.remoteId = 0
+            comment.sequenceId = String(self.sequenceID)
+            comment.userId = currentUserId
             comment.realtime = { if let time = self.currentTime { return NSNumber(float: Float(time)) } else { return nil } }()
             //comment.mediaWidth = publishParameters.width
             //comment.mediaHeight = publishParameters.height
             comment.text = self.text ?? ""
             comment.postedAt = NSDate()
-            comment.sequenceId = String(self.sequenceID)
             //comment.thumbnailUrl = mediaURL.absoluteString // see localImageURLForVideo:
             comment.mediaUrl = self.publishParameters?.mediaToUploadURL.absoluteString
-            comment.userId = currentUserId
-            
             context.saveChanges()
+            dispatch_sync( dispatch_get_main_queue() ) {
+                self.optimisticCommentIdentifier = comment.identifier
+            }
             completion()
         }
     }
     
-    override func onComplete( comment:CommentAddRequest.ResultType, completion: () -> ()) {
+    override func onComplete( comment: CommentAddRequest.ResultType, completion: () -> ()) {
         persistentStore.asyncFromBackground() { context in
             
-            // Repopulate the comment after created on server to provide remoteId and other properties
-            if let commentCreated: VComment = context.findObjects( [ "sequenceId" : String(comment.commentID)] ).first {
-                commentCreated.populate( fromSourceModel: comment )
-                context.saveChanges()
+            guard let identifier = self.optimisticCommentIdentifier,
+                let optimisticComment: VComment = context.getObject( identifier ) else {
+                fatalError( "Failed to load comment create optimistically during operation's execution." )
             }
+            
+            // Repopulate the comment after created on server to provide remoteId and other properties
+            optimisticComment.populate( fromSourceModel: comment )
+            context.saveChanges()
             
             completion()
         }

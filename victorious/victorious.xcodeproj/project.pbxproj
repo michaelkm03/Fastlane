@@ -859,6 +859,12 @@
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
+		A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825971C0FADAD00C53A07 /* KVODebugger.swift */; };
+		A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */; };
+		A798259C1C0FB26500C53A07 /* CommentFindRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A798259B1C0FB26500C53A07 /* CommentFindRequestTests.swift */; };
+		A798259E1C0FB2BA00C53A07 /* CommentFindResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */; };
+		A79825A01C0FB4D400C53A07 /* CommentFindOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */; };
+		A79825A21C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */; };
 		A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */; };
 		A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */; };
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
@@ -3161,6 +3167,12 @@
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
+		A79825971C0FADAD00C53A07 /* KVODebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVODebugger.swift; sourceTree = "<group>"; };
+		A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFindRequest.swift; sourceTree = "<group>"; };
+		A798259B1C0FB26500C53A07 /* CommentFindRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFindRequestTests.swift; sourceTree = "<group>"; };
+		A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CommentFindResponse.json; sourceTree = "<group>"; };
+		A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFindOperation.swift; sourceTree = "<group>"; };
+		A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentDeepLinkHandler.swift; sourceTree = "<group>"; };
 		A79869E01AD7124D00F2564A /* VContentDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeepLinkHandler.h; sourceTree = "<group>"; };
@@ -5074,6 +5086,7 @@
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
 				A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */,
 				79CFD3CE1BF2A19C004F70D9 /* FlagConversationRequest.swift */,
+				A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */,
 				A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */,
 				67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */,
 				67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */,
@@ -5182,6 +5195,7 @@
 				A716F3EA1C050A15003068A2 /* RequestErrorTypeTests.swift */,
 				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
+				A798259B1C0FB26500C53A07 /* CommentFindRequestTests.swift */,
 				67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */,
 				A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */,
 				03BC6FB51BE84A1000CFCBEE /* SequenceLikersRequestTests.swift */,
@@ -5263,6 +5277,7 @@
 				C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */,
 				A72EDF9E1C040172003D6177 /* Sequence.json */,
 				C3D956121BF431AF00069FD6 /* SequenceCommentsResponse.json */,
+				A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */,
 				67C5C5381C000F3400F99C8C /* SequenceDetailListByUserValidResponse.json */,
 				A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */,
 				035B3ECE1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json */,
@@ -6933,6 +6948,7 @@
 				A76AEAD21C038E0000E8A26F /* ConversationListOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
+				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
 				A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A76AEAD51C038E0000E8A26F /* LikeSequenceOperation.swift */,
@@ -7172,6 +7188,7 @@
 			children = (
 				A72EDF901C03E5EC003D6177 /* NSNumber+Extensions.swift */,
 				A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */,
+				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -7251,6 +7268,7 @@
 			children = (
 				A79869E01AD7124D00F2564A /* VContentDeepLinkHandler.h */,
 				A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */,
+				A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */,
 				A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */,
 				A79869E31AD7124D00F2564A /* VDeepLinkReceiver.h */,
 				A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */,
@@ -9554,6 +9572,7 @@
 				678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
+				A798259E1C0FB2BA00C53A07 /* CommentFindResponse.json in Resources */,
 				67C210251BFA7A210074E40E /* ImageAsset.json in Resources */,
 				A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */,
 				035B3ECF1BEAB3F600424CBF /* SequenceLikersEmptyResponse.json in Resources */,
@@ -10292,6 +10311,7 @@
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
+				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
 				67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */,
@@ -10376,6 +10396,7 @@
 				67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */,
 				67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */,
 				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
+				A798259C1C0FB26500C53A07 /* CommentFindRequestTests.swift in Sources */,
 				67FD54C91BF69A4500CF52F7 /* DeleteCommentRequestTests.swift in Sources */,
 				A71F41F51C040A1A00131BE6 /* SequenceRepostersRequestTests.swift in Sources */,
 				C3D956151BF4321100069FD6 /* CommentTests.swift in Sources */,
@@ -10937,6 +10958,7 @@
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */,
+				A79825A01C0FB4D400C53A07 /* CommentFindOperation.swift in Sources */,
 				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
 				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
@@ -11030,6 +11052,7 @@
 				A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
+				A79825A21C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift in Sources */,
 				F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */,
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
@@ -11315,6 +11338,7 @@
 				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,
 				A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
+				A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */,
 				A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */,
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A721E9541B572454000B7901 /* UIImage+VTint.m in Sources */,

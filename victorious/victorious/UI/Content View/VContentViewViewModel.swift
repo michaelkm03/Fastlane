@@ -8,45 +8,11 @@
 
 import Foundation
 
-@objc class KVODebugger: NSObject {
-    
-    class func printObservation( keyPath keyPath: String, object: NSObject, change: NSDictionary?) {
-        let objectType = NSStringFromClass(object.classForCoder)
-        if let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
-            let kind = NSKeyValueChange(rawValue:value) {
-                switch kind {
-                case .Setting:
-                    print( "KVO :: \(objectType) :: Setting \(keyPath)" )
-                case .Insertion:
-                    print( "KVO :: \(objectType) :: Inserting \(keyPath)" )
-                case .Removal:
-                    print( "KVO :: \(objectType) :: Removing \(keyPath)" )
-                case .Replacement:
-                    print( "KVO :: \(objectType) :: Replacing \(keyPath)" )
-                }
-        }
-    }
-}
-
 public extension VContentViewViewModel {
     
     func loadNetworkData() {
         
         let sequenceID = Int64(self.sequence.remoteId)!
-        
-        SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
-            // This is here to update the vote counts
-            self.experienceEnhancerController.updateData()
-            
-            // Sets up the monetization chain
-            if (self.sequence.adBreaks?.count ?? 0) > 0 {
-                self.setupAdChain()
-            }
-            if self.endCardViewModel == nil {
-                self.updateEndcard()
-            }
-            self.delegate?.didUpdateContent()
-        }
         
         if self.sequence.isPoll() {
             PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
@@ -55,12 +21,31 @@ public extension VContentViewViewModel {
         }
         
         if let deepLinkCommentId = self.deepLinkCommentId {
-            self.findComment(
-                commendID: deepLinkCommentId,
-                completion: { (comment, error) in
+            self.findComment( commendID: deepLinkCommentId,
+                completion: { (pageNumber, error) in
+                    guard let pageNumber = pageNumber else {
+                        return
+                    }
                     
-            })
+                    self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
+                    let sequenceID = Int64(self.sequence.remoteId)!
+                    let operation = SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
+                    self.loadCommentsOperation = operation
+                })
         } else {
+            SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
+                // This is here to update the vote counts
+                self.experienceEnhancerController.updateData()
+                
+                // Sets up the monetization chain
+                if (self.sequence.adBreaks?.count ?? 0) > 0 {
+                    self.setupAdChain()
+                }
+                if self.endCardViewModel == nil {
+                    self.updateEndcard()
+                }
+                self.delegate?.didUpdateContent()
+            }
             self.loadComments(.First)
         }
         
@@ -85,13 +70,18 @@ public extension VContentViewViewModel {
     func loadComments( pageType: VPageType ) {
         let sequenceID = Int64(self.sequence.remoteId)!
         let operation: SequenceCommentsOperation?
-        switch pageType {
-        case .First:
-            operation = SequenceCommentsOperation(sequenceID: sequenceID)
-        case .Next:
-            operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.nextPageOperation
-        case .Previous:
-            operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.previousPageOperation
+        if let currentOperation = self.loadCommentsOperation as? SequenceCommentsOperation
+            where currentOperation.ready && !currentOperation.executing && !currentOperation.cancelled && !currentOperation.finished {
+                operation = currentOperation
+        } else {
+            switch pageType {
+            case .First:
+                operation = SequenceCommentsOperation(sequenceID: sequenceID)
+            case .Next:
+                operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.nextPageOperation
+            case .Previous:
+                operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.previousPageOperation
+            }
         }
         
         if let currentOperation = operation {
@@ -120,8 +110,15 @@ public extension VContentViewViewModel {
         }
     }
     
-    func findComment( commendID commentID: NSNumber, completion:(VComment?, NSError?)->() ) {
-        // TODO: /api/comment/find/%@/%@/%@
+    func findComment( commendID commentID: NSNumber, completion:(Int?, NSError?)->() ) {
+        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        operation.queue() { error in
+            if error == nil, let pageNumber = operation.pageNumber {
+                completion(pageNumber, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {

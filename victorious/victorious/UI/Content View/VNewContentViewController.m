@@ -212,6 +212,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 // position to which VCommentHighlighter animated to
                 [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
             }];
+            break;
         }
     }
 }

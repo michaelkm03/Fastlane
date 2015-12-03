@@ -72,8 +72,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         return;
     }
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
-    
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
     
     NSNumber *commentId = nil;
@@ -85,27 +83,33 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     NSString *streamId = [url v_pathComponentAtIndex:3];
     
-    [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
-                                         inStreamWithStreamID:streamId
-                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    __block ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.streamId = streamId;
+    context.commentId = commentId;
+    context.viewController = self.scaffoldViewController.rootNavigationController;
+    context.originDependencyManager = self.dependencyManager;
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
+    [self loadSequence:sequenceID completion:^(NSError *_Nullable error)
      {
-         [hud hide:YES];
-         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         
-         ContentViewContext *context = [[ContentViewContext alloc] init];
-         context.sequence = sequence;
-         context.streamId = streamId;
-         context.commentId = commentId;
-         context.viewController = self.scaffoldViewController.rootNavigationController;
-         context.originDependencyManager = self.dependencyManager;
-         [self.contentViewPresenter presentContentViewWithContext:context];
-         
-         completion( YES, nil );
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-         completion( NO, nil );
+         if ( error == nil )
+         {
+             [hud hide:YES];
+             
+             id<PersistentStoreTypeBasic> persistentStore = [[MainPersistentStore alloc] init];
+             [persistentStore syncBasic:^(id<PersistentStoreContextBasic> _Nonnull persistentStoreContext)
+              {
+                  context.sequence = (VSequence *)[[persistentStoreContext findObjectsWithEntityName:[VSequence entityName]
+                                                                                     queryDictionary:@{ @"remoteId" : sequenceID }
+                                                                                               limit:0] firstObject];
+              }];
+             [self.contentViewPresenter presentContentViewWithContext:context];
+         }
+         else
+         {
+             [hud hide:YES];
+             completion( NO, nil );
+         }
      }];
 }
 

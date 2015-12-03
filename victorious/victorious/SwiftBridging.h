@@ -79,6 +79,7 @@
 #import "VFirstTimeInstallHelper.h"
 #import "VFocusable.h"
 #import "VFollowControl.h"
+#import "VContentDeepLinkHandler.h"
 #import "VFollowResponder.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VHasManagedDependencies.h"

@@ -15,6 +15,7 @@ class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
     
     init( sequenceID: Int64) {
         super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
+        self.qualityOfService = .UserInitiated
     }
     
     override func onComplete(result: SequenceFetchRequest.ResultType, completion:()->() ) {
