@@ -372,7 +372,6 @@
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
-		792D46C91BD953F500DE662A /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 792D46C81BD953F500DE662A /* Reveal.framework */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
 		7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */; };
@@ -394,11 +393,11 @@
 		79A80F831B9F96F700522380 /* VTabScaffoldViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F821B9F96F700522380 /* VTabScaffoldViewControllerTests.swift */; };
 		79A80F861B9F970B00522380 /* VRootViewController+UIAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
-		79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */; };
 		79C593531BFD5D1700EC76ED /* CGRect+AspectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */; };
+		79C624971BFE43090086AF9E /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -2074,11 +2073,11 @@
 		79A80F851B9F970B00522380 /* VRootViewController+UIAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRootViewController+UIAutomation.m"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
-		79C624961BFE43090086AF9E /* VUser+FetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+FetcherTests.m"; sourceTree = "<group>"; };
 		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
 		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
 		79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Aspect.swift"; sourceTree = "<group>"; };
 		79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+AspectTests.swift"; sourceTree = "<group>"; };
+		79C624961BFE43090086AF9E /* VUser+FetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+FetcherTests.m"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3769,7 +3768,6 @@
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
 				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
 				DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */,
-				792D46C91BD953F500DE662A /* Reveal.framework in Frameworks */,
 				DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */,
 				038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */,
 				DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */,
