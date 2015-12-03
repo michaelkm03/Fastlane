@@ -140,7 +140,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
     }
     
-    [self showLoadingViewController];
+//    [self showLoadingViewController];
+    [self showAgeGateViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -233,6 +234,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.loadingViewController.delegate = self;
     self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
     [self showViewController:self.loadingViewController animated:NO completion:nil];
+}
+
+- (void)showAgeGateViewController
+{
+    self.launchState = VAppLaunchStateWaiting;
+    VDependencyManager *ageGateDependencyManager = [self createNewParentDependencyManager];
+    
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithDependencyManager:ageGateDependencyManager];
+    [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
