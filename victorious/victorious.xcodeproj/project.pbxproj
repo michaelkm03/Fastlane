@@ -442,7 +442,6 @@
 		67C5C5411C03C1E700F99C8C /* VSuggestedUsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */; };
 		67D9BFD41BFAA347002B1F17 /* FollowCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
-		67E3A9261C0D491E00F69EE7 /* GIFSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA79A1BF172FA003446CC /* GIFSearchResponse.json */; };
 		67FD54B51BF68D4500CF52F7 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B41BF68D4500CF52F7 /* FlagSequenceRequest.swift */; };
 		67FD54B71BF68D5300CF52F7 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */; };
 		67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */; };
@@ -9745,7 +9744,6 @@
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */,
-				67E3A9261C0D491E00F69EE7 /* GIFSearchResponse.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
