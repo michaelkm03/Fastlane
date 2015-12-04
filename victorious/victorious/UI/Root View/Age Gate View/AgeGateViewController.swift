@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol AgeGateViewControllerDelegate {
-    func continueToLoadingViewController(loadingViewController: VLoadingViewController)
+    func continueButtonTapped(isKid: Bool)
 }
 
 class AgeGateViewController: UIViewController {
@@ -19,20 +19,17 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var datePicker: UIDatePicker!
     @IBOutlet private weak var continueButton: UIButton!
     
-    private var dependencyManager: VDependencyManager?
     private var delegate: AgeGateViewControllerDelegate?
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
     }
     
-    static func ageGateViewController(withDependencyManager dependencyManager: VDependencyManager,
-        ageGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
+    static func ageGateViewController(withAgeGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
             let storyboard = UIStoryboard.v_mainStoryboard()
             guard let ageGateViewController = storyboard.instantiateViewControllerWithIdentifier(StringFromClass(AgeGateViewController)) as? AgeGateViewController else {
                 fatalError("Could not instantiate an AgeGateViewController from Storyboard")
             }
-            ageGateViewController.dependencyManager = dependencyManager
             ageGateViewController.delegate = delegate
             
             return ageGateViewController
@@ -46,10 +43,8 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
-        let isUnderThirteen = isKid(underAge: 13)
-        let loadingVC = VLoadingViewController.loadingViewControllerFromStoryboard()
-        loadingVC.parentDependencyManager = dependencyManager
-        delegate?.continueToLoadingViewController(loadingVC)
+        let userIsKid = isKid(underAge: 13)
+        delegate?.continueButtonTapped(userIsKid)
     }
     
     //MARK: - Private helpers

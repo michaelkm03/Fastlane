@@ -236,9 +236,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showAgeGateViewController
 {
-    VDependencyManager *ageGateDependencyManager = [self createNewParentDependencyManager];
-    
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithDependencyManager:ageGateDependencyManager ageGateDelegate:self];
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self];
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
@@ -557,10 +555,9 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 #pragma mark - AgeGateViewControllerDelegate
 
-- (void)continueToLoadingViewController:(VLoadingViewController *)loadingViewController
+- (void)continueButtonTapped:(BOOL)isKid
 {
-    loadingViewController.delegate = self;
-    [self showViewController:loadingViewController animated:NO completion:nil];
+    [self showLoadingViewController];
 }
 
 #pragma mark - VHashtag
