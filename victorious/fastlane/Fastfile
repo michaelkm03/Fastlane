@@ -49,10 +49,6 @@ def clean_build_products
   `git checkout #{FASTLANE_DIRECTORY}/../fastlane/metadata/`
 end
 
-def log(message:)
-  puts message
-end
-
 def make_build_string(version:, build_number:)
   "#{version} (#{build_number})"
 end
@@ -65,7 +61,6 @@ def send_submission_result(app_id:, client:, build:, status:)
     status:   status
   )
   client.submit_result(result)
-  log(message: "Notified VAMS with status: #{status}")
 end
 
 platform :ios do
@@ -84,6 +79,7 @@ platform :ios do
     client.apps_to_build.each do |app|
       clean_build_products
 
+      logger       = VAMS::ColoredLogger.new($stdout)
       version      = ''
       build_number = ''
 
@@ -103,20 +99,24 @@ platform :ios do
 
           deliver(force: true)
 
+          status = VAMS::SubmissionResult::Status::GOOD
           send_submission_result(app_id: app.app_id,
                                  client: client,
                                  build:  make_build_string(version:      version,
                                                            build_number: build_number),
-                                 status: VAMS::SubmissionResult::Status::GOOD)
+                                 status: status)
+          logger.info("Notified VAMS with status: #{status}")
         end
 
       rescue Exception => exception
-        log(message: exception.message)
+        status = VAMS::SubmissionResult::Status::BAD
+        logger.error(exception.message)
         send_submission_result(app_id: app.app_id,
                                client: client,
                                build:  make_build_string(version:      version,
                                                          build_number: build_number),
-                               status: VAMS::SubmissionResult::Status::BAD)
+                               status: status)
+        logger.error("Notified VAMS with status: #{status}")
       ensure
         clean_build_products
       end
