@@ -27,13 +27,13 @@ class AgeGateViewController: UIViewController {
     }
     
     static func ageGateViewController(withDependencyManager dependencyManager: VDependencyManager,
-        onRootViewController rootViewController: VRootViewController) -> AgeGateViewController {
+        ageGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
             let storyboard = UIStoryboard.v_mainStoryboard()
             guard let ageGateViewController = storyboard.instantiateViewControllerWithIdentifier(StringFromClass(AgeGateViewController)) as? AgeGateViewController else {
                 fatalError("Could not instantiate an AgeGateViewController from Storyboard")
             }
             ageGateViewController.dependencyManager = dependencyManager
-            ageGateViewController.delegate = rootViewController
+            ageGateViewController.delegate = delegate
             
             return ageGateViewController
     }

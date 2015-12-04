@@ -10,7 +10,6 @@
 #import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
-@protocol AgeGateViewControllerDelegate;
 
 /**
  *  ViewControllers that will be contained by the rootViewController can conform 
@@ -31,7 +30,7 @@
  */
 extern NSString * const VApplicationDidBecomeActiveNotification;
 
-@interface VRootViewController : UIViewController <AgeGateViewControllerDelegate>
+@interface VRootViewController : UIViewController
 
 /**
  The view controller that is currently being displayed

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder>
+@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder, AgeGateViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -241,7 +241,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.launchState = VAppLaunchStateWaiting;
     VDependencyManager *ageGateDependencyManager = [self createNewParentDependencyManager];
     
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithDependencyManager:ageGateDependencyManager onRootViewController:self];
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithDependencyManager:ageGateDependencyManager ageGateDelegate:self];
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
