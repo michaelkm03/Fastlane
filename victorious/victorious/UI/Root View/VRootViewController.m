@@ -37,7 +37,8 @@
 #import "VCrashlyticsLogTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
-NSString * const kBirthdayProvidedForAgeGate = @"com.getvictorious.age_gate.birthday_provided";
+NSString * const kBirthdayProvidedByUser = @"com.getvictorious.age_gate.birthday_provided";
+NSString * const kIsUserAKid = @"com.getvictorious.age_gate.is_kid";
 
 static const NSTimeInterval kAnimationDuration = 0.25f;
 
@@ -243,7 +244,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showInitialScreen
 {
     self.launchState = VAppLaunchStateWaiting;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedForAgeGate])
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedByUser])
     {
         [self showLoadingViewController];
     }
@@ -557,6 +558,11 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)continueButtonTapped:(BOOL)isKid
 {
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    [standardDefaults setValue:@(YES) forKey:kBirthdayProvidedByUser];
+    [standardDefaults setValue:@(isKid) forKey:kIsUserAKid];
+    [standardDefaults synchronize];
+    
     [self showLoadingViewController];
 }
 
