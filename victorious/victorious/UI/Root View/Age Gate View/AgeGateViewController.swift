@@ -8,6 +8,10 @@
 
 import UIKit
 
+@objc protocol AgeGateViewControllerDelegate {
+    func continueToLoadingViewController(loadingViewController: VLoadingViewController)
+}
+
 class AgeGateViewController: UIViewController {
     @IBOutlet private weak var backgroundView: UIView!
     @IBOutlet private weak var widgetBackground: UIView!
@@ -16,18 +20,22 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var continueButton: UIButton!
     
     private var dependencyManager: VDependencyManager?
+    private var delegate: AgeGateViewControllerDelegate?
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
     }
     
-    static func ageGateViewController(withDependencyManager dependencyManager: VDependencyManager) -> AgeGateViewController {
-        let storyboard = UIStoryboard.v_mainStoryboard()
-        guard let ageGateViewController = storyboard.instantiateViewControllerWithIdentifier(StringFromClass(AgeGateViewController)) as? AgeGateViewController else {
-            fatalError("Could not instantiate an AgeGateViewController from Storyboard")
-        }
-        ageGateViewController.dependencyManager = dependencyManager
-        return ageGateViewController
+    static func ageGateViewController(withDependencyManager dependencyManager: VDependencyManager,
+        onRootViewController rootViewController: VRootViewController) -> AgeGateViewController {
+            let storyboard = UIStoryboard.v_mainStoryboard()
+            guard let ageGateViewController = storyboard.instantiateViewControllerWithIdentifier(StringFromClass(AgeGateViewController)) as? AgeGateViewController else {
+                fatalError("Could not instantiate an AgeGateViewController from Storyboard")
+            }
+            ageGateViewController.dependencyManager = dependencyManager
+            ageGateViewController.delegate = rootViewController
+            
+            return ageGateViewController
     }
     
     //MARK: - UI Lifecycle
@@ -40,7 +48,7 @@ class AgeGateViewController: UIViewController {
     @IBAction func tappedOnContinue(sender: UIButton) {
         let loadingVC = VLoadingViewController.loadingViewControllerFromStoryboard()
         loadingVC.parentDependencyManager = dependencyManager
-        presentViewController(loadingVC, animated: false, completion: nil)
+        delegate?.continueToLoadingViewController(loadingVC)
     }
     
     //MARK: - Private helpers
