@@ -27,10 +27,16 @@ extension Pageable {
     public var paginator: PaginatorType { return StandardPaginator() }
     
     public var nextPageRequest: Self? {
+        if let nextPaginator = self.paginator.getNextPage( self.paginator.itemsPerPage ) {
+            return self.dynamicType.init(paginator: nextPaginator)
+        }
         return nil
     }
     
     public var previousPageRequest: Self? {
+        if let previousPaginator = self.paginator.getPreviousPage() {
+            return self.dynamicType.init(paginator: previousPaginator)
+        }
         return nil
     }
 }

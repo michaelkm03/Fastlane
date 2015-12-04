@@ -23,7 +23,7 @@ class MainPersistentStore: NSObject, PersistentStoreType {
         let docsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         let persistentStoreURL = docsDirectory.URLByAppendingPathComponent( persistentStorePath )
         
-        //do { try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL) } catch {}
+        do { try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL) } catch {}
         
         let momPath = ("\(managedObjectModelName).momd" as NSString).stringByAppendingPathComponent( managedObjectModelVersion )
         guard let momURLInBundle = NSBundle.mainBundle().URLForResource( momPath, withExtension: "mom" ) else {
