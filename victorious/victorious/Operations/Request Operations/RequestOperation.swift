@@ -148,20 +148,25 @@ protocol RequestOperationType : class {
     init(request: RequestType)
 }
 
+protocol PageableOperation {
+    func nextOperation() -> Self?
+    func previousOperation() -> Self?
+}
+
 extension RequestOperation where T : Pageable {
     
-    func nextOperation<U: RequestOperationType>() -> U? {
-        if let nextPaginator = request.paginator.getNextPage(resultCount),
-            let nextRequest = T(paginator: nextPaginator) as? U.RequestType {
-                return U(request: nextRequest)
+    func nextOperation() -> Self? {
+        if let nextPaginator = request.paginator.getNextPage(resultCount) {
+            let nextRequest = T(paginator: nextPaginator)
+            return self.dynamicType.init(request: nextRequest)
         }
         return nil
     }
     
-    func previousOperation<U: RequestOperationType>() -> U? {
-        if let previousPaginator = request.paginator.getPreviousPage(),
-            let prevRequest = T(paginator: previousPaginator) as? U.RequestType {
-                return U(request: prevRequest)
+    func previousOperation() -> Self? {
+        if let previousPaginator = request.paginator.getPreviousPage() {
+            let prevRequest = T(paginator: previousPaginator)
+            return self.dynamicType.init(request: prevRequest)
         }
         return nil
     }

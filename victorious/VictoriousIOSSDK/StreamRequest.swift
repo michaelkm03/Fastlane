@@ -28,7 +28,7 @@ public struct StreamRequest: Pageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [StreamItemType] {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
         let stream: Stream
         if responseJSON["payload"].array != nil,
@@ -42,7 +42,7 @@ public struct StreamRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        return stream.items
+        return stream
     }
 }
 

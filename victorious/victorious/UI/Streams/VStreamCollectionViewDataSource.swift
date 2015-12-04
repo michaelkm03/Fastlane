@@ -16,15 +16,25 @@ public extension VStreamCollectionViewDataSource {
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
     public func loadPage( pageType: VPageType, withSuccess success:()->(), failure:(NSError?)->()) {
         
-        if  self.streamLoadOperation == nil, let apiPath = self.stream?.apiPath {
-            self.streamLoadOperation = StreamOperation(apiPath: apiPath)
-        }
-        else if let streamLoadOperation = self.streamLoadOperation as? StreamOperation,
-            let operation: StreamOperation = streamLoadOperation.nextOperation() {
-                self.streamLoadOperation = operation
+        typealias OperationType = RequestOperation<StreamRequest>
+        
+        var operation: OperationType? = nil
+        switch pageType {
+        case .First:
+            if let apiPath = self.stream?.apiPath {
+                operation = StreamOperation(apiPath: apiPath)
+            }
+        case .Next:
+            if let streamLoadOperation = self.streamLoadOperation as? OperationType {
+                operation = streamLoadOperation.nextOperation()
+            }
+        case .Previous:
+            if let streamLoadOperation = self.streamLoadOperation as? OperationType {
+                operation = streamLoadOperation.previousOperation()
+            }
         }
         
-        if let operation = self.streamLoadOperation as? StreamOperation {
+        if let operation = operation {
             self.isLoading = true
             operation.queue() { error in
                 self.isLoading = false
@@ -34,6 +44,8 @@ public extension VStreamCollectionViewDataSource {
                     success()
                 }
             }
+            print( "operation = \(operation.dynamicType)" )
+            self.streamLoadOperation = operation
         }
     }
 }
