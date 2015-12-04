@@ -35,7 +35,7 @@ private class MockRequest<T>: RequestType {
     }
 }
 
-class EndpointRequestTests: XCTestCase {
+class RequestTypeTests: XCTestCase {
 
     private let mockAuthenticationContext =  AuthenticationContext(userID: 31337, token: "abcdefg")
     private let mockRequestContext = RequestContext(appID: 1, deviceID: "57a01bb1-e97d-420e-96d1-b98966328df8", buildNumber: "1234")

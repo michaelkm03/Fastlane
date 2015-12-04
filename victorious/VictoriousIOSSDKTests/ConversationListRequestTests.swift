@@ -25,7 +25,7 @@ class ConversationListRequestTests: XCTestCase {
         
         do {
             let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
-            let (results, _, _) = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssert(results.count  > 0)
             if let firstConversation = results.first {
@@ -60,7 +60,7 @@ class ConversationListRequestTests: XCTestCase {
         
         do {
             let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
-            let (results, _, _) = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             let secondConversation = results[1]
             XCTAssertEqual(secondConversation.isRead, true)
         } catch {
@@ -76,11 +76,8 @@ class ConversationListRequestTests: XCTestCase {
         
         do {
             let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
-            let (results, previousPage, nextPage) = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            
+            let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 0)
-            XCTAssertNil(previousPage)
-            XCTAssertNil(nextPage)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")
         }
@@ -94,7 +91,7 @@ class ConversationListRequestTests: XCTestCase {
         
         do {
             let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
-            let (results, _, _) = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 0)
         } catch {
             XCTFail("We Sorry, parseResponse should not throw here.")

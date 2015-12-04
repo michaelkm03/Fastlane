@@ -20,6 +20,9 @@ public struct TrendingHashtagRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
-        return try HashtagResponseParser().parseResponse(responseJSON)
+        guard let hashtagJSON = responseJSON["payload"].array else {
+            throw ResponseParsingError()
+        }
+        return hashtagJSON.flatMap { Hashtag(json: $0) }
     }
 }

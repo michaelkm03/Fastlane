@@ -21,14 +21,12 @@ class FollowingHashtagsRequestTests: XCTestCase {
         
         do {
             let followingHashtags = FollowingHashtagsRequest(pageNumber: 1, itemsPerPage: 100)
-            let (results, _, previousPage) = try followingHashtags.parseResponse(NSURLResponse(), toRequest: followingHashtags.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try followingHashtags.parseResponse(NSURLResponse(), toRequest: followingHashtags.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].hashtagID, 191)
             XCTAssertEqual(results[0].tag, "test")
             XCTAssertEqual(results[1].hashtagID, 495)
             XCTAssertEqual(results[1].tag, "surfer")
-            
-            XCTAssertNil(previousPage, "There should be no page before page 1")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

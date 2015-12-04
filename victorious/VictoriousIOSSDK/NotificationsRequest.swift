@@ -10,15 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of notifications for the logged in user
-public struct NotificationsRequest: RequestType /* FIXME */{
+public struct NotificationsRequest: Pageable {
     
-    private let paginator: StandardPaginator
+    public let paginator: PaginatorType
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    private init(paginator: StandardPaginator) {
+    public init(request: NotificationsRequest, paginator: PaginatorType) {
         self.paginator = paginator
     }
     
@@ -29,22 +29,11 @@ public struct NotificationsRequest: RequestType /* FIXME */{
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [Notification], nextPage: NotificationsRequest?, previousPage: NotificationsRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Notification] {
         
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = notificationsJSON.flatMap { Notification(json: $0) }
-        
-        let nextPageRequest: NotificationsRequest? = results.count > 0 ? NotificationsRequest(paginator: paginator.nextPage) : nil
-        let previousPageRequest: NotificationsRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = NotificationsRequest(paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return notificationsJSON.flatMap { Notification(json: $0) }
     }
 }

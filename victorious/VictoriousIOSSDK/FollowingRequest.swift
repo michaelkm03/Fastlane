@@ -10,43 +10,39 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users followed by a specific user
-public struct FollowingRequest: RequestType /* FIXME */{
+public struct FollowingRequest: Pageable {
+    
+    public let urlRequest: NSURLRequest
+    
     /// Users being followed will be retrieved by this user ID
     public let userID: Int64
     
-    private let paginator: StandardPaginator
+    public let paginator: PaginatorType
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 40) {
-        self.init(userID: userID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init(userID: userID, paginator: paginator)
     }
     
-    private init(userID: Int64, paginator: StandardPaginator) {
+    public init( request: FollowingRequest, paginator: PaginatorType ) {
+        self.init( userID: request.userID, paginator: request.paginator)
+    }
+    
+    private init(userID: Int64, paginator: PaginatorType) {
         self.userID = userID
         self.paginator = paginator
-    }
-    
-    public var urlRequest: NSURLRequest {
+        
         let url = NSURL(string: "/api/follow/subscribed_to_list/\(userID)")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
-        
-        return request
+        self.urlRequest = request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: FollowingRequest?, previousPage: FollowingRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
+        
         guard let usersJSON = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: FollowingRequest? = usersJSON.count > 0 ? FollowingRequest(userID: userID, paginator: paginator.nextPage) : nil
-        let previousPageRequest: FollowingRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = FollowingRequest(userID: userID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

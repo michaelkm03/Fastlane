@@ -16,11 +16,11 @@ public protocol PaginatorType {
     
     /// Returns a PaginatorType object that contains data for retrieving the next page
     /// of paginated data after the receiver.
-    func getPreviousPage() -> PaginatorType?
+    func previousPage() -> PaginatorType?
     
     /// Returns a PaginatorType object that contains data for retrieving the next page
     /// of paginated data after the receiver.
-    func getNextPage( resultCount: Int ) -> PaginatorType?
+    func nextPage( resultCount: Int ) -> PaginatorType?
     
     /// Modifies the provided request by adding pagination data to it according to
     /// the implementation-specific logic for doing so.

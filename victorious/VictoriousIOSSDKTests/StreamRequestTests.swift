@@ -18,24 +18,24 @@ class StreamRequestTests: XCTestCase {
     
     func testSimpleStreamRequest() {
         
-        var request = StreamRequest( apiPath: streamAPIPath)
+        var request = StreamRequest( apiPath: streamAPIPath)!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/feed/following/1/15" )
         
         let pageNumber = 2
         let itemsPerPage = 20
-        request = StreamRequest(apiPath: streamAPIPath, sequenceID: nil, pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        request = StreamRequest(apiPath: streamAPIPath, sequenceID: nil, pageNumber: pageNumber, itemsPerPage: itemsPerPage)!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/feed/following/\(pageNumber)/\(itemsPerPage)" )
     }
     
     func testComplexStreamRequest() {
         
         let sequenceID = "321321"
-        var request = StreamRequest( apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID )
+        var request = StreamRequest( apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID )!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/1/15" )
         
         let pageNumber = 2
         let itemsPerPage = 20
-        request = StreamRequest(apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        request = StreamRequest(apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString,  "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/\(pageNumber)/\(itemsPerPage)" )
     }
     
@@ -47,18 +47,10 @@ class StreamRequestTests: XCTestCase {
                 return
         }
         
-        var request = StreamRequest(apiPath: streamAPIPath)
+        let request = StreamRequest(apiPath: streamAPIPath)!
         do {
-            var stream = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let stream = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertNotNil( stream )
-            XCTAssertNotNil( request.nextPageRequest )
-            XCTAssertNil( request.previousPageRequest )
-            
-            request = request.nextPageRequest!
-            stream = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertNotNil( stream )
-            XCTAssertNotNil( request.nextPageRequest )
-            XCTAssertNotNil( request.previousPageRequest )
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }

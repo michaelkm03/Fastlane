@@ -9,18 +9,23 @@
 import Foundation
 import SwiftyJSON
 
-public struct SequenceRepostersRequest: RequestType /* FIXME */{
-    
-    public let sequenceID: Int64
-    private let paginator: StandardPaginator
+public struct SequenceRepostersRequest: Pageable {
     
     public let urlRequest: NSURLRequest
+    
+    public let sequenceID: Int64
+    
+    public let paginator: PaginatorType
+    
+    public init( request: SequenceRepostersRequest, paginator: PaginatorType ) {
+        self.init( sequenceID: request.sequenceID, paginator: paginator )
+    }
     
     public init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
     }
     
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
+    private init(sequenceID: Int64, paginator: PaginatorType) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         
@@ -30,20 +35,10 @@ public struct SequenceRepostersRequest: RequestType /* FIXME */{
         self.urlRequest = request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: SequenceRepostersRequest?, previousPage: SequenceRepostersRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
         guard let usersJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: SequenceRepostersRequest? = !usersJSON.isEmpty ? SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator.nextPage) : nil
-        let previousPageRequest: SequenceRepostersRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = SequenceRepostersRequest(sequenceID: sequenceID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

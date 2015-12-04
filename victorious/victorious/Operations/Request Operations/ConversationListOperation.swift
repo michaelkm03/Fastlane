@@ -17,10 +17,10 @@ class ConversationListOperation: RequestOperation<ConversationListRequest> {
         super.init( request: ConversationListRequest() )
     }
     
-    override func onComplete( result: ConversationListRequest.ResultType, completion: ()->() ) {
+    override func onComplete( results: ConversationListRequest.ResultType, completion: ()->() ) {
         
         persistentStore.asyncFromBackground() { context in
-            for conversation in result.results {
+            for conversation in results {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
                 let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )

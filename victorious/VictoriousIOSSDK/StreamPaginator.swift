@@ -23,11 +23,15 @@ public struct StreamPaginator: PaginatorType {
     public let apiPath: String
     public let sequenceID: String?
     
-    public init(apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    public init?(apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.apiPath = apiPath
         self.sequenceID = sequenceID
         self.pageNumber = pageNumber
         self.itemsPerPage = itemsPerPage
+        
+        if apiPath.containsString( Macro.SequenceID.rawValue ) && sequenceID == nil {
+            return nil
+        }
     }
     
     // MARK: - PaginatorType
@@ -39,14 +43,14 @@ public struct StreamPaginator: PaginatorType {
         request.URL = urlWithMacrosReplaced( apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage )
     }
     
-    public func getPreviousPage() -> PaginatorType? {
+    public func previousPage() -> PaginatorType? {
         if pageNumber > 1 {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func getNextPage( resultCount: Int ) -> PaginatorType? {
+    public func nextPage( resultCount: Int ) -> PaginatorType? {
         if resultCount >= itemsPerPage {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }

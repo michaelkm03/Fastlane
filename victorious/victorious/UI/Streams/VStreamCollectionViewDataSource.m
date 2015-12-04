@@ -17,8 +17,6 @@
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
-static char KVOContext;
-
 NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
 
 @interface VStreamCollectionViewDataSource()

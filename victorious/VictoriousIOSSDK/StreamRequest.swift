@@ -12,13 +12,23 @@ import SwiftyJSON
 public struct StreamRequest: Pageable {
     
     public let paginator: PaginatorType
+    public let apiPath: String
     
-    public init(paginator: PaginatorType ) {
-        self.paginator = paginator
+    public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        if let paginator = StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage:itemsPerPage ) {
+            self.init( apiPath: apiPath, paginator: paginator )
+        } else {
+            return nil
+        }
     }
     
-    public init( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.paginator = StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage:itemsPerPage )
+    public init(request: StreamRequest, paginator: PaginatorType) {
+        self.init(apiPath: request.apiPath, paginator: paginator)
+    }
+    
+    private init( apiPath: String, paginator: PaginatorType ) {
+        self.apiPath = apiPath
+        self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {

@@ -10,21 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of GIFs based on a search query
-public struct GIFSearchRequest: RequestType /* FIXME */{
-    
-    // A term to use when searching for GIFs
-    public let searchTerm: String
+public struct GIFSearchRequest: Pageable, Searchable {
     
     public let urlRequest: NSURLRequest
     
-    private let paginator: StandardPaginator
+    public let searchTerm: String
     
-    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(searchTerm: searchTerm, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
-    }
+    public var paginator: PaginatorType
     
-    private init(searchTerm: String, paginator: StandardPaginator) {
-        
+    public init(searchTerm: String, paginator: PaginatorType) {
         let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
@@ -34,21 +28,10 @@ public struct GIFSearchRequest: RequestType /* FIXME */{
         self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [GIFSearchResult], nextPage: GIFSearchRequest?, previousPage: GIFSearchRequest?) {
-        
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = gifsJSON.flatMap { GIFSearchResult(json: $0) }
-        let nextPageRequest: GIFSearchRequest? = gifsJSON.count > 0 ? GIFSearchRequest(searchTerm: searchTerm, paginator: paginator.nextPage) : nil
-        let previousPageRequest: GIFSearchRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = GIFSearchRequest(searchTerm: searchTerm, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
     }
 }

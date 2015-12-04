@@ -26,30 +26,17 @@ public struct StandardPaginator: PaginatorType {
         request.URL = request.URL?.URLByAppendingPathComponent(String(pageNumber)).URLByAppendingPathComponent(String(itemsPerPage))
     }
     
-    public func getPreviousPage() -> PaginatorType? {
+    public func previousPage() -> PaginatorType? {
         if pageNumber > 1 {
             return StandardPaginator(pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func getNextPage( resultCount: Int ) -> PaginatorType? {
+    public func nextPage( resultCount: Int ) -> PaginatorType? {
         if resultCount >= itemsPerPage {
             return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }
         return nil
-    }
-    
-    // FIXME: Delete these and replace uses
-    
-    public var previousPage: StandardPaginator? {
-        if pageNumber > 1 {
-            return StandardPaginator(pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
-        }
-        return nil
-    }
-    
-    public var nextPage: StandardPaginator {
-        return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
     }
 }
