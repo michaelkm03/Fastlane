@@ -18,7 +18,7 @@ class StreamOperation: RequestOperation<StreamRequest> {
     }
     
     convenience init( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID) )
+        self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
     }
     
     override func onComplete(stream: StreamRequest.ResultType, completion:()->() ) {

@@ -109,6 +109,8 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable, RequestOperation
         dispatch_semaphore_wait( mainSemaphore, DISPATCH_TIME_FOREVER )
     }
     
+    // MARK: - Quauable
+    
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
         self.completionBlock = { [weak self] in
             dispatch_async( dispatch_get_main_queue() ) { [weak self] in

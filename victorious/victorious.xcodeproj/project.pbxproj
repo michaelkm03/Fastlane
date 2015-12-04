@@ -560,6 +560,9 @@
 		A702C84F1C123C33001EE1D5 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C84E1C123C33001EE1D5 /* Searchable.swift */; };
 		A702C8511C123DC5001EE1D5 /* StreamPaginatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8501C123DC5001EE1D5 /* StreamPaginatorTests.swift */; };
 		A702C8531C124110001EE1D5 /* PageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8521C124110001EE1D5 /* PageableTests.swift */; };
+		A702C8551C12462A001EE1D5 /* RequestOperation2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8541C12462A001EE1D5 /* RequestOperation2.swift */; };
+		A702C8571C1247C9001EE1D5 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8561C1247C9001EE1D5 /* RequestExecutor.swift */; };
+		A702C8591C125163001EE1D5 /* StreamItemParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8581C125163001EE1D5 /* StreamItemParser.swift */; };
 		A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
@@ -2609,6 +2612,9 @@
 		A702C84E1C123C33001EE1D5 /* Searchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		A702C8501C123DC5001EE1D5 /* StreamPaginatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamPaginatorTests.swift; sourceTree = "<group>"; };
 		A702C8521C124110001EE1D5 /* PageableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageableTests.swift; sourceTree = "<group>"; };
+		A702C8541C12462A001EE1D5 /* RequestOperation2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation2.swift; sourceTree = "<group>"; };
+		A702C8561C1247C9001EE1D5 /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
+		A702C8581C125163001EE1D5 /* StreamItemParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemParser.swift; sourceTree = "<group>"; };
 		A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernLoginAndRegistrationFlowViewController.swift; sourceTree = "<group>"; };
 		A70417621A365EE80042CABD /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
 		A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
@@ -6915,6 +6921,8 @@
 				A7D69C1B1C0E510800B462C3 /* PollResultByUserOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A76AEA3E1BFEBA0500E8A26F /* RequestOperation.swift */,
+				A702C8541C12462A001EE1D5 /* RequestOperation2.swift */,
+				A702C8561C1247C9001EE1D5 /* RequestExecutor.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A76AEA401BFEBA0500E8A26F /* StreamOperation.swift */,
 				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
@@ -7133,6 +7141,7 @@
 				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
 				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 				A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */,
+				A702C8581C125163001EE1D5 /* StreamItemParser.swift */,
 			);
 			name = Parsers;
 			path = Serializers;
@@ -10552,6 +10561,7 @@
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */,
+				A702C8551C12462A001EE1D5 /* RequestOperation2.swift in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
@@ -10992,6 +11002,7 @@
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				A76AEAA91BFFAD8000E8A26F /* AccountUpdateOperation.swift in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
+				A702C8571C1247C9001EE1D5 /* RequestExecutor.swift in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
@@ -11108,6 +11119,7 @@
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
+				A702C8591C125163001EE1D5 /* StreamItemParser.swift in Sources */,
 				F06B417F1B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift in Sources */,
 				F089E35D1AC4863F0076DC4D /* VBlurredMarqueeController.m in Sources */,
 				A7F711F81AE1D5A00086F729 /* VAbstractProfileEditViewController.m in Sources */,
