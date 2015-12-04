@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who follows a specific user
-public struct FollowersRequest: Pageable {
+public struct FollowersRequest: RequestType /* FIXME */{
     /// Followers will be retrieved by this user ID
     public let userID: Int64
     

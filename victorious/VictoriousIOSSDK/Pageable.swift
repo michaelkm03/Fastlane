@@ -11,7 +11,26 @@ import SwiftyJSON
 
 /// A special RequestType for endpoints that support pagination
 public protocol Pageable: RequestType {
-    typealias PageableResultType
     
-    func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws -> (results: PageableResultType, nextPage: Self?, previousPage: Self?)
+    var nextPageRequest: Self? { get }
+    
+    var previousPageRequest: Self? { get }
+    
+    var paginator: PaginatorType { get }
+    
+    init( paginator: PaginatorType )
+}
+
+
+extension Pageable {
+    
+    public var paginator: PaginatorType { return StandardPaginator() }
+    
+    public var nextPageRequest: Self? {
+        return nil
+    }
+    
+    public var previousPageRequest: Self? {
+        return nil
+    }
 }

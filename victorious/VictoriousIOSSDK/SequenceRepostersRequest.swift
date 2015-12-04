@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct SequenceRepostersRequest: Pageable {
+public struct SequenceRepostersRequest: RequestType /* FIXME */{
     
     public let sequenceID: Int64
     private let paginator: StandardPaginator

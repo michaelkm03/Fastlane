@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of notifications for the logged in user
-public struct NotificationsRequest: Pageable {
+public struct NotificationsRequest: RequestType /* FIXME */{
     
     private let paginator: StandardPaginator
     

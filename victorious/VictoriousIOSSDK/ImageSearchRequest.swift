@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of images based on a search term
-public struct ImageSearchRequest: Pageable {
+public struct ImageSearchRequest: RequestType /* FIXME */{
     
     // A term to use when searching for images
     public let searchTerm: String

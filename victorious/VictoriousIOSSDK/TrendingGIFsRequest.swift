@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of trending GIFs
-public struct TrendingGIFsRequest: Pageable {
+public struct TrendingGIFsRequest: RequestType /* FIXME */{
     
     private let paginator: StandardPaginator
     

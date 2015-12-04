@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
-public struct SequenceLikersRequest: Pageable {
+public struct SequenceLikersRequest: RequestType /* FIXME */{
     
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64

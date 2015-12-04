@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of GIFs based on a search query
-public struct GIFSearchRequest: Pageable {
+public struct GIFSearchRequest: RequestType /* FIXME */{
     
     // A term to use when searching for GIFs
     public let searchTerm: String

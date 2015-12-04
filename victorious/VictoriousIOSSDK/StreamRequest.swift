@@ -11,30 +11,24 @@ import SwiftyJSON
 
 public struct StreamRequest: Pageable {
     
-    let pageNumber: Int
-    let itemsPerPage: Int
+    public let paginator: PaginatorType
     
-    public let apiPath: String
-    public let sequenceID: String?
-    
-    public let urlRequest: NSURLRequest
-    
-    public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.apiPath = apiPath
-        self.sequenceID = sequenceID
-        self.pageNumber = pageNumber
-        self.itemsPerPage = itemsPerPage
-        
-        guard let streamURL = StreamURLMacros.urlWithMacrosReplaced( apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber,
-            itemsPerPage: itemsPerPage) else {
-                return nil
-        }
-        self.urlRequest = NSMutableURLRequest(URL: streamURL)
+    public init(paginator: PaginatorType ) {
+        self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: Stream, nextPage: StreamRequest?, previousPage: StreamRequest?) {
+    public init( apiPath: String, sequenceID: String? = nil) {
+        self.paginator = StreamPaginator(apiPath: apiPath, sequenceID: sequenceID)
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let url = NSURL()
+        let request = NSMutableURLRequest(URL: url)
+        paginator.addPaginationArgumentsToRequest(request)
+        return request
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [StreamItemType] {
         
         let stream: Stream
         if responseJSON["payload"].array != nil,
@@ -48,37 +42,58 @@ public struct StreamRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let nextPageRequest = StreamRequest( apiPath: apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber + 1,
-            itemsPerPage: itemsPerPage )
-        
-        let prevPageRequest = StreamRequest( apiPath: apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber - 1,
-            itemsPerPage: itemsPerPage )
-        
-        return (
-            results: stream,
-            nextPage: stream.items.count == 0 ? nil : nextPageRequest,
-            previousPage: pageNumber == 1 ? nil : prevPageRequest
-        )
+        return stream.items
     }
 }
 
-private enum StreamURLMacros: String {
+public struct StreamPaginator: PaginatorType {
     
-    case PageNumber     = "%%PAGE_NUM%%"
-    case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
-    case SequenceID     = "%%SEQUENCE_ID%%"
-    
-    static var all: [StreamURLMacros] {
-        return [ .PageNumber, .ItemsPerPage, .SequenceID ]
+    public enum Macro: String {
+        case PageNumber     = "%%PAGE_NUM%%"
+        case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
+        case SequenceID     = "%%SEQUENCE_ID%%"
+        
+        static var all: [Macro] {
+            return [ .PageNumber, .ItemsPerPage, .SequenceID ]
+        }
     }
     
-    static func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
+    public let apiPath: String
+    public let sequenceID: String?
+    
+    public init(apiPath: String, pageNumber: Int = 1, itemsPerPage: Int = 15, sequenceID: String? = nil) {
+        self.apiPath = apiPath
+        self.sequenceID = sequenceID
+        self.pageNumber = pageNumber
+        self.itemsPerPage = itemsPerPage
+    }
+    
+    // MARK: - PaginatorType
+    
+    public let pageNumber: Int
+    public let itemsPerPage: Int
+    
+    public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
+        request.URL = urlWithMacrosReplaced( apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage )
+    }
+    
+    public func getPreviousPage() -> PaginatorType? {
+        if pageNumber > 1 {
+            return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
+        }
+        return nil
+    }
+    
+    public func getNextPage( resultCount: Int ) -> PaginatorType? {
+        if resultCount >= itemsPerPage {
+            return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
+        }
+        return nil
+    }
+    
+    private func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
         var apiPathWithMacrosReplaced = apiPath
-        for macro in StreamURLMacros.all where apiPath.containsString(macro.rawValue) {
+        for macro in Macro.all where apiPath.containsString(macro.rawValue) {
             switch macro {
             case .PageNumber:
                 apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(pageNumber))

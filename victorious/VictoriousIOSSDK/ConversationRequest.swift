@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 // A RequestType for fetching pages of messages for a particular conversation.
-public struct ConversationRequest: Pageable {
+public struct ConversationRequest: RequestType /* FIXME */{
     
     /// The conversation for this request
     public let conversationID: Int64

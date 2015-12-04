@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags based on a search term
-public struct HashtagSearchRequest: Pageable {
+public struct HashtagSearchRequest: RequestType /* FIXME */{
     
     /// The search term to use when querying for hashtags
     public let searchTerm: String

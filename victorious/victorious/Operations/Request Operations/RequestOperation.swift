@@ -12,7 +12,7 @@ import VictoriousCommon
 
 private let _defaultQueue = NSOperationQueue()
 
-class RequestOperation<T: RequestType> : NSOperation, Queuable {
+class RequestOperation<T: RequestType> : NSOperation, Queuable, RequestOperationType {
     
     static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
@@ -23,7 +23,9 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable {
         return _defaultQueue
     }
     
-    init( request: T ) {
+    var resultCount: Int = 0
+    
+    required init(request: T) {
         self.request = request
     }
     
@@ -138,5 +140,29 @@ private extension RequestContext {
             buildNumber = ""
         }
         self.init(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
+    }
+}
+
+protocol RequestOperationType : class {
+    typealias RequestType
+    init(request: RequestType)
+}
+
+extension RequestOperation where T : Pageable {
+    
+    func nextOperation<U: RequestOperationType>() -> U? {
+        if let nextPaginator = request.paginator.getNextPage(resultCount),
+            let nextRequest = T(paginator: nextPaginator) as? U.RequestType {
+                return U(request: nextRequest)
+        }
+        return nil
+    }
+    
+    func previousOperation<U: RequestOperationType>() -> U? {
+        if let previousPaginator = request.paginator.getPreviousPage(),
+            let prevRequest = T(paginator: previousPaginator) as? U.RequestType {
+                return U(request: prevRequest)
+        }
+        return nil
     }
 }
