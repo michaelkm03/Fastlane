@@ -9,6 +9,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     coderay (1.1.0)
+    colorize (0.7.7)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     dotenv (2.0.2)
@@ -75,6 +76,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  colorize
   dotenv
   fakefs
   guard
