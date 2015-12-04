@@ -46,6 +46,7 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
+        let isUnderThirteen = isKid(underAge: 13)
         let loadingVC = VLoadingViewController.loadingViewControllerFromStoryboard()
         loadingVC.parentDependencyManager = dependencyManager
         delegate?.continueToLoadingViewController(loadingVC)
@@ -65,5 +66,12 @@ class AgeGateViewController: UIViewController {
         promptLabel.text = NSLocalizedString("Enter birthday before continuing", comment: "Age gate prompt telling user to select birthday")
         continueButton.setTitle(NSLocalizedString("Continue", comment: "Age gate Continue button title"),
             forState: .Normal)
+    }
+    
+    private func isKid(underAge age: Int) -> Bool {
+        let birthday = datePicker.date
+        let now = NSDate()
+        let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
+        return ageComponents.year < 13
     }
 }

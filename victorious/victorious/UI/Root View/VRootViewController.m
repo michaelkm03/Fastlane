@@ -37,6 +37,7 @@
 #import "VCrashlyticsLogTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
+NSString * const kBirthdayProvidedForAgeGate = @"com.getvictorious.age_gate.birthday_provided";
 
 static const NSTimeInterval kAnimationDuration = 0.25f;
 
@@ -139,9 +140,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
     }
-    
-//    [self showLoadingViewController];
-    [self showAgeGateViewController];
+    [self showInitialScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -229,7 +228,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showLoadingViewController
 {
-    self.launchState = VAppLaunchStateWaiting;
     self.loadingViewController = [VLoadingViewController loadingViewControllerFromStoryboard];
     self.loadingViewController.delegate = self;
     self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
@@ -238,11 +236,23 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showAgeGateViewController
 {
-    self.launchState = VAppLaunchStateWaiting;
     VDependencyManager *ageGateDependencyManager = [self createNewParentDependencyManager];
     
     AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithDependencyManager:ageGateDependencyManager ageGateDelegate:self];
     [self showViewController:ageGateViewController animated:NO completion:nil];
+}
+
+- (void)showInitialScreen
+{
+    self.launchState = VAppLaunchStateWaiting;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedForAgeGate])
+    {
+        [self showLoadingViewController];
+    }
+    else
+    {
+        [self showAgeGateViewController];
+    }
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
