@@ -1,5 +1,13 @@
 module VAMS
   class Metadata
+    VAMS_TO_ITUNES_CATEGORIES    = {
+      'Books'             => 'Book',
+      'Catalogs'          => 'Apps.Catalogs',
+      'Food & Drink'      => 'Apps.Food_Drink',
+      'Health & Fitness'  => 'Healthcare_Fitness',
+      'Photo & Video'     => 'Photography',
+      'Social Networking' => 'SocialNetworking'
+    }
     CORE_ATTRIBUTES              = [:copyright,
                                     :primary_category,
                                     :secondary_category]
@@ -13,11 +21,11 @@ module VAMS
     def initialize(app)
       @ios_app_categories = app.ios_app_categories
       @copyright          = app.copyright
-      @primary_category   = find_category_string(categories: app.ios_app_categories, number: app.ios_primary_category)
-      @secondary_category = find_category_string(categories: app.ios_app_categories, number: app.ios_secondary_category)
+      @primary_category   = retrieve_category(categories: app.ios_app_categories, number: app.ios_primary_category)
+      @secondary_category = retrieve_category(categories: app.ios_app_categories, number: app.ios_secondary_category)
       @description        = app.ios_description
       @keywords           = app.ios_keywords
-      @privacy_url = app.privacy_policy_url
+      @privacy_url        = app.privacy_policy_url
       @support_url        = app.support_url
       @name               = app.app_name
     end
@@ -36,6 +44,16 @@ module VAMS
     end
 
     private
+
+    def retrieve_category(categories:, number:)
+      vams_category = find_category_string(categories: categories, number: number)
+      translate_vams_category_into_itunes_if_needed(category: vams_category)
+    end
+
+    def translate_vams_category_into_itunes_if_needed(category:)
+      translated_category = VAMS_TO_ITUNES_CATEGORIES[category]
+      translated_category ? translated_category : category
+    end
 
     def find_category_string(categories:, number:)
       category_pair = categories.detect { |string, number_in_hash|
