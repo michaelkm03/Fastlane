@@ -27,6 +27,8 @@ class RequestOperation: NSOperation, Queuable {
     private(set) var error: NSError?
     
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
+
+        assert( NSThread.currentThread().isMainThread == false )
         
         var baseURL: NSURL?
         var requestContext: RequestContext?
