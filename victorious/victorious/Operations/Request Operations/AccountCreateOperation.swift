@@ -9,12 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
-    
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+class AccountCreateOperation: RequestOperation {
     
     private let loginType: VLoginType
     private let accountIdentifier: String?
+    
+    var currentRequest: AccountCreateRequest
     
     var isNewUser = false
     var persistentUser: VUser?
@@ -22,14 +22,19 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
         self.loginType = loginType
         self.accountIdentifier = accountIdentifier
-        super.init( request: request )
+        self.currentRequest = request
     }
     
     // MARK: - Operation overrides
     
-    override func onComplete( response: AccountCreateRequest.ResultType, completion:()->() ) {
+    override func main() {
+        executeRequest( currentRequest, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( response: AccountCreateResponse, completion:()->() ) {
         self.isNewUser = response.newUser
         
+        // First, find or create the new user who just logged in
         persistentStore.asyncFromBackground() { context in
             let user: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
             user.populate(fromSourceModel: response.user)
@@ -39,29 +44,41 @@ class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
             
             let identifier = user.identifier
             dispatch_async( dispatch_get_main_queue() ) {
-                self.persistentStore.sync() { context in
-                    guard let persistentUser: VUser = context.getObject(identifier) else {
-                        fatalError( "Failed to add create current user.  Check code in the `onResponse(_:) method." )
-                    }
-                    persistentUser.setAsCurrentUser(inContext: context)
-                    
-                    VStoredLogin().saveLoggedInUserToDisk( persistentUser )
-                    NSUserDefaults.standardUserDefaults().setInteger( persistentUser.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)
-                    if let accountIdentifier = self.accountIdentifier {
-                        NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
-                    }
-                    
-                    // Respond to the login
-                    VLoginType(rawValue: persistentUser.loginType.integerValue )?.trackSuccess( response.newUser )
-                    NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
-                    
-                    // Load more data from the network about the user
-                    PollResultByUserOperation( userID: persistentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
-                    ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
-                    
-                    completion()
-                }
+                let currentUser = self.setCurrentUser( identifier )!
+                self.updateStoredCredentials( currentUser )
+                self.notifyLoginChange( currentUser, isNewUser: response.newUser )
+                self.queueNextOperations( currentUser )
+                completion()
             }
         }
+    }
+    
+    private func setCurrentUser( identifier: AnyObject ) -> VUser? {
+        return self.persistentStore.sync() { context in
+            if let persistentUser: VUser = context.getObject(identifier) {
+                persistentUser.setAsCurrentUser(inContext: context)
+                return persistentUser
+            }
+            return nil
+        }
+    }
+    
+    private func updateStoredCredentials( user: VUser ) {
+        VStoredLogin().saveLoggedInUserToDisk( user )
+        NSUserDefaults.standardUserDefaults().setInteger( user.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)
+        if let accountIdentifier = self.accountIdentifier {
+            NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
+        }
+    }
+    
+    private func notifyLoginChange( user: VUser, isNewUser: Bool ) {
+        VLoginType(rawValue: user.loginType.integerValue )?.trackSuccess( isNewUser )
+        NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
+    }
+    
+    private func queueNextOperations( currentUser: VUser ) {
+        // Load more data from the network about the user
+        PollResultByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
+        ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }

@@ -12,48 +12,21 @@ import VictoriousCommon
 
 private let _defaultQueue = NSOperationQueue()
 
-class RequestOperation<T: RequestType> : NSOperation, Queuable, RequestOperationType {
+class RequestOperation: NSOperation, Queuable {
+    
+    var defaultQueue: NSOperationQueue { return _defaultQueue }
     
     static var sharedQueue: NSOperationQueue { return _defaultQueue }
     
-    private let request: T
-    private(set) var requestError: NSError?
+    var mainQueueCompletionBlock: ((NSError?)->())?
     
-    var defaultQueue: NSOperationQueue {
-        return _defaultQueue
-    }
+    let persistentStore: PersistentStoreType = MainPersistentStore()
     
     var resultCount: Int = 0
     
-    required init(request: T) {
-        self.request = request
-    }
+    private(set) var error: NSError?
     
-    // MARK: - Lifecycle Subclassing
-    
-    func onStart( completion:()->() ) {
-        completion()
-    }
-    
-    func onComplete( result: T.ResultType, completion:()->() ) {
-        completion()
-    }
-    
-    func onError( error: NSError, completion: ()->() ) {
-        completion()
-    }
-    
-    // MARK: - NSOperation overrides
-    
-    final override func cancel() {
-        super.cancel()
-        
-        if let request = self.request as? Cancelable {
-            request.cancel()
-        }
-    }
-    
-    override func main() {
+    final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
         
         var baseURL: NSURL?
         var requestContext: RequestContext?
@@ -74,51 +47,55 @@ class RequestOperation<T: RequestType> : NSOperation, Queuable, RequestOperation
                 }
                 return nil
             }
-            self.onStart() {
-                dispatch_semaphore_signal( startSemaphore )
-            }
+            dispatch_semaphore_signal(startSemaphore)
         }
         dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
-        let mainSemaphore = dispatch_semaphore_create(0)
-        self.request.execute(
+        let executeSemphore = dispatch_semaphore_create(0)
+        request.execute(
             baseURL: baseURL!,
             requestContext: requestContext!,
             authenticationContext: authenticationContext,
             callback: { (result, error) -> () in
-                dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                    guard let strongSelf = self where !strongSelf.cancelled else {
-                        return
-                    }
-                    
+                dispatch_async( dispatch_get_main_queue() ) {
                     if let error = error as? RequestErrorType {
                         let nsError = NSError( error )
-                        strongSelf.requestError = nsError
-                        strongSelf.onError( nsError ) {
-                            dispatch_semaphore_signal( mainSemaphore )
+                        if let onError = onError {
+                            onError( nsError ) {
+                                dispatch_semaphore_signal( executeSemphore )
+                            }
+                        } else {
+                            print( "Error in operation: \(self.dynamicType):\n \(error)" )
+                            dispatch_semaphore_signal( executeSemphore )
                         }
                     }
                     else if let requestResult = result {
-                        strongSelf.onComplete( requestResult ) {
-                            dispatch_semaphore_signal( mainSemaphore )
+                        if let onComplete = onComplete {
+                            onComplete( requestResult ) {
+                                dispatch_semaphore_signal( executeSemphore )
+                            }
+                        } else {
+                            dispatch_semaphore_signal( executeSemphore )
                         }
                     }
                 }
             }
         )
-        dispatch_semaphore_wait( mainSemaphore, DISPATCH_TIME_FOREVER )
+        dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
     }
     
-    // MARK: - Quauable
+    // MARK: - Queuable
     
-    func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())? = nil) {
-        self.completionBlock = { [weak self] in
-            dispatch_async( dispatch_get_main_queue() ) { [weak self] in
-                guard let strongSelf = self else { return }
-                completionBlock?( strongSelf.requestError )
+    func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
+        self.completionBlock = {
+            if completionBlock != nil {
+                self.mainQueueCompletionBlock = completionBlock
+            }
+            dispatch_async( dispatch_get_main_queue()) {
+                self.mainQueueCompletionBlock?( self.error )
             }
         }
-        RequestOperation.sharedQueue.addOperation( self )
+        queue.addOperation( self )
     }
 }
 
@@ -142,32 +119,5 @@ private extension RequestContext {
             buildNumber = ""
         }
         self.init(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
-    }
-}
-
-protocol RequestOperationType : class {
-    typealias RequestType
-    init(request: RequestType)
-}
-
-protocol PageableOperation {
-    func nextOperation() -> Self?
-    func previousOperation() -> Self?
-}
-
-extension RequestOperation where T : Pageable {
-    
-    func nextOperation() -> Self? {
-        /*if let nextRequest = request.nextPageRequest {
-            return self.dynamicType.init(request: nextRequest)
-        }*/
-        return nil
-    }
-    
-    func previousOperation() -> Self? {
-        /*if let previousRequest = request.previousPageRequest {
-            return self.dynamicType.init(request: previousRequest)
-        }*/
-        return nil
     }
 }

@@ -28,7 +28,7 @@ extension VLoginFlowAPIHelper {
                 profileImageURL: profileImageURL
             )
         )
-        operation.queue() { error in
+        operation!.queue() { error in
             completion?( error )
         }
         return operation

@@ -9,18 +9,27 @@
 import Foundation
 import VictoriousIOSSDK
 
-class ConversationListOperation: RequestOperation<ConversationListRequest> {
+final class ConversationListOperation: RequestOperation, PageableOperationType {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: ConversationListRequest
     
-    init() {
-        super.init( request: ConversationListRequest() )
+    required init( request: ConversationListRequest ) {
+        self.currentRequest = request
     }
     
-    override func onComplete( results: ConversationListRequest.ResultType, completion: ()->() ) {
+    override convenience init() {
+        self.init( request: ConversationListRequest() )
+    }
+    
+    override func main() {
+        executeRequest( currentRequest, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
+        self.resultCount = conversations.count
         
         persistentStore.asyncFromBackground() { context in
-            for conversation in results {
+            for conversation in conversations {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
                 let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )

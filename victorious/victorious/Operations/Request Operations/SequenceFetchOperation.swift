@@ -9,16 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceFetchOperation: RequestOperation<SequenceFetchRequest> {
+class SequenceFetchOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: SequenceFetchRequest
     
     init( sequenceID: Int64) {
-        super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
+        self.currentRequest = SequenceFetchRequest(sequenceID: sequenceID)
     }
     
-    override func onComplete(result: SequenceFetchRequest.ResultType, completion:()->() ) {
-        let sequence = result
+    override func main() {
+        executeRequest( currentRequest, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
+        
         persistentStore.asyncFromBackground() { context in
             let persistentSequence: VSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
             persistentSequence.populate(fromSourceModel: sequence)

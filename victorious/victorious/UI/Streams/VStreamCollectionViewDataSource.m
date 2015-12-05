@@ -40,20 +40,24 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)setStream:(VStream *)stream
 {
-    if (stream == _stream)
+    if ( stream == _stream && _stream != nil )
     {
         return;
     }
     _stream = stream;
     
+    __weak typeof(self) welf = self;
     [self.KVOController observe:_stream
                         keyPath:@"streamItems"
-                        options:kNilOptions
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [self updateVisibleStreamItems];
+         NSKeyValueChange kind = (NSKeyValueChange)((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
+         if ( kind == NSKeyValueChangeSetting )
+         {
+             [welf updateVisibleStreamItems];
+         }
      }];
-    [self updateVisibleStreamItems];
 }
 
 - (void)setSuppressShelves:(BOOL)suppressShelves
