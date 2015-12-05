@@ -20,9 +20,14 @@ class StreamOperation: RequestOperation<StreamRequest> {
         super.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)! )
     }
     
+<<<<<<< Updated upstream
     override init( request: StreamRequest ) {
         self.apiPath = request.apiPath
         super.init(request: request)
+=======
+    convenience init( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
+>>>>>>> Stashed changes
     }
     
     var nextPageOperation: StreamOperation?

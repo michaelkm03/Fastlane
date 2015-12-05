@@ -1,0 +1,48 @@
+//
+//  NetworkActivityIndicator.swift
+//  victorious
+//
+//  Created by Patrick Lynch on 12/4/15.
+//  Copyright © 2015 Victorious. All rights reserved.
+//
+
+import Foundation
+
+public class NetworkActivityIndicator {
+    
+    private(set) var activityCount: Int = 0
+    
+    private static var instance: NetworkActivityIndicator?
+    
+    public static func sharedInstance() -> NetworkActivityIndicator {
+        if let instance = instance {
+            return instance
+        } else {
+            let newInstance = NetworkActivityIndicator()
+            instance = newInstance
+            return newInstance
+        }
+    }
+    
+    private init() {}
+    
+    public func start() {
+        activityCount += 1
+        self.update()
+    }
+    
+    public func stop() {
+        if activityCount > 0 {
+            activityCount -= 1
+        }
+        self.update()
+    }
+    
+    var visible: Bool {
+        return activityCount > 0
+    }
+    
+    func update() {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = visible
+    }
+}
