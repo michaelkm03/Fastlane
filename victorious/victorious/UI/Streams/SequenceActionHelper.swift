@@ -17,12 +17,16 @@ import UIKit
                 completion?( error == nil )
             }
         } else {
-            let uiContext = LikeSequenceOperation.UIContext(
-                originViewController: originViewController,
-                dependencyManager: dependencyManager,
-                triggeringView: triggeringView
-            )
-            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!, uiContext: uiContext ).queue() { error in
+            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!).queue() { error in
+                VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
+                dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
+                    VLikeButtonCoachmarkIdentifier,
+                    inViewController:originViewController,
+                    atLocation:triggeringView.convertRect(
+                        triggeringView.bounds,
+                        toView:originViewController.view
+                    )
+                )
                 completion?( error == nil )
             }
         }
@@ -42,7 +46,7 @@ import UIKit
     
     func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
         
-        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)!).queue() { error in
+        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)! ).queue() { error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )

@@ -11,30 +11,34 @@ import SwiftyJSON
 
 public struct StreamRequest: Pageable {
     
-    let pageNumber: Int
-    let itemsPerPage: Int
-    
+    public let paginator: PaginatorType
     public let apiPath: String
-    public let sequenceID: String?
     
-    public let urlRequest: NSURLRequest
     public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.apiPath = apiPath
-        self.sequenceID = sequenceID
-        self.pageNumber = pageNumber
-        self.itemsPerPage = itemsPerPage
-        
-        if let streamURL = StreamURLMacros.urlWithMacrosReplaced( apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber,
-            itemsPerPage: itemsPerPage) {
-            self.urlRequest = NSURLRequest(URL: streamURL)
+        if let paginator = StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage:itemsPerPage ) {
+            self.init( apiPath: apiPath, paginator: paginator )
         } else {
             return nil
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: Stream, nextPage: StreamRequest?, previousPage: StreamRequest?) {
+    public init(request: StreamRequest, paginator: PaginatorType) {
+        self.init(apiPath: request.apiPath, paginator: paginator)
+    }
+    
+    private init( apiPath: String, paginator: PaginatorType ) {
+        self.apiPath = apiPath
+        self.paginator = paginator
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let url = NSURL()
+        let request = NSMutableURLRequest(URL: url)
+        paginator.addPaginationArgumentsToRequest(request)
+        return request
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Stream {
         
         let stream: Stream
         if responseJSON["payload"].array != nil,
@@ -47,49 +51,6 @@ public struct StreamRequest: Pageable {
         else {
             throw ResponseParsingError()
         }
-        
-        let nextPageRequest = StreamRequest( apiPath: apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber + 1,
-            itemsPerPage: itemsPerPage )
-        
-        let prevPageRequest = StreamRequest( apiPath: apiPath,
-            sequenceID: sequenceID,
-            pageNumber: pageNumber - 1,
-            itemsPerPage: itemsPerPage )
-        
-        return (
-            results: stream,
-            nextPage: stream.items.count == 0 ? nil : nextPageRequest,
-            previousPage: pageNumber == 1 ? nil : prevPageRequest
-        )
-    }
-}
-
-private enum StreamURLMacros: String {
-    
-    case PageNumber     = "%%PAGE_NUM%%"
-    case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
-    case SequenceID     = "%%SEQUENCE_ID%%"
-    
-    static var allCases: [StreamURLMacros] {
-        return [ .PageNumber, .ItemsPerPage, .SequenceID ]
-    }
-    
-    static func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
-        var apiPathWithMacrosReplaced = apiPath
-        for macro in StreamURLMacros.allCases where apiPath.containsString(macro.rawValue) {
-            switch macro {
-            case .PageNumber:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(pageNumber))
-            case .ItemsPerPage:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(itemsPerPage))
-            case .SequenceID:
-                if let sequenceID = sequenceID {
-                    apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: sequenceID)
-                }
-            }
-        }
-        return NSURL(string: apiPathWithMacrosReplaced)
+        return stream
     }
 }

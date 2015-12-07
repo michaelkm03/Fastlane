@@ -11,39 +11,34 @@ import SwiftyJSON
 
 public struct SequenceRepostersRequest: Pageable {
     
-    public let sequenceID: Int64
-    private let paginator: StandardPaginator
+    public let urlRequest: NSURLRequest
     
-    public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/repost/all/\(String(self.sequenceID))")!
-        let request = NSMutableURLRequest(URL: url)
-        paginator.addPaginationArgumentsToRequest(request)
-        return request
+    public let sequenceID: Int64
+    
+    public let paginator: PaginatorType
+    
+    public init( request: SequenceRepostersRequest, paginator: PaginatorType ) {
+        self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
     public init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
     }
     
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
+    private init(sequenceID: Int64, paginator: PaginatorType) {
         self.sequenceID = sequenceID
         self.paginator = paginator
+        
+        let url = NSURL(string: "/api/repost/all/\(String(self.sequenceID))")!
+        let request = NSMutableURLRequest(URL: url)
+        paginator.addPaginationArgumentsToRequest(request)
+        urlRequest = request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: SequenceRepostersRequest?, previousPage: SequenceRepostersRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
         guard let usersJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: SequenceRepostersRequest? = !usersJSON.isEmpty ? SequenceRepostersRequest(sequenceID: sequenceID, paginator: paginator.nextPage) : nil
-        let previousPageRequest: SequenceRepostersRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = SequenceRepostersRequest(sequenceID: sequenceID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

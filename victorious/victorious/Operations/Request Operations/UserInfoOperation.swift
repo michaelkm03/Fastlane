@@ -9,19 +9,22 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UserInfoOperation: RequestOperation<UserInfoRequest> {
+class UserInfoOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    let request: UserInfoRequest
     
     init( userID: Int64 ) {
-        super.init( request: UserInfoRequest(userID: userID) )
+        self.request = UserInfoRequest(userID: userID)
     }
     
-    override func onComplete( response: UserInfoRequest.ResultType, completion:()->() ) {
-        
+    override func main() {
+        self.executeRequest( request, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
-            let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.userID) ])
-            persistentUser.populate(fromSourceModel: response)
+            let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: user.userID) ])
+            persistentUser.populate(fromSourceModel: user)
             context.saveChanges()
             completion()
         }

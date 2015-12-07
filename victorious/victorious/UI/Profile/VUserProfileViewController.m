@@ -65,7 +65,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
-@property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
@@ -149,6 +148,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
     
     [self updateProfileHeader];
+    [self refreshWithCompletion:nil];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -461,33 +461,22 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    if ( self.user != nil )
     {
-        if (completionBlock)
+        void (^fullCompletionBlock)(void) = ^void(void)
         {
-            completionBlock();
-        }
-        return;
-    }
-    else
-    {
-        if ( self.user != nil )
-        {
-            void (^fullCompletionBlock)(void) = ^void(void)
+            if (self.streamDataSource.count)
             {
-                if (self.streamDataSource.count)
-                {
-                    [self shrinkHeaderAnimated:YES];
-                }
-                if ( completionBlock != nil )
-                {
-                    completionBlock();
-                }
-                [self.profileHeaderViewController reloadProfileImage];
-                [self reloadUserFollowingRelationship];
-            };
-            [super refreshWithCompletion:fullCompletionBlock];
-        }
+                [self shrinkHeaderAnimated:YES];
+            }
+            if ( completionBlock != nil )
+            {
+                completionBlock();
+            }
+            [self.profileHeaderViewController reloadProfileImage];
+            [self reloadUserFollowingRelationship];
+        };
+        [super refreshWithCompletion:fullCompletionBlock];
     }
 }
 
@@ -747,11 +736,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andDependencyManager:self.dependencyManager];
-    }
-    else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
     }
@@ -835,14 +820,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self loadUserWithRemoteId:mainUserId forceReload:YES];
     }
     
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        return;
-    }
-    else
-    {
-        [super refresh:sender];
-    }
+    [super refresh:sender];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate

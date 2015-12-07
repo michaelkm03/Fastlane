@@ -11,42 +11,38 @@ import SwiftyJSON
 
 /// Retrieves a list of users who follows a specific user
 public struct FollowersRequest: Pageable {
+    
+    public let urlRequest: NSURLRequest
+
     /// Followers will be retrieved by this user ID
     public let userID: Int64
     
-    private let paginator: StandardPaginator
+    public let paginator: PaginatorType
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 40) {
-        self.init(userID: userID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init(userID: userID, paginator: paginator)
     }
     
-    private init(userID: Int64, paginator: StandardPaginator) {
+    public init( request: FollowersRequest, paginator: PaginatorType ) {
+        self.init( userID: request.userID, paginator: request.paginator)
+    }
+    
+    private init(userID: Int64, paginator: PaginatorType) {
         self.userID = userID
         self.paginator = paginator
-    }
-    
-    public var urlRequest: NSURLRequest {
+        
         let url = NSURL(string: "/api/follow/followers_list/\(userID)")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
-        
-        return request
+        self.urlRequest = request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [User], nextPage: FollowersRequest?, previousPage: FollowersRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {
+
         guard let usersJSON = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = usersJSON.flatMap { User(json: $0) }
-        let nextPageRequest: FollowersRequest? = usersJSON.count > 0 ? FollowersRequest(userID: userID, paginator: paginator.nextPage) : nil
-        let previousPageRequest: FollowersRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = FollowersRequest(userID: userID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

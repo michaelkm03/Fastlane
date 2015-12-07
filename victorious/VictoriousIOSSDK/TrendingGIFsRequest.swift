@@ -12,14 +12,14 @@ import SwiftyJSON
 /// Retrieves a list of trending GIFs
 public struct TrendingGIFsRequest: Pageable {
     
-    private let paginator: StandardPaginator
+    public let paginator: PaginatorType
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init( request: TrendingGIFsRequest, paginator: PaginatorType ) {
+        self.paginator = paginator
     }
     
-    private init(paginator: StandardPaginator) {
-        self.paginator = paginator
+    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
     public var urlRequest: NSURLRequest {
@@ -29,21 +29,10 @@ public struct TrendingGIFsRequest: Pageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [GIFSearchResult], nextPage: TrendingGIFsRequest?, previousPage: TrendingGIFsRequest?) {
-        
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = gifsJSON.flatMap { GIFSearchResult(json: $0) }
-        let nextPageRequest: TrendingGIFsRequest? = gifsJSON.count > 0 ? TrendingGIFsRequest(paginator: paginator.nextPage) : nil
-        let previousPageRequest: TrendingGIFsRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = TrendingGIFsRequest(paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
     }
 }

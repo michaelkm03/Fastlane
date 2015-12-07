@@ -40,17 +40,19 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)setStream:(VStream *)stream
 {
-    if (stream == _stream)
+    if ( stream == _stream && _stream != nil )
     {
         return;
     }
-    
     _stream = stream;
     
     __weak typeof(self) welf = self;
-    [self.KVOController observe:_stream keyPath:@"streamItems" options:kNilOptions block:^(id observer, id object, NSDictionary *change)
+    [self.KVOController observe:_stream
+                        keyPath:@"streamItems"
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
      {
-         NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
+         NSKeyValueChange kind = (NSKeyValueChange)((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
          if ( kind == NSKeyValueChangeSetting )
          {
              [welf updateVisibleStreamItems];
@@ -73,17 +75,16 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     self.visibleStreamItems = self.suppressShelves ? [self streamItemsWithoutShelves] : self.stream.streamItems.array;
     if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
     {
-        [self.delegate dataSource:self
-                hasNewStreamItems:self.visibleStreamItems];
+        [self.delegate dataSource:self hasNewStreamItems:self.visibleStreamItems];
     }
     [self.collectionView reloadData];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
-                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification object:self];
 }
 
 - (NSArray *)streamItemsWithoutShelves
 {
-    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings) {
+    NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings)
+    {
         return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
     }];
     return [self.stream.streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate];

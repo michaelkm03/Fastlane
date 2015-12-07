@@ -19,7 +19,7 @@ extension VChangePasswordViewController {
                 passwordNew: new
             )
         )
-        operation.queue() { error in
+        operation!.queue() { error in
             completion?( error )
         }
         return operation

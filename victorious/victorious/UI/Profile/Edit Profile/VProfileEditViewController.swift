@@ -21,7 +21,7 @@ extension VProfileEditViewController {
                 profileImageURL: profileImageURL
             )
         )
-        operation.queue()
+        operation!.queue()
         return operation
     }
 }

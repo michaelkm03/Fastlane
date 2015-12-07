@@ -11,28 +11,21 @@ import VictoriousIOSSDK
 
 public extension VStreamCollectionViewDataSource {
     
-    ///The primary way to load a stream.
+    /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
     public func loadPage( pageType: VPageType, withSuccess success:()->(), failure:(NSError?)->()) {
         
-        guard let apiPath = self.stream?.apiPath else {
-            fatalError( "Bad API path" )
-        }
-        
         let operation: StreamOperation?
-        switch pageType {
-        case .First:
-            operation = StreamOperation(apiPath: apiPath, sequenceID: nil)
-        case .Next:
-            operation = (self.streamLoadOperation as? StreamOperation)?.nextPageOperation
-        case .Previous:
-            operation = (self.streamLoadOperation as? StreamOperation)?.previousPageOperation
+        if let apiPath = self.stream?.apiPath where pageType == .First {
+            operation = StreamOperation(apiPath: apiPath)
+        } else {
+            operation = (self.streamLoadOperation as? StreamOperation)?.operation(forPageType: pageType)
         }
         
-        if let currentOperation = operation {
+        if let operation = operation {
             self.isLoading = true
-            currentOperation.queue() { error in
+            operation.queue() { error in
                 self.isLoading = false
                 if let error = error {
                     failure( error )
@@ -40,12 +33,8 @@ public extension VStreamCollectionViewDataSource {
                     success()
                 }
             }
-            self.streamLoadOperation = currentOperation
+            print( "operation = \(operation.dynamicType)" )
+            self.streamLoadOperation = operation
         }
-    }
-    
-    /// Returns whether or not there is a nother page to load, i.e. we are not already at the end of the stream.
-    func canLoadNextPage() -> Bool {
-        return (self.streamLoadOperation as? StreamOperation)?.nextPageOperation != nil
     }
 }

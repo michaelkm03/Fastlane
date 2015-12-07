@@ -24,21 +24,30 @@ class StandardPaginatorTests: XCTestCase {
     
     func testNextPage() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
-        let nextPage = paginator.nextPage
+        let nextPage = paginator.nextPage(paginator.itemsPerPage)!
         XCTAssertEqual(nextPage.pageNumber, 2)
         XCTAssertEqual(nextPage.itemsPerPage, 10)
     }
     
+    func testPageHasNoNextPage() {
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
+        var nextPage = paginator.nextPage(paginator.itemsPerPage-1)
+        XCTAssertNil( nextPage )
+        
+        nextPage = paginator.nextPage(0)
+        XCTAssertNil( nextPage )
+    }
+    
     func testPreviousPage() {
         let paginator = StandardPaginator(pageNumber: 2, itemsPerPage: 10)
-        let previousPage = paginator.previousPage
+        let previousPage = paginator.previousPage()
         XCTAssertEqual(previousPage?.pageNumber, 1)
         XCTAssertEqual(previousPage?.itemsPerPage, 10)
     }
     
     func testFirstPageHasNoPreviousPage() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
-        let previousPage = paginator.previousPage
+        let previousPage = paginator.previousPage()
         XCTAssertNil(previousPage)
     }
 }

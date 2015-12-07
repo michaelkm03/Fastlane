@@ -13,14 +13,14 @@ import SwiftyJSON
 public struct ConversationListRequest: Pageable {
     
     private static let basePath = NSURL(string: "/api/message/conversation_list")!
-    private let paginator: StandardPaginator
     
-    // Masks the Paginator initialization
+    public let paginator: PaginatorType
+    
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    private init(paginator: StandardPaginator) {
+    public init(request: ConversationListRequest, paginator: PaginatorType) {
         self.paginator = paginator
     }
     
@@ -30,20 +30,10 @@ public struct ConversationListRequest: Pageable {
         return urlRequest
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [Conversation], nextPage: ConversationListRequest?, previousPage: ConversationListRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Conversation] {
         guard let conversationArrayJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        
-        let results = conversationArrayJSON.flatMap{ Conversation(json: $0) }
-        let nextPageRequest: ConversationListRequest? = conversationArrayJSON.count > 0 ? ConversationListRequest(paginator: paginator.nextPage) : nil
-        let previousPageRequest: ConversationListRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = ConversationListRequest(paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return conversationArrayJSON.flatMap{ Conversation(json: $0) }
     }
 }

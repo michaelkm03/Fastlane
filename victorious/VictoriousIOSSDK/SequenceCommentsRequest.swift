@@ -15,15 +15,20 @@ public struct SequenceCommentsRequest: Pageable {
     /// Comments will be retrieved for the sequence with this ID
     public let sequenceID: Int64
     
-    private let paginator: StandardPaginator
+    public let paginator: PaginatorType
     
     public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init(sequenceID: sequenceID, paginator: paginator)
     }
     
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
-        self.sequenceID = sequenceID
+    public init( request: SequenceCommentsRequest, paginator: PaginatorType) {
+        self.init(sequenceID: request.sequenceID, paginator: paginator)
+    }
+    
+    private init(sequenceID: Int64, paginator: PaginatorType) {
         self.paginator = paginator
+        self.sequenceID = sequenceID
     }
     
     public var urlRequest: NSURLRequest {
@@ -33,21 +38,12 @@ public struct SequenceCommentsRequest: Pageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [Comment], nextPage: SequenceCommentsRequest?, previousPage: SequenceCommentsRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Comment] {
         
         guard let commentsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let results = commentsJSON.flatMap { Comment(json: $0) }
-        let nextPageRequest: SequenceCommentsRequest? = commentsJSON.count > 0 ? SequenceCommentsRequest(sequenceID: sequenceID, paginator: paginator.nextPage) : nil
-        let previousPageRequest: SequenceCommentsRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = SequenceCommentsRequest(sequenceID: sequenceID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return commentsJSON.flatMap { Comment(json: $0) }
     }
 }

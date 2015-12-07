@@ -9,15 +9,18 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SuggestedUsersOperation: RequestOperation<SuggestedUsersRequest> {
+class SuggestedUsersOperation: RequestOperation {
+    
+    var currentRequest = SuggestedUsersRequest()
+    
     private(set) var suggestedUsers: [VSuggestedUser] = []
     
-    init() {
-        super.init(request: SuggestedUsersRequest())
+    override func main() {
+        executeRequest( self.currentRequest, onComplete: self.onComplete )
     }
     
-    override func onComplete(result: SuggestedUsersRequest.ResultType, completion: () -> ()) {
-        suggestedUsers = result.flatMap() {
+    func onComplete( users: [SuggestedUser], completion:()->() ) {
+        suggestedUsers = users.flatMap() {
             let suggestedUser = VSuggestedUser()
             suggestedUser.populate(fromSourceModel: $0)
             return suggestedUser

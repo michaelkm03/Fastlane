@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: PersistenceParsable {
+extension VStream: PersistenceParsable, StreamItemParser {
     
     func populate( fromSourceModel stream: Stream ) {
         remoteId        = String(stream.remoteID)
@@ -17,24 +17,8 @@ extension VStream: PersistenceParsable {
         itemSubType     = stream.subtype?.rawValue ?? ""
         name            = stream.name
         count           = stream.postCount
-
-        // TODO: Unit test the flagged content stuff
-        let flaggedStreamItemIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem) ?? []
-        let flaggedStreamIds: [String] = flaggedStreamItemIds.flatMap { $0 as? String }
-        let flaggedSequenceIds: [Int64] = flaggedStreamItemIds.flatMap { $0 as? Int64 }
-        let newStreamItems: [VStreamItem] = stream.items.flatMap {
-            if let sequence = $0 as? Sequence where !flaggedSequenceIds.contains( sequence.sequenceID ) {
-                let persistentSequence = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
-                persistentSequence.populate( fromSourceModel: sequence )
-                return persistentSequence
-            }
-            else if let stream = $0 as? Stream where !flaggedStreamIds.contains( stream.streamID )  {
-                let persistentStream = self.persistentStoreContext.findOrCreateObject([ "remoteId" : stream.streamID ]) as VStream
-                persistentStream.populate( fromSourceModel: stream )
-                return persistentStream
-            }
-            return nil
-        }
-        self.addObjects( newStreamItems, to: "streamItems" )
+        
+        let streamItems = self.parseStreamItems( stream.items, context: self.persistentStoreContext)
+        self.addObjects( streamItems, to: "streamItems" )
     }
 }

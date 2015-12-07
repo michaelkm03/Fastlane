@@ -9,20 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
-    
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+class FlagSequenceOperation: RequestOperation {
+
     private let sequenceID: Int64
     private let flaggedContent = VFlaggedContent()
     
+    var currentRequest: FlagSequenceRequest
+    
     init( sequenceID: Int64 ) {
+        self.currentRequest = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
-        super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onComplete(result:FlagSequenceRequest.ResultType, completion: () -> ()) {
-        flaggedContent.addRemoteId( String(self.sequenceID), toFlaggedItemsWithType: .StreamItem)
-        
+    func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
+
         persistentStore.asyncFromBackground() { context in
             if let sequence: VSequence = context.findObjects([ "remoteId" : String(self.sequenceID) ]).first {
                 context.destroy( sequence )

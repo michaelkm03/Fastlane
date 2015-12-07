@@ -21,14 +21,12 @@ class SequenceCommentsRequestTests: XCTestCase {
         
         do {
             let sequenceComments = SequenceCommentsRequest(sequenceID: 1)
-            let (results, _, previousPage) = try sequenceComments.parseResponse(NSURLResponse(), toRequest: sequenceComments.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try sequenceComments.parseResponse(NSURLResponse(), toRequest: sequenceComments.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].commentID, 28550)
             XCTAssertEqual(results[0].text, "test2")
             XCTAssertEqual(results[1].commentID, 28543)
             XCTAssertEqual(results[1].text, "test")
-            
-            XCTAssertNil(previousPage, "There should be no page before page 1")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

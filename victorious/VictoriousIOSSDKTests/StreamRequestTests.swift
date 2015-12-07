@@ -18,7 +18,7 @@ class StreamRequestTests: XCTestCase {
     
     func testSimpleStreamRequest() {
         
-        var request = StreamRequest( apiPath: streamAPIPath )!
+        var request = StreamRequest( apiPath: streamAPIPath)!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/feed/following/1/15" )
         
         let pageNumber = 2
@@ -39,19 +39,6 @@ class StreamRequestTests: XCTestCase {
         XCTAssertEqual( request.urlRequest.URL?.absoluteString,  "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/\(pageNumber)/\(itemsPerPage)" )
     }
     
-    func testInvalidStreamRequest() {
-        
-        // Test a missing sequenceID with URL that has sequence ID macro
-        let sequenceID = "321321"
-        var request = StreamRequest( apiPath: streamWithSequenceAPIPath )
-        XCTAssertNil( request )
-        
-        // Test an unknown macro that will not be replaced
-        let extraMacroPath = "%%UNKNOWN_MACRO%%"
-        request = StreamRequest(apiPath: extraMacroPath, sequenceID: sequenceID)
-        XCTAssertNil( request )
-    }
-    
     func testParseResponse() {
         
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("StreamResponse", withExtension: "json"),
@@ -60,18 +47,10 @@ class StreamRequestTests: XCTestCase {
                 return
         }
         
-        var request = StreamRequest(apiPath: streamAPIPath)!
+        let request = StreamRequest(apiPath: streamAPIPath)!
         do {
-            var output = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertNotNil( output.results )
-            XCTAssertNotNil( output.nextPage )
-            XCTAssertNil( output.previousPage )
-            
-            request = output.nextPage!
-            output = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertNotNil( output.results )
-            XCTAssertNotNil( output.nextPage )
-            XCTAssertNotNil( output.previousPage )
+            let stream = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            XCTAssertNotNil( stream )
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }
