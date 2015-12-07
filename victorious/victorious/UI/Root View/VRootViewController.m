@@ -244,13 +244,18 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showInitialScreen
 {
     self.launchState = VAppLaunchStateWaiting;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedByUser])
+    
+#warning The ageGateActivated is hardcoded here. It should be template driven when backend is ready
+    BOOL ageGateActivated = YES;
+    BOOL userHasProvidedBirthday = [[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedByUser];
+    
+    if (ageGateActivated && !userHasProvidedBirthday)
     {
-        [self showLoadingViewController];
+        [self showAgeGateViewController];
     }
     else
     {
-        [self showAgeGateViewController];
+        [self showLoadingViewController];
     }
 }
 

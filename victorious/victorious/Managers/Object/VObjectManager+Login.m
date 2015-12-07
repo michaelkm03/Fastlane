@@ -316,6 +316,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 - (BOOL)loginWithAnonymousUserToken
 {
     VUser *newAnonymousUser = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    
+#warning The following remoteId and token is harded coded as user 4041. It will be template driven when backend is ready
     newAnonymousUser.remoteId = @(4041);
     newAnonymousUser.token = @"96d4e836cf5518bc9371cdefd4c9e91c830dea68";
     
