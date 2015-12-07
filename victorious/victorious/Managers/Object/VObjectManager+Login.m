@@ -316,8 +316,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 - (BOOL)loginWithAnonymousUserToken
 {
     VUser *newAnonymousUser = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
-    newAnonymousUser.remoteId = @(19901016);
-    newAnonymousUser.token = @"whatevertokenthatwegetfromserver";
+    newAnonymousUser.remoteId = @(4041);
+    newAnonymousUser.token = @"96d4e836cf5518bc9371cdefd4c9e91c830dea68";
     
     VLoginType loginType = VLogintypeAnonymous;
     [self loggedInWithUser:newAnonymousUser loginType:loginType];
