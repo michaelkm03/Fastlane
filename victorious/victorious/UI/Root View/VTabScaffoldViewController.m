@@ -336,24 +336,36 @@ static NSString * const kMenuKey = @"menu";
 
     ForceLoginOperation *forceLoginOperation = [[ForceLoginOperation alloc] initWithDependencyManager:self.dependencyManager delegate:self];
     
+    NSOperation *showQueuedDeeplinkOperation = [NSBlockOperation blockOperationWithBlock:^{
+        dispatch_async( dispatch_get_main_queue(), ^{
+            // Root view controller's `deepLinkReceiver` may have queued a deep link until the user is logged in
+            // So now that login is complete, show any queued deep links
+            [[VRootViewController rootViewController].deepLinkReceiver receiveQueuedDeeplink];
+        });
+    }];
+    
     FTUEVideoOperation *ftueVideoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                          viewControllerToPresentOn:self
                                                                                       sessionTimer:[VRootViewController rootViewController].sessionTimer];
 
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    pushNotificationOperation.completionBlock = ^void
-    {
-        self.coachmarkManager.allowCoachmarks = YES;
+    pushNotificationOperation.completionBlock = ^void {
+        dispatch_async( dispatch_get_main_queue(), ^{
+            self.coachmarkManager.allowCoachmarks = YES;
+        });
     };
     
     // Determine execution order by setting dependencies
+    [showQueuedDeeplinkOperation addDependency:pushNotificationOperation];
     [pushNotificationOperation addDependency:ftueVideoOperation];
     [ftueVideoOperation addDependency:forceLoginOperation];
     
     // Order doesn't matter in this array, dependencies ensure order
-    NSArray *operationsToAdd = @[ pushNotificationOperation, ftueVideoOperation, forceLoginOperation ];
+    NSArray *operationsToAdd = @[ pushNotificationOperation,
+                                  ftueVideoOperation,
+                                  forceLoginOperation,
+                                  showQueuedDeeplinkOperation ];
     
-    // All operations run on main queue since there is not networking or background processing
     [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
 }
 

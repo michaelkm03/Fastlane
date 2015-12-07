@@ -15,6 +15,8 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VTabScaffoldViewController.h"
+#import "VUser.h"
+#import "victorious-Swift.h"
 
 #define FORCE_DEEPLINK 1
 
@@ -53,7 +55,7 @@
 
 - (BOOL)canReceiveDeeplinks
 {
-    return self.scaffold != nil;
+    return self.scaffold != nil && [VUser currentUser] != nil;
 }
 
 - (void)queueDeeplink:(NSURL *)url
@@ -75,7 +77,7 @@
 
 - (void)receiveQueuedDeeplink
 {
-    if ( self.queuedURL != nil )
+    if ( self.queuedURL != nil && self.canReceiveDeeplinks )
     {
         [self receiveDeeplink:self.queuedURL];
         self.queuedURL = nil;
@@ -84,6 +86,7 @@
 
 - (void)navigateToDeeplinkURL:(NSURL *)url
 {
+    
     if ( self.scaffold.presentedViewController != nil )
     {
         [self.scaffold dismissViewControllerAnimated:YES completion:^(void)

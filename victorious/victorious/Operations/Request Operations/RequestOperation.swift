@@ -22,13 +22,7 @@ class RequestOperation: NSOperation, Queuable {
     
     let persistentStore: PersistentStoreType = MainPersistentStore()
     
-    private var didSetResultCount = false
-    
-    var resultCount: Int = 0 {
-        didSet {
-            didSetResultCount = true
-        }
-    }
+    var resultCount: Int?
     
     private(set) var error: NSError?
     
@@ -90,10 +84,6 @@ class RequestOperation: NSOperation, Queuable {
             }
         )
         dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
-        
-        guard didSetResultCount else {
-            fatalError( "Pagination in operation \"\(self.dynamicType)\"depends on the `resultCount` being set before the execution of `executeRequest(_:onComplete:onError:)` ends.  Make sure you are setting this property in the `onComplete` block provided to this method." )
-        }
     }
     
     // MARK: - Queuable
