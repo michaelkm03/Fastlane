@@ -28,8 +28,10 @@
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
+#import "victorious-Swift.h"
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
+static NSString * const kIsUserAKid = @"com.getvictorious.age_gate.is_kid";
 
 @interface VLoadingViewController() <VTemplateDownloadOperationDelegate>
 
@@ -39,7 +41,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadOperation;
-@property (nonatomic, strong) VLoginOperation *loginOperation;
+@property (nonatomic, strong) NSOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, assign) BOOL isLoading;
@@ -173,7 +175,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-    self.loginOperation = [[VLoginOperation alloc] init];
+    self.loginOperation = [[NSUserDefaults standardUserDefaults] boolForKey:kIsUserAKid] ? [[AnonymousLoginForKidOperation alloc] init] : [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
