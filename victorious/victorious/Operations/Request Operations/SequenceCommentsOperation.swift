@@ -9,51 +9,42 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceCommentsOperation: RequestOperation<SequenceCommentsRequest> {
+final class SequenceCommentsOperation: RequestOperation, PageableOperationType {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
-    private let flaggedContent = VFlaggedContent()
+    var currentRequest: SequenceCommentsRequest
+    
     private let sequenceID: Int64
     
-    init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.sequenceID = sequenceID
-        super.init( request: SequenceCommentsRequest(sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage) )
+    required init( request: SequenceCommentsRequest ) {
+        self.sequenceID = request.sequenceID
+        self.currentRequest = request
     }
     
-    init( sequenceID: Int64, request: SequenceCommentsRequest ) {
-        self.sequenceID = sequenceID
-        super.init(request: request)
+    convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        self.init( request: SequenceCommentsRequest(sequenceID: sequenceID) )
     }
     
-    var nextPageOperation: SequenceCommentsOperation?
-    var previousPageOperation: SequenceCommentsOperation?
+    override func main() {
+        executeRequest( currentRequest, onComplete: self.onComplete )
+    }
     
-    override func onComplete(response: SequenceCommentsRequest.ResultType, completion:()->() ) {
+    private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
         
         // TODO: Unit test the flagged content stuff
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
-        if response.results.count > 0 {
+        if comments.count > 0 {
             persistentStore.asyncFromBackground() { context in
-                var comments = [VComment]()
-                for comment in response.results.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
+                var newComments = [VComment]()
+                for comment in comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
                     let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                     persistentComment.populate( fromSourceModel: comment )
-                    comments.append( persistentComment )
+                    newComments.append( persistentComment )
                 }
                 let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
-                sequence.comments = NSOrderedSet( array: sequence.comments.array + comments )
+                sequence.comments = NSOrderedSet( array: sequence.comments.array + newComments )
                 context.saveChanges()
             }
             completion()
-        }
-        
-        dispatch_async( dispatch_get_main_queue() ) {
-            if let nextPageRequest = response.nextPage {
-                self.nextPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: nextPageRequest )
-            }
-            if let previousPageRequest = response.previousPage {
-                self.previousPageOperation = SequenceCommentsOperation( sequenceID: self.sequenceID, request: previousPageRequest )
-            }
         }
     }
 }

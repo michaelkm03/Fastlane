@@ -962,7 +962,7 @@
 		A7D69C141C0E33B600B462C3 /* Stream-Invalid.json in Resources */ = {isa = PBXBuildFile; fileRef = A7EF1BD91BF2761E00D429DE /* Stream-Invalid.json */; };
 		A7D69C161C0E49D300B462C3 /* PollResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C151C0E49D300B462C3 /* PollResult.swift */; };
 		A7D69C181C0E4A0C00B462C3 /* VPollResult+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */; };
-		A7D69C1C1C0E510800B462C3 /* PollResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C1B1C0E510800B462C3 /* PollResultsOperation.swift */; };
+		A7D69C1C1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */; };
 		A7D69C241C0E51A000B462C3 /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
 		A7D69C401C0E51A000B462C3 /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
 		A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750119E335060072E87A /* VUploadTaskInformationTests.m */; };
@@ -1066,6 +1066,7 @@
 		A7DCA5161C128A78004E35B4 /* VVoteTypeFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */; };
 		A7DCA5171C128A78004E35B4 /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		A7DCA5181C128A78004E35B4 /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
+		A7DCA51E1C16157D004E35B4 /* PollResultSummaryByUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51D1C16157D004E35B4 /* PollResultSummaryByUserOperation.swift */; };
 		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
 		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
@@ -3336,7 +3337,7 @@
 		A7D69C0A1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.1-2.0.xcmappingmodel"; sourceTree = "<group>"; };
 		A7D69C151C0E49D300B462C3 /* PollResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResult.swift; sourceTree = "<group>"; };
 		A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPollResult+Parsable.swift"; sourceTree = "<group>"; };
-		A7D69C1B1C0E510800B462C3 /* PollResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultsOperation.swift; sourceTree = "<group>"; };
+		A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryBySequenceOperation.swift; sourceTree = "<group>"; };
 		A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequestTests.swift; sourceTree = "<group>"; };
 		A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddOperation.swift; sourceTree = "<group>"; };
 		A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VComment+Parsable.swift"; sourceTree = "<group>"; };
@@ -3380,6 +3381,7 @@
 		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutomation.m; sourceTree = "<group>"; };
 		A7DC00D41BF2BBC100E24A2F /* SimpleStream.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SimpleStream.json; sourceTree = "<group>"; };
+		A7DCA51D1C16157D004E35B4 /* PollResultSummaryByUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryByUserOperation.swift; sourceTree = "<group>"; };
 		A7DD35EE1BB07D6900C4DBC5 /* VContentAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentAlertHelper.h; sourceTree = "<group>"; };
 		A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentAlertHelper.m; sourceTree = "<group>"; };
 		A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+VBitmask.h"; sourceTree = "<group>"; };
@@ -6997,7 +6999,8 @@
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A702C85A1C126038001EE1D5 /* PageableOperationType.swift */,
-				A7D69C1B1C0E510800B462C3 /* PollResultsOperation.swift */,
+				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
+				A7DCA51D1C16157D004E35B4 /* PollResultSummaryByUserOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
@@ -10728,6 +10731,7 @@
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
 				A7078CD91BFA7D2B008FB7FF /* LogoutLocallyOperation.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
+				A7DCA51E1C16157D004E35B4 /* PollResultSummaryByUserOperation.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
@@ -11211,7 +11215,7 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
-				A7D69C1C1C0E510800B462C3 /* PollResultsOperation.swift in Sources */,
+				A7D69C1C1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift in Sources */,
 				A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				C348D2101B8C03CA0040042C /* KMeans.swift in Sources */,

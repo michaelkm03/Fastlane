@@ -9,32 +9,28 @@
 import Foundation
 import VictoriousIOSSDK
 
-// TODO: See about a `PageableOperationType` protocol that can abstract some of the nextPage and previousPage stuff for calling code
-
-class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
+final class SequenceRepostersOperation: RequestOperation, PageableOperationType {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: SequenceRepostersRequest
     
-    private let sequenceID: Int64
+    private var sequenceID: Int64
     
-    init( sequenceID: Int64, request: SequenceRepostersRequest ) {
-        self.sequenceID = sequenceID
-        super.init(request: request)
+    required init( request: SequenceRepostersRequest ) {
+        self.sequenceID = request.sequenceID
+        self.currentRequest = request
     }
     
-    init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.sequenceID = sequenceID
-        super.init( request: SequenceRepostersRequest(sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage) )
+    convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        self.init( request: SequenceRepostersRequest(sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage) )
     }
     
-    var nextPageOperation: SequenceRepostersOperation?
-    var previousPageOperation: SequenceRepostersOperation?
+    override func main() {
+        executeRequest( currentRequest, onComplete: self.onComplete )
+    }
     
-    override func onComplete(response: SequenceRepostersRequest.ResultType, completion:()->() ) {
-        let users: [User] = response.results
+    private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
         persistentStore.asyncFromBackground() { context in
-            
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             let sortedUsers = users.sort {
@@ -59,13 +55,6 @@ class SequenceRepostersOperation: RequestOperation<SequenceRepostersRequest> {
             context.saveChanges()
             
             completion()
-        }
-        
-        if let nextPageRequest = response.nextPage {
-            self.nextPageOperation = SequenceRepostersOperation( sequenceID: self.sequenceID, request: nextPageRequest )
-        }
-        if let previousPageRequest = response.previousPage {
-            self.previousPageOperation = SequenceRepostersOperation( sequenceID: self.sequenceID, request: previousPageRequest )
         }
     }
 }

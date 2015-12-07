@@ -20,7 +20,7 @@ public extension VStreamCollectionViewDataSource {
         if let apiPath = self.stream?.apiPath where pageType == .First {
             operation = StreamOperation(apiPath: apiPath)
         } else {
-            operation = (self.streamLoadOperation as? StreamOperation)?.operation(forPageType: pageType)
+            operation = self.streamLoadOperation?.operation(forPageType: pageType)
         }
         
         if let operation = operation {
@@ -33,7 +33,6 @@ public extension VStreamCollectionViewDataSource {
                     success()
                 }
             }
-            print( "operation = \(operation.dynamicType)" )
             self.streamLoadOperation = operation
         }
     }

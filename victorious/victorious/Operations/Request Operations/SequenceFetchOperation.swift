@@ -14,7 +14,8 @@ class SequenceFetchOperation: RequestOperation {
     var currentRequest: SequenceFetchRequest
     
     init( sequenceID: Int64) {
-        super.init(request: SequenceFetchRequest(sequenceID: sequenceID) )
+        self.currentRequest = SequenceFetchRequest(sequenceID: sequenceID)
+        super.init()
         self.qualityOfService = .UserInitiated
     }
     

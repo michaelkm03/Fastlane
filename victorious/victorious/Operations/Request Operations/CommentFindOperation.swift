@@ -9,9 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CommentFindOperation: RequestOperation<CommentFindRequest> {
+class CommentFindOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: CommentFindRequest
+    
     private let flaggedContent = VFlaggedContent()
     
     private let sequenceID: Int64
@@ -22,10 +23,14 @@ class CommentFindOperation: RequestOperation<CommentFindRequest> {
     init( sequenceID: Int64, commentID: Int64, itemsPerPage: Int = 15 ) {
         self.sequenceID = sequenceID
         self.commentID = commentID
-        super.init( request: CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage) )
+        self.currentRequest = CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage)
     }
     
-    override func onComplete(response: CommentFindRequest.ResultType, completion:()->() ) {
+    override func main() {
+        executeRequest( self.currentRequest )
+    }
+    
+    private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {
         self.pageNumber = response.pageNumber
         
         // TODO: Unit test the flagged content stuff

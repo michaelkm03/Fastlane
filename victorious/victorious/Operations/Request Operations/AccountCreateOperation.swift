@@ -77,7 +77,7 @@ class AccountCreateOperation: RequestOperation {
     
     private func queueNextOperations( currentUser: VUser ) {
         // Load more data from the network about the user
-        PollResultByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
+        PollResultSummaryByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
         ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }

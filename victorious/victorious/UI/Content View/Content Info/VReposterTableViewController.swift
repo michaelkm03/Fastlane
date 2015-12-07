@@ -15,18 +15,20 @@ extension VReposterTableViewController {
             return
         }
         
-        switch pageType {
-        case .First:
-            self.repostersOperation = SequenceRepostersOperation(sequenceID: sequenceID )
-        case .Next:
-            self.repostersOperation = self.repostersOperation?.nextPageOperation
-        case .Previous:
-            self.repostersOperation = self.repostersOperation?.previousPageOperation
+        let operation: SequenceRepostersOperation?
+        if pageType == .First {
+            operation = SequenceRepostersOperation(sequenceID: sequenceID )
+        } else {
+            operation = self.repostersOperation?.operation(forPageType: pageType)
         }
-        self.repostersOperation?.queue() { error in
-            let hasReposters: Bool = self.sequence.reposters.count > 0 && error == nil
-            self.setHasReposters( hasReposters )
-            self.tableView.reloadData()
+        
+        if let operation = operation {
+            operation.queue() { error in
+                let hasReposters: Bool = self.sequence.reposters.count > 0 && error == nil
+                self.setHasReposters( hasReposters )
+                self.tableView.reloadData()
+            }
+            self.repostersOperation = operation
         }
     }
 }

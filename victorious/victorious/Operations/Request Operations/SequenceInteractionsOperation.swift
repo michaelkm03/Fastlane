@@ -9,18 +9,22 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SequenceUserInterationsOperation: RequestOperation<SequenceUserInteractionsRequest> {
+class SequenceUserInterationsOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: SequenceUserInteractionsRequest
     
     private let sequenceID: Int64
     
     init( sequenceID: Int64, userID: Int64 ) {
         self.sequenceID = sequenceID
-        super.init(request: SequenceUserInteractionsRequest(sequenceID: sequenceID, userID:userID) )
+        self.currentRequest = SequenceUserInteractionsRequest(sequenceID: sequenceID, userID:userID)
     }
     
-    override func onComplete(result:SequenceUserInteractionsRequest.ResultType, completion: () -> ()) {
+    override func main() {
+        executeRequest( self.currentRequest )
+    }
+    
+    private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
             let sequence: VSequence = context.findOrCreateObject([ "remoteId" : String(self.sequenceID) ])
             sequence.hasBeenRepostedByMainUser = result

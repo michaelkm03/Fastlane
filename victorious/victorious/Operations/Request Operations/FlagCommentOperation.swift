@@ -9,18 +9,19 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagCommentOperation: RequestOperation<FlagCommentRequest> {
+class FlagCommentOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: FlagCommentRequest
+    
     private let commentID: Int64
     private let flaggedContent = VFlaggedContent()
     
     init( commentID: Int64 ) {
         self.commentID = commentID
-        super.init( request: FlagCommentRequest(commentID: commentID) )
+        self.currentRequest = FlagCommentRequest(commentID: commentID)
     }
     
-    override func onComplete(result:FlagCommentRequest.ResultType, completion: () -> ()) {
+    private func onComplete( response: FlagCommentRequest.ResultType, completion:()->() ) {
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         persistentStore.asyncFromBackground() { context in

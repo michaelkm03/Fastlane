@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
-@class ContentViewContext, VLargeNumberFormatter;
+@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation;
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
@@ -154,7 +154,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
 @property (nonatomic, readonly) NSString *numberOfVotersText;
-@property (nonatomic, strong) NSOperation *loadCommentsOperation;
+@property (nonatomic, strong) SequenceCommentsOperation *loadCommentsOperation;
 @property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
 
 /**

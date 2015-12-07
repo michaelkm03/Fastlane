@@ -68,20 +68,14 @@ public extension VContentViewViewModel {
     }
     
     func loadComments( pageType: VPageType ) {
+        
         let sequenceID = Int64(self.sequence.remoteId)!
+        
         let operation: SequenceCommentsOperation?
-        if let currentOperation = self.loadCommentsOperation as? SequenceCommentsOperation
-            where currentOperation.ready && !currentOperation.executing && !currentOperation.cancelled && !currentOperation.finished {
-                operation = currentOperation
+        if pageType == .First {
+            operation =  SequenceCommentsOperation(sequenceID: sequenceID)
         } else {
-            switch pageType {
-            case .First:
-                operation = SequenceCommentsOperation(sequenceID: sequenceID)
-            case .Next:
-                operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.nextPageOperation
-            case .Previous:
-                operation = (self.loadCommentsOperation as? SequenceCommentsOperation)?.previousPageOperation
-            }
+            operation = self.loadCommentsOperation?.operation(forPageType: pageType)
         }
         
         if let currentOperation = operation {
@@ -122,12 +116,13 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
-        CommentAddOperation(
+        let operation = CommentAddOperation(
             sequenceID: Int64(self.sequence.remoteId)!,
             text: text,
             publishParameters: publishParameters,
             currentTime: currentTime == nil ? nil : Float64(currentTime!.floatValue)
-        ).queue()
+        )
+        operation.queue()
     }
     
     func answerPoll( answer: VPollAnswer, completion:((NSError?)->())? ) {

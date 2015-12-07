@@ -20,9 +20,10 @@ private extension VPublishParameters {
     }
 }
 
-class CommentAddOperation: RequestOperation<CommentAddRequest> {
+class CommentAddOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    var currentRequest: CommentAddRequest
+    
     private let publishParameters: VPublishParameters?
     private let sequenceID: Int64
     private let currentTime: Float64?
@@ -35,18 +36,19 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
         self.currentTime = currentTime
         self.publishParameters = publishParameters
         self.text = text
-        let request = CommentAddRequest(
+        if let request = CommentAddRequest(
             sequenceID: sequenceID,
             text: text,
             mediaAttachmentType: publishParameters?.commentMediaAttachmentType,
-            mediaURL: publishParameters?.mediaToUploadURL
-        )
-        super.init(request: request!)
+            mediaURL: publishParameters?.mediaToUploadURL ) {
+                self.currentRequest = request
+        } else {
+            fatalError( "Failed to send comment!" )
+        }
     }
     
-    override func onStart( completion:()->() ) {
+    override func main() {
         guard let currentUserId = VUser.currentUser()?.remoteId else {
-            completion()
             return
         }
         
@@ -68,11 +70,11 @@ class CommentAddOperation: RequestOperation<CommentAddRequest> {
             dispatch_sync( dispatch_get_main_queue() ) {
                 self.optimisticCommentIdentifier = comment.identifier
             }
-            completion()
         }
+        executeRequest( currentRequest, onComplete: self.onComplete )
     }
     
-    override func onComplete( comment: CommentAddRequest.ResultType, completion: () -> ()) {
+    private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
             
             guard let identifier = self.optimisticCommentIdentifier,
