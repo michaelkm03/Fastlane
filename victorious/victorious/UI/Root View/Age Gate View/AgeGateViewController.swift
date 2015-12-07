@@ -47,7 +47,7 @@ class AgeGateViewController: UIViewController {
         delegate?.continueButtonTapped(userIsKid)
     }
     
-    //MARK: - Private helpers
+    //MARK: - Private functions
     private func addBackgroundView() {
         let launchScreen = VLaunchScreenProvider.launchScreen()
         launchScreen.translatesAutoresizingMaskIntoConstraints = false
