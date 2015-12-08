@@ -1,5 +1,5 @@
 //
-//  AnonymousLoginForKidOperation.swift
+//  AnonymousLoginOperation.swift
 //  victorious
 //
 //  Created by Tian Lan on 12/7/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AnonymousLoginForKidOperation: Operation {
+class AnonymousLoginOperation: Operation {
     override init() {
         super.init()
         qualityOfService = .UserInteractive
