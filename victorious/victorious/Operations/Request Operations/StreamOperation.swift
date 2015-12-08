@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: RequestOperation, StreamItemParser, PageableOperationType {
+final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperation {
     
     let request: StreamRequest
     

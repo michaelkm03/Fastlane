@@ -1,5 +1,5 @@
 //
-//  PageableOperationType.swift
+//  PaginatedOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.
@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PageableOperationType : class {
+protocol PaginatedOperation : class {
     
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -34,7 +34,7 @@ protocol PageableOperationType : class {
     func operation( forPageType pageType: VPageType ) -> Self?
 }
 
-extension PageableOperationType {
+extension PaginatedOperation {
     
     func next() -> Self? {
         if let request = PaginatedRequestType(nextRequestFromRequest: self.request) {
