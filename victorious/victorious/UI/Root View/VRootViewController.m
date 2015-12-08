@@ -38,7 +38,7 @@
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 NSString * const kBirthdayProvidedByUser = @"com.getvictorious.age_gate.birthday_provided";
-NSString * const kIsUserAKid = @"com.getvictorious.age_gate.is_kid";
+static NSString * const kIsAnonymousUser = @"com.getvictorious.user.is_anonymous";
 
 static const NSTimeInterval kAnimationDuration = 0.25f;
 
@@ -565,7 +565,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     [standardDefaults setValue:@(YES) forKey:kBirthdayProvidedByUser];
-    [standardDefaults setValue:@(isKid) forKey:kIsUserAKid];
+    [standardDefaults setValue:@(isKid) forKey:kIsAnonymousUser];
     [standardDefaults synchronize];
     
     [self showLoadingViewController];

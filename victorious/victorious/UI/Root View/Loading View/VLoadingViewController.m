@@ -31,7 +31,6 @@
 #import "victorious-Swift.h"
 
 static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
-static NSString * const kIsUserAKid = @"com.getvictorious.age_gate.is_kid";
 
 @interface VLoadingViewController() <VTemplateDownloadOperationDelegate>
 
@@ -175,7 +174,7 @@ static NSString * const kIsUserAKid = @"com.getvictorious.age_gate.is_kid";
     
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-    self.loginOperation = [[NSUserDefaults standardUserDefaults] boolForKey:kIsUserAKid] ? [[AnonymousLoginForKidOperation alloc] init] : [[VLoginOperation alloc] init];
+    self.loginOperation = [VUserManager isAnonymousUser] ? [[AnonymousLoginForKidOperation alloc] init] : [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];

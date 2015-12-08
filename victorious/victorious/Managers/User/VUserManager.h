@@ -68,4 +68,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
  */
 - (void)userDidLogout;
 
++ (BOOL)isAnonymousUser;
+
 @end
