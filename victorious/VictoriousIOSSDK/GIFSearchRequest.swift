@@ -10,13 +10,23 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of GIFs based on a search query
-public struct GIFSearchRequest: Pageable, Searchable {
+public struct GIFSearchRequest: Pageable {
     
     public let urlRequest: NSURLRequest
     public let searchTerm: String
-    public var paginator: PaginatorType
     
-    public init(searchTerm: String, paginator: PaginatorType) {
+    public var paginator: StandardPaginator
+    
+    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init( searchTerm: searchTerm, paginator: paginator )
+    }
+    
+    public init( request: GIFSearchRequest, paginator: StandardPaginator ) {
+        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
+    }
+    
+    public init(searchTerm: String, paginator: StandardPaginator) {
         let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
@@ -30,6 +40,9 @@ public struct GIFSearchRequest: Pageable, Searchable {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
+        
+        let output = gifsJSON.flatMap { GIFSearchResult(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

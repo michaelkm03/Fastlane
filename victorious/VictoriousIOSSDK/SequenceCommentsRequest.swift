@@ -15,18 +15,18 @@ public struct SequenceCommentsRequest: Pageable {
     /// Comments will be retrieved for the sequence with this ID
     public let sequenceID: Int64
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
     public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init(sequenceID: sequenceID, paginator: paginator)
     }
     
-    public init( request: SequenceCommentsRequest, paginator: PaginatorType) {
+    public init( request: SequenceCommentsRequest, paginator: StandardPaginator) {
         self.init(sequenceID: request.sequenceID, paginator: paginator)
     }
     
-    private init(sequenceID: Int64, paginator: PaginatorType) {
+    private init(sequenceID: Int64, paginator: StandardPaginator) {
         self.paginator = paginator
         self.sequenceID = sequenceID
     }
@@ -44,6 +44,8 @@ public struct SequenceCommentsRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        return commentsJSON.flatMap { Comment(json: $0) }
+        let output = commentsJSON.flatMap { Comment(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

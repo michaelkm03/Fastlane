@@ -12,13 +12,13 @@ import XCTest
 
 struct MockPageableRequest: Pageable {
     
-    let paginator: PaginatorType
+    let paginator: StandardPaginator
     
     init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    init(request: MockPageableRequest, paginator: PaginatorType) {
+    init(request: MockPageableRequest, paginator: StandardPaginator) {
         self.paginator = paginator
     }
     
@@ -34,8 +34,8 @@ class PageableTests: XCTestCase {
     
     func testPrevAndNext() {
         let request = MockPageableRequest(pageNumber: 2, itemsPerPage: 10)
-        
-        let next = MockPageableRequest( nextRequestFromRequest: request, resultCount: request.paginator.itemsPerPage )
+        request.paginator.resultCount = request.paginator.itemsPerPage
+        let next = MockPageableRequest( nextRequestFromRequest: request )
         XCTAssertNotNil( next )
         XCTAssertEqual( next?.paginator.pageNumber, request.paginator.pageNumber + 1 )
         
@@ -46,11 +46,12 @@ class PageableTests: XCTestCase {
     
     func testPrevAndNextDoNotExit() {
         let request = MockPageableRequest(pageNumber: 1, itemsPerPage: 10)
-        
-        var next = MockPageableRequest( nextRequestFromRequest: request, resultCount: request.paginator.itemsPerPage - 1 )
+        request.paginator.resultCount = request.paginator.itemsPerPage - 1
+        var next = MockPageableRequest( nextRequestFromRequest: request )
         XCTAssertNil( next )
         
-        next = MockPageableRequest( nextRequestFromRequest: request, resultCount: 0)
+        request.paginator.resultCount = 0
+        next = MockPageableRequest( nextRequestFromRequest: request)
         XCTAssertNil( next )
         
         let prev = MockPageableRequest( previousFromSourceRequest: request )

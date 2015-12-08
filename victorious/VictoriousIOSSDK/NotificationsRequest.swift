@@ -12,13 +12,13 @@ import SwiftyJSON
 /// Retrieves a list of notifications for the logged in user
 public struct NotificationsRequest: Pageable {
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    public init(request: NotificationsRequest, paginator: PaginatorType) {
+    public init(request: NotificationsRequest, paginator: StandardPaginator) {
         self.paginator = paginator
     }
     
@@ -34,6 +34,9 @@ public struct NotificationsRequest: Pageable {
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return notificationsJSON.flatMap { Notification(json: $0) }
+        
+        let output = notificationsJSON.flatMap { Notification(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

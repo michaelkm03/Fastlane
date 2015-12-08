@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class CommentAddOperation: RequestOperation {
     
-    var currentRequest: CommentAddRequest
+    var request: CommentAddRequest
     
     private let publishParameters: VPublishParameters?
     private let commentParameters: CommentParameters
@@ -23,7 +23,7 @@ class CommentAddOperation: RequestOperation {
         self.publishParameters = publishParameters
         
         if let request = CommentAddRequest(parameters: commentParameters) {
-            self.currentRequest = request
+            self.request = request
         } else {
             fatalError( "Failed to create required request for operation." )
         }
@@ -55,7 +55,7 @@ class CommentAddOperation: RequestOperation {
                 self.optimisticCommentIdentifier = comment.identifier
             }
         }
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {

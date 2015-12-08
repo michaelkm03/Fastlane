@@ -11,17 +11,17 @@ import VictoriousIOSSDK
 
 class SequenceUserInterationsOperation: RequestOperation {
     
-    var currentRequest: SequenceUserInteractionsRequest
+    var request: SequenceUserInteractionsRequest
     
     private let sequenceID: Int64
     
     init( sequenceID: Int64, userID: Int64 ) {
         self.sequenceID = sequenceID
-        self.currentRequest = SequenceUserInteractionsRequest(sequenceID: sequenceID, userID:userID)
+        self.request = SequenceUserInteractionsRequest(sequenceID: sequenceID, userID:userID)
     }
     
     override func main() {
-        executeRequest( self.currentRequest )
+        executeRequest( self.request )
     }
     
     private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {

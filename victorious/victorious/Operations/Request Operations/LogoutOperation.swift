@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class LogoutOperation: RequestOperation {
     
-    var currentRequest = LogoutRequest()
+    let request = LogoutRequest()
     
     let userIdentifier: AnyObject
     
@@ -22,7 +22,7 @@ class LogoutOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.currentRequest, onComplete: self.onComplete )
+        executeRequest( self.request, onComplete: self.onComplete )
     }
     
     private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {

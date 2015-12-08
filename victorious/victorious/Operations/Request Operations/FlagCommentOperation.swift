@@ -11,14 +11,14 @@ import VictoriousIOSSDK
 
 class FlagCommentOperation: RequestOperation {
     
-    var currentRequest: FlagCommentRequest
+    var request: FlagCommentRequest
     
     private let commentID: Int64
     private let flaggedContent = VFlaggedContent()
     
     init( commentID: Int64 ) {
         self.commentID = commentID
-        self.currentRequest = FlagCommentRequest(commentID: commentID)
+        self.request = FlagCommentRequest(commentID: commentID)
     }
     
     private func onComplete( response: FlagCommentRequest.ResultType, completion:()->() ) {

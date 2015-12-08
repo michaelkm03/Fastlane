@@ -1,5 +1,5 @@
 //
-//  VURLMacroReplacement.m
+//  VSDKURLMacroReplacement.m
 //  victorious
 //
 //  Created by Josh Hinman on 2/26/15.
@@ -7,13 +7,13 @@
 //
 
 #import "NSCharacterSet+VURLParts.h"
-#import "VURLMacroReplacement.h"
+#import "VSDKURLMacroReplacement.h"
 
-NSString * const VURLMacroReplacementDelimiter = @"%%";
+NSString * const VSDKURLMacroReplacementDelimiter = @"%%";
 
 static NSString * const kQueryStringDelimiter = @"?";
 
-@implementation VURLMacroReplacement
+@implementation VSDKURLMacroReplacement
 
 - (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
 {
@@ -83,7 +83,7 @@ static NSString * const kQueryStringDelimiter = @"?";
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^(void)
         {
-            macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VURLMacroReplacementDelimiter]
+            macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VSDKURLMacroReplacementDelimiter]
                                                                    options:0
                                                                      error:nil];
         });

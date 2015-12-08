@@ -13,10 +13,10 @@ class AccountUpdateOperation: RequestOperation {
     
     private let storedPassword = VStoredPassword()
     
-    var currentRequest: AccountUpdateRequest
+    let request: AccountUpdateRequest
     
     required init( request: AccountUpdateRequest ) {
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init?( passwordUpdate: PasswordUpdate ) {
@@ -38,7 +38,7 @@ class AccountUpdateOperation: RequestOperation {
     override func main() {
         // For profile updates, optimistically update everything right away
         let semphore = dispatch_semaphore_create(0)
-        if let profileUpdate = self.currentRequest.profileUpdate {
+        if let profileUpdate = self.request.profileUpdate {
             persistentStore.asyncFromBackground() { context in
                 guard let user = VUser.currentUser() else {
                     fatalError( "Expecting a current user to be set before now." )
@@ -70,11 +70,11 @@ class AccountUpdateOperation: RequestOperation {
         }
         dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
         
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {
-        if let passwordUpdate = self.currentRequest.passwordUpdate {
+        if let passwordUpdate = self.request.passwordUpdate {
             self.storedPassword.savePassword( passwordUpdate.passwordNew, forEmail: passwordUpdate.email )
         }
         completion()

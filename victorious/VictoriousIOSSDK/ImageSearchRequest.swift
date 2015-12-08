@@ -10,16 +10,25 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of images based on a search term
-public struct ImageSearchRequest: Pageable, Searchable {
+public struct ImageSearchRequest: Pageable {
     
     // A term to use when searching for GIFs
     public let searchTerm: String
     
     public let urlRequest: NSURLRequest
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
-    public init(searchTerm: String, paginator: PaginatorType) {
+    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init( searchTerm: searchTerm, paginator: paginator )
+    }
+    
+    public init( request: ImageSearchRequest, paginator: StandardPaginator ) {
+        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
+    }
+    
+    public init(searchTerm: String, paginator: StandardPaginator) {
         let url = NSURL(string: "/api/image/search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
@@ -34,6 +43,9 @@ public struct ImageSearchRequest: Pageable, Searchable {
         guard let imagesJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return imagesJSON.flatMap { ImageSearchResult(json: $0) }
+        
+        let output = imagesJSON.flatMap { ImageSearchResult(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

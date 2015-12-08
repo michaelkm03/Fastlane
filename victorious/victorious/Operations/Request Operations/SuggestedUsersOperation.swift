@@ -11,12 +11,12 @@ import VictoriousIOSSDK
 
 class SuggestedUsersOperation: RequestOperation {
     
-    var currentRequest = SuggestedUsersRequest()
+    let request = SuggestedUsersRequest()
     
     private(set) var suggestedUsers: [VSuggestedUser] = []
     
     override func main() {
-        executeRequest( self.currentRequest, onComplete: self.onComplete )
+        executeRequest( self.request, onComplete: self.onComplete )
     }
     
     func onComplete( users: [SuggestedUser], completion:()->() ) {

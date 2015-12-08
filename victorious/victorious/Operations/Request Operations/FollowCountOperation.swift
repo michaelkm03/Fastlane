@@ -11,12 +11,12 @@ import VictoriousIOSSDK
 
 class FollowCountOperation: RequestOperation {
     
-    var currentRequest: FollowCountRequest
+    var request: FollowCountRequest
     private let userID: Int64
     
     required init( request: FollowCountRequest ) {
         self.userID = request.userID
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init( userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -24,7 +24,7 @@ class FollowCountOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {

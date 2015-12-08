@@ -9,14 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PollResultSummaryByUserOperation: RequestOperation, PageableOperationType {
+final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperation {
     
-    var currentRequest: PollResultSummaryRequest
+    var request: PollResultSummaryRequest
+    
     private let userID: Int64
     
     required init( request: PollResultSummaryRequest ) {
         self.userID = request.userID!
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init( userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -24,7 +25,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PageableOperatio
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {

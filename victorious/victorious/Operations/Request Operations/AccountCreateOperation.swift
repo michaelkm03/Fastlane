@@ -14,20 +14,20 @@ class AccountCreateOperation: RequestOperation {
     private let loginType: VLoginType
     private let accountIdentifier: String?
     
-    var currentRequest: AccountCreateRequest
+    let request: AccountCreateRequest
     
     var isNewUser = false
     
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
         self.loginType = loginType
         self.accountIdentifier = accountIdentifier
-        self.currentRequest = request
+        self.request = request
     }
     
     // MARK: - Operation overrides
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( response: AccountCreateResponse, completion:()->() ) {

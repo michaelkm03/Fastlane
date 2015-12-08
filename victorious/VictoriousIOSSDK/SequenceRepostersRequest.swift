@@ -15,9 +15,9 @@ public struct SequenceRepostersRequest: Pageable {
     
     public let sequenceID: Int64
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
-    public init( request: SequenceRepostersRequest, paginator: PaginatorType ) {
+    public init( request: SequenceRepostersRequest, paginator: StandardPaginator ) {
         self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
@@ -25,7 +25,7 @@ public struct SequenceRepostersRequest: Pageable {
         self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
     }
     
-    private init(sequenceID: Int64, paginator: PaginatorType) {
+    private init(sequenceID: Int64, paginator: StandardPaginator) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         
@@ -39,6 +39,9 @@ public struct SequenceRepostersRequest: Pageable {
         guard let usersJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return usersJSON.flatMap { User(json: $0) }
+        
+        let output = usersJSON.flatMap { User(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

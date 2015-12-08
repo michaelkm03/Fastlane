@@ -17,18 +17,18 @@ public struct FollowersRequest: Pageable {
     /// Followers will be retrieved by this user ID
     public let userID: Int64
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
     public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init(userID: userID, paginator: paginator)
     }
     
-    public init( request: FollowersRequest, paginator: PaginatorType ) {
+    public init( request: FollowersRequest, paginator: StandardPaginator ) {
         self.init( userID: request.userID, paginator: request.paginator)
     }
     
-    private init(userID: Int64, paginator: PaginatorType) {
+    private init(userID: Int64, paginator: StandardPaginator) {
         self.userID = userID
         self.paginator = paginator
         
@@ -43,6 +43,9 @@ public struct FollowersRequest: Pageable {
         guard let usersJSON = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }
-        return usersJSON.flatMap { User(json: $0) }
+        
+        let output = usersJSON.flatMap { User(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

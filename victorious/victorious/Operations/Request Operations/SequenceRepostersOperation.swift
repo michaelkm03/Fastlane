@@ -9,15 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceRepostersOperation: RequestOperation, PageableOperationType {
+final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
-    var currentRequest: SequenceRepostersRequest
+    var request: SequenceRepostersRequest
     
     private var sequenceID: Int64
     
     required init( request: SequenceRepostersRequest ) {
         self.sequenceID = request.sequenceID
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -25,7 +25,7 @@ final class SequenceRepostersOperation: RequestOperation, PageableOperationType 
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {

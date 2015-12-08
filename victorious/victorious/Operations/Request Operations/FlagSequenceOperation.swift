@@ -14,15 +14,15 @@ class FlagSequenceOperation: RequestOperation {
     private let sequenceID: Int64
     private let flaggedContent = VFlaggedContent()
     
-    var currentRequest: FlagSequenceRequest
+    let request: FlagSequenceRequest
     
     init( sequenceID: Int64 ) {
-        self.currentRequest = FlagSequenceRequest(sequenceID: sequenceID)
+        self.request = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
     override func main() {
-        executeRequest( self.currentRequest )
+        executeRequest( self.request )
     }
     
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
@@ -48,15 +48,15 @@ class DeleteSequenceOperation: RequestOperation {
     
     private let sequenceID: Int64
     
-    var currentRequest: DeleteSequenceRequest
+    var request: DeleteSequenceRequest
     
     init( sequenceID: Int64 ) {
-        self.currentRequest = DeleteSequenceRequest(sequenceID: sequenceID)
+        self.request = DeleteSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
     override func main() {
-        executeRequest( self.currentRequest )
+        executeRequest( self.request )
     }
     
     func onComplete( stream: DeleteSequenceRequest.ResultType, completion:()->() ) {

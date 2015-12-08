@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class CommentFindOperation: RequestOperation {
     
-    var currentRequest: CommentFindRequest
+    var request: CommentFindRequest
     
     private let flaggedContent = VFlaggedContent()
     
@@ -23,11 +23,11 @@ class CommentFindOperation: RequestOperation {
     init( sequenceID: Int64, commentID: Int64, itemsPerPage: Int = 15 ) {
         self.sequenceID = sequenceID
         self.commentID = commentID
-        self.currentRequest = CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage)
+        self.request = CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage)
     }
     
     override func main() {
-        executeRequest( self.currentRequest )
+        executeRequest( self.request )
     }
     
     private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {

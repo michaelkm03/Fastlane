@@ -14,13 +14,13 @@ public struct ConversationListRequest: Pageable {
     
     private static let basePath = NSURL(string: "/api/message/conversation_list")!
     
-    public let paginator: PaginatorType
+    public let paginator: StandardPaginator
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    public init(request: ConversationListRequest, paginator: PaginatorType) {
+    public init(request: ConversationListRequest, paginator: StandardPaginator) {
         self.paginator = paginator
     }
     
@@ -34,6 +34,9 @@ public struct ConversationListRequest: Pageable {
         guard let conversationArrayJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return conversationArrayJSON.flatMap{ Conversation(json: $0) }
+        
+        let output = conversationArrayJSON.flatMap{ Conversation(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

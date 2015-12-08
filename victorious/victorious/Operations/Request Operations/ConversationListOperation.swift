@@ -9,12 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ConversationListOperation: RequestOperation, PageableOperationType {
+final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
-    var currentRequest: ConversationListRequest
+    let request: ConversationListRequest
     
     required init( request: ConversationListRequest ) {
-        self.currentRequest = request
+        self.request = request
     }
     
     override convenience init() {
@@ -22,11 +22,10 @@ final class ConversationListOperation: RequestOperation, PageableOperationType {
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
-        self.resultCount = conversations.count
         
         persistentStore.asyncFromBackground() { context in
             for conversation in conversations {

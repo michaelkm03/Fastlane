@@ -8,20 +8,29 @@
 
 import Foundation
 
-public struct StreamPaginator: PaginatorType {
+final public class StreamPaginator: Paginator {
     
     public enum Macro: String {
         case PageNumber     = "%%PAGE_NUM%%"
         case ItemsPerPage   = "%%ITEMS_PER_PAGE%%"
         case SequenceID     = "%%SEQUENCE_ID%%"
         
-        static var all: [Macro] {
+        public static var all: [Macro] {
             return [ .PageNumber, .ItemsPerPage, .SequenceID ]
         }
     }
     
+    /// This paginator requires knowing the result count of the previous request
+    /// in order to determine if there are more pages to load.  Calling code must
+    /// set this property before calling `nextPage()` for a new paginator for
+    // the next page.
+    public var resultCount: Int?
+    public let pageNumber: Int
+    public let itemsPerPage: Int
     public let apiPath: String
     public let sequenceID: String?
+    
+    private let urlMacroReplacer = VSDKURLMacroReplacement()
     
     public init?(apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.apiPath = apiPath
@@ -30,48 +39,41 @@ public struct StreamPaginator: PaginatorType {
         self.itemsPerPage = itemsPerPage
         
         if apiPath.containsString( Macro.SequenceID.rawValue ) && sequenceID == nil {
+            print( "\(self.dynamicType) :: Failed to create instance because the provided `apiPath` contains a \"\(Macro.SequenceID.rawValue)\" macro but no `sequenceID` value was provided.")
             return nil
         }
     }
     
-    // MARK: - PaginatorType
-    
-    public let pageNumber: Int
-    public let itemsPerPage: Int
+    // MARK: - Paginator protocol
     
     public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
-        request.URL = urlWithMacrosReplaced( apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage )
+        var dictionary: [NSObject : AnyObject] = [
+            Macro.PageNumber.rawValue : String(pageNumber),
+            Macro.ItemsPerPage.rawValue : String(itemsPerPage)
+        ]
+        if let sequenceID = sequenceID {
+            dictionary[ Macro.SequenceID.rawValue ] = sequenceID
+        }
+        if let urlString = urlMacroReplacer.urlByReplacingMacrosFromDictionary( dictionary, inURLString: apiPath) {
+            request.URL = NSURL(string: urlString)
+        }
     }
     
-    public func previousPage() -> PaginatorType? {
+    public func previousPage() -> StreamPaginator? {
         if pageNumber > 1 {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func nextPage( resultCount: Int ) -> PaginatorType? {
+    public func nextPage() -> StreamPaginator? {
+        guard let resultCount = resultCount else {
+            print( "The `resultCount` property has not been set on `StandardPaginator`.  This is required in order to determine if there is a next page available.  Make sure that a Pageable request sets this property after receving results." )
+            return nil
+        }
         if resultCount >= itemsPerPage {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }
         return nil
-    }
-    
-    private func urlWithMacrosReplaced( apiPath: String, sequenceID: String?, pageNumber: Int = 1, itemsPerPage: Int = 15) -> NSURL? {
-        var apiPathWithMacrosReplaced = apiPath
-        for macro in Macro.all where apiPath.containsString(macro.rawValue) {
-            switch macro {
-            case .PageNumber:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(pageNumber))
-            case .ItemsPerPage:
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: String(itemsPerPage))
-            case .SequenceID:
-                guard let sequenceID = sequenceID else {
-                    return nil
-                }
-                apiPathWithMacrosReplaced = apiPathWithMacrosReplaced.stringByReplacingOccurrencesOfString(macro.rawValue, withString: sequenceID)
-            }
-        }
-        return NSURL(string: apiPathWithMacrosReplaced)
     }
 }

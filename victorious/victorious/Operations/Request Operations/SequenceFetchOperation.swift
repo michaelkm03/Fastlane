@@ -11,16 +11,16 @@ import VictoriousIOSSDK
 
 class SequenceFetchOperation: RequestOperation {
     
-    var currentRequest: SequenceFetchRequest
+    let request: SequenceFetchRequest
     
     init( sequenceID: Int64) {
-        self.currentRequest = SequenceFetchRequest(sequenceID: sequenceID)
+        self.request = SequenceFetchRequest(sequenceID: sequenceID)
         super.init()
         self.qualityOfService = .UserInitiated
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {

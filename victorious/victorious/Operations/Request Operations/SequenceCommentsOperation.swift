@@ -9,15 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceCommentsOperation: RequestOperation, PageableOperationType {
+final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
-    var currentRequest: SequenceCommentsRequest
+    var request: SequenceCommentsRequest
     
     private let sequenceID: Int64
     
     required init( request: SequenceCommentsRequest ) {
         self.sequenceID = request.sequenceID
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -25,7 +25,7 @@ final class SequenceCommentsOperation: RequestOperation, PageableOperationType {
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {

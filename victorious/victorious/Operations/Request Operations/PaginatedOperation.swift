@@ -1,5 +1,5 @@
 //
-//  PageableOperationType.swift
+//  PaginatedOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.
@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PageableOperationType : class {
+protocol PaginatedOperation : class {
     
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -21,12 +21,7 @@ protocol PageableOperationType : class {
     
     /// The current request used for this operation, required in order to get the next/prev requests
     /// from which to maket the next/prev operations.
-    var currentRequest: PaginatedRequestType { get }
-    
-    /// Most PaginatorTypes require knowing the result count of the previous request
-    /// in order to determine if there are more pages to load, therefore tracking that
-    /// value in this operation is required when paginated.
-    var resultCount: Int? { get }
+    var request: PaginatedRequestType { get }
     
     /// Returns a copy of this operation configured for loading next page worth of data
     func next() -> Self?
@@ -39,21 +34,17 @@ protocol PageableOperationType : class {
     func operation( forPageType pageType: VPageType ) -> Self?
 }
 
-extension PageableOperationType {
+extension PaginatedOperation {
     
     func next() -> Self? {
-        guard let resultCount = self.resultCount else {
-            fatalError( "Pagination in operation \"\(self.dynamicType)\"depends on the `resultCount` being set before the execution of `executeRequest(_:onComplete:onError:)` ends.  Make sure you are setting this property in the `onComplete` block provided to this method." )
-        }
-        
-        if let request = PaginatedRequestType(nextRequestFromRequest: self.currentRequest, resultCount: resultCount) {
+        if let request = PaginatedRequestType(nextRequestFromRequest: self.request) {
             return self.dynamicType.init(request: request)
         }
         return nil
     }
     
     func prev() -> Self? {
-        if let request = PaginatedRequestType(previousFromSourceRequest: self.currentRequest) {
+        if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)
         }
         return nil
