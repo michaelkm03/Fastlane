@@ -33,6 +33,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
+
 @end
 
 @implementation VExperienceEnhancerBar

@@ -31,10 +31,14 @@ extension VComment : PersistenceParsable {
         sequenceId              = String(comment.sequenceID)
         userId                  = NSNumber(longLong:comment.userID)
         
-        //sequence = persistentStoreContext.findOrCreateObject([ "remoteId" : String(comment.sequenceID) ]) as VSequence
-        //inStreamSequence = sequence //< TODO: Not sure if this is correct
+        if sequence == nil {
+            sequence = persistentStoreContext.findOrCreateObject([ "remoteId" : String(comment.sequenceID) ]) as VSequence
+            inStreamSequence = sequence
+        }
         
-        // user = persistentStoreContext.findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
-        //user.populate( fromSourceModel: comment.user )
+        if user == nil {
+            user = persistentStoreContext.findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
+            user.populate( fromSourceModel: comment.user )
+        }
     }
 }

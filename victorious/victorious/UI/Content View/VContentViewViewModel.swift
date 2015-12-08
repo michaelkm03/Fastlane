@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 public extension VContentViewViewModel {
     
@@ -116,13 +117,32 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
-        let operation = CommentAddOperation(
-            sequenceID: Int64(self.sequence.remoteId)!,
+        
+        let realtimeComment: CommentParameters.RealtimeComment?
+        if let time = currentTime?.doubleValue where time > 0.0,
+            let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
+                realtimeComment = CommentParameters.RealtimeComment( time: time, assetID: assetID )
+        } else {
+            realtimeComment = nil
+        }
+        
+        let commentParameters = CommentParameters(
+            sequenceID: Int64(sequence.remoteId)!,
             text: text,
-            publishParameters: publishParameters,
-            currentTime: currentTime == nil ? nil : Float64(currentTime!.floatValue)
+            mediaURL: publishParameters.mediaToUploadURL,
+            mediaType: publishParameters.commentMediaAttachmentType,
+            realtimeComment: realtimeComment
         )
+        
+        let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters)
         operation.queue()
+        
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
+            parameters: [
+                VTrackingKeyTextLength : text.characters.count,
+                VTrackingKeyMediaType : publishParameters.mediaToUploadURL?.pathExtension ?? ""
+            ]
+        )
     }
     
     func answerPoll( answer: VPollAnswer, completion:((NSError?)->())? ) {
@@ -131,5 +151,16 @@ public extension VContentViewViewModel {
         // TODO: on complete
         let params = [ VTrackingKeyIndex : answer == .B ? 1 : 0 ]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+    }
+}
+
+private extension VPublishParameters {
+    var commentMediaAttachmentType: MediaAttachmentType {
+        if self.isGIF {
+            return .GIF
+        } else if self.isVideo {
+            return .Video
+        }
+        return .Image
     }
 }

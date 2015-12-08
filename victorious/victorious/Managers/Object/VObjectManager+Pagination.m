@@ -368,7 +368,6 @@ static const NSInteger kUserSearchResultLimit = 20;
 
 #pragma mark - Sequence
 
-
 - (void)addEditorializationToStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath usingHeadline:(NSString *)headline inMarquee:(BOOL)inMarquee
 {
     VEditorializationItem *editorializationItem = [streamItem editorializationForStreamWithApiPath:apiPath];

@@ -15,6 +15,7 @@ public struct AccountUpdateRequest: RequestType {
     public let profileUpdate: ProfileUpdate?
     public let passwordUpdate: PasswordUpdate?
     private let requestBody: AccountUpdateRequestBody.Output
+    private let requestBodyWriter = AccountUpdateRequestBody()
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/account/update")!)
@@ -23,8 +24,6 @@ public struct AccountUpdateRequest: RequestType {
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request.copy() as! NSURLRequest
     }
-    
-    private let requestBodyWriter = AccountUpdateRequestBody()
     
     public init?(passwordUpdate: PasswordUpdate) {
         self.init( passwordUpdate:passwordUpdate, profileUpdate:nil )

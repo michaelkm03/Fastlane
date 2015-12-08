@@ -167,12 +167,11 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
-    __block NSString *remoteId = sequence.remoteId;
-    __weak VObjectManager *weakSelf = self;
+    __unused __block NSString *remoteId = sequence.remoteId;
+    __unused __weak VObjectManager *weakSelf = self;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagPost];
-        //FIXME: [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
         if ( success != nil )
         {
             success( operation, fullResponse, resultObjects );
@@ -186,9 +185,6 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         
         if ( error.code == kVSequenceAlreadyFlagged )
         {
-            //We've already flagged this sequence, perhaps before 3.4 when the on-system removal was introduced,
-            //so add it to our local batch of flagged contents and show the success stuff to the user
-            //FIXME: [weakSelf addRemoteId:remoteId toFlaggedItemsWithType:VFlaggedContentTypeStreamItem];
             if ( success != nil )
             {
                 success( operation, nil, @[] );

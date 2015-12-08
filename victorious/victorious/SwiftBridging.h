@@ -83,6 +83,7 @@
 #import "VFollowResponder.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VHasManagedDependencies.h"
+#import "NSURL+MediaType.h"
 #import "VHashTag.h"
 #import "VHashTagTextView.h"
 #import "VHashTags.h"

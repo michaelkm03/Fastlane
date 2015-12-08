@@ -27,7 +27,8 @@ extension VNewContentViewController {
             return
         }
         
-        // TODO: Create request/operation
-        completion?(nil)
+        DeleteSequenceOperation(sequenceID: sequenceID ).queue() { error in
+            completion?( error )
+        }
     }
 }

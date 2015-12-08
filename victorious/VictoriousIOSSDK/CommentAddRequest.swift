@@ -9,34 +9,94 @@
 import Foundation
 import SwiftyJSON
 
-/// Adds a comment to a particular sequence
-public class CommentAddRequest: RequestType {
+class CommentAddRequestBody: NSObject {
+    
+    struct Output {
+        let fileURL: NSURL
+        let contentType: String
+    }
+    
+    private var bodyTempFile: NSURL = {
+        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
+    }()
+    
+    deinit {
+        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    }
+    
+    /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
+    func write( parameters parameters: CommentParameters ) throws -> Output {
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
+        
+        try writer.appendPlaintext(String(parameters.sequenceID), withFieldName: "sequence_id")
+        
+        if let text = parameters.text {
+            try writer.appendPlaintext(text, withFieldName: "text")
+        }
+        
+        if let realtime = parameters.realtimeComment {
+            try writer.appendPlaintext( String(realtime.assetID), withFieldName: "asset_id" )
+            try writer.appendPlaintext( String(realtime.time), withFieldName: "realtime" )
+        }
+        
+        /*if let profileImageURL = profileUpdate?.profileImageURL,
+            let pathExtension = profileImageURL.pathExtension,
+            let mimeType = profileImageURL.vsdk_mimeType {
+                try writer.appendFileWithName("profile_image.\(pathExtension)", contentType: mimeType, fileURL: profileImageURL, fieldName: "profile_image")
+        }*/
+        
+        try writer.finishWriting()
+        return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+    }
+}
+
+public struct CommentParameters {
+    
+    public struct RealtimeComment {
+        public let time: Double
+        public let assetID: Int64
+        
+        public init( time: Double, assetID: Int64 ) {
+            self.time = time
+            self.assetID = assetID
+        }
+    }
     
     public let sequenceID: Int64
     public let text: String?
     public let mediaURL: NSURL?
     public let mediaType: MediaAttachmentType?
+    public let realtimeComment: RealtimeComment?
     
-    public private(set) var urlRequest = NSURLRequest()
-    
-    private var bodyTempFile: NSURL?
-    
-    public init?(sequenceID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
+    public init( sequenceID: Int64, text: String?, mediaURL: NSURL?, mediaType: MediaAttachmentType?, realtimeComment: RealtimeComment? ) {
         self.sequenceID = sequenceID
         self.text = text
-        self.mediaType = mediaAttachmentType
         self.mediaURL = mediaURL
-        
-        do {
-            self.urlRequest = try makeRequest()
-        } catch {
-            return nil
-        }
+        self.mediaType = mediaType
+        self.realtimeComment = realtimeComment
+    }
+}
+
+/// Adds a comment to a particular sequence
+public struct CommentAddRequest: RequestType {
+    
+    private let requestBody: CommentAddRequestBody.Output
+    private let requestBodyWriter = CommentAddRequestBody()
+    
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
+        request.HTTPMethod = "POST"
+        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
+        return request.copy() as! NSURLRequest
     }
     
-    deinit {
-        if let bodyTempFile = bodyTempFile {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    public init?( parameters: CommentParameters ) {
+        do {
+            self.requestBody = try requestBodyWriter.write(parameters: parameters)
+        } catch {
+            return nil
         }
     }
     
@@ -45,36 +105,5 @@ public class CommentAddRequest: RequestType {
             throw ResponseParsingError()
         }
         return comment
-    }
-    
-    private func makeRequest() throws -> NSURLRequest {
-        let bodyTempFile = self.tempFile()
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
-        
-        try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext(String(sequenceID), withFieldName: "sequence_id")
-        
-        if let mediaURL = mediaURL,
-            let mediaType = mediaType,
-            let pathExtension = mediaURL.pathExtension,
-            let mimeType = mediaURL.vsdk_mimeType {
-                if mediaType == .GIF {
-                    try writer.appendPlaintext("true", withFieldName: "is_gif_style")
-                }
-                try writer.appendFileWithName("message_media.\(pathExtension)", contentType: mimeType, fileURL: mediaURL, fieldName: "media_data")
-        }
-        
-        try writer.finishWriting()
-        self.bodyTempFile = bodyTempFile
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
-        request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: bodyTempFile)
-        return request
-    }
-    
-    private func tempFile() -> NSURL {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
     }
 }

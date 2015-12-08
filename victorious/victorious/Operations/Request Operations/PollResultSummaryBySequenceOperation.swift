@@ -9,10 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol PollResultParser {
-    // TODO: Maybe combine parsing and make `PollResultSummaryByUserOperation` and `PollResultSummaryBySequenceOperation` conform
-}
-
 final class PollResultSummaryBySequenceOperation: RequestOperation, PageableOperationType {
     
     var currentRequest: PollResultSummaryRequest

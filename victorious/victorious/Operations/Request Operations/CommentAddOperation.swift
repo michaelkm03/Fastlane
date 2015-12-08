@@ -9,41 +9,23 @@
 import Foundation
 import VictoriousIOSSDK
 
-private extension VPublishParameters {
-    var commentMediaAttachmentType: MediaAttachmentType {
-        if self.isGIF {
-            return .GIF
-        } else if self.isVideo {
-            return .Video
-        }
-        return .Image
-    }
-}
-
 class CommentAddOperation: RequestOperation {
     
     var currentRequest: CommentAddRequest
     
     private let publishParameters: VPublishParameters?
-    private let sequenceID: Int64
-    private let currentTime: Float64?
-    private let text: String?
+    private let commentParameters: CommentParameters
     
     private var optimisticCommentIdentifier: AnyObject?
     
-    init( sequenceID: Int64, text: String?, publishParameters: VPublishParameters?, currentTime: Float64? ) {
-        self.sequenceID = sequenceID
-        self.currentTime = currentTime
+    init( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
+        self.commentParameters = commentParameters
         self.publishParameters = publishParameters
-        self.text = text
-        if let request = CommentAddRequest(
-            sequenceID: sequenceID,
-            text: text,
-            mediaAttachmentType: publishParameters?.commentMediaAttachmentType,
-            mediaURL: publishParameters?.mediaToUploadURL ) {
-                self.currentRequest = request
+        
+        if let request = CommentAddRequest(parameters: commentParameters) {
+            self.currentRequest = request
         } else {
-            fatalError( "Failed to send comment!" )
+            fatalError( "Failed to create required request for operation." )
         }
     }
     
@@ -52,20 +34,22 @@ class CommentAddOperation: RequestOperation {
             return
         }
         
-        // TODO: Finish add comment
+        // Optimistically create a comment before sending request
         persistentStore.asyncFromBackground() { context in
-            // Optimistically create a comment before sending request
             let comment: VComment = context.createObject()
             comment.remoteId = 0
-            comment.sequenceId = String(self.sequenceID)
+            comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
-            comment.realtime = { if let time = self.currentTime { return NSNumber(float: Float(time)) } else { return nil } }()
-            //comment.mediaWidth = publishParameters.width
-            //comment.mediaHeight = publishParameters.height
-            comment.text = self.text ?? ""
+            if let realtime = self.commentParameters.realtimeComment {
+                comment.realtime = NSNumber(float: Float(realtime.time))
+            }
+            comment.mediaWidth = self.publishParameters?.width
+            comment.mediaHeight = self.publishParameters?.height
+            comment.text = self.commentParameters.text ?? ""
             comment.postedAt = NSDate()
-            //comment.thumbnailUrl = mediaURL.absoluteString // see localImageURLForVideo:
-            comment.mediaUrl = self.publishParameters?.mediaToUploadURL.absoluteString
+            comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
+            comment.mediaUrl = self.publishParameters?.mediaToUploadURL?.absoluteString
+            
             context.saveChanges()
             dispatch_sync( dispatch_get_main_queue() ) {
                 self.optimisticCommentIdentifier = comment.identifier
@@ -88,5 +72,40 @@ class CommentAddOperation: RequestOperation {
             
             completion()
         }
+    }
+    
+    private func localImageURLForVideoAtPath( localVideoPath: String ) -> String? {
+        
+        guard let url = NSURL(string:localVideoPath) else {
+            return nil
+        }
+        
+        guard !localVideoPath.v_hasImageExtension() else {
+            return localVideoPath
+        }
+        
+        let asset = AVAsset(URL: url)
+        let assetGenerator = AVAssetImageGenerator(asset: asset)
+        let time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale)
+        let anImageRef: CGImageRef?
+        do {
+            anImageRef = try assetGenerator.copyCGImageAtTime(time, actualTime: nil)
+        } catch {
+            return nil
+        }
+        
+        guard let imageRef = anImageRef else {
+            return nil
+        }
+        let previewImage = UIImage(CGImage: imageRef)
+        
+        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
+        if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
+            imgData.writeToURL(tempFile, atomically: false )
+            return tempFile.absoluteString
+        }
+        
+        return nil
     }
 }

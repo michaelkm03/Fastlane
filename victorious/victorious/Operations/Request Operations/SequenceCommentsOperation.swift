@@ -30,7 +30,6 @@ final class SequenceCommentsOperation: RequestOperation, PageableOperationType {
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
         
-        // TODO: Unit test the flagged content stuff
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
         if comments.count > 0 {
             persistentStore.asyncFromBackground() { context in

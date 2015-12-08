@@ -140,7 +140,7 @@
 - (id)init
 {
     NSAssert(false, @"-init is not allowed. Use the designated initializer: \"-initWithSequence:\"");
-    return nil;
+    return [self initWithContext:nil];
 }
 
 - (void)dealloc
