@@ -11,19 +11,18 @@ import SwiftyJSON
 
 final public class StandardPaginator: Paginator {
     
+    /// This paginator requires knowing the result count of the previous request
+    /// in order to determine if there are more pages to load.  Calling code must
+    /// set this property before calling `nextPage()` for a new paginator for
+    // the next page.
+    public var resultCount: Int?
+    public let pageNumber: Int
+    public let itemsPerPage: Int
+    
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.pageNumber = pageNumber
         self.itemsPerPage = itemsPerPage
     }
-    
-    /// This Paginator requires knowing the result count of the previous request
-    /// in order to determine if there are more pages to load, therefore tracking that
-    /// value in this operation is required when paginated.
-    public var resultCount: Int?
-    
-    public let pageNumber: Int
-    
-    public let itemsPerPage: Int
     
     // MARK: - Paginator
     

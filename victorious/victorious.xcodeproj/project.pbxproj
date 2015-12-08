@@ -5076,11 +5076,11 @@
 				79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */,
 				C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
+				A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */,
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
-				A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				A702C84C1C121762001EE1D5 /* Paginator.swift */,
@@ -6224,11 +6224,11 @@
 		794246431B7D39A200F5F879 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				794246441B7D39B000F5F879 /* Operation.swift */,
-				A76AEA311BFEAD9300E8A26F /* Queueable.swift */,
 				A746796D1BF6CC7B0026FD2E /* Helpers */,
 				A7078CC21BFA7D2B008FB7FF /* Launch Operations */,
 				A7078CC81BFA7D2B008FB7FF /* NavigationOperations */,
+				794246441B7D39B000F5F879 /* Operation.swift */,
+				A76AEA311BFEAD9300E8A26F /* Queueable.swift */,
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
 			);
 			path = Operations;
@@ -6381,8 +6381,8 @@
 			children = (
 				A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */,
 				A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */,
-				A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */,
 				A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */,
+				A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */,
 			);
 			path = NavigationOperations;
 			sourceTree = "<group>";

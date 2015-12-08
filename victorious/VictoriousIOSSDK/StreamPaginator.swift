@@ -20,9 +20,10 @@ final public class StreamPaginator: Paginator {
         }
     }
     
-    /// This Paginator requires knowing the result count of the previous request
-    /// in order to determine if there are more pages to load, therefore tracking that
-    /// value in this operation is required when paginated.
+    /// This paginator requires knowing the result count of the previous request
+    /// in order to determine if there are more pages to load.  Calling code must
+    /// set this property before calling `nextPage()` for a new paginator for
+    // the next page.
     public var resultCount: Int = 0
     public let pageNumber: Int
     public let itemsPerPage: Int

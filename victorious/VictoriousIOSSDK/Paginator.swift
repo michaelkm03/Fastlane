@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// Defines an object that adds pagination arguments to a URL according to the
+/// specifications of the intended endpoint.  Additionally, it instantiates copies
+/// itself that are configured for next or previous pages, if available.
 public protocol Paginator {
     
     /// Returns a Paginator object that contains data for retrieving the next page
