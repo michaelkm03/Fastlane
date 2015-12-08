@@ -73,10 +73,13 @@ public extension VContentViewViewModel {
         let sequenceID = Int64(self.sequence.remoteId)!
         
         let operation: SequenceCommentsOperation?
-        if pageType == .First {
+        switch pageType {
+        case .First:
             operation =  SequenceCommentsOperation(sequenceID: sequenceID)
-        } else {
-            operation = self.loadCommentsOperation?.operation(forPageType: pageType)
+        case .Next:
+            operation = self.loadCommentsOperation?.next()
+        case .Previous:
+            operation = self.loadCommentsOperation?.prev()
         }
         
         if let currentOperation = operation {

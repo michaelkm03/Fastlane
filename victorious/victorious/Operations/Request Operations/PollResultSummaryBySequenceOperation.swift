@@ -11,7 +11,9 @@ import VictoriousIOSSDK
 
 final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
     
-    var request: PollResultSummaryRequest
+    let request: PollResultSummaryRequest
+    var resultCount: Int?
+    
     private let sequenceID: Int64
     
     required init( request: PollResultSummaryRequest ) {

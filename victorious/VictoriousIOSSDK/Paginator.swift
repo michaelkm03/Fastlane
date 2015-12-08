@@ -19,7 +19,7 @@ public protocol Paginator {
     
     /// Returns a Paginator object that contains data for retrieving the next page
     /// of paginated data after the receiver.
-    func nextPage() -> Self?
+    func nextPage( resultCount: Int ) -> Self?
     
     /// Modifies the provided request by adding pagination data to it according to
     /// the implementation-specific logic for doing so.

@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
     var request: SequenceCommentsRequest
+    var resultCount: Int?
     
     private let sequenceID: Int64
     

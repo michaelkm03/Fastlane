@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
-    var request: SequenceRepostersRequest
+    let request: SequenceRepostersRequest
+    var resultCount: Int?
     
     private var sequenceID: Int64
     

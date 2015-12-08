@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperation {
     
-    var request: PollResultSummaryRequest
+    let request: PollResultSummaryRequest
+    var resultCount: Int?
     
     private let userID: Int64
     

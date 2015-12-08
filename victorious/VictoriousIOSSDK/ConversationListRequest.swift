@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 // A RequestType to grab pages of the currently logged in user's conversation
-public struct ConversationListRequest: Pageable {
+public struct ConversationListRequest: PaginatorPageable, DynamicPageable {
     
     private static let basePath = NSURL(string: "/api/message/conversation_list")!
     
@@ -31,12 +31,11 @@ public struct ConversationListRequest: Pageable {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Conversation] {
+        
         guard let conversationArrayJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let output = conversationArrayJSON.flatMap{ Conversation(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return conversationArrayJSON.flatMap{ Conversation(json: $0) }
     }
 }

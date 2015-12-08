@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags based on a search term
-public struct HashtagSearchRequest: Pageable {
+public struct HashtagSearchRequest: PaginatorPageable, DynamicPageable {
     
     /// The search term to use when querying for hashtags
     public let searchTerm: String
@@ -40,12 +40,11 @@ public struct HashtagSearchRequest: Pageable {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
+        
         guard let hashtagJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let output = hashtagJSON.flatMap { Hashtag(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return hashtagJSON.flatMap { Hashtag(json: $0) }
     }
 }

@@ -15,6 +15,7 @@ class AccountCreateOperation: RequestOperation {
     private let accountIdentifier: String?
     
     let request: AccountCreateRequest
+    private(set) var resultCount: Int?
     
     var isNewUser = false
     

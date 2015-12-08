@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users followed by a specific user
-public struct FollowingRequest: Pageable {
+public struct FollowingRequest: PaginatorPageable, DynamicPageable {
     
     public let urlRequest: NSURLRequest
     
@@ -44,8 +44,6 @@ public struct FollowingRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let output = usersJSON.flatMap { User(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

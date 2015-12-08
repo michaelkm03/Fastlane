@@ -9,41 +9,33 @@
 import Foundation
 import SwiftyJSON
 
-/// A special RequestType for endpoints that support pagination
+/// Defines an object as a specialized RequestType that that can initialize a copy
+/// of itself that is configured to load the previous or next page(s) of the same endpoint.
 public protocol Pageable: RequestType {
-    
-    typealias PaginatorType: Paginator
-    
-    /// An abstract object that implements pagination logic and decorates URLs accordingly.
-    var paginator: PaginatorType { get }
-    
-    /// Objects are required to support initialization with an existing paginator
-    init( request: Self, paginator: PaginatorType  )
-    
-    /// A request that will load the next page of data relative to the receiver
-    /// or `nil` if the receiver represents the last page.
-    init?( nextRequestFromRequest request: Self )
     
     /// A request that will load the previous page of data relative to the receiver
     /// or `nil` if the receiver represents the first page.
+    ///
+    /// -parameter request: A request to copy and configure for the previous page relative to it
     init?( previousFromSourceRequest request: Self )
+    
+    /// A request that will load the next page of data relative to the receiver
+    /// or `nil` if the receiver represents the last page.
+    ///
+    /// -parameter request: A request to copy and configure for the next page relative to it
+    init?( nextRequestFromRequest request: Self )
 }
 
-extension Pageable {
+/// Defines an object as a specialized Pageable that returns a next page based
+/// on the results of the last execution of a request, which is provided as
+/// a required parameter in an alternate initializer.
+public protocol DynamicPageable {
     
-    public init?( nextRequestFromRequest request: Self ) {
-        if let paginator = request.paginator.nextPage() {
-            self.init( request: request, paginator: paginator )
-        } else {
-            return nil
-        }
-    }
-    
-    public init?( previousFromSourceRequest request: Self ) {
-        if let paginator = request.paginator.previousPage() {
-            self.init( request: request, paginator: paginator )
-        } else {
-            return nil
-        }
-    }
+    /// A request that will load the next page of data relative to the receiver
+    /// or `nil` if the receiver represents the last page.
+    ///
+    /// -parameter request: A request to copy and configure for the next page relative to it
+    /// -parameter resultCount: The number of paginated results returned in the previous
+    /// execution of the provided `request` parameter
+    init?( nextRequestFromRequest request: Self, resultCount: Int )
 }

@@ -37,7 +37,6 @@ public class NetworkActivityIndicator {
     }
     
     func update() {
-        print( "NetworkActivityIndicator :: activityCount = \(activityCount)" )
         UIApplication.sharedApplication().networkActivityIndicatorVisible = visible
     }
 }

@@ -16,10 +16,13 @@ extension VReposterTableViewController {
         }
         
         let operation: SequenceRepostersOperation?
-        if pageType == .First {
+        switch pageType {
+        case .First:
             operation = SequenceRepostersOperation(sequenceID: sequenceID )
-        } else {
-            operation = self.repostersOperation?.operation(forPageType: pageType)
+        case .Next:
+            operation = self.repostersOperation?.next()
+        case .Previous:
+            operation = self.repostersOperation?.prev()
         }
         
         if let operation = operation {

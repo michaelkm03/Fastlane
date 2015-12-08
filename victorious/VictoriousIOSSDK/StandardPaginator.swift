@@ -9,13 +9,8 @@
 import Foundation
 import SwiftyJSON
 
-final public class StandardPaginator: Paginator {
+public struct StandardPaginator: Paginator {
     
-    /// This paginator requires knowing the result count of the previous request
-    /// in order to determine if there are more pages to load.  Calling code must
-    /// set this property before calling `nextPage()` for a new paginator for
-    // the next page.
-    public var resultCount: Int?
     public let pageNumber: Int
     public let itemsPerPage: Int
     
@@ -37,12 +32,8 @@ final public class StandardPaginator: Paginator {
         return nil
     }
     
-    public func nextPage() -> StandardPaginator? {
-        guard let resultCount = resultCount else {
-            print( "The `resultCount` property has not been set on `StandardPaginator`.  This is required in order to determine if there is a next page available.  Make sure that a Pageable request sets this property after receving results." )
-            return nil
-        }
-        if resultCount >= itemsPerPage {
+    public func nextPage( resultCount: Int ) -> StandardPaginator? {
+        if resultCount > 0 {
             return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }
         return nil

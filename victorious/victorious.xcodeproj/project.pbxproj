@@ -734,6 +734,7 @@
 		A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */; };
 		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
 		A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */; };
+		A75D3BEB1C176F39006CE331 /* PaginatorPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -2953,6 +2954,7 @@
 		A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextCalloutFormatter.swift; sourceTree = "<group>"; };
 		A75C64AE1AE0299900245125 /* VTextPostImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostImageHelper.h; sourceTree = "<group>"; };
 		A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostImageHelper.m; sourceTree = "<group>"; };
+		A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatorPageable.swift; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -5148,6 +5150,7 @@
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				A702C84C1C121762001EE1D5 /* PaginatorType.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
+				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
 				A702C84C1C121762001EE1D5 /* Paginator.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */,
 				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
@@ -10356,6 +10359,7 @@
 				0300AA611BF197FE000A121D /* NSURL+MimeType.swift in Sources */,
 				03314F621BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift in Sources */,
 				A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */,
+				A75D3BEB1C176F39006CE331 /* PaginatorPageable.swift in Sources */,
 				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
 				A7BBB8ED1C167858009319D9 /* VSDKURLMacroReplacement.m in Sources */,
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,

@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 // A RequestType for fetching pages of messages for a particular conversation.
-public struct ConversationRequest: Pageable {
+public struct ConversationRequest: PaginatorPageable, DynamicPageable {
 
     private static let basePath = NSURL(string: "/api/message/conversation/")!
     
@@ -47,8 +47,6 @@ public struct ConversationRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let output = messageArrayJSON.flatMap{ Message(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return messageArrayJSON.flatMap{ Message(json: $0) }
     }
 }
