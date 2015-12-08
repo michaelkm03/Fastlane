@@ -12,13 +12,13 @@ import XCTest
 
 struct MockPageableRequest: Pageable {
     
-    let paginator: PaginatorType
+    let paginator: Paginator
     
     init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    init(request: MockPageableRequest, paginator: PaginatorType) {
+    init(request: MockPageableRequest, paginator: Paginator) {
         self.paginator = paginator
     }
     

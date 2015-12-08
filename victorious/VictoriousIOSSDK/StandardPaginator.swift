@@ -9,14 +9,14 @@
 import Foundation
 import SwiftyJSON
 
-public struct StandardPaginator: PaginatorType {
+public struct StandardPaginator: Paginator {
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.pageNumber = pageNumber
         self.itemsPerPage = itemsPerPage
     }
     
-    // MARK: - PaginatorType
+    // MARK: - Paginator
     
     public let pageNumber: Int
     
@@ -26,14 +26,14 @@ public struct StandardPaginator: PaginatorType {
         request.URL = request.URL?.URLByAppendingPathComponent(String(pageNumber)).URLByAppendingPathComponent(String(itemsPerPage))
     }
     
-    public func previousPage() -> PaginatorType? {
+    public func previousPage() -> Paginator? {
         if pageNumber > 1 {
             return StandardPaginator(pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func nextPage( resultCount: Int ) -> PaginatorType? {
+    public func nextPage( resultCount: Int ) -> Paginator? {
         if resultCount >= itemsPerPage {
             return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }

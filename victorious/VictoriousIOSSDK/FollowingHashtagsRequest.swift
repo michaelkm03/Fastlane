@@ -12,13 +12,13 @@ import SwiftyJSON
 /// Retrieves a list of hashtags which the current user is following
 public struct FollowingHashtagsRequest: Pageable {
     
-    public let paginator: PaginatorType
+    public let paginator: Paginator
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    public init(request: FollowingHashtagsRequest, paginator: PaginatorType) {
+    public init(request: FollowingHashtagsRequest, paginator: Paginator) {
         self.paginator = paginator
     }
     

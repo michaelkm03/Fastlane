@@ -18,18 +18,18 @@ public struct ConversationRequest: Pageable {
     public let conversationID: Int64
     private static let descPathParameter = "desc"
     
-    public let paginator: PaginatorType
+    public let paginator: Paginator
     
     public init(conversationID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init(conversationID: conversationID, paginator: paginator)
     }
     
-    public init(request: ConversationRequest, paginator: PaginatorType) {
+    public init(request: ConversationRequest, paginator: Paginator) {
         self.init( conversationID: request.conversationID, paginator: request.paginator)
     }
     
-    private init(conversationID: Int64, paginator: PaginatorType) {
+    private init(conversationID: Int64, paginator: Paginator) {
         self.conversationID = conversationID
         self.paginator = paginator
     }

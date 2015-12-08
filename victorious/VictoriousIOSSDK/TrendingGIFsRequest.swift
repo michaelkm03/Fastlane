@@ -12,9 +12,9 @@ import SwiftyJSON
 /// Retrieves a list of trending GIFs
 public struct TrendingGIFsRequest: Pageable {
     
-    public let paginator: PaginatorType
+    public let paginator: Paginator
     
-    public init( request: TrendingGIFsRequest, paginator: PaginatorType ) {
+    public init( request: TrendingGIFsRequest, paginator: Paginator ) {
         self.paginator = paginator
     }
     

@@ -11,7 +11,7 @@ import SwiftyJSON
 
 public struct StreamRequest: Pageable {
     
-    public let paginator: PaginatorType
+    public let paginator: Paginator
     public let apiPath: String
     
     public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -22,11 +22,11 @@ public struct StreamRequest: Pageable {
         }
     }
     
-    public init(request: StreamRequest, paginator: PaginatorType) {
+    public init(request: StreamRequest, paginator: Paginator) {
         self.init(apiPath: request.apiPath, paginator: paginator)
     }
     
-    private init( apiPath: String, paginator: PaginatorType ) {
+    private init( apiPath: String, paginator: Paginator ) {
         self.apiPath = apiPath
         self.paginator = paginator
     }

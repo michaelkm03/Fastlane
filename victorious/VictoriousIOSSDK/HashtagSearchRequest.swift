@@ -15,9 +15,9 @@ public struct HashtagSearchRequest: Pageable {
     /// The search term to use when querying for hashtags
     public let searchTerm: String
     
-    public let paginator: PaginatorType
+    public let paginator: Paginator
     
-    public init(searchTerm: String, paginator: PaginatorType) {
+    public init(searchTerm: String, paginator: Paginator) {
         self.searchTerm = searchTerm
         self.paginator = paginator
     }
@@ -27,7 +27,7 @@ public struct HashtagSearchRequest: Pageable {
         self.init( searchTerm: searchTerm, paginator: paginator )
     }
     
-    public init( request: HashtagSearchRequest, paginator: PaginatorType ) {
+    public init( request: HashtagSearchRequest, paginator: Paginator ) {
         self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
     

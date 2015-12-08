@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StreamPaginator: PaginatorType {
+public struct StreamPaginator: Paginator {
     
     public enum Macro: String {
         case PageNumber     = "%%PAGE_NUM%%"
@@ -34,7 +34,7 @@ public struct StreamPaginator: PaginatorType {
         }
     }
     
-    // MARK: - PaginatorType
+    // MARK: - Paginator
     
     public let pageNumber: Int
     public let itemsPerPage: Int
@@ -43,14 +43,14 @@ public struct StreamPaginator: PaginatorType {
         request.URL = urlWithMacrosReplaced( apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage )
     }
     
-    public func previousPage() -> PaginatorType? {
+    public func previousPage() -> Paginator? {
         if pageNumber > 1 {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func nextPage( resultCount: Int ) -> PaginatorType? {
+    public func nextPage( resultCount: Int ) -> Paginator? {
         if resultCount >= itemsPerPage {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }

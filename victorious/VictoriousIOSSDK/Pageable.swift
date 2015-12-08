@@ -13,10 +13,10 @@ import SwiftyJSON
 public protocol Pageable: RequestType {
     
     /// An abstract object that implements pagination logic and decorates URLs accordingly.
-    var paginator: PaginatorType { get }
+    var paginator: Paginator { get }
     
     /// Objects are required to support initialization with an existing paginator
-    init( request: Self, paginator: PaginatorType  )
+    init( request: Self, paginator: Paginator  )
     
     /// A request that will load the next page of data relative to the receiver
     /// or `nil` if the receiver represents the last page.

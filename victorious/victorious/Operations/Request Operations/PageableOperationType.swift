@@ -23,7 +23,7 @@ protocol PageableOperationType : class {
     /// from which to maket the next/prev operations.
     var request: PaginatedRequestType { get }
     
-    /// Most PaginatorTypes require knowing the result count of the previous request
+    /// Most Paginators require knowing the result count of the previous request
     /// in order to determine if there are more pages to load, therefore tracking that
     /// value in this operation is required when paginated.
     var resultCount: Int { get }

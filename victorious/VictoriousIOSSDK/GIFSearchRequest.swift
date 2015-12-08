@@ -16,18 +16,18 @@ public struct GIFSearchRequest: Pageable {
     
     public let searchTerm: String
     
-    public var paginator: PaginatorType
+    public var paginator: Paginator
     
     public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init( searchTerm: searchTerm, paginator: paginator )
     }
     
-    public init( request: GIFSearchRequest, paginator: PaginatorType ) {
+    public init( request: GIFSearchRequest, paginator: Paginator ) {
         self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
     
-    public init(searchTerm: String, paginator: PaginatorType) {
+    public init(searchTerm: String, paginator: Paginator) {
         let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)

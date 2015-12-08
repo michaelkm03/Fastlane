@@ -1,5 +1,5 @@
 //
-//  PaginatorType.swift
+//  Paginator.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/4/15.
@@ -8,19 +8,19 @@
 
 import Foundation
 
-public protocol PaginatorType {
+public protocol Paginator {
     
     var pageNumber: Int { get }
     
     var itemsPerPage: Int { get }
     
-    /// Returns a PaginatorType object that contains data for retrieving the next page
+    /// Returns a Paginator object that contains data for retrieving the next page
     /// of paginated data after the receiver.
-    func previousPage() -> PaginatorType?
+    func previousPage() -> Paginator?
     
-    /// Returns a PaginatorType object that contains data for retrieving the next page
+    /// Returns a Paginator object that contains data for retrieving the next page
     /// of paginated data after the receiver.
-    func nextPage( resultCount: Int ) -> PaginatorType?
+    func nextPage( resultCount: Int ) -> Paginator?
     
     /// Modifies the provided request by adding pagination data to it according to
     /// the implementation-specific logic for doing so.
