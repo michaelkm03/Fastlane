@@ -92,21 +92,29 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
 {
     NSString *captionText = self.hasHeadline ? self.editorialization.marqueeHeadline : self.marqueeItem.name;
     
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
-    NSMutableAttributedString *attributedCaptionString = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
-    
-    CGFloat currentHeight = CGRectGetHeight([attributedCaptionString boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)
-                                                                                  options:NSStringDrawingUsesLineFragmentOrigin
-                                                                                  context:nil]);
-    CGFloat desiredLabelHeight = currentHeight + kPaddingForEmojiInLCaptionLabel;
-    if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
+    if (captionText != nil )
     {
-        self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
-        [self setNeedsUpdateConstraints];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = [self.captionFont v_fontSpecificLineSpace];
+        NSMutableAttributedString *attributedCaptionString = [[NSMutableAttributedString alloc] initWithString:captionText attributes:@{NSParagraphStyleAttributeName: paragraphStyle}];
+        
+        CGFloat currentHeight = CGRectGetHeight([attributedCaptionString boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)
+                                                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                      context:nil]);
+        CGFloat desiredLabelHeight = currentHeight + kPaddingForEmojiInLCaptionLabel;
+        if (desiredLabelHeight > self.captionLabelMinimumHeightConstraint.constant)
+        {
+            self.captionLabelMinimumHeightConstraint.constant = desiredLabelHeight;
+            [self setNeedsUpdateConstraints];
+        }
+        
+        self.captionLabel.attributedText = attributedCaptionString;
     }
-    
-    self.captionLabel.attributedText = attributedCaptionString;
+    else
+    {
+        self.captionLabelMinimumHeightConstraint.constant = 0;
+        self.captionLabel.attributedText = nil;
+    }
 }
 
 - (void)updateDividerConstraints
