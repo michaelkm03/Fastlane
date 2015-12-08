@@ -14,6 +14,8 @@ import UIKit
 
 class AgeGateViewController: UIViewController {
     @IBOutlet private weak var backgroundView: UIView!
+    @IBOutlet private weak var blurView: UIVisualEffectView!
+    @IBOutlet private weak var dimmingView: UIView!
     @IBOutlet private weak var widgetBackground: UIView!
     @IBOutlet private weak var promptLabel: UILabel!
     @IBOutlet private weak var datePicker: UIDatePicker!
@@ -23,6 +25,13 @@ class AgeGateViewController: UIViewController {
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
+        static let blurViewCornerRadius: CGFloat = 17.0
+        static let initialTransformScale: CGFloat = 1.2
+    }
+    
+    private struct AnimationConstant {
+        static let animationDuration: NSTimeInterval = 0.35
+        static let springDamping: CGFloat = 1.0
     }
     
     static func ageGateViewController(withAgeGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
@@ -38,8 +47,33 @@ class AgeGateViewController: UIViewController {
     //MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        blurView.layer.cornerRadius = UIConstant.blurViewCornerRadius
+        blurView.layer.masksToBounds = true
         addBackgroundView()
         setupDisplayText()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        dimmingView.alpha = 0.0
+        blurView.alpha = 0.0
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.blurView.transform = CGAffineTransformMakeScale(UIConstant.initialTransformScale, UIConstant.initialTransformScale)
+        UIView.animateWithDuration(AnimationConstant.animationDuration,
+            delay: 0.0,
+            usingSpringWithDamping: AnimationConstant.springDamping,
+            initialSpringVelocity: 0.0,
+            options: [],
+            animations: {
+                self.dimmingView.alpha = 1.0
+                self.blurView.alpha = 1.0
+                self.blurView.transform = CGAffineTransformIdentity
+            }, completion: nil)
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
