@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 // A RequestType for fetching pages of messages for a particular conversation.
-public struct ConversationRequest: PaginatorPageable, DynamicPageable {
+public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
 
     private static let basePath = NSURL(string: "/api/message/conversation/")!
     

@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 import XCTest
 
-struct MockPageableRequest: PaginatorPageable, DynamicPageable {
+struct MockPageableRequest: PaginatorPageable, ResultBasedPageable {
     
     let paginator: StandardPaginator
     

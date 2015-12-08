@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who follows a specific user
-public struct FollowersRequest: PaginatorPageable, DynamicPageable {
+public struct FollowersRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
 

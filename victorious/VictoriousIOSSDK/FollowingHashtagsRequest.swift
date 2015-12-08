@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags which the current user is following
-public struct FollowingHashtagsRequest: PaginatorPageable, DynamicPageable {
+public struct FollowingHashtagsRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
