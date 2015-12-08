@@ -3,6 +3,7 @@
 ### Prerequisites
 - Install [Homebrew](http://brew.sh)
 - install Xcode 7.0.1 from apple developer site
+- Install rbenv using [these instructions](http://www.startprogrammingnowbook.com/book/setup#uid10)
 
 ### Setup
 
@@ -13,6 +14,10 @@ brew install python
 pip install requests
 xcode-select --switch <path_to_xcode_developer_folder>
 xcode-select --install # install command line tools
+cd <project_dir>/victorious/fastlane
+rbenv install
+gem install bundler
+bundle install
 ```
 
 #### Environment variables
@@ -35,7 +40,7 @@ LOCAL_VAMS_PASSWORD='<local_password>'
 ### Build and Push
 
 ```
-cd <project_dir>/VictoriousiOS/victorious
-gem install fastlane && gem up fastlane
+cd <project_dir>/victorious/fastlane
+gem install fastlane
 fastlane ios deploy
 ```
