@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.launchState = VAppLaunchStateWaiting;
     
-#warning The ageGateActivated is hardcoded here. It should be template driven when backend is ready
+#warning The ageGateActivated is hardcoded here. It should determined by a build flag 
     BOOL ageGateActivated = YES;
     BOOL userHasProvidedBirthday = [[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedByUser];
     
