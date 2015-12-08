@@ -21,6 +21,7 @@ class RequestOperation: NSOperation, Queuable {
     var mainQueueCompletionBlock: ((NSError?)->())?
     
     let persistentStore: PersistentStoreType = MainPersistentStore()
+    let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     
     private(set) var error: NSError?
     
@@ -50,6 +51,8 @@ class RequestOperation: NSOperation, Queuable {
             dispatch_semaphore_signal(startSemaphore)
         }
         dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
+        
+        networkActivityIndicator.start()
         
         let executeSemphore = dispatch_semaphore_create(0)
         request.execute(
@@ -82,6 +85,8 @@ class RequestOperation: NSOperation, Queuable {
             }
         )
         dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
+        
+        networkActivityIndicator.stop()
     }
     
     // MARK: - Queuable
