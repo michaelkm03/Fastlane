@@ -10,24 +10,24 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
-public struct SequenceLikersRequest: RequestType /* FIXME */{
+public struct SequenceLikersRequest: Pageable {
     
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64
     public let urlRequest: NSURLRequest
     
-    public let paginator: Paginator
+    public let paginator: StandardPaginator
     
     public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init(sequenceID: sequenceID, paginator: paginator)
     }
     
-    public init( request: SequenceLikersRequest, paginator: Paginator ) {
+    public init( request: SequenceLikersRequest, paginator: StandardPaginator ) {
         self.init( sequenceID: request.sequenceID, paginator: paginator)
     }
     
-    private init(sequenceID: Int64, paginator: Paginator) {
+    private init(sequenceID: Int64, paginator: StandardPaginator) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         
