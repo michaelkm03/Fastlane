@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol AgeGateViewControllerDelegate {
+@objc protocol AgeGateViewControllerDelegate: class {
     func continueButtonTapped(isKid: Bool)
 }
 
@@ -19,7 +19,7 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var datePicker: UIDatePicker!
     @IBOutlet private weak var continueButton: UIButton!
     
-    private var delegate: AgeGateViewControllerDelegate?
+    private weak var delegate: AgeGateViewControllerDelegate?
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
