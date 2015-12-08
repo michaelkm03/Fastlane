@@ -23,11 +23,6 @@ protocol PageableOperationType : class {
     /// from which to maket the next/prev operations.
     var request: PaginatedRequestType { get }
     
-    /// Most Paginators require knowing the result count of the previous request
-    /// in order to determine if there are more pages to load, therefore tracking that
-    /// value in this operation is required when paginated.
-    var resultCount: Int { get }
-    
     /// Returns a copy of this operation configured for loading next page worth of data
     func next() -> Self?
     
@@ -42,7 +37,7 @@ protocol PageableOperationType : class {
 extension PageableOperationType {
     
     func next() -> Self? {
-        if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: self.resultCount) {
+        if let request = PaginatedRequestType(nextRequestFromRequest: self.request) {
             return self.dynamicType.init(request: request)
         }
         return nil

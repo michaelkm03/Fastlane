@@ -18,18 +18,18 @@ public struct ConversationRequest: Pageable {
     public let conversationID: Int64
     private static let descPathParameter = "desc"
     
-    public let paginator: Paginator
+    public let paginator: StandardPaginator
     
     public init(conversationID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
         self.init(conversationID: conversationID, paginator: paginator)
     }
     
-    public init(request: ConversationRequest, paginator: Paginator) {
+    public init(request: ConversationRequest, paginator: StandardPaginator) {
         self.init( conversationID: request.conversationID, paginator: request.paginator)
     }
     
-    private init(conversationID: Int64, paginator: Paginator) {
+    private init(conversationID: Int64, paginator: StandardPaginator) {
         self.conversationID = conversationID
         self.paginator = paginator
     }
@@ -48,5 +48,4 @@ public struct ConversationRequest: Pageable {
         }
         return messageArrayJSON.flatMap{ Message(json: $0) }
     }
-    
 }

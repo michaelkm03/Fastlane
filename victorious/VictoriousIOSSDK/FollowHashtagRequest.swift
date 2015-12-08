@@ -9,10 +9,8 @@
 import Foundation
 import SwiftyJSON
 
-/// Follow a hashtag
 public struct FollowHashtagRequest: RequestType {
     
-    /// The hashtag you'd like to follow
     public let hashtagToFollow: String
     
     public init(hashtagToFollow: String) {

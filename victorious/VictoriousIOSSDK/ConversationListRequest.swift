@@ -14,13 +14,13 @@ public struct ConversationListRequest: Pageable {
     
     private static let basePath = NSURL(string: "/api/message/conversation_list")!
     
-    public let paginator: Paginator
+    public let paginator: StandardPaginator
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     }
     
-    public init(request: ConversationListRequest, paginator: Paginator) {
+    public init(request: ConversationListRequest, paginator: StandardPaginator) {
         self.paginator = paginator
     }
     

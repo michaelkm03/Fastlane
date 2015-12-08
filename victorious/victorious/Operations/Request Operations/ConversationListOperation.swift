@@ -26,7 +26,6 @@ final class ConversationListOperation: RequestOperation, PageableOperationType {
     }
     
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
-        self.resultCount = conversations.count
         
         persistentStore.asyncFromBackground() { context in
             for conversation in conversations {

@@ -15,9 +15,9 @@ public struct HashtagSearchRequest: Pageable {
     /// The search term to use when querying for hashtags
     public let searchTerm: String
     
-    public let paginator: Paginator
+    public let paginator: StandardPaginator
     
-    public init(searchTerm: String, paginator: Paginator) {
+    public init(searchTerm: String, paginator: StandardPaginator) {
         self.searchTerm = searchTerm
         self.paginator = paginator
     }
@@ -27,7 +27,7 @@ public struct HashtagSearchRequest: Pageable {
         self.init( searchTerm: searchTerm, paginator: paginator )
     }
     
-    public init( request: HashtagSearchRequest, paginator: Paginator ) {
+    public init( request: HashtagSearchRequest, paginator: StandardPaginator ) {
         self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
     
@@ -43,6 +43,8 @@ public struct HashtagSearchRequest: Pageable {
         guard let hashtagJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return hashtagJSON.flatMap { Hashtag(json: $0) }
+        let output = hashtagJSON.flatMap { Hashtag(json: $0) }
+        self.paginator.resultCount = output.count // TODO: Do this for all pageable requests
+        return output
     }
 }

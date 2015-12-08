@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StreamPaginator: Paginator {
+final public class StreamPaginator: Paginator {
     
     public enum Macro: String {
         case PageNumber     = "%%PAGE_NUM%%"
@@ -22,6 +22,11 @@ public struct StreamPaginator: Paginator {
     
     public let apiPath: String
     public let sequenceID: String?
+    
+    /// This Paginator requires knowing the result count of the previous request
+    /// in order to determine if there are more pages to load, therefore tracking that
+    /// value in this operation is required when paginated.
+    public var resultCount: Int = 0
     
     public init?(apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.apiPath = apiPath
@@ -43,14 +48,14 @@ public struct StreamPaginator: Paginator {
         request.URL = urlWithMacrosReplaced( apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage )
     }
     
-    public func previousPage() -> Paginator? {
+    public func previousPage() -> StreamPaginator? {
         if pageNumber > 1 {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public func nextPage( resultCount: Int ) -> Paginator? {
+    public func nextPage() -> StreamPaginator? {
         if resultCount >= itemsPerPage {
             return StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }

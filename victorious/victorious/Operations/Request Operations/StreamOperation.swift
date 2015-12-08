@@ -29,7 +29,6 @@ final class StreamOperation: RequestOperation, StreamItemParser, PageableOperati
     }
     
     private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
-        self.resultCount = stream.items.count
         
        persistentStore.asyncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( [ "apiPath" : self.apiPath ] )

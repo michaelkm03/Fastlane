@@ -22,8 +22,6 @@ class RequestOperation: NSOperation, Queuable {
     
     let persistentStore: PersistentStoreType = MainPersistentStore()
     
-    var resultCount: Int = 0
-    
     private(set) var error: NSError?
     
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {

@@ -12,15 +12,17 @@ import SwiftyJSON
 /// A special RequestType for endpoints that support pagination
 public protocol Pageable: RequestType {
     
+    typealias PaginatorType: Paginator
+    
     /// An abstract object that implements pagination logic and decorates URLs accordingly.
-    var paginator: Paginator { get }
+    var paginator: PaginatorType { get }
     
     /// Objects are required to support initialization with an existing paginator
-    init( request: Self, paginator: Paginator  )
+    init( request: Self, paginator: PaginatorType  )
     
     /// A request that will load the next page of data relative to the receiver
     /// or `nil` if the receiver represents the last page.
-    init?( nextRequestFromRequest request: Self, resultCount: Int )
+    init?( nextRequestFromRequest request: Self )
     
     /// A request that will load the previous page of data relative to the receiver
     /// or `nil` if the receiver represents the first page.
@@ -29,8 +31,8 @@ public protocol Pageable: RequestType {
 
 extension Pageable {
     
-    public init?( nextRequestFromRequest request: Self, resultCount: Int ) {
-        if let paginator = request.paginator.nextPage( resultCount ) {
+    public init?( nextRequestFromRequest request: Self ) {
+        if let paginator = request.paginator.nextPage() {
             self.init( request: request, paginator: paginator )
         } else {
             return nil
