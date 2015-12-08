@@ -561,11 +561,11 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 #pragma mark - AgeGateViewControllerDelegate
 
-- (void)continueButtonTapped:(BOOL)isKid
+- (void)continueButtonTapped:(BOOL)isAnonymousUser
 {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     [standardDefaults setValue:@(YES) forKey:kBirthdayProvidedByUser];
-    [standardDefaults setValue:@(isKid) forKey:kIsAnonymousUser];
+    [standardDefaults setValue:@(isAnonymousUser) forKey:kIsAnonymousUser];
     [standardDefaults synchronize];
     
     [self showLoadingViewController];

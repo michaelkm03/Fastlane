@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol AgeGateViewControllerDelegate: class {
-    func continueButtonTapped(isKid: Bool)
+    func continueButtonTapped(isAnonymousUser: Bool)
 }
 
 class AgeGateViewController: UIViewController {
@@ -60,8 +60,8 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
-        let userIsKid = isKid(underAge: 13)
-        delegate?.continueButtonTapped(userIsKid)
+        let shouldBeAnonymous = isUserYoungerThan(13)
+        delegate?.continueButtonTapped(shouldBeAnonymous)
     }
     
     //MARK: - Private functions
@@ -88,7 +88,7 @@ class AgeGateViewController: UIViewController {
             forState: .Normal)
     }
     
-    private func isKid(underAge age: Int) -> Bool {
+    private func isUserYoungerThan(age: Int) -> Bool {
         let birthday = datePicker.date
         let now = NSDate()
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
