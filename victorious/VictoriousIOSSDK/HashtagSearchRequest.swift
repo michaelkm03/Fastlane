@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags based on a search term
-public struct HashtagSearchRequest: Pageable, Searchable {
+public struct HashtagSearchRequest: Pageable {
     
     /// The search term to use when querying for hashtags
     public let searchTerm: String
@@ -20,6 +20,15 @@ public struct HashtagSearchRequest: Pageable, Searchable {
     public init(searchTerm: String, paginator: PaginatorType) {
         self.searchTerm = searchTerm
         self.paginator = paginator
+    }
+    
+    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init( searchTerm: searchTerm, paginator: paginator )
+    }
+    
+    public init( request: HashtagSearchRequest, paginator: PaginatorType ) {
+        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
     
     public var urlRequest: NSURLRequest {

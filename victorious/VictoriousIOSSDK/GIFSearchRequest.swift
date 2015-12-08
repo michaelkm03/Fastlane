@@ -10,13 +10,22 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of GIFs based on a search query
-public struct GIFSearchRequest: Pageable, Searchable {
+public struct GIFSearchRequest: Pageable {
     
     public let urlRequest: NSURLRequest
     
     public let searchTerm: String
     
     public var paginator: PaginatorType
+    
+    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.init( searchTerm: searchTerm, paginator: paginator )
+    }
+    
+    public init( request: GIFSearchRequest, paginator: PaginatorType ) {
+        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
+    }
     
     public init(searchTerm: String, paginator: PaginatorType) {
         let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
