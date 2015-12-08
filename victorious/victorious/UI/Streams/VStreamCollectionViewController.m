@@ -55,7 +55,7 @@
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VTabScaffoldViewController.h"
 #import "VTracking.h"
-#import "VURLMacroReplacement.h"
+#import "VSDKURLMacroReplacement.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUser.h"
@@ -138,7 +138,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
     if ( sequenceID != nil )
     {
-        VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+        VSDKURLMacroReplacement *urlMacroReplacement = [[VSDKURLMacroReplacement alloc] init];
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }

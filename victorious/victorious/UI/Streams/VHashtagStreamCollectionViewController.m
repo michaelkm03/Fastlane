@@ -9,7 +9,7 @@
 #import "NSString+VParseHelp.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VURLMacroReplacement.h"
+#import "VSDKURLMacroReplacement.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "MBProgressHUD.h"
@@ -55,7 +55,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     if ( hashtag != nil )
     {
-        VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+        VSDKURLMacroReplacement *macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         streamURL = [macroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kHashtagURLMacro: hashtag } inURLString:streamURL];
     }
     

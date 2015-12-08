@@ -12,7 +12,7 @@
 
 #import "VPaginationManager.h"
 #import "VUser.h"
-#import "VURLMacroReplacement.h"
+#import "VSDKURLMacroReplacement.h"
 #import "VSequence.h"
 #import "VComment.h"
 #import "VMessage.h"
@@ -265,7 +265,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     NSDictionary *macroReplacements = @{ VPaginationManagerItemsPerPageMacro: [conversation.perPageNumber stringValue],
                                          VPaginationManagerPageNumberMacro: @"1",
                                       };
-    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+    VSDKURLMacroReplacement *macroReplacement = [[VSDKURLMacroReplacement alloc] init];
     
     return [self GET:[macroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:conversation.filterAPIPath]
               object:nil
