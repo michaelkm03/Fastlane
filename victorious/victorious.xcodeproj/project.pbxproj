@@ -928,7 +928,6 @@
 		A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D378541AF15EDB007FF197 /* VTextFragment.swift */; };
 		A7D378641AF308B3007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378681AF45B7C007FF197 /* VSequencePermissions.m */; };
-		A7D69BC11C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69BC01C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift */; };
 		A7D69C0B1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C0A1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel */; };
 		A7D69C0D1C0E33B600B462C3 /* SequenceLikersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */; };
 		A7D69C0E1C0E33B600B462C3 /* InvalidConversationListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */; };
@@ -11390,7 +11389,6 @@
 				A76AEA551BFED31B00E8A26F /* AVAsset+OrientationTests.m in Sources */,
 				A7D69C5D1C0E51A000B462C3 /* VUserTaggingTextStorageTests.m in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
-				A7D69BC11C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift in Sources */,
 				A7D69C5C1C0E51A000B462C3 /* VURLDetectorTests.m in Sources */,
 				A7D69C3B1C0E51A000B462C3 /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
 				A7D69C411C0E51A000B462C3 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,

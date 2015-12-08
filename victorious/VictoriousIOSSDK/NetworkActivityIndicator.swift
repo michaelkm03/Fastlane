@@ -12,16 +12,10 @@ public class NetworkActivityIndicator {
     
     private(set) var activityCount: Int = 0
     
-    private static var instance: NetworkActivityIndicator?
+    private static var instance = NetworkActivityIndicator()
     
     public static func sharedInstance() -> NetworkActivityIndicator {
-        if let instance = instance {
-            return instance
-        } else {
-            let newInstance = NetworkActivityIndicator()
-            instance = newInstance
-            return newInstance
-        }
+        return instance
     }
     
     private init() {}
