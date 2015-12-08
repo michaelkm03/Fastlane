@@ -112,11 +112,7 @@ static const CGFloat kPaddingForEmojiInLCaptionLabel = 10.0f;
     }
     else
     {
-        if ( self.captionLabelMinimumHeightConstraint.constant != 0 )
-        {
-            self.captionLabelMinimumHeightConstraint.constant = 0;
-            [self setNeedsUpdateConstraints];
-        }
+        self.captionLabelMinimumHeightConstraint.constant = 0;
         self.captionLabel.attributedText = nil;
     }
 }
