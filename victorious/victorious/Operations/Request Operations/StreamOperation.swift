@@ -11,13 +11,13 @@ import VictoriousIOSSDK
 
 final class StreamOperation: RequestOperation, StreamItemParser, PageableOperationType {
     
-    var currentRequest: StreamRequest
+    let request: StreamRequest
     
     private let apiPath: String
     
     required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
-        self.currentRequest = request
+        self.request = request
     }
     
     convenience init( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
@@ -25,7 +25,7 @@ final class StreamOperation: RequestOperation, StreamItemParser, PageableOperati
     }
     
     override func main() {
-        executeRequest( currentRequest, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete )
     }
     
     private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {

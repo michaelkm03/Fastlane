@@ -21,7 +21,7 @@ protocol PageableOperationType : class {
     
     /// The current request used for this operation, required in order to get the next/prev requests
     /// from which to maket the next/prev operations.
-    var currentRequest: PaginatedRequestType { get }
+    var request: PaginatedRequestType { get }
     
     /// Most PaginatorTypes require knowing the result count of the previous request
     /// in order to determine if there are more pages to load, therefore tracking that
@@ -42,14 +42,14 @@ protocol PageableOperationType : class {
 extension PageableOperationType {
     
     func next() -> Self? {
-        if let request = PaginatedRequestType(nextRequestFromRequest: self.currentRequest, resultCount: self.resultCount) {
+        if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: self.resultCount) {
             return self.dynamicType.init(request: request)
         }
         return nil
     }
     
     func prev() -> Self? {
-        if let request = PaginatedRequestType(previousFromSourceRequest: self.currentRequest) {
+        if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)
         }
         return nil

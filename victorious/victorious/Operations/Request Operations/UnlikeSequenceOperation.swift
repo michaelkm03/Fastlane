@@ -11,12 +11,12 @@ import VictoriousIOSSDK
 
 class UnlikeSequenceOperation: RequestOperation {
     
-    var currentRequest: UnlikeSequenceRequest
+    let request: UnlikeSequenceRequest
     
     private let sequenceID: Int64
     
     init( sequenceID: Int64 ){
-        self.currentRequest = UnlikeSequenceRequest(sequenceID: sequenceID)
+        self.request = UnlikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
@@ -29,6 +29,6 @@ class UnlikeSequenceOperation: RequestOperation {
         }
         
         // Now execute the request fire-and-forget style
-        executeRequest( self.currentRequest )
+        executeRequest( self.request )
     }
 }

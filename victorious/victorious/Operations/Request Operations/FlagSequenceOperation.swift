@@ -13,10 +13,10 @@ class FlagSequenceOperation: RequestOperation {
     
     private let sequenceID: Int64
     
-    var currentRequest: FlagSequenceRequest
+    let request: FlagSequenceRequest
     
     init( sequenceID: Int64 ) {
-        self.currentRequest = FlagSequenceRequest(sequenceID: sequenceID)
+        self.request = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
