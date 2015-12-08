@@ -14,6 +14,8 @@ import UIKit
 
 class AgeGateViewController: UIViewController {
     @IBOutlet private weak var backgroundView: UIView!
+    @IBOutlet private weak var blurView: UIVisualEffectView!
+    @IBOutlet private weak var dimmingView: UIView!
     @IBOutlet private weak var widgetBackground: UIView!
     @IBOutlet private weak var promptLabel: UILabel!
     @IBOutlet private weak var datePicker: UIDatePicker!
@@ -38,8 +40,33 @@ class AgeGateViewController: UIViewController {
     //MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        blurView.layer.cornerRadius = 17.0
+        blurView.layer.masksToBounds = true
         addBackgroundView()
         setupDisplayText()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        dimmingView.alpha = 0.0
+        blurView.alpha = 0.0
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.blurView.transform = CGAffineTransformMakeScale(1.2, 1.2)
+        UIView.animateWithDuration(0.35,
+            delay: 0.0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0.0,
+            options: [],
+            animations: {
+                self.dimmingView.alpha = 1.0
+                self.blurView.alpha = 1.0
+                self.blurView.transform = CGAffineTransformIdentity
+            }, completion: nil)
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
