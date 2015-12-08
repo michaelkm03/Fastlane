@@ -25,6 +25,13 @@ class AgeGateViewController: UIViewController {
     
     private struct UIConstant {
         static let widgetBackgroundCornerRadius: CGFloat = 10.0
+        static let blurViewCornerRadius: CGFloat = 17.0
+        static let initialTransformScale: CGFloat = 1.2
+    }
+    
+    private struct AnimationConstant {
+        static let animationDuration: NSTimeInterval = 0.35
+        static let springDamping: CGFloat = 1.0
     }
     
     static func ageGateViewController(withAgeGateDelegate delegate: AgeGateViewControllerDelegate) -> AgeGateViewController {
@@ -40,7 +47,7 @@ class AgeGateViewController: UIViewController {
     //MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        blurView.layer.cornerRadius = 17.0
+        blurView.layer.cornerRadius = UIConstant.blurViewCornerRadius
         blurView.layer.masksToBounds = true
         addBackgroundView()
         setupDisplayText()
@@ -56,10 +63,10 @@ class AgeGateViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.blurView.transform = CGAffineTransformMakeScale(1.2, 1.2)
-        UIView.animateWithDuration(0.35,
+        self.blurView.transform = CGAffineTransformMakeScale(UIConstant.initialTransformScale, UIConstant.initialTransformScale)
+        UIView.animateWithDuration(AnimationConstant.animationDuration,
             delay: 0.0,
-            usingSpringWithDamping: 1.0,
+            usingSpringWithDamping: AnimationConstant.springDamping,
             initialSpringVelocity: 0.0,
             options: [],
             animations: {
