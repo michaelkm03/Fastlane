@@ -49,7 +49,7 @@ class AgeGateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addBackgroundView()
+        setupBackgroundViews()
         setupDisplayText()
     }
     
@@ -66,7 +66,7 @@ class AgeGateViewController: UIViewController {
     
     //MARK: - Private functions
     
-    private func addBackgroundView() {
+    private func setupBackgroundViews() {
         let launchScreen = VLaunchScreenProvider.launchScreen()
         launchScreen.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(launchScreen)
