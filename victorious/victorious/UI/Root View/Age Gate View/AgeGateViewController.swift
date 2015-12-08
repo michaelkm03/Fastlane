@@ -44,36 +44,19 @@ class AgeGateViewController: UIViewController {
             return ageGateViewController
     }
     
-    //MARK: - UI Lifecycle
+    //MARK: - View Controller Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        blurView.layer.cornerRadius = UIConstant.blurViewCornerRadius
-        blurView.layer.masksToBounds = true
+
         addBackgroundView()
         setupDisplayText()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        dimmingView.alpha = 0.0
-        blurView.alpha = 0.0
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.blurView.transform = CGAffineTransformMakeScale(UIConstant.initialTransformScale, UIConstant.initialTransformScale)
-        UIView.animateWithDuration(AnimationConstant.animationDuration,
-            delay: 0.0,
-            usingSpringWithDamping: AnimationConstant.springDamping,
-            initialSpringVelocity: 0.0,
-            options: [],
-            animations: {
-                self.dimmingView.alpha = 1.0
-                self.blurView.alpha = 1.0
-                self.blurView.transform = CGAffineTransformIdentity
-            }, completion: nil)
+        showDatePickerWithAnimation()
     }
     
     @IBAction func tappedOnContinue(sender: UIButton) {
@@ -82,6 +65,7 @@ class AgeGateViewController: UIViewController {
     }
     
     //MARK: - Private functions
+    
     private func addBackgroundView() {
         let launchScreen = VLaunchScreenProvider.launchScreen()
         launchScreen.translatesAutoresizingMaskIntoConstraints = false
@@ -89,6 +73,13 @@ class AgeGateViewController: UIViewController {
         backgroundView.v_addFitToParentConstraintsToSubview(launchScreen)
         
         widgetBackground.layer.cornerRadius = UIConstant.widgetBackgroundCornerRadius
+        
+        blurView.transform = CGAffineTransformMakeScale(UIConstant.initialTransformScale, UIConstant.initialTransformScale)
+        blurView.alpha = 0.0
+        blurView.layer.cornerRadius = UIConstant.blurViewCornerRadius
+        blurView.layer.masksToBounds = true
+        
+        dimmingView.alpha = 0.0
     }
     
     private func setupDisplayText() {
@@ -102,5 +93,18 @@ class AgeGateViewController: UIViewController {
         let now = NSDate()
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
         return ageComponents.year < 13
+    }
+    
+    private func showDatePickerWithAnimation() {
+        UIView.animateWithDuration(AnimationConstant.animationDuration,
+            delay: 0.0,
+            usingSpringWithDamping: AnimationConstant.springDamping,
+            initialSpringVelocity: 0.0,
+            options: [],
+            animations: {
+                self.dimmingView.alpha = 1.0
+                self.blurView.alpha = 1.0
+                self.blurView.transform = CGAffineTransformIdentity
+            }, completion: nil)
     }
 }
