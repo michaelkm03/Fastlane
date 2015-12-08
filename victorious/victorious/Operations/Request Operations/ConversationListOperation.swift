@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     let request: ConversationListRequest
+    private(set) var resultCount: Int?
     
     required init( request: ConversationListRequest ) {
         self.request = request
@@ -26,6 +27,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
+        self.resultCount = conversations.count
         
         persistentStore.asyncFromBackground() { context in
             for conversation in conversations {

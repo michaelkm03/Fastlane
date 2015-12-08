@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperation {
     
     let request: StreamRequest
+    private(set) var resultCount: Int?
     
     private let apiPath: String
     
@@ -29,6 +30,7 @@ final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperat
     }
     
     private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+        self.resultCount = stream.items.count
         
        persistentStore.asyncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( [ "apiPath" : self.apiPath ] )

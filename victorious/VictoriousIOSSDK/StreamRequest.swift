@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct StreamRequest: Pageable {
+public struct StreamRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StreamPaginator
     public let apiPath: String
@@ -51,8 +51,6 @@ public struct StreamRequest: Pageable {
         else {
             throw ResponseParsingError()
         }
-        
-        self.paginator.resultCount = stream.items.count
         
         return stream
     }

@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of notifications for the logged in user
-public struct NotificationsRequest: Pageable {
+public struct NotificationsRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
@@ -35,8 +35,6 @@ public struct NotificationsRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let output = notificationsJSON.flatMap { Notification(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return notificationsJSON.flatMap { Notification(json: $0) }
     }
 }

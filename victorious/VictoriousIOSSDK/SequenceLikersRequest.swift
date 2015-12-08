@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
-public struct SequenceLikersRequest: Pageable {
+public struct SequenceLikersRequest: PaginatorPageable, DynamicPageable {
     
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64
@@ -43,8 +43,6 @@ public struct SequenceLikersRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let output = usersJSON.flatMap { User(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

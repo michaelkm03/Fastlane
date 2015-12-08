@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct SequenceRepostersRequest: Pageable {
+public struct SequenceRepostersRequest: PaginatorPageable, DynamicPageable {
     
     public let urlRequest: NSURLRequest
     
@@ -40,8 +40,6 @@ public struct SequenceRepostersRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        let output = usersJSON.flatMap { User(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return usersJSON.flatMap { User(json: $0) }
     }
 }

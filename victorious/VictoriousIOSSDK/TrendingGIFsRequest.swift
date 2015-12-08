@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of trending GIFs
-public struct TrendingGIFsRequest: Pageable {
+public struct TrendingGIFsRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
@@ -30,12 +30,11 @@ public struct TrendingGIFsRequest: Pageable {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
+        
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let output = gifsJSON.flatMap { GIFSearchResult(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
     }
 }

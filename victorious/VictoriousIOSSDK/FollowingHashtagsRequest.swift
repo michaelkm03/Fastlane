@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags which the current user is following
-public struct FollowingHashtagsRequest: Pageable {
+public struct FollowingHashtagsRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
@@ -30,12 +30,11 @@ public struct FollowingHashtagsRequest: Pageable {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
+        
         guard let hashtagJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let output = hashtagJSON.flatMap { Hashtag(json: $0) }
-        self.paginator.resultCount = output.count
-        return output
+        return hashtagJSON.flatMap { Hashtag(json: $0) }
     }
 }

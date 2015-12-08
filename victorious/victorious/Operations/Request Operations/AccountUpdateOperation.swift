@@ -14,6 +14,7 @@ class AccountUpdateOperation: RequestOperation {
     private let storedPassword = VStoredPassword()
     
     let request: AccountUpdateRequest
+    private(set) var resultCount: Int?
     
     required init( request: AccountUpdateRequest ) {
         self.request = request
