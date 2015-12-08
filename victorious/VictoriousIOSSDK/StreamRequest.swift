@@ -52,6 +52,8 @@ public struct StreamRequest: Pageable {
             throw ResponseParsingError()
         }
         
+        self.paginator.resultCount = stream.items.count
+        
         return stream
     }
 }

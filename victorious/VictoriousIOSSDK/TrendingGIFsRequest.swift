@@ -33,6 +33,9 @@ public struct TrendingGIFsRequest: Pageable {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
+        
+        let output = gifsJSON.flatMap { GIFSearchResult(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

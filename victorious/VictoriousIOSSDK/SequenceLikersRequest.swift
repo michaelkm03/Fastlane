@@ -42,6 +42,9 @@ public struct SequenceLikersRequest: Pageable {
         guard let usersJSON = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }
-        return usersJSON.flatMap { User(json: $0) }
+        
+        let output = usersJSON.flatMap { User(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

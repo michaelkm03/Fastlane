@@ -43,8 +43,9 @@ public struct HashtagSearchRequest: Pageable {
         guard let hashtagJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
+        
         let output = hashtagJSON.flatMap { Hashtag(json: $0) }
-        self.paginator.resultCount = output.count // TODO: Do this for all pageable requests
+        self.paginator.resultCount = output.count
         return output
     }
 }

@@ -19,7 +19,7 @@ final public class StandardPaginator: Paginator {
     /// This Paginator requires knowing the result count of the previous request
     /// in order to determine if there are more pages to load, therefore tracking that
     /// value in this operation is required when paginated.
-    public var resultCount: Int = 0
+    public var resultCount: Int?
     
     public let pageNumber: Int
     
@@ -39,6 +39,9 @@ final public class StandardPaginator: Paginator {
     }
     
     public func nextPage() -> StandardPaginator? {
+        guard let resultCount = resultCount else {
+            fatalError( "The `resultCount` property has not been set.  This is required in order to determine if there is a next page available.  Make sure that a Pageable request sets this property after receving results." )
+        }
         if resultCount >= itemsPerPage {
             return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
         }

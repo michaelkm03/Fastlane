@@ -34,6 +34,9 @@ public struct NotificationsRequest: Pageable {
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return notificationsJSON.flatMap { Notification(json: $0) }
+        
+        let output = notificationsJSON.flatMap { Notification(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

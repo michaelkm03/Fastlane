@@ -46,6 +46,9 @@ public struct ConversationRequest: Pageable {
         guard let messageArrayJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return messageArrayJSON.flatMap{ Message(json: $0) }
+        
+        let output = messageArrayJSON.flatMap{ Message(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

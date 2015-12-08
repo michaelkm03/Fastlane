@@ -33,6 +33,9 @@ public struct FollowingHashtagsRequest: Pageable {
         guard let hashtagJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return hashtagJSON.flatMap { Hashtag(json: $0) }
+        
+        let output = hashtagJSON.flatMap { Hashtag(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

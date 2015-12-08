@@ -44,6 +44,8 @@ public struct SequenceCommentsRequest: Pageable {
             throw ResponseParsingError()
         }
         
-        return commentsJSON.flatMap { Comment(json: $0) }
+        let output = commentsJSON.flatMap { Comment(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }

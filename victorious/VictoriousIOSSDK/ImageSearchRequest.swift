@@ -43,6 +43,9 @@ public struct ImageSearchRequest: Pageable {
         guard let imagesJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        return imagesJSON.flatMap { ImageSearchResult(json: $0) }
+        
+        let output = imagesJSON.flatMap { ImageSearchResult(json: $0) }
+        self.paginator.resultCount = output.count
+        return output
     }
 }
