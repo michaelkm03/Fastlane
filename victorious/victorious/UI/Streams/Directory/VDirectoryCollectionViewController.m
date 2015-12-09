@@ -29,6 +29,8 @@
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
+
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
 

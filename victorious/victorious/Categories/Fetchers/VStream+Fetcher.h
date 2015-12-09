@@ -8,8 +8,6 @@
 
 #import "VStream.h"
 
-@import VictoriousIOSSDK;
-
 @class VUser, VSequence;
 
 extern NSString * const VStreamFilterTypeRecent;

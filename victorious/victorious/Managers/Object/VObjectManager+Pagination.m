@@ -26,6 +26,8 @@
 #import "victorious-Swift.h"
 #import "VObjectManager+ContentModeration.h"
 
+@import VictoriousIOSSDK;
+
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;

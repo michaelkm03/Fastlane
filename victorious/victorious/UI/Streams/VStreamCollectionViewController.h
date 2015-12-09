@@ -16,8 +16,6 @@
 #import "VTabMenuContainedViewControllerNavigation.h"
 #import "VContentViewOriginViewController.h"
 
-@import VictoriousIOSSDK;
-
 extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The key that identifies the stream URL path in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
 

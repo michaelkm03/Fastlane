@@ -14,6 +14,8 @@
 #import "VAbstractFilter.h"
 #import "VUser+Fetcher.h"
 
+@import VictoriousIOSSDK;
+
 @implementation VObjectManager (Discover)
 
 - (RKManagedObjectRequestOperation *)getSuggestedUsers:(VSuccessBlock)success

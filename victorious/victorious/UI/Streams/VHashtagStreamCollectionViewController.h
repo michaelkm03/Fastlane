@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-@import VictoriousIOSSDK;
-
 #import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
 

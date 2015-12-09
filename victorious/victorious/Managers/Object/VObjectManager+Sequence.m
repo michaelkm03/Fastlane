@@ -16,6 +16,8 @@
 #import "VPageType.h"
 #import "VObjectManager+ContentModeration.h"
 
+@import VictoriousIOSSDK;
+
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)

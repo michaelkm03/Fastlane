@@ -13,6 +13,8 @@
 #import "VUser.h"
 #import "VPaginationManager.h"
 
+@import VictoriousIOSSDK;
+
 @implementation VStream (Fetcher)
 
 - (BOOL)isHashtagStream

@@ -61,6 +61,7 @@
 #import "VSleekStreamCollectionCell.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import SDWebImage;
 

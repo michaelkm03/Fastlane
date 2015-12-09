@@ -25,6 +25,7 @@
 #import "VHashtag+RestKit.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
