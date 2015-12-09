@@ -405,7 +405,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     // Login
     [self queueLoginOperation];
     [self queueFirstTimeContentOperation];
-    [self queuePushNotificationOperation];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self queuePushNotificationOperation];
+    }
     
     NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
