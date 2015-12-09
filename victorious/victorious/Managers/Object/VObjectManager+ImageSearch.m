@@ -9,6 +9,8 @@
 #import "VObjectManager+ImageSearch.h"
 #import "VObjectManager+Private.h"
 
+@import VictoriousIOSSDK;
+
 @implementation VObjectManager (ImageSearch)
 
 - (RKManagedObjectRequestOperation *)imageSearchWithKeyword:(NSString *)keyword

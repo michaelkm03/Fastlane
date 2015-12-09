@@ -17,6 +17,7 @@
 #import "VConstants.h"
 #import "VJSONHelper.h"
 
+@import VictoriousIOSSDK;
 @import Accounts;
 
 @interface VObjectManager (UserProperties)

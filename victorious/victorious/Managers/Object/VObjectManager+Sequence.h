@@ -10,8 +10,6 @@
 #import "VConstants.h"
 #import "VSequenceUserInteractions.h"
 
-@import VictoriousIOSSDK;
-
 extern NSString * const kPollResultsLoaded;
 
 @class VAnswer, VSequence, VVoteType, VAsset;

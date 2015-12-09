@@ -39,6 +39,7 @@
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import MBProgressHUD;
 @import SDWebImage;

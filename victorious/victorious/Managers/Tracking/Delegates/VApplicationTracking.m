@@ -14,6 +14,8 @@
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
+
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";

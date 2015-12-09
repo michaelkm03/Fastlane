@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import VictoriousIOSSDK;
-
 #import "VObjectManager.h"
 #import "VAbstractFilter+RestKit.h"
 

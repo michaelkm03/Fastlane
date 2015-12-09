@@ -10,6 +10,8 @@
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskCreator.h"
 
+@import VictoriousIOSSDK;
+
 @implementation VUploadTaskCreator
 
 - (instancetype)initWithUploadManager:(VUploadManager *)uploadManager
