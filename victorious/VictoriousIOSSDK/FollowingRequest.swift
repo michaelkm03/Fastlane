@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users followed by a specific user
-public struct FollowingRequest: PaginatorPageable, DynamicPageable {
+public struct FollowingRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
     
@@ -19,16 +19,15 @@ public struct FollowingRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        self.init(userID: userID, paginator: paginator)
+    public init(request: FollowersRequest, paginator: StandardPaginator ) {
+        self.init( userID: request.userID, paginator: paginator )
     }
     
     public init( request: FollowingRequest, paginator: StandardPaginator ) {
         self.init( userID: request.userID, paginator: request.paginator)
     }
     
-    private init(userID: Int64, paginator: StandardPaginator) {
+    private init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.userID = userID
         self.paginator = paginator
         

@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who like a specific sequence
-public struct SequenceLikersRequest: PaginatorPageable, DynamicPageable {
+public struct SequenceLikersRequest: PaginatorPageable, ResultBasedPageable {
     
     /// Likers will be retrieved for the sequence with this ID
     public let sequenceID: Int64
@@ -18,16 +18,11 @@ public struct SequenceLikersRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
-    public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        self.init(sequenceID: sequenceID, paginator: paginator)
+    public init(request: SequenceLikersRequest, paginator: StandardPaginator ) {
+        self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
-    public init( request: SequenceLikersRequest, paginator: StandardPaginator ) {
-        self.init( sequenceID: request.sequenceID, paginator: paginator)
-    }
-    
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
+    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         

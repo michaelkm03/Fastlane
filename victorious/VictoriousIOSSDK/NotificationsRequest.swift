@@ -10,15 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of notifications for the logged in user
-public struct NotificationsRequest: PaginatorPageable, DynamicPageable {
+public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+    public init(paginator: StandardPaginator = StandardPaginator() ) {
+        self.paginator = paginator
     }
     
-    public init(request: NotificationsRequest, paginator: StandardPaginator) {
+    public init(request: NotificationsRequest, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
     }
     

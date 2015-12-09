@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSCharacterSet+VURLParts.h"
+#import "NSCharacterSet+VSDKURLParts.h"
 #import "VSDKURLMacroReplacement.h"
 
 NSString * const VSDKURLMacroReplacementDelimiter = @"%%";
@@ -45,11 +45,11 @@ static NSString * const kQueryStringDelimiter = @"?";
         nonQueryString = urlString;
     }
     
-    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet] complete:complete];
+    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet] complete:complete];
     
     if ( queryString != nil )
     {
-        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet v_queryPartCharacterSet] complete:complete];
+        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet vsdk_queryPartCharacterSet] complete:complete];
         return [NSString stringWithFormat:@"%@%@%@", nonQueryString, kQueryStringDelimiter, queryString];
     }
     else

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-
 #import "NSArray+VMap.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
@@ -55,7 +54,6 @@
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VTabScaffoldViewController.h"
 #import "VTracking.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUser.h"

@@ -11,6 +11,8 @@
 #import "VObjectManager.h"
 #import "VAbstractFilter+RestKit.h"
 
+@import VictoriousIOSSDK;
+
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const VPaginationManagerPageNumberMacro; ///< A macro that, if it appears in the filter path, will be replaced by the page number

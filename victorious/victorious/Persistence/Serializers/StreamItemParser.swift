@@ -9,16 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// Defines an object that can parse an array ov `[StreamItemType]` into `[VStreamItem]`
-/// and provides a default implementation.  Conformance to this protocol may be added
-/// as a mix-in for other objects that must parse stream items in the same way.
-protocol StreamItemParser {
-    func parseStreamItems(streamIteams: [StreamItemType], context: PersistentStoreContext) -> [VStreamItem]
-}
-
-extension StreamItemParser {
+/// Parses an array of networking `[StreamItemType]` into an array of persisetnt `[VStreamItem]`
+extension VStreamItem {
     
-    func parseStreamItems(streamItems: [StreamItemType], context: PersistentStoreContext) -> [VStreamItem] {
+    static func parseStreamItems(streamItems: [StreamItemType], context: PersistentStoreContext) -> [VStreamItem] {
         return streamItems.flatMap {
             if let sequence = $0 as? Sequence {
                 let persistentSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence

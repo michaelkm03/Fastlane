@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperation {
+final class StreamOperation: RequestOperation, PaginatedOperation {
     
     let request: StreamRequest
     private(set) var resultCount: Int?
@@ -21,7 +21,7 @@ final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperat
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( apiPath: String, sequenceID: Int64? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
     }
     
@@ -34,7 +34,7 @@ final class StreamOperation: RequestOperation, StreamItemParser, PaginatedOperat
         
        persistentStore.asyncFromBackground() { context in
             let persistentStream: VStream = context.findOrCreateObject( [ "apiPath" : self.apiPath ] )
-            let streamItems = self.parseStreamItems( stream.items, context: context)
+            let streamItems = VStreamItem.parseStreamItems(stream.items, context: context)
             persistentStream.addObjects( streamItems, to: "streamItems" )
             context.saveChanges()
             completion()

@@ -42,7 +42,7 @@ extension PaginatedOperation {
     }
 }
 
-extension PaginatedOperation where PaginatedRequestType : DynamicPageable {
+extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
         guard let resultCount = self.resultCount else {

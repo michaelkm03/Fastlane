@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct SequenceRepostersRequest: PaginatorPageable, DynamicPageable {
+public struct SequenceRepostersRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
     
@@ -17,15 +17,11 @@ public struct SequenceRepostersRequest: PaginatorPageable, DynamicPageable {
     
     public let paginator: StandardPaginator
     
-    public init( request: SequenceRepostersRequest, paginator: StandardPaginator ) {
+    public init(request: SequenceRepostersRequest, paginator: StandardPaginator ) {
         self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
-    public init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(sequenceID: sequenceID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
-    }
-    
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
+    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         

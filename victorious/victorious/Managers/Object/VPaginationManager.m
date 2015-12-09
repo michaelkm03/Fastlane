@@ -9,7 +9,6 @@
 #import "VAbstractFilter.h"
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VStream.h"
 
 NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";

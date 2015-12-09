@@ -10,21 +10,16 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags based on a search term
-public struct HashtagSearchRequest: PaginatorPageable, DynamicPageable {
+public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     /// The search term to use when querying for hashtags
     public let searchTerm: String
     
     public let paginator: StandardPaginator
     
-    public init(searchTerm: String, paginator: StandardPaginator) {
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.searchTerm = searchTerm
         self.paginator = paginator
-    }
-    
-    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        self.init( searchTerm: searchTerm, paginator: paginator )
     }
     
     public init( request: HashtagSearchRequest, paginator: StandardPaginator ) {
