@@ -183,3 +183,5 @@
 #import "VWorkspaceShimDestination.h"
 #import "VPhotoFilter.h"
 #import "UIImage+Resize.h"
+#import "VTOSViewController.h"
+#import "VWebContentViewController.h"
