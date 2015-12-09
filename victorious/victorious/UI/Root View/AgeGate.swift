@@ -66,4 +66,8 @@ import Foundation
     static func filterTabMenuItems(menuItems: [VNavigationMenuItem]) -> [VNavigationMenuItem] {
         return menuItems.filter() { ["Home", "Channels", "Explore"].contains($0.title) }
     }
+    
+    static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
+        return containerChilds.filter() { !$0.isKindOfClass(VDiscoverContainerViewController) }
+    }
 }

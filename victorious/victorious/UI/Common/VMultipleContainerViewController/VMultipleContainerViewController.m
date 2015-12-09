@@ -20,6 +20,7 @@
 #import "VCoachmarkDisplayResponder.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "victorious-Swift.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder, VCoachmarkDisplayer>
 
@@ -191,7 +192,15 @@ static NSString * const kInitialKey = @"initial";
          child.multipleContainerChildDelegate = self;
     }];
     
-    _viewControllers = [viewControllers copy];
+    NSArray *childViewControllers = [viewControllers copy];
+    
+    // Filter the view controllers
+    if ([AgeGate isAnonymousUser])
+    {
+        childViewControllers = [AgeGate filterMultipleContainerItems:childViewControllers];
+    }
+    
+    _viewControllers = childViewControllers;
     self.selector.viewControllers = _viewControllers;
     
     [self.collectionView reloadData];

@@ -63,6 +63,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager.h"
+#import "VDiscoverContainerViewController.h"
 #import "VDirectoryCellFactory.h"
 #import "VDirectoryCellUpdateableFactory.h"
 #import "VDirectoryCollectionFlowLayout.h"
