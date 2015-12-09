@@ -34,10 +34,12 @@ class PageableTests: XCTestCase {
     
     func testPrevAndNext() {
         let request = MockPageableRequest(pageNumber: 2, itemsPerPage: 10)
-        request.paginator.resultCount = request.paginator.itemsPerPage
-        let next = MockPageableRequest( nextRequestFromRequest: request )
+        let next = MockPageableRequest( nextRequestFromRequest: request, resultCount: 5 )
         XCTAssertNotNil( next )
         XCTAssertEqual( next?.paginator.pageNumber, request.paginator.pageNumber + 1 )
+        
+        let noNext = MockPageableRequest( nextRequestFromRequest: request, resultCount: 0 )
+        XCTAssertNil( noNext )
         
         let prev = MockPageableRequest( previousFromSourceRequest: request )
         XCTAssertNotNil( prev )
@@ -46,14 +48,6 @@ class PageableTests: XCTestCase {
     
     func testPrevAndNextDoNotExit() {
         let request = MockPageableRequest(pageNumber: 1, itemsPerPage: 10)
-        request.paginator.resultCount = request.paginator.itemsPerPage - 1
-        var next = MockPageableRequest( nextRequestFromRequest: request )
-        XCTAssertNil( next )
-        
-        request.paginator.resultCount = 0
-        next = MockPageableRequest( nextRequestFromRequest: request)
-        XCTAssertNil( next )
-        
         let prev = MockPageableRequest( previousFromSourceRequest: request )
         XCTAssertNil( prev )
     }
