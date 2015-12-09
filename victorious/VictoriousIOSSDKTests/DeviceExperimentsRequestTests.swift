@@ -31,7 +31,6 @@ class DeviceExperimentsRequestTests: XCTestCase {
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")
         }
-
     }
     
 }

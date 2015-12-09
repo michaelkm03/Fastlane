@@ -25,7 +25,9 @@ public struct DeviceExperimentsRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        return (experimentsJSON.flatMap { DeviceExperiment(json: $0) }, defaultExperimentsJSON.flatMap{Int64($0.stringValue)} )
+        let deviceExperiments = experimentsJSON.flatMap { DeviceExperiment(json: $0) }
+        let defaultExperiments = defaultExperimentsJSON.flatMap{Int64($0.stringValue)}
+        return (deviceExperiments,defaultExperiments)
     }
     
 }
