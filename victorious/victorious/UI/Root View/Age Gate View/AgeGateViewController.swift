@@ -20,6 +20,7 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var promptLabel: UILabel!
     @IBOutlet private weak var datePicker: UIDatePicker!
     @IBOutlet private weak var continueButton: UIButton!
+    @IBOutlet private var separatorHeightConstraints: [NSLayoutConstraint]!
     
     private weak var delegate: AgeGateViewControllerDelegate?
     
@@ -51,6 +52,7 @@ class AgeGateViewController: UIViewController {
 
         setupBackgroundViews()
         setupDisplayText()
+        setupSeparators()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -86,6 +88,12 @@ class AgeGateViewController: UIViewController {
         promptLabel.text = NSLocalizedString("Enter birthday before continuing", comment: "Age gate prompt telling user to select birthday")
         continueButton.setTitle(NSLocalizedString("Continue", comment: "Age gate Continue button title"),
             forState: .Normal)
+    }
+    
+    private func setupSeparators() {
+        for separator in separatorHeightConstraints {
+            separator.constant = 0.5
+        }
     }
     
     private func isUserYoungerThan(age: Int) -> Bool {
