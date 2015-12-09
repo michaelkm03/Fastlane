@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct SequenceRepostersRequest: PaginatorPageable, DynamicPageable {
+public struct SequenceRepostersRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
     

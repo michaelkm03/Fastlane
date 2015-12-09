@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct StreamRequest: PaginatorPageable, DynamicPageable {
+public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StreamPaginator
     public let apiPath: String

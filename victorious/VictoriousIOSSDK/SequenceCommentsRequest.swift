@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of comments for a certain sequence
-public struct SequenceCommentsRequest: PaginatorPageable, DynamicPageable {
+public struct SequenceCommentsRequest: PaginatorPageable, ResultBasedPageable {
     
     /// Comments will be retrieved for the sequence with this ID
     public let sequenceID: Int64

@@ -29,7 +29,7 @@ public protocol Pageable: RequestType {
 /// Defines an object as a specialized Pageable that returns a next page based
 /// on the results of the last execution of a request, which is provided as
 /// a required parameter in an alternate initializer.
-public protocol DynamicPageable {
+public protocol ResultBasedPageable {
     
     /// A request that will load the next page of data relative to the receiver
     /// or `nil` if the receiver represents the last page.

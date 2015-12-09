@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of GIFs based on a search query
-public struct GIFSearchRequest: PaginatorPageable, DynamicPageable {
+public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
     public let searchTerm: String
