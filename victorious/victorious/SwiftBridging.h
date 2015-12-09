@@ -185,3 +185,7 @@
 #import "UIImage+Resize.h"
 #import "VTOSViewController.h"
 #import "VWebContentViewController.h"
+#import "VNotificationSettingsViewController.h"
+#import "VNotificationSettings.h"
+#import "VNotificationSettingsStateManager.h"
+#import "VAlertController.h"

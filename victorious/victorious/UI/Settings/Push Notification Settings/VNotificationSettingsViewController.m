@@ -12,13 +12,15 @@
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
 #import "VNotificationSettings+Fetcher.h"
-#import "VAlertController.h"
+
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
 #import "VPermissionsTrackingHelper.h"
+#import "victorious-swift.h"
+
 @interface VNotificationSettingsViewController() <VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
 @property (nonatomic, strong) VNotificationSettings *settings;
@@ -26,7 +28,7 @@
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
 @property (nonatomic, strong) NSError *settingsError;
 @property (nonatomic, assign) BOOL didSettingsChange;
-@property (nonatomic, strong) VNotificationSettingsStateManager *stateManager;
+@property (nonatomic, strong, readwrite) VNotificationSettingsStateManager *stateManager;
 @property (nonatomic, assign) CGFloat lastKnownTableWidth;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
@@ -70,7 +72,7 @@
     
     if ( self.didSettingsChange && self.settingsError == nil )
     {
-        [self saveSettings];
+        [self saveSettings:self.settings];
     }
 }
 
@@ -94,22 +96,6 @@
 }
 
 #pragma mark - Settings Table Data Management
-
-- (void)loadSettings
-{
-    self.settingsError = nil;
-    self.settings = nil;
-    [[VObjectManager sharedManager] getDeviceSettingsSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self settingsDidLoadWithResults:resultObjects];
-         self.settingsError = nil;
-         [self.tableView reloadData];
-     }
-                                                        failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self.stateManager errorDidOccur:error];
-     }];
-}
 
 - (void)setLoading
 {
@@ -180,37 +166,6 @@
     self.settings.isNewFollowerEnabled = @( [section rowAtIndex:1].isEnabled );
     self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:2].isEnabled );
     self.settings.isPeopleLikeMyPostEnabled = @( [section rowAtIndex:3].isEnabled );
-}
-
-- (void)saveSettings
-{
-    // Because this method is called on viewWillDisappear, it's possible that this view controller will no
-    // longer exist when the failBlock is called.  So, we'll present the error alert in the navigation controller.
-    __weak UINavigationController *navigationController = self.navigationController;
-
-    // Save and show alert only if there was an error
-    [[VObjectManager sharedManager] setDeviceSettings:self.settings successBlock:nil failBlock:^(NSOperation *operation, NSError *error)
-    {
-        // The navigationController could be nil if the user exits this view and then exists the previous
-        // view in the nav stack fast enough (or with a network connection slow enough) that navigationController
-        // is deallocated by the time the failBlock is called.  The weak reference ensures that if that happens,
-        // it is read as nil, in which case we don't present the alert.
-        if ( navigationController != nil )
-        {
-            NSString *title = NSLocalizedString( @"ErrorPushNotificationsNotSaved", nil );
-            NSString *message = NSLocalizedString( @"ErrorPushNotificationsNotSavedMessage", nil );
-            VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
-            [alertConroller presentInViewController:navigationController animated:YES completion:nil];
-        }
-    }];
-}
-
-- (void)settingsDidLoadWithResults:(NSArray *)resultObjects
-{
-    id result = resultObjects.firstObject;
-    BOOL resultIsValid = result != nil && [result isKindOfClass:[VNotificationSettings class]];
-    self.settings = resultIsValid ? (VNotificationSettings *)result : [VNotificationSettings createDefaultSettings];
 }
 
 - (BOOL)hasValidSettings
