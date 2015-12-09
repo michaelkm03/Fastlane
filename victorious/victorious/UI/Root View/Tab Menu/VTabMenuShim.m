@@ -47,7 +47,13 @@
         _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
         _selectedIconColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         _unselectedIconColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
-        _menuItems = [AgeGate isAnonymousUser] ? [AgeGate filterTabMenuItems:[dependencyManager menuItems]] : [dependencyManager menuItems];
+        _menuItems = [dependencyManager menuItems];
+        
+        // Filter menu items for age gate if necessary
+        if ( [AgeGate isAnonymousUser] )
+        {
+            _menuItems = [AgeGate filterTabMenuItems:_menuItems];
+        }
     }
     return self;
 }
