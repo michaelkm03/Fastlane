@@ -471,6 +471,9 @@
 		797FD25F1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
+		7992DF671C17ACCF004007A1 /* DeviceExperimentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */; };
+		7992DF691C17ADFE004007A1 /* DeviceExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */; };
+		7992DF6B1C17B174004007A1 /* DeviceExperimentsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */; };
 		79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */; };
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
@@ -2470,6 +2473,9 @@
 		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
 		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
+		7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsRequest.swift; sourceTree = "<group>"; };
+		7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperiment.swift; sourceTree = "<group>"; };
+		7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsRequestTests.swift; sourceTree = "<group>"; };
 		79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsViewController.storyboard; sourceTree = "<group>"; };
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
@@ -5056,6 +5062,7 @@
 				67FD54C21BF6939400CF52F7 /* DeleteCommentRequest.swift */,
 				67FD54C41BF693A800CF52F7 /* DeleteConversationRequest.swift */,
 				67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */,
+				7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */,
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				67FD54B61BF68D5300CF52F7 /* FlagCommentRequest.swift */,
@@ -5080,13 +5087,15 @@
 				03314F5A1BE40F3200EE74FD /* Models */,
 				A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */,
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
+				A7BBB8F01C1678F3009319D9 /* NSCharacterSet+VURLParts.h */,
+				A7BBB8F11C1678F3009319D9 /* NSCharacterSet+VURLParts.m */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
-				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
 				A702C84C1C121762001EE1D5 /* Paginator.swift */,
+				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */,
 				678D944F1BF43B38009A1F93 /* PollResultByUserRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
@@ -5122,8 +5131,6 @@
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
 				A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */,
 				A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */,
-				A7BBB8F01C1678F3009319D9 /* NSCharacterSet+VURLParts.h */,
-				A7BBB8F11C1678F3009319D9 /* NSCharacterSet+VURLParts.m */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -5142,6 +5149,7 @@
 				67FD54C81BF69A4500CF52F7 /* DeleteCommentRequestTests.swift */,
 				67FD54CA1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift */,
 				67FD54C61BF69A2900CF52F7 /* DeleteSequenceRequestTests.swift */,
+				7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */,
 				0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */,
 				67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */,
 				79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */,
@@ -5152,7 +5160,6 @@
 				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
 				6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */,
 				C352CF371BF2834E00790921 /* FollowUserRequestTests.swift */,
-				A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */,
 				C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */,
 				C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */,
 				6727B1361BFBBCE00093AA0A /* Helpers */,
@@ -5163,19 +5170,20 @@
 				C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */,
 				79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */,
 				03314F461BE40F0100EE74FD /* Models */,
+				A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */,
 				C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */,
 				67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */,
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
+				A702C8521C124110001EE1D5 /* PageableTests.swift */,
 				6779A2121BF55E6B0024BBD0 /* PollResultBySequenceRequestTests.swift */,
 				678D94531BF43D9C009A1F93 /* PollResultByUserRequestTests.swift */,
 				678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */,
 				C3D6FA8F1BF582D0006DEE19 /* PostCommentRequestTests.swift */,
 				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
 				6782EA861BF2D40E000C7C0D /* RepostSequenceRequestTests.swift */,
-				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
-				A702C8521C124110001EE1D5 /* PageableTests.swift */,
 				A716F3EA1C050A15003068A2 /* RequestErrorTypeTests.swift */,
+				03314F451BE40F0100EE74FD /* RequestTypeTests.swift */,
 				C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */,
 				C3C43ABC1BF5538100870099 /* SequenceCommentsRequestTests.swift */,
 				67C5C5361C000A7100F99C8C /* SequenceDetailListByUserRequestTests.swift */,
@@ -5295,6 +5303,7 @@
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
 				C3D956161BF4368F00069FD6 /* Comment.swift */,
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
+				7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */,
 				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
 				C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
@@ -10194,6 +10203,7 @@
 				6782EA831BF2D2A4000C7C0D /* RepostSequenceRequest.swift in Sources */,
 				A702C84D1C121762001EE1D5 /* Paginator.swift in Sources */,
 				03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */,
+				7992DF691C17ADFE004007A1 /* DeviceExperiment.swift in Sources */,
 				A7EF1BCE1BF2754D00D429DE /* Sequence.swift in Sources */,
 				A7EF1BCA1BF2754D00D429DE /* Asset.swift in Sources */,
 				678D94501BF43B38009A1F93 /* PollResultByUserRequest.swift in Sources */,
@@ -10226,6 +10236,7 @@
 				A75D3BEB1C176F39006CE331 /* PaginatorPageable.swift in Sources */,
 				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
 				A7BBB8ED1C167858009319D9 /* VSDKURLMacroReplacement.m in Sources */,
+				7992DF671C17ACCF004007A1 /* DeviceExperimentsRequest.swift in Sources */,
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0300AA551BF15CDE000A121D /* TODO.swift in Sources */,
 				C314E6B91BF13AD800FB9591 /* TrendingHashtagRequest.swift in Sources */,
@@ -10297,6 +10308,7 @@
 				C352CF3E1BF296F000790921 /* BatchFollowUsersRequestTests.swift in Sources */,
 				79D081A41BF155BF00E8A0C5 /* ConversationListRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
+				7992DF6B1C17B174004007A1 /* DeviceExperimentsRequestTests.swift in Sources */,
 				0300AA631BF19CA4000A121D /* NSURL+MimeTypeTests.swift in Sources */,
 				A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */,
 				678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */,
