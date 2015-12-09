@@ -354,7 +354,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (self.viewModel.sequence.permissions.canComment )
+    if (self.viewModel.sequence.permissions.canComment && ![AgeGate isAnonymousUser])
     {
         NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
         VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
