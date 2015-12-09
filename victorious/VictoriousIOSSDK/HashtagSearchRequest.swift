@@ -17,14 +17,9 @@ public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(searchTerm: String, paginator: StandardPaginator) {
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.searchTerm = searchTerm
         self.paginator = paginator
-    }
-    
-    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        self.init( searchTerm: searchTerm, paginator: paginator )
     }
     
     public init( request: HashtagSearchRequest, paginator: StandardPaginator ) {

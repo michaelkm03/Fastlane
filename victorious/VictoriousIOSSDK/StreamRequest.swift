@@ -13,22 +13,24 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StreamPaginator
     public let apiPath: String
+    public let sequenceID: Int64?
     
-    public init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        if let paginator = StreamPaginator(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage:itemsPerPage ) {
-            self.init( apiPath: apiPath, paginator: paginator )
+    public init?( apiPath: String, sequenceID: Int64?, paginator: StreamPaginator? = nil ) {
+        if let paginator = paginator ?? StreamPaginator(apiPath: apiPath, sequenceID: sequenceID) {
+            self.init( apiPath: apiPath, sequenceID: sequenceID, paginator: paginator )
         } else {
             return nil
         }
     }
     
-    public init(request: StreamRequest, paginator: StreamPaginator) {
-        self.init(apiPath: request.apiPath, paginator: paginator)
+    public init( apiPath: String, sequenceID: Int64?, paginator: StreamPaginator ) {
+        self.paginator = paginator
+        self.apiPath = apiPath
+        self.sequenceID = sequenceID
     }
     
-    private init( apiPath: String, paginator: StreamPaginator ) {
-        self.apiPath = apiPath
-        self.paginator = paginator
+    public init(request: StreamRequest, paginator: StreamPaginator) {
+        self.init(apiPath: request.apiPath, sequenceID: request.sequenceID, paginator: paginator)
     }
     
     public var urlRequest: NSURLRequest {

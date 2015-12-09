@@ -39,6 +39,7 @@
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import MBProgressHUD;
 @import SDWebImage;
@@ -549,7 +550,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
-    NSCharacterSet *charSet = [NSCharacterSet v_pathPartCharacterSet];
+    NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:charSet];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];

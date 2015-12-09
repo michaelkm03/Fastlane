@@ -9,8 +9,9 @@
 #import "VAbstractFilter.h"
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VStream.h"
+
+@import VictoriousIOSSDK;
 
 NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";
 NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";

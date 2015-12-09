@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct PollResultSummaryRequest: DynamicPageable, PaginatorPageable {
+public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
     
     public let paginator: StandardPaginator
     public let userID: Int64?

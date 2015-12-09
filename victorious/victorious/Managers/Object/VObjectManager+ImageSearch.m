@@ -8,7 +8,8 @@
 
 #import "VObjectManager+ImageSearch.h"
 #import "VObjectManager+Private.h"
-#import "NSCharacterSet+VURLParts.h"
+
+@import VictoriousIOSSDK;
 
 @implementation VObjectManager (ImageSearch)
 
@@ -18,7 +19,7 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *escapedKeyword = [keyword stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *escapedKeyword = [keyword stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
     NSString *path = [NSString stringWithFormat:@"/api/image/search/%@/%lu/%lu",
                         escapedKeyword,
                         (long)page,

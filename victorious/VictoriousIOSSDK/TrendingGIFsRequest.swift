@@ -18,8 +18,8 @@ public struct TrendingGIFsRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+    public init( paginator: StandardPaginator = StandardPaginator() ) {
+        self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {

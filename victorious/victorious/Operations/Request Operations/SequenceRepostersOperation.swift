@@ -21,8 +21,8 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init( request: SequenceRepostersRequest(sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage) )
+    convenience init( sequenceID: Int64 ) {
+        self.init( request: SequenceRepostersRequest(sequenceID: sequenceID) )
     }
     
     override func main() {

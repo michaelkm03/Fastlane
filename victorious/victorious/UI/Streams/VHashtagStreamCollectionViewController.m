@@ -9,7 +9,6 @@
 #import "NSString+VParseHelp.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "MBProgressHUD.h"
@@ -26,6 +25,7 @@
 #import "VHashtag+RestKit.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";

@@ -17,7 +17,6 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
@@ -29,6 +28,8 @@
 #import "VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
+
+@import VictoriousIOSSDK;
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";

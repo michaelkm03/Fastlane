@@ -13,7 +13,6 @@
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
-#import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+VDataCacheID.h"
 #import "UIColor+VBrightness.h"

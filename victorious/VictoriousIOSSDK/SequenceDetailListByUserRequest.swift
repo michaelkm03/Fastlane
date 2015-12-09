@@ -12,13 +12,13 @@ import SwiftyJSON
 public struct SequenceDetailListByUserRequest: RequestType {
     public let userID: Int64
     
-    public let paginator: Paginator
+    public let paginator: StandardPaginator
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(userID: userID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init(request: SequenceDetailListByUserRequest, paginator: StandardPaginator ) {
+        self.init( userID: request.userID, paginator: paginator )
     }
     
-    private init(userID: Int64, paginator: StandardPaginator) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.userID = userID
         self.paginator = paginator
     }

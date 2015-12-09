@@ -9,12 +9,12 @@
 #import "VApplicationTracking.h"
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
-#import "VSDKURLMacroReplacement.h"
-#import "NSCharacterSet+VURLParts.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
+
+@import VictoriousIOSSDK;
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
