@@ -33,6 +33,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
 #import "VContentFittingPreviewView.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -95,6 +96,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.sleekActionView removeFromSuperview];
+        self.sleekActionView = nil;
+    }
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
