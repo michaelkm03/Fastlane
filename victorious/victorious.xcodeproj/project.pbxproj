@@ -508,6 +508,7 @@
 		A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB581B43657F0050536C /* VMediaAttachmentPresenter.m */; };
 		A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */; };
 		A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */; };
+		A603FC401C180B00001996F1 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A603FC3F1C180B00001996F1 /* NotificationSettings.swift */; };
 		A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */; };
 		A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */; };
 		A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */ = {isa = PBXBuildFile; fileRef = A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */; };
@@ -2532,6 +2533,7 @@
 		A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditProfilePicturePresenter.m; sourceTree = "<group>"; };
 		A601FB5D1B437E2B0050536C /* VAbstractPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPresenter.h; sourceTree = "<group>"; };
 		A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPresenter.m; sourceTree = "<group>"; };
+		A603FC3F1C180B00001996F1 /* NotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionListPresentationController.h; sourceTree = "<group>"; };
 		A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionListPresentationController.m; sourceTree = "<group>"; };
 		A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionGridViewController.storyboard; sourceTree = "<group>"; };
@@ -5085,8 +5087,6 @@
 				03314F5A1BE40F3200EE74FD /* Models */,
 				A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */,
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
-				A7BBB8F01C1678F3009319D9 /* NSCharacterSet+VURLParts.h */,
-				A7BBB8F11C1678F3009319D9 /* NSCharacterSet+VURLParts.m */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
@@ -5325,6 +5325,7 @@
 				0300AA541BF15CDE000A121D /* TODO.swift */,
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
+				A603FC3F1C180B00001996F1 /* NotificationSettings.swift */,
 				678D94471BF428AA009A1F93 /* VoteResult.swift */,
 			);
 			path = Models;
@@ -10227,6 +10228,7 @@
 				67FD54B71BF68D5300CF52F7 /* FlagCommentRequest.swift in Sources */,
 				C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */,
 				C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */,
+				A603FC401C180B00001996F1 /* NotificationSettings.swift in Sources */,
 				C3E7C0FF1BF4139E00AFE545 /* MediaAttachmentType.swift in Sources */,
 				C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */,
 				C323C3B11BF559DE00681059 /* SequenceCommentsRequest.swift in Sources */,
