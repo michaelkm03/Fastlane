@@ -14,19 +14,19 @@ class DeviceExperimentsRequestTests: XCTestCase {
     
     func testRequest() {
         let experimentSettingsRequest = DeviceExperimentsRequest()
-        XCTAssertEqual(experimentSettingsRequest, "/api/device/experiments")
+        XCTAssertEqual(experimentSettingsRequest.urlRequest.URL, NSURL(string: "/api/device/experiments"))
     }
     
     func testValidResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ConversationListResponse", withExtension: "json"), let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("DeviceExperimentsResponse", withExtension: "json"), let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
             XCTFail("Error reading mock json data.")
             return
         }
         
         do {
             let request = DeviceExperimentsRequest()
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request, responseData: mockData, responseJSON: JSON(data: mockData))
-            let firstExperiment = results.first
+            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let firstExperiment = results.first!
             XCTAssertEqual(firstExperiment.name, "shelves_variant_0")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")

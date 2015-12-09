@@ -11,8 +11,12 @@ import SwiftyJSON
 
 public struct DeviceExperimentsRequest: RequestType {
     
+    public init() {
+        // just to be public
+    }
+    
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "api/device/experiments")!)
+        return NSURLRequest(URL: NSURL(string: "/api/device/experiments")!)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [DeviceExperiment]{
