@@ -19,12 +19,39 @@ class SuggestedUsersOperation: RequestOperation {
         executeRequest( self.request, onComplete: self.onComplete )
     }
     
-    func onComplete( users: [SuggestedUser], completion:()->() ) {
-        suggestedUsers = users.flatMap() {
-            let suggestedUser = VSuggestedUser()
-            suggestedUser.populate(fromSourceModel: $0)
-            return suggestedUser
+    private func onComplete( users: [SuggestedUser], completion:()->() ) {
+        
+        persistentStore.asyncFromBackground() { context in
+            let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
+                let user: VUser = context.findOrCreateObject(["remoteId": NSNumber(longLong: sourceModel.user.userID)])
+                user.populate(fromSourceModel: sourceModel.user)
+                let recentSequences: [VSequence] = sourceModel.recentSequences.flatMap {
+                    let sequence: VSequence = context.findOrCreateObject(["remoteId": String($0.sequenceID)])
+                    sequence.populate(fromSourceModel: $0)
+                    return sequence
+                }
+                return VSuggestedUser( user: user, recentSequences: recentSequences )
+            }
+            context.saveChanges()
+            
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.suggestedUsers = self.suggestedUsersFromMainContext( suggestedUsers )
+                completion()
+            }
         }
-        completion()
+    }
+    
+    private func suggestedUsersFromMainContext( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
+        var output = [VSuggestedUser]()
+        persistentStore.sync() { context in
+            for suggestedUser in suggestedUsers {
+                guard let user: VUser = context.getObject( suggestedUser.user.identifier ) else {
+                    fatalError( "Could not load user." )
+                }
+                let recentSequences: [VSequence] = suggestedUser.recentSequences.flatMap { context.getObject( $0.identifier ) }
+                output.append( VSuggestedUser( user: user, recentSequences: recentSequences ) )
+            }
+        }
+        return output
     }
 }
