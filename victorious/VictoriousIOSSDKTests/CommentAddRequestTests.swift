@@ -10,11 +10,22 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
+// TODO: Finish
 class CommentAddRequestTests: XCTestCase {
     
+    let textOnlyParameters = CommentParameters(
+        sequenceID: 17100,
+        text: "test",
+        mediaURL: nil,
+        mediaType: nil,
+        realtimeComment: nil
+    )
+    
     func testRequest() {
-        let postCommentRequest = CommentAddRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil)
-        XCTAssertEqual(postCommentRequest?.urlRequest.URL?.absoluteString, "/api/comment/add")
+        
+        let postCommentRequest = CommentAddRequest(parameters: textOnlyParameters)!
+        XCTAssertNotNil( postCommentRequest )
+        XCTAssertEqual(postCommentRequest.urlRequest.URL?.absoluteString, "/api/comment/add")
     }
     
     func testResponseParsing() {
@@ -24,7 +35,7 @@ class CommentAddRequestTests: XCTestCase {
                 return
         }
         
-        guard let postCommentRequest = CommentAddRequest(sequenceID: 17100, text: "test", mediaAttachmentType: nil, mediaURL: nil) else {
+        guard let postCommentRequest = CommentAddRequest(parameters: textOnlyParameters) else {
             XCTFail("Could not instantiate AccountUpdateRequest")
             return
         }

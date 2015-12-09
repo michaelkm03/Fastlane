@@ -20,7 +20,8 @@ class HashtagSearchResponseTests: XCTestCase {
         }
         
         do {
-            let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", pageNumber: 1, itemsPerPage: 100)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+            let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", paginator: paginator)
             let results = try hashtagSearch.parseResponse(NSURLResponse(), toRequest: hashtagSearch.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].hashtagID, 495)
@@ -33,7 +34,8 @@ class HashtagSearchResponseTests: XCTestCase {
     }
     
     func testRequest() {
-        let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", paginator: paginator)
         XCTAssertEqual(hashtagSearch.urlRequest.URL?.absoluteString, "/api/hashtag/search/surfer/1/100")
     }
 }

@@ -35,7 +35,8 @@ class SequenceRepostersRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let sequenceReposters = SequenceRepostersRequest(sequenceID: 99, pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let sequenceReposters = SequenceRepostersRequest(sequenceID: 99, paginator:paginator)
         XCTAssertEqual(sequenceReposters.urlRequest.URL?.absoluteString, "/api/repost/all/99/1/100")
     }
 }

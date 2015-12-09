@@ -33,7 +33,8 @@ class SequenceCommentsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let sequenceComments = SequenceCommentsRequest(sequenceID: 99, pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let sequenceComments = SequenceCommentsRequest(sequenceID: 99, paginator: paginator)
         XCTAssertEqual(sequenceComments.urlRequest.URL?.absoluteString, "/api/comment/all/99/1/100")
     }
 }

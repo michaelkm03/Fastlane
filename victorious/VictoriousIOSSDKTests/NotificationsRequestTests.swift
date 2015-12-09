@@ -20,7 +20,8 @@ class NotificationsRequestTests: XCTestCase {
         }
         
         do {
-            let notifications = NotificationsRequest(pageNumber: 1, itemsPerPage: 100)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+            let notifications = NotificationsRequest(paginator: paginator)
             let results = try notifications.parseResponse(NSURLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 1)
             XCTAssertEqual(results[0].subject, "Ryan Higa sent you a message")
@@ -31,7 +32,8 @@ class NotificationsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let notifications = NotificationsRequest(pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let notifications = NotificationsRequest(paginator: paginator)
         XCTAssertEqual(notifications.urlRequest.URL?.absoluteString, "/api/notification/notifications_list/1/100")
     }
 }

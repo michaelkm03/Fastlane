@@ -13,7 +13,8 @@ import SwiftyJSON
 class SequenceDetailListByUserRequestTests: XCTestCase {
     
     func testValidRequest() {
-        let sequenceList = SequenceDetailListByUserRequest(userID: 101, pageNumber: 102, itemsPerPage: 103)
+        let paginator = StandardPaginator(pageNumber: 102, itemsPerPage: 103)
+        let sequenceList = SequenceDetailListByUserRequest(userID: 101, paginator: paginator)
         XCTAssertEqual(sequenceList.urlRequest.URL?.absoluteString, "/api/sequence/detail_list_by_user/101/102/103")
     }
     

@@ -33,7 +33,8 @@ class TrendingGIFsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let trendingGIFs = TrendingGIFsRequest(pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let trendingGIFs = TrendingGIFsRequest(paginator:paginator)
         XCTAssertEqual(trendingGIFs.urlRequest.URL?.absoluteString, "/api/image/trending_gifs/1/100")
     }
 }

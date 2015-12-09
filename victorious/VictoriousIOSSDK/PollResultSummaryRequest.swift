@@ -33,16 +33,16 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
         self.userID = request.userID
     }
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = nil
         self.userID = userID
-        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.paginator = paginator
     }
     
-    public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.userID = nil
-        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+        self.paginator = paginator
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [PollResult] {

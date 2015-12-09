@@ -11,9 +11,10 @@ import VictoriousIOSSDK
 import SwiftyJSON
 
 class ConversationListRequestTests: XCTestCase {
-
+    
     func testRequestFormatting() {
-        let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 99)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
+        let conversationListRequest = ConversationListRequest( paginator: paginator )
         XCTAssertEqual(conversationListRequest.urlRequest.URL?.absoluteString, "/api/message/conversation_list/1/99")
     }
 
@@ -24,7 +25,9 @@ class ConversationListRequestTests: XCTestCase {
         }
         
         do {
-            let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
+            
+            let paginator = StandardPaginator( pageNumber: 1, itemsPerPage: 10 )
+            let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssert(results.count  > 0)
@@ -59,7 +62,8 @@ class ConversationListRequestTests: XCTestCase {
         }
         
         do {
-            let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
+            let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             let secondConversation = results[1]
             XCTAssertEqual(secondConversation.isRead, true)
@@ -75,7 +79,8 @@ class ConversationListRequestTests: XCTestCase {
         }
         
         do {
-            let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
+            let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 0)
         } catch {
@@ -90,7 +95,8 @@ class ConversationListRequestTests: XCTestCase {
         }
         
         do {
-            let conversationListRequest = ConversationListRequest(pageNumber: 1, itemsPerPage: 10)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
+            let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 0)
         } catch {
