@@ -758,7 +758,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if ([AgeGate isAnonymousUser])
     {
-        switch (vSection) {
+        switch (vSection)
+        {
             case VContentViewSectionContent:
                 return 1;
                 break;
