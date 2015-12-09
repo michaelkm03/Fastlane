@@ -9359,7 +9359,7 @@
 				CLASSPREFIX = V;
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					03314F1B1BE3E2DE00EE74FD = {
