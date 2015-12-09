@@ -9,6 +9,7 @@
 import Foundation
 
 @objc class AgeGate: NSObject {
+    
     private struct DictionaryKeys {
         static let birthdayProvidedByUser = "com.getvictorious.age_gate.birthday_provided"
         static let isAnonymousUser = "com.getvictorious.user.is_anonymous"
@@ -17,6 +18,8 @@ import Foundation
         static let anonymousUserToken = "AnonymousAccountUserToken"
     }
     
+    //MARK: - NSUserDefaults functions
+    
     static func hasBirthdayBeenProvided() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.birthdayProvidedByUser)
     }
@@ -24,6 +27,15 @@ import Foundation
     static func isAnonymousUser() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
+    
+    static func saveShouldUserBeAnonymous(anonymous: Bool) {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
+        userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)
+        userDefaults.synchronize()
+    }
+    
+    //MARK: - Info.plist functions
     
     static func isAgeGateEnabled() -> Bool {
         if let ageGateEnabled = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.ageGateEnabled) as? String {
@@ -49,10 +61,9 @@ import Foundation
         }
     }
     
-    static func saveShouldUserBeAnonymous(anonymous: Bool) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
-        userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)
-        userDefaults.synchronize()
+    //MARK: - Feature Disabling functions
+    
+    static func filterTabMenuItems(menuItems: [VNavigationMenuItem]) -> [VNavigationMenuItem] {
+        return menuItems.filter() { ["Home", "Channels", "Explore"].contains($0.title) }
     }
 }

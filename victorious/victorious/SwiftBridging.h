@@ -106,6 +106,7 @@
 #import "VMessage+Fetcher.h"
 #import "VMessage.h"
 #import "VNavigationController.h"
+#import "VNavigationMenuItem.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"

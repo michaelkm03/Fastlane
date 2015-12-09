@@ -47,7 +47,7 @@
         _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
         _selectedIconColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         _unselectedIconColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
-        _menuItems = [dependencyManager menuItems];
+        _menuItems = [AgeGate isAnonymousUser] ? [AgeGate filterTabMenuItems:[dependencyManager menuItems]] : [dependencyManager menuItems];
     }
     return self;
 }
