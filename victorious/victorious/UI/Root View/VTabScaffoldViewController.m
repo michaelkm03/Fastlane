@@ -109,11 +109,11 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
-    
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
-    {
+#warning this is temporary
+//    if ([VObjectManager sharedManager].mainUserLoggedIn)
+//    {
         [self configureTabBar];
-    }
+//    }
     
     // Make sure we're listening for interstitial events
     [[InterstitialManager sharedInstance] setInterstitialListener:self];

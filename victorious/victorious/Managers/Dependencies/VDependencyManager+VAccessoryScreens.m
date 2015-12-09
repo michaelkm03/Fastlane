@@ -17,6 +17,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
+#import "victorious-Swift.h"
 
 /**
  A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
@@ -56,6 +57,12 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
                            fromViewController:(UIViewController *)sourceViewController
 {
+    // Anonymous user does not need accessory screens
+    if ([AgeGate isAnonymousUser])
+    {
+        return;
+    }
+    
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
