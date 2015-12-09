@@ -109,6 +109,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
+    
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [self configureTabBar];
@@ -403,10 +404,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.hasSetupFirstLaunchOperations = YES;
     
     // Login
-    [self queueLoginOperation];
-    [self queueFirstTimeContentOperation];
     if ( ![AgeGate isAnonymousUser] )
     {
+        [self queueLoginOperation];
+        [self queueFirstTimeContentOperation];
         [self queuePushNotificationOperation];
     }
     
