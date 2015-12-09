@@ -22,6 +22,8 @@ class SuggestedUsersOperation: RequestOperation {
     private func onComplete( users: [SuggestedUser], completion:()->() ) {
         
         persistentStore.asyncFromBackground() { context in
+            
+            // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
                 let user: VUser = context.findOrCreateObject(["remoteId": NSNumber(longLong: sourceModel.user.userID)])
                 user.populate(fromSourceModel: sourceModel.user)
@@ -34,6 +36,7 @@ class SuggestedUsersOperation: RequestOperation {
             }
             context.saveChanges()
             
+            // Now reload on the main thread using the main context
             dispatch_async( dispatch_get_main_queue() ) {
                 self.suggestedUsers = self.suggestedUsersFromMainContext( suggestedUsers )
                 completion()
