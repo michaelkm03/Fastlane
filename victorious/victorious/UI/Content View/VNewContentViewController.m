@@ -748,6 +748,26 @@ static NSString * const kPollBallotIconKey = @"orIcon";
      numberOfItemsInSection:(NSInteger)section
 {
     VContentViewSection vSection = section;
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        switch (vSection) {
+            case VContentViewSectionContent:
+                return 1;
+                break;
+            case VContentViewSectionPollQuestion:
+            case VContentViewSectionExperienceEnhancers:
+                return 0;
+                break;
+            case VContentViewSectionAllComments:
+                return (NSInteger)self.viewModel.comments.count;
+                break;
+            case VContentViewSectionCount:
+                return 0;
+                break;
+        }
+    }
+    
     switch (vSection)
     {
         case VContentViewSectionContent:
