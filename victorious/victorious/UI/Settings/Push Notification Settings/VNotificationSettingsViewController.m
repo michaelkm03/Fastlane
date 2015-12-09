@@ -8,11 +8,9 @@
 
 #import "VNotificationSettingsViewController.h"
 #import "VSettingsSwitchCell.h"
-#import "VObjectManager+DeviceRegistration.h"
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
 #import "VNotificationSettings+Fetcher.h"
-
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
