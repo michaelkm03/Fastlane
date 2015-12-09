@@ -56,7 +56,7 @@ class AgeGateViewController: UIViewController {
         showDatePickerWithAnimation()
     }
     
-    @IBAction func tappedOnContinue(sender: UIButton) {
+    @IBAction private func tappedOnContinue(sender: UIButton) {
         let shouldBeAnonymous = isUserYoungerThan(13)
         delegate?.continueButtonTapped(shouldBeAnonymous)
     }

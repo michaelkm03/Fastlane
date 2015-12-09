@@ -37,7 +37,7 @@
 #import "VCrashlyticsLogTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
-NSString * const kBirthdayProvidedByUser = @"com.getvictorious.age_gate.birthday_provided";
+static NSString * const kBirthdayProvidedByUser = @"com.getvictorious.age_gate.birthday_provided";
 static NSString * const kIsAnonymousUser = @"com.getvictorious.user.is_anonymous";
 
 static const NSTimeInterval kAnimationDuration = 0.25f;
