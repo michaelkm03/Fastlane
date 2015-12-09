@@ -244,7 +244,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.launchState = VAppLaunchStateWaiting;
     
     BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
-    BOOL userHasProvidedBirthday = [AgeGate isBirthdayProvided];
+    BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
     
     if (ageGateActivated && !userHasProvidedBirthday)
     {

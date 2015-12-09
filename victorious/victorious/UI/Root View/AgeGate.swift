@@ -17,7 +17,7 @@ import Foundation
         static let anonymousUserToken = "AnonymousAccountUserToken"
     }
     
-    static func isBirthdayProvided() -> Bool {
+    static func hasBirthdayBeenProvided() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.birthdayProvidedByUser)
     }
     
@@ -49,7 +49,7 @@ import Foundation
         }
     }
     
-    func saveShouldUserBeAnonymous(anonymous: Bool) {
+    static func saveShouldUserBeAnonymous(anonymous: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
         userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)
