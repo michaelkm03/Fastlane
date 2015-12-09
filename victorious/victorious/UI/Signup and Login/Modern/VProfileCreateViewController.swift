@@ -19,7 +19,8 @@ extension VProfileCreateViewController {
     }
     
     func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, location: String?, completion: ((NSError?)->())? ) -> NSOperation? {
-        let operation = AccountUpdateOperation(
+        
+        let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(
                 email: nil,
                 name: username,
@@ -28,9 +29,14 @@ extension VProfileCreateViewController {
                 profileImageURL: profileImageURL
             )
         )
-        operation.queue() { error in
-            completion?( error )
+        
+        if let operation = updateOperation {
+            operation.queue() { error in
+                completion?( error )
+            }
+            return operation
         }
-        return operation
+        
+        return nil
     }
 }

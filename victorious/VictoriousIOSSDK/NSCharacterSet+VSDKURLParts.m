@@ -1,16 +1,16 @@
 //
-//  NSCharacterSet+VURLParts.m
+//  NSCharacterSet+VSDKURLParts.m
 //  victorious
 //
 //  Created by Josh Hinman on 2/27/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSCharacterSet+VURLParts.h"
+#import "NSCharacterSet+VSDKURLParts.h"
 
 @implementation NSCharacterSet (VURLParts)
 
-+ (NSCharacterSet *)v_pathPartCharacterSet
++ (NSCharacterSet *)vsdk_pathPartCharacterSet
 {
     static NSCharacterSet *pathPartCharacterSet;
     static dispatch_once_t onceToken;
@@ -23,7 +23,7 @@
     return pathPartCharacterSet;
 }
 
-+ (NSCharacterSet *)v_queryPartCharacterSet
++ (NSCharacterSet *)vsdk_queryPartCharacterSet
 {
     static NSCharacterSet *queryPartCharacterSet;
     static dispatch_once_t onceToken;

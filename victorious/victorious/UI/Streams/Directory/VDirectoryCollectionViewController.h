@@ -9,6 +9,7 @@
 #import "VAbstractStreamCollectionViewController.h"
 #import "VHasManagedDependencies.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
+
 /**
     A collection view controller that displays content in a format determined its "directoryCell" component
  */

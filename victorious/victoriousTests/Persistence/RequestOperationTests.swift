@@ -25,58 +25,47 @@ struct MockErrorRequest: RequestType {
     }
 }
 
-class MockRequestOperation<T: RequestType>: RequestOperation<T> {
-    var onStartCalled: Bool = false
-    var onCompleteCalled: Bool = false
-    var onErrorCalled: Bool = false
-
-    override init( request: T ) {
-        super.init( request: request )
-    }
-    
-    override func onStart( completion:()->() ) {
-        self.onStartCalled = true
-        completion()
-    }
-    
-    override func onComplete( result: T.ResultType, completion:()->() ) {
-        self.onCompleteCalled = true
-        completion()
-    }
-    
-    override func onError( error: NSError, completion: ()->() ) {
-        self.onErrorCalled = true
-        completion()
-    }
-}
-
 class RequestOperationTests: XCTestCase {
     
+    var requestOperation: RequestOperation!
+
+    override func setUp() {
+        requestOperation = RequestOperation()
+    }
+    
     func testBasic() {
-        let expectation = self.expectationWithDescription( "testBasic" )
-        let operation = MockRequestOperation( request: MockRequest() )
-        operation.queue() { error in
-            XCTAssert( NSThread.currentThread().isMainThread )
-            XCTAssertNil( error )
-            XCTAssert( operation.onCompleteCalled )
-            XCTAssert( operation.onStartCalled )
-            XCTAssertFalse( operation.onErrorCalled )
-            expectation.fulfill()
+        let expectation = self.expectationWithDescription("testBasic")
+        
+        let request = MockRequest()
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+            self.requestOperation.executeRequest( request,
+                onComplete: { (result, completion:()->() ) in
+                    completion()
+                    expectation.fulfill()
+                },
+                onError: { (error, completion:()->() ) in
+                    XCTFail( "Should not be called" )
+                }
+            )
         }
-        waitForExpectationsWithTimeout(2) { error in }
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testError() {
-        let expectation = self.expectationWithDescription( "testError" )
-        let operation = MockRequestOperation( request: MockErrorRequest() )
-        operation.queue() { error in
-            XCTAssert( NSThread.currentThread().isMainThread )
-            XCTAssertNotNil( error )
-            XCTAssertFalse( operation.onCompleteCalled )
-            XCTAssert( operation.onStartCalled )
-            XCTAssert( operation.onErrorCalled )
-            expectation.fulfill()
+        let expectation = self.expectationWithDescription("testError")
+        
+        let request = MockErrorRequest()
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+            self.requestOperation.executeRequest( request,
+                onComplete: { (result, completion:()->() ) in
+                    XCTFail( "Should not be called" )
+                },
+                onError: { (error, completion:()->() ) in
+                    completion()
+                    expectation.fulfill()
+                }
+            )
         }
-        waitForExpectationsWithTimeout(2) { error in }
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 }

@@ -9,30 +9,37 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
-    
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+class AccountUpdateOperation: RequestOperation {
     
     private let storedPassword = VStoredPassword()
-    private let profileUpdate: ProfileUpdate?
-    private let passwordUpdate: PasswordUpdate?
     
-    init(passwordUpdate: PasswordUpdate) {
-        self.profileUpdate = nil
-        self.passwordUpdate = passwordUpdate
-        super.init( request: AccountUpdateRequest(passwordUpdate: passwordUpdate)! )
+    let request: AccountUpdateRequest
+    private(set) var resultCount: Int?
+    
+    required init( request: AccountUpdateRequest ) {
+        self.request = request
     }
     
-    init(profileUpdate: ProfileUpdate) {
-        self.profileUpdate = profileUpdate
-        self.passwordUpdate = nil
-        super.init( request: AccountUpdateRequest(profileUpdate: profileUpdate)! )
+    convenience init?( passwordUpdate: PasswordUpdate ) {
+        if let request = AccountUpdateRequest(passwordUpdate: passwordUpdate) {
+            self.init(request: request)
+        } else {
+            return nil
+        }
     }
     
-    override func onStart( completion:()->() ) {
-        
+    convenience init?( profileUpdate: ProfileUpdate ) {
+        if let request = AccountUpdateRequest(profileUpdate: profileUpdate) {
+            self.init(request: request)
+        } else {
+            return nil
+        }
+    }
+    
+    override func main() {
         // For profile updates, optimistically update everything right away
-        if let profileUpdate = self.profileUpdate {
+        let semphore = dispatch_semaphore_create(0)
+        if let profileUpdate = self.request.profileUpdate {
             persistentStore.asyncFromBackground() { context in
                 guard let user = VUser.currentUser() else {
                     fatalError( "Expecting a current user to be set before now." )
@@ -58,20 +65,18 @@ class AccountUpdateOperation: RequestOperation<AccountUpdateRequest> {
                             user.previewAssets.insert( imageAsset )
                     }
                 }
-                
                 context.saveChanges()
-                completion()
+                dispatch_semaphore_signal( semphore )
             }
         }
-        else {
-            completion()
-        }
+        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
+        
+        executeRequest( request, onComplete: self.onComplete )
     }
     
-    override func onComplete( response: AccountUpdateRequest.ResultType, completion:()->() ) {
-        
-        if let passwordUpdate = self.passwordUpdate {
-            self.storedPassword.savePassword(passwordUpdate.passwordNew, forEmail: passwordUpdate.email)
+    private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {
+        if let passwordUpdate = self.request.passwordUpdate {
+            self.storedPassword.savePassword( passwordUpdate.passwordNew, forEmail: passwordUpdate.email )
         }
         completion()
     }

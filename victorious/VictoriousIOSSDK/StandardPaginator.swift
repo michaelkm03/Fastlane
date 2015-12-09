@@ -9,28 +9,33 @@
 import Foundation
 import SwiftyJSON
 
-public struct StandardPaginator {
+public struct StandardPaginator: Paginator {
     
     public let pageNumber: Int
     public let itemsPerPage: Int
-    
-    public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
-        request.URL = request.URL?.URLByAppendingPathComponent(String(pageNumber)).URLByAppendingPathComponent(String(itemsPerPage))
-    }
     
     public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.pageNumber = pageNumber
         self.itemsPerPage = itemsPerPage
     }
     
-    public var previousPage: StandardPaginator? {
+    // MARK: - Paginator
+    
+    public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
+        request.URL = request.URL?.URLByAppendingPathComponent(String(pageNumber)).URLByAppendingPathComponent(String(itemsPerPage))
+    }
+    
+    public func previousPage() -> StandardPaginator? {
         if pageNumber > 1 {
             return StandardPaginator(pageNumber: pageNumber - 1, itemsPerPage: itemsPerPage)
         }
         return nil
     }
     
-    public var nextPage: StandardPaginator {
-        return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
+    public func nextPage( resultCount: Int ) -> StandardPaginator? {
+        if resultCount > 0 {
+            return StandardPaginator(pageNumber: pageNumber + 1, itemsPerPage: itemsPerPage)
+        }
+        return nil
     }
 }

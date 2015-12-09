@@ -12,13 +12,13 @@ import SwiftyJSON
 public struct SequenceDetailListByUserRequest: RequestType {
     public let userID: Int64
     
-    private let paginator: StandardPaginator
+    public let paginator: StandardPaginator
     
-    public init(userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(userID: userID, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init(request: SequenceDetailListByUserRequest, paginator: StandardPaginator ) {
+        self.init( userID: request.userID, paginator: paginator )
     }
     
-    private init(userID: Int64, paginator: StandardPaginator) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.userID = userID
         self.paginator = paginator
     }
@@ -30,20 +30,11 @@ public struct SequenceDetailListByUserRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [Sequence], nextPage: SequenceDetailListByUserRequest?, previousPage: SequenceDetailListByUserRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Sequence] {
+        
         guard let sequenceListJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
-        let results = sequenceListJSON.flatMap { Sequence(json: $0) }
-        
-        let nextPageRequest: SequenceDetailListByUserRequest? = sequenceListJSON.count > 0 ? SequenceDetailListByUserRequest(userID: userID, paginator: paginator.nextPage) : nil
-        
-        let previousPageRequest: SequenceDetailListByUserRequest?
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = SequenceDetailListByUserRequest(userID: userID, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return sequenceListJSON.flatMap { Sequence(json: $0) }
     }
 }

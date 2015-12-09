@@ -9,49 +9,28 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LikeSequenceOperation: RequestOperation<LikeSequenceRequest> {
+class LikeSequenceOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
-    
-    struct UIContext {
-        let originViewController: UIViewController
-        let dependencyManager: VDependencyManager
-        let triggeringView: UIView
-    }
+    let request: LikeSequenceRequest
     
     private let sequenceID: Int64
-    private let uiContext: UIContext?
     
-    init( sequenceID: Int64, uiContext: UIContext? = nil ) {
-        self.uiContext = uiContext
+    init( sequenceID: Int64 ){
+        self.request = LikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
-        super.init( request: LikeSequenceRequest(sequenceID: sequenceID) )
     }
-    
-    override func onStart( completion:()->() ) {
+
+    override func main() {
         
-        // Handle some immediate synchronous UI updates
-        dispatch_sync( dispatch_get_main_queue() ) {
-            VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
-            
-            if let uiContext = self.uiContext {
-                uiContext.dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
-                    VLikeButtonCoachmarkIdentifier,
-                    inViewController:uiContext.originViewController,
-                    atLocation:uiContext.triggeringView.convertRect(
-                        uiContext.triggeringView.bounds,
-                        toView:uiContext.originViewController.view
-                    )
-                )
-            }
-        }
-        
-        // Handle immediate asynchronous data updates
+        // Make data change optimistically before executing the request
         persistentStore.asyncFromBackground() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
             let sequence: VSequence = context.findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = true
             context.saveChanges()
         }
+        
+        // Now execute the request fire-and-forget style
+        executeRequest( self.request )
     }
 }

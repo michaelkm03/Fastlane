@@ -11,7 +11,7 @@
 
 extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 
-@class  VStream, VStreamItem, VStreamCollectionViewDataSource;
+@class  VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation;
 
 /**
  *  Data delegate for the VStreamCollectionViewDataSource.
@@ -76,7 +76,7 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
 @property (nonatomic, readonly) NSArray *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
-@property (nonatomic, strong) NSOperation *streamLoadOperation;
+@property (nonatomic, strong) StreamOperation *streamLoadOperation;
 @property (nonatomic, assign) BOOL isLoading;
 
 /**

@@ -9,8 +9,9 @@
 #import "VAbstractFilter.h"
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
-#import "VURLMacroReplacement.h"
 #import "VStream.h"
+
+@import VictoriousIOSSDK;
 
 NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";
 NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
@@ -23,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) dispatch_queue_t                             filterIDQueue; ///< All access to filterIDs should go through this queue
 @property (nonatomic, strong) NSMutableSet /* NSString */                 *pathsBeingLoaded;
 @property (nonatomic, strong) dispatch_queue_t                             pathsBeingLoadedQueue; ///< All access to pathsBeingLoaded should go through this queue
-@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (nonatomic, strong) VSDKURLMacroReplacement *macroReplacement;
 
 @end
 
@@ -39,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
         _filterIDQueue = dispatch_queue_create("VPaginationManager.filterIDQueue", DISPATCH_QUEUE_CONCURRENT);
         _pathsBeingLoaded = [[NSMutableSet alloc] init];
         _pathsBeingLoadedQueue = dispatch_queue_create("VPaginationManager.pathsBeingLoadedQueue", DISPATCH_QUEUE_CONCURRENT);
-        _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
     }
     return self;
 }

@@ -9,19 +9,21 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
-    
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+class RepostSequenceOperation: RequestOperation {
     
     private let nodeID: Int64
     
+    var request: RepostSequenceRequest
+    
     init( nodeID: Int64 ) {
         self.nodeID = nodeID
-        super.init(request: RepostSequenceRequest(nodeID: nodeID) )
+        self.request = RepostSequenceRequest(nodeID: nodeID)
     }
     
-    override func onStart( completion:()->() ) {
+    override func main() {
+        
         // Peform optimistic changes before the request is executed
+        let semphore = dispatch_semaphore_create(0)
         persistentStore.asyncFromBackground() { context in
             guard let user = VUser.currentUser() else {
                 fatalError( "User must be logged in." )
@@ -30,9 +32,13 @@ class RepostSequenceOperation: RequestOperation<RepostSequenceRequest> {
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.repostedSequences.insert( node.sequence )
-            context.saveChanges()
             
-            completion()
+            context.saveChanges()
+            dispatch_semaphore_signal( semphore )
         }
+        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
+        
+        // Then execute the request
+        self.executeRequest( request )
     }
 }

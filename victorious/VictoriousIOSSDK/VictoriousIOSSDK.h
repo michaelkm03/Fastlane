@@ -17,3 +17,5 @@ FOUNDATION_EXPORT const unsigned char VictoriousIOSSDKVersionString[];
 #import <VictoriousIOSSDK/VMultipartFormDataWriter.h>
 #import <VictoriousIOSSDK/VSDKCrypto.h>
 #import <VictoriousIOSSDK/VRequestErrorConstants.h>
+#import <VictoriousIOSSDK/VSDKURLMacroReplacement.h>
+#import <VictoriousIOSSDK/NSCharacterSet+VSDKURLParts.h>

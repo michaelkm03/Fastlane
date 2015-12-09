@@ -10,21 +10,20 @@ import Foundation
 import SwiftyJSON
 
 /// Returns a list of images based on a search term
-public struct ImageSearchRequest: Pageable {
+public struct ImageSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    // A term to use when searching for images
+    // A term to use when searching for GIFs
     public let searchTerm: String
     
-    public var urlRequest: NSURLRequest
+    public let urlRequest: NSURLRequest
     
-    private let paginator: StandardPaginator
+    public let paginator: StandardPaginator
     
-    public init(searchTerm: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(searchTerm: searchTerm, paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init( request: ImageSearchRequest, paginator: StandardPaginator ) {
+        self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
     
-    private init(searchTerm: String, paginator: StandardPaginator) {
-        
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
         let url = NSURL(string: "/api/image/search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
@@ -34,21 +33,12 @@ public struct ImageSearchRequest: Pageable {
         self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [ImageSearchResult], nextPage: ImageSearchRequest?, previousPage: ImageSearchRequest?) {
-        
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ImageSearchResult] {
+
         guard let imagesJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let results = imagesJSON.flatMap { ImageSearchResult(json: $0) }
-        let nextPageRequest: ImageSearchRequest? = imagesJSON.count > 0 ? ImageSearchRequest(searchTerm: searchTerm, paginator: paginator.nextPage) : nil
-        let previousPageRequest: ImageSearchRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = ImageSearchRequest(searchTerm: searchTerm, paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return imagesJSON.flatMap { ImageSearchResult(json: $0) }
     }
 }

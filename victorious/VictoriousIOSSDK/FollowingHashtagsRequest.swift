@@ -10,15 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags which the current user is following
-public struct FollowingHashtagsRequest: Pageable {
+public struct FollowingHashtagsRequest: PaginatorPageable, ResultBasedPageable {
     
-    private let paginator: StandardPaginator
+    public let paginator: StandardPaginator
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init(paginator: StandardPaginator = StandardPaginator() ) {
+        self.paginator = paginator
     }
     
-    private init(paginator: StandardPaginator) {
+    public init(request: FollowingHashtagsRequest, paginator: StandardPaginator ) {
         self.paginator = paginator
     }
     
@@ -29,18 +29,12 @@ public struct FollowingHashtagsRequest: Pageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [Hashtag], nextPage: FollowingHashtagsRequest?, previousPage: FollowingHashtagsRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
         
-        let results = try HashtagResponseParser().parseResponse(responseJSON)
-        
-        let nextPageRequest: FollowingHashtagsRequest? = results.count > 0 ? FollowingHashtagsRequest(paginator: paginator.nextPage) : nil
-        let previousPageRequest: FollowingHashtagsRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = FollowingHashtagsRequest(paginator: previousPage)
-        } else {
-            previousPageRequest = nil
+        guard let hashtagJSON = responseJSON["payload"].array else {
+            throw ResponseParsingError()
         }
-        return (results, nextPageRequest, previousPageRequest)
+        
+        return hashtagJSON.flatMap { Hashtag(json: $0) }
     }
 }
