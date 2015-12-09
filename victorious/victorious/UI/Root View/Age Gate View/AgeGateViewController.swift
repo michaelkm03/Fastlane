@@ -69,7 +69,7 @@ class AgeGateViewController: UIViewController {
     @IBAction private func tappedOnContinue(sender: UIButton) {
         let shouldBeAnonymous = isUserYoungerThan(13)
         
-        AgeGateModel().userSelectedBirthday(shouldUserBeAnonymous: shouldBeAnonymous)
+        AgeGate().saveShouldUserBeAnonymous(shouldBeAnonymous)
         delegate?.continueButtonTapped(shouldBeAnonymous)
     }
     

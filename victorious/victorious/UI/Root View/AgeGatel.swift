@@ -13,6 +13,8 @@ import Foundation
         static let birthdayProvidedByUser = "com.getvictorious.age_gate.birthday_provided"
         static let isAnonymousUser = "com.getvictorious.user.is_anonymous"
         static let ageGateEnabled = "IsAgeGateEnabled"
+        static let anonymousUserID = "AnonymousAccountUserID"
+        static let anonymousUserToken = "AnonymousAccountUserToken"
     }
     
     static func isBirthdayProvided() -> Bool {
@@ -23,7 +25,7 @@ import Foundation
         return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
-    static func isAgeGateEnabled() -> Bool{
+    static func isAgeGateEnabled() -> Bool {
         if let ageGateEnabled = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.ageGateEnabled) as? String {
             return ageGateEnabled.lowercaseString == "yes"
         } else {
@@ -31,7 +33,23 @@ import Foundation
         }
     }
     
-    func userSelectedBirthday(shouldUserBeAnonymous anonymous: Bool) {
+    static func anonymousUserID() -> String? {
+        if let userID = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.anonymousUserID) as? String {
+            return userID
+        } else {
+            return nil
+        }
+    }
+    
+    static func anonymousUserToken() -> String? {
+        if let token = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.anonymousUserToken) as? String {
+            return token
+        } else {
+            return nil
+        }
+    }
+    
+    func saveShouldUserBeAnonymous(anonymous: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
         userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)

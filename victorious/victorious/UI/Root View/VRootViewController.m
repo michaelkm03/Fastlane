@@ -243,9 +243,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.launchState = VAppLaunchStateWaiting;
     
-#warning The ageGateActivated is hardcoded here. It should determined by a build flag
-    BOOL ageGateActivated = [AgeGateModel isAgeGateEnabled];
-    BOOL userHasProvidedBirthday = [AgeGateModel isBirthdayProvided];
+    BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
+    BOOL userHasProvidedBirthday = [AgeGate isBirthdayProvided];
     
     if (ageGateActivated && !userHasProvidedBirthday)
     {
