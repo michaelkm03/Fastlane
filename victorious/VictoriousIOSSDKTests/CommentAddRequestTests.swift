@@ -10,22 +10,58 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-// TODO: Finish
 class CommentAddRequestTests: XCTestCase {
     
     let textOnlyParameters = CommentParameters(
         sequenceID: 17100,
         text: "test",
+        replyToCommentID: 1564,
         mediaURL: nil,
         mediaType: nil,
         realtimeComment: nil
     )
     
-    func testRequest() {
+    func testTextOnlyRequest() {
+        let request = CommentAddRequest(parameters: textOnlyParameters)!
+        XCTAssertNotNil( request )
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
+        XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
+    }
+    
+    func testRealtimeRequest() {
+        let params = CommentParameters(
+            sequenceID: 17100,
+            text: "test",
+            replyToCommentID: nil,
+            mediaURL: nil,
+            mediaType: nil,
+            realtimeComment: CommentParameters.RealtimeComment(time: 0.54, assetID: 999)
+        )
         
-        let postCommentRequest = CommentAddRequest(parameters: textOnlyParameters)!
-        XCTAssertNotNil( postCommentRequest )
-        XCTAssertEqual(postCommentRequest.urlRequest.URL?.absoluteString, "/api/comment/add")
+        let request = CommentAddRequest(parameters: params)!
+        XCTAssertNotNil( request )
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
+        XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
+    }
+    
+    func testMediaRequest() {
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("test_image", withExtension: "png") else {
+            XCTFail("Error reading mock image")
+            return
+        }
+        
+        let params = CommentParameters(
+            sequenceID: 17100,
+            text: nil,
+            replyToCommentID: nil,
+            mediaURL: mockUserDataURL,
+            mediaType: .Image,
+            realtimeComment: nil
+        )
+        let request = CommentAddRequest(parameters: params)!
+        XCTAssertNotNil( request )
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
+        XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
     }
     
     func testResponseParsing() {
@@ -34,18 +70,17 @@ class CommentAddRequestTests: XCTestCase {
                 XCTFail("Error reading mock json data")
                 return
         }
+        let request = CommentAddRequest(parameters: textOnlyParameters)!
         
-        guard let postCommentRequest = CommentAddRequest(parameters: textOnlyParameters) else {
-            XCTFail("Could not instantiate AccountUpdateRequest")
-            return
-        }
-        
+        let comment: Comment?
         do {
-            let comment = try postCommentRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(comment.commentID, 28612)
-            XCTAssertEqual(comment.text, "test")
+            comment = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("parseResponse is not supposed to throw")
+            comment = nil
         }
+        
+        XCTAssertEqual( comment?.commentID, 28612 )
+        XCTAssertEqual( comment?.text, "test" )
     }
 }

@@ -34,19 +34,27 @@ class CommentAddRequestBody: NSObject {
             try writer.appendPlaintext(text, withFieldName: "text")
         }
         
+        if let commentID = parameters.replyToCommentID {
+            try writer.appendPlaintext( String(commentID), withFieldName: "parent_id")
+        }
+        
         if let realtime = parameters.realtimeComment {
             try writer.appendPlaintext( String(realtime.assetID), withFieldName: "asset_id" )
             try writer.appendPlaintext( String(realtime.time), withFieldName: "realtime" )
         }
         
-        // TODO: FINISH THIS!
-        /*if let profileImageURL = profileUpdate?.profileImageURL,
-        let pathExtension = profileImageURL.pathExtension,
-        let mimeType = profileImageURL.vsdk_mimeType {
-        try writer.appendFileWithName("profile_image.\(pathExtension)", contentType: mimeType, fileURL: profileImageURL, fieldName: "profile_image")
-        }*/
+        if let mediaURL = parameters.mediaURL,
+            let pathExtension = mediaURL.pathExtension,
+            let mimeType = mediaURL.vsdk_mimeType {
+                try writer.appendFileWithName("media_data.\(pathExtension)",
+                    contentType: mimeType,
+                    fileURL: mediaURL,
+                    fieldName: "media_data"
+                )
+        }
         
         try writer.finishWriting()
+        
         return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
     }
 }

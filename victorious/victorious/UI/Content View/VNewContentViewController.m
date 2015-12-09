@@ -1106,7 +1106,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-    [self submitCommentWithText:inputAccessoryView.composedText];
+    [self.viewModel addCommentWithText:inputAccessoryView.composedText
+                     publishParameters:self.publishParameters
+                           currentTime:self.realtimeCommentBeganTime];
+    
     [inputAccessoryView clearTextAndResign];
     self.publishParameters.mediaToUploadURL = nil;
 }
@@ -1213,13 +1216,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)clearEditingRealTimeComment
 {
     self.realtimeCommentBeganTime = nil;
-}
-
-- (void)submitCommentWithText:(NSString *)commentText
-{
-    [self.viewModel addCommentWithText:commentText
-                     publishParameters:self.publishParameters
-                           currentTime:self.realtimeCommentBeganTime];
 }
 
 - (void)reloadComments

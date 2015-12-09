@@ -23,13 +23,15 @@ public struct CommentParameters {
     
     public let sequenceID: Int64
     public let text: String?
+    public let replyToCommentID: Int64?
     public let mediaURL: NSURL?
     public let mediaType: MediaAttachmentType?
     public let realtimeComment: RealtimeComment?
     
-    public init( sequenceID: Int64, text: String?, mediaURL: NSURL?, mediaType: MediaAttachmentType?, realtimeComment: RealtimeComment? ) {
+    public init( sequenceID: Int64, text: String?, replyToCommentID: Int64?, mediaURL: NSURL?, mediaType: MediaAttachmentType?, realtimeComment: RealtimeComment? ) {
         self.sequenceID = sequenceID
         self.text = text
+        self.replyToCommentID = replyToCommentID
         self.mediaURL = mediaURL
         self.mediaType = mediaType
         self.realtimeComment = realtimeComment
