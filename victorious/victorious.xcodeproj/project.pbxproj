@@ -911,6 +911,7 @@
 		A7BBB8F41C167A91009319D9 /* VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */; };
 		A7BC35A21C18E12400732750 /* test_image.png in Resources */ = {isa = PBXBuildFile; fileRef = A7BC35A01C18E12000732750 /* test_image.png */; };
 		A7BC35A41C18E43A00732750 /* CommentAddRequestBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */; };
+		A7BC35A61C18EADB00732750 /* CommentParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35A51C18EADB00732750 /* CommentParameters.swift */; };
 		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
 		A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C713B11B74450A00089B5E /* GCDUtils.swift */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
@@ -3280,6 +3281,7 @@
 		A7BBB8F11C1678F3009319D9 /* NSCharacterSet+VSDKURLParts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+VSDKURLParts.m"; sourceTree = "<group>"; };
 		A7BC35A01C18E12000732750 /* test_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_image.png; sourceTree = "<group>"; };
 		A7BC35A31C18E43A00732750 /* CommentAddRequestBodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestBodyTests.swift; sourceTree = "<group>"; };
+		A7BC35A51C18EADB00732750 /* CommentParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentParameters.swift; sourceTree = "<group>"; };
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
@@ -5347,6 +5349,7 @@
 				A7EF1BC11BF2754D00D429DE /* Answer.swift */,
 				A7EF1BC21BF2754D00D429DE /* Asset.swift */,
 				C3D956161BF4368F00069FD6 /* Comment.swift */,
+				A7BC35A51C18EADB00732750 /* CommentParameters.swift */,
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
 				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
 				C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */,
@@ -10352,6 +10355,7 @@
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
 				67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */,
 				67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */,
+				A7BC35A61C18EADB00732750 /* CommentParameters.swift in Sources */,
 				A71F41F31C0409C400131BE6 /* SequenceRepostersRequest.swift in Sources */,
 				A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */,
 				A7D69C161C0E49D300B462C3 /* PollResult.swift in Sources */,
