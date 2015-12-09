@@ -301,29 +301,29 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                             </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgC-40-sNL">
-                                <rect key="frame" x="32" y="143" width="256" height="282"/>
+                                <rect key="frame" x="32" y="148" width="256" height="272"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Js6-bn-fje">
-                                    <rect key="frame" x="0.0" y="0.0" width="256" height="282"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="256" height="272"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="BqB-LM-0fF">
-                                            <rect key="frame" x="0.0" y="0.0" width="256" height="282"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="256" height="272"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Lorem ipsum dolor sit amet, nusquam accusata." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nV-Sx-JTX">
-                                                    <rect key="frame" x="20" y="24" width="216" height="32"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="20" y="20" width="216" height="32"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIb-OA-tq9" userLabel="Separator">
-                                                    <rect key="frame" x="0.0" y="75" width="256" height="1"/>
+                                                    <rect key="frame" x="0.0" y="65" width="256" height="1"/>
                                                     <color key="backgroundColor" red="0.76862745098039209" green="0.76862745098039209" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="UeB-Pv-ahb"/>
+                                                        <constraint firstAttribute="height" constant="1" identifier="topSeparatorHeight" id="UeB-Pv-ahb"/>
                                                     </constraints>
                                                 </view>
                                                 <datePicker contentMode="scaleToFill" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="DYS-Tw-yd5">
-                                                    <rect key="frame" x="0.0" y="76" width="256" height="162"/>
+                                                    <rect key="frame" x="0.0" y="66" width="256" height="162"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="162" id="Udy-if-pXv"/>
                                                     </constraints>
@@ -332,14 +332,14 @@
                                                     </date>
                                                 </datePicker>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BF1-N9-LMr" userLabel="Separator">
-                                                    <rect key="frame" x="0.0" y="238" width="256" height="1"/>
+                                                    <rect key="frame" x="0.0" y="228" width="256" height="1"/>
                                                     <color key="backgroundColor" red="0.7686274509803922" green="0.7686274509803922" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="iOQ-Gz-8VC"/>
+                                                        <constraint firstAttribute="height" constant="1" identifier="bottomSeparatorHeight" id="iOQ-Gz-8VC"/>
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmL-ba-erc">
-                                                    <rect key="frame" x="0.0" y="238" width="256" height="44"/>
+                                                    <rect key="frame" x="0.0" y="228" width="256" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="LaT-fO-hdf"/>
                                                     </constraints>
@@ -353,10 +353,10 @@
                                             <constraints>
                                                 <constraint firstItem="BF1-N9-LMr" firstAttribute="top" secondItem="DYS-Tw-yd5" secondAttribute="bottom" id="0Jh-pV-l4X"/>
                                                 <constraint firstItem="lmL-ba-erc" firstAttribute="top" secondItem="DYS-Tw-yd5" secondAttribute="bottom" id="727-yh-FfW"/>
-                                                <constraint firstItem="DYS-Tw-yd5" firstAttribute="top" secondItem="7nV-Sx-JTX" secondAttribute="baseline" constant="24" id="A4M-le-l5E"/>
+                                                <constraint firstItem="DYS-Tw-yd5" firstAttribute="top" secondItem="7nV-Sx-JTX" secondAttribute="baseline" constant="18" id="A4M-le-l5E"/>
                                                 <constraint firstItem="7nV-Sx-JTX" firstAttribute="leading" secondItem="BqB-LM-0fF" secondAttribute="leading" constant="20" id="BQK-KJ-PXE"/>
                                                 <constraint firstAttribute="trailing" secondItem="lmL-ba-erc" secondAttribute="trailing" id="H9k-yw-0EI"/>
-                                                <constraint firstItem="7nV-Sx-JTX" firstAttribute="top" secondItem="BqB-LM-0fF" secondAttribute="top" constant="24" id="JdN-Dw-e3o"/>
+                                                <constraint firstItem="7nV-Sx-JTX" firstAttribute="top" secondItem="BqB-LM-0fF" secondAttribute="top" constant="20" id="JdN-Dw-e3o"/>
                                                 <constraint firstItem="DYS-Tw-yd5" firstAttribute="top" secondItem="PIb-OA-tq9" secondAttribute="bottom" id="Khp-Cz-02L"/>
                                                 <constraint firstItem="DYS-Tw-yd5" firstAttribute="leading" secondItem="BqB-LM-0fF" secondAttribute="leading" id="KiT-O9-Ldl"/>
                                                 <constraint firstItem="PIb-OA-tq9" firstAttribute="leading" secondItem="BqB-LM-0fF" secondAttribute="leading" id="UQv-tR-iMw"/>
@@ -405,6 +405,8 @@
                         <outlet property="dimmingView" destination="NmV-Tx-pcR" id="Lin-6t-OwI"/>
                         <outlet property="promptLabel" destination="7nV-Sx-JTX" id="lOR-Cu-efr"/>
                         <outlet property="widgetBackground" destination="BqB-LM-0fF" id="u3u-9C-hgF"/>
+                        <outletCollection property="separatorHeightConstraints" destination="UeB-Pv-ahb" collectionClass="NSMutableArray" id="6Xv-zn-MCR"/>
+                        <outletCollection property="separatorHeightConstraints" destination="iOQ-Gz-8VC" collectionClass="NSMutableArray" id="QIq-bY-bDt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ax0-Nc-sUQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
