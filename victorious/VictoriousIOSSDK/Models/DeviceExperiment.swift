@@ -9,12 +9,25 @@
 import Foundation
 import SwiftyJSON
 
+/// DeviceExperiment is a simple networking struct that is quickly converted from JSON.
 public struct DeviceExperiment {
+    
+    /// The server provided ID for this experiment. Should be globally unique.
     public let id: Int64
+    
+    /// The name of this Experiment. Internally visible (in settings) user string to describe the experiment.
     public let name: String
+    
+    /// The name of the containing experiment bucket. Internally visible (in settings) user string to describe the experiment.
     public let bucketType: String
+    
+    ///
     public let numberOfBuckets: Int64
+    
+    /// The ID of the layer that this experiment will be contained in. Note: only 1 experiment may be activated per a layer.
     public let layerID: Int64
+    
+    /// The name of the layer this experiment is contained in. Note: only 1 experiment may be activated per a layer.
     public let layerName: String
 }
 

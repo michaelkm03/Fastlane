@@ -84,10 +84,12 @@ class ExperimentSettingsDataSource: NSObject {
                 return
             }
             
+            // Synchronously grab all experiments from the main queue context.
             let experiments: [Experiment] = self.persistentStore.sync{ context in
                 return context.findObjects()
             }
             
+            // If we have (internal) user configured experiments use those, otherwise use defaults returned from the operation.
             let activeExperiments = self.experimentSettings.activeExperiments ?? experimentsOperation.defaultExperimentIDs
             for experiment in experiments {
                 experiment.isEnabled = activeExperiments.contains( experiment.id.integerValue )
