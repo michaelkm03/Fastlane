@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import VictoriousIOSSDK;
 
+#import <Foundation/Foundation.h>
 #import "VTracking.h"
 #import "VTrackingDelegate.h"
 

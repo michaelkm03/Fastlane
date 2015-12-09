@@ -17,16 +17,11 @@ public struct SequenceCommentsRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        let paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
-        self.init(sequenceID: sequenceID, paginator: paginator)
+    public init(request: SequenceCommentsRequest, paginator: StandardPaginator ) {
+        self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
-    public init( request: SequenceCommentsRequest, paginator: StandardPaginator) {
-        self.init(sequenceID: request.sequenceID, paginator: paginator)
-    }
-    
-    private init(sequenceID: Int64, paginator: StandardPaginator) {
+    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
         self.sequenceID = sequenceID
     }

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VStream: PersistenceParsable, StreamItemParser {
+extension VStream: PersistenceParsable {
     
     func populate( fromSourceModel stream: Stream ) {
         remoteId        = String(stream.remoteID)
@@ -18,7 +18,7 @@ extension VStream: PersistenceParsable, StreamItemParser {
         name            = stream.name
         count           = stream.postCount
         
-        let streamItems = self.parseStreamItems( stream.items, context: self.persistentStoreContext)
+        let streamItems = VStreamItem.parseStreamItems( stream.items, context: self.persistentStoreContext)
         self.addObjects( streamItems, to: "streamItems" )
     }
 }

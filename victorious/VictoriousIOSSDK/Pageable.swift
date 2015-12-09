@@ -16,13 +16,13 @@ public protocol Pageable: RequestType {
     /// A request that will load the previous page of data relative to the receiver
     /// or `nil` if the receiver represents the first page.
     ///
-    /// -parameter request: A request to copy and configure for the previous page relative to it
+    /// - parameter request: A request to copy and configure for the previous page relative to it
     init?( previousFromSourceRequest request: Self )
     
     /// A request that will load the next page of data relative to the receiver
     /// or `nil` if the receiver represents the last page.
     ///
-    /// -parameter request: A request to copy and configure for the next page relative to it
+    /// - parameter request: A request to copy and configure for the next page relative to it
     init?( nextRequestFromRequest request: Self )
 }
 
@@ -34,8 +34,8 @@ public protocol ResultBasedPageable {
     /// A request that will load the next page of data relative to the receiver
     /// or `nil` if the receiver represents the last page.
     ///
-    /// -parameter request: A request to copy and configure for the next page relative to it
-    /// -parameter resultCount: The number of paginated results returned in the previous
+    /// - parameter request: A request to copy and configure for the next page relative to it
+    /// - parameter resultCount: The number of paginated results returned in the previous
     /// execution of the provided `request` parameter
     init?( nextRequestFromRequest request: Self, resultCount: Int )
 }

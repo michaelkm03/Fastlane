@@ -8,17 +8,12 @@
 
 #import "NSArray+VMap.h"
 #import "NSString+VCrypto.h"
-#import "NSCharacterSet+VURLParts.h"
-
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
-
 #import "VHashtag+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VUser.h"
-
 #import "TWAPIManager.h"
-
 #import "VConstants.h"
 #import "VJSONHelper.h"
 
@@ -368,7 +363,7 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
     NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
     NSString *url;
     if ( context != nil )

@@ -9,6 +9,9 @@
 #import "VAbstractStreamCollectionViewController.h"
 #import "VHasManagedDependencies.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
+
+@import VictoriousIOSSDK;
+
 /**
     A collection view controller that displays content in a format determined its "directoryCell" component
  */

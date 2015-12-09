@@ -12,7 +12,6 @@
 #import "VHashtag+RestKit.h"
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
-#import "NSCharacterSet+VURLParts.h"
 #import "VUser+Fetcher.h"
 
 @implementation VObjectManager (Discover)
@@ -258,7 +257,7 @@
         pageLimit = 15;
     }
     
-    NSString *escapedHashtag = [hashtag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *escapedHashtag = [hashtag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
 
     return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", escapedHashtag, (long)pageLimit]
                object:nil

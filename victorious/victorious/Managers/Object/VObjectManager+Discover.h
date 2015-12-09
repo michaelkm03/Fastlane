@@ -9,6 +9,8 @@
 #import "VObjectManager.h"
 #import "VAbstractFilter+RestKit.h"
 
+@import VictoriousIOSSDK;
+
 @class VHashtag;
 
 @interface VObjectManager (Discover)

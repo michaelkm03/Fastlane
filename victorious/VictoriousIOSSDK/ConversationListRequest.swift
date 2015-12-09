@@ -16,11 +16,11 @@ public struct ConversationListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.paginator = StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+    public init( paginator: StandardPaginator = StandardPaginator() ) {
+        self.paginator = paginator
     }
     
-    public init(request: ConversationListRequest, paginator: StandardPaginator) {
+    public init( request: ConversationListRequest, paginator: StandardPaginator ) {
         self.paginator = paginator
     }
     

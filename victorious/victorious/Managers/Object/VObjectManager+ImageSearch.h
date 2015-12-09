@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+@import VictoriousIOSSDK;
+
 @interface VObjectManager (ImageSearch)
 
 /**

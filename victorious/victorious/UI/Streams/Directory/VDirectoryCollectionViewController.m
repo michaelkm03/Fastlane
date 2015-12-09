@@ -17,7 +17,6 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VSDKURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
