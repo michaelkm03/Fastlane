@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
 static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
-static NSString * const kIsAnonymousUser = @"com.getvictorious.user.is_anonymous";
 
 
 @implementation VUserManager
@@ -411,11 +410,6 @@ static NSString * const kIsAnonymousUser = @"com.getvictorious.user.is_anonymous
      }];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
-}
-
-+ (BOOL)isAnonymousUser
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kIsAnonymousUser];
 }
 
 @end

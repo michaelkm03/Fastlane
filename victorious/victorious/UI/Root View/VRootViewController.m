@@ -37,8 +37,6 @@
 #import "VCrashlyticsLogTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
-static NSString * const kBirthdayProvidedByUser = @"com.getvictorious.age_gate.birthday_provided";
-static NSString * const kIsAnonymousUser = @"com.getvictorious.user.is_anonymous";
 
 static const NSTimeInterval kAnimationDuration = 0.25f;
 
@@ -245,9 +243,9 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.launchState = VAppLaunchStateWaiting;
     
-#warning The ageGateActivated is hardcoded here. It should determined by a build flag 
-    BOOL ageGateActivated = NO;
-    BOOL userHasProvidedBirthday = [[NSUserDefaults standardUserDefaults] boolForKey:kBirthdayProvidedByUser];
+#warning The ageGateActivated is hardcoded here. It should determined by a build flag
+    BOOL ageGateActivated = [AgeGateViewController isAgeGateEnabled];
+    BOOL userHasProvidedBirthday = [AgeGateViewController isBirthdayProvided];
     
     if (ageGateActivated && !userHasProvidedBirthday)
     {
@@ -563,11 +561,6 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)continueButtonTapped:(BOOL)isAnonymousUser
 {
-    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
-    [standardDefaults setValue:@(YES) forKey:kBirthdayProvidedByUser];
-    [standardDefaults setValue:@(isAnonymousUser) forKey:kIsAnonymousUser];
-    [standardDefaults synchronize];
-    
     [self showLoadingViewController];
 }
 

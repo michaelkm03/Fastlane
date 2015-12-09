@@ -174,7 +174,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-    self.loginOperation = [VUserManager isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[VLoginOperation alloc] init];
+    self.loginOperation = [AgeGateViewController isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     
     self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];

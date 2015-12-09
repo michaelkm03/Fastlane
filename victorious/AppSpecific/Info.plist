@@ -155,5 +155,11 @@
 	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
+	<key>IsAgeGateEnabled</key>
+	<string>yes</string>
+	<key>AnonymousAccountUserID</key>
+	<string>-1</string>
+	<key>AnonymousAccountUserToken</key>
+	<string>n39iPtAaRNXrOMF7SGL62t51NQs2os5220LkGL7cWcBmjnah8M</string>
 </dict>
 </plist>
