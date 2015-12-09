@@ -13,7 +13,7 @@ public struct DeviceExperiment {
     public let id: Int64
     public let name: String
     public let bucketType: String
-    public let numberOfBuckets: Int64?
+    public let numberOfBuckets: Int64
     public let layerID: Int64
     public let layerName: String
 }
@@ -35,7 +35,7 @@ extension DeviceExperiment {
         }
         name = json["name"].stringValue
         bucketType = json["bucket_type"].stringValue
-        numberOfBuckets = Int64(json["num_buckets"].stringValue)
+        numberOfBuckets = Int64(json["num_buckets"].stringValue) ?? 0
         layerName = json["layer_name"].stringValue
     }
 }

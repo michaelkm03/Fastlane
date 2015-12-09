@@ -19,12 +19,13 @@ public struct DeviceExperimentsRequest: RequestType {
         return NSURLRequest(URL: NSURL(string: "/api/device/experiments")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [DeviceExperiment]{
-        guard let experimentsJSON = responseJSON["payload"].array else {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (experiments: [DeviceExperiment],defaultExperimentIDs: [Int64]){
+        guard let experimentsJSON = responseJSON["payload"].array,
+            let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
             throw ResponseParsingError()
         }
         
-        return experimentsJSON.flatMap { DeviceExperiment(json: $0) }
+        return (experimentsJSON.flatMap { DeviceExperiment(json: $0) }, defaultExperimentsJSON.flatMap{Int64($0.stringValue)} )
     }
     
 }

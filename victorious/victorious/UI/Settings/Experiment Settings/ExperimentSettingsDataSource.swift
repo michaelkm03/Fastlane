@@ -19,6 +19,8 @@ protocol ExperimentSettingsDataSourceDelegate: class {
 
 class ExperimentSettingsDataSource: NSObject {
     
+    private let persistentStore = MainPersistentStore()
+    
     weak var delegate:ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
@@ -73,30 +75,36 @@ class ExperimentSettingsDataSource: NSObject {
         self.state = .Loading
         self.delegate?.tableView.reloadData()
         
-        VObjectManager.sharedManager().getDeviceExperiments(
-            success: { (experiments, defaultExperimentIds) -> Void in
-                
-                let activeExperiments = self.experimentSettings.activeExperiments ?? defaultExperimentIds
-                for experiment in experiments {
-                    experiment.isEnabled = activeExperiments.contains( experiment.id.integerValue )
-                }
-                
-                self.updateTintColor()
-                
-                let layers = Set<String>( experiments.map { $0.layerName } )
-                for layer in layers {
-                    let experimentsInLayer = experiments.filter { $0.layerName == layer }
-                    self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
-                }
-                
-                self.state = self.sections.count > 0 ? .Content : .NoContent
-                self.delegate?.tableView.reloadData()
-            },
-            failure: { (operation, error) -> Void in
+        let experimentsOperation = DeviceExperimentsOperation()
+        experimentsOperation.queue() { error in
+            guard error == nil else {
+                /// Handle Error
                 self.sections = []
                 self.state = .Error
+                return
             }
-        )
+            
+            let experiments: [Experiment] = self.persistentStore.sync{ context in
+                return context.findObjects()
+            }
+            
+            let activeExperiments = self.experimentSettings.activeExperiments ?? experimentsOperation.defaultExperimentIDs
+            for experiment in experiments {
+                experiment.isEnabled = activeExperiments.contains( experiment.id.integerValue )
+            }
+
+            self.updateTintColor()
+            
+            let layers = Set<String>( experiments.map { $0.layerName } )
+            for layer in layers {
+                let experimentsInLayer = experiments.filter { $0.layerName == layer }
+                self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
+            }
+            
+            self.state = self.sections.count > 0 ? .Content : .NoContent
+            self.delegate?.tableView.reloadData()
+            
+        }
     }
     
     private func updateTintColor() {
