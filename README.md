@@ -1,8 +1,11 @@
+# VictoriousiOS
+Victorious iOS app
+
 ## Deployment
 
 ### Prerequisites
 - Install [Homebrew](http://brew.sh)
-- install Xcode 7.0.1 from apple developer site
+- Install the version of Xcode which was used to develop the latest app version on the master branch
 - Install rbenv using [these instructions](http://www.startprogrammingnowbook.com/book/setup#uid10)
 
 ### Setup
