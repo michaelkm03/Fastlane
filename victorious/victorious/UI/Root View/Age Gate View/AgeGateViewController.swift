@@ -18,8 +18,16 @@ class AgeGateViewController: UIViewController {
     @IBOutlet private weak var dimmingView: UIView!
     @IBOutlet private weak var widgetBackground: UIView!
     @IBOutlet private weak var promptLabel: UILabel!
-    @IBOutlet private weak var datePicker: UIDatePicker!
-    @IBOutlet private weak var continueButton: UIButton!
+    @IBOutlet private weak var datePicker: UIDatePicker! {
+        didSet {
+            datePicker.maximumDate = NSDate()
+        }
+    }
+    @IBOutlet private weak var continueButton: UIButton! {
+        didSet {
+            continueButton.enabled = false
+        }
+    }
     @IBOutlet private var separatorHeightConstraints: [NSLayoutConstraint]!
     
     private weak var delegate: AgeGateViewControllerDelegate?
@@ -61,6 +69,10 @@ class AgeGateViewController: UIViewController {
     @IBAction private func tappedOnContinue(sender: UIButton) {
         let shouldBeAnonymous = isUserYoungerThan(13)
         delegate?.continueButtonTapped(shouldBeAnonymous)
+    }
+    
+    @IBAction private func selectedBirthday(sender: UIDatePicker) {
+        continueButton.enabled = true
     }
     
     //MARK: - Private functions
