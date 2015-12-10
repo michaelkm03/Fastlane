@@ -25,8 +25,8 @@ import Foundation
     }
     
     static func isAnonymousUser() -> Bool {
-        //FIXME: temporary
-        return true
+        //FIXME: temporary setting user 4041 as the anonymous user
+        return VObjectManager.sharedManager().mainUser?.remoteId == 4041
 //        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
