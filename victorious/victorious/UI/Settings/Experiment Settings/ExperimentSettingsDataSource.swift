@@ -105,7 +105,6 @@ class ExperimentSettingsDataSource: NSObject {
             
             self.state = self.sections.count > 0 ? .Content : .NoContent
             self.delegate?.tableView.reloadData()
-            
         }
     }
     

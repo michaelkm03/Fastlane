@@ -9,14 +9,10 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// Encapsulates requesting and persisting hte results of a request for the current device's experiments.
-/// By the time the completion block has been called for this operation the results will have been parsed 
-/// and peristed to the parent background context.
 class DeviceExperimentsOperation: RequestOperation {
     
     private let request = DeviceExperimentsRequest()
     
-    /// Calling code can read the default experiments IDs from this property.
     private(set) var defaultExperimentIDs: Set<Int> = []
     
     override func main() {
@@ -25,7 +21,6 @@ class DeviceExperimentsOperation: RequestOperation {
     
     private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int64]), completion:() -> () ) {
         
-        /// Persist to Core Data in the background
         persistentStore.asyncFromBackground(){ context in
             for experiment in result.experiments {
                 let persistentExperiment: Experiment = context.findOrCreateObject(["id": NSNumber(longLong: experiment.id),
