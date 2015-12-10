@@ -16,6 +16,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -200,6 +201,12 @@
 
 - (void)applyStyle
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.primaryActionButton removeFromSuperview];
+        self.primaryActionButton = nil;
+        return;
+    }
     NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey];
     const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManagerProfileEditButtonStylePill];
     [self.primaryActionButton layoutIfNeeded];
