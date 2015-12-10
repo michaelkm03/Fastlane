@@ -157,7 +157,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupFirstLaunchOperations];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self setupFirstLaunchOperations];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -404,12 +407,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.hasSetupFirstLaunchOperations = YES;
     
     // Login
-    if ( ![AgeGate isAnonymousUser] )
-    {
-        [self queueLoginOperation];
-        [self queueFirstTimeContentOperation];
-        [self queuePushNotificationOperation];
-    }
+    [self queueLoginOperation];
+    [self queueFirstTimeContentOperation];
+    [self queuePushNotificationOperation];
     
     NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
