@@ -237,7 +237,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdatePollsData
 {
-    if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
+    BOOL shouldShowPollResults = !self.viewModel.votingEnabled || [AgeGate isAnonymousUser];
+    if ( shouldShowPollResults && !self.isBeingDismissed )
     {
         [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
         [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
