@@ -34,6 +34,8 @@
 #import "VSequencePermissions.h"
 #import "VComment+Fetcher.h"
 
+#import "victorious-Swift.h"
+
 static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 20.0f, 55.0f };
 
 static NSCache *_sharedImageCache = nil;
@@ -111,8 +113,11 @@ static NSCache *_sharedImageCache = nil;
     
     self.commentersAvatarButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self setupSwipeView];
-    [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self setupSwipeView];
+        [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
+    }
 }
 
 - (void)prepareContentAndMediaView
