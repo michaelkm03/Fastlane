@@ -29,14 +29,14 @@ extension VNotificationSettings {
     func networkPreferences() -> [NotificationPreference: Bool] {
         var networkPreferences = [NotificationPreference: Bool]()
         
-        networkPreferences[.CreatorPost] = self.isPostFromCreatorEnabled.boolValue
-        networkPreferences[.FollowPost] = self.isPostFromFollowedEnabled.boolValue
-        networkPreferences[.CommentPost] = self.isNewCommentOnMyPostEnabled.boolValue
-        networkPreferences[.PrivateMessage] = self.isNewPrivateMessageEnabled.boolValue
-        networkPreferences[.TagPost] = self.isPostOnFollowedHashTagEnabled.boolValue
-        networkPreferences[.Mention] = self.isUserTagInCommentEnabled.boolValue
-        networkPreferences[.LikePost] = self.isPeopleLikeMyPostEnabled.boolValue
-        networkPreferences[.NewFollower] = self.isNewFollowerEnabled.boolValue
+        networkPreferences[.CreatorPost] = self.isPostFromCreatorEnabled?.boolValue ?? false
+        networkPreferences[.FollowPost] = self.isPostFromFollowedEnabled?.boolValue ?? false
+        networkPreferences[.CommentPost] = self.isNewCommentOnMyPostEnabled?.boolValue ?? false
+        networkPreferences[.PrivateMessage] = self.isNewPrivateMessageEnabled?.boolValue ?? false
+        networkPreferences[.TagPost] = self.isPostOnFollowedHashTagEnabled?.boolValue ?? false
+        networkPreferences[.Mention] = self.isUserTagInCommentEnabled?.boolValue ?? false
+        networkPreferences[.LikePost] = self.isPeopleLikeMyPostEnabled?.boolValue ?? false
+        networkPreferences[.NewFollower] = self.isNewFollowerEnabled?.boolValue ?? false
         
         return networkPreferences
     }
