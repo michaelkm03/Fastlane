@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// A class responsible for Age gate related non-UI logics,
+/// e.g. User defaults read/write, filtering array of app components for disabling.
+/// Note: This class contains only static methods, it should not be instantiated in general
 @objc class AgeGate: NSObject {
     private struct DictionaryKeys {
         static let birthdayProvidedByUser = "com.getvictorious.age_gate.birthday_provided"
