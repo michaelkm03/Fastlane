@@ -72,4 +72,14 @@ import Foundation
     static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
         return containerChilds.filter() { !$0.isKindOfClass(VDiscoverContainerViewController) }
     }
+    
+    static func isTrackingEventAllowed(forEventName eventName: String) -> Bool {
+        let allowedTrackingEvents = [
+            VTrackingEventApplicationFirstInstall,
+            VTrackingEventApplicationDidLaunch,
+            VTrackingEventApplicationDidEnterForeground,
+            VTrackingEventApplicationDidEnterBackground
+        ]
+        return allowedTrackingEvents.contains(eventName)
+    }
 }

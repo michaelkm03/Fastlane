@@ -292,6 +292,12 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    
+    if ([AgeGate isAnonymousUser] && ![AgeGate isTrackingEventAllowedForEventName:eventName])
+    {
+        return;
+    }
+        
     NSArray *templateURLs = [self templateURLsWithEventName:eventName eventParameters:parameters];
     NSArray *eventURLs = parameters[ VTrackingKeyUrls ];
     NSArray *allURLs = [eventURLs ?: @[] arrayByAddingObjectsFromArray:templateURLs];
