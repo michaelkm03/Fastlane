@@ -26,7 +26,7 @@ import Foundation
     
     static func isAnonymousUser() -> Bool {
         //FIXME: temporary
-        return false
+        return true
 //        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
