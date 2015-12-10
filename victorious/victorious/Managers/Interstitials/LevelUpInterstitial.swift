@@ -17,9 +17,9 @@ struct FanLoyalty {
         self.progressPercentage = progressPercentage
     }
     
-    init?(optionalLevel: Int?, progressPercentage: Int?) {
-        if let level = optionalLevel,
-            let progressPercentage = progressPercentage {
+    init?(dictionary: [String: AnyObject]?) {
+        if let level = dictionary?["level"] as? Int,
+            let progressPercentage = dictionary?["progress"] as? Int {
                 self.init(level: level, progressPercentage: progressPercentage)
         } else {
             return nil
