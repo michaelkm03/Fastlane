@@ -932,8 +932,6 @@
 		A7D0AD321C0D453D0018C63E /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A7D0AD331C0D453D0018C63E /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
 		A7D0ADBC1C0D45470018C63E /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
-		A7D0AE001C0E1DBC0018C63E /* Persistence.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7D0ADF91C0E1DBB0018C63E /* Persistence.framework */; };
-		A7D0AE011C0E1DBC0018C63E /* Persistence.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7D0ADF91C0E1DBB0018C63E /* Persistence.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */; };
 		A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378351AEF4ED5007FF197 /* VProfileHeaderCell.m */; };
 		A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378391AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m */; };
@@ -1672,13 +1670,6 @@
 			remoteGlobalIDString = 0370FBB21B71B260009047B6;
 			remoteInfo = VictoriousCommon;
 		};
-		A7D0ADFE1C0E1DBC0018C63E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A7D0ADF81C0E1DBB0018C63E;
-			remoteInfo = Persistence;
-		};
 		A7DB4D301B7AB1D400199D10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1722,7 +1713,6 @@
 			files = (
 				03314F321BE3E2DF00EE74FD /* VictoriousIOSSDK.framework in Embed Frameworks */,
 				0370FBCB1B71B261009047B6 /* VictoriousCommon.framework in Embed Frameworks */,
-				A7D0AE011C0E1DBC0018C63E /* Persistence.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3302,7 +3292,6 @@
 		A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VRenderablePreviewView.h; sourceTree = "<group>"; };
 		A7D047931B97AE140091F366 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
 		A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewStreamTransition.swift; sourceTree = "<group>"; };
-		A7D0ADF91C0E1DBB0018C63E /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewControllerTests.m; sourceTree = "<group>"; };
 		A7D3782D1AEF39FC007FF197 /* VHashtagSelectionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagSelectionResponder.h; sourceTree = "<group>"; };
 		A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPassthroughContainerView.h; sourceTree = "<group>"; };
@@ -4420,13 +4409,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D0ADF51C0E1DBB0018C63E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A7DB4D271B7AB1D300199D10 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -4439,7 +4421,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D0AE001C0E1DBC0018C63E /* Persistence.framework in Frameworks */,
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */,
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
@@ -7740,7 +7721,6 @@
 				03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */,
 				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
 				EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */,
-				A7D0ADF91C0E1DBB0018C63E /* Persistence.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9218,13 +9198,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A7D0ADF61C0E1DBB0018C63E /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -9347,24 +9320,6 @@
 			productReference = 0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A7D0ADF81C0E1DBB0018C63E /* Persistence */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A7D0AE071C0E1DBD0018C63E /* Build configuration list for PBXNativeTarget "Persistence" */;
-			buildPhases = (
-				A7D0ADF41C0E1DBB0018C63E /* Sources */,
-				A7D0ADF51C0E1DBB0018C63E /* Frameworks */,
-				A7D0ADF61C0E1DBB0018C63E /* Headers */,
-				A7D0ADF71C0E1DBB0018C63E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Persistence;
-			productName = Persistence;
-			productReference = A7D0ADF91C0E1DBB0018C63E /* Persistence.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		A7DB4D291B7AB1D300199D10 /* UIAutomationTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7DB4D371B7AB1D400199D10 /* Build configuration list for PBXNativeTarget "UIAutomationTests" */;
@@ -9410,7 +9365,6 @@
 			dependencies = (
 				0370FBC91B71B261009047B6 /* PBXTargetDependency */,
 				03314F301BE3E2DF00EE74FD /* PBXTargetDependency */,
-				A7D0ADFF1C0E1DBC0018C63E /* PBXTargetDependency */,
 			);
 			name = victorious;
 			productName = victorious;
@@ -9491,10 +9445,6 @@
 						CreatedOnToolsVersion = 6.4;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
-					A7D0ADF81C0E1DBB0018C63E = {
-						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = ABHRJGEGKA;
-					};
 					A7DB4D291B7AB1D300199D10 = {
 						CreatedOnToolsVersion = 6.4;
 						TestTargetID = BE171D751868BE64004E5202;
@@ -9548,7 +9498,6 @@
 				03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
 				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				EBEA19B51BC4A76C00878B18 /* victoriousUITests */,
-				A7D0ADF81C0E1DBB0018C63E /* Persistence */,
 			);
 		};
 /* End PBXProject section */
@@ -9654,13 +9603,6 @@
 			files = (
 				0352FC781B72B09900DB6EAB /* templateCache.json in Resources */,
 				0370FBF31B728618009047B6 /* templateWithImageURLs.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A7D0ADF71C0E1DBB0018C63E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10561,13 +10503,6 @@
 				0370FBF21B728612009047B6 /* VTemplatePackageManagerTests.m in Sources */,
 				0352FC6F1B729B0300DB6EAB /* VTemplateDownloadOperationTests.m in Sources */,
 				0352FC6B1B729B0300DB6EAB /* VDataCacheTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A7D0ADF41C0E1DBB0018C63E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11669,11 +11604,6 @@
 			isa = PBXTargetDependency;
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
 			targetProxy = 0370FBC81B71B261009047B6 /* PBXContainerItemProxy */;
-		};
-		A7D0ADFF1C0E1DBC0018C63E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A7D0ADF81C0E1DBB0018C63E /* Persistence */;
-			targetProxy = A7D0ADFE1C0E1DBC0018C63E /* PBXContainerItemProxy */;
 		};
 		A7DB4D311B7AB1D400199D10 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -13228,145 +13158,6 @@
 			};
 			name = Staging;
 		};
-		A7D0AE021C0E1DBC0018C63E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Persistence/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.Persistence;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		A7D0AE031C0E1DBC0018C63E /* QA */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Persistence/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.Persistence;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = QA;
-		};
-		A7D0AE041C0E1DBC0018C63E /* Staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Persistence/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.Persistence;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Staging;
-		};
-		A7D0AE051C0E1DBC0018C63E /* Stable */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Persistence/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.Persistence;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Stable;
-		};
-		A7D0AE061C0E1DBC0018C63E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = Persistence/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.Persistence;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		A7DB4D321B7AB1D400199D10 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DF7570C25D953516D1D78115 /* Pods-UIAutomationTests.debug.xcconfig */;
@@ -14029,18 +13820,6 @@
 				0370FBD61B71B262009047B6 /* Staging */,
 				0370FBD71B71B262009047B6 /* Stable */,
 				0370FBD81B71B262009047B6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A7D0AE071C0E1DBD0018C63E /* Build configuration list for PBXNativeTarget "Persistence" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A7D0AE021C0E1DBC0018C63E /* Debug */,
-				A7D0AE031C0E1DBC0018C63E /* QA */,
-				A7D0AE041C0E1DBC0018C63E /* Staging */,
-				A7D0AE051C0E1DBC0018C63E /* Stable */,
-				A7D0AE061C0E1DBC0018C63E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
