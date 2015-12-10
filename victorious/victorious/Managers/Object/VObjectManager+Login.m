@@ -313,6 +313,28 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     return NO;
 }
 
+- (BOOL)loginWithAnonymousUserToken
+{
+    VUser *newAnonymousUser = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    
+    newAnonymousUser.remoteId = [NSNumber numberWithLongLong:[AgeGate anonymousUserID].longLongValue];
+    newAnonymousUser.token = [AgeGate anonymousUserToken];
+    
+    VLoginType loginType = VLogintypeAnonymous;
+    [self loggedInWithUser:newAnonymousUser loginType:loginType];
+    
+    if ( self.mainUser != nil )
+    {
+        [[VObjectManager sharedManager] fetchUser:self.mainUser.remoteId
+                                      forceReload:YES
+                                 withSuccessBlock:nil
+                                        failBlock:nil];
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - LoggedIn
 
 - (void)loggedInWithUser:(VUser *)user loginType:(VLoginType)loginType

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder>
+@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder, AgeGateViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -139,8 +139,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
     }
-    
-    [self showLoadingViewController];
+    [self showInitialScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -228,11 +227,33 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showLoadingViewController
 {
-    self.launchState = VAppLaunchStateWaiting;
     self.loadingViewController = [VLoadingViewController loadingViewController];
     self.loadingViewController.delegate = self;
     self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
     [self showViewController:self.loadingViewController animated:NO completion:nil];
+}
+
+- (void)showAgeGateViewController
+{
+    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self];
+    [self showViewController:ageGateViewController animated:NO completion:nil];
+}
+
+- (void)showInitialScreen
+{
+    self.launchState = VAppLaunchStateWaiting;
+    
+    BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
+    BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
+    
+    if (ageGateActivated && !userHasProvidedBirthday)
+    {
+        [self showAgeGateViewController];
+    }
+    else
+    {
+        [self showLoadingViewController];
+    }
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -533,6 +554,13 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                       andCompletion:completion
                  fromViewController:sourceViewController
                      withScreenName:screenName];
+}
+
+#pragma mark - AgeGateViewControllerDelegate
+
+- (void)continueButtonTapped:(BOOL)isAnonymousUser
+{
+    [self showLoadingViewController];
 }
 
 #pragma mark - VHashtag
