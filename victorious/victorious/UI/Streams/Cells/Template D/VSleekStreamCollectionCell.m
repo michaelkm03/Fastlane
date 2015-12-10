@@ -141,7 +141,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              CGFloat previewHeight =  VCEIL( size.width  / [sequence previewAssetAspectRatio] );
              return CGSizeMake( 0.0f, previewHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        if ( ![AgeGate isAnonymousUser] )
+        {
+            [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        }
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
@@ -364,8 +367,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
     self.inStreamCommentsCollectionViewHeightConstraint.active = !hasComments;
     
-    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
-    self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+        self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
+    }
 
     [super updateConstraints];
 }
