@@ -13,7 +13,10 @@ import VictoriousIOSSDK
 extension VStreamItem {
     
     static func parseStreamItems(streamItems: [StreamItemType], context: PersistentStoreContext) -> [VStreamItem] {
-        return streamItems.flatMap {
+        let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.StreamItem)
+        let unflaggedStreamItems = streamItems.filter { !flaggedIds.contains(String($0.remoteID)) }
+        
+        return unflaggedStreamItems.flatMap {
             if let sequence = $0 as? Sequence {
                 let persistentSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ]) as VSequence
                 persistentSequence.populate( fromSourceModel: sequence )

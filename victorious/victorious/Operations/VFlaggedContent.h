@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Describes a kind of flag-able content
  */
@@ -15,12 +17,24 @@ typedef NS_ENUM(NSInteger, VFlaggedContentType)
     VFlaggedContentTypeComment
 };
 
-#warning TODO: Write unit tests
+extern const NSTimeInterval VDefaultRefreshTimeInterval;
 
 /**
  Defines some helpful methods for managing the contents that a user has flagged
  */
 @interface VFlaggedContent : NSObject
+
+- (instancetype)initWithDefaults:(NSUserDefaults *)defaults;
+
+- (instancetype)initWithDefaults:(NSUserDefaults *_Nullable)defaults
+             refreshTimeInterval:(NSTimeInterval)timeInterval NS_DESIGNATED_INITIALIZER;
+
+/**
+ Determines the interval of time after which flagged content is considered old and and will
+ be removed when `refreshFlaggedContents` is called.  A default value of 30 days is used
+ if not set, as defined by `VDefaultRefreshTimeInterval`.
+ */
+@property (nonatomic, assign) NSTimeInterval refreshTimeInterval;
 
 /**
  Removes contents that are sufficiently old from the flagged contents arrays
@@ -28,31 +42,9 @@ typedef NS_ENUM(NSInteger, VFlaggedContentType)
 - (void)refreshFlaggedContents;
 
 /**
- Creates an array of comments after removing those flagged by a user on this device.
- 
- @parameter comments The array of comments that could contain flagged comments.
- 
- @return An array of comments minus those that have been flagged by a user on this device.
- */
-- (NSArray *)commentsAfterStrippingFlaggedItems:(NSArray *)comments;
-
-/**
- Creates an array of stream items after removing those flagged by a user on this device.
- 
- @parameter streamItems The array of stream items that could contain flagged stream items.
- 
- @return An array of stream items minus those that have been flagged by a user on this device.
- */
-- (NSArray *)streamItemsAfterStrippingFlaggedItems:(NSArray *)streamItems;
-
-/**
  Returns the ids of all flagged contents of the provided type.
- 
- @parameter type The type of content whose content ids are desired.
- 
- @return An array of strings representing the remote ids of contents that have been flagged.
  */
-- (NSArray *)flaggedContentIdsWithType:(VFlaggedContentType)type;
+- (NSArray<NSString *> *)flaggedContentIdsWithType:(VFlaggedContentType)type;
 
 /**
  Adds the provided id of a piece of content to the array flagged items of the provided type.
@@ -63,3 +55,5 @@ typedef NS_ENUM(NSInteger, VFlaggedContentType)
 - (void)addRemoteId:(NSString *)remoteId toFlaggedItemsWithType:(VFlaggedContentType)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

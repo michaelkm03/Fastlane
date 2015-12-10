@@ -11,9 +11,37 @@
 #import "VStreamItem.h"
 #import "VFlaggedContent.h"
 
-static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 60 * 24 * 30)
+@interface VFlaggedContent()
+
+@property (nonatomic, strong) NSUserDefaults *userDefaults;
+
+@end
+
+const NSTimeInterval VDefaultRefreshTimeInterval = 2592000.0f; //30 days (60 * 60 * 24 * 30)
 
 @implementation VFlaggedContent
+
+- (instancetype)init
+{
+    return [self initWithDefaults:[NSUserDefaults standardUserDefaults]
+              refreshTimeInterval:VDefaultRefreshTimeInterval];
+}
+
+- (instancetype)initWithDefaults:(NSUserDefaults *)defaults
+{
+    return [self initWithDefaults:defaults refreshTimeInterval:VDefaultRefreshTimeInterval];
+}
+
+- (instancetype)initWithDefaults:(NSUserDefaults *)defaults refreshTimeInterval:(NSTimeInterval)timeInterval
+{
+    self = [super init];
+    if (self)
+    {
+        _userDefaults = defaults;
+        _refreshTimeInterval = timeInterval;
+    }
+    return self;
+}
 
 - (void)refreshFlaggedContents
 {
@@ -30,7 +58,7 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
     for ( NSString *remoteId in remoteIds )
     {
         NSDate *expirationDate = [flaggedContents objectForKey:remoteId];
-        if ( expirationDate.timeIntervalSinceNow < -kFlagHideTimeInterval )
+        if ( expirationDate.timeIntervalSinceNow < -self.refreshTimeInterval )
         {
             needsUpdate = YES;
             [validFlaggedContents removeObjectForKey:remoteId];
@@ -38,37 +66,9 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
     }
     if ( needsUpdate )
     {
-        [[NSUserDefaults standardUserDefaults] setObject:validFlaggedContents forKey:[self flagArrayKeyForType:type]];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.userDefaults setObject:validFlaggedContents forKey:[self flagArrayKeyForType:type]];
+        [self.userDefaults synchronize];
     }
-}
-
-- (NSArray *)commentsAfterStrippingFlaggedItems:(NSArray *)comments
-{
-    NSArray *flaggedCommentIds = [self flaggedContentIdsWithType:VFlaggedContentTypeComment];
-    NSMutableArray *safeComments = [comments mutableCopy];
-    for ( VComment *comment in comments )
-    {
-        if ( [flaggedCommentIds containsObject:comment.remoteId.stringValue] )
-        {
-            [safeComments removeObject:comment];
-        }
-    }
-    return safeComments;
-}
-
-- (NSArray *)streamItemsAfterStrippingFlaggedItems:(NSArray *)streamItems
-{
-    NSArray *flaggedStreamItemIds = [self flaggedContentIdsWithType:VFlaggedContentTypeStreamItem];
-    NSMutableArray *safeStreamItems = [streamItems mutableCopy];
-    for ( VStreamItem *streamItem in streamItems )
-    {
-        if ( [flaggedStreamItemIds containsObject:streamItem.remoteId] )
-        {
-            [safeStreamItems removeObject:streamItem];
-        }
-    }
-    return safeStreamItems;
 }
 
 - (void)addRemoteId:(NSString *)remoteId toFlaggedItemsWithType:(VFlaggedContentType)type
@@ -79,11 +79,11 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
     }
     NSMutableDictionary *contents = [[self flaggedContentDictionaryWithType:type] mutableCopy];
     [contents setObject:[NSDate date] forKey:remoteId];
-    [[NSUserDefaults standardUserDefaults] setObject:contents forKey:[self flagArrayKeyForType:type]];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.userDefaults setObject:contents forKey:[self flagArrayKeyForType:type]];
+    [self.userDefaults synchronize];
 }
 
-- (NSArray *)flaggedContentIdsWithType:(VFlaggedContentType)type
+- (NSArray<NSString *> *)flaggedContentIdsWithType:(VFlaggedContentType)type
 {
     return [self flaggedContentDictionaryWithType:type].allKeys;
 }
@@ -91,12 +91,12 @@ static const NSTimeInterval kFlagHideTimeInterval = 2592000.0f; //30 days (60 * 
 - (NSDictionary *)flaggedContentDictionaryWithType:(VFlaggedContentType)type
 {
     NSString *key = [self flagArrayKeyForType:type];
-    NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    NSDictionary *dictionary = [self.userDefaults objectForKey:key];
     if ( dictionary == nil )
     {
         dictionary = @{};
-        [[NSUserDefaults standardUserDefaults] setObject:dictionary forKey:key];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.userDefaults setObject:dictionary forKey:key];
+        [self.userDefaults synchronize];
     }
     return dictionary;
 }

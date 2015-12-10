@@ -31,8 +31,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
         
-        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment)?.flatMap { $0 as? Int64 } ?? []
-        if comments.count > 0 {
+        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { $0 as? Int64 } ?? []
+        if !comments.isEmpty {
             persistentStore.asyncFromBackground() { context in
                 var newComments = [VComment]()
                 for comment in comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
