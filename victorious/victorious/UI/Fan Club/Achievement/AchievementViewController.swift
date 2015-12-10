@@ -49,7 +49,10 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
             if let achievementInterstitial = achievementInterstitial {
                 descriptionLabel.text = achievementInterstitial.description
                 titleLabel.text = achievementInterstitial.title
-                animatedBadge?.levelNumberString = String(achievementInterstitial.level)
+                
+                if let fanLoyalty = achievementInterstitial.fanLoyalty {
+                    animatedBadge?.levelNumberString = String(fanLoyalty.level)
+                }
                 
                 guard let iconURL = achievementInterstitial.icons.first where iconURL.absoluteString.characters.count > 0 else {
                     // In order to add space between the description label and the dismiss button
@@ -89,13 +92,18 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
-        self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage, completion: nil)
         
-        // Assuming this achievement contains the most up-to-date fanloyalty info,
-        // we update the user's level and level progress when the interstitial appears
-        VObjectManager.sharedManager().mainUser?.level = achievementInterstitial.level
-        VObjectManager.sharedManager().mainUser?.levelProgressPercentage = achievementInterstitial.progressPercentage
+        if let  fanLoyalty = achievementInterstitial.fanLoyalty {
+            if let animatedBadge = animatedBadge {
+                let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(fanLoyalty.progressPercentage) / 100.0)
+                animatedBadge.animateProgress(duration, endPercentage: fanLoyalty.progressPercentage, completion: nil)
+            }
+
+            // Assuming this achievement contains the most up-to-date fanloyalty info,
+            // we update the user's level and level progress when the interstitial appears
+            VObjectManager.sharedManager().mainUser?.level = fanLoyalty.level
+            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = fanLoyalty.progressPercentage
+        }
     }
     
     private func layoutContent() {
@@ -143,17 +151,17 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         var verticalConstraintString: String
         var views: [String : UIView]
         
-        if let animatedBadge = animatedBadge {
+        if let animatedBadge = animatedBadge where achievementInterstitial.fanLoyalty != nil {
             animatedBadge.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(animatedBadge)
-            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description][icon][button(64)]|"
+            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description]-[icon]-[button(64)]|"
             views = ["badgeView" : animatedBadge, "button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
             
             animatedBadge.v_addWidthConstraint(60)
             containerView.v_addCenterHorizontallyConstraintsToSubview(animatedBadge)
         }
         else {
-            verticalConstraintString = "V:|-23-[title]-20-[description][icon][button(40)]|"
+            verticalConstraintString = "V:|-23-[title]-20-[description]-[icon]-[button(40)]|"
             views = ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
         }
         
