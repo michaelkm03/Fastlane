@@ -91,7 +91,7 @@ platform :ios do
           sigh
 
           gym(
-            scheme: 'release-victorious',
+            scheme:               'release-victorious',
             codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
           )
           version      = get_version_number(xcodeproj: "victorious.xcodeproj")
