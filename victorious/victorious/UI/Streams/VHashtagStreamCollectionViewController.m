@@ -28,6 +28,7 @@
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VUser+Fetcher.h"
 #import "VHashtag+RestKit.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -74,6 +75,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     streamCollection.followControl.dependencyManager = dependencyManager;
     streamCollection.followControl.tintUnselectedImage = YES;
     streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [streamCollection.followControl removeFromSuperview];
+        streamCollection.followControl = nil;
+    }
     
     return streamCollection;
 }
