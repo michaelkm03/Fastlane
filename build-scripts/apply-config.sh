@@ -10,7 +10,7 @@ XCARCHIVE_PATH=""
 CONFIGURATION=""
 ENVIRONMENT="production"
 
-usage(){
+show_usage () {
     echo "Usage: `basename $0` <app name> [-a <archive path> <build configuration>]"
     echo ""
     echo "If -a and -c are specified, this script will modify an .xcarchive."
@@ -20,11 +20,7 @@ usage(){
     echo ""
 }
 
-if [ "$APP_NAME" == "" ]; then
-    usage
-    exit 1
-fi
-
+# Parse command line arguments
 OPTIND=2
 while getopts "a:e:c:" opt; do
     case $opt in
@@ -41,11 +37,16 @@ while getopts "a:e:c:" opt; do
     esac
 done
 
+if [ "$APP_NAME" == "" ]; then
+  show_usage
+  exit 1
+fi
+
 if [ $A_FLAG == true -a "$CONFIGURATION" == "" ]; then
-    echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
-    echo ""
-    usage
-    exit 1
+  echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
+  echo ""
+  show_usage
+  exit 1
 fi
 
 # Grab the latest assets and configuration data from VAMS.
@@ -59,7 +60,6 @@ if [ "$RESPONSE_CODE" -ne 0 ]; then
 else
     FOLDER="$RESPONSE_MESSAGE"
 fi
-
 
 if [ $A_FLAG == true ]; then
     if [ ! -d "$XCARCHIVE_PATH" ]; then
