@@ -8,21 +8,38 @@
 
 import Foundation
 
+struct FanLoyalty {
+    let level: Int
+    let progressPercentage: Int
+    
+    init(level: Int, progressPercentage: Int) {
+        self.level = level
+        self.progressPercentage = progressPercentage
+    }
+    
+    init?(dictionary: [String: AnyObject]?) {
+        if let level = dictionary?["level"] as? Int,
+            let progressPercentage = dictionary?["progress"] as? Int {
+                self.init(level: level, progressPercentage: progressPercentage)
+        } else {
+            return nil
+        }
+    }
+}
+
 /// An interstitial that represents the level up screen
 struct LevelUpInterstitial: Interstitial {
     
     let remoteID: Int
-    let level: Int
-    let progressPercentage: Int
+    let fanLoyalty: FanLoyalty
     let title: String
     let description: String
     let icons: [NSURL]
     let videoURL: NSURL
     
-    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icons: [NSURL], videoURL: NSURL) {
+    init(remoteID: Int, fanLoyalty: FanLoyalty, title: String, description: String, icons: [NSURL], videoURL: NSURL) {
         self.remoteID = remoteID
-        self.level = level
-        self.progressPercentage = progressPercentage
+        self.fanLoyalty = fanLoyalty
         self.title = title
         self.description = description
         self.icons = icons

@@ -195,10 +195,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if ( self.isRegisteredAsNewUser )
     {
         [self.appTimingTracker endEventWithType:VAppTimingEventTypeSignup subtype:nil];
+        [self.appTimingTracker resetEventWithType:VAppTimingEventTypeLogin];
     }
     else
     {
         [self.appTimingTracker endEventWithType:VAppTimingEventTypeLogin subtype:nil];
+        [self.appTimingTracker resetEventWithType:VAppTimingEventTypeSignup];
     }
 }
 
