@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('lib')
 require 'vams/client'
-environment = :development
+environment = :dev
 client = VAMS::Client.new(environment: environment)
 puts '=== Getting apps to build'
 puts client.apps_to_build
