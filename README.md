@@ -47,3 +47,10 @@ cd <project_dir>/victorious/fastlane
 gem install fastlane
 fastlane ios deploy
 ```
+
+Fastlane runs in production environment by default. If you want to run it in a different environment, just specify `environment:<your_environment_here>` at the end of the fastlane command. See the example below:
+
+```
+fastlane ios deploy                 # deploys to production
+fastlane ios deploy environment:dev # deploys to dev
+```
