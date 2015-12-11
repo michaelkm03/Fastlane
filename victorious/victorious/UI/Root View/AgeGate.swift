@@ -28,9 +28,11 @@ import Foundation
     }
     
     static func isAnonymousUser() -> Bool {
-        //TODO: temporary setting user 4041 as the anonymous user
-        return VObjectManager.sharedManager().mainUser?.remoteId == 4041
-//        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
+        //TODO: The following VObjectManager line is for testing before user -1 is authroized on the backend. Remove before merging.
+//        return VObjectManager.sharedManager().mainUserLoggedIn
+        
+        // Following is the correct implementation
+        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
     static func saveShouldUserBeAnonymous(anonymous: Bool) {
@@ -84,5 +86,12 @@ import Foundation
             VTrackingEventApplicationDidEnterBackground
         ]
         return allowedTrackingEvents.contains(eventName)
+    }
+    
+    //MARK: - Age Gate Business Logic functions
+    static func isUserYoungerThan(age: Int, forBirthday birthday: NSDate) -> Bool {
+        let now = NSDate()
+        let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
+        return ageComponents.year < 13
     }
 }

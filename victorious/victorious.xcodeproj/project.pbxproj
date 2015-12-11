@@ -374,6 +374,7 @@
 		6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6775E75A1C17C318007765B9 /* AgeGate.swift */; };
 		6781CE3F1BE4084B00370679 /* TrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
+		67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
@@ -2048,6 +2049,7 @@
 		6781CE3E1BE4084B00370679 /* TrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateTests.swift; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -6782,6 +6784,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9981,6 +9984,7 @@
 				F0FC97F91B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m in Sources */,
 				F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VAbstractMarqueeControllerTests.m in Sources */,
+				67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */,
 				A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */,
 				A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */,

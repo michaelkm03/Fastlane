@@ -71,7 +71,7 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction private func tappedOnContinue(sender: UIButton) {
-        let shouldBeAnonymous = isUserYoungerThan(13)
+        let shouldBeAnonymous = AgeGate.isUserYoungerThan(13, forBirthday: datePicker.date)
         
         AgeGate.saveShouldUserBeAnonymous(shouldBeAnonymous)
         delegate?.continueButtonTapped(shouldBeAnonymous)
@@ -109,13 +109,6 @@ class AgeGateViewController: UIViewController {
         for separator in separatorHeightConstraints {
             separator.constant = 0.5
         }
-    }
-    
-    private func isUserYoungerThan(age: Int) -> Bool {
-        let birthday = datePicker.date
-        let now = NSDate()
-        let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
-        return ageComponents.year < 13
     }
     
     private func showDatePickerWithAnimation() {
