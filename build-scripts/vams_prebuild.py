@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Author: Lawrence H. Leach - Sr. Software Engineer
 # Note: Hash calculating code was "borrowed" from Frank Zhao.
