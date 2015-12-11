@@ -99,7 +99,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
                 let currentLevel = levelUpInterstitial.fanLoyalty.level
-                badgeView?.levelNumberString = String(currentLevel - 1)
+                badgeView?.levelNumberString = String(currentLevel)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
@@ -164,11 +164,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn() { completed in
-                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
-                    self.upgradeBadgeNumber()
-                }
-            }
+            animateIn()
             
             let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
             videoPlayerItem.loop = false
@@ -179,31 +175,6 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             // we update the user's level and level progress when the interstitial appears
             VObjectManager.sharedManager().mainUser?.level = levelUpInterstitial.fanLoyalty.level
             VObjectManager.sharedManager().mainUser?.levelProgressPercentage = levelUpInterstitial.fanLoyalty.progressPercentage
-        }
-    }
-    
-    private func upgradeBadgeNumber() {
-        
-        if let levelUpInterstitial = self.levelUpInterstitial {
-            badgeView?.levelUp(String(levelUpInterstitial.fanLoyalty.level))
-        }
-        
-        UIView.animateWithDuration(0.1,
-            delay: 0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.4,
-            options: [],
-            animations: {
-                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) in
-                self.badgeView?.resetProgress(true)
-                UIView.animateWithDuration(0.1,
-                    delay: 0,
-                    options: .CurveLinear,
-                    animations: {
-                        self.badgeView?.transform = CGAffineTransformIdentity
-                    },
-                    completion: nil)
         }
     }
     
@@ -219,7 +190,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Helpers
     
-    private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
+    private func animateIn(completion badgeAnimationCompletion: ((Bool) -> Void)? = nil) {
         
         // Title animation
         UIView.animateWithDuration(0.6,
