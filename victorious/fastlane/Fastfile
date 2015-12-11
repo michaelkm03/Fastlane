@@ -24,8 +24,8 @@ fastlane_version "1.36.0"
 
 default_platform :ios
 
-def apply_config(build_name:)
-  sh "cd ../../ && ./build-scripts/apply-config.sh #{build_name}"
+def apply_config(build_name:, environment:)
+  sh "cd ../../ && ./build-scripts/apply-config.sh #{build_name} -e #{environment}"
 end
 
 def prepare_metadata(client:, build_name:)
@@ -74,8 +74,9 @@ platform :ios do
   end
 
   desc "Deploy a new version to the App Store"
-  lane :deploy do
-    client = VAMS::Client.new(environment: :production)
+  lane :deploy do |options|
+    environment = options[:environment]
+    client      = VAMS::Client.new(environment: environment || :production)
     client.apps_to_build.each do |app|
       clean_build_products
 
@@ -84,7 +85,7 @@ platform :ios do
       build_number = ''
 
       begin
-        apply_config(build_name: app.build_name)
+        apply_config(build_name: app.build_name, environment: environment)
         app_with_meta = prepare_metadata(client: client, build_name: app.build_name)
 
         with_bundle_id(bundle_id: app_with_meta.sanitized_bundle_id) do
