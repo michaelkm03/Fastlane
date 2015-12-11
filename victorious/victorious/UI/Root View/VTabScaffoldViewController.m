@@ -59,7 +59,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
-@property (nonatomic, strong) AppTimingTracker *appTimingTracker;
+@property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
 
@@ -77,7 +77,8 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        _appTimingTracker = [AppTimingTracker sharedInstanceWithDependencyManager:dependencyManager];
+        _appTimingTracker = [DefaultTimingTracker sharedInstanceWithDependencyManager:dependencyManager
+                                                                          tracker:[VTrackingManager sharedInstance]];
     }
     return self;
 }
@@ -414,8 +415,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.coachmarkManager.allowCoachmarks = YES;
-            
-            [self.appTimingTracker endEventWithType:VAppTimingEventTypeAppStart subtype:nil];
         });
     }];
     [self.launchOperationQueue addOperation:allLaunchOperationFinishedBlockOperation];

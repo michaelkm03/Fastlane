@@ -64,7 +64,7 @@
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
-    AppTimingTracker *appTimingTracker = [AppTimingTracker sharedInstance];
+    DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstanceWithTracker:[VTrackingManager sharedInstance]];
     [appTimingTracker startEventWithType:VAppTimingEventTypeAppStart subtype:nil];
     [appTimingTracker startEventWithType:VAppTimingEventTypeShowRegistration subtype:nil];
     

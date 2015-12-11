@@ -69,7 +69,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, strong) RKManagedObjectRequestOperation *currentRequest;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
-@property (nonatomic, strong) AppTimingTracker *appTimingTracker;
+@property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
 
@@ -107,7 +107,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
         
-        _appTimingTracker = [AppTimingTracker sharedInstanceWithDependencyManager:dependencyManager];
+        _appTimingTracker = [DefaultTimingTracker sharedInstanceWithDependencyManager:dependencyManager
+                                                                          tracker:[VTrackingManager sharedInstance]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }

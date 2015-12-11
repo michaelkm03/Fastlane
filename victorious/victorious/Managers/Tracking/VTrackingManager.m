@@ -52,7 +52,7 @@
 
 @implementation VTrackingManager
 
-+ (VTrackingManager *)sharedInstance
++ (id<VTracker>)sharedInstance
 {
     static VTrackingManager *instance;
     static dispatch_once_t onceToken;

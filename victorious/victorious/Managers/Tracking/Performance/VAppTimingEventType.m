@@ -1,19 +1,21 @@
 //
-//  VAppTimingEventType.m
+//  VPerformanceTrackingEvents.m
 //  victorious
 //
-//  Created by Patrick Lynch on 12/10/15.
+//  Created by Patrick Lynch on 11/25/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-extern NSString * const VAppTimingEventTypeAppStart;
-extern NSString * const VAppTimingEventTypeShowRegistration;
-extern NSString * const VAppTimingEventTypeSignup;
-extern NSString * const VAppTimingEventTypeLogin;
-extern NSString * const VAppTimingEventTypeStreamLoad;
-extern NSString * const VAppTimingEventTypeContentViewLoad;
-extern NSString * const VAppTimingEventTypeStreamRefresh;
+#import "VAppTimingEventType.h"
 
-extern NSString * const VAppTimingEventSubtypeEmail;
-extern NSString * const VAppTimingEventSubtypeFacebook;
-extern NSString * const VAppTimingEventSubtypeTwitter;
+NSString * const VAppTimingEventTypeAppStart            = @"app_start";
+NSString * const VAppTimingEventTypeShowRegistration    = @"show_registration";
+NSString * const VAppTimingEventTypeSignup              = @"signup";
+NSString * const VAppTimingEventTypeLogin               = @"login";
+NSString * const VAppTimingEventTypeStreamLoad          = @"stream_load";
+NSString * const VAppTimingEventTypeContentViewLoad     = @"content_view_load";
+NSString * const VAppTimingEventTypeStreamRefresh       = @"stream_refresh";
+    
+NSString * const VAppTimingEventSubtypeEmail            = @"email";
+NSString * const VAppTimingEventSubtypeFacebook         = @"facebook";
+NSString * const VAppTimingEventSubtypeTwitter          = @"twitter";

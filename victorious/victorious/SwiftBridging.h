@@ -105,6 +105,7 @@
 #import "VMarqueeController.h"
 #import "VMediaAttachmentPresenter.h"
 #import "VMessage+Fetcher.h"
+#import "VEnvironmentManager.h"
 #import "VMessage.h"
 #import "VNavigationController.h"
 #import "VNoContentCollectionViewCellFactory.h"

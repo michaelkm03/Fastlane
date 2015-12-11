@@ -40,7 +40,7 @@ static NSString * const kMacroDuration               = @"%%DURATION%%";
 static NSString * const kMacroType                   = @"%%TYPE%%";
 static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 0
+#define APPLICATION_TRACKING_LOGGING_ENABLED 1
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED || APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
