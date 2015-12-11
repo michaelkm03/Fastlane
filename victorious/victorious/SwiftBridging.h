@@ -83,7 +83,7 @@
 #import "VHashtagResponder.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VPerformanceTrackingEvents.h"
+#import "VAppTimingEventType.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder+PollAssets.h"
 #import "VImageAssetFinder.h"

@@ -28,7 +28,7 @@
 @import RestKit;
 
 #import "VTrackingManager.h"
-#import "VPerformanceTrackingEvents.h"
+#import "VAppTimingEventType.h"
 
 // Global Defines for 32/64 bit
 #import "VCompatibility.h"
