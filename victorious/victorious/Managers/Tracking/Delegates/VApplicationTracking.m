@@ -86,9 +86,9 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
                                     VTrackingKeyVolumeLevel        : kMacroVolumeLevel,
                                     VTrackingKeyErrorType          : kMacroErrorType,
                                     VTrackingKeyErrorDetails       : kMacroErrorDetails,
-                                    VTrackingKeyType                : kMacroType,
-                                    VTrackingKeySubtype             : kMacroSubtype,
-                                    VTrackingKeyDuration            : kMacroDuration };
+                                    VTrackingKeyType               : kMacroType,
+                                    VTrackingKeySubtype            : kMacroSubtype,
+                                    VTrackingKeyDuration           : kMacroDuration };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,

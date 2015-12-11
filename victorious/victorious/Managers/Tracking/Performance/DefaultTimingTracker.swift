@@ -8,8 +8,6 @@
 
 import Foundation
 
-let defaultURLString = "/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%"
-
 private class AppTimingEvent: NSObject {
     let type: String
     let subtype: String?
@@ -22,15 +20,19 @@ private class AppTimingEvent: NSObject {
 }
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
-/// Internally uses VTrackingManager's singleton instance to actually send the URL requests.
 class DefaultTimingTracker: NSObject, TimingTracker {
     
-    private(set) var urls = [String]()
+    static let defaultURLString = "/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%"
     
+    private(set) var urls = [String]()
     private var activeEvents = Set<AppTimingEvent>()
     private static var instance: DefaultTimingTracker?
     private let tracker: VTracker
     
+    /// Singleton initializer with `tracker` dependency.  An internally-defined default URL
+    /// will be used to track events using the provided `tracker` if one has not been provided by
+    /// calling `sharedInstance(dependencyManager:tracker:)`.  In the latter case, the value is read
+    /// from the template through the provided dependency manager and used in favor of the default.
     class func sharedInstance( tracker tracker: VTracker = VTrackingManager.sharedInstance() ) -> DefaultTimingTracker {
         if let instance = instance {
             return instance
@@ -41,13 +43,16 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         }
     }
     
+    
+    /// Singleton initializer with `tracker` dependency.  A tracking endpoint URL value is read
+    /// from the template through the provided dependency manager and used in favor of the default.
     class func sharedInstance( dependencyManager dependencyManager: VDependencyManager, tracker: VTracker = VTrackingManager.sharedInstance() ) -> DefaultTimingTracker {
         let instance = sharedInstance(tracker: tracker)
         if let urls = dependencyManager.trackingURLsForKey( "app_time" ) as? [String] {
             instance.urls = urls
         } else {
             if let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment {
-                let fullURL = (currentEnvironment.baseURL.absoluteString as NSString).stringByAppendingPathComponent(defaultURLString)
+                let fullURL = (currentEnvironment.baseURL.absoluteString as NSString).stringByAppendingPathComponent(self.defaultURLString)
                 instance.urls = [ fullURL ]
             }
         }
