@@ -355,7 +355,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (self.viewModel.sequence.permissions.canComment && ![AgeGate isAnonymousUser])
+    if (self.viewModel.sequence.permissions.canComment)
     {
         NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
         VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
@@ -368,6 +368,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
+    }
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        self.textEntryView.hidden = YES;
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;

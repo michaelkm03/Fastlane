@@ -54,14 +54,8 @@ class ContentViewHandoffController {
         let superview = previewReceiver.getTargetSuperview()
         
         // Calculate these frame values before adding to superview
-        //FIXME: Temporary hacky bug fix here. Removal of comment bar caused this convertRect method to behave differently - not sure why yet.
-        var previewFrame = superview.convertRect( previewView.frame, fromView: previewView )
-        var containerFrame = superview.convertRect( containerView.frame, fromView: containerView )
-        
-        if AgeGate.isAnonymousUser() {
-            previewFrame.origin.y += 20
-            containerFrame.origin.y += 20
-        }
+        let previewFrame = superview.convertRect( previewView.frame, fromView: previewView )
+        let containerFrame = superview.convertRect( containerView.frame, fromView: containerView )
         
         superview.addSubview( previewView )
         previewReceiver.setPreviewView( previewView )
