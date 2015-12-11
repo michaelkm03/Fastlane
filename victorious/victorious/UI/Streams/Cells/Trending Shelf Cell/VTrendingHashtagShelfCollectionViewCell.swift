@@ -153,7 +153,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             where mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
             controlState = .Followed
         }
-        followControl.setControlState(controlState, animated: true)
+        followControl?.setControlState(controlState, animated: true)
     }
     
     private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject : AnyObject]?) -> Bool {
