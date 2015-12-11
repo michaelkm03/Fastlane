@@ -8,10 +8,14 @@
 
 import UIKit
 
+/// AgeGateViewController delegates should be able to handle next steps after user provide birthday
 @objc protocol AgeGateViewControllerDelegate: class {
     func continueButtonTapped(isAnonymousUser: Bool)
 }
 
+/// Age gate view appears on splash screen when app first starts, if it is enabled in info.plist.
+/// It is presented by Root View, and Root view(as this view's delegate)
+/// will proceed to loading view after user taps `continue` button
 class AgeGateViewController: UIViewController {
     @IBOutlet private weak var backgroundView: UIView!
     @IBOutlet private weak var blurView: UIVisualEffectView!
