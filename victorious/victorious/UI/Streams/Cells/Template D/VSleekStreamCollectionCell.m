@@ -372,6 +372,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         self.textViewConstraint.constant = self.sleekActionView.leftMargin;
         self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
     }
+    else
+    {
+        [self.countsTextView.topAnchor constraintEqualToAnchor:self.previewContainer.bottomAnchor].active = YES;
+    }
 
     [super updateConstraints];
 }
