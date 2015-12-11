@@ -78,6 +78,10 @@ return VObjectManager.sharedManager().mainUserLoggedIn
         return containerChilds.filter() { !$0.isKindOfClass(VDiscoverContainerViewController) }
     }
     
+    static func filterMoreButtonItems(items: [VActionItem]) -> [VActionItem] {
+        return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") }
+    }
+    
     static func isTrackingEventAllowed(forEventName eventName: String) -> Bool {
         let allowedTrackingEvents = [
             VTrackingEventApplicationFirstInstall,
@@ -89,6 +93,7 @@ return VObjectManager.sharedManager().mainUserLoggedIn
     }
     
     //MARK: - Age Gate Business Logic functions
+    
     static func isUserYoungerThan(age: Int, forBirthday birthday: NSDate) -> Bool {
         let now = NSDate()
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())

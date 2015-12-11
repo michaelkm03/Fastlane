@@ -401,13 +401,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.view.backgroundColor = [UIColor blackColor];
     
     self.videoPlayerDidFinishPlayingOnce = NO;
-    
-    // Disable more button for anonymous user
-    if ([AgeGate isAnonymousUser])
-    {
-        [self.moreButton removeFromSuperview];
-        self.moreButton = nil;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
