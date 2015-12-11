@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -300,6 +300,50 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Jrz-2b-07p" userLabel="Legal Button Container">
+                                <rect key="frame" x="78" y="517" width="165" height="43"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="By signing up you agree to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAa-W5-W1B">
+                                        <rect key="frame" x="0.0" y="0.0" width="165" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="et8-Fb-0cs" userLabel="termsOfServiceButton">
+                                        <rect key="frame" x="0.0" y="14" width="81" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tappedTermsOfService:" destination="9Ky-JO-FJc" eventType="touchUpInside" id="s5V-hn-ALB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W7d-at-ELh" userLabel="privacyPolicyButton">
+                                        <rect key="frame" x="84" y="14" width="81" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tappedPrivacyPolicy:" destination="9Ky-JO-FJc" eventType="touchUpInside" id="Gwv-co-oYj"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="pAa-W5-W1B" firstAttribute="leading" secondItem="Jrz-2b-07p" secondAttribute="leading" id="4Tm-sO-6Sf"/>
+                                    <constraint firstAttribute="bottom" secondItem="et8-Fb-0cs" secondAttribute="bottom" id="6ce-wp-cME"/>
+                                    <constraint firstItem="pAa-W5-W1B" firstAttribute="top" secondItem="Jrz-2b-07p" secondAttribute="top" id="7oI-2d-OfR"/>
+                                    <constraint firstItem="W7d-at-ELh" firstAttribute="baseline" secondItem="et8-Fb-0cs" secondAttribute="baseline" id="BkD-CR-KrR"/>
+                                    <constraint firstAttribute="trailing" secondItem="pAa-W5-W1B" secondAttribute="trailing" id="ET1-VF-A4x"/>
+                                    <constraint firstItem="W7d-at-ELh" firstAttribute="leading" secondItem="et8-Fb-0cs" secondAttribute="trailing" constant="3" id="Jgm-iF-Msn"/>
+                                    <constraint firstItem="et8-Fb-0cs" firstAttribute="top" secondItem="pAa-W5-W1B" secondAttribute="bottom" constant="-2" id="NRy-CD-a3W"/>
+                                    <constraint firstItem="et8-Fb-0cs" firstAttribute="leading" secondItem="Jrz-2b-07p" secondAttribute="leading" id="XIy-oC-V3T"/>
+                                    <constraint firstAttribute="trailing" secondItem="W7d-at-ELh" secondAttribute="trailing" id="fre-86-Z94"/>
+                                    <constraint firstItem="W7d-at-ELh" firstAttribute="width" secondItem="et8-Fb-0cs" secondAttribute="width" id="qam-67-ctc"/>
+                                </constraints>
+                            </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgC-40-sNL">
                                 <rect key="frame" x="32" y="148" width="256" height="272"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Js6-bn-fje">
@@ -385,7 +429,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="rA6-XH-cGi" firstAttribute="top" secondItem="Jrz-2b-07p" secondAttribute="bottom" constant="8" id="57c-Xz-IM2"/>
                             <constraint firstItem="zEq-DA-pAY" firstAttribute="top" secondItem="WMk-A4-l9Y" secondAttribute="topMargin" id="AuL-uE-x9g"/>
+                            <constraint firstItem="Jrz-2b-07p" firstAttribute="centerX" secondItem="WMk-A4-l9Y" secondAttribute="centerX" id="BMK-5p-MIN"/>
                             <constraint firstAttribute="trailing" secondItem="NmV-Tx-pcR" secondAttribute="trailing" id="FSW-gC-Wvm"/>
                             <constraint firstItem="rA6-XH-cGi" firstAttribute="top" secondItem="zEq-DA-pAY" secondAttribute="bottom" id="Fg1-lJ-2fC"/>
                             <constraint firstItem="hgC-40-sNL" firstAttribute="centerX" secondItem="WMk-A4-l9Y" secondAttribute="centerX" id="Ix0-bs-bF1"/>
@@ -406,7 +452,10 @@
                         <outlet property="continueButton" destination="lmL-ba-erc" id="bev-ch-rWG"/>
                         <outlet property="datePicker" destination="DYS-Tw-yd5" id="uo6-5F-Ckd"/>
                         <outlet property="dimmingView" destination="NmV-Tx-pcR" id="Lin-6t-OwI"/>
+                        <outlet property="legalPromptLabel" destination="pAa-W5-W1B" id="x8h-fU-GA9"/>
+                        <outlet property="privacyButton" destination="W7d-at-ELh" id="BEf-sA-fgT"/>
                         <outlet property="promptLabel" destination="7nV-Sx-JTX" id="lOR-Cu-efr"/>
+                        <outlet property="tosButton" destination="et8-Fb-0cs" id="FaQ-6x-Vxo"/>
                         <outlet property="widgetBackground" destination="BqB-LM-0fF" id="u3u-9C-hgF"/>
                         <outletCollection property="separatorHeightConstraints" destination="UeB-Pv-ahb" collectionClass="NSMutableArray" id="6Xv-zn-MCR"/>
                         <outletCollection property="separatorHeightConstraints" destination="iOQ-Gz-8VC" collectionClass="NSMutableArray" id="QIq-bY-bDt"/>
