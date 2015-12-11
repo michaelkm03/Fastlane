@@ -119,6 +119,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
 
         collectionView.accessoryView = keyboardBar
+        
+        if AgeGate.isAnonymousUser() {
+            collectionView.accessoryView?.hidden = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
