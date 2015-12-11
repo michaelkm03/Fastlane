@@ -767,6 +767,7 @@
 		A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22041BA77E0400F2CD37 /* ContentViewHandoffController.swift */; };
 		A7BA22081BA7825200F2CD37 /* VVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */; };
 		A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */; };
+		A7BC35B91C1A47D500732750 /* VPerformanceTrackingEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC35B81C1A47D500732750 /* VPerformanceTrackingEvents.m */; };
 		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
 		A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C713B11B74450A00089B5E /* GCDUtils.swift */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
@@ -815,7 +816,6 @@
 		A7D7ED541B5D6A6300FA346A /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */; };
 		A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
-		A7D9205A1C0670D6002A6503 /* VPerformanceTrackingEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
@@ -2744,6 +2744,8 @@
 		A7BA22071BA7825200F2CD37 /* VVideoPlayerToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayerToolbarView.m; sourceTree = "<group>"; };
 		A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentPreviewViewProvider.swift; sourceTree = "<group>"; };
 		A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VVideoPlayer.h; sourceTree = "<group>"; };
+		A7BC35B71C1A47D500732750 /* VPerformanceTrackingEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPerformanceTrackingEvents.h; path = Performance/VPerformanceTrackingEvents.h; sourceTree = "<group>"; };
+		A7BC35B81C1A47D500732750 /* VPerformanceTrackingEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPerformanceTrackingEvents.m; path = Performance/VPerformanceTrackingEvents.m; sourceTree = "<group>"; };
 		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
 		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7C15E751BA8DE77007B969C /* VSequencePreviewViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewViewProtocols.h; sourceTree = "<group>"; };
@@ -2822,8 +2824,6 @@
 		A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaleAnimator.m; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
-		A7D920581C0670D6002A6503 /* VPerformanceTrackingEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPerformanceTrackingEvents.h; sourceTree = "<group>"; };
-		A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPerformanceTrackingEvents.m; sourceTree = "<group>"; };
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
@@ -6205,8 +6205,6 @@
 				A72005571A030E4700285A9C /* Delegates */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
 				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
-				A7D920581C0670D6002A6503 /* VPerformanceTrackingEvents.h */,
-				A7D920591C0670D6002A6503 /* VPerformanceTrackingEvents.m */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
 				B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */,
 				A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */,
@@ -6423,6 +6421,8 @@
 				A7D0AC8C1C0D3A150018C63E /* PerformanceTracker.swift */,
 				A7D0AC8E1C0D3A2B0018C63E /* PerformanceMetric.swift */,
 				A7D0AC901C0D3A430018C63E /* PerformanceEvent.swift */,
+				A7BC35B71C1A47D500732750 /* VPerformanceTrackingEvents.h */,
+				A7BC35B81C1A47D500732750 /* VPerformanceTrackingEvents.m */,
 			);
 			name = Performance;
 			sourceTree = "<group>";
@@ -9229,7 +9229,6 @@
 				0317D7501B912A2F00D75E6B /* VDependencyManager+VUserProfile.m in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */,
-				A7D9205A1C0670D6002A6503 /* VPerformanceTrackingEvents.m in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
@@ -9244,6 +9243,7 @@
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
+				A7BC35B91C1A47D500732750 /* VPerformanceTrackingEvents.m in Sources */,
 				A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */,
 				A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VInboxViewController.m in Sources */,

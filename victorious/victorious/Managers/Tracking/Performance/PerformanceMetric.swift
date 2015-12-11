@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// An object that represents an aspect of the application that participates in
+/// tracking app times for performance and latency.  
 class PerformanceMetric: NSObject, NSCoding {
     let startEvent: String
     let endEvent: String

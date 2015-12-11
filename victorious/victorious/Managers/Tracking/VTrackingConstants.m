@@ -14,6 +14,7 @@ NSString * const VTrackingEventApplicationFirstInstall = @"ApplicationFirstInsta
 NSString * const VTrackingEventApplicationDidLaunch = @"ApplicationDidLaunch";
 NSString * const VTrackingEventApplicationDidEnterBackground = @"ApplicationDidEnterBackground";
 NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidEnterForeground";
+NSString * const VTrackingEventApplicationPerformanceMeasured = @"ApplicationPerformanceMeasured";
 
 // Navigation
 NSString * const VTrackingEventUserDidSelectMainMenu = @"UserDidSelectMainMenu";
@@ -283,6 +284,9 @@ NSString * const VTrackingKeyConnectivity = @"Connectivity";
 NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
 NSString * const VTrackingKeyErrorType = @"Type";
 NSString * const VTrackingKeyErrorDetails = @"Details";
+NSString * const VTrackingKeyType = @"Type";
+NSString * const VTrackingKeySubtype = @"Subtype";
+NSString * const VTrackingKeyDuration = @"Duration";
 
 // Tracking Event Values
 // ContentType values
