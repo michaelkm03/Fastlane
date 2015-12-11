@@ -32,7 +32,7 @@ static NSString * const kVPrivacyURL = @"privacyURL";
 {
     [super viewDidLoad];
     
-    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL];
+    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL] ?: @"http://dev.getvictorious.com/api/static/privacy";
     self.urlToView = [NSURL URLWithString:privacyURLString];
 }
 
