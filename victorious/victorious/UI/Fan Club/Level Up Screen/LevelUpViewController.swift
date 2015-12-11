@@ -190,7 +190,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Helpers
     
-    private func animateIn(completion badgeAnimationCompletion: ((Bool) -> Void)? = nil) {
+    private func animateIn() {
         
         // Title animation
         UIView.animateWithDuration(0.6,
@@ -214,7 +214,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             animations: {
                 self.badgeView?.transform = CGAffineTransformIdentity
             },
-            completion: badgeAnimationCompletion)
+            completion: nil)
         
         // Button animation
         UIView.animateWithDuration(0.6,
