@@ -95,8 +95,8 @@ platform :ios do
             scheme:               'release-victorious',
             codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
           )
-          version      = get_version_number(xcodeproj: "victorious.xcodeproj")
-          build_number = get_build_number(xcodeproj:   "victorious.xcodeproj")
+          version      = get_version_number(xcodeproj: 'victorious.xcodeproj')
+          build_number = get_build_number(xcodeproj:   'victorious.xcodeproj')
 
           deliver(force: true)
 
