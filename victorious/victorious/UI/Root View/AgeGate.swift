@@ -30,8 +30,6 @@ import Foundation
     static func isAnonymousUser() -> Bool {
         //TODO: The following VObjectManager line is for testing before user -1 is authroized on the backend. Remove before merging.
 //        return VObjectManager.sharedManager().mainUserLoggedIn
-        
-    // Following is the correct implementation
         return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
