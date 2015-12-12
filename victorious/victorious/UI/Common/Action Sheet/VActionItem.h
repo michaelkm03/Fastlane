@@ -17,6 +17,8 @@ typedef NS_ENUM(NSInteger, VActionItemType)
     VActionItemTypeDescriptionWithHashTags,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A VActionItem represents a single item in a VActionsheetViewController. Note: does not support changing properties so everything must be available at instantiation.
  */
@@ -32,8 +34,8 @@ typedef NS_ENUM(NSInteger, VActionItemType)
  *  @return An initialized action item for default actions
  */
 + (instancetype)defaultActionItemWithTitle:(NSString *)title
-                                actionIcon:(UIImage *)actionIcon
-                                detailText:(NSString *)detailText;
+                                actionIcon:(nullable UIImage *)actionIcon
+                                detailText:(nullable NSString *)detailText;
 
 /**
  *  Same as above but with the enabled parameter.
@@ -43,13 +45,13 @@ typedef NS_ENUM(NSInteger, VActionItemType)
  *  @return An initialized action item.
  */
 + (instancetype)defaultActionItemWithTitle:(NSString *)title
-                                actionIcon:(UIImage *)actionIcon
-                                detailText:(NSString *)detailText
+                                actionIcon:(nullable UIImage *)actionIcon
+                                detailText:(nullable NSString *)detailText
                                    enabled:(BOOL)enabled;
 
 + (instancetype)userActionItemUserWithTitle:(NSString *)title
                                        user:(VUser *)user
-                                 detailText:(NSString *)detailText;
+                                 detailText:(nullable NSString *)detailText;
 
 + (instancetype)descriptionActionItemWithText:(NSString *)text
                       hashTagSelectionHandler:(void (^)(NSString *hashTag))hashTagSelectionHandler;
@@ -77,3 +79,5 @@ typedef NS_ENUM(NSInteger, VActionItemType)
 @property (nonatomic, copy) void (^hashTagSelectionHandler)(NSString *hashTag);
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -68,7 +68,7 @@ class AgeGateTests: XCTestCase {
     }
     
     func testFilterMultipleContainerItems() {
-        let inputItems:[UIViewController] = [
+        let inputItems: [UIViewController] = [
             UIViewController(),
             VExploreViewController(),
             VDiscoverContainerViewController(),
@@ -78,6 +78,39 @@ class AgeGateTests: XCTestCase {
         let outputItems = AgeGate.filterMultipleContainerItems(inputItems)
         XCTAssertEqual(outputItems.count, 3)
         XCTAssertFalse(outputItems.contains(VDiscoverContainerViewController()))
+    }
+    
+    func testFilterMoreButtonItems() {
+        let inputItems = [
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("", comment: ""), actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("ha", comment: ""), actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Repost", comment: ""), actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report", comment: ""), actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Flag", comment: ""), actionIcon: UIImage(), detailText: ""),
+            VActionItem.defaultActionItemWithTitle(NSLocalizedString("Report/Flag", comment: ""), actionIcon: UIImage(), detailText: "")
+        ]
+        
+        let outputItems = AgeGate.filterMoreButtonItems(inputItems)
+        XCTAssertEqual(outputItems.count, 1)
+        XCTAssertEqual(outputItems[0].title, NSLocalizedString("Report/Flag", comment: ""))
+    }
+    
+    func testFilterCommentCellUtilities() {
+        let inputItems = [
+            VUtilityButtonConfig(),
+            VUtilityButtonConfig(),
+            VUtilityButtonConfig(),
+            VUtilityButtonConfig(),
+            VUtilityButtonConfig()
+        ]
+        inputItems[0].type = .Delete
+        inputItems[1].type = .Edit
+        inputItems[2].type = .Flag
+        inputItems[3].type = .Reply
+        
+        let outputItems = AgeGate.filterCommentCellUtilities(inputItems)
+        XCTAssertEqual(outputItems.count, 1)
+        XCTAssertEqual(outputItems[0].type, VCommentCellUtilityType.Flag)
     }
     
     func testIsTrackingEventAllowed() {
