@@ -113,11 +113,8 @@ static NSCache *_sharedImageCache = nil;
     
     self.commentersAvatarButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    if ( ![AgeGate isAnonymousUser] )
-    {
-        [self setupSwipeView];
-        [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
-    }
+    [self setupSwipeView];
+    [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
 }
 
 - (void)prepareContentAndMediaView

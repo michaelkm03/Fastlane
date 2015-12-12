@@ -29,10 +29,10 @@ import Foundation
     
     static func isAnonymousUser() -> Bool {
         //TODO: The following VObjectManager line is for testing before user -1 is authroized on the backend. Remove before merging.
-return VObjectManager.sharedManager().mainUserLoggedIn
+        return VObjectManager.sharedManager().mainUserLoggedIn
         
-        // Following is the correct implementation
-        //return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
+    // Following is the correct implementation
+//        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
     static func saveShouldUserBeAnonymous(anonymous: Bool) {
@@ -80,6 +80,10 @@ return VObjectManager.sharedManager().mainUserLoggedIn
     
     static func filterMoreButtonItems(items: [VActionItem]) -> [VActionItem] {
         return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") }
+    }
+    
+    static func filterCommentCellUtilities(utilities: [VUtilityButtonConfig]) -> [VUtilityButtonConfig] {
+        return utilities.filter() { $0.type == .Flag }
     }
     
     static func isTrackingEventAllowed(forEventName eventName: String) -> Bool {
