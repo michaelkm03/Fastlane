@@ -14,13 +14,13 @@ import VictoriousIOSSDK
 class TrendingGIFsOperationTests: XCTestCase {
     
     func testEmptyResult() {
-        let result: TrendingGIFsRequest.ResultType = ([], nil, nil)
+        let result: TrendingGIFsRequest.ResultType = []
         let operation = TrendingGIFsOperation()
         operation.onComplete(result){ }
         
         XCTAssertTrue(operation.trendingGIFsResults.isEmpty)
-        XCTAssertNil(operation.nextPageOperation)
-        XCTAssertNil(operation.previousPageOperation)
+        XCTAssertNil( operation.next() )
+        XCTAssertNil( operation.prev() )
     }
 
     func testValidResult() {
@@ -32,13 +32,13 @@ class TrendingGIFsOperationTests: XCTestCase {
             "thumbnail_still": "www.still.com",
             "remote_id": "1001"
         ]
-        let result: TrendingGIFsRequest.ResultType = ([GIFSearchResult(json: mockJSON)!], TrendingGIFsRequest(), TrendingGIFsRequest())
+        let result: TrendingGIFsRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
         let operation = TrendingGIFsOperation()
         operation.onComplete(result){ }
         
         XCTAssertEqual(operation.trendingGIFsResults.count, 1)
         XCTAssertEqual(operation.trendingGIFsResults[0].remoteID, "1001")
-        XCTAssertNotNil(operation.nextPageOperation)
-        XCTAssertNotNil(operation.previousPageOperation)
+        XCTAssertNotNil( operation.next() )
+        XCTAssertNotNil( operation.prev() )
     }
 }

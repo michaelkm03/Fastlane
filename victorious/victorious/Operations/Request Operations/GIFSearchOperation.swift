@@ -32,7 +32,7 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete )
     }
     
-    private func onComplete( results: GIFSearchRequest.ResultType, completion:()->() ) {
+    func onComplete( results: GIFSearchRequest.ResultType, completion:()->() ) {
         self.resultCount = results.count
         self.searchResults = results
         completion()

@@ -14,13 +14,13 @@ import VictoriousIOSSDK
 class GIFSearchOperationTests: XCTestCase {
 
     func testEmptyResult() {
-        let result: GIFSearchRequest.ResultType = ([], nil, nil)
-        let operation = GIFSearchOperation(searchText: "fun")
+        let result: GIFSearchRequest.ResultType = []
+        let operation = GIFSearchOperation(searchTerm: "fun")
         operation.onComplete(result){ }
         
-        XCTAssertTrue(operation.searchResults.isEmpty)
-        XCTAssertNil(operation.nextPageOperation)
-        XCTAssertNil(operation.previousPageOperation)
+        XCTAssertTrue( operation.searchResults.isEmpty)
+        XCTAssertNil( operation.next() )
+        XCTAssertNil( operation.prev() )
     }
 
     func testValidResult() {
@@ -32,13 +32,13 @@ class GIFSearchOperationTests: XCTestCase {
             "thumbnail_still": "www.still.com",
             "remote_id": "1001"
         ]
-        let result: GIFSearchRequest.ResultType = ([GIFSearchResult(json: mockJSON)!], GIFSearchRequest(searchTerm: "next"), GIFSearchRequest(searchTerm: "Prev"))
-        let operation = GIFSearchOperation(searchText: "fun")
+        let result: GIFSearchRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
+        let operation = GIFSearchOperation(searchTerm: "fun")
         operation.onComplete(result){ }
         
-        XCTAssertEqual(operation.searchResults.count, 1)
-        XCTAssertEqual(operation.searchResults[0].remoteID, "1001")
-        XCTAssertNotNil(operation.nextPageOperation)
-        XCTAssertNotNil(operation.previousPageOperation)
+        XCTAssertEqual( operation.searchResults.count, 1 )
+        XCTAssertEqual( operation.searchResults[0].remoteID, "1001" )
+        XCTAssertNotNil( operation.next() )
+        XCTAssertNotNil( operation.prev() )
     }
 }
