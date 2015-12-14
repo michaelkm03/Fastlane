@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-
 #import "NSArray+VMap.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
@@ -55,7 +54,6 @@
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VTabScaffoldViewController.h"
 #import "VTracking.h"
-#import "VURLMacroReplacement.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUser.h"
@@ -63,6 +61,7 @@
 #import "VSleekStreamCollectionCell.h"
 #import "victorious-Swift.h"
 
+@import VictoriousIOSSDK;
 @import KVOController;
 @import SDWebImage;
 
@@ -138,7 +137,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
     if ( sequenceID != nil )
     {
-        VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+        VSDKURLMacroReplacement *urlMacroReplacement = [[VSDKURLMacroReplacement alloc] init];
         url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
                                                                    inURLString:url];
     }

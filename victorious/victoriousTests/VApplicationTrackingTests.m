@@ -13,7 +13,8 @@
 #import "VTrackingURLRequest.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
-#import "VURLMacroReplacement.h"
+#import "NSCharacterSet+VSDKURLParts.h"
+#import "VSDKURLMacroReplacement.h"
 #import "victorious-Swift.h"
 
 @interface VApplicationTracking (UnitTest)

@@ -9,12 +9,12 @@
 #import "VApplicationTracking.h"
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
-#import "VURLMacroReplacement.h"
-#import "NSCharacterSet+VURLParts.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
+
+@import VictoriousIOSSDK;
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -48,7 +48,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
-@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (nonatomic, strong) VSDKURLMacroReplacement *macroReplacement;
 @property (nonatomic, strong, readwrite) TrackingRequestScheduler *requestScheduler;
 
 @end
@@ -93,7 +93,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                  VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey,
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
-        _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         _requestScheduler = [[TrackingRequestScheduler alloc] init];
     }
     return self;

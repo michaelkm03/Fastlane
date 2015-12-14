@@ -8,16 +8,15 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
-
 #import "VUser.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VAsset.h"
 #import "VPollResult.h"
 #import "VPageType.h"
-
-#import "NSCharacterSet+VURLParts.h"
 #import "VObjectManager+ContentModeration.h"
+
+@import VictoriousIOSSDK;
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
@@ -130,7 +129,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     
     if ( streamId.length > 0 )
     {
-        NSString *percentEncodedStreamId = [streamId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+        NSString *percentEncodedStreamId = [streamId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
         path = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", percentEncodedStreamId]];
     }
     

@@ -9,22 +9,23 @@
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: RequestOperation<LogoutRequest> {
+class LogoutOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    let request = LogoutRequest()
     
     let userIdentifier: AnyObject
     
     init( userIdentifier: AnyObject ) {
         self.userIdentifier = userIdentifier
-        
-        super.init( request: LogoutRequest() )
-        
-        qualityOfService = .UserInitiated
+        super.init()
+        self.qualityOfService = .UserInitiated
     }
     
-    override func onComplete(result: LogoutRequest.ResultType, completion:()->() ) {
-        
+    override func main() {
+        executeRequest( self.request, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
             guard let loggedOutUser: VUser = context.getObject(self.userIdentifier) else {
                 fatalError()

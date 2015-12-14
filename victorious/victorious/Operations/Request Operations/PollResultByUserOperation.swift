@@ -9,24 +9,25 @@
 import Foundation
 import VictoriousIOSSDK
 
-class PollResultByUserOperation: RequestOperation<PollResultByUserRequest> {
+class PollResultByUserOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
     private let userID: Int64
+    
+    var request: PollResultByUserRequest
     
     init( userID: Int64 ) {
         self.userID = userID
-        super.init( request: PollResultByUserRequest(userID: userID) )
+        self.request = PollResultByUserRequest(userID: userID)
     }
     
-    override func onError(error: NSError, completion: () -> ()) {
-        completion()
+    override func main() {
+        self.executeRequest( request, onComplete: self.onComplete )
     }
     
-    override func onComplete( response: PollResultByUserRequest.ResultType, completion:()->() ) {
+    private func onComplete( polls: PollResultByUserRequest.ResultType, completion:()->() ) {
         
         persistentStore.asyncFromBackground() { context in
-            let pollResults: [VPollResult] = response.flatMap {
+            let pollResults: [VPollResult] = polls.flatMap {
                 let uniqueElements = [
                     "answerId" : NSNumber(longLong: $0.answerID),
                     "sequenceId" : String($0.sequenceID)

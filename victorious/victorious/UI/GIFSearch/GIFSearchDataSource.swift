@@ -88,31 +88,42 @@ class GIFSearchDataSource: NSObject {
         }
         self.state = .Loading
         
-        let operation = mostRecentTrendingOperation?.adjacentOperation(forPageType: pageType) ?? TrendingGIFsOperation()
+        let nextOperation: TrendingGIFsOperation?
+        switch pageType {
+        case .First:
+            nextOperation = TrendingGIFsOperation()
+        case .Next:
+            nextOperation = self.mostRecentTrendingOperation?.next()
+        case .Previous:
+            nextOperation = self.mostRecentTrendingOperation?.prev()
+        }
         
-        operation.queue() { operationError in
+        if let operation = nextOperation {
             self.mostRecentTrendingOperation = operation
-            self.isLastPage = (self.mostRecentTrendingOperation?.nextPageOperation == nil)
-            
-            var result = ChangeResult()
-            if let error = operationError {
-                // Operation failed
-                if self.isLastPage {
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
+            operation.queue() { operationError in
+                self.mostRecentTrendingOperation = operation
+                self.isLastPage = self.mostRecentTrendingOperation?.next() == nil
+                
+                var result = ChangeResult()
+                if let error = operationError {
+                    // Operation failed
+                    if self.isLastPage {
+                        self.state = .Content
                     }
-                    self.state = .Error
-                    result.error = error
+                    else {
+                        if pageType == .First {
+                            self.clear()
+                        }
+                        self.state = .Error
+                        result.error = error
+                    }
+                } else {
+                    // Operation succeeded
+                    self.state = .Content
+                    result = self.updateDataSource( operation.trendingGIFsResults, pageType: pageType )
                 }
-            } else {
-                // Operation succeeded
-                self.state = .Content
-                result = self.updateDataSource( operation.trendingGIFsResults, pageType: pageType )
+                completion?( result )
             }
-            completion?( result )
         }
     }
     
@@ -129,32 +140,44 @@ class GIFSearchDataSource: NSObject {
         }
         self.state = .Loading
         
-        let operation = mostRecentSearchOperation?.adjacentOperation(forPageType: pageType) ?? GIFSearchOperation(searchText: searchText)
+        let nextOperation: GIFSearchOperation?
+        switch pageType {
+        case .First:
+            nextOperation = GIFSearchOperation(searchTerm: searchText)
+        case .Next:
+            nextOperation = self.mostRecentSearchOperation?.next()
+        case .Previous:
+            nextOperation = self.mostRecentSearchOperation?.prev()
+        }
         
-        operation.queue() { operationError in
+        if let operation = nextOperation {
             self.mostRecentSearchOperation = operation
-            self.isLastPage = (self.mostRecentSearchOperation?.nextPageOperation == nil)
             
-            var result = ChangeResult()
-            if let error = operationError {
-                // Operation failed
-                if self.isLastPage {
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
+            operation.queue() { operationError in
+                self.mostRecentSearchOperation = operation
+                self.isLastPage = self.mostRecentSearchOperation?.next() == nil
+                
+                var result = ChangeResult()
+                if let error = operationError {
+                    // Operation failed
+                    if self.isLastPage {
+                        self.state = .Content
                     }
-                    self.state = .Error
-                    result.error = error
+                    else {
+                        if pageType == .First {
+                            self.clear()
+                        }
+                        self.state = .Error
+                        result.error = error
+                    }
+                } else {
+                    // Operation succeeded
+                    self.state = .Content
+                    self.mostRecentSearchText = searchText
+                    result = self.updateDataSource(operation.searchResults, pageType: pageType)
                 }
-            } else {
-                // Operation succeeded
-                self.state = .Content
-                self.mostRecentSearchText = searchText
-                result = self.updateDataSource(operation.searchResults, pageType: pageType)
+                completion?(result)
             }
-            completion?(result)
         }
     }
 

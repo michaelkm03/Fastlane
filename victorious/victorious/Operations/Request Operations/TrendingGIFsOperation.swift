@@ -9,27 +9,24 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class TrendingGIFsOperation: RequestOperation<TrendingGIFsRequest>, PageableOperation {
+final class TrendingGIFsOperation: RequestOperation, PaginatedOperation {
+    
+    let request: TrendingGIFsRequest
+    
     private(set) var trendingGIFsResults: [GIFSearchResult] = []
-    private(set) var nextPageOperation: TrendingGIFsOperation?
-    private(set) var previousPageOperation: TrendingGIFsOperation?
+    private(set) var resultCount: Int?
     
-    init() {
-        super.init(request: TrendingGIFsRequest())
+    required init( request: TrendingGIFsRequest = TrendingGIFsRequest() ) {
+        self.request = request
     }
     
-    override init(request: TrendingGIFsRequest) {
-        super.init(request: request)
+    override func main() {
+        executeRequest( request, onComplete: self.onComplete )
     }
     
-    override func onComplete(result: TrendingGIFsRequest.ResultType, completion: () -> ()) {
-        trendingGIFsResults = result.results
-        if let nextPageRequest = result.nextPage {
-            nextPageOperation = TrendingGIFsOperation(request: nextPageRequest)
-        }
-        if let previousPageRequest = result.previousPage {
-            previousPageOperation = TrendingGIFsOperation(request: previousPageRequest)
-        }
+    func onComplete(results: TrendingGIFsRequest.ResultType, completion: () -> ()) {
+        self.resultCount = results.count
+        self.trendingGIFsResults = results
         completion()
     }
 }

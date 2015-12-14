@@ -9,28 +9,32 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class GIFSearchOperation: RequestOperation<GIFSearchRequest>, PageableOperation {
+final class GIFSearchOperation: RequestOperation, PaginatedOperation {
+    
+    let request: GIFSearchRequest
+    
     private(set) var searchResults: [GIFSearchResult] = []
+    private(set) var resultCount: Int?
     
-    private(set) var nextPageOperation: GIFSearchOperation?
-    private(set) var previousPageOperation: GIFSearchOperation?
     
-    init(searchText: String) {
-        super.init(request: GIFSearchRequest(searchTerm: searchText))
+    private let searchTerm: String
+    
+    required init( request: GIFSearchRequest ) {
+        self.searchTerm = request.searchTerm
+        self.request = request
     }
     
-    override init(request: GIFSearchRequest) {
-        super.init(request: request)
+    convenience init( searchTerm: String) {
+        self.init( request: GIFSearchRequest(searchTerm: searchTerm) )
     }
     
-    override func onComplete(result: GIFSearchRequest.ResultType, completion: () -> ()) {
-        searchResults = result.results
-        if let nextPageRequest = result.nextPage {
-            nextPageOperation = GIFSearchOperation(request: nextPageRequest)
-        }
-        if let previousPageRequest = result.previousPage {
-            previousPageOperation = GIFSearchOperation(request: previousPageRequest)
-        }
+    override func main() {
+        executeRequest( request, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( results: GIFSearchRequest.ResultType, completion:()->() ) {
+        self.resultCount = results.count
+        self.searchResults = results
         completion()
     }
 }

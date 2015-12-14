@@ -1,5 +1,5 @@
 //
-//  VURLMacroReplacement.h
+//  VSDKURLMacroReplacement.h
 //  victorious
 //
 //  Created by Josh Hinman on 2/26/15.
@@ -11,13 +11,13 @@
 /**
  The character sequence that bookends the macros in URLs.
  */
-extern NSString * const VURLMacroReplacementDelimiter;
+extern NSString * const VSDKURLMacroReplacementDelimiter;
 
 /**
  A class for replacing macros in a URL
  string with real values
  */
-@interface VURLMacroReplacement : NSObject
+@interface VSDKURLMacroReplacement : NSObject
 
 /**
  Takes a URL-like string that contains macros (e.g. "%%SESSION_TIME%%"),

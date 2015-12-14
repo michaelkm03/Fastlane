@@ -2,47 +2,42 @@
 //  StreamOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 11/16/15.
+//  Created by Patrick Lynch on 12/4/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-class StreamOperation: RequestOperation<StreamRequest> {
+final class StreamOperation: RequestOperation, PaginatedOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    let request: StreamRequest
+    private(set) var resultCount: Int?
     
     private let apiPath: String
     
-    init?( apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.apiPath = apiPath
-        super.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID, pageNumber: pageNumber, itemsPerPage: itemsPerPage)! )
-    }
-    
-    override init( request: StreamRequest ) {
+    required init( request: StreamRequest ) {
         self.apiPath = request.apiPath
-        super.init(request: request)
+        self.request = request
     }
     
-    var nextPageOperation: StreamOperation?
-    var previousPageOperation: StreamOperation?
+    convenience init( apiPath: String, sequenceID: Int64? = nil) {
+        self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
+    }
     
-    override func onComplete(response: StreamRequest.ResultType, completion:()->() ) {
-        let stream = response.results
-        let uniqueElements = [ "apiPath" : self.apiPath ]
+    override func main() {
+        executeRequest( request, onComplete: self.onComplete )
+    }
+    
+    private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+        self.resultCount = stream.items.count
         
-        persistentStore.asyncFromBackground() { context in
-            let persistentStream: VStream = context.findOrCreateObject( uniqueElements )
-            persistentStream.populate( fromSourceModel: stream )
+       persistentStore.asyncFromBackground() { context in
+            let persistentStream: VStream = context.findOrCreateObject( [ "apiPath" : self.apiPath ] )
+            let streamItems = VStreamItem.parseStreamItems(stream.items, context: context)
+            persistentStream.addObjects( streamItems, to: "streamItems" )
             context.saveChanges()
-        }
-        
-        if let nextPageRequest = response.nextPage {
-            self.nextPageOperation = StreamOperation( request: nextPageRequest )
-        }
-        if let previousPageRequest = response.previousPage {
-            self.previousPageOperation = StreamOperation( request: previousPageRequest )
+            completion()
         }
     }
 }

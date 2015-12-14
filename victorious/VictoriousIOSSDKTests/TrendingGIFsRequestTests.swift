@@ -21,14 +21,12 @@ class TrendingGIFsRequestTests: XCTestCase {
         
         do {
             let trendingGIFs = TrendingGIFsRequest()
-            let (results, _, previousPage) = try trendingGIFs.parseResponse(NSURLResponse(), toRequest: trendingGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try trendingGIFs.parseResponse(NSURLResponse(), toRequest: trendingGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 15)
             XCTAssertEqual(results[0].gifURL, "https://media2.giphy.com/media/6T1xoDuIVI5WM/giphy.gif")
             XCTAssertEqual(results[0].mp4URL, "https://media2.giphy.com/media/6T1xoDuIVI5WM/giphy.mp4")
             XCTAssertEqual(results[1].gifURL, "https://media0.giphy.com/media/xy6d8j1gO7XuE/giphy.gif")
             XCTAssertEqual(results[1].mp4URL, "https://media0.giphy.com/media/xy6d8j1gO7XuE/giphy.mp4")
-            
-            XCTAssertNil(previousPage, "There should be no page before page 1")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

@@ -21,13 +21,10 @@ class NotificationsRequestTests: XCTestCase {
         
         do {
             let notifications = NotificationsRequest(pageNumber: 1, itemsPerPage: 100)
-            let (results, nextPage, previousPage) = try notifications.parseResponse(NSURLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try notifications.parseResponse(NSURLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 1)
             XCTAssertEqual(results[0].subject, "Ryan Higa sent you a message")
             XCTAssertEqual(results[0].deeplink, "officialryanhiga://inbox/1379901")
-            
-            XCTAssertNil(previousPage, "There should be no page before page 1")
-            XCTAssertNotNil(nextPage, "Next page should not be nil")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

@@ -1,19 +1,19 @@
 //
-//  VURLMacroReplacement.m
+//  VSDKURLMacroReplacement.m
 //  victorious
 //
 //  Created by Josh Hinman on 2/26/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSCharacterSet+VURLParts.h"
-#import "VURLMacroReplacement.h"
+#import "NSCharacterSet+VSDKURLParts.h"
+#import "VSDKURLMacroReplacement.h"
 
-NSString * const VURLMacroReplacementDelimiter = @"%%";
+NSString * const VSDKURLMacroReplacementDelimiter = @"%%";
 
 static NSString * const kQueryStringDelimiter = @"?";
 
-@implementation VURLMacroReplacement
+@implementation VSDKURLMacroReplacement
 
 - (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
 {
@@ -45,11 +45,11 @@ static NSString * const kQueryStringDelimiter = @"?";
         nonQueryString = urlString;
     }
     
-    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet] complete:complete];
+    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet] complete:complete];
     
     if ( queryString != nil )
     {
-        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet v_queryPartCharacterSet] complete:complete];
+        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet vsdk_queryPartCharacterSet] complete:complete];
         return [NSString stringWithFormat:@"%@%@%@", nonQueryString, kQueryStringDelimiter, queryString];
     }
     else
@@ -83,7 +83,7 @@ static NSString * const kQueryStringDelimiter = @"?";
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^(void)
         {
-            macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VURLMacroReplacementDelimiter]
+            macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VSDKURLMacroReplacementDelimiter]
                                                                    options:0
                                                                      error:nil];
         });

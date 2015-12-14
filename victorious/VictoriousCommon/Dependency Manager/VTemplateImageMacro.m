@@ -9,7 +9,7 @@
 #import "VJSONHelper.h"
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
-#import "VURLMacroReplacement.h"
+#import "VSDKURLMacroReplacement.h"
 
 static NSString * const kImageCountKey = @"imageCount";
 static NSString * const kImageMacroKey = @"imageMacro";
@@ -36,7 +36,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
         if ( imageCount != nil && [macro isKindOfClass:[NSString class]] )
         {
             NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
-            VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+            VSDKURLMacroReplacement *macroReplacement = [[VSDKURLMacroReplacement alloc] init];
             for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
             {
                 NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];

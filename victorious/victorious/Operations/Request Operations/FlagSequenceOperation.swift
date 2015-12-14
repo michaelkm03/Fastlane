@@ -9,21 +9,18 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FlagSequenceOperation: RequestOperation<FlagSequenceRequest> {
+class FlagSequenceOperation: RequestOperation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
-    
-    private let originViewController: UIViewController
     private let sequenceID: Int64
     
-    init( sequenceID: Int64, originViewController: UIViewController ) {
+    let request: FlagSequenceRequest
+    
+    init( sequenceID: Int64 ) {
+        self.request = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
-        self.originViewController = originViewController
-        super.init( request: FlagSequenceRequest(sequenceID: sequenceID) )
     }
     
-    override func onComplete( response: FlagSequenceRequest.ResultType, completion:()->() ) {
-        
+    func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
             guard let sequence: VSequence = context.findObjects( uniqueElements, limit: 1).first else  {

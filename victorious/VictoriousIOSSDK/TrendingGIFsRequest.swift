@@ -10,15 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of trending GIFs
-public struct TrendingGIFsRequest: Pageable {
+public struct TrendingGIFsRequest: PaginatorPageable, ResultBasedPageable {
     
-    private let paginator: StandardPaginator
+    public let paginator: StandardPaginator
     
-    public init(pageNumber: Int = 1, itemsPerPage: Int = 15) {
-        self.init(paginator: StandardPaginator(pageNumber: pageNumber, itemsPerPage: itemsPerPage))
+    public init( request: TrendingGIFsRequest, paginator: StandardPaginator ) {
+        self.paginator = paginator
     }
     
-    private init(paginator: StandardPaginator) {
+    public init( paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
     }
     
@@ -29,21 +29,12 @@ public struct TrendingGIFsRequest: Pageable {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (results: [GIFSearchResult], nextPage: TrendingGIFsRequest?, previousPage: TrendingGIFsRequest?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
         
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        let results = gifsJSON.flatMap { GIFSearchResult(json: $0) }
-        let nextPageRequest: TrendingGIFsRequest? = gifsJSON.count > 0 ? TrendingGIFsRequest(paginator: paginator.nextPage) : nil
-        let previousPageRequest: TrendingGIFsRequest?
-        
-        if let previousPage = paginator.previousPage {
-            previousPageRequest = TrendingGIFsRequest(paginator: previousPage)
-        } else {
-            previousPageRequest = nil
-        }
-        return (results, nextPageRequest, previousPageRequest)
+        return gifsJSON.flatMap { GIFSearchResult(json: $0) }
     }
 }

@@ -16,7 +16,6 @@ FOUNDATION_EXPORT const unsigned char VictoriousCommonVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <VictoriousCommon/PublicHeader.h>
 
-#import <VictoriousCommon/NSCharacterSet+VURLParts.h>
 #import <VictoriousCommon/NSString+VCrypto.h>
 #import <VictoriousCommon/NSString+VDataCacheID.h>
 #import <VictoriousCommon/NSURL+VDataCacheID.h>
@@ -26,7 +25,6 @@ FOUNDATION_EXPORT const unsigned char VictoriousCommonVersionString[];
 #import <VictoriousCommon/VTemplateImage.h>
 #import <VictoriousCommon/VTemplateImageMacro.h>
 #import <VictoriousCommon/VTemplateImageSet.h>
-#import <VictoriousCommon/VURLMacroReplacement.h>
 #import <VictoriousCommon/VEnvironment.h>
 #import <VictoriousCommon/VJSONHelper.h>
 #import <VictoriousCommon/VBulkDownloadOperation.h>
