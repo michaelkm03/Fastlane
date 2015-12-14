@@ -57,12 +57,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
                            fromViewController:(UIViewController *)sourceViewController
 {
-    // Anonymous user does not need accessory screens
-    if ([AgeGate isAnonymousUser])
-    {
-        return;
-    }
-    
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
@@ -197,6 +191,11 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 - (BOOL)shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        return [AgeGate isAccessoryItemAllowed:menuItem];
+    }
+    
     // If anyone in the responder chain can and does say no, then we don't display
     __block BOOL shouldDisplay = YES;
     [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)

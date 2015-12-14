@@ -84,14 +84,30 @@ import Foundation
         return utilities.filter() { $0.type == .Flag }
     }
     
+    static func isAccessoryItemAllowed(accessoryItem: VNavigationMenuItem) -> Bool {
+        let accessoryItemBlackList = [
+            VDependencyManagerAccessoryItemMenu,
+            VDependencyManagerAccessoryItemCompose,
+            VDependencyManagerAccessoryItemInbox,
+            VDependencyManagerAccessoryItemFindFriends,
+            VDependencyManagerAccessoryItemInvite,
+            VDependencyManagerAccessoryItemCreatePost,
+            VDependencyManagerAccessoryItemFollowHashtag,
+            VDependencyManagerAccessoryItemMore,
+            VDependencyManagerAccessoryNewMessage,
+            VDependencyManagerAccessorySettings
+        ]
+        return !accessoryItemBlackList.contains(accessoryItem.identifier)
+    }
+    
     static func isTrackingEventAllowed(forEventName eventName: String) -> Bool {
-        let allowedTrackingEvents = [
+        let trackingEventsWhiteList = [
             VTrackingEventApplicationFirstInstall,
             VTrackingEventApplicationDidLaunch,
             VTrackingEventApplicationDidEnterForeground,
             VTrackingEventApplicationDidEnterBackground
         ]
-        return allowedTrackingEvents.contains(eventName)
+        return trackingEventsWhiteList.contains(eventName)
     }
     
     //MARK: - Age Gate Business Logic functions
