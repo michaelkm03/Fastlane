@@ -175,7 +175,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
     self.loginOperation = [AgeGate isAnonymousUser] ? [[AnonymousLoginOperation alloc] init] : [[VLoginOperation alloc] init];
-//    self.loginOperation = [[VLoginOperation alloc] init];
     
     [self.operationQueue addOperation:self.loginOperation];
     
