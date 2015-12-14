@@ -21,7 +21,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     private var sortedInternalComments = [VComment]()
     
     func sortInternalComments() {
-        self.sortedInternalComments = sequence.unflaggedComments().sort { $0.postedAt > $1.postedAt }
+        self.sortedInternalComments = (sequence.comments.array as? [VComment] ?? []).sort { $0.postedAt > $1.postedAt }
     }
     
     lazy private var successBlock: VSuccessBlock = { [weak self] (_, _, _) in
