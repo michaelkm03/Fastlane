@@ -201,12 +201,6 @@
 
 - (void)applyStyle
 {
-    if ([AgeGate isAnonymousUser])
-    {
-        [self.primaryActionButton removeFromSuperview];
-        self.primaryActionButton = nil;
-        return;
-    }
     NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey];
     const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManagerProfileEditButtonStylePill];
     [self.primaryActionButton layoutIfNeeded];
@@ -214,6 +208,12 @@
     self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.primaryActionButton removeFromSuperview];
+        self.primaryActionButton = nil;
+    }
 }
 
 #pragma mark - Actions
