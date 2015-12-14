@@ -117,6 +117,7 @@ platform :ios do
       rescue Exception => exception
         status = VAMS::SubmissionResult::Status::BAD
         logger.error(exception.message)
+        logger.error(exception.backtrace.join("\n"))
         send_submission_result(app_id: app.app_id,
                                client: client,
                                build:  make_build_string(version:      version,
