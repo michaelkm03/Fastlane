@@ -627,6 +627,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:self.view.window];
     CGRect obscuredRectInOwnView = [self.view.window convertRect:obscuredRectInWindow toView:self.view];
     CGFloat bottomObscuredSize = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY(obscuredRectInOwnView);
+    if ([AgeGate isAnonymousUser])
+    {
+        bottomObscuredSize = 0.0f;
+    }
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
