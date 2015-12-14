@@ -76,8 +76,8 @@ platform :ios do
   desc "Deploy a new version to the App Store"
   lane :deploy do |options|
     ensure_git_status_clean unless ENV['IGNORE_DIRTY_GIT_STATE']
-    environment = options[:environment]
-    client      = VAMS::Client.new(environment: environment || :production)
+    environment = options[:environment] || :production
+    client      = VAMS::Client.new(environment: environment)
     client.apps_to_build.each do |app|
       clean_build_products
 
