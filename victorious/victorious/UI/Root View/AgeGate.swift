@@ -29,8 +29,8 @@ import Foundation
     
     static func isAnonymousUser() -> Bool {
         //TODO: The following VObjectManager line is for testing before user -1 is authroized on the backend. Remove before merging.
-//        return VObjectManager.sharedManager().mainUserLoggedIn
-        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
+        return VObjectManager.sharedManager().mainUserLoggedIn
+//        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
     static func saveShouldUserBeAnonymous(anonymous: Bool) {
@@ -77,7 +77,7 @@ import Foundation
     }
     
     static func filterMoreButtonItems(items: [VActionItem]) -> [VActionItem] {
-        return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") }
+        return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") || $0.type != VActionItemType.Default }
     }
     
     static func filterCommentCellUtilities(utilities: [VUtilityButtonConfig]) -> [VUtilityButtonConfig] {
