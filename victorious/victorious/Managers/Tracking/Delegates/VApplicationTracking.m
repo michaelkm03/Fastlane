@@ -49,7 +49,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, strong, readwrite) TrackingRequestScheduler *requestScheduler;
 
 @end
 
@@ -94,9 +93,17 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        _requestScheduler = [[TrackingRequestScheduler alloc] init];
     }
     return self;
+}
+
+- (id<TrackingRequestScheduler>)requestScheduler
+{
+    if ( _requestScheduler == nil )
+    {
+        _requestScheduler = [[ApplicationTrackingRequestScheduler alloc] init];
+    }
+    return _requestScheduler;
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -113,7 +120,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     return dateFormatter;
 }
 
-- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
+- (NSInteger)trackEventWithUrls:(NSArray *)urls forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
     if ( ![self validateUrls:urls]  )
     {
@@ -123,7 +130,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     __block NSUInteger numFailures = 0;
     [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
     {
-        if ( ![self trackEventWithUrl:url andParameters:parameters] )
+        if ( ![self trackEventWithUrl:url forEventName:eventName withParameters:parameters] )
         {
             numFailures++;
         }
@@ -137,7 +144,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
-- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
+- (BOOL)trackEventWithUrl:(NSString *)url forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
     if ( !isUrlValid )
@@ -165,7 +172,14 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-    [self.requestScheduler scheduleRequest:request];
+    if ( [self.immediateExecutionWhiteList containsObject:eventName] )
+    {
+        [self.requestScheduler sendSingleRequest:request];
+    }
+    else
+    {
+        [self.requestScheduler scheduleRequest:request];
+    }
     return YES;
 }
 
@@ -300,7 +314,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     // If calling code doesn't supply any URLs, we can't proceed any further
     if ( allURLs != nil && allURLs.count > 0 )
     {
-        [self trackEventWithUrls:allURLs andParameters:parameters];
+        [self trackEventWithUrls:allURLs forEventName:eventName withParameters:parameters];
     }
 }
 
