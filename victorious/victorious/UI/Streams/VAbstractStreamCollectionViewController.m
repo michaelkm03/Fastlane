@@ -78,7 +78,7 @@
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
     
-    id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstanceWithTracker:[VTrackingManager sharedInstance]];
+    id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
     self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
                                                                    timingTracker:timingTracker];
 }

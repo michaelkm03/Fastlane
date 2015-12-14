@@ -77,8 +77,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        _appTimingTracker = [DefaultTimingTracker sharedInstanceWithDependencyManager:dependencyManager
-                                                                          tracker:[VTrackingManager sharedInstance]];
+        _appTimingTracker = [DefaultTimingTracker sharedInstanceWithDependencyManager:dependencyManager];
     }
     return self;
 }

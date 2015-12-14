@@ -21,9 +21,9 @@ class ContentViewAppTimingHelperTests: XCTestCase {
         XCTAssertEqual( timingTracker.eventsStarted[0], VAppTimingEventTypeContentViewLoad )
         XCTAssertEqual( timingTracker.eventsEnded.count, 0 )
         
-        for endpoint in ContentViewEndpoint.AllCases {
+        for endpoint in ContentViewEndpoint.allCases {
             helper.setEndpointFinished( endpoint )
-            if endpoint != Array(ContentViewEndpoint.AllCases).last {
+            if endpoint != Array(ContentViewEndpoint.allCases).last {
                 XCTAssertEqual( timingTracker.eventsEnded.count, 0 )
             }
         }

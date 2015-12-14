@@ -52,11 +52,11 @@ class AutoShowLoginOperation: Operation {
         super.start()
         
         if cancelled {
-            self.finishedExecuting()
+            finishedExecuting()
             return
         }
         
-        self.beganExecuting()
+        beganExecuting()
         
         dispatch_async(dispatch_get_main_queue()) {
             

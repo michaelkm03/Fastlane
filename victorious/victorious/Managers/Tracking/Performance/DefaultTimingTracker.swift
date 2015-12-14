@@ -8,7 +8,7 @@
 
 import Foundation
 
-private class AppTimingEvent: NSObject {
+private struct AppTimingEvent: Hashable {
     let type: String
     let subtype: String?
     let dateStarted = NSDate()
@@ -17,6 +17,14 @@ private class AppTimingEvent: NSObject {
         self.type = type
         self.subtype = subtype
     }
+	
+	var hashValue: Int {
+		return self.type.hashValue
+	}
+}
+
+private func ==(lhs: AppTimingEvent, rhs: AppTimingEvent) -> Bool {
+	return lhs.type == rhs.type
 }
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
@@ -27,27 +35,28 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     private(set) var urls = [String]()
     private var activeEvents = Set<AppTimingEvent>()
     private static var instance: DefaultTimingTracker?
-    private let tracker: VTracker
+	
+	/// An object to which the actual tracking will be delegated once a performance event has been
+	/// recorded and its duration calculated.  Defaults to using `VTrackingManager`.
+	var tracker: VTracker? = VTrackingManager.sharedInstance()
     
-    /// Singleton initializer with `tracker` dependency.  An internally-defined default URL
-    /// will be used to track events using the provided `tracker` if one has not been provided by
-    /// calling `sharedInstance(dependencyManager:tracker:)`.  In the latter case, the value is read
+    /// Singleton initializer.  An internally-defined default URL will be used to track events if one has not been
+    ///  provided by calling `sharedInstance(dependencyManager:tracker:)`.  In the latter case, the value is read
     /// from the template through the provided dependency manager and used in favor of the default.
-    class func sharedInstance( tracker tracker: VTracker = VTrackingManager.sharedInstance() ) -> DefaultTimingTracker {
+    class func sharedInstance() -> DefaultTimingTracker {
         if let instance = instance {
             return instance
         } else {
-            let newInstance = DefaultTimingTracker(tracker: tracker)
+            let newInstance = DefaultTimingTracker()
             instance = newInstance
             return newInstance
         }
     }
     
-    
-    /// Singleton initializer with `tracker` dependency.  A tracking endpoint URL value is read
-    /// from the template through the provided dependency manager and used in favor of the default.
-    class func sharedInstance( dependencyManager dependencyManager: VDependencyManager, tracker: VTracker = VTrackingManager.sharedInstance() ) -> DefaultTimingTracker {
-        let instance = sharedInstance(tracker: tracker)
+    /// Singleton initializer with dependency manager to provide tracking endpoint URL value is read
+    /// from the template and used in favor of the default.
+    class func sharedInstance( dependencyManager dependencyManager: VDependencyManager ) -> DefaultTimingTracker {
+        let instance = sharedInstance()
         if let urls = dependencyManager.trackingURLsForKey( "app_time" ) as? [String] {
             instance.urls = urls
         } else {
@@ -59,16 +68,12 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         return instance
     }
     
-    private init(tracker: VTracker) {
-        self.tracker = tracker
-    }
-    
     func resetAllEvents() {
         self.activeEvents.removeAll()
     }
     
     func resetEvent(type type: String) {
-        if let existing = self.activeEvents.filter({ $0.type == type }).first {
+        if let existing = self.activeEvents.lazy.filter({ $0.type == type }).first {
             self.activeEvents.remove( existing )
         }
     }
@@ -80,7 +85,7 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     }
     
     func endEvent(type type: String, subtype: String? = nil) {
-        if let event = self.activeEvents.filter({ $0.type == type }).first {
+        if let event = self.activeEvents.lazy.filter({ $0.type == type }).first {
             trackEvent( event )
             self.activeEvents.remove( event )
         }
@@ -94,6 +99,6 @@ class DefaultTimingTracker: NSObject, TimingTracker {
             VTrackingKeyType : event.type,
             VTrackingKeySubtype : event.subtype ?? ""
         ]
-        tracker.trackEvent(VTrackingEventApplicationPerformanceMeasured, parameters: params)
+        tracker?.trackEvent(VTrackingEventApplicationPerformanceMeasured, parameters: params)
     }
 }

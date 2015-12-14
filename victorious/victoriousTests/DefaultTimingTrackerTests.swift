@@ -33,14 +33,16 @@ class DefaultTimingTrackerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockTracker = MockTracker()
-        templateTracker = DefaultTimingTracker.sharedInstance(tracker: mockTracker)
+		templateTracker = DefaultTimingTracker.sharedInstance()
+		templateTracker.tracker = mockTracker
         let config = [
             "tracking" : [
                 "app_time" : [testTemplateURL]
             ]
         ]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: nil)
-        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance(dependencyManager: dependencyManager, tracker: mockTracker)
+        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance(dependencyManager: dependencyManager)
+		trackerWithDefaultURL.tracker = mockTracker
     }
     
     func testInitializer() {
@@ -65,7 +67,7 @@ class DefaultTimingTrackerTests: XCTestCase {
         XCTAssertEqual( urls[0], testTemplateURL )
         
         let duration = mockTracker.lastParams[VTrackingKeyDuration] as! Float
-        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 2.0)
+        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 10.0)
         XCTAssertEqual( mockTracker.lastParams[VTrackingKeySubtype] as? String, eventSubtype )
         XCTAssertEqual( mockTracker.lastParams[VTrackingKeyType] as? String, eventType )
     }

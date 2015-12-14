@@ -15,7 +15,7 @@ import Foundation
     case UserInfo
     case SequenceData
     
-    static var AllCases: Set<ContentViewEndpoint> {
+    static var allCases: Set<ContentViewEndpoint> {
         return Set<ContentViewEndpoint>(arrayLiteral: .PollData, .Comments, .UserInfo, .SequenceData)
     }
 }
@@ -33,7 +33,7 @@ class AppTimingContentHelper: NSObject {
     
     /// Signals the start of a session during which tracking of completed endpoints may occur.
     func start() {
-        if completedEndpoints.count < ContentViewEndpoint.AllCases.count {
+        if completedEndpoints.count < ContentViewEndpoint.allCases.count {
             timingTracker.startEvent(type: VAppTimingEventTypeContentViewLoad, subtype:nil)
         }
     }
@@ -48,7 +48,7 @@ class AppTimingContentHelper: NSObject {
     func setEndpointFinished( endpoint: ContentViewEndpoint ) {
         completedEndpoints.insert( endpoint )
         
-        if completedEndpoints.count == ContentViewEndpoint.AllCases.count {
+        if completedEndpoints.count == ContentViewEndpoint.allCases.count {
             timingTracker.endEvent(type: VAppTimingEventTypeContentViewLoad, subtype:nil)
         }
     }

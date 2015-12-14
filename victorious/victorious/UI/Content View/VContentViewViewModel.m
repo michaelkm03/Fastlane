@@ -96,7 +96,7 @@
         _streamId = context.streamId ?: @"";
         _dependencyManager = context.destinationDependencyManager;
         
-        id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstanceWithTracker:[VTrackingManager sharedInstance]];
+        id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
         _appTimingHelper = [[AppTimingContentHelper alloc] initWithTimingTracker:timingTracker];
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
