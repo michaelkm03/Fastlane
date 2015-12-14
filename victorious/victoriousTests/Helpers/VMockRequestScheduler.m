@@ -13,7 +13,8 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if ( self != nil )
+    {
         _requestsScheduled = [[NSMutableArray alloc] init];
         _requestsSent = [[NSMutableArray alloc] init];
     }
