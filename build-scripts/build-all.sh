@@ -134,7 +134,7 @@ fi
 applyConfiguration(){
     echo "Configuring for $1"
 
-    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive -c $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         return 1
