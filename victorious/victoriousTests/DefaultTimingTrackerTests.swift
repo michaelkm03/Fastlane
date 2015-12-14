@@ -62,14 +62,16 @@ class DefaultTimingTrackerTests: XCTestCase {
         
         XCTAssertEqual( mockTracker.lastEvent, VTrackingEventApplicationPerformanceMeasured )
         
-        let urls = mockTracker.lastParams[ VTrackingKeyUrls ] as! [String]
+        let urls = mockTracker.lastParams?[ VTrackingKeyUrls ] as? [String] ?? []
         XCTAssertEqual( urls.count, 1 )
-        XCTAssertEqual( urls[0], testTemplateURL )
+        if urls.count >= 1 {
+            XCTAssertEqual( urls[0], testTemplateURL )
+        }
         
-        let duration = mockTracker.lastParams[VTrackingKeyDuration] as! Float
-        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 10.0)
-        XCTAssertEqual( mockTracker.lastParams[VTrackingKeySubtype] as? String, eventSubtype )
-        XCTAssertEqual( mockTracker.lastParams[VTrackingKeyType] as? String, eventType )
+        let duration = mockTracker.lastParams?[VTrackingKeyDuration] as? Float ?? 0.0
+        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 2.0)
+        XCTAssertEqual( mockTracker.lastParams?[VTrackingKeySubtype] as? String, eventSubtype )
+        XCTAssertEqual( mockTracker.lastParams?[VTrackingKeyType] as? String, eventType )
     }
     
     func testReset() {
@@ -78,15 +80,15 @@ class DefaultTimingTrackerTests: XCTestCase {
         trackerWithDefaultURL.startEvent(type: eventType + "2", subtype: nil)
         
         trackerWithDefaultURL.resetEvent(type: eventType + "0")
-        trackerWithDefaultURL.endEvent(type: eventType + "0", subtype: eventSubtype)
+        trackerWithDefaultURL.endEvent(type: eventType + "0", subtype: nil)
         XCTAssertNil( mockTracker.lastEvent )
         
         mockTracker.lastEvent = nil
-        trackerWithDefaultURL.endEvent(type: eventType + "1", subtype: eventSubtype)
+        trackerWithDefaultURL.endEvent(type: eventType + "1", subtype: nil)
         XCTAssertNotNil( mockTracker.lastEvent )
         
         mockTracker.lastEvent = nil
-        trackerWithDefaultURL.endEvent(type: eventType + "2", subtype: eventSubtype)
+        trackerWithDefaultURL.endEvent(type: eventType + "2", subtype: nil)
         XCTAssertNotNil( mockTracker.lastEvent )
     }
     
