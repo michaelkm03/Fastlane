@@ -784,7 +784,6 @@
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
 		A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047931B97AE140091F366 /* ContentViewPresenter.swift */; };
 		A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */; };
-		A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
 		A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */; };
 		A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378351AEF4ED5007FF197 /* VProfileHeaderCell.m */; };
 		A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378391AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m */; };
@@ -9952,7 +9951,6 @@
 				A7D378531AF06C65007FF197 /* VImageAssetFinderTests.m in Sources */,
 				7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */,
 				A720053A1A03073B00285A9C /* VVoteTypeFetcherTests.m in Sources */,
-				A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */,
 				A72005311A03073B00285A9C /* VUIAlertView+VBlocksTests.m in Sources */,
 				035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */,
 				A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */,
