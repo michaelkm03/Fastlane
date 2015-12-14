@@ -17,14 +17,14 @@ private struct AppTimingEvent: Hashable {
         self.type = type
         self.subtype = subtype
     }
-	
-	var hashValue: Int {
-		return self.type.hashValue
-	}
+    
+    var hashValue: Int {
+        return self.type.hashValue
+    }
 }
 
 private func ==(lhs: AppTimingEvent, rhs: AppTimingEvent) -> Bool {
-	return lhs.type == rhs.type
+    return lhs.type == rhs.type
 }
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
@@ -35,10 +35,10 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     private(set) var urls = [String]()
     private var activeEvents = Set<AppTimingEvent>()
     private static var instance: DefaultTimingTracker?
-	
-	/// An object to which the actual tracking will be delegated once a performance event has been
-	/// recorded and its duration calculated.  Defaults to using `VTrackingManager`.
-	var tracker: VTracker? = VTrackingManager.sharedInstance()
+    
+    /// An object to which the actual tracking will be delegated once a performance event has been
+    /// recorded and its duration calculated.  Defaults to using `VTrackingManager`.
+    var tracker: VTracker? = VTrackingManager.sharedInstance()
     
     /// Singleton initializer.  An internally-defined default URL will be used to track events if one has not been
     ///  provided by calling `sharedInstance(dependencyManager:tracker:)`.  In the latter case, the value is read
