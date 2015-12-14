@@ -99,6 +99,7 @@
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VInsetMarqueeController.h"
 #import "VInsetMarqueeStreamItemCell.h"
+#import "VInteraction.h"
 #import "VKeyboardInputAccessoryView.h"
 #import "VLargeNumberFormatter.h"
 #import "VLightboxTransitioningDelegate.h"

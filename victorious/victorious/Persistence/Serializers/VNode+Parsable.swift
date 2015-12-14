@@ -22,5 +22,12 @@ extension VNode: PersistenceParsable {
             asset.populate( fromSourceModel: $0 )
             return asset
         })
+        
+        interactions = NSOrderedSet( array: node.interactions.flatMap {
+            let uniqueElements = [ "remoteId" : NSNumber(longLong: $0.remoteID) ]
+            let interaction: VInteraction = self.persistentStoreContext.findOrCreateObject( uniqueElements )
+            interaction.populate( fromSourceModel: $0 )
+            return interaction
+        })
     }
 }
