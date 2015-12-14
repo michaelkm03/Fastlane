@@ -6199,10 +6199,10 @@
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */,
 				A72005571A030E4700285A9C /* Delegates */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
 				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
-				A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
 				B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */,
 				A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */,
@@ -6368,12 +6368,12 @@
 		A7B98A2D1A251CEE00C58335 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A76712051C1F55B3006568DF /* VMockRequestScheduler.h */,
+				A76712061C1F55B3006568DF /* VMockRequestScheduler.m */,
 				A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */,
 				A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */,
 				A7B98A311A251D7D00C58335 /* VTestHelpers.h */,
 				A7B98A321A251D7D00C58335 /* VTestHelpers.m */,
-				A76712051C1F55B3006568DF /* VMockRequestScheduler.h */,
-				A76712061C1F55B3006568DF /* VMockRequestScheduler.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
