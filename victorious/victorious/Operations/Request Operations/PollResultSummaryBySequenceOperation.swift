@@ -21,7 +21,7 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
         self.request = request
     }
     
-    convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( sequenceID: Int64 ) {
         self.init( request: PollResultSummaryRequest(sequenceID: sequenceID) )
     }
     
