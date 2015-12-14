@@ -15,6 +15,7 @@
 #import "VObjectManager+Private.h"
 #import "VURLMacroReplacement.h"
 #import "victorious-Swift.h"
+#import "VObjectManager.h"
 #import "VMockRequestScheduler.h"
 
 @interface VApplicationTracking (UnitTest)
