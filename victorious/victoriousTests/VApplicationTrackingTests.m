@@ -29,6 +29,7 @@
 - (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters;
 - (void)sendRequest:(NSURLRequest *)request;
 - (VObjectManager *)applicationObjectManager;
+- (void)sessionTimerDidResetSession:(VSessionTimer *)sessionTimer;
 
 @end
 
@@ -277,11 +278,24 @@
     XCTAssertEqual( mockRequestScheduler.requestsSent.count, 3u);
 }
 
-- (void)testOrder
+- (void)testOrderAndSessionReset
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
     self.applicationTracking.requestScheduler = mockRequestScheduler;
+    
+    for ( NSInteger i = 0; i < 10; i++ )
+    {
+        [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
+        for ( NSInteger j = 0; j <= i; j++ )
+        {
+            NSURLRequest *request = mockRequestScheduler.requestsScheduled[i];
+            NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(i+1)];
+            XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
+        }
+    }
+    
+    [self.applicationTracking sessionTimerDidResetSession:nil];
     
     for ( NSInteger i = 0; i < 10; i++ )
     {
