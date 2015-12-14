@@ -149,12 +149,16 @@ public extension VContentViewViewModel {
         )
     }
     
-    func answerPoll( answer: VPollAnswer, completion:((NSError?)->())? ) {
-        // TODO: api/pollresult/create"
+    func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         
-        // TODO: on complete
-        let params = [ VTrackingKeyIndex : answer == .B ? 1 : 0 ]
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+        if let sequenceID = Int64(self.sequence.remoteId),
+            let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
+                let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
+                operation.queue() { error in
+                    let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
+                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+                }
+        }
     }
 }
 
@@ -166,5 +170,19 @@ private extension VPublishParameters {
             return .Video
         }
         return .Image
+    }
+}
+
+private extension VSequence {
+    
+    func answerModelForPollAnswer( answer: VPollAnswer ) -> VAnswer? {
+        switch answer {
+        case .A:
+            return self.firstNode()?.firstAnswers()?.first as? VAnswer
+        case .B:
+            return self.firstNode()?.firstAnswers()?.last as? VAnswer
+        default:
+            return nil
+        }
     }
 }
