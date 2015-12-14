@@ -36,6 +36,7 @@ static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
 static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
 static NSString * const kMacroErrorType              = @"%%ERROR_TYPE%%";
 static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
+static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -44,11 +45,12 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
-@interface VApplicationTracking()
+@interface VApplicationTracking() <VSessionTimerDelegate>
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (nonatomic, assign) NSUInteger requestCounter;
 
 @end
 
@@ -81,7 +83,8 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                     VTrackingKeyConnectivity       : kMacroConnectivity,
                                     VTrackingKeyVolumeLevel        : kMacroVolumeLevel,
                                     VTrackingKeyErrorType          : kMacroErrorType,
-                                    VTrackingKeyErrorDetails       : kMacroErrorDetails };
+                                    VTrackingKeyErrorDetails       : kMacroErrorDetails,
+                                    VTrackingKeyRequestOrder       : kMacroRequestOrder };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
@@ -93,6 +96,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _requestCounter = NSUIntegerMax;
     }
     return self;
 }
@@ -155,6 +159,10 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
+    if ( [url containsString:kMacroRequestOrder] )
+    {
+        completeParameters[ VTrackingKeyRequestOrder ] = @(self.orderOfNextRequest);
+    }
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
@@ -163,7 +171,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     {
         return NO;
     }
-    
     
     VObjectManager *objManager = [self applicationObjectManager];
     VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
@@ -316,6 +323,24 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     {
         [self trackEventWithUrls:allURLs forEventName:eventName withParameters:parameters];
     }
+}
+
+#pragma mark - VSessionTimerDelegate
+
+- (void)sessionTimerDidResetSession:(VSessionTimer *)sessionTimer
+{
+    self.requestCounter = 0;
+}
+
+#pragma mark -
+
+- (NSUInteger)orderOfNextRequest
+{
+    if ( self.requestCounter >= NSUIntegerMax )
+    {
+        self.requestCounter = 0;
+    }
+    return ++self.requestCounter;
 }
 
 @end

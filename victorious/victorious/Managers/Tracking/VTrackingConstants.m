@@ -283,6 +283,7 @@ NSString * const VTrackingKeyConnectivity = @"Connectivity";
 NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
 NSString * const VTrackingKeyErrorType = @"Type";
 NSString * const VTrackingKeyErrorDetails = @"Details";
+NSString * const VTrackingKeyRequestOrder = @"RequestOrder";
 
 // Tracking Event Values
 // ContentType values
