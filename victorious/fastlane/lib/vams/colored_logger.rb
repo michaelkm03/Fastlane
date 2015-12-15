@@ -1,4 +1,5 @@
 require 'colorize'
+require 'logger'
 
 module VAMS
   class ColoredLogger < Logger
