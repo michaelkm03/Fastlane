@@ -25,8 +25,7 @@
 @property (nonatomic, assign) NSUInteger requestCounter;
 
 - (NSString *)stringFromParameterValue:(id)value;
-- (NSInteger)trackEventWithUrl:(NSString *)url forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters;
-- (NSInteger)trackEventWithUrls:(NSArray *)urls forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters;
+- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
 - (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters;
 - (void)sendRequest:(NSURLRequest *)request;
 - (VObjectManager *)applicationObjectManager;
@@ -71,7 +70,6 @@
 {
     [VApplicationTracking v_restoreOriginalImplementation:self.applicationObjectManagerImp forMethod:@selector(applicationObjectManager)];
     [VApplicationTracking v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequest:)];
-    [self.applicationTracking.requestScheduler cancelAllQueuedRequests];
 
     [[LSNocilla sharedInstance] clearStubs];
     [[LSNocilla sharedInstance] stop];
@@ -80,68 +78,57 @@
 
 - (void)testTrackEvents
 {
-    NSString *eventName = @"testEvent";
-    
+    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
     stubRequest(@"GET", @"http://www.apple.com").andReturn(200);
     stubRequest(@"GET", @"http://www.yahoo.com").andReturn(200);
     stubRequest(@"GET", @"http://www.google.com").andReturn(200);
     
     NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls forEventName:eventName withParameters:nil], 0 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 0 );
     
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:nil forEventName:eventName withParameters:nil], -1 );
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:@[] forEventName:eventName withParameters:nil], -1 );
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:(NSArray *)[NSObject new] forEventName:eventName withParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:nil andParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:@[] andParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
     
     urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls forEventName:eventName withParameters:nil], 1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 1 );
     
     urls = @[ [NSNull null], [NSNull null] ];
-    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls forEventName:eventName withParameters:nil], 2 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 2 );
     
-    XCTAssertEqual( [self.applicationTracking.requestScheduler numberOfQueuedRequests], 6 );
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
 }
 
 - (void)testTrackEvent
 {
-    NSString *eventName = @"testEvent";
+    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
     stubRequest(@"GET", @"http://www.google.com").andReturn(200);
     
-    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" forEventName:eventName withParameters:nil] );
-    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" forEventName:eventName withParameters:@{}] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
     
-    XCTAssertEqual( [self.applicationTracking.requestScheduler numberOfQueuedRequests], 2 );
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
 }
 
 - (void)testTrackEventNoValuesInvalid
 {
-    NSString *eventName = @"testEvent";
-    
-    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:@"" forEventName:eventName withParameters:nil] );
-    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:nil forEventName:eventName withParameters:nil] );
-    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:(NSString *)[NSObject new] forEventName:eventName withParameters:nil] );
-    
-    XCTAssertEqual( [self.applicationTracking.requestScheduler numberOfQueuedRequests], 0 );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:@"" andParameters:nil] );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:nil andParameters:nil] );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:(NSString *)[NSObject new] andParameters:nil] );
 }
 
 - (void)testTrackEventValues
 {
-    NSString *eventName = @"testEvent";
-    
     NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
     NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros forEventName:eventName withParameters:parameters] );
-    
-    XCTAssertEqual( [self.applicationTracking.requestScheduler numberOfQueuedRequests], 1 );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testTrackEventValuesInvalid
 {
-    NSString *eventName = @"testEvent";
-    
     NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
     NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
@@ -149,18 +136,16 @@
     NSDictionary *parameters;
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros forEventName:eventName withParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @3 , macro2 : @6 };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros forEventName:eventName withParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : [NSDate date] , macro2 : [NSDate date] };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros forEventName:eventName withParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @5.0f , macro2 : @10.0f };
-    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros forEventName:eventName withParameters:parameters] );
-    
-    XCTAssertEqual( [self.applicationTracking.requestScheduler numberOfQueuedRequests], 4 );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testMacroReplacement
@@ -251,40 +236,11 @@
     XCTAssertEqualObjects( output, expected, @"Attempting to replace a macro in a URL with the wrong macro should leave URL unchanged." );
 }
 
-- (void)testImmediateExecutionWhiteList
-{
-    NSDictionary *params = @{ VTrackingKeyUrls : @[ @"www.google.com"] };
-    VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    self.applicationTracking.requestScheduler = mockRequestScheduler;
-    self.applicationTracking.immediateExecutionWhiteList = @[ @"event0", @"event2", @"event4" ];
-    
-    [self.applicationTracking trackEventWithName:@"event0" parameters:params];
-    XCTAssertEqual( mockRequestScheduler.requestsScheduled.count, 0u);
-    XCTAssertEqual( mockRequestScheduler.requestsSent.count, 1u);
-    
-    [self.applicationTracking trackEventWithName:@"event1" parameters:params];
-    XCTAssertEqual( mockRequestScheduler.requestsScheduled.count, 1u);
-    XCTAssertEqual( mockRequestScheduler.requestsSent.count, 1u);
-    
-    [self.applicationTracking trackEventWithName:@"event2" parameters:params];
-    XCTAssertEqual( mockRequestScheduler.requestsScheduled.count, 1u);
-    XCTAssertEqual( mockRequestScheduler.requestsSent.count, 2u);
-    
-    [self.applicationTracking trackEventWithName:@"event3" parameters:params];
-    XCTAssertEqual( mockRequestScheduler.requestsScheduled.count, 2u);
-    XCTAssertEqual( mockRequestScheduler.requestsSent.count, 2u);
-    
-    [self.applicationTracking trackEventWithName:@"event4" parameters:params];
-    XCTAssertEqual( mockRequestScheduler.requestsScheduled.count, 2u);
-    XCTAssertEqual( mockRequestScheduler.requestsSent.count, 3u);
-}
-
 - (void)testOrderAndSessionReset
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    self.applicationTracking.requestScheduler = mockRequestScheduler;
     
     for ( NSInteger i = 0; i < 10; i++ )
     {
@@ -316,7 +272,6 @@
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    self.applicationTracking.requestScheduler = mockRequestScheduler;
     
     [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
     {
@@ -340,7 +295,6 @@
     NSDictionary *paramsWithoutMacro = @{ VTrackingKeyUrls : @[ @"http://www.google.com" ] };
     
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    self.applicationTracking.requestScheduler = mockRequestScheduler;
     
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
     {

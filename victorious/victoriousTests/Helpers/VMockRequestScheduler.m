@@ -31,19 +31,4 @@
     [self.requestsSent addObject:request];
 }
 
-- (void)sendAllQueuedRequests
-{
-    
-}
-
-- (void)cancelAllQueuedRequests
-{
-    
-}
-
-- (NSInteger)numberOfQueuedRequests
-{
-    return 0;
-}
-
 @end

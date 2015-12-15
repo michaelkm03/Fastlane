@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "victorious-Swift.h"
 
-@interface VMockRequestScheduler : NSObject <TrackingRequestScheduler>
+@interface VMockRequestScheduler : NSObject
 
 @property (nonatomic, strong) NSMutableArray *requestsScheduled;
 @property (nonatomic, strong) NSMutableArray *requestsSent;

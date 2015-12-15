@@ -359,7 +359,6 @@
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
-		67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
@@ -372,9 +371,9 @@
 		676372ED1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */; };
 		676372EF1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */; };
 		6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6775E75A1C17C318007765B9 /* AgeGate.swift */; };
-		6781CE3F1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6781CE3E1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift */; };
 		678BCA931B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */; };
 		67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */; };
+		67F9515A1C20C03E005E2A4D /* VMockRequestScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 67F951591C20C03E005E2A4D /* VMockRequestScheduler.m */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
@@ -670,8 +669,6 @@
 		A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FA1C1B7DD7006568DF /* TimingTracker.swift */; };
 		A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */; };
 		A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FE1C1B8439006568DF /* MockTimingTracker.swift */; };
-		A76712021C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */; };
-		A76712091C1F576D006568DF /* VMockRequestScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = A76712061C1F55B3006568DF /* VMockRequestScheduler.m */; };
 		A76712121C1FA667006568DF /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
 		A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
@@ -2043,7 +2040,6 @@
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VExploreViewController.swift; sourceTree = "<group>"; };
-		67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRequestScheduler.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
@@ -2056,10 +2052,11 @@
 		676372EC1B8D62FD00A59705 /* ExploreMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6775E75A1C17C318007765B9 /* AgeGate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGate.swift; sourceTree = "<group>"; };
-		6781CE3E1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationTrackingRequestSchedulerTests.swift; sourceTree = "<group>"; };
 		678BCA911B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		678BCA921B8FD73F009877B5 /* VExploreMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateTests.swift; sourceTree = "<group>"; };
+		67F951581C20C03E005E2A4D /* VMockRequestScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMockRequestScheduler.h; sourceTree = "<group>"; };
+		67F951591C20C03E005E2A4D /* VMockRequestScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMockRequestScheduler.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -2560,9 +2557,6 @@
 		A76711FA1C1B7DD7006568DF /* TimingTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingTracker.swift; sourceTree = "<group>"; };
 		A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTimingStreamHelperTests.swift; sourceTree = "<group>"; };
 		A76711FE1C1B8439006568DF /* MockTimingTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTimingTracker.swift; sourceTree = "<group>"; };
-		A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationTrackingRequestScheduler.swift; sourceTree = "<group>"; };
-		A76712051C1F55B3006568DF /* VMockRequestScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMockRequestScheduler.h; sourceTree = "<group>"; };
-		A76712061C1F55B3006568DF /* VMockRequestScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMockRequestScheduler.m; sourceTree = "<group>"; };
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
 		A769C3DA1A13176700698D0C /* VWebBrowserActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserActions.m; sourceTree = "<group>"; };
@@ -6234,10 +6228,8 @@
 			isa = PBXGroup;
 			children = (
 				A76711E41C1B4F47006568DF /* Performance */,
-				A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */,
 				A72005571A030E4700285A9C /* Delegates */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
-				67402D9B1BE1B89D0073C014 /* TrackingRequestScheduler.swift */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
 				B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */,
 				A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */,
@@ -6404,8 +6396,8 @@
 		A7B98A2D1A251CEE00C58335 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				A76712051C1F55B3006568DF /* VMockRequestScheduler.h */,
-				A76712061C1F55B3006568DF /* VMockRequestScheduler.m */,
+				67F951581C20C03E005E2A4D /* VMockRequestScheduler.h */,
+				67F951591C20C03E005E2A4D /* VMockRequestScheduler.m */,
 				A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */,
 				A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */,
 				A7B98A311A251D7D00C58335 /* VTestHelpers.h */,
@@ -6736,7 +6728,6 @@
 			isa = PBXGroup;
 			children = (
 				BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */,
-				6781CE3E1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift */,
 				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
 				03D94C2719DE155400BFAA27 /* AsyncTestHelper */,
 				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
@@ -9424,7 +9415,6 @@
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
 				F0AD21811AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m in Sources */,
-				A76712021C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift in Sources */,
 				A721E9561B572454000B7901 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */,
 				A75C64961AD78DCA00245125 /* VTextPostTextView.m in Sources */,
@@ -9467,7 +9457,6 @@
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */,
-				67402D9C1BE1B89D0073C014 /* TrackingRequestScheduler.swift in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
 				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
@@ -9980,7 +9969,6 @@
 				A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */,
 				A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */,
 				A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */,
-				6781CE3F1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift in Sources */,
 				A72005351A03073B00285A9C /* VUploadTaskInformationTests.m in Sources */,
 				A72005341A03073B00285A9C /* VUploadTaskCreatorTests.m in Sources */,
 				A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */,
@@ -9999,6 +9987,7 @@
 				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
 				A7D378531AF06C65007FF197 /* VImageAssetFinderTests.m in Sources */,
 				7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */,
+				67F9515A1C20C03E005E2A4D /* VMockRequestScheduler.m in Sources */,
 				A720053A1A03073B00285A9C /* VVoteTypeFetcherTests.m in Sources */,
 				A72005311A03073B00285A9C /* VUIAlertView+VBlocksTests.m in Sources */,
 				035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */,
@@ -10031,7 +10020,6 @@
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
 				A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */,
 				F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,
-				A76712091C1F576D006568DF /* VMockRequestScheduler.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
 				035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,

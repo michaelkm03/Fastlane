@@ -102,18 +102,10 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
         _requestCounter = NSUIntegerMax;
     }
     return self;
-}
-
-- (id<TrackingRequestScheduler>)requestScheduler
-{
-    if ( _requestScheduler == nil )
-    {
-        _requestScheduler = [[ApplicationTrackingRequestScheduler alloc] init];
-    }
-    return _requestScheduler;
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -130,7 +122,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
     return dateFormatter;
 }
 
-- (NSInteger)trackEventWithUrls:(NSArray *)urls forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
 {
     if ( ![self validateUrls:urls]  )
     {
@@ -140,7 +132,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
     __block NSUInteger numFailures = 0;
     [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
     {
-        if ( ![self trackEventWithUrl:url forEventName:eventName withParameters:parameters] )
+        if ( ![self trackEventWithUrl:url andParameters:parameters] )
         {
             numFailures++;
         }
@@ -154,7 +146,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
-- (BOOL)trackEventWithUrl:(NSString *)url forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
+- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
     if ( !isUrlValid )
@@ -185,14 +177,11 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
         return NO;
     }
     
-    if ( [self.immediateExecutionWhiteList containsObject:eventName] )
+    dispatch_async( self.requestQueue, ^(void)
     {
-        [self.requestScheduler sendSingleRequest:request];
-    }
-    else
-    {
-        [self.requestScheduler scheduleRequest:request];
-    }
+        [self sendRequest:request];
+    });
+    
     return YES;
 }
 
@@ -333,7 +322,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
     // If calling code doesn't supply any URLs, we can't proceed any further
     if ( allURLs != nil && allURLs.count > 0 )
     {
-        [self trackEventWithUrls:allURLs forEventName:eventName withParameters:parameters];
+        [self trackEventWithUrls:allURLs andParameters:parameters];
     }
 }
 
