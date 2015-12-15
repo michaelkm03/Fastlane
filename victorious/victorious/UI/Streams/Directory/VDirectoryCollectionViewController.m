@@ -64,6 +64,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @implementation VDirectoryCollectionViewController
 
 @synthesize collectionView = _collectionView;
+@synthesize dependencyManager;
 
 #pragma mark - Initializers
 
