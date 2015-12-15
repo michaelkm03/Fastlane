@@ -11,7 +11,8 @@ import VictoriousIOSSDK
 
 class DevicePreferencesOperation: RequestOperation {
     
-    var notificationPreferences: NotificationPreference?
+    // These settings were created with an appropriate ManagedObjectContext for main queue use
+    var mainQueueSettings: VNotificationSettings?
     
     private var request: DevicePreferencesRequest
     
@@ -28,7 +29,30 @@ class DevicePreferencesOperation: RequestOperation {
     }
     
     private func onComplete( result: DevicePreferencesRequest.ResultType, completion: () -> () ) {
-        notificationPreferences = result
-        completion()
+        persistentStore.asyncFromBackground { context in
+            
+            // Grab the background current user's notificationSettings
+            let currentUser = VUser.currentUser()
+            let newSettings: VNotificationSettings
+            if let currentNotificationSettings = currentUser?.notificationSettings {
+                newSettings = currentNotificationSettings
+            }
+            else {
+                newSettings = context.createObject()
+            }
+            newSettings.populate(fromSourceModel: result)
+            currentUser?.notificationSettings = newSettings
+            context.saveChanges()
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.persistentStore.sync({ context in
+                    // Provide the main queue current user for calling code.
+                    let mainQueueCurrentUser = VUser.currentUser()
+                    self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
+                    completion()
+                })
+            })
+        }
+        
     }
 }

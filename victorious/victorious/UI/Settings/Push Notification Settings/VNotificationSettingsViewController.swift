@@ -14,21 +14,17 @@ extension VNotificationSettingsViewController {
     func loadSettings() {
         self.setSettings(nil)
         self.settingsError = nil
-        let persistentStore = MainPersistentStore()
         
         let notificationPreferencesOperation = DevicePreferencesOperation()
         notificationPreferencesOperation.queue() { error in
-            if let error = error {
+            guard error == nil, let mainQueueSettings = notificationPreferencesOperation.mainQueueSettings else {
+                self.setSettings(nil)
                 self.stateManager.errorDidOccur(error)
-            } else {
-                persistentStore.sync{ context in
-                    let settings = context.createObjectAndSave({ (notificationSettings: VNotificationSettings) -> () in
-                        notificationSettings.populate(fromSourceModel: notificationPreferencesOperation.notificationPreferences!)
-                    })
-                    self.setSettings(settings)
-                    self.tableView.reloadData()
-                }
+                self.settingsError = error
+                return
             }
+            self.setSettings(mainQueueSettings)
+            self.tableView.reloadData()
         }
     }
     

@@ -9,7 +9,6 @@
 import Foundation
 import SwiftyJSON
 
-/// DeviceExperiment is a simple networking struct that is quickly converted from JSON.
 public struct DeviceExperiment {
     public let id: Int64
     public let name: String

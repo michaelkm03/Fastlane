@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 /// A RequestType for getting the experiments for the current device.
-/// Returns the available experiments as well as the default experimentIDs from ParseResponse.
+/// - returns: Returns the available experiments as well as the default experimentIDs from parseResponse().
 public struct DeviceExperimentsRequest: RequestType {
     
     public init() {

@@ -347,6 +347,7 @@
         <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
+        <relationship name="notificationSettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NotificationSettings" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
@@ -396,7 +397,7 @@
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="240"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="555"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="28"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>
