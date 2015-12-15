@@ -216,6 +216,18 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
+        
+        NSDictionary *data = @{ @"init" : @"http://dev.getvictorious.com/api/tracking/app_init/?notification_id=%%NOTIF_ID%%&order=%%REQUEST_ORDER%%",
+                                @"install" : @"http://dev.getvictorious.com/api/tracking/app_install/?referrer=%%REFERRER%%&order=%%REQUEST_ORDER%%",
+                                @"start" : @"http://dev.getvictorious.com/api/tracking/app_start/?notification_id=%%NOTIF_ID%%&order=%%REQUEST_ORDER%%",
+                                @"stop" : @"http://dev.getvictorious.com/api/tracking/app_stop/?session_time=%%SESSION_TIME%%&order=%%REQUEST_ORDER%%" };
+        
+        for ( NSString *key in data.allKeys )
+        {
+            NSArray *url = @[ data[key] ];
+            NSString *keyPath = [[templateDecorator keyPathsForKey:key] firstObject];
+            NSParameterAssert( [templateDecorator setTemplateValue:url forKeyPath:keyPath] );
+        }
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
