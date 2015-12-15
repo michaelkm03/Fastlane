@@ -6396,13 +6396,13 @@
 		A7B98A2D1A251CEE00C58335 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				A76711FE1C1B8439006568DF /* MockTimingTracker.swift */,
 				67F951581C20C03E005E2A4D /* VMockRequestRecorder.h */,
 				67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */,
 				A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */,
 				A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */,
 				A7B98A311A251D7D00C58335 /* VTestHelpers.h */,
 				A7B98A321A251D7D00C58335 /* VTestHelpers.m */,
-				A76711FE1C1B8439006568DF /* MockTimingTracker.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
