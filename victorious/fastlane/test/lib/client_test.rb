@@ -57,11 +57,17 @@ module VAMS
     def test_response_submission
       timestamp     = Time.parse("2015-03-10 01:39:34")
       result        = SubmissionResult.new(app_id: 1, status: 'All good', datetime: timestamp)
-      response_code = 404
+      response_code = 200
       stub_login(date: @date)
       stub_submit_result(status: response_code)
       response = @client.submit_result(result)
       assert_equal(response_code, response.code)
+
+      response_code = 500
+      stub_submit_result(status: response_code)
+      assert_raises(SubmissionResult::FailedResponseError) {
+        @client.submit_result(result)
+      }
     end
 
     private

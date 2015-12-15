@@ -90,12 +90,14 @@ module VAMS
     def submit_result(result)
       endpoint = Endpoints::SUBMISSION_RESPONSE
       method   = :post
-      HTTP.send_request(type:     method,
-                        host:     @env.host,
-                        protocol: @env.protocol,
-                        path:     endpoint,
-                        body:     result,
-                        headers:  construct_headers(endpoint: endpoint, method: method))
+      response = HTTP.send_request(type:     method,
+                                   host:     @env.host,
+                                   protocol: @env.protocol,
+                                   path:     endpoint,
+                                   body:     result,
+                                   headers:  construct_headers(endpoint: endpoint, method: method))
+      raise SubmissionResult::FailedResponseError.new("Failed to save the status for #{result}") unless successful_response?(status_code: response.code)
+      response
     end
 
     private
@@ -117,6 +119,10 @@ module VAMS
       hash_data      = "#{@date}#{endpoint}#{@env.useragent}#{token}#{method.to_s.upcase}"
       auth_hash      = Digest::SHA1.hexdigest(hash_data)
       "BASIC #{user_id}:#{auth_hash}"
+    end
+
+    def successful_response?(status_code:, non_error_codes: [200, 201])
+      non_error_codes.include?(status_code)
     end
   end
 end

@@ -2,6 +2,9 @@ require 'active_support/json'
 
 module VAMS
   class SubmissionResult < Hash
+    class FailedResponseError < RuntimeError
+    end
+
     module Platform
       IOS = 'iOS'
     end
