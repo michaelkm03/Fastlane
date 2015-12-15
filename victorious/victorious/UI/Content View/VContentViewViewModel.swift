@@ -69,6 +69,9 @@ public extension VContentViewViewModel {
     }
     
     func loadComments( pageType: VPageType ) {
+        guard !isLoadingComments else {
+            return
+        }
         
         let sequenceID = Int64(self.sequence.remoteId)!
         
@@ -77,14 +80,17 @@ public extension VContentViewViewModel {
         case .First:
             operation =  SequenceCommentsOperation(sequenceID: sequenceID)
         case .Next:
-            operation = self.loadCommentsOperation?.next()
+            operation = loadCommentsOperation?.next()
         case .Previous:
-            operation = self.loadCommentsOperation?.prev()
+            operation = loadCommentsOperation?.prev()
         }
         
         if let currentOperation = operation {
-            currentOperation.queue()
-            self.loadCommentsOperation = currentOperation
+            loadCommentsOperation = currentOperation
+            isLoadingComments = true
+            currentOperation.queue() { error in
+                self.isLoadingComments = false
+            }
         }
     }
     

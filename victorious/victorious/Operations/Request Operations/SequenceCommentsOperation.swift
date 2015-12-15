@@ -26,12 +26,17 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+    }
+    
+    private func onError( error: NSError, completion:(()->())? ) {
+        self.resultCount = 0
     }
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
+        self.resultCount = comments.count
         
-        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { $0 as? Int64 } ?? []
+        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) } ?? []
         if !comments.isEmpty {
             persistentStore.asyncFromBackground() { context in
                 var newComments = [VComment]()

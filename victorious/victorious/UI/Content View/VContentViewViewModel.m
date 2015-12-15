@@ -237,7 +237,7 @@
     __weak typeof(self) welf = self;
     [self.KVOController observe:_sequence
                         keyPath:@"comments"
-                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                           block:^(id observer, id object, NSDictionary *change)
      {
          NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
@@ -245,6 +245,7 @@
          {
              [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
          }
+         [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
      }];
 }
 
@@ -322,11 +323,6 @@
 }
 
 #pragma mark - Public Methods
-
-- (void)removeCommentAtIndex:(NSUInteger)index
-{
-    // TODO
-}
 
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex
 {

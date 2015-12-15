@@ -1326,7 +1326,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.contentCollectionView performBatchUpdates:^void
      {
          NSUInteger row = [self.viewModel.sequence.comments indexOfObject:comment];
-         [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
      }
