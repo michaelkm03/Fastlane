@@ -53,6 +53,15 @@ fastlane ios deploy                 # deploys to production
 fastlane ios deploy environment:dev # deploys to dev
 ```
 
+### Developing using Fastlane
+
+#### Running tests
+
+First thing, make sure tests pass:
+
+- `guard` # runs unit tests
+- `rake`  # runs unit and integration tests
+
 #### Ignore local chages
 
 Fastlane will exit early if you have some local changes. It's useful for running it in production, although it might be inconvenient for local development. In order to run fastlane with local changes use `IGNORE_DIRTY_GIT_STATE=1` environment variable in front of the fastlane command.
