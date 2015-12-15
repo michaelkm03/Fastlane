@@ -21,8 +21,16 @@ protocol CommentsDataSource {
     func indexOfComment(comment: VComment) -> Int
     
     /// Loads comements with the specified page
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?)
+    
     func loadComments( pageType: VPageType )
     
     /// Loads comements with a deepLink comment ID.
     func loadComments(deepLinkCommentID: NSNumber)
+}
+
+extension CommentsDataSource {
+    func loadComments( pageType: VPageType ) {
+        loadComments( pageType, completion: nil )
+    }
 }

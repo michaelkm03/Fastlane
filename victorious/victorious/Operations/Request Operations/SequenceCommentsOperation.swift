@@ -29,8 +29,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
-    private func onError( error: NSError, completion:(()->())? ) {
+    private func onError( error: NSError, completion:(()->()) ) {
         self.resultCount = 0
+        completion()
     }
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
@@ -48,7 +49,10 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
                 let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + newComments )
                 context.saveChanges()
+                completion()
             }
+        
+        } else {
             completion()
         }
     }

@@ -38,7 +38,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         return 0
     }
     
-    func loadComments( pageType: VPageType ) {
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?) {
         guard let sequenceID = Int64(self.sequence.remoteId) where !isLoadingComments else {
             return
         }
@@ -58,6 +58,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
             isLoadingComments = true
             currentOperation.queue() { error in
                 self.isLoadingComments = false
+                completion?(error)
             }
         }
     }

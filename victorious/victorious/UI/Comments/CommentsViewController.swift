@@ -48,7 +48,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             if let sequence = sequence {
                 self.KVOController.observe( sequence,
                     keyPath: "comments",
-                    options: [.New, .Initial, .Old],
+                    options: [.New, .Old],
                     block: { (observer, object, change) in
                         self.onCommentsDidChange()
                 })
@@ -89,7 +89,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
-        commentsDataSourceSwitcher.dataSource.loadComments( .First )
+        commentsDataSourceSwitcher.dataSource.loadComments( .First ) { error in
+            self.onCommentsDidChange()
+        }
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
         if let sequence = self.sequence {
             keyboardBar?.sequencePermissions = sequence.permissions
@@ -166,13 +168,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             self.noContentView?.resetInitialAnimationState()
         }
         
-        collectionView.reloadData()
-        focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
-        
-        self.collectionView.reloadData()
-        dispatch_after(0.1) {
-            self.collectionView.flashScrollIndicators()
+        if isViewLoaded() {
+            collectionView.reloadData()
+            focusHelper?.updateFocus()
+            updateInsetForKeyboardBarState()
+            dispatch_after(0.1) {
+                self.collectionView.flashScrollIndicators()
+            }
         }
     }
 

@@ -22,8 +22,8 @@ class EmtpyCommentsDataSource : CommentsDataSource {
     func indexOfComment(comment: VComment) -> Int {
         return 0
     }
-
-    func loadComments(pageType: VPageType) {}
+    
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?) {}
     
     func loadComments(commentID: NSNumber) {}
     
