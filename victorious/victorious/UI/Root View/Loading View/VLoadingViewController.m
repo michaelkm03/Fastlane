@@ -207,6 +207,18 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     self.progressHUD.taskInProgress = YES;
 }
 
+- (void)addAppTimingURL:(VTemplateDecorator *)templateDecorator
+{
+    VEnvironment *currentEnvironment = [VEnvironmentManager sharedInstance].currentEnvironment;
+    NSString *keyPath = @"tracking/app_time";
+    if ( [templateDecorator templateValueForKeyPath:keyPath] == nil && currentEnvironment != nil )
+    {
+        NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
+        NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
+        NSParameterAssert( [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath] );
+    }
+}
+
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
@@ -217,14 +229,10 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             self.templateConfigurationBlock(templateDecorator);
         }
         
-        VEnvironment *currentEnvironment = [VEnvironmentManager sharedInstance].currentEnvironment;
-        NSString *keyPath = @"tracking/app_time";
-        if ( [templateDecorator templateValueForKeyPath:keyPath] == nil && currentEnvironment != nil )
-        {
-            NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
-            NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
-            NSParameterAssert( [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath] );
-        }
+        // Add app_time URL to template if it is not there already.
+        // This is done to ship with this tracking feature before the backend is ready to supply it in the template.
+        // TODO: It should be removed once the URL is in the template.
+        [self addAppTimingURL:templateDecorator];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
