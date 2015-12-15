@@ -152,7 +152,7 @@
     XCTAssertNil( cell );
 }
 
-- (void)__testSaveError
+- (void)testSaveError
 {
     [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
     
