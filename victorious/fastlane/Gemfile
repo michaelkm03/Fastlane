@@ -4,6 +4,7 @@ gem 'activesupport', require: false
 gem 'httparty'
 gem 'dotenv'
 gem 'colorize'
+gem 'fastlane'
 
 group :development do
   gem 'pry', require: false
