@@ -1,5 +1,5 @@
 //
-//  VMockRequestScheduler.h
+//  VMockRequestRecorder.h
 //  victorious
 //
 //  Created by Patrick Lynch on 12/14/15.
@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "victorious-Swift.h"
 
-@interface VMockRequestScheduler : NSObject
+/* Defines an object that records sent requests */
+@interface VMockRequestRecorder : NSObject
 
-@property (nonatomic, strong) NSMutableArray *requestsScheduled;
 @property (nonatomic, strong) NSMutableArray *requestsSent;
+
+- (void)sendRequest:(NSURLRequest *)request;
 
 @end

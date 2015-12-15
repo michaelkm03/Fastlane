@@ -16,7 +16,7 @@
 #import "VURLMacroReplacement.h"
 #import "victorious-Swift.h"
 #import "VObjectManager.h"
-#import "VMockRequestScheduler.h"
+#import "VMockRequestRecorder.h"
 
 @interface VApplicationTracking (UnitTest)
 
@@ -39,6 +39,7 @@
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, assign) IMP sendRequestImp;
 @property (nonatomic, assign) IMP applicationObjectManagerImp;
+@property (nonatomic, strong) VMockRequestRecorder *mockRequestRecorder;
 
 @end
 
@@ -48,6 +49,8 @@
 {
     [super setUp];
     
+    self.mockRequestRecorder = [[VMockRequestRecorder alloc] init];
+    
     self.applicationObjectManagerImp = [VApplicationTracking v_swizzleMethod:@selector(applicationObjectManager)
                                                                 withBlock:(VObjectManager *)^
                                      {
@@ -55,8 +58,10 @@
                                      }];
     
     self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
-                                                                withBlock:^(NSURLRequest *request)
-                                     {}];
+                                                                withBlock:^(VApplicationTracking *applicationTracking, NSURLRequest *request)
+                                     {
+                                         [self.mockRequestRecorder sendRequest:request];
+                                     }];
     
     self.applicationTracking = [[VApplicationTracking alloc] init];
     
@@ -240,14 +245,14 @@
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     
-    VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    
     for ( NSInteger i = 0; i < 10; i++ )
     {
         [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
+        dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+        
         for ( NSInteger j = 0; j <= i; j++ )
         {
-            NSURLRequest *request = mockRequestScheduler.requestsScheduled[i];
+            NSURLRequest *request = self.mockRequestRecorder.requestsSent[i];
             NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(i+1)];
             XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
         }
@@ -258,9 +263,11 @@
     for ( NSInteger i = 0; i < 10; i++ )
     {
         [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
+        dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+
         for ( NSInteger j = 0; j <= i; j++ )
         {
-            NSURLRequest *request = mockRequestScheduler.requestsScheduled[i];
+            NSURLRequest *request = self.mockRequestRecorder.requestsSent[i];
             NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(i+1)];
             XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
         }
@@ -271,19 +278,21 @@
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     
-    VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    
     [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+    
     {
-        NSURLRequest *request = mockRequestScheduler.requestsScheduled[0];
+        NSURLRequest *request = self.mockRequestRecorder.requestsSent[0];
+        
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
     self.applicationTracking.requestCounter = NSUIntegerMax;
     [self.applicationTracking trackEventWithName:@"some_event" parameters:params];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
     {
-        NSURLRequest *request = mockRequestScheduler.requestsScheduled[1];
+        NSURLRequest *request = self.mockRequestRecorder.requestsSent[1];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
@@ -294,31 +303,37 @@
     NSDictionary *paramsWithMacro = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
     NSDictionary *paramsWithoutMacro = @{ VTrackingKeyUrls : @[ @"http://www.google.com" ] };
     
-    VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
-    
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+    
     {
-        NSURLRequest *request = mockRequestScheduler.requestsScheduled[0];
+        NSURLRequest *request = self.mockRequestRecorder.requestsSent[0];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
     // Track another event in between to ensure that counter is not incremented
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithoutMacro];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
     
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+    
     {
-        NSURLRequest *request = mockRequestScheduler.requestsScheduled[2];
+        NSURLRequest *request = self.mockRequestRecorder.requestsSent[2];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(2)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
     // Track another event in between to ensure that counter is not incremented
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithoutMacro];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
     
     [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
+
     {
-        NSURLRequest *request = mockRequestScheduler.requestsScheduled[4];
+        NSURLRequest *request = self.mockRequestRecorder.requestsSent[4];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(3)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
