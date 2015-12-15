@@ -43,7 +43,7 @@
     
     if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
     {
-        NSString * shareTwitterButtonTitle = NSLocalizedString( @"ShareTwitter", nil);
+        NSString *shareTwitterButtonTitle = NSLocalizedString( @"ShareTwitter", nil);
         
         if ( ![AgeGate isAnonymousUser] || [AgeGate isWebViewActionItemAllowedForActionName:shareTwitterButtonTitle] )
         {

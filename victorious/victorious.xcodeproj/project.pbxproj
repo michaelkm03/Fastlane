@@ -662,7 +662,6 @@
 		A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C31B572453000B7901 /* NSString+Unicode.swift */; };
 		A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */; };
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
-		A76711E91C1B4F47006568DF /* VAppTimingEventType.h in Sources */ = {isa = PBXBuildFile; fileRef = A76711E71C1B4F47006568DF /* VAppTimingEventType.h */; };
 		A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */ = {isa = PBXBuildFile; fileRef = A76711E61C1B4F47006568DF /* VAppTimingEventType.m */; };
 		A76711EC1C1B5C6C006568DF /* AppTimingStreamHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */; };
 		A76711EE1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711ED1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift */; };
@@ -9856,7 +9855,6 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
 				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,
-				A76711E91C1B4F47006568DF /* VAppTimingEventType.h in Sources */,
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
