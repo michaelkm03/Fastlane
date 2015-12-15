@@ -10,96 +10,62 @@ import Foundation
 
 class SequenceCommentsDataSource : CommentsDataSource {
     
-    let sequence: VSequence
-    let flaggedContent = VFlaggedContent()
+    private let sequence: VSequence
+    private let flaggedContent = VFlaggedContent()
+    private(set) var isLoadingComments: Bool = false
+    private var loadCommentsOperation: SequenceCommentsOperation?
+    
+    var commentsArray: [VComment] {
+        return self.sequence.comments.array as? [VComment] ?? []
+    }
     
     init(sequence: VSequence) {
         self.sequence = sequence
-        sortInternalComments()
-    }
-    
-    private var sortedInternalComments = [VComment]()
-    
-    func sortInternalComments() {
-        self.sortedInternalComments = (sequence.comments.array as? [VComment] ?? []).sort { $0.postedAt > $1.postedAt }
-    }
-    
-    lazy private var successBlock: VSuccessBlock = { [weak self] (_, _, _) in
-        guard let strongSelf = self else {
-            return
-        }
-        strongSelf.sortInternalComments()
-        strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf)
-    }
-    
-    lazy private var failBlock: VFailBlock = {[weak self](_, _) in
-        guard let strongSelf = self else {
-            return
-        }
-        strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf)
-    }
-    
-    func loadFirstPage() {
-        
-        VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
-            pageType: VPageType.Next,
-            successBlock: successBlock,
-            failBlock: failBlock)
-    }
-    
-    func loadNextPage() {
-        VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
-            pageType: VPageType.Next,
-            successBlock: successBlock,
-            failBlock: nil)
-    }
-    
-    func loadPreviousPage() {
-        VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
-            pageType: VPageType.Previous,
-            successBlock: successBlock,
-            failBlock: nil)
     }
     
     var numberOfComments: Int {
-        return self.sortedInternalComments.count
+        return self.commentsArray.count
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        return self.sortedInternalComments[index]
+        return (self.sequence.comments.array as? [VComment] ?? [])[index]
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        if let commentIndex = sortedInternalComments.indexOf(comment) {
+        if let commentIndex = commentsArray.indexOf(comment) {
             return commentIndex
         }
         return 0
     }
     
-    weak var delegate : CommentsDataSourceDelegate? {
-        didSet {
-            if delegate != nil {
-                loadFirstPage()
+    func loadComments( pageType: VPageType ) {
+        guard let sequenceID = Int64(self.sequence.remoteId) where !isLoadingComments else {
+            return
+        }
+        
+        let operation: SequenceCommentsOperation?
+        switch pageType {
+        case .First:
+            operation =  SequenceCommentsOperation(sequenceID: sequenceID)
+        case .Next:
+            operation = loadCommentsOperation?.next()
+        case .Previous:
+            operation = loadCommentsOperation?.prev()
+        }
+        
+        if let currentOperation = operation {
+            loadCommentsOperation = currentOperation
+            isLoadingComments = true
+            currentOperation.queue() { error in
+                self.isLoadingComments = false
             }
         }
     }
     
     func loadComments(commentID: NSNumber) {
-        VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
-            successBlock: { [weak self] (_, _, _) in
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf.delegate?.commentsDataSourceDidUpdate(strongSelf, deepLinkId: commentID)
-            },
-            failBlock: nil)
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
+            return
+        }
+        CommentFindOperation(sequenceID: sequenceID, commentID: commentID.longLongValue ).queue()
     }
-    
-    func removeCommentAtIndex(index: Int) {
-        var updatedComments = sortedInternalComments
-        updatedComments.removeAtIndex(index)
-        sortedInternalComments = updatedComments
-        delegate?.commentsDataSourceDidUpdate(self)
-    }
-
 }

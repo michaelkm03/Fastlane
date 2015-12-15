@@ -23,16 +23,8 @@ class EmtpyCommentsDataSource : CommentsDataSource {
         return 0
     }
 
-    weak var delegate: CommentsDataSourceDelegate?
-
-    func loadFirstPage() { }
-
-    func loadNextPage() { }
-
-    func loadPreviousPage() { }
+    func loadComments(pageType: VPageType) {}
     
-    func loadComments(commentID: NSNumber) { }
-
-    func removeCommentAtIndex(index: Int) {}
+    func loadComments(commentID: NSNumber) {}
     
 }

@@ -1,5 +1,5 @@
 //
-//  UpdateCommentRequestTests.swift
+//  CommentEditRequestTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/12/15.
@@ -10,14 +10,14 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class UpdateCommentRequestTests: XCTestCase {
+class CommentEditRequestTests: XCTestCase {
     
     func testRequest() {
         
         let fakeCommentID = 99 as Int64
         let fakeCommentText = "problems"
         
-        let updateCommentRequest = UpdateCommentRequest(commentID: fakeCommentID, text: fakeCommentText)
+        let updateCommentRequest = CommentEditRequest(commentID: fakeCommentID, text: fakeCommentText)
         
         XCTAssertEqual(updateCommentRequest.urlRequest.URL?.absoluteString, "/api/comment/edit")
         
@@ -41,7 +41,7 @@ class UpdateCommentRequestTests: XCTestCase {
         let fakeCommentID = 99 as Int64
         let fakeCommentText = "problems"
         
-        let updateCommentRequest = UpdateCommentRequest(commentID: fakeCommentID, text: fakeCommentText)
+        let updateCommentRequest = CommentEditRequest(commentID: fakeCommentID, text: fakeCommentText)
         
         do {
             let response = try updateCommentRequest.parseResponse(NSURLResponse(), toRequest: updateCommentRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))

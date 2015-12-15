@@ -40,6 +40,7 @@ class CommentAddOperation: RequestOperation {
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
+            comment.user = VUser.currentUser()
             if let realtime = self.commentParameters.realtimeComment {
                 comment.realtime = NSNumber(float: Float(realtime.time))
             }
@@ -50,12 +51,24 @@ class CommentAddOperation: RequestOperation {
             comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
             comment.mediaUrl = self.publishParameters?.mediaToUploadURL?.absoluteString
             
+            // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
+            let sequence: VSequence = context.findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
+            let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
+            sequence.comments = NSOrderedSet(array: allComments)
+            
             context.saveChanges()
             dispatch_sync( dispatch_get_main_queue() ) {
                 self.optimisticCommentIdentifier = comment.identifier
             }
         }
         executeRequest( request, onComplete: self.onComplete )
+        
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
+            parameters: [
+                VTrackingKeyTextLength : self.commentParameters.text?.characters.count ?? 0,
+                VTrackingKeyMediaType : self.publishParameters?.mediaToUploadURL?.pathExtension ?? ""
+            ]
+        )
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
@@ -69,7 +82,6 @@ class CommentAddOperation: RequestOperation {
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticComment.populate( fromSourceModel: comment )
             context.saveChanges()
-            
             completion()
         }
     }

@@ -24,10 +24,8 @@ class CommentsDataSourceSwitchter {
         didSet {
             if let sequence = sequence {
                 dataSource = SequenceCommentsDataSource(sequence: sequence)
-                dataSource.delegate = emptyDataSource.delegate
             }
             else {
-                emptyDataSource.delegate = dataSource.delegate
                 dataSource = emptyDataSource
             }
         }

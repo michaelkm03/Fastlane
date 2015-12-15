@@ -1,5 +1,5 @@
 //
-//  UpdateCommentRequest.swift
+//  CommentEditRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/12/15.
@@ -9,7 +9,7 @@
 import SwiftyJSON
 
 /// Request for editing a particular comment
-public struct UpdateCommentRequest: RequestType {
+public struct CommentEditRequest: RequestType {
     
     public let commentID: Int64
     public let text: String

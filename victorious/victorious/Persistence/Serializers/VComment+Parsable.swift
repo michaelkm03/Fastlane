@@ -29,16 +29,19 @@ extension VComment : PersistenceParsable {
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         sequenceId              = String(comment.sequenceID)
-        userId                  = NSNumber(longLong:comment.userID)
+        userId                  = NSNumber(longLong:comment.userID)        
         
+        // Set the sequence and inStreamSequence based on the comment's sequenceID if a Sequence object isn't set
         if sequence == nil {
             sequence = persistentStoreContext.findOrCreateObject([ "remoteId" : String(comment.sequenceID) ]) as VSequence
             inStreamSequence = sequence
         }
         
+        // Set the user based on the comment's user if a User object isn't set
         if user == nil {
             user = persistentStoreContext.findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
             user.populate( fromSourceModel: comment.user )
         }
+        
     }
 }

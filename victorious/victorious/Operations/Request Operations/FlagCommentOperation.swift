@@ -21,16 +21,31 @@ class FlagCommentOperation: RequestOperation {
         self.request = FlagCommentRequest(commentID: commentID)
     }
     
-    private func onComplete( response: FlagCommentRequest.ResultType, completion:()->() ) {
+    override func main() {
+        // Add comment to flagged comments so it will be filtered from view
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
+        // Perform data changes optimistically
         persistentStore.asyncFromBackground() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
             if let comment: VComment = context.findObjects( uniqueElements ).first {
                 context.destroy( comment )
                 context.saveChanges()
             }
-            completion()
         }
+        
+        // Execute request with callbacks
+        executeRequest( request, onComplete: self.onComplete, onError: self.onError)
+    }
+    
+    private func onError( error: NSError, completion:()->() ) {
+        let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagCommentDidFail, parameters:params)
+        completion()
+    }
+    
+    private func onComplete( response: FlagCommentRequest.ResultType, completion:()->() ) {
+        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidFlagComment)
+        completion()
     }
 }

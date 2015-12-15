@@ -1321,17 +1321,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - VCommentCellUtilitiesDelegate
 
-- (void)commentRemoved:(VComment *)comment
-{
-    [self.contentCollectionView performBatchUpdates:^void
-     {
-         NSUInteger row = [self.viewModel.sequence.comments indexOfObject:comment];
-         NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
-         [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
-     }
-                                         completion:nil];
-}
-
 - (void)editComment:(VComment *)comment
 {
     VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];

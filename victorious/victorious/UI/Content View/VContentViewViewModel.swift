@@ -126,7 +126,6 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
-        
         let realtimeComment: CommentParameters.RealtimeComment?
         if let time = currentTime?.doubleValue where time > 0.0,
             let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
@@ -143,16 +142,7 @@ public extension VContentViewViewModel {
             mediaType: publishParameters.commentMediaAttachmentType,
             realtimeComment: realtimeComment
         )
-        
-        let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters)
-        operation.queue()
-        
-        VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
-            parameters: [
-                VTrackingKeyTextLength : text.characters.count,
-                VTrackingKeyMediaType : publishParameters.mediaToUploadURL?.pathExtension ?? ""
-            ]
-        )
+        CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters).queue()
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
@@ -165,17 +155,6 @@ public extension VContentViewViewModel {
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
                 }
         }
-    }
-}
-
-private extension VPublishParameters {
-    var commentMediaAttachmentType: MediaAttachmentType {
-        if self.isGIF {
-            return .GIF
-        } else if self.isVideo {
-            return .Video
-        }
-        return .Image
     }
 }
 

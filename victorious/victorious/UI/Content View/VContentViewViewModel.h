@@ -77,8 +77,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 
 - (void)setupAdChain;
 
-- (void)removeCommentAtIndex:(NSUInteger)index;
-
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize;
 
 @property (nonatomic, readonly) ContentViewContext *context;

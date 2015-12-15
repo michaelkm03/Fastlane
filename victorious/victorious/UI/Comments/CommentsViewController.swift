@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension VDependencyManager {
     
@@ -21,7 +22,7 @@ extension VDependencyManager {
     }
 }
 
-class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, CommentsDataSourceDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
+class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
 
     // MARK: - Factory Method
     
@@ -44,6 +45,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     var sequence: VSequence? {
         didSet {
             commentsDataSourceSwitcher.sequence = sequence
+            if let sequence = sequence {
+                self.KVOController.observe( sequence,
+                    keyPath: "comments",
+                    options: [.New, .Initial, .Old],
+                    block: { (observer, object, change) in
+                        self.onCommentsDidChange()
+                })
+            }
         }
     }
     
@@ -80,7 +89,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
-        commentsDataSourceSwitcher.dataSource.delegate = self
+        commentsDataSourceSwitcher.dataSource.loadComments( .First )
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
         if let sequence = self.sequence {
             keyboardBar?.sequencePermissions = sequence.permissions
@@ -148,6 +157,24 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     // MARK: - Internal Methods
+    
+    private func onCommentsDidChange() {
+        if sequence?.comments.array.isEmpty ?? true {
+            self.noContentView?.animateTransitionIn()
+        }
+        else {
+            self.noContentView?.resetInitialAnimationState()
+        }
+        
+        collectionView.reloadData()
+        focusHelper?.updateFocus()
+        updateInsetForKeyboardBarState()
+        
+        self.collectionView.reloadData()
+        dispatch_after(0.1) {
+            self.collectionView.flashScrollIndicators()
+        }
+    }
 
     private func updateInsetForKeyboardBarState() {
         if let currentWindow = view.window, keyboardBar = keyboardBar {
@@ -188,11 +215,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        commentsDataSourceSwitcher.dataSource.loadNextPage()
+        commentsDataSourceSwitcher.dataSource.loadComments(.Next)
     }
     
     func shouldLoadPreviousPage() {
-        commentsDataSourceSwitcher.dataSource.loadPreviousPage()
+        commentsDataSourceSwitcher.dataSource.loadComments(.Previous)
     }
     
     // MARK: - VSwipeViewControllerDelegate
@@ -223,16 +250,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             let hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
             self.navigationController?.pushViewController(hashtagViewController, animated: true)
         }
-    }
-    
-    // MARK: - VCommentCellUtilitiesDelegate
-    
-    func commentRemoved(comment: VComment) {
-        collectionView.performBatchUpdates({
-            let commentIndex = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
-            self.commentsDataSourceSwitcher.dataSource.removeCommentAtIndex(commentIndex)
-            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: commentIndex, inSection: 0)])
-            }, completion: nil)
     }
     
     func editComment(comment: VComment) {
@@ -348,64 +365,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         VLightboxTransitioningDelegate.addNewTransitioningDelegateToLightboxController(lightBox, referenceView: sourceView)
         self.presentViewController(lightBox!, animated: true, completion: nil)
     }
-    
-    // MARK: - CommentsDataSourceDelegate
-    
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if dataSource.numberOfComments == 0 {
-                self.noContentView?.animateTransitionIn()
-            }
-            else {
-                self.noContentView?.resetInitialAnimationState()
-            }
-            
-            switch self.collectionView.numberOfItemsInSection(0) {
-            case 0: // First load
-                self.collectionView.reloadData()
-            case dataSource.numberOfComments: // No change, no need to update
-                break
-            default: // There are changes that we need to update
-                self.collectionView.reloadData()
-                dispatch_after(0.1) {
-                    self.collectionView.flashScrollIndicators()
-                }
-            }
-            dispatch_after(0.1) {
-                self.focusHelper?.updateFocus()
-                self.updateInsetForKeyboardBarState()
-            }
-        }
-    }
-    
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkId: NSNumber) {
-        collectionView.reloadData()
-        focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
-    }
-
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
         if let sequence = self.sequence {
-            VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
-                publishParameters: self.publishParameters,
-                toSequence: sequence,
-                andParent: nil,
-                successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                    dispatch_async(dispatch_get_main_queue(), { () in
-                        self.collectionView.performBatchUpdates({ () in
-                            if let seqdataSource = self.commentsDataSourceSwitcher.dataSource as? SequenceCommentsDataSource {
-                                seqdataSource.sortInternalComments()
-                            }
-                            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-                            self.noContentView?.resetInitialAnimationState()
-                            }, completion: { (finished: Bool) -> Void in
-                                self.updateInsetForKeyboardBarState()
-                                self.focusHelper?.updateFocus()
-                        })
-                    })
-                }, failBlock: nil)
+            let commentParameters = CommentParameters(
+                sequenceID: Int64(sequence.remoteId)!,
+                text: inputAccessoryView.composedText,
+                replyToCommentID: nil,
+                mediaURL: self.publishParameters?.mediaToUploadURL,
+                mediaType: self.publishParameters?.commentMediaAttachmentType,
+                realtimeComment: nil
+            )
+            CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters).queue()
             
             self.keyboardBar?.clearTextAndResign()
             self.publishParameters?.mediaToUploadURL = nil
