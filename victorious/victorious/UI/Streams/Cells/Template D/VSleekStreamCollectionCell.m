@@ -374,9 +374,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     }
     else
     {
-        NSLayoutConstraint *spacingBetweenCountsAndPreview = [self.countsTextView.topAnchor constraintEqualToAnchor:self.previewContainer.bottomAnchor];
-        spacingBetweenCountsAndPreview.constant = 5;
-        spacingBetweenCountsAndPreview.active = YES;
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.countsTextView
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.previewContainer 
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:5]];
     }
 
     [super updateConstraints];
