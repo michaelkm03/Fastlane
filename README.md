@@ -42,11 +42,14 @@ LOCAL_VAMS_PASSWORD='<local_password>'
 
 ### Build and Push
 
+#### Submit to production
+
 ```
 cd <project_dir>/victorious/fastlane
-gem install fastlane
 fastlane ios deploy
 ```
+
+#### Submit dev or staging apps
 
 Fastlane runs in production environment by default. If you want to run it in a different environment, just specify `environment:<your_environment_here>` at the end of the fastlane command. See the example below:
 
@@ -54,3 +57,7 @@ Fastlane runs in production environment by default. If you want to run it in a d
 fastlane ios deploy                 # deploys to production
 fastlane ios deploy environment:dev # deploys to dev
 ```
+
+#### Ignore local chages
+
+Fastlane will exit early if you have some local changes. It's useful for running it in production, although it might be inconvenient for local development. In order to run fastlane with local changes use `IGNORE_DIRTY_GIT_STATE=1` environment variable in front of the fastlane command.
