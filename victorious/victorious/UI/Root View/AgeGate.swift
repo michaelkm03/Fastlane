@@ -108,6 +108,15 @@ import Foundation
         return trackingEventsWhiteList.contains(eventName)
     }
     
+    static func isWebViewActionItemAllowed(forActionName actionName: String) -> Bool {
+        let actionItemBlackList = [
+            NSLocalizedString("ShareFacebook", comment: ""),
+            NSLocalizedString("ShareTwitter", comment: ""),
+            NSLocalizedString("ShareSMS", comment: "")
+        ]
+        return !actionItemBlackList.contains(actionName)
+    }
+    
     //MARK: - Age Gate Business Logic functions
     
     static func isUserYoungerThan(age: Int, forBirthday birthday: NSDate) -> Bool {

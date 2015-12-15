@@ -138,6 +138,48 @@ class AgeGateTests: XCTestCase {
         XCTAssertEqual(outputTrackingEvents[3], VTrackingEventApplicationFirstInstall)
     }
     
+    func testIsAccessoryItemAllowed() {
+        let inputAccessoryItems: [VNavigationMenuItem] = [
+            VNavigationMenuItem(title: "title", identifier: "onlySurvivor", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemMenu, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemCompose, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemInbox, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemFindFriends, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemInvite, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemCreatePost, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemFollowHashtag, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemInbox, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryItemMore, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessoryNewMessage, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor()),
+            VNavigationMenuItem(title: "title", identifier: VDependencyManagerAccessorySettings, icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "", tintColor: UIColor())
+        ]
+        
+        let filteredAccessoryItems = inputAccessoryItems.filter() {
+            AgeGate.isAccessoryItemAllowed($0)
+        }
+        
+        XCTAssertEqual(filteredAccessoryItems.count, 1)
+        XCTAssertEqual(filteredAccessoryItems[0].identifier, "onlySurvivor")
+    }
+    
+    func testIsWebViewActionItemAllowed() {
+        let inputActionItemNames: [String] = [
+            NSLocalizedString("ShareFacebook", comment: ""),
+            NSLocalizedString("ShareTwitter", comment: ""),
+            NSLocalizedString("ShareSMS", comment: ""),
+            NSLocalizedString("", comment: ""),
+            NSLocalizedString("Other string", comment: ""),
+        ]
+        
+        let filteredActionItemNames = inputActionItemNames.filter() {
+            AgeGate.isWebViewActionItemAllowed(forActionName: $0)
+        }
+        
+        XCTAssertEqual(filteredActionItemNames.count, 2)
+        XCTAssertEqual(filteredActionItemNames[0], NSLocalizedString("", comment: ""))
+        XCTAssertEqual(filteredActionItemNames[1], NSLocalizedString("Other string", comment: ""))
+    }
+    
     func testIsUserYoungerThan() {
         let targetAge = 13
         let oldManBirthday = NSDate(dateString: "1944-05-13")
