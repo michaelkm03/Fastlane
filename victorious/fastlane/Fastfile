@@ -99,8 +99,6 @@ platform :ios do
           version      = get_version_number(xcodeproj: 'victorious.xcodeproj')
           build_number = get_build_number(xcodeproj:   'victorious.xcodeproj')
 
-          # HACK: This is a workaround the fact that spaceship uses a different environment variable for logging in iTunesConnect.
-          #       We'll need to keep an eye on it. It will prrobably break in the future.
           ENV['FASTLANE_ITC_TEAM_ID']   = ENV['FASTLANE_TEAM_ID']
           ENV['FASTLANE_ITC_TEAM_NAME'] = ENV['FASTLANE_TEAM_NAME']
 
