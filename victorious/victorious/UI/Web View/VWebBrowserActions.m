@@ -29,58 +29,75 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:nil];
     
-    [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareFacebook", nil) block:^
-     {
-         FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
-         link.contentURL = url;
-         [[VFacebookHelper shareDialogWithContent:link mode:self.shareMode] show];
-     }];
+    NSString *shareFacebookButtonTitle = NSLocalizedString( @"ShareFacebook", nil);
     
-    if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
+    if ( ![AgeGate isAnonymousUser] || [AgeGate isWebViewActionItemAllowedForActionName:shareFacebookButtonTitle] )
     {
-        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareTwitter", nil) block:^
+        [actionSheet addButtonWithTitle:shareFacebookButtonTitle block:^
          {
-             SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-             if ( title != nil )
-             {
-                 [controller setInitialText:title];
-             }
-             [controller addURL:url];
-             [viewController presentViewController:controller animated:YES completion:nil];
+             FBSDKShareLinkContent *link = [[FBSDKShareLinkContent alloc] init];
+             link.contentURL = url;
+             [[VFacebookHelper shareDialogWithContent:link mode:self.shareMode] show];
          }];
     }
     
-    [actionSheet addButtonWithTitle:NSLocalizedString( @"OpenSafari", nil) block:^
-     {
-         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)),
-                        dispatch_get_main_queue(), ^
-                        {
-                            [[UIApplication sharedApplication] openURL:url];
-                        });
-     }];
+    if ( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
+    {
+        NSString * shareTwitterButtonTitle = NSLocalizedString( @"ShareTwitter", nil);
+        
+        if ( ![AgeGate isAnonymousUser] || [AgeGate isWebViewActionItemAllowedForActionName:shareTwitterButtonTitle] )
+        {
+            [actionSheet addButtonWithTitle:shareTwitterButtonTitle block:^
+             {
+                 SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                 if ( title != nil )
+                 {
+                     [controller setInitialText:title];
+                 }
+                 [controller addURL:url];
+                 [viewController presentViewController:controller animated:YES completion:nil];
+             }];
+        }
+    }
     
+    NSString *openSafariButtonTitle = NSLocalizedString( @"OpenSafari", nil);
+    if ( ![AgeGate isAnonymousUser] || [AgeGate isWebViewActionItemAllowedForActionName:openSafariButtonTitle] )
+    {
+        [actionSheet addButtonWithTitle:openSafariButtonTitle block:^
+         {
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)),
+                            dispatch_get_main_queue(), ^
+                            {
+                                [[UIApplication sharedApplication] openURL:url];
+                            });
+         }];
+    }
     
     if ( [MFMessageComposeViewController canSendText] )
     {
-        [actionSheet addButtonWithTitle:NSLocalizedString( @"ShareSMS", nil) block:^
-         {
-             NSString *message = nil;
-             if ( title != nil )
+        NSString *shareSMSButtonTitle = NSLocalizedString( @"ShareSMS", nil);
+        if ( ![AgeGate isAnonymousUser] || [AgeGate isWebViewActionItemAllowedForActionName:shareSMSButtonTitle] )
+        {
+            [actionSheet addButtonWithTitle:shareSMSButtonTitle block:^
              {
-                 message = [NSString stringWithFormat:@"%@\n%@", title, url.absoluteString];
-             }
-             else
-             {
-                 message = [NSString stringWithFormat:@"%@", url.absoluteString];
-             }
-             MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-             controller.messageComposeDelegate = self;
-             if ( message != nil )
-             {
-                 [controller setBody:message];
-             }
-             [viewController presentViewController:controller animated:YES completion:nil];
-         }];
+                 NSString *message = nil;
+                 if ( title != nil )
+                 {
+                     message = [NSString stringWithFormat:@"%@\n%@", title, url.absoluteString];
+                 }
+                 else
+                 {
+                     message = [NSString stringWithFormat:@"%@", url.absoluteString];
+                 }
+                 MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+                 controller.messageComposeDelegate = self;
+                 if ( message != nil )
+                 {
+                     [controller setBody:message];
+                 }
+                 [viewController presentViewController:controller animated:YES completion:nil];
+             }];
+        }
     }
     
     // Setup cancel button here to ensure it is on the bottom of the action sheet

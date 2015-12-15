@@ -29,6 +29,8 @@
 #import "VUser.h"
 #import "VObjectManager.h"
 
+#import "victorious-Swift.h"
+
 // Frameworks
 @import KVOController;
 
@@ -138,7 +140,11 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     _sequence = sequence;
     
-    BOOL shouldShowFollowControl = ![self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]] && !self.sequence.user.isFollowedByMainUser.boolValue;
+    BOOL isPostedByMainUser = [self.sequence.user isEqual:[[VObjectManager sharedManager] mainUser]];
+    BOOL isAlreadyFollowingPoster = self.sequence.user.isFollowedByMainUser.boolValue;
+    BOOL isAnonymousUser = [AgeGate isAnonymousUser];
+    BOOL shouldShowFollowControl = !isPostedByMainUser && !isAlreadyFollowingPoster && !isAnonymousUser;
+    
     if ( self.shouldShowFollowControl != shouldShowFollowControl )
     {
         self.shouldShowFollowControl = shouldShowFollowControl;

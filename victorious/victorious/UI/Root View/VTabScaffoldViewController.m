@@ -156,7 +156,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupFirstLaunchOperations];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self setupFirstLaunchOperations];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

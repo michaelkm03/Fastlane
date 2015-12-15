@@ -52,6 +52,13 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @implementation VTrendingTagCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self.followHashtagControl removeFromSuperview];
+    self.followHashtagControl = nil;
+}
+
 + (NSInteger)cellHeight
 {
     return kTrendingTagCellRowHeight;

@@ -18,9 +18,14 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
     
-    @IBOutlet weak var followControl: VFollowControl! {
+    @IBOutlet weak var followControl: VFollowControl? {
         didSet {
-            followControl.tintUnselectedImage = true
+            followControl?.tintUnselectedImage = true
+            
+            if AgeGate.isAnonymousUser() {
+                followControl?.removeFromSuperview()
+                followControl = nil
+            }
         }
     }
     
@@ -67,7 +72,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             }
             
             if let dependencyManager = dependencyManager {
-                followControl.dependencyManager = dependencyManager
+                followControl?.dependencyManager = dependencyManager
                 streamItemVisibilityTrackingHelper.trackingMinRequiredCellVisibilityRatio = dependencyManager.minTrackingRequiredCellVisibilityRatio
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }

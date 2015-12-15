@@ -33,6 +33,9 @@ class AgeGateViewController: UIViewController {
         }
     }
     @IBOutlet private var separatorHeightConstraints: [NSLayoutConstraint]!
+    @IBOutlet weak var legalPromptLabel: UILabel!
+    @IBOutlet weak var tosButton: UIButton!
+    @IBOutlet weak var privacyButton: UIButton!
     
     private weak var delegate: AgeGateViewControllerDelegate?
     
@@ -62,6 +65,7 @@ class AgeGateViewController: UIViewController {
         setupBackgroundViews()
         setupDisplayText()
         setupSeparators()
+        setUpLegalInfoContainer()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -71,7 +75,7 @@ class AgeGateViewController: UIViewController {
     }
     
     @IBAction private func tappedOnContinue(sender: UIButton) {
-        let shouldBeAnonymous = isUserYoungerThan(13)
+        let shouldBeAnonymous = AgeGate.isUserYoungerThan(13, forBirthday: datePicker.date)
         
         AgeGate.saveShouldUserBeAnonymous(shouldBeAnonymous)
         delegate?.continueButtonTapped(shouldBeAnonymous)
@@ -79,6 +83,14 @@ class AgeGateViewController: UIViewController {
     
     @IBAction private func selectedBirthday(sender: UIDatePicker) {
         continueButton.enabled = true
+    }
+    
+    @IBAction private func tappedTermsOfService(sender: UIButton) {
+        presentViewController(VTOSViewController.presentableTermsOfServiceViewController(), animated: true, completion: nil)
+    }
+    
+    @IBAction private func tappedPrivacyPolicy(sender: UIButton) {
+        presentViewController(VPrivacyPoliciesViewController.presentableTermsOfServiceViewControllerWithDependencyManager(nil), animated: true, completion: nil)
     }
     
     //MARK: - Private functions
@@ -111,11 +123,19 @@ class AgeGateViewController: UIViewController {
         }
     }
     
-    private func isUserYoungerThan(age: Int) -> Bool {
-        let birthday = datePicker.date
-        let now = NSDate()
-        let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
-        return ageComponents.year < 13
+    private func setUpLegalInfoContainer() {
+        let legalAttributesUnderline = [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+        
+        let legalPrompt = NSLocalizedString("By continuing you are agreeing to our", comment: "Legal prompt on age gate view")
+        let tosText = NSAttributedString(string: NSLocalizedString("terms of service", comment: "") , attributes: legalAttributesUnderline)
+        let ppText = NSAttributedString(string: NSLocalizedString("privacy policy", comment: ""), attributes: legalAttributesUnderline)
+        
+        legalPromptLabel.text = legalPrompt
+        tosButton.setAttributedTitle(tosText, forState: .Normal)
+        privacyButton.setAttributedTitle(ppText, forState: .Normal)
+        
+        tosButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTOS
+        privacyButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationPrivacy
     }
     
     private func showDatePickerWithAnimation() {
