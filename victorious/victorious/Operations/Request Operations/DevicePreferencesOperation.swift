@@ -31,26 +31,18 @@ class DevicePreferencesOperation: RequestOperation {
     private func onComplete( result: DevicePreferencesRequest.ResultType, completion: () -> () ) {
         persistentStore.asyncFromBackground { context in
             
-            // Grab the background current user's notificationSettings
+            // Grab the background current user's notificationSettings, creating if none already exist
             let currentUser = VUser.currentUser()
-            let newSettings: VNotificationSettings
-            if let currentNotificationSettings = currentUser?.notificationSettings {
-                newSettings = currentNotificationSettings
-            }
-            else {
-                newSettings = context.createObject()
-            }
-            newSettings.populate(fromSourceModel: result)
+            let newSettings: VNotificationSettings = currentUser?.notificationSettings ?? context.createObject()
             currentUser?.notificationSettings = newSettings
+            newSettings.populate(fromSourceModel: result)
             context.saveChanges()
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.persistentStore.sync({ context in
-                    // Provide the main queue current user for calling code.
-                    let mainQueueCurrentUser = VUser.currentUser()
-                    self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
-                    completion()
-                })
+            self.persistentStore.sync({ context in
+                // Provide the main queue current user for calling code.
+                let mainQueueCurrentUser = VUser.currentUser()
+                self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
+                completion()
             })
         }
         
