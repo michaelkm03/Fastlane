@@ -672,6 +672,7 @@
 		A76712021C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712011C1F5375006568DF /* ApplicationTrackingRequestScheduler.swift */; };
 		A76712091C1F576D006568DF /* VMockRequestScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = A76712061C1F55B3006568DF /* VMockRequestScheduler.m */; };
 		A76712121C1FA667006568DF /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
+		A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
 		A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */; };
@@ -773,7 +774,6 @@
 		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
 		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
-		A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */; };
 		A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */; };
@@ -6734,9 +6734,13 @@
 			isa = PBXGroup;
 			children = (
 				BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */,
+				6781CE3E1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift */,
+				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
 				03D94C2719DE155400BFAA27 /* AsyncTestHelper */,
 				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
 				79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */,
+				A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */,
+				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */,
 				03949CE91C1A0C490092B366 /* FanLoyaltyTests.swift */,
@@ -6752,10 +6756,6 @@
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
-				6781CE3E1BE4084B00370679 /* ApplicationTrackingRequestSchedulerTests.swift */,
-				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
-				A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */,
-				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
 				BE9674F919E335060072E87A /* VAbstractMarqueeControllerTests.m */,
 				F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */,
 				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
@@ -9247,7 +9247,6 @@
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
-				A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */,
 				A721E92E1B572454000B7901 /* VNotification+RestKit.m in Sources */,
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
 				A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */,
@@ -9927,6 +9926,7 @@
 				0314D4AB19B46B5E00FA363C /* VMessageContainerViewController.m in Sources */,
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
+				A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
