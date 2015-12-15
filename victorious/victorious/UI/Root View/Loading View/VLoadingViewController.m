@@ -208,6 +208,18 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     self.progressHUD.taskInProgress = YES;
 }
 
+- (void)addAppTimingURL:(VTemplateDecorator *)templateDecorator
+{
+    VEnvironment *currentEnvironment = [VEnvironmentManager sharedInstance].currentEnvironment;
+    NSString *keyPath = @"tracking/app_time";
+    if ( [templateDecorator templateValueForKeyPath:keyPath] == nil && currentEnvironment != nil )
+    {
+        NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
+        NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
+        NSParameterAssert( [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath] );
+    }
+}
+
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
@@ -218,17 +230,10 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
             self.templateConfigurationBlock(templateDecorator);
         }
         
-        NSDictionary *data = @{ @"init" : @"http://dev.getvictorious.com/api/tracking/app_init/?notification_id=%%NOTIF_ID%%&order=%%REQUEST_ORDER%%",
-                                @"install" : @"http://dev.getvictorious.com/api/tracking/app_install/?referrer=%%REFERRER%%&order=%%REQUEST_ORDER%%",
-                                @"start" : @"http://dev.getvictorious.com/api/tracking/app_start/?notification_id=%%NOTIF_ID%%&order=%%REQUEST_ORDER%%",
-                                @"stop" : @"http://dev.getvictorious.com/api/tracking/app_stop/?session_time=%%SESSION_TIME%%&order=%%REQUEST_ORDER%%" };
-        
-        for ( NSString *key in data.allKeys )
-        {
-            NSArray *url = @[ data[key] ];
-            NSString *keyPath = [[templateDecorator keyPathsForKey:key] firstObject];
-            NSParameterAssert( [templateDecorator setTemplateValue:url forKeyPath:keyPath] );
-        }
+        // Add app_time URL to template if it is not there already.
+        // This is done to ship with this tracking feature before the backend is ready to supply it in the template.
+        // TODO: It should be removed once the URL is in the template.
+        [self addAppTimingURL:templateDecorator];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

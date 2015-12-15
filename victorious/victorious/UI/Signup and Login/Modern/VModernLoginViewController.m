@@ -7,24 +7,19 @@
 //
 
 #import "VModernLoginViewController.h"
-
-// Libraries
 #import <CCHLinkTextView/CCHLinkTextView.h>
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-
-// Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 #import "VDependencyManager+VTracking.h"
+#import "victorious-Swift.h"
 
 @import CoreText;
 

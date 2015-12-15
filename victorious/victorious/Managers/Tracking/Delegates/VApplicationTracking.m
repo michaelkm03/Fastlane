@@ -36,6 +36,9 @@ static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
 static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
 static NSString * const kMacroErrorType              = @"%%ERROR_TYPE%%";
 static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
+static NSString * const kMacroDuration               = @"%%DURATION%%";
+static NSString * const kMacroType                   = @"%%TYPE%%";
+static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
 static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
@@ -84,6 +87,9 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
                                     VTrackingKeyVolumeLevel        : kMacroVolumeLevel,
                                     VTrackingKeyErrorType          : kMacroErrorType,
                                     VTrackingKeyErrorDetails       : kMacroErrorDetails,
+                                    VTrackingKeyType               : kMacroType,
+                                    VTrackingKeySubtype            : kMacroSubtype,
+                                    VTrackingKeyDuration           : kMacroDuration,
                                     VTrackingKeyRequestOrder       : kMacroRequestOrder };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
