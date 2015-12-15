@@ -216,6 +216,15 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         {
             self.templateConfigurationBlock(templateDecorator);
         }
+        
+        VEnvironment *currentEnvironment = [VEnvironmentManager sharedInstance].currentEnvironment;
+        NSString *keyPath = @"tracking/app_time";
+        if ( [templateDecorator templateValueForKeyPath:keyPath] == nil && currentEnvironment != nil )
+        {
+            NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
+            NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
+            NSParameterAssert( [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath] );
+        }
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
