@@ -282,6 +282,7 @@
 - (void)testOrderAndSessionReset
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
+    
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
     self.applicationTracking.requestScheduler = mockRequestScheduler;
     
@@ -313,6 +314,7 @@
 - (void)testOrderStartIndexAndReset
 {
     NSDictionary *params = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
+    
     VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
     self.applicationTracking.requestScheduler = mockRequestScheduler;
     
@@ -328,6 +330,42 @@
     {
         NSURLRequest *request = mockRequestScheduler.requestsScheduled[1];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
+        XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
+    }
+}
+
+- (void)testOnlyIncrementOrderWhenMacroIsPresent
+{
+    NSDictionary *paramsWithMacro = @{ VTrackingKeyUrls : @[ @"http://www.google.com?order=%%REQUEST_ORDER%%"] };
+    NSDictionary *paramsWithoutMacro = @{ VTrackingKeyUrls : @[ @"http://www.google.com" ] };
+    
+    VMockRequestScheduler *mockRequestScheduler = [[VMockRequestScheduler alloc] init];
+    self.applicationTracking.requestScheduler = mockRequestScheduler;
+    
+    [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    {
+        NSURLRequest *request = mockRequestScheduler.requestsScheduled[0];
+        NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
+        XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
+    }
+    
+    // Track another event in between to ensure that counter is not incremented
+    [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithoutMacro];
+    
+    [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    {
+        NSURLRequest *request = mockRequestScheduler.requestsScheduled[2];
+        NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(2)];
+        XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
+    }
+    
+    // Track another event in between to ensure that counter is not incremented
+    [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithoutMacro];
+    
+    [self.applicationTracking trackEventWithName:@"some_event" parameters:paramsWithMacro];
+    {
+        NSURLRequest *request = mockRequestScheduler.requestsScheduled[4];
+        NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(3)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
 }
