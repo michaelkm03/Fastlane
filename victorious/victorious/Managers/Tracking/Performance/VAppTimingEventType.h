@@ -1,5 +1,5 @@
 //
-//  VAppTimingEventType.m
+//  VAppTimingEventType.h
 //  victorious
 //
 //  Created by Patrick Lynch on 12/10/15.
