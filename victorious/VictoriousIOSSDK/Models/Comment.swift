@@ -9,6 +9,13 @@
 import Foundation
 import SwiftyJSON
 
+public enum MediaAttachmentType: String {
+    case Image      = "image"
+    case Video      = "video"
+    case GIF        = "gif"
+    case Ballistic  = "voteType"
+}
+
 public struct Comment {
     
     private let dateFormatter: NSDateFormatter = {

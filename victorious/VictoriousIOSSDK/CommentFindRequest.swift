@@ -9,6 +9,8 @@
 import Foundation
 import SwiftyJSON
 
+/// Finds and loads the page on which a particular comment is located,
+/// designed for use with deep linking directly to a comment.
 public struct CommentFindRequest: RequestType {
     
     public struct Result {

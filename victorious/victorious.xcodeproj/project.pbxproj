@@ -1305,7 +1305,6 @@
 		C3E7C0F91BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */; };
 		C3E7C0FB1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */; };
 		C3E7C0FD1BF40D7400AFE545 /* SendMessageRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */; };
-		C3E7C0FF1BF4139E00AFE545 /* MediaAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */; };
 		C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */; };
 		C3E7C1031BF416DF00AFE545 /* SendMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */; };
 		C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */; };
@@ -3739,7 +3738,6 @@
 		C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkAllNotificationsAsReadRequestTests.swift; sourceTree = "<group>"; };
 		C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkAllNotificationsAsReadRequest.swift; sourceTree = "<group>"; };
 		C3E7C0FC1BF40D7400AFE545 /* SendMessageRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageRequestTests.swift; sourceTree = "<group>"; };
-		C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentType.swift; sourceTree = "<group>"; };
 		C3E7C1001BF414D100AFE545 /* SendMessageResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendMessageResponse.json; sourceTree = "<group>"; };
 		C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageRequest.swift; sourceTree = "<group>"; };
 		C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
@@ -5134,7 +5132,6 @@
 				A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */,
 				C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */,
 				79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */,
-				C3E7C0FE1BF4139E00AFE545 /* MediaAttachmentType.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
 				A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */,
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
@@ -10298,7 +10295,6 @@
 				A7956D241C18AA3A006A76EC /* CommentAddRequestBody.swift in Sources */,
 				C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */,
 				C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */,
-				C3E7C0FF1BF4139E00AFE545 /* MediaAttachmentType.swift in Sources */,
 				C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */,
 				C323C3B11BF559DE00681059 /* SequenceCommentsRequest.swift in Sources */,
 				C3FEA7951BF16AF1003446CC /* GIFSearchResult.swift in Sources */,

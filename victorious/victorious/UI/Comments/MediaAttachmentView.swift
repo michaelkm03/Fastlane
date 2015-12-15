@@ -26,7 +26,9 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     // Factory method for returning correct concrete subclass with a comment
     class func mediaViewWithComment(comment: VComment) -> MediaAttachmentView? {
-        let attachmentType = MediaAttachmentType.attachmentType(comment)
+        guard let attachmentType = comment.commentMediaType().attachmentType else {
+            return nil
+        }
         let mediaAttachmentView = MediaAttachmentView.mediaViewForAttachment(attachmentType)
         if let unwrapped = mediaAttachmentView {
             unwrapped.comment = comment
@@ -37,7 +39,9 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     // Factory method for returning correct concrete subclass with a message
     class func mediaViewWithMessage(message: VMessage) -> MediaAttachmentView? {
-        let attachmentType = MediaAttachmentType.attachmentType(message)
+        guard let attachmentType = message.messageMediaType().attachmentType else {
+            return nil
+        }
         let mediaAttachmentView = MediaAttachmentView.mediaViewForAttachment(attachmentType)
         if let unwrapped = mediaAttachmentView {
             unwrapped.message = message
@@ -48,32 +52,26 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     
     // Class method for returning a cell reuse identifier given a certain media type
     class func mediaViewForAttachment(type: MediaAttachmentType) -> MediaAttachmentView? {
-        var mediaAttachmentView: MediaAttachmentView?
-        
-        switch (type) {
+        switch type {
         case .Image:
-            mediaAttachmentView = MediaAttachmentImageView()
+            return MediaAttachmentImageView()
         case .Video:
-            mediaAttachmentView = MediaAttachmentVideoView()
+            return MediaAttachmentVideoView()
         case .GIF:
-            mediaAttachmentView = MediaAttachmentGIFView()
+            return MediaAttachmentGIFView()
         case .Ballistic:
-            mediaAttachmentView = MediaAttachmentBallisticView()
-        default:
-            mediaAttachmentView = nil
+            return MediaAttachmentBallisticView()
         }
-        
-        return mediaAttachmentView
     }
     
     // Returns an cell reuse identifer for the proper concrete subclass
     class func reuseIdentifierForComment(comment: VComment) -> String {
-        return MediaAttachmentType.attachmentType(comment).rawValue
+        return comment.commentMediaType().attachmentType?.rawValue ?? "no_media"
     }
     
     // Returns an cell reuse identifer for the proper concrete subclass
     class func reuseIdentifierForMessage(message: VMessage) -> String {
-        return MediaAttachmentType.attachmentType(message).rawValue
+        return message.messageMediaType().attachmentType?.rawValue ?? "no_media"
     }
     
     func prepareForReuse() {
@@ -89,35 +87,36 @@ class MediaAttachmentView : UIView, VFocusable, Reuse {
     }
 }
 
-private extension MediaAttachmentType {
+extension VMessageMediaType {
     
-    static func attachmentType(comment: VComment) -> MediaAttachmentType {
-        let commentMediaType = comment.commentMediaType()
-        switch (commentMediaType) {
+    var attachmentType: MediaAttachmentType? {
+        switch self {
         case .Image:
             return .Image
-        case .Video:
-            return .Video
         case .GIF:
             return .GIF
+        case .Video:
+            return .Video
+        default:
+            return nil
+        }
+    }
+}
+
+extension VCommentMediaType {
+    
+    var attachmentType: MediaAttachmentType? {
+        switch self {
+        case .Image:
+            return .Image
+        case .GIF:
+            return .GIF
+        case .Video:
+            return .Video
         case .Ballistic:
             return .Ballistic
         default:
-            return .NoMedia
-        }
-    }
-    
-    static func attachmentType(message: VMessage) -> MediaAttachmentType {
-        let messageMediaType = message.messageMediaType()
-        switch (messageMediaType) {
-        case .Image:
-            return .Image
-        case .GIF:
-            return .GIF
-        case .Video:
-            return .Video
-        default:
-            return .NoMedia
+            return nil
         }
     }
 }

@@ -19,7 +19,7 @@ class FollowCountOperation: RequestOperation {
         self.request = request
     }
     
-    convenience init( userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( userID: Int64 ) {
         self.init( request: FollowCountRequest(userID: userID) )
     }
     
@@ -30,8 +30,8 @@ class FollowCountOperation: RequestOperation {
     private func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
             let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.userID) ])
-            user.numberOfFollowers = response.followersCount
-            user.numberOfFollowing = response.followingCount
+            user.numberOfFollowers = NSNumber(longLong:response.followersCount)
+            user.numberOfFollowing = NSNumber(longLong:response.followingCount)
             context.saveChanges()
             completion()
         }

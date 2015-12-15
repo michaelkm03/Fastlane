@@ -1,5 +1,5 @@
 //
-//  FlagSequenceRequest.swift
+//  FlagCommentRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/13/15.
