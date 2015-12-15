@@ -39,7 +39,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
     
     func testBatchFiringTrackingRequests() {
         var firedRequestsCount = 0
-        let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 1)
+        let requestScheduler = ApplicationTrackingRequestScheduler(batchFiringInterval: 1)
         let expectation = expectationWithDescription("Last tracking requests sent")
 
         for index in 0..<trackingRequestRecords.count {
@@ -59,7 +59,7 @@ class TrackingRequestSchedulerTests: XCTestCase {
     
     func testTrackingRequestsShouldNotFire() {
         var firedRequestsCount = 0
-        let requestScheduler = TrackingRequestScheduler(batchFiringInterval: 10)
+        let requestScheduler = ApplicationTrackingRequestScheduler(batchFiringInterval: 10)
         
         for index in 0..<trackingRequestRecords.count {
             let record = trackingRequestRecords[index]
