@@ -163,7 +163,6 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         return NO;
     }
     
-    
     VObjectManager *objManager = [self applicationObjectManager];
     VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
     if ( request == nil )

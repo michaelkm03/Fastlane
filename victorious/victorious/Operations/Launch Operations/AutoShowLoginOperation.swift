@@ -74,6 +74,9 @@ class AutoShowLoginOperation: Operation {
                 // The following event will only be measured when auto login will be presented
                 appTimingTracker.endEvent(type: VAppTimingEventTypeShowRegistration)
                 
+                // Reset this event, since it's only valid when the login view won't be presented
+                appTimingTracker.resetEvent(type: VAppTimingEventTypeAppStart)
+                
             } else {
                 // If the loginVC is nil we should not show and just finish up
                 self.finishedExecuting()

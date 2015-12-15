@@ -284,8 +284,8 @@ NSString * const VTrackingKeyConnectivity = @"Connectivity";
 NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
 NSString * const VTrackingKeyErrorType = @"Type";
 NSString * const VTrackingKeyErrorDetails = @"Details";
-NSString * const VTrackingKeyType = @"Type";
-NSString * const VTrackingKeySubtype = @"Subtype";
+NSString * const VTrackingKeyType = @"EventType";
+NSString * const VTrackingKeySubtype = @"EventSubtype";
 NSString * const VTrackingKeyDuration = @"Duration";
 
 // Tracking Event Values
