@@ -36,6 +36,7 @@ static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
 static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
 static NSString * const kMacroErrorType              = @"%%ERROR_TYPE%%";
 static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
+static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -44,12 +45,12 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
-@interface VApplicationTracking()
+@interface VApplicationTracking() <VSessionTimerDelegate>
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, strong, readwrite) TrackingRequestScheduler *requestScheduler;
+@property (nonatomic, assign) NSUInteger requestCounter;
 
 @end
 
@@ -82,7 +83,8 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                     VTrackingKeyConnectivity       : kMacroConnectivity,
                                     VTrackingKeyVolumeLevel        : kMacroVolumeLevel,
                                     VTrackingKeyErrorType          : kMacroErrorType,
-                                    VTrackingKeyErrorDetails       : kMacroErrorDetails };
+                                    VTrackingKeyErrorDetails       : kMacroErrorDetails,
+                                    VTrackingKeyRequestOrder       : kMacroRequestOrder };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
@@ -94,9 +96,18 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
                                  VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        _requestScheduler = [[TrackingRequestScheduler alloc] init];
+        _requestCounter = NSUIntegerMax;
     }
     return self;
+}
+
+- (id<TrackingRequestScheduler>)requestScheduler
+{
+    if ( _requestScheduler == nil )
+    {
+        _requestScheduler = [[ApplicationTrackingRequestScheduler alloc] init];
+    }
+    return _requestScheduler;
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -113,7 +124,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     return dateFormatter;
 }
 
-- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
+- (NSInteger)trackEventWithUrls:(NSArray *)urls forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
     if ( ![self validateUrls:urls]  )
     {
@@ -123,7 +134,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     __block NSUInteger numFailures = 0;
     [urls enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop)
     {
-        if ( ![self trackEventWithUrl:url andParameters:parameters] )
+        if ( ![self trackEventWithUrl:url forEventName:eventName withParameters:parameters] )
         {
             numFailures++;
         }
@@ -137,7 +148,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
-- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
+- (BOOL)trackEventWithUrl:(NSString *)url forEventName:(NSString *)eventName withParameters:(NSDictionary *)parameters
 {
     BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
     if ( !isUrlValid )
@@ -148,6 +159,10 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
+    if ( [url containsString:kMacroRequestOrder] )
+    {
+        completeParameters[ VTrackingKeyRequestOrder ] = @(self.orderOfNextRequest);
+    }
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
@@ -157,7 +172,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-    
     VObjectManager *objManager = [self applicationObjectManager];
     VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
     if ( request == nil )
@@ -165,7 +179,14 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         return NO;
     }
     
-    [self.requestScheduler scheduleRequest:request];
+    if ( [self.immediateExecutionWhiteList containsObject:eventName] )
+    {
+        [self.requestScheduler sendSingleRequest:request];
+    }
+    else
+    {
+        [self.requestScheduler scheduleRequest:request];
+    }
     return YES;
 }
 
@@ -300,8 +321,26 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     // If calling code doesn't supply any URLs, we can't proceed any further
     if ( allURLs != nil && allURLs.count > 0 )
     {
-        [self trackEventWithUrls:allURLs andParameters:parameters];
+        [self trackEventWithUrls:allURLs forEventName:eventName withParameters:parameters];
     }
+}
+
+#pragma mark - VSessionTimerDelegate
+
+- (void)sessionTimerDidResetSession:(VSessionTimer *)sessionTimer
+{
+    self.requestCounter = 0;
+}
+
+#pragma mark -
+
+- (NSUInteger)orderOfNextRequest
+{
+    if ( self.requestCounter >= NSUIntegerMax )
+    {
+        self.requestCounter = 0;
+    }
+    return ++self.requestCounter;
 }
 
 @end

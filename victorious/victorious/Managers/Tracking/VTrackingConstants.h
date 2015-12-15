@@ -295,6 +295,8 @@ extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level w
 extern NSString * const VTrackingKeyErrorType;
 extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error, value should be a string
 
+extern NSString * const VTrackingKeyRequestOrder;
+
 // Tracking Event Values
 // ContentType values
 extern NSString * const VTrackingValueGIF; 
