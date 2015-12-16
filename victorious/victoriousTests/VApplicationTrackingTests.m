@@ -57,7 +57,7 @@
     
     self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
                                                                 withBlock:^(VApplicationTracking *applicationTracking, NSURLRequest *request)
-                                     { }];
+                                     {}];
     
     self.applicationTracking = [[VApplicationTracking alloc] init];
     
@@ -309,6 +309,7 @@
     
     // Track another event before to ensure that counter is not incremented
     [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
+    
     [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
     
     {
@@ -317,8 +318,9 @@
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
-    // Track another event after to ensure that counter is not incremented
     [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
+
+    // Track another event after to ensure that counter is not incremented
     [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
 
     {
