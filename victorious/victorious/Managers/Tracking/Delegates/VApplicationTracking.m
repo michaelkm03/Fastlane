@@ -146,32 +146,20 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
+- (BOOL)validateURL:(NSString *)url
+{
+    return url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
+}
+
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
 {
-    BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
-    if ( !isUrlValid )
+    if ( ![self validateURL:url] )
     {
         return NO;
     }
     
-    NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
-    completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
-    if ( [url containsString:kMacroRequestOrder] )
-    {
-        completeParameters[ VTrackingKeyRequestOrder ] = @(self.orderOfNextRequest);
-    }
+    VTrackingURLRequest *request = [self requestWithUrl:url withParameters:parameters];
     
-    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
-                                                           inString:url
-                                        withCorrespondingParameters:completeParameters.copy];
-    if ( !urlWithMacrosReplaced )
-    {
-        return NO;
-    }
-    
-    VObjectManager *objManager = [self applicationObjectManager];
-    VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
     if ( request == nil )
     {
         return NO;
@@ -260,12 +248,25 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 #endif
 }
 
-- (VTrackingURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
+- (nullable VTrackingURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters
 {
-    NSParameterAssert( objectManager != nil );
+    VObjectManager *objectManager = [self applicationObjectManager];
+    NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
     
-    NSURL *url = [NSURL URLWithString:urlString];
-    if ( url == nil )
+    completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
+    
+    if ( [urlString containsString:kMacroRequestOrder] )
+    {
+        completeParameters[ VTrackingKeyRequestOrder ] = @(self.orderOfNextRequest);
+    }
+    
+    NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
+                                                           inString:urlString
+                                        withCorrespondingParameters:completeParameters.copy];
+    
+    NSURL *url = [NSURL URLWithString:urlWithMacrosReplaced];
+    if ( urlString == nil )
     {
 #if APPLICATION_TRACKING_LOGGING_ENABLED
         NSLog( @"Application Tracking :: ERROR :: Invalid URL %@.", urlString );
