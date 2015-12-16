@@ -98,11 +98,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
-    NSArray *sessionCriticalEvents = @[ VTrackingEventApplicationFirstInstall,
-                                        VTrackingEventApplicationDidLaunch,
-                                        VTrackingEventApplicationDidEnterForeground,
-                                        VTrackingEventApplicationDidEnterBackground ];
-    self.applicationTracking.immediateExecutionWhiteList = sessionCriticalEvents;
     self.crashlyticsLogTracking = [[VCrashlyticsLogTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     [[VTrackingManager sharedInstance] addDelegate:self.crashlyticsLogTracking];
