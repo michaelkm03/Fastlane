@@ -20,6 +20,16 @@ class AgeGateTests: XCTestCase {
     
     let userDefaults = NSUserDefaults.standardUserDefaults()
     
+    private let originalValueForBirthdayProvided = AgeGate.hasBirthdayBeenProvided()
+    private let originalValueForIsAnonymousUser = AgeGate.isAnonymousUser()
+
+    override func tearDown() {
+        super.tearDown()
+        // Revert changes user default changes made by test cases
+        userDefaults.setBool(originalValueForBirthdayProvided, forKey: DictionaryKeys.birthdayProvidedByUser)
+        userDefaults.setBool(originalValueForIsAnonymousUser, forKey: DictionaryKeys.isAnonymousUser)
+    }
+    
     func testHasBirthdayBeenProvided() {
         userDefaults.setValue(false, forKey: DictionaryKeys.birthdayProvidedByUser)
         XCTAssertFalse(AgeGate.hasBirthdayBeenProvided())
