@@ -408,8 +408,15 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     
     if (publishParameters.mediaToUploadURL != nil)
     {
-        NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
-        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
+        if ( publishParameters.isGIF )
+        {
+            parameters[ @"should_autoplay" ] = @"true";
+            parameters[ VObjectManagerContentGIFParameter ] =  @"true";
+        }
+        else
+        {
+            parameters[VObjectManagerContentGIFParameter] = @"false";
+        }
     }
     
     NSURL *mediaURL = publishParameters.mediaToUploadURL;
