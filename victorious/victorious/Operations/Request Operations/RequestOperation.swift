@@ -33,8 +33,7 @@ class RequestOperation: NSOperation, Queuable {
         var requestContext: RequestContext?
         var authenticationContext: AuthenticationContext?
         
-        let startSemaphore = dispatch_semaphore_create(0)
-        dispatch_async( dispatch_get_main_queue() ) {
+        dispatch_sync( dispatch_get_main_queue() ) {
             
             let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
             requestContext = RequestContext(v_environment: currentEnvironment)
@@ -48,9 +47,7 @@ class RequestOperation: NSOperation, Queuable {
                 }
                 return nil
             }
-            dispatch_semaphore_signal(startSemaphore)
         }
-        dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
         networkActivityIndicator.start()
         

@@ -37,10 +37,10 @@ class AccountUpdateOperation: RequestOperation {
     }
     
     override func main() {
+        
         // For profile updates, optimistically update everything right away
-        let semphore = dispatch_semaphore_create(0)
         if let profileUpdate = self.request.profileUpdate {
-            persistentStore.asyncFromBackground() { context in
+            persistentStore.syncFromBackground() { context in
                 guard let user = VUser.currentUser() else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
@@ -66,11 +66,10 @@ class AccountUpdateOperation: RequestOperation {
                     }
                 }
                 context.saveChanges()
-                dispatch_semaphore_signal( semphore )
             }
         }
-        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
         
+        // Then send out the request the server
         executeRequest( request, onComplete: self.onComplete )
     }
     

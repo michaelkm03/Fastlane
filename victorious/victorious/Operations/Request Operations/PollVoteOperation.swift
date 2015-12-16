@@ -20,8 +20,7 @@ final class PollVoteOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        let semphore = dispatch_semaphore_create(0)
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.syncFromBackground() { context in
             guard let user = VUser.currentUser() else {
                 fatalError( "User must be logged in." )
             }
@@ -38,9 +37,7 @@ final class PollVoteOperation: RequestOperation {
             pollResult.user = user
             
             context.saveChanges()
-            dispatch_semaphore_signal( semphore )
         }
-        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
         
         // Then execute the request
         self.executeRequest( request )
