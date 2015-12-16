@@ -8,8 +8,10 @@
 
 import Foundation
 
+/// Provides some useful debugging utilities when using Key-Value Observing
 @objc class KVODebugger: NSObject {
     
+    /// Parses the `change` dictionary and prints out the change that has been observed
     class func printObservation( keyPath keyPath: String, object: NSObject, change: NSDictionary?) {
         let objectType = NSStringFromClass(object.classForCoder)
         if let value = change?[ NSKeyValueChangeKindKey ] as? UInt,

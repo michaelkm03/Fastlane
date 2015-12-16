@@ -49,7 +49,7 @@ class CommentAddOperation: RequestOperation {
             comment.text = self.commentParameters.text ?? ""
             comment.postedAt = NSDate()
             comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
-            comment.mediaUrl = self.publishParameters?.mediaToUploadURL?.absoluteString
+            comment.mediaUrl = self.commentParameters.mediaURL?.absoluteString
             
             // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
             let sequence: VSequence = context.findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )

@@ -8,8 +8,7 @@
 
 import UIKit
 
-/// An object used as input to other objects that execute functionalty related
-/// to adding comments through the endpoint api/comment/add
+/// An object used as input for adding comments through the endpoint api/comment/add
 public struct CommentParameters {
     
     public struct RealtimeComment {

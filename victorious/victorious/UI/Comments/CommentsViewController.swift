@@ -367,6 +367,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         VLightboxTransitioningDelegate.addNewTransitioningDelegateToLightboxController(lightBox, referenceView: sourceView)
         self.presentViewController(lightBox!, animated: true, completion: nil)
     }
+    
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {

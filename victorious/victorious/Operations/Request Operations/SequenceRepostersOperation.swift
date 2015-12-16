@@ -35,7 +35,7 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             let sortedUsers = users.sort {
-                return ($0.name ?? "").localizedCaseInsensitiveCompare($1.name ?? "") == NSComparisonResult.OrderedAscending
+                return ($0.name ?? "").localizedCaseInsensitiveCompare($1.name ?? "") == .OrderedAscending
             }
             for user in sortedUsers {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]

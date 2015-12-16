@@ -29,10 +29,18 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
         executeRequest( request, onComplete: self.onComplete )
     }
     
+    private func onError( error: NSError, completion:()->() ) {
+        self.resultCount = 0
+        completion()
+    }
+    
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
+        self.resultCount = pollResults.count
         
         persistentStore.asyncFromBackground() { context in
-            defer {  completion() }
+            defer {
+                completion()
+            }
             
             // Update the user
             guard let user: VUser = context.findObjects( [ "remoteId" :  NSNumber(longLong: self.userID) ] ).first else {
