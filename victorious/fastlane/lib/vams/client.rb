@@ -96,7 +96,11 @@ module VAMS
                                    path:     endpoint,
                                    body:     result,
                                    headers:  construct_headers(endpoint: endpoint, method: method))
-      raise SubmissionResult::FailedResponseError.new("Failed to save the status for #{result}") unless successful_response?(status_code: response.code)
+      if !successful_response?(status_code: response.code)
+        error_message = "Failed to save a status for #{result}. Here is the response from VAMS: #{response}}"
+        raise SubmissionResult::FailedResponseError.new(error_message)
+      end
+
       response
     end
 
