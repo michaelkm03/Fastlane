@@ -769,14 +769,17 @@
 		A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */; };
 		A767120B1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */; };
 		A767120D1C1F7BCF006568DF /* PollVoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */; };
-		A767120F1C1F81A7006568DF /* VInteraction+Parseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767120E1C1F81A7006568DF /* VInteraction+Parseable.swift */; };
-		A76712111C1F83C8006568DF /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712101C1F83C8006568DF /* VAsset+Parsable.swift */; };
+		A767120F1C1F81A7006568DF /* VInteraction+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */; };
+		A76712111C1F83C8006568DF /* VAnswer+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */; };
 		A76712151C2099F6006568DF /* VPublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712141C2099F6006568DF /* VPublishParameters.swift */; };
 		A76712171C209D54006568DF /* VCommentCellUtilitiesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712161C209D54006568DF /* VCommentCellUtilitiesController.swift */; };
 		A76712191C209E11006568DF /* VEditCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712181C209E11006568DF /* VEditCommentViewController.swift */; };
 		A767121B1C209F37006568DF /* CommentEditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767121A1C209F37006568DF /* CommentEditOperation.swift */; };
 		A767121D1C20ADB7006568DF /* VSequence+SortedComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767121C1C20ADB7006568DF /* VSequence+SortedComments.swift */; };
 		A76712211C20F216006568DF /* DeleteSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712201C20F216006568DF /* DeleteSequenceOperation.swift */; };
+		A76712221C21E50F006568DF /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8541C12462A001EE1D5 /* RequestOperation.swift */; };
+		A76712241C21E57E006568DF /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712231C21E57E006568DF /* VAsset+Parsable.swift */; };
+		A76712251C21E5E2006568DF /* LikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
 		A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */; };
@@ -802,10 +805,8 @@
 		A76AEAE21C038E0000E8A26F /* ConversationListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD21C038E0000E8A26F /* ConversationListOperation.swift */; };
 		A76AEAE31C038E0000E8A26F /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */; };
 		A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */; };
-		A76AEAE51C038E0000E8A26F /* LikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD51C038E0000E8A26F /* LikeSequenceOperation.swift */; };
 		A76AEAE61C038E0000E8A26F /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */; };
 		A76AEAE71C038E0000E8A26F /* RepostSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD71C038E0000E8A26F /* RepostSequenceOperation.swift */; };
-		A76AEAE81C038E0000E8A26F /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD81C038E0000E8A26F /* RequestOperation.swift */; };
 		A76AEAE91C038E0000E8A26F /* SequenceCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */; };
 		A76AEAEA1C038E0000E8A26F /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */; };
 		A76AEAED1C038E0000E8A26F /* UnlikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */; };
@@ -3015,14 +3016,15 @@
 		A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewNextTransition.swift; sourceTree = "<group>"; };
 		A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryByUserOperation.swift; sourceTree = "<group>"; };
 		A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollVoteOperation.swift; sourceTree = "<group>"; };
-		A767120E1C1F81A7006568DF /* VInteraction+Parseable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VInteraction+Parseable.swift"; sourceTree = "<group>"; };
-		A76712101C1F83C8006568DF /* VAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Parsable.swift"; sourceTree = "<group>"; };
+		A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VInteraction+Parsable.swift"; sourceTree = "<group>"; };
+		A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAnswer+Parsable.swift"; sourceTree = "<group>"; };
 		A76712141C2099F6006568DF /* VPublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPublishParameters.swift; sourceTree = "<group>"; };
 		A76712161C209D54006568DF /* VCommentCellUtilitiesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCommentCellUtilitiesController.swift; sourceTree = "<group>"; };
 		A76712181C209E11006568DF /* VEditCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VEditCommentViewController.swift; sourceTree = "<group>"; };
 		A767121A1C209F37006568DF /* CommentEditOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentEditOperation.swift; sourceTree = "<group>"; };
 		A767121C1C20ADB7006568DF /* VSequence+SortedComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+SortedComments.swift"; sourceTree = "<group>"; };
 		A76712201C20F216006568DF /* DeleteSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSequenceOperation.swift; sourceTree = "<group>"; };
+		A76712231C21E57E006568DF /* VAsset+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAsset+Parsable.swift"; sourceTree = "<group>"; };
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
 		A769C3DA1A13176700698D0C /* VWebBrowserActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserActions.m; sourceTree = "<group>"; };
@@ -3064,10 +3066,8 @@
 		A76AEAD21C038E0000E8A26F /* ConversationListOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListOperation.swift; sourceTree = "<group>"; };
 		A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperation.swift; sourceTree = "<group>"; };
-		A76AEAD51C038E0000E8A26F /* LikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
 		A76AEAD71C038E0000E8A26F /* RepostSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostSequenceOperation.swift; sourceTree = "<group>"; };
-		A76AEAD81C038E0000E8A26F /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsOperation.swift; sourceTree = "<group>"; };
 		A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchOperation.swift; sourceTree = "<group>"; };
 		A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceOperation.swift; sourceTree = "<group>"; };
@@ -6987,19 +6987,16 @@
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
-				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
 				A76AEAD71C038E0000E8A26F /* RepostSequenceOperation.swift */,
-				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
 				A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
-				A702C8561C1247C9001EE1D5 /* StreamOperation.swift */,
 				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
 				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
@@ -7216,19 +7213,20 @@
 			children = (
 				A7F843651BFD44DB004C3D55 /* Conversation+Parsable.swift */,
 				A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */,
+				A702C8581C125163001EE1D5 /* StreamItemParser.swift */,
+				A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */,
+				A76712231C21E57E006568DF /* VAsset+Parsable.swift */,
+				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
 				A7F843691BFD4504004C3D55 /* VEndCard+Parsable.swift */,
 				A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */,
+				A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */,
 				A7F843671BFD44EE004C3D55 /* VMessage+Parsable.swift */,
 				A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */,
+				A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */,
 				A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */,
 				A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */,
 				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
 				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
-				A767120E1C1F81A7006568DF /* VInteraction+Parseable.swift */,
-				A76712101C1F83C8006568DF /* VAsset+Parsable.swift */,
-				A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */,
-				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
-				A702C8581C125163001EE1D5 /* StreamItemParser.swift */,
 			);
 			name = Parsers;
 			path = Serializers;
@@ -10770,15 +10768,15 @@
 				0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */,
 				0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */,
 				F06B41801B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift in Sources */,
-				A76712111C1F83C8006568DF /* VAsset+Parsable.swift in Sources */,
+				A76712111C1F83C8006568DF /* VAnswer+Parsable.swift in Sources */,
 				D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */,
+				A76712221C21E50F006568DF /* RequestOperation.swift in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
-				A76AEAE51C038E0000E8A26F /* LikeSequenceOperation.swift in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
@@ -10979,6 +10977,7 @@
 				A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */,
 				A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */,
 				D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */,
+				A76712241C21E57E006568DF /* VAsset+Parsable.swift in Sources */,
 				A7724FD41B3241D100B1BBB3 /* VUserIsFollowingDataSource.m in Sources */,
 				A7078CDA1BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */,
@@ -10998,7 +10997,7 @@
 				A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */,
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
-				A767120F1C1F81A7006568DF /* VInteraction+Parseable.swift in Sources */,
+				A767120F1C1F81A7006568DF /* VInteraction+Parsable.swift in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
 				F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */,
@@ -11067,7 +11066,6 @@
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
-				A76AEAE81C038E0000E8A26F /* RequestOperation.swift in Sources */,
 				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
@@ -11094,6 +11092,7 @@
 				F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
+				A76712251C21E5E2006568DF /* LikeSequenceOperation.swift in Sources */,
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
