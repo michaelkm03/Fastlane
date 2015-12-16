@@ -27,37 +27,25 @@ class RequestOperation: NSOperation, Queuable {
     
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
 
-        assert( NSThread.currentThread().isMainThread == false )
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(environment: currentEnvironment)
+        let baseURL = currentEnvironment.baseURL
         
-        var baseURL: NSURL?
-        var requestContext: RequestContext?
-        var authenticationContext: AuthenticationContext?
-        
-        let startSemaphore = dispatch_semaphore_create(0)
-        dispatch_async( dispatch_get_main_queue() ) {
-            
-            let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-            requestContext = RequestContext(v_environment: currentEnvironment)
-            baseURL = currentEnvironment.baseURL
-            
-            let currentUserID = VUser.currentUser()?.identifier
-            let persistentStore: PersistentStoreType = MainPersistentStore()
-            authenticationContext = persistentStore.sync() { context in
-                if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
-                    return AuthenticationContext(v_currentUser: currentUser)
-                }
-                return nil
+        let currentUserID = VUser.currentUser()?.identifier
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        let authenticationContext: AuthenticationContext? = persistentStore.sync() { context in
+            if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
+                return AuthenticationContext(currentUser: currentUser)
             }
-            dispatch_semaphore_signal(startSemaphore)
+            return nil
         }
-        dispatch_semaphore_wait( startSemaphore, DISPATCH_TIME_FOREVER )
         
         networkActivityIndicator.start()
         
         let executeSemphore = dispatch_semaphore_create(0)
         request.execute(
-            baseURL: baseURL!,
-            requestContext: requestContext!,
+            baseURL: baseURL,
+            requestContext: requestContext,
             authenticationContext: authenticationContext,
             callback: { (result, error) -> () in
                 dispatch_async( dispatch_get_main_queue() ) {
@@ -105,16 +93,16 @@ class RequestOperation: NSOperation, Queuable {
 }
 
 private extension AuthenticationContext {
-    init?( v_currentUser currentUser: VUser? ) {
+    init?( currentUser: VUser? ) {
         guard let currentUser = currentUser else {
             return nil
         }
-        self.init( userID: Int64(currentUser.remoteId.integerValue), token: currentUser.token)
+        self.init( userID: currentUser.remoteId.longLongValue, token: currentUser.token)
     }
 }
 
 private extension RequestContext {
-    init( v_environment environment: VEnvironment ) {
+    init( environment: VEnvironment ) {
         let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
         let buildNumber: String
         
