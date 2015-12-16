@@ -11,7 +11,7 @@ import Foundation
 private struct Constants {
     static let distanceToContainerFromSide: CGFloat = 50
     static let collectionViewHeight: CGFloat = 80
-    static let badgeHeight = 150
+    static let badgeHeight = 155 // This needs to be slightly higher than in the mocks to accomodate for rounded corners
     static let badgeWidth = 135
 }
 
