@@ -38,7 +38,6 @@
 @interface VApplicationTrackingTests : XCTestCase
 
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
-@property (nonatomic, strong) VMockRequestRecorder *mockRequestRecorder;
 @property (nonatomic, assign) IMP sendRequestImp;
 @property (nonatomic, assign) IMP applicationObjectManagerImp;
 
@@ -49,9 +48,6 @@
 - (void)setUp
 {
     [super setUp];
-    
-    self.mockRequestRecorder = [[VMockRequestRecorder alloc] init];
-    
     
     self.applicationObjectManagerImp = [VApplicationTracking v_swizzleMethod:@selector(applicationObjectManager)
                                                                 withBlock:(VObjectManager *)^
@@ -244,13 +240,15 @@
 - (void)testOrderAndSessionReset
 {
     NSString *trackingURL = @"http://www.google.com?order=%%REQUEST_ORDER%%";
+    VMockRequestRecorder *mockRequestRecorder = [[VMockRequestRecorder alloc] init];
     
     for ( NSInteger i = 0; i < 10; i++ )
     {
-        [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
+        NSURLRequest *trackingRequest = [self.applicationTracking requestWithUrl:trackingURL withParameters:nil];
+        [mockRequestRecorder recordRequest:trackingRequest];
         for ( NSInteger j = 0; j <= i; j++ )
         {
-            NSURLRequest *request = self.mockRequestRecorder.requestsSent[i];
+            NSURLRequest *request = mockRequestRecorder.requestsSent[i];
             NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(i+1)];
             XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
         }
@@ -260,10 +258,11 @@
     
     for ( NSInteger i = 0; i < 10; i++ )
     {
-        [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
+        NSURLRequest *trackingRequest = [self.applicationTracking requestWithUrl:trackingURL withParameters:nil];
+        [mockRequestRecorder recordRequest:trackingRequest];
         for ( NSInteger j = 0; j <= i; j++ )
         {
-            NSURLRequest *request = self.mockRequestRecorder.requestsSent[i];
+            NSURLRequest *request = mockRequestRecorder.requestsSent[i];
             NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(i+1)];
             XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
         }
@@ -274,20 +273,21 @@
 {
     NSString *trackingURL = @"http://www.google.com?order=%%REQUEST_ORDER%%";
     
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
+    VMockRequestRecorder *mockRequestRecorder = [[VMockRequestRecorder alloc] init];
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
     
     {
-        NSURLRequest *request = self.mockRequestRecorder.requestsSent[0];
+        NSURLRequest *request = mockRequestRecorder.requestsSent[0];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
     self.applicationTracking.requestCounter = NSUIntegerMax;
     
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:trackingURL withParameters:nil]];
     
     {
-        NSURLRequest *request = self.mockRequestRecorder.requestsSent[1];
+        NSURLRequest *request = mockRequestRecorder.requestsSent[1];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
@@ -297,31 +297,32 @@
 {
     NSString *urlWithMacro = @"http://www.google.com?order=%%REQUEST_ORDER%%";
     NSString *urlWithoutMacro = @"http://www.google.com";
-    
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
+
+    VMockRequestRecorder *mockRequestRecorder = [[VMockRequestRecorder alloc] init];
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
     
     {
-        NSURLRequest *request = self.mockRequestRecorder.requestsSent[0];
+        NSURLRequest *request = mockRequestRecorder.requestsSent[0];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(1)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
-    // Track another event in between to ensure that counter is not incremented
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
+    // Track another event before to ensure that counter is not incremented
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
     
     {
-        NSURLRequest *request = self.mockRequestRecorder.requestsSent[2];
+        NSURLRequest *request = mockRequestRecorder.requestsSent[2];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(2)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
     
-    // Track another event in between to ensure that counter is not incremented
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
-    [self.mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
+    // Track another event after to ensure that counter is not incremented
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithMacro withParameters:nil]];
+    [mockRequestRecorder recordRequest:[self.applicationTracking requestWithUrl:urlWithoutMacro withParameters:nil]];
 
     {
-        NSURLRequest *request = self.mockRequestRecorder.requestsSent[4];
+        NSURLRequest *request = mockRequestRecorder.requestsSent[3];
         NSString *expectedURL = [NSString stringWithFormat:@"http://www.google.com?order=%@", @(3)];
         XCTAssertEqualObjects( request.URL.absoluteString, expectedURL );
     }
