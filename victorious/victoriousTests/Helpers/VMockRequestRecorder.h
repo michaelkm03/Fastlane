@@ -14,6 +14,6 @@
 
 @property (nonatomic, strong) NSMutableArray *requestsSent;
 
-- (void)sendRequest:(NSURLRequest *)request;
+- (void)recordRequest:(NSURLRequest *)request;
 
 @end

@@ -37,9 +37,9 @@
 @interface VApplicationTrackingTests : XCTestCase
 
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
+@property (nonatomic, strong) VMockRequestRecorder *mockRequestRecorder;
 @property (nonatomic, assign) IMP sendRequestImp;
 @property (nonatomic, assign) IMP applicationObjectManagerImp;
-@property (nonatomic, strong) VMockRequestRecorder *mockRequestRecorder;
 
 @end
 
@@ -51,6 +51,7 @@
     
     self.mockRequestRecorder = [[VMockRequestRecorder alloc] init];
     
+    
     self.applicationObjectManagerImp = [VApplicationTracking v_swizzleMethod:@selector(applicationObjectManager)
                                                                 withBlock:(VObjectManager *)^
                                      {
@@ -60,7 +61,7 @@
     self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
                                                                 withBlock:^(VApplicationTracking *applicationTracking, NSURLRequest *request)
                                      {
-                                         [self.mockRequestRecorder sendRequest:request];
+                                         [self.mockRequestRecorder recordRequest:request];
                                      }];
     
     self.applicationTracking = [[VApplicationTracking alloc] init];

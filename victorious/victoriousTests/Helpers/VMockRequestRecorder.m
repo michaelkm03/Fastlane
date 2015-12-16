@@ -20,7 +20,7 @@
     return self;
 }
 
-- (void)sendRequest:(NSURLRequest *)request
+- (void)recordRequest:(NSURLRequest *)request
 {
     [self.requestsSent addObject:request];
 }
