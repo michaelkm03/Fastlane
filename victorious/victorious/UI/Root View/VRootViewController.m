@@ -232,6 +232,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showLoadingViewController
 {
+    self.launchState = VAppLaunchStateWaiting;
     self.loadingViewController = [VLoadingViewController loadingViewController];
     self.loadingViewController.delegate = self;
     self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
@@ -240,14 +241,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)showAgeGateViewController
 {
+    self.launchState = VAppLaunchStateWaiting;
     AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self];
     [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
 - (void)showInitialScreen
 {
-    self.launchState = VAppLaunchStateWaiting;
-    
     BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
     BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
     
