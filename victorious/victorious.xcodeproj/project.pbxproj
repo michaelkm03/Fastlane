@@ -384,7 +384,6 @@
 		6759555D1BF1553100D40A87 /* SuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555C1BF1553100D40A87 /* SuggestedUser.swift */; };
 		6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555E1BF157BA00D40A87 /* FanLoyalty.swift */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */; };
-		675A9AFF1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */; };
 		675EAF0B1C10E52E00019087 /* AgeGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */; };
 		676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */; };
 		676372DE1B8CD79D00A59705 /* ExploreMarqueeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */; };
@@ -794,7 +793,6 @@
 		A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FA1C1B7DD7006568DF /* TimingTracker.swift */; };
 		A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */; };
 		A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FE1C1B8439006568DF /* MockTimingTracker.swift */; };
-		A76712121C1FA667006568DF /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
 		A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
@@ -11508,7 +11506,6 @@
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
 				A7DCA50D1C128A78004E35B4 /* VUIAlertView+VBlocksTests.m in Sources */,
 				A7DCA4EC1C128A78004E35B4 /* VFollowersTextFormatterTests.m in Sources */,
-				675A9AFF1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift in Sources */,
 				A76711F51C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift in Sources */,
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */,
@@ -11572,7 +11569,6 @@
 				A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */,
 				67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */,
 				A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */,
-				A76712121C1FA667006568DF /* VNotificationSettingsViewControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
