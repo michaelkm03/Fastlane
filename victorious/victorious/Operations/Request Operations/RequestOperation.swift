@@ -31,13 +31,8 @@ class RequestOperation: NSOperation, Queuable {
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
         
-        let currentUserID = VUser.currentUser()?.identifier
-        let persistentStore: PersistentStoreType = MainPersistentStore()
-        let authenticationContext: AuthenticationContext? = persistentStore.sync() { context in
-            if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
-                return AuthenticationContext(currentUser: currentUser)
-            }
-            return nil
+        let authenticationContext = persistentStore.sync() { context in
+            return AuthenticationContext(currentUser: VUser.currentUser())
         }
         
         networkActivityIndicator.start()
