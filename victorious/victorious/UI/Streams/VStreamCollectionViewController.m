@@ -113,7 +113,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
-    
     streamCollection.currentStream = stream;
     return streamCollection;
 }
@@ -233,8 +232,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
         self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
     }
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
@@ -257,10 +254,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         self.collectionView.collectionViewLayout = flowLayout;
     }
     
-    [self.KVOController observe:self.streamDataSource
-                        keyPath:NSStringFromSelector(@selector(visibleStreamItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(dataSourceDidChange)];
     [self.KVOController observe:self.streamDataSource
                         keyPath:NSStringFromSelector(@selector(hasHeaderCell))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -405,7 +398,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSArray *streamItems = self.streamDataSource.visibleStreamItems;
+    NSOrderedSet *streamItems = self.streamDataSource.visibleStreamItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -1013,15 +1006,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)dataSourceDidChange
 {
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        self.hasRefreshed = YES;
-        [self updateNoContentViewAnimated:YES];
-        
-        [self updateCellVisibilityTracking];
-        [self.marqueeCellController updateFocus];
-        [self.focusHelper updateFocus];
-    });
+    self.hasRefreshed = YES;
+    [self updateNoContentViewAnimated:YES];
+    
+    [self updateCellVisibilityTracking];
+    [self.marqueeCellController updateFocus];
+    [self.focusHelper updateFocus];
 }
 
 - (void)updateNoContentViewAnimated:(BOOL)animated

@@ -153,12 +153,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
-    
-    [self.KVOController observe:self.currentStream
-                        keyPath:@"sequences"
-                        options:NSKeyValueObservingOptionNew
-                        context:VUserProfileViewContext];
-    [self updateCollectionViewDataSource];
 }
 
 - (void)updateProfileHeader
@@ -523,7 +517,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.representsMainUser )
     {
         self.user = [VUser currentUser];
-        [self updateCollectionViewDataSource];
     }
     else if ( [VUser currentUser] != nil )
     {
@@ -752,12 +745,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
-}
-
-- (void)updateCollectionViewDataSource
-{
-    self.collectionView.dataSource = self.streamDataSource;
-    [self.collectionView addSubview:self.refreshControl];
 }
 
 - (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass

@@ -552,6 +552,7 @@
 		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
+		A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */; };
 		A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */; };
 		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
@@ -890,7 +891,6 @@
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
 		A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */; };
-		A7AEF9B91A83F1C300A3D3A0 /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */; };
 		A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */; };
 		A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9C31A83F2AD00A3D3A0 /* VFollowersTextFormatter.m */; };
 		A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9C51A83F2AD00A3D3A0 /* VLargeNumberFormatter.m */; };
@@ -11074,6 +11074,7 @@
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
+				A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
 				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
@@ -11457,7 +11458,6 @@
 				A716F3EE1C053A99003068A2 /* VNewContentViewController+Actions.swift in Sources */,
 				A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */,
 				F06B41841B7ADA4B008709E8 /* VShelfContentCollectionViewCell.swift in Sources */,
-				A7AEF9B91A83F1C300A3D3A0 /* VStreamCollectionViewController.m in Sources */,
 				A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
 				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,

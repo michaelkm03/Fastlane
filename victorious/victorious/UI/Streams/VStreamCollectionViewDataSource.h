@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VAbstractFilter+RestKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 
 @class  VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation;
@@ -71,13 +73,13 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @interface VStreamCollectionViewDataSource : NSObject <UICollectionViewDataSource>
 
 @property (nonatomic, weak) id<VStreamCollectionDataDelegate> delegate;
-@property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
-@property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
+@property (nonatomic, nullable) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
+@property (nonatomic, nullable, strong) VStream *stream;///< The stream object used to populate the collectionView
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
-@property (nonatomic, readonly) NSArray *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
-@property (nonatomic, strong) StreamOperation *streamLoadOperation;
+@property (nonatomic, nullable, strong) StreamOperation *streamLoadOperation;
 @property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, strong) NSOrderedSet *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
 
 /**
  *  Initializes the data source with a default stream.
@@ -118,3 +120,5 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 - (void)unloadStream;
 
 @end
+
+NS_ASSUME_NONNULL_END

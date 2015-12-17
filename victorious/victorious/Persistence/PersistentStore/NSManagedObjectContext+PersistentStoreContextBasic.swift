@@ -64,7 +64,13 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
     }
     
     func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> PersistentStoreObject {
-        if let existingObject = self.findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, limit: 1).first {
+        let objects = self.findObjectsWithEntityName( entityName,
+            queryDictionary: queryDictionary,
+            pageNumber: nil,
+            itemsPerPage: nil,
+            limit: NSNumber(integer: 1)
+        )
+        if let existingObject = objects.first {
             return existingObject
         }
         else {
@@ -76,20 +82,38 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
         }
     }
     
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [PersistentStoreObject] {
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [PersistentStoreObject] {
+        return findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, limit: nil)
+    }
+    
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [PersistentStoreObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
-        request.fetchLimit = limit
+        if let limit = limit {
+            request.fetchLimit = limit.integerValue
+        }
+        if let itemsPerPage = itemsPerPage, let pageNumber = pageNumber {
+            request.fetchLimit = itemsPerPage.integerValue
+            request.fetchOffset = pageNumber.integerValue * itemsPerPage.integerValue
+        }
         
         if let queryDictionary = queryDictionary {
             let arguments = NSMutableArray()
             var format = String()
             var i = 0
             for (attribute, value) in queryDictionary {
-                let connector = i++ < queryDictionary.count-1 ? " && " : " "
-                format += "(\(attribute) == %@)\(connector)"
-                arguments.addObject( value )
+                let connector = i++ < queryDictionary.count-1 ? " && " : ""
+                if let dict = value as? [String : AnyObject] {
+                    let subAttribute = Array(dict.keys)[0]
+                    if let subValue = dict[subAttribute] {
+                        format += "ANY self.\(attribute).\(subAttribute) = %@\(connector)"
+                        arguments.addObject( subValue )
+                    }
+                } else {
+                    format += "(\(attribute) == %@)\(connector)"
+                    arguments.addObject( value )
+                }
             }
             request.predicate = NSPredicate(format: format, argumentArray: arguments as [AnyObject] )
         }

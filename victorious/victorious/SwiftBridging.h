@@ -10,7 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
@@ -28,6 +27,7 @@
 #import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
+#import "VAbstractStreamCollectionViewController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
 #import "VAsset+Fetcher.h"

@@ -35,9 +35,17 @@ import CoreData
     ///
     /// -parameter entityName String, the name or type of the entity to search for
     /// -parameter queryDictionary A dictionary of values that will be marshed into predicate used to search for matching objects
-    /// -parameter limit Int, the maximum nunber of result objects to return
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [PersistentStoreObject]
+    /// -parameter limit Int, the maximum nunber of result objects to return.  Use this to improve performance.
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [PersistentStoreObject]
     
+    /// Searches for objects matching the data in the query dictionary
+    ///
+    /// -parameter entityName String, the name or type of the entity to search for
+    /// -parameter queryDictionary A dictionary of values that will be marshed into predicate used to search for matching objects
+    /// -parameter limit Int, the maximum nunber of result objects to return.  Use this to improve performance.
+    /// -parameter pageNumber Int
+    /// -parameter itemsPerPage Int
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [PersistentStoreObject]
     
     /// Searches for an object matching the data in the query dictionary, or creates a new object
     /// and populates it with the data in the query dictionary.

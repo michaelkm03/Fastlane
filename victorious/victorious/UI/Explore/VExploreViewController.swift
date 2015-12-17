@@ -121,7 +121,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         searchResultsViewController?.updateTableView()
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, cellForIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
+    override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let streamItem = streamItemFor(indexPath)
         if let shelf = streamItem as? Shelf {
             
@@ -154,7 +154,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, hasNewStreamItems streamItems: [AnyObject]!) {
+    override func dataSource(dataSource: VStreamCollectionViewDataSource, hasNewStreamItems streamItems: [AnyObject] ) {
         if let streamItems = streamItems as? [VStreamItem] {
             let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
             for streamItem in recentItems {
@@ -168,7 +168,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func updateSectionRanges() {
         var tempRanges = [SectionRange]()
-        if let streamDataSource = streamDataSource, streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
+        if let streamDataSource = streamDataSource, let streamItems = streamDataSource.visibleStreamItems.array as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
@@ -215,12 +215,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return section == collectionView.numberOfSections() - 1
     }
     
-    override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
+    override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource) -> Int {
         // Total number of shelves plus one section for recent content
         return sectionRanges.count + 1
     }
     
-    override func dataSource(dataSource: VStreamCollectionViewDataSource!, numberOfRowsInSection section: UInt) -> Int {
+    override func dataSource(dataSource: VStreamCollectionViewDataSource, numberOfRowsInSection section: UInt) -> Int {
         let convertedSection = Int(section)
         if convertedSection < sectionRanges.count {
             return sectionRanges[convertedSection].range.length
@@ -239,7 +239,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath)
     }
     
-    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
+    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView, inSection section: Int) -> Bool {
         // Only show activity footer if the superclass's checks, which check for being able to load more items from the stream,
         // pass and we're trying to display a footer in the last section of the collection view
         return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
@@ -396,14 +396,14 @@ private extension VDependencyManager {
 
 extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForHeaderInSection section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, heightForHeaderInSection section: Int) -> CGFloat {
         if let dependencyManager = dependencyManager where isRecentContent(section) {
             return RecentPostsExploreHeaderView.desiredHeight(dependencyManager)
         }
         return 0
     }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForFooterInSection section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, heightForFooterInSection section: Int) -> CGFloat {
         if section == collectionView.numberOfSections() - 1 {
             // We're in our dummy last section, return the preffered size for the activity indicator footer
             return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
@@ -516,7 +516,7 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
         return isRecentContent(section) ? 2 : 1
     }
     
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     

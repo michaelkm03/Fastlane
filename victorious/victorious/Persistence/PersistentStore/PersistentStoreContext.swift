@@ -53,6 +53,11 @@ extension NSManagedObject: PersistentStoreObjectSwift {
     }
 }
 
+struct PersistentStorePagination {
+    let itemsPerPage: Int
+    let pageNumber: Int
+}
+
 /// Adapts methods of the PersistentStoreContext protocol to use generics
 protocol PersistentStoreContext: PersistentStoreContextBasic {
     
@@ -64,11 +69,38 @@ protocol PersistentStoreContext: PersistentStoreContextBasic {
     
     func findOrCreateObject<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ] ) -> T
     
-    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ], limit: Int  ) -> [T]
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ]?, pagination: PersistentStorePagination?, limit: Int? ) -> [T]
     
-    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ]  ) -> [T]
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ], pagination: PersistentStorePagination ) -> [T]
+    
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ], limit: Int ) -> [T]
+    
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ] ) -> [T]
     
     func findObjects<T: PersistentStoreObjectSwift>( limit limit: Int ) -> [T]
     
     func findObjects<T: PersistentStoreObjectSwift>() -> [T]
+}
+
+extension PersistentStoreContext {
+    
+    func findObjects<T: PersistentStoreObjectSwift>( limit limit: Int ) -> [T] {
+        return findObjects( nil, pagination: nil, limit: limit)
+    }
+    
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ], limit: Int ) -> [T] {
+        return findObjects( queryDictionary, pagination: nil, limit: limit)
+    }
+    
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ] ) -> [T] {
+        return findObjects( queryDictionary, pagination: nil, limit: nil)
+    }
+    
+    func findObjects<T: PersistentStoreObjectSwift>( queryDictionary: [ String : AnyObject ], pagination: PersistentStorePagination ) -> [T] {
+        return findObjects( queryDictionary, pagination: pagination, limit: nil)
+    }
+    
+    func findObjects<T: PersistentStoreObjectSwift>() -> [T] {
+        return findObjects( nil, pagination: nil, limit: nil)
+    }
 }

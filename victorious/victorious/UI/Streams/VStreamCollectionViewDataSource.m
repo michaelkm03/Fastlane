@@ -19,12 +19,6 @@
 
 NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
 
-@interface VStreamCollectionViewDataSource()
-
-@property (nonatomic, strong) NSArray *visibleStreamItems;
-
-@end
-
 @implementation VStreamCollectionViewDataSource
 
 - (instancetype)initWithStream:(VStream *)stream
@@ -32,62 +26,41 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     self = [self init];
     if ( self != nil )
     {
-        self.visibleStreamItems = @[];
+        _visibleStreamItems = [[NSOrderedSet alloc] init];
         self.stream = stream;
     }
     return self;
 }
 
-- (void)setStream:(VStream *)stream
+- (void)setSuppressShelves:(BOOL)suppressShelves
 {
-    if ( stream == _stream && _stream != nil )
+    if ( _suppressShelves == suppressShelves )
     {
         return;
     }
-    _stream = stream;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:_stream
-                        keyPath:@"streamItems"
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSKeyValueChange kind = (NSKeyValueChange)((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
-         if ( kind == NSKeyValueChangeSetting )
-         {
-             [welf updateVisibleStreamItems];
-         }
-     }];
-}
-
-- (void)setSuppressShelves:(BOOL)suppressShelves
-{
-    BOOL needsUpdate = _suppressShelves != suppressShelves;
     _suppressShelves = suppressShelves;
-    if ( needsUpdate )
-    {
-        [self updateVisibleStreamItems];
-    }
+    self.visibleStreamItems = _visibleStreamItems;
 }
 
-- (void)updateVisibleStreamItems
+- (void)setVisibleStreamItems:(NSOrderedSet *)visibleStreamItems
 {
-    self.visibleStreamItems = self.suppressShelves ? [self streamItemsWithoutShelves] : self.stream.streamItems.array;
-    if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
+    if ( self.suppressShelves )
     {
-        [self.delegate dataSource:self hasNewStreamItems:self.visibleStreamItems];
+        _visibleStreamItems = [self streamItemsWithoutShelvesFromStreamItems:visibleStreamItems];
     }
-    [self.collectionView reloadData];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification object:self];
+    else
+    {
+        _visibleStreamItems = visibleStreamItems;
+    }
 }
 
-- (NSArray *)streamItemsWithoutShelves
+- (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems
 {
     NSPredicate *streamRemovalPredicate = [NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings)
     {
         return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
     }];
-    return [self.stream.streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate];
+    return [[NSOrderedSet alloc] initWithArray:[streamItems.array filteredArrayUsingPredicate:streamRemovalPredicate]];
 }
 
 - (VStreamItem *)itemAtIndexPath:(NSIndexPath *)indexPath
@@ -109,6 +82,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)removeStreamItem:(VStreamItem *)streamItem
 {
+#warning Create RequestOperation for this
     NSMutableOrderedSet *tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.stream.streamItems];
     [tempSet removeObject:streamItem];
     self.stream.streamItems = tempSet;

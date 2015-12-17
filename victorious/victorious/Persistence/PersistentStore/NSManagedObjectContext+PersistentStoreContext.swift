@@ -12,7 +12,7 @@ import Foundation
 /// Core Data managed object context.
 extension NSManagedObjectContext: PersistentStoreContext {
     
-    func getObject<T: PersistentStoreObject>( identifier: AnyObject ) -> T? {
+    func getObject<T: PersistentStoreObjectSwift>( identifier: AnyObject ) -> T? {
         return self.getObjectWithIdentifier( identifier ) as? T
     }
     
@@ -31,20 +31,13 @@ extension NSManagedObjectContext: PersistentStoreContext {
         return self.findOrCreateObjectWithEntityName( T.dataStoreEntityName(), queryDictionary: queryDictionary ) as! T
     }
     
-    func findObjects<T: PersistentStoreObject>() -> [T] {
-        return self.findObjectsWithEntityName( T.dataStoreEntityName(), queryDictionary: nil, limit: 0 ) as? [T] ?? []
-    }
-    
-    func findObjects<T: PersistentStoreObject>( limit limit: Int ) -> [T] {
-        return self.findObjectsWithEntityName( T.dataStoreEntityName(), queryDictionary: nil, limit: limit ) as? [T] ?? []
-    }
-    
-    func findObjects<T: PersistentStoreObject>( queryDictionary: [ String : AnyObject ] ) -> [T] {
-        return self.findObjectsWithEntityName( T.dataStoreEntityName(), queryDictionary:queryDictionary, limit: 0 ) as? [T] ?? []
-    }
-    
-    func findObjects<T: PersistentStoreObject>( queryDictionary: [ String : AnyObject ], limit: Int ) -> [T] {
-        return self.findObjectsWithEntityName( T.dataStoreEntityName(), queryDictionary:queryDictionary, limit: limit ) as? [T] ?? []
+    func findObjects<T: PersistentStoreObject>( queryDictionary: [ String : AnyObject ]?, pagination: PersistentStorePagination?, limit: Int? ) -> [T] {
+        return self.findObjectsWithEntityName( T.dataStoreEntityName(),
+            queryDictionary: queryDictionary,
+            pageNumber: pagination?.pageNumber,
+            itemsPerPage: pagination?.itemsPerPage,
+            limit: limit
+        ) as? [T] ?? []
     }
     
     func cacheObject<T: PersistentStoreObject>(object: T?, forKey key: String) {

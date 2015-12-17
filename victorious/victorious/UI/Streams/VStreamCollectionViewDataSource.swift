@@ -39,8 +39,46 @@ public extension VStreamCollectionViewDataSource {
                 } else {
                     success()
                 }
+                let old = self.visibleStreamItems.array as? [VStreamItem] ?? []
+                let new = operation.results
+                
+                let section = self.sectionIndexForContent()
+                let combined = old + new
+                let change = UICollectionView.Change(
+                    deletedIndexPaths: nil,
+                    insertedIndexPaths: new.flatMap { combined.indexOf($0) }.map { NSIndexPath(forItem: Int($0), inSection: section) }
+                )
+                self.visibleStreamItems = NSOrderedSet(array: combined)
+                
+                self.collectionView?.reloadData()
+                
+                //self.collectionView?.applyChange( change )
             }
             self.streamLoadOperation = operation
         }
+    }
+}
+
+private extension UICollectionView {
+    
+    struct Change {
+        let deletedIndexPaths:[NSIndexPath]?
+        let insertedIndexPaths:[NSIndexPath]?
+        
+        var hasChanges: Bool {
+            return self.deletedIndexPaths?.count > 0 || self.insertedIndexPaths?.count > 0
+        }
+    }
+    
+    func applyChange( change: Change ) {
+        self.performBatchUpdates({
+            
+            if let insertedIndexPaths = change.insertedIndexPaths {
+                self.insertItemsAtIndexPaths( insertedIndexPaths )
+            }
+            if let deletedIndexPaths = change.deletedIndexPaths {
+                self.deleteItemsAtIndexPaths( deletedIndexPaths )
+            }
+        }, completion: nil)
     }
 }

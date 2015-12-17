@@ -32,7 +32,6 @@
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
@@ -239,7 +238,7 @@
     if ([self isViewLoaded])
     {
         self.streamDataSource.stream = currentStream;
-        self.collectionView.dataSource = self.streamDataSource;
+        //self.collectionView.dataSource = self.streamDataSource;
     }
 }
 
@@ -412,7 +411,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    // FIXME:
+#warning FIXME:
     /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
