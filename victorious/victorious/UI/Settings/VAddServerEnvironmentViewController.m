@@ -7,6 +7,7 @@
 //
 
 #import "VAddServerEnvironmentViewController.h"
+#import "VEnvironment.h"
 #import "VEnvironmentManager.h"
 
 @interface VAddServerEnvironmentViewController ()
