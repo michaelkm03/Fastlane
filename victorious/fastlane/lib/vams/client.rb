@@ -87,7 +87,7 @@ module VAMS
       Screenshots.new(json['payload'])
     end
 
-    def submit_result(result)
+    def submit_result(result:)
       endpoint = Endpoints::SUBMISSION_RESPONSE
       method   = :post
       response = HTTP.send_request(type:     method,

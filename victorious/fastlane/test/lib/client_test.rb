@@ -60,13 +60,13 @@ module VAMS
       response_code = 200
       stub_login(date: @date)
       stub_submit_result(status: response_code)
-      response = @client.submit_result(result)
+      response = @client.submit_result(result: result)
       assert_equal(response_code, response.code)
 
       response_code = 500
       stub_submit_result(status: response_code)
       assert_raises(SubmissionResult::FailedResponseError) {
-        @client.submit_result(result)
+        @client.submit_result(result: result)
       }
     end
 

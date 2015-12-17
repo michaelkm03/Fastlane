@@ -21,7 +21,7 @@ module VAMS
                                       datetime: Time.now,
                                       status:   SubmissionResult::Status::GOOD,
                                       build:    'test build')
-        assert(client.submit_result(result: result, environment: environment), failure_message)
+        assert(client.submit_result(result: result), failure_message)
       end
     end
 
