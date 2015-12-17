@@ -35,6 +35,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             previewView.removeFromSuperview()
             
             previewView = VStreamItemPreviewView(streamItem: streamItem)
+            previewView.frame = self.bounds
             previewView.displaySize = self.bounds.size
             if let dependencyManager = dependencyManager {
                 previewView.dependencyManager = dependencyManager
