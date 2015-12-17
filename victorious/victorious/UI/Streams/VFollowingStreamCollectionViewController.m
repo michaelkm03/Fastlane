@@ -11,6 +11,9 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VNoContentView.h"
+#import "VActionSheetViewController.h"
+#import "VActionSheetTransitioningDelegate.h"
+#import "victorious-Swift.h"
 
 @interface VFollowingStreamCollectionViewController ()
 
@@ -41,8 +44,11 @@
 {
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:nil];
-    self.navigationItem.leftBarButtonItem = dismissButton;
+    if ([AgeGate isAnonymousUser])
+    {
+        UIBarButtonItem *legalInfoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"D_more"] style:UIBarButtonItemStylePlain target:self action:@selector(showLegalInfoOptions)];
+        self.navigationItem.leftBarButtonItem = legalInfoButton;
+    }
 }
 
 - (void)dealloc
@@ -97,6 +103,48 @@
     {
         self.collectionView.backgroundView = nil;
     }
+}
+
+#pragma mark - Anonymous User Actions
+
+- (void)showLegalInfoOptions
+{
+    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    
+    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    actionSheetViewController.dependencyManager = self.dependencyManager;
+    
+    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
+    // Compose a terms of service action item
+    VActionItem *tosItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"ToSText", "")
+                                                        actionIcon:nil
+                                                        detailText:nil];
+    tosItem.selectionHandler = ^(VActionItem *item)
+    {
+        [actionSheetViewController dismissViewControllerAnimated:YES completion:^
+         {
+             [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController] animated:YES completion:nil];
+         }];
+    };
+    
+    [actionItems addObject:tosItem];
+    
+    // Compose a privacy policies action item
+    VActionItem *privacyItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Privacy Policy", "")
+                                                        actionIcon:nil
+                                                        detailText:nil];
+    privacyItem.selectionHandler = ^(VActionItem *item)
+    {
+        [actionSheetViewController dismissViewControllerAnimated:YES completion:^
+         {
+             [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager] animated:YES completion:nil];
+         }];
+    };
+    
+    [actionItems addObject:privacyItem];
+    
+    [actionSheetViewController addActionItems:actionItems];
+    [self presentViewController:actionSheetViewController animated:YES completion:nil];
 }
 
 @end
