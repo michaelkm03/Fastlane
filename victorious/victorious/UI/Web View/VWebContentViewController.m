@@ -33,8 +33,6 @@
     
     self.urlToView = self.urlToView;
     [self addConstraintsToWebView:self.webView];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped)];
 }
 
 - (void)setFailureWithError:(NSError *)error
@@ -117,11 +115,6 @@
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (void)doneButtonTapped
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - WKNavigationDelegate
