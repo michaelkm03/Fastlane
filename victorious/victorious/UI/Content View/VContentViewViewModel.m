@@ -77,6 +77,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) AppTimingContentHelper *appTimingHelper;
 
 @end
 
@@ -94,6 +95,9 @@
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
         _dependencyManager = context.destinationDependencyManager;
+        
+        id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+        _appTimingHelper = [[AppTimingContentHelper alloc] initWithTimingTracker:timingTracker];
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
@@ -267,7 +271,8 @@
     {
         return;
     }
-    
+    [self.appTimingHelper start];
+
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
@@ -299,8 +304,14 @@
          {
              welf.followersText = @"";  //< To prevent showing "0 Followers"
          }
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointUserInfo];
      }
-                                                failBlock:nil];
+                                                failBlock:^(NSOperation *_Nullable operation, NSError *_Nullable error)
+     {
+         
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointUserInfo];
+     }];
+     
     if ( [VObjectManager sharedManager].mainUserLoggedIn )
     {
         [[VObjectManager sharedManager] fetchUserInteractionsForSequence:self.sequence
@@ -518,8 +529,13 @@
          __strong typeof(weakSelf) strongSelf = weakSelf;
          strongSelf.comments = [strongSelf.sequence.comments array];
          [strongSelf.delegate didUpdateCommentsWithDeepLink:commentId];
+         
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointComments];
      }
-                                                    failBlock:nil];
+                                                    failBlock:^(NSOperation *_Nullable operation, NSError *_Nullable error)
+     {
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointComments];
+     }];
 }
 
 - (void)loadComments:(VPageType)pageType
@@ -539,8 +555,12 @@
          __strong typeof(weakSelf) strongSelf = weakSelf;
          strongSelf.comments = [strongSelf.sequence.comments array];
          [strongSelf.delegate didUpdateCommentsWithPageType:pageType];
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointComments];
      }
-                                                 failBlock:nil];
+                                                 failBlock:^(NSOperation *_Nullable operation, NSError *_Nullable error)
+     {
+         [self.appTimingHelper setEndpointFinished:ContentViewEndpointComments];
+     }];
 }
 
 - (NSString *)commentTimeAgoTextForCommentIndex:(NSInteger)commentIndex

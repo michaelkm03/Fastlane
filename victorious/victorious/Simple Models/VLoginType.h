@@ -17,4 +17,6 @@ typedef NS_ENUM( NSInteger, VLoginType )
     VLoginTypeEmail,        ///< User signed up with email and password
     VLoginTypeFacebook,     ///< User connected with their Facebook account
     VLoginTypeTwitter,      ///< User connected with their Twitter account
+    VLogintypeAnonymous,    ///< User is anonymous, e.g. A child under certain age that we don't store info of
+    VLoginTypeCount,
 };

@@ -7,23 +7,18 @@
 //
 
 #import "VAbstractStreamCollectionViewController.h"
-
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
-
 #import "MBProgressHUD.h"
-
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
 
 //View Controllers
+#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
-
-//Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VAbstractFilter.h"
-
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
@@ -44,6 +39,8 @@
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
 @property (nonatomic, assign) BOOL isRefreshingFirstPage;
+
+@property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
 @end
 
@@ -82,6 +79,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
+    
+    id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
+                                                                   timingTracker:timingTracker];
 }
 
 - (void)dealloc
@@ -303,6 +304,8 @@
     self.isRefreshingFirstPage = YES;
     [self.refreshControl beginRefreshing];
     
+    [self.appTimingStreamHelper startStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+    
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
@@ -324,12 +327,15 @@
          self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
          [self.collectionView reloadData];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }
                             failure:^(NSError *error)
      {
          self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
          // TODO: Show error in non-disruptive way
+         
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
@@ -448,6 +454,9 @@
     
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
+    
+    [self.appTimingStreamHelper startStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
+    
     [self.streamDataSource loadPage:VPageTypeNext withSuccess:
      ^{
          __weak typeof(self) welf = self;
@@ -455,10 +464,13 @@
                         {
                             [welf.collectionView flashScrollIndicators];
                         });
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }
-                            failure:^(NSError *_Nullable error) {
-                                // TODO: Show error in non-disruptive way
-                            }];
+                            failure:^(NSError *_Nullable error)
+    {
+        // TODO: Show error in non-disruptive way
+        [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
+    }];
 }
 
 #pragma mark - UIScrollViewDelegate

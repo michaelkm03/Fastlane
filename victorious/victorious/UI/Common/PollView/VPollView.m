@@ -19,8 +19,6 @@
 
 @end
 
-static const CGFloat kPlayIconMinimumSpacingToContainerBorder = 10.0f;
-
 @implementation VPollView
 
 - (instancetype)init
@@ -146,8 +144,11 @@ static const CGFloat kPlayIconMinimumSpacingToContainerBorder = 10.0f;
                                                                    attribute:NSLayoutAttributeHeight
                                                                   multiplier:1.0/1.0
                                                                     constant:0.0f]];
-        [self v_addHorizontalMinimumSpacingToSubview:self.playIconA spacing:kPlayIconMinimumSpacingToContainerBorder];
-        [self v_addVerticalMinimumSpacingToSubview:self.playIconA spacing:kPlayIconMinimumSpacingToContainerBorder];
+        
+        CGFloat playIconMinimumSpacingToContainerBorder = 0.125 * CGRectGetWidth(self.bounds);
+        
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconA spacing:playIconMinimumSpacingToContainerBorder];
+        [self v_addVerticalMinimumSpacingToSubview:self.playIconA spacing:playIconMinimumSpacingToContainerBorder];
 
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self.playIconB
                                                          attribute:NSLayoutAttributeCenterX
@@ -168,8 +169,8 @@ static const CGFloat kPlayIconMinimumSpacingToContainerBorder = 10.0f;
                                                                    attribute:NSLayoutAttributeHeight
                                                                   multiplier:1.0/1.0
                                                                     constant:0.0f]];
-        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:kPlayIconMinimumSpacingToContainerBorder];
-        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:kPlayIconMinimumSpacingToContainerBorder];
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:playIconMinimumSpacingToContainerBorder];
+        [self v_addHorizontalMinimumSpacingToSubview:self.playIconB spacing:playIconMinimumSpacingToContainerBorder];
         
         self.hasLayedOutViews = YES;
     }

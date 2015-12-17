@@ -32,6 +32,7 @@ static UIEdgeInsets const kTextInsets = { 2.0f, 0.0f, 2.0f, 0.0f };
     
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithMessage:message];
+    self.mediaAttachmentView.clipsToBounds = YES;
     
     self.textView.textContainerInset = UIEdgeInsetsMake(1.0f, 0.0f, 0.0f, 0.0f);
 }

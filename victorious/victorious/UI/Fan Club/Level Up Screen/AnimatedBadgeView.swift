@@ -208,40 +208,6 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    /// Updates the level number label with a carousal animation
-    ///
-    /// - parameter newLevel: A string with which to update the level number label
-    func levelUp(newLevel: String) {
-        
-        // Sets the gradient mask
-        container.maskView = linearGradientView
-        
-        UIView.animateWithDuration(0.4,
-            delay: 0,
-            options: .CurveLinear,
-            animations: { () in
-                
-                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(-self.levelNumberLabel.bounds.width, 0)
-                
-            }) { (completed) in
-                
-                self.levelNumberLabel.transform = CGAffineTransformMakeTranslation(self.levelNumberLabel.bounds.width, 0)
-                self.levelNumberString = newLevel
-                
-                UIView.animateWithDuration(0.4,
-                    delay: 0,
-                    usingSpringWithDamping: 0.7,
-                    initialSpringVelocity: 0.7,
-                    options: .CurveEaseOut,
-                    animations: { () in
-                        self.levelNumberLabel.transform = CGAffineTransformIdentity
-                    }, completion: { (completed) in
-                        // Resets gradient mask
-                        self.container.maskView = nil
-                })
-        }
-    }
-    
     /// MARK: Helpers
     
     private func configureWithDependencyManager(dependencyManager: VDependencyManager?) {
