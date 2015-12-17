@@ -19,7 +19,7 @@ static NSString * const kVPrivacyURL = @"privacyURL";
     tosViewController.automaticallyAdjustsScrollViewInsets = NO;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tosViewController];
-    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:tosViewController action:@selector(cancel)];
+    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:tosViewController action:@selector(cancel)];
     tosViewController.navigationItem.leftBarButtonItem = dismissButton;
     tosViewController.dependencyManager = dependencyManager;
     tosViewController.title = NSLocalizedString(@"Privacy Policy", nil);
@@ -32,7 +32,7 @@ static NSString * const kVPrivacyURL = @"privacyURL";
 {
     [super viewDidLoad];
     
-    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL] ?: @"http://api.getvictorious.com/api/static/privacy";
+    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL] ?: @"https://api.getvictorious.com/api/static/privacy";
     self.urlToView = [NSURL URLWithString:privacyURLString];
 }
 

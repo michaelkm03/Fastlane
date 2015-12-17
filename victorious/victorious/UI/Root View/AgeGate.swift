@@ -24,11 +24,11 @@ import Foundation
     //MARK: - NSUserDefaults functions
     
     static func hasBirthdayBeenProvided() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.birthdayProvidedByUser)
+        return isAgeGateEnabled() && NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.birthdayProvidedByUser)
     }
     
     static func isAnonymousUser() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
+        return isAgeGateEnabled() && NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
     static func saveShouldUserBeAnonymous(anonymous: Bool) {

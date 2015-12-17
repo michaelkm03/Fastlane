@@ -74,6 +74,10 @@ class AgeGateViewController: UIViewController {
         showDatePickerWithAnimation()
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     @IBAction private func tappedOnContinue(sender: UIButton) {
         let shouldBeAnonymous = AgeGate.isUserYoungerThan(13, forBirthday: datePicker.date)
         
