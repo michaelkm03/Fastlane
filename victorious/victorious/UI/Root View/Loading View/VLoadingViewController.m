@@ -216,7 +216,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
         NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
-        NSParameterAssert( [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath] );
+        __unused BOOL success = [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath];
+        NSAssert(success, @"Template decorator failed");
     }
 }
 

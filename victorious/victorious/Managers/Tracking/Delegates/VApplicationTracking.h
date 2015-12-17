@@ -12,18 +12,18 @@
 #import "VTrackingDelegate.h"
 
 @class VDependencyManager;
-@protocol TrackingRequestScheduler;
 
 @interface VApplicationTracking : NSObject <VTrackingDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) id<TrackingRequestScheduler> requestScheduler;
+@property (nonatomic, strong) dispatch_queue_t requestQueue; ///< A dispatch queue on which to send HTTP requests. Default is dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
 
 /**
- An array of event names as NSStrings for which network requests for trackings calls will be
- executed immediately and not scheduled for later execution.  This is required for some events
- that are critical to measuring session activity.
+ Tracks event using URLS after replacing URL-embedded macros with values
+ that correspond to values in parameters dictionary.  That is to say, the keys in 
+ the parameters dictionary should be the same as the macro in the URLs that the value
+ for that key is intended to replace.  See VTrackingConstants for list of supported keys/macros.
  */
-@property (nonatomic, strong) NSArray<NSString *> *immediateExecutionWhiteList;
+- (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters;
 
 @end

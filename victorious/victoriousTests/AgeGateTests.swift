@@ -19,31 +19,48 @@ class AgeGateTests: XCTestCase {
     }
     
     let userDefaults = NSUserDefaults.standardUserDefaults()
+    private var isAgeGateEnabled: Bool {
+        if let ageGateEnabled = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.ageGateEnabled) as? String {
+            return ageGateEnabled.lowercaseString == "yes"
+        } else {
+            return false
+        }
+    }
+
+    private let originalValueForBirthdayProvided = AgeGate.hasBirthdayBeenProvided()
+    private let originalValueForIsAnonymousUser = AgeGate.isAnonymousUser()
+
+    override func tearDown() {
+        super.tearDown()
+        // Revert changes user default changes made by test cases
+        userDefaults.setBool(originalValueForBirthdayProvided, forKey: DictionaryKeys.birthdayProvidedByUser)
+        userDefaults.setBool(originalValueForIsAnonymousUser, forKey: DictionaryKeys.isAnonymousUser)
+    }
     
     func testHasBirthdayBeenProvided() {
         userDefaults.setValue(false, forKey: DictionaryKeys.birthdayProvidedByUser)
-        XCTAssertFalse(AgeGate.hasBirthdayBeenProvided())
+        XCTAssertEqual(AgeGate.hasBirthdayBeenProvided(), isAgeGateEnabled)
         
         userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
-        XCTAssertTrue(AgeGate.hasBirthdayBeenProvided())
+        XCTAssertEqual(AgeGate.hasBirthdayBeenProvided(), isAgeGateEnabled)
     }
     
     func testIsAnonymousUser() {
         userDefaults.setValue(false, forKey: DictionaryKeys.isAnonymousUser)
-        XCTAssertFalse(AgeGate.isAnonymousUser())
+        XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
         
         userDefaults.setValue(true, forKey: DictionaryKeys.isAnonymousUser)
-        XCTAssertTrue(AgeGate.isAnonymousUser())
+        XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
     }
     
     func testSaveShouldUserBeAnonymous() {
         AgeGate.saveShouldUserBeAnonymous(false)
         XCTAssertTrue(userDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
-        XCTAssertFalse(AgeGate.isAnonymousUser())
+        XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
         
         AgeGate.saveShouldUserBeAnonymous(true)
         XCTAssertTrue(userDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
-        XCTAssertTrue(AgeGate.isAnonymousUser())
+        XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
     }
     
     func testFilterTabMenuItems() {
