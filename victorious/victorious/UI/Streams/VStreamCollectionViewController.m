@@ -306,7 +306,10 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.marqueeCellController updateFocus];
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
-    [self updateNavigationItems];
+    if (![AgeGate isAnonymousUser])
+    {
+        [self updateNavigationItems];
+    }
 
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
