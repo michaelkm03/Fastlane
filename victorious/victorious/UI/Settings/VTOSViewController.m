@@ -9,7 +9,7 @@
 @import WebKit;
 
 #import "VTOSViewController.h"
-#import "VObjectManager+Websites.h"
+#import "victorious-swift.h"
 
 @implementation VTOSViewController
 
@@ -40,17 +40,7 @@
     
     self.shouldShowLoadingState = YES;
     
-    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
-    {
-        if ( !error )
-        {
-            [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.victorious.com/"]];
-        }
-        else
-        {
-            [self setFailureWithError:error];
-        }
-    }];
+    [self loadTermsOfService];
 }
 
 - (void)viewWillAppear:(BOOL)animated

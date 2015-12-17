@@ -9,16 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VNotificationSettings : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * isPostFromCreatorEnabled;
-@property (nonatomic, retain) NSNumber * isNewFollowerEnabled;
-@property (nonatomic, retain) NSNumber * isNewPrivateMessageEnabled;
-@property (nonatomic, retain) NSNumber * isNewCommentOnMyPostEnabled;
-@property (nonatomic, retain) NSNumber * isPostFromFollowedEnabled;
-@property (nonatomic, retain) NSNumber * isPostOnFollowedHashTagEnabled;
-@property (nonatomic, retain) NSNumber * isUserTagInCommentEnabled;
-@property (nonatomic, retain) NSNumber * isPeopleLikeMyPostEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isPostFromCreatorEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isNewFollowerEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isNewPrivateMessageEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isNewCommentOnMyPostEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isPostFromFollowedEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isPostOnFollowedHashTagEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isUserTagInCommentEnabled;
+@property (nonatomic, retain, nullable) NSNumber * isPeopleLikeMyPostEnabled;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -15,3 +15,19 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< Must be set prior to display
 
 @end
+
+/// Below is only visible to facilitate Swift Integration
+@class VNotificationSettings, VNotificationSettingsStateManager;
+
+@interface VNotificationSettingsViewController (SwiftPersistenceIntegration)
+
+/// ATTENTION: For internal class use only.
+@property (nonatomic, strong) NSError *settingsError;
+
+/// ATTENTION: For internal class use only.
+@property (nonatomic, readonly) VNotificationSettingsStateManager *stateManager;
+
+/// ATTENTION: For internal class use only.
+- (void)setSettings:(VNotificationSettings *)settings;
+
+@end
