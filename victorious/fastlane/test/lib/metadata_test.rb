@@ -5,8 +5,9 @@ require 'vams/app'
 
 module VAMS
   class MetadataTest < Minitest::Test
+    include FileTestHelper
+
     def setup
-      @tmp_dir = File.join(TEST_DIR_PATH, 'tmp')
       clean_tmp_dir
       @copyright              = 'Victorious Inc'
       @ios_primary_category   = '5'
@@ -40,24 +41,23 @@ module VAMS
         "Weather"           => 21
       }
 
-
       @app = App.new({
-                      ios_app_categories:     @ios_app_categories,
-                      copyright:              @copyright,
-                      ios_primary_category:   @ios_primary_category,
-                      ios_secondary_category: @ios_secondary_category,
-                      ios_description:        @ios_description,
-                      ios_keywords:           @ios_keywords,
-                      app_name:               @app_name,
-                      privacy_policy_url:     @privacy_policy_url,
-                      support_url:            @support_url
-                    })
+                       ios_app_categories:     @ios_app_categories,
+                       copyright:              @copyright,
+                       ios_primary_category:   @ios_primary_category,
+                       ios_secondary_category: @ios_secondary_category,
+                       ios_description:        @ios_description,
+                       ios_keywords:           @ios_keywords,
+                       app_name:               @app_name,
+                       privacy_policy_url:     @privacy_policy_url,
+                       support_url:            @support_url
+                     })
 
       @metadata = Metadata.new(@app)
     end
 
     def test_saving
-      location = @tmp_dir
+      location = TMP_DIR
       language = 'en_US'
       @metadata.save(location: location, language: language)
       assert_equal(@copyright,          read_file(location, 'copyright.txt'))
@@ -71,7 +71,7 @@ module VAMS
     end
 
     def test_categories
-      location                  = @tmp_dir
+      location                  = TMP_DIR
       language                  = 'en_US'
       setup_and_save_metadata(category: 9, location: location, language: language)
       assert_equal('Healthcare_Fitness', read_file(location, 'primary_category.txt'))
@@ -100,19 +100,6 @@ module VAMS
       @app.ios_primary_category = category
       metadata                 = Metadata.new(@app)
       metadata.save(location: location, language: language)
-    end
-
-    def read_file(*paths)
-      File.read(File.join(paths))
-    end
-
-    def assert_file_exists(*paths)
-      file_location = File.join(paths)
-      assert(File.exists?(file_location))
-    end
-
-    def clean_tmp_dir
-      FileUtils.rm_rf(Dir["#{@tmp_dir.to_s}/*"])
     end
   end
 end
