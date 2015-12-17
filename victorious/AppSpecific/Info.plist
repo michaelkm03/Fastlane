@@ -156,7 +156,7 @@
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 	<key>IsAgeGateEnabled</key>
-	<string>yes</string>
+	<string>NO</string>
 	<key>AnonymousAccountUserID</key>
 	<string>-1</string>
 	<key>AnonymousAccountUserToken</key>

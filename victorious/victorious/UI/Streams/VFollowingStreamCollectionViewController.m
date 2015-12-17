@@ -47,7 +47,9 @@
     if ([AgeGate isAnonymousUser])
     {
         UIBarButtonItem *legalInfoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"D_more"] style:UIBarButtonItemStylePlain target:self action:@selector(showLegalInfoOptions)];
-        self.navigationItem.leftBarButtonItem = legalInfoButton;
+        NSMutableArray *leftItems = [NSMutableArray arrayWithArray:self.navigationItem.leftBarButtonItems];
+        [leftItems addObject:legalInfoButton];
+        [self.navigationItem setLeftBarButtonItems:leftItems];
     }
 }
 
