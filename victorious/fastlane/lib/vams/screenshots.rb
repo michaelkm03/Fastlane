@@ -1,4 +1,3 @@
-require 'uri'
 require 'vams/http'
 require 'vams/file_helper'
 
@@ -20,13 +19,8 @@ module VAMS
     end
 
     def save_screenshots_into_dir(dir:, screenshot_urls:)
-      screenshot_urls.each do |url|
-        uri      = URI.parse(url)
-        filename = File.basename(uri.path)
-        response = HTTP.send_request_to_uri(type: :get, uri: uri)
-
-        file_path = File.join(dir, filename)
-        FileHelper.save_text_into_file(text: response.body, path: file_path)
+      screenshot_urls.each do |url_string|
+        FileHelper.download_file(url_string: url_string, location: dir)
       end
     end
   end
