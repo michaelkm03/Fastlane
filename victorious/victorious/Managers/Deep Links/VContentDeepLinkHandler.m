@@ -96,11 +96,11 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
          {
              [hud hide:YES];
              
-             id<PersistentStoreTypeBasic> persistentStore = [[MainPersistentStore alloc] init];
-             [persistentStore syncBasic:^(id<PersistentStoreContextBasic> _Nonnull persistentStoreContext)
+             id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+             [persistentStore.mainContext performBlockAndWait:^
               {
-                  NSArray *objects = [persistentStoreContext findObjectsWithEntityName:[VSequence entityName]
-                                                                       queryDictionary:@{ @"remoteId" : sequenceID }];
+                  NSArray *objects = [persistentStore.mainContext v_findObjectsWithEntityName:[VSequence entityName]
+                                                                            queryDictionary:@{ @"remoteId" : sequenceID }];
                   context.sequence = (VSequence *)[objects firstObject];
               }];
              [self.contentViewPresenter presentContentViewWithContext:context];

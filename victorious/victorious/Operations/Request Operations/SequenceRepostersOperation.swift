@@ -31,7 +31,7 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             let sortedUsers = users.sort {
@@ -40,10 +40,10 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             for user in sortedUsers {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
                 let reposter: VUser
-                if let existingUser: VUser = context.findObjects( uniqueElements, limit: 1 ).first {
+                if let existingUser: VUser = context.v_findObjects( uniqueElements, limit: 1 ).first {
                     reposter = existingUser
                 } else {
-                    reposter = context.createObject()
+                    reposter = context.v_createObject()
                     reposter.populate(fromSourceModel: user )
                 }
                 reposters.append( reposter )
@@ -51,9 +51,9 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             
             // Add the loaded persistent models to the sequence as `reposters`
             let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
-            let sequence: VSequence = context.findOrCreateObject(uniqueElements)
-            sequence.addObjects( reposters, to: "reposters" )
-            context.saveChanges()
+            let sequence: VSequence = context.v_findOrCreateObject(uniqueElements)
+            sequence.v_addObjects( reposters, to: "reposters" )
+            context.v_save()
             
             completion()
         }

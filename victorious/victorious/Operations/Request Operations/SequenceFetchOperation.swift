@@ -25,10 +25,10 @@ class SequenceFetchOperation: RequestOperation {
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
         
-        persistentStore.asyncFromBackground() { context in
-            let persistentSequence: VSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
             persistentSequence.populate(fromSourceModel: sequence)
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

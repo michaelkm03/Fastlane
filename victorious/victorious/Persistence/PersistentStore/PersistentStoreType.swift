@@ -8,40 +8,18 @@
 
 import Foundation
 
-/// Defines an object that can be used to interact with a persistent store stack that provides implementations
-/// for `PersistentStoreContext(Basic)`, such as CoreData.
-/// Application code will program to this interface, allowing the concrete implementation to change.
-@objc protocol PersistentStoreTypeBasic {
+/// Defines an object that provides access to a persistent backed by CoreData that exposes
+/// its internally configured and managed instances of `NSManagedObjectContext` which are the
+/// primary interfaces through which application code should interact.
+@objc protocol PersistentStoreType {
     
-    /// Designed for main-thread reads, which blocks the thread to ensure a result can be generated
-    /// through the `PersistentStoreContextBasic` instance provided when the `closure` parameter is called.
-    /// The closure is called synchronously using the main context of the persistent store.
-    func syncBasic( closure: ((PersistentStoreContextBasic)->()) )
+    /// A context used primarily for reads that should only ever be accessed from the main queue.
+    /// To ensure this, always call `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
+    /// with this context.
+    var mainContext: NSManagedObjectContext { get }
     
-    /// Executes a closure asynchronously using the background context of the persistent store.
-    /// This method should be used for any asynchronous, concurrent data operations, such as
-    /// parsing a network response into the peristent store.
-    func asyncFromBackgroundBasic( closure: ((PersistentStoreContextBasic)->()) )
-}
-
-/// Adds Swift-only generics.
-protocol PersistentStoreType: PersistentStoreTypeBasic {
-    
-    /// Executes a closure synchronously using the main context of the persistent store.
-    /// Keep in mind, the generic type can be Void if no result is desired.
-    func sync<T>( closure: ((PersistentStoreContext)->(T)) ) -> T
-    
-    /// Executes a closure asynchronously using the background context of the persistent store.
-    /// This method should be used for any asynchronous, concurrent data operations, such as
-    /// parsing a network response into the peristent store.
-    func asyncFromBackground( closure: ((PersistentStoreContext)->()) )
-
-    /// Executes a closure asynchronously using the main context of the persistent store.
-    func async( closure: ((PersistentStoreContext)->()) )
-    
-    /// Executes a closure synchronously using the background context of the persistent store.
-    /// This method should be used for any concurrent data operations, such as
-    /// parsing a network response into the peristent store.
-    /// Keep in mind, the generic type can be Void if no result is desired.
-    func syncFromBackground<T>( closure: ((PersistentStoreContext)->(T)) ) -> T
+    /// A context used primarily for asynchronous writes that should only ever be accessed from
+    /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
+    /// with this context.
+    var backgroundContext: NSManagedObjectContext { get }
 }

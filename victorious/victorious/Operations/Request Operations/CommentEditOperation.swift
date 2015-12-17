@@ -16,7 +16,7 @@ class CommentEditOperation: RequestOperation {
     private let text: String
     private let commentID: Int64
     
-    private var optimisticCommentIdentifier: AnyObject?
+    private var optimisticCommentObjectID: NSManagedObjectID?
     
     init( commentID: Int64, text: String ) {
         self.commentID = commentID
@@ -27,12 +27,12 @@ class CommentEditOperation: RequestOperation {
     override func main() {
         
         // Optimistically edit the comment before sending request
-        persistentStore.asyncFromBackground() { context in
-            if let comment: VComment = context.findObjects( ["remoteId" : NSNumber(longLong:self.commentID)] ).first {
+        persistentStore.backgroundContext.v_performBlock() { context in
+            if let comment: VComment = context.v_findObjects( ["remoteId" : NSNumber(longLong:self.commentID)] ).first {
                 comment.text = self.text
-                context.saveChanges()
+                context.v_save()
                 dispatch_sync( dispatch_get_main_queue() ) {
-                    self.optimisticCommentIdentifier = comment.identifier
+                    self.optimisticCommentObjectID = comment.objectID
                 }
             }
         }
@@ -48,16 +48,16 @@ class CommentEditOperation: RequestOperation {
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             
-            guard let identifier = self.optimisticCommentIdentifier,
-                let optimisticComment: VComment = context.getObject( identifier ) else {
+            guard let objectID = self.optimisticCommentObjectID,
+                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
                     fatalError( "Failed to load comment create optimistically during operation's execution." )
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticComment.populate( fromSourceModel: comment )
-            context.saveChanges()
+            context.v_save()
             completion()
         }
         

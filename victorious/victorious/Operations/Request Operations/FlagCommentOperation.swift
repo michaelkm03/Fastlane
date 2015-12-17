@@ -26,11 +26,11 @@ class FlagCommentOperation: RequestOperation {
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
-            if let comment: VComment = context.findObjects( uniqueElements ).first {
-                context.destroy( comment )
-                context.saveChanges()
+            if let comment: VComment = context.v_findObjects( uniqueElements ).first {
+                context.deleteObject( comment )
+                context.v_save()
             }
         }
         

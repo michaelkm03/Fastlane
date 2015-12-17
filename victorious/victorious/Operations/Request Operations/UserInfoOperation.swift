@@ -22,10 +22,10 @@ class UserInfoOperation: RequestOperation {
     }
     
     private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
-            let persistentUser: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: user.userID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let persistentUser: VUser = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: user.userID) ])
             persistentUser.populate(fromSourceModel: user)
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

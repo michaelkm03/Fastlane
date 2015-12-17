@@ -22,10 +22,10 @@ class UnlikeSequenceOperation: RequestOperation {
     
     override func main() {
         let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
-        persistentStore.asyncFromBackground() { context in
-            let sequence: VSequence = context.findOrCreateObject( uniqueElements )
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let sequence: VSequence = context.v_findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = false
-            context.saveChanges()
+            context.v_save()
         }
         
         // Now execute the request fire-and-forget style

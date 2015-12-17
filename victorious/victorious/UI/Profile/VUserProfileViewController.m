@@ -549,10 +549,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
-    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
-        self.currentStream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
-        [context saveChanges];
+    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        [persistentStore.mainContext save:nil];
     }];
     
     [self updateProfileHeader];

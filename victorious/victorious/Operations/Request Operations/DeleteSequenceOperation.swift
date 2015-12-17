@@ -26,14 +26,14 @@ class DeleteSequenceOperation: RequestOperation {
     }
     
     func onComplete( stream: DeleteSequenceRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
-            guard let sequence: VSequence = context.findObjects([ "remoteId" : String(self.sequenceID) ]).first else {
+        persistentStore.backgroundContext.v_performBlock() { context in
+            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : String(self.sequenceID) ]).first else {
                 completion()
                 return
             }
             
-            context.destroy( sequence )
-            context.saveChanges()
+            context.deleteObject( sequence )
+            context.v_save()
             completion()
         }
     }

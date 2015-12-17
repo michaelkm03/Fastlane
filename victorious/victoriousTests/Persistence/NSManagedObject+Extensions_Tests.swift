@@ -67,7 +67,7 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
         XCTAssertNil( children[0].parent )
         XCTAssertEqual( parent.children.count, 0 )
         
-        parent.addObjects( children, to: "children" )
+        parentv_addObjects( children, to: "children" )
         XCTAssertEqual( parent.children.count, children.count )
         let persistentChidlren = parent.children.flatMap({ $0 as? PersistentEntity })
         XCTAssertEqual( persistentChidlren[0], children[0] )

@@ -28,7 +28,7 @@ extension VUser: PersistenceParsable {
         maxUploadDuration           = NSNumber( longLong: user.maxVideoUploadDuration)
         
         previewAssets = Set<VImageAsset>(user.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+            let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
             imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
         })

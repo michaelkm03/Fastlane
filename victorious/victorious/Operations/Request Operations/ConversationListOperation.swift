@@ -29,13 +29,13 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
         self.resultCount = conversations.count
         
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             for conversation in conversations {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
-                let persistentConversation: VConversation = context.findOrCreateObject( uniqueElements )
+                let persistentConversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )
             }
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

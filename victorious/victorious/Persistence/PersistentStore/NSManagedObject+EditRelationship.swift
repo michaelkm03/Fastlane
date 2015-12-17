@@ -1,9 +1,9 @@
 //
-//  NSManagedObject+Extensions.swift
+//  NSManagedObject+EditRelationship.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 7/9/15.
-//  Copyright (c) 2015 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 12/17/15.
+//  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
@@ -11,44 +11,7 @@ import CoreData
 
 extension NSManagedObject {
     
-    /// Returns the class name as a string, intended to match that which is configured in the MOM file.
-    static var v_defaultEntityName: String {
-        return StringFromClass(self)
-    }
-    
-    func deepCopy( desinationContext: NSManagedObjectContext? = nil ) -> NSManagedObject {
-        let context = desinationContext ?? self.managedObjectContext
-        let copy = self.shallowCopy( desinationContext )
-        
-        // Copy relationships to shallow copy, making it "deep"
-        for (key, relatiionship) in self.entity.relationshipsByName {
-            if relatiionship.toMany {
-                let source = self.mutableSetValueForKey( key )
-                let destination = copy.mutableSetValueForKey( key )
-                for value in source {
-                    destination.addObject( value.deepCopy(context) )
-                }
-            }
-            else if let object = self.valueForKey(key) as? NSManagedObject where object != self {
-                copy.setValue( object.shallowCopy( context ), forKey: key)
-            }
-        }
-        return copy
-    }
-    
-    func shallowCopy( desinationContext: NSManagedObjectContext? = nil ) -> NSManagedObject {
-        let context = desinationContext ?? self.managedObjectContext
-        let copy = NSManagedObject(entity: self.entity, insertIntoManagedObjectContext: context )
-        
-        // Attributes
-        let keys = (self.entity.attributesByName as NSDictionary).allKeys as? [String] ?? [String]()
-        let keyedValues = self.dictionaryWithValuesForKeys( keys )
-        copy.setValuesForKeysWithDictionary( keyedValues )
-        
-        return copy
-    }
-    
-    func addObjects( objects: [NSManagedObject], to relationshipName: String ) {
+    func v_addObjects( objects: [NSManagedObject], to relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
             "Could not find a relationship on entity of type '\(self.entity.name)' for key '\(relationshipName)'" )
         
@@ -64,7 +27,7 @@ extension NSManagedObject {
         }
     }
     
-    func addObject( object: NSManagedObject, to relationshipName: String ) {
+    func v_addObject( object: NSManagedObject, to relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
             "Could not find a relationship for key '\(relationshipName)'" )
         
@@ -80,7 +43,7 @@ extension NSManagedObject {
         }
     }
     
-    func removeObjects( objects: [NSManagedObject], from relationshipName: String ) {
+    func v_removeObjects( objects: [NSManagedObject], from relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
             "Could not find a relationship for key '\(relationshipName)'" )
         
@@ -96,7 +59,7 @@ extension NSManagedObject {
         }
     }
     
-    func removeObject( object: NSManagedObject, from relationshipName: String ) {
+    func v_removeObject( object: NSManagedObject, from relationshipName: String ) {
         assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
             "Could not find a relationship for key '\(relationshipName)'" )
         

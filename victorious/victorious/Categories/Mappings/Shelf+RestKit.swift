@@ -10,10 +10,6 @@ import Foundation
 
 extension Shelf {
     
-    override class func entityName() -> String {
-        return v_defaultEntityName
-    }
-    
     class func propertyMapping() -> [String : String] {
         return [
             "title" : "title",
@@ -40,7 +36,7 @@ extension Shelf {
     class func mapping(itemSubType: String) -> RKObjectMapping? {
         switch itemSubType {
         case VStreamItemSubTypeTrendingTopic, VStreamItemSubTypeMarquee:
-            return mappingBaseForEntity(named: entityName())
+            return mappingBaseForEntity(named:v_entityName())
         case VStreamItemSubTypeUser:
             return UserShelf.entityMapping()
         case VStreamItemSubTypeHashtag:

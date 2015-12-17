@@ -9,13 +9,9 @@
 import Foundation
 import CoreData
 
-private let SingleObjectCacheKey = "SingleObjectCache"
-
-/// An implementation of the PersistentStoreContextBasic protocol that provides access to a single
-/// Core Data managed object context.
-extension NSManagedObjectContext: PersistentStoreContextBasic {
+extension NSManagedObjectContext {
     
-    func saveChanges() -> Bool {
+    func v_save() -> Bool {
         do {
             try self.save()
             return true
@@ -36,35 +32,24 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
         return false
     }
     
-    func destroy( object: PersistentStoreObject ) -> Bool {
-        self.deleteObject( object as! NSManagedObject )
-        do {
-            try self.save()
-        } catch {
-            print( "Failed to delete object: \(error)" )
-            
-        }
-        return false
-    }
-    
-    func createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: PersistentStoreObject -> Void ) -> PersistentStoreObject {
-        let object = self.createObjectWithEntityName( entityName )
+    func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
+        let object = self.v_createObjectWithEntityName( entityName )
         configurations( object )
-        self.saveChanges()
+        self.v_save()
         return object
     }
     
-    func createObjectWithEntityName( entityName: String ) -> PersistentStoreObject {
+    func v_createObjectWithEntityName( entityName: String ) -> NSManagedObject {
 
         guard let entity = NSEntityDescription.entityForName( entityName, inManagedObjectContext: self ) else {
             fatalError( "Could not find entity for name: \(entityName).  Make sure the entity name configurated in the managed object object matches the expected class type." )
         }
         
-        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as PersistentStoreObject
+        return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as NSManagedObject
     }
     
-    func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> PersistentStoreObject {
-        let objects = self.findObjectsWithEntityName( entityName,
+    func v_findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject {
+        let objects = self.v_findObjectsWithEntityName( entityName,
             queryDictionary: queryDictionary,
             pageNumber: nil,
             itemsPerPage: nil,
@@ -74,19 +59,19 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
             return existingObject
         }
         else {
-            let object = self.createObjectWithEntityName( entityName )
+            let object = self.v_createObjectWithEntityName( entityName )
             for (key, value) in queryDictionary {
-                (object as! NSManagedObject).setValue(value, forKey: key)
+                object.setValue(value, forKey: key)
             }
             return object
         }
     }
     
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [PersistentStoreObject] {
-        return findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, limit: nil)
+    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [NSManagedObject] {
+        return v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, limit: nil)
     }
     
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [PersistentStoreObject] {
+    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
@@ -119,33 +104,12 @@ extension NSManagedObjectContext: PersistentStoreContextBasic {
         }
         
         do {
-            if let results = try self.executeFetchRequest( request ) as? [PersistentStoreObject] {
+            if let results = try self.executeFetchRequest( request ) as? [NSManagedObject] {
                 return results
             }
         } catch {
             print( "Error: \(error)" )
         }
-        return [PersistentStoreObject]()
-    }
-    
-    func getObjectWithIdentifier(identifier: AnyObject) -> PersistentStoreObject? {
-        return self.objectWithID( identifier as! NSManagedObjectID ) as PersistentStoreObject
-    }
-    
-    func cacheObject(object: PersistentStoreObject?, forKey key: String) {
-        var cache = userInfo[SingleObjectCacheKey] as? [String : PersistentStoreObject] ?? [:]
-        if let object = object {
-            cache[key] = object
-        } else {
-            cache.removeValueForKey(key)
-        }
-        userInfo[SingleObjectCacheKey] = cache
-    }
-    
-    func cachedObjectForKey(key: String) -> PersistentStoreObject? {
-        guard let cache = userInfo[SingleObjectCacheKey] as? [String : NSManagedObject] else {
-            return nil
-        }
-        return cache[key] as? PersistentStoreObject
+        return [NSManagedObject]()
     }
 }

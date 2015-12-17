@@ -30,6 +30,7 @@ extension VListShelfCellFactory: VStreamCellFactory {
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = streamItem as? Shelf {
+            print(streamItem.itemSubType)
             if streamItem.itemSubType == VStreamItemSubTypePlaylist {
                 if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VListPlaylistShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)

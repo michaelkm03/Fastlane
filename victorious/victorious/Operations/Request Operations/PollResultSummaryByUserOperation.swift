@@ -37,13 +37,13 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         self.resultCount = pollResults.count
         
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             defer {
                 completion()
             }
             
             // Update the user
-            guard let user: VUser = context.findObjects( [ "remoteId" :  NSNumber(longLong: self.userID) ] ).first else {
+            guard let user: VUser = context.v_findObjects( [ "remoteId" :  NSNumber(longLong: self.userID) ] ).first else {
                 return
             }
             
@@ -52,12 +52,12 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
                     "answerId" : NSNumber(longLong: pollResult.answerID),
                     "sequenceId" : String(pollResult.sequenceID)
                 ]
-                let persistentResult: VPollResult = context.findOrCreateObject( uniqueElements )
+                let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel: pollResult)
                 persistentResult.user = user
             }
             
-            context.saveChanges()
+            context.v_save()
         }
     }
 }

@@ -34,27 +34,27 @@ extension VSequence: PersistenceParsable {
         sequenceDescription     = sequence.sequenceDescription
         
         if let trackingModel = sequence.tracking {
-            tracking = persistentStoreContext.createObject() as VTracking
+            tracking = v_managedObjectContext.v_createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
         if let endCardModel = sequence.endCard {
-            endCard = persistentStoreContext.createObject() as VEndCard
+            endCard = v_managedObjectContext.v_createObject() as VEndCard
             endCard?.populate(fromSourceModel: endCardModel)
         }
         
-        user = persistentStoreContext.findOrCreateObject( [ "remoteId" : NSNumber( longLong: sequence.user.userID) ] ) as VUser
+        user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: sequence.user.userID) ] ) as VUser
         user?.populate(fromSourceModel: sequence.user)
         
         previewImageAssets = Set<VImageAsset>(sequence.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+            let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
             imageAsset.populate( fromSourceModel: $0 )
             return imageAsset
         })
         
         nodes = NSOrderedSet(array: sequence.nodes.flatMap {
             if let nodeID = NSNumber( v_longLong: Int64($0.nodeID)) {
-                let node: VNode = persistentStoreContext.findOrCreateObject([ "remoteId" : nodeID ])
+                let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : nodeID ])
                 node.populate( fromSourceModel: $0 )
                 return node
             }
@@ -64,10 +64,10 @@ extension VSequence: PersistenceParsable {
         let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.Comment)
         let unflaggedComments = sequence.comments.filter { !flaggedIds.contains(String($0.commentID)) }
         let persistentComments: [VComment] = unflaggedComments.map {
-            let comment: VComment = self.persistentStoreContext.findOrCreateObject([ "remoteId" : String($0.commentID) ])
+            let comment: VComment = self.v_managedObjectContext.v_findOrCreateObject([ "remoteId" : String($0.commentID) ])
             comment.populate(fromSourceModel: $0)
             return comment
         }
-        self.addObjects( persistentComments, to: "comments")
+        self.v_addObjects( persistentComments, to: "comments")
     }
 }

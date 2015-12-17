@@ -553,6 +553,9 @@
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
 		A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */; };
+		A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */; };
+		A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */; };
+		A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */; };
 		A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */; };
 		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
@@ -567,7 +570,7 @@
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
 		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
-		A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */; };
+		A70CCC701BF3E156003574D5 /* VUser+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70CCC6F1BF3E156003574D5 /* VUser+Current.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
@@ -858,7 +861,6 @@
 		A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */; };
 		A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */; };
 		A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */; };
-		A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */; };
 		A789F7541BF1211D00F5C87B /* CoreDataPathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F74A1BF1211D00F5C87B /* CoreDataPathHelper.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
@@ -1124,10 +1126,10 @@
 		A7F843681BFD44EE004C3D55 /* VMessage+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843671BFD44EE004C3D55 /* VMessage+Parsable.swift */; };
 		A7F8436A1BFD4504004C3D55 /* VEndCard+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843691BFD4504004C3D55 /* VEndCard+Parsable.swift */; };
 		A7F843721BFD5A0B004C3D55 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436C1BFD5A0B004C3D55 /* CoreDataManager.swift */; };
-		A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContext.swift */; };
-		A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift */; };
+		A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */; };
+		A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */; };
 		A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F8436F1BFD5A0B004C3D55 /* PersistentStoreType.swift */; };
-		A7F843761BFD5A0B004C3D55 /* PersistentStoreContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843701BFD5A0B004C3D55 /* PersistentStoreContext.swift */; };
+		A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */; };
 		A7F843771BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843711BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift */; };
 		A7F8437E1BFE6B72004C3D55 /* VFlaggedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8437D1BFE6B72004C3D55 /* VFlaggedContent.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
@@ -2648,6 +2650,9 @@
 		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
 		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
 		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
+		A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Perform.swift"; sourceTree = "<group>"; };
+		A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+EditRelationship.swift"; sourceTree = "<group>"; };
+		A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Copy.swift"; sourceTree = "<group>"; };
 		A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserProfileViewController.swift; sourceTree = "<group>"; };
 		A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForceLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
@@ -2664,7 +2669,7 @@
 		A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceFetchResponse.json; sourceTree = "<group>"; };
 		A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentViewViewModel.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
-		A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+CurrentUserCache.swift"; sourceTree = "<group>"; };
+		A70CCC6F1BF3E156003574D5 /* VUser+Current.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Current.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
 		A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableRow.h; sourceTree = "<group>"; };
@@ -3172,7 +3177,6 @@
 		A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Parsable.swift"; sourceTree = "<group>"; };
-		A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContextTests.swift; sourceTree = "<group>"; };
 		A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
 		A789F7411BF1211D00F5C87B /* 1.0-1.1.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.0-1.1.xcmappingmodel"; sourceTree = "<group>"; };
@@ -3470,10 +3474,10 @@
 		A7F843671BFD44EE004C3D55 /* VMessage+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VMessage+Parsable.swift"; sourceTree = "<group>"; };
 		A7F843691BFD4504004C3D55 /* VEndCard+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VEndCard+Parsable.swift"; sourceTree = "<group>"; };
 		A7F8436C1BFD5A0B004C3D55 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PersistentStoreContext.swift"; sourceTree = "<group>"; };
-		A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+PersistentStoreContextBasic.swift"; sourceTree = "<group>"; };
+		A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Generics.swift"; sourceTree = "<group>"; };
+		A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Fetchers.swift"; sourceTree = "<group>"; };
 		A7F8436F1BFD5A0B004C3D55 /* PersistentStoreType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreType.swift; sourceTree = "<group>"; };
-		A7F843701BFD5A0B004C3D55 /* PersistentStoreContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContext.swift; sourceTree = "<group>"; };
+		A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Entity.swift"; sourceTree = "<group>"; };
 		A7F843711BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreContextBasic.swift; sourceTree = "<group>"; };
 		A7F8437C1BFE6B72004C3D55 /* VFlaggedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFlaggedContent.h; sourceTree = "<group>"; };
 		A7F8437D1BFE6B72004C3D55 /* VFlaggedContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlaggedContent.m; sourceTree = "<group>"; };
@@ -7203,7 +7207,7 @@
 		A789F71A1BF11F4900F5C87B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A70CCC6F1BF3E156003574D5 /* VUser+CurrentUserCache.swift */,
+				A70CCC6F1BF3E156003574D5 /* VUser+Current.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -7236,7 +7240,6 @@
 			isa = PBXGroup;
 			children = (
 				A72EDF901C03E5EC003D6177 /* NSNumber+Extensions.swift */,
-				A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */,
 				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
 			);
 			path = Utils;
@@ -7686,11 +7689,14 @@
 			isa = PBXGroup;
 			children = (
 				A7F8436C1BFD5A0B004C3D55 /* CoreDataManager.swift */,
-				A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContext.swift */,
-				A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift */,
-				A7F8436F1BFD5A0B004C3D55 /* PersistentStoreType.swift */,
-				A7F843701BFD5A0B004C3D55 /* PersistentStoreContext.swift */,
+				A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */,
+				A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */,
+				A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */,
+				A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */,
+				A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */,
+				A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */,
 				A7F843711BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift */,
+				A7F8436F1BFD5A0B004C3D55 /* PersistentStoreType.swift */,
 			);
 			path = PersistentStore;
 			sourceTree = "<group>";
@@ -10550,6 +10556,7 @@
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
+				A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				C3623E651B9F63BD002B121D /* AlertParser.swift in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
@@ -10702,7 +10709,7 @@
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
-				A7F843761BFD5A0B004C3D55 /* PersistentStoreContext.swift in Sources */,
+				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -10852,6 +10859,7 @@
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
+				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
 				A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
@@ -10906,7 +10914,6 @@
 				A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,
-				A789F7351BF11F4900F5C87B /* NSManagedObject+Extensions.swift in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */,
@@ -10997,6 +11004,7 @@
 				A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */,
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
+				A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */,
 				A767120F1C1F81A7006568DF /* VInteraction+Parsable.swift in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
@@ -11132,7 +11140,7 @@
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
 				F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
-				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContextBasic.swift in Sources */,
+				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				A721E91D1B572454000B7901 /* GIFSearchResult+RestKit.swift in Sources */,
@@ -11166,7 +11174,7 @@
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
-				A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+PersistentStoreContext.swift in Sources */,
+				A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
@@ -11434,7 +11442,7 @@
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
-				A70CCC701BF3E156003574D5 /* VUser+CurrentUserCache.swift in Sources */,
+				A70CCC701BF3E156003574D5 /* VUser+Current.swift in Sources */,
 				7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,

@@ -19,7 +19,7 @@ public class PersistentEntity: NSManagedObject {
     @NSManaged public var children: NSOrderedSet
     @NSManaged public var parent: PersistentEntity?
     
-    public static override func entityName() -> String { return "PersistentEntity" }
+    public static override func v_entityName() -> String { return "PersistentEntity" }
 }
 
 public class TransientEntity: NSManagedObject {
@@ -27,5 +27,5 @@ public class TransientEntity: NSManagedObject {
     @NSManaged public var stringAttribute: String?
     @NSManaged public var persistentEntity: PersistentEntity?
     
-    public static override func entityName() -> String { return "TransientEntity" }
+    public static override func v_entityName() -> String { return "TransientEntity" }
 }

@@ -28,11 +28,11 @@ class FollowCountOperation: RequestOperation {
     }
     
     private func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject( [ "remoteId" : Int(self.userID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : Int(self.userID) ])
             user.numberOfFollowers = NSNumber(longLong:response.followersCount)
             user.numberOfFollowing = NSNumber(longLong:response.followingCount)
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

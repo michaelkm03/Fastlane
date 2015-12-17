@@ -35,16 +35,16 @@ class CommentFindOperation: RequestOperation {
         
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) } ?? []
         if !response.comments.isEmpty {
-            persistentStore.asyncFromBackground() { context in
+            persistentStore.backgroundContext.v_performBlock() { context in
                 var comments = [VComment]()
                 for comment in response.comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
-                    let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
+                    let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                     persistentComment.populate( fromSourceModel: comment )
                     comments.append( persistentComment )
                 }
-                let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+                let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + comments )
-                context.saveChanges()
+                context.v_save()
             }
             completion()
         }

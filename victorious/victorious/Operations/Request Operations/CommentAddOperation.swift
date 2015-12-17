@@ -16,7 +16,7 @@ class CommentAddOperation: RequestOperation {
     private let publishParameters: VPublishParameters?
     private let commentParameters: CommentParameters
     
-    private var optimisticCommentIdentifier: AnyObject?
+    private var optimisticCommentObjectID: NSManagedObjectID?
     
     init( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
         self.commentParameters = commentParameters
@@ -35,8 +35,8 @@ class CommentAddOperation: RequestOperation {
         }
         
         // Optimistically create a comment before sending request
-        persistentStore.asyncFromBackground() { context in
-            let comment: VComment = context.createObject()
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let comment: VComment = context.v_createObject()
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
@@ -52,13 +52,13 @@ class CommentAddOperation: RequestOperation {
             comment.mediaUrl = self.commentParameters.mediaURL?.absoluteString
             
             // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
-            let sequence: VSequence = context.findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
+            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
             let allComments = [comment] + sequence.comments.array as? [VComment] ?? []
             sequence.comments = NSOrderedSet(array: allComments)
             
-            context.saveChanges()
+            context.v_save()
             dispatch_sync( dispatch_get_main_queue() ) {
-                self.optimisticCommentIdentifier = comment.identifier
+                self.optimisticCommentObjectID = comment.objectID
             }
         }
         executeRequest( request, onComplete: self.onComplete )
@@ -72,16 +72,16 @@ class CommentAddOperation: RequestOperation {
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             
-            guard let identifier = self.optimisticCommentIdentifier,
-                let optimisticComment: VComment = context.getObject( identifier ) else {
+            guard let objectID = self.optimisticCommentObjectID,
+                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
                 fatalError( "Failed to load comment create optimistically during operation's execution." )
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticComment.populate( fromSourceModel: comment )
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

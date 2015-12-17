@@ -40,11 +40,11 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     }
     
     private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
-       persistentStore.asyncFromBackground() { context in
-            let persistentStream: VStream = context.findOrCreateObject( [ "apiPath" : self.apiPath ] )
-            let streamItems = VStreamItem.parseStreamItems(stream.items, context: context)
-            persistentStream.addObjects( streamItems, to: "streamItems" )
-            context.saveChanges()
+       persistentStore.backgroundContext.v_performBlock() { context in
+            let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
+            let streamItems = VStreamItem.parseStreamItems(stream.items, managedObjectContext: context)
+            persistentStream.v_addObjects( streamItems, to: "streamItems" )
+            context.v_save()
             completion()
         }
         
@@ -54,13 +54,13 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     }
     
     private func loadPersistentItems() -> [VStreamItem] {
-        return persistentStore.sync() { context in
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
             let uniqueProps = [ "streams" : [ "apiPath" : self.apiPath] ]
             let pagination = PersistentStorePagination(
                 itemsPerPage: self.request.paginator.itemsPerPage,
                 pageNumber: self.request.paginator.pageNumber
             )
-            return context.findObjects( uniqueProps, pagination: pagination )
+            return context.v_findObjects( uniqueProps, pagination: pagination )
         }
     }
 }

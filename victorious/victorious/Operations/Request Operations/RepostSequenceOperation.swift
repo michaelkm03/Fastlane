@@ -23,16 +23,16 @@ class RepostSequenceOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        persistentStore.syncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
             guard let user = VUser.currentUser() else {
                 fatalError( "User must be logged in." )
             }
-            let node:VNode = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: self.nodeID) ] )
+            let node:VNode = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: self.nodeID) ] )
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.repostedSequences.insert( node.sequence )
             
-            context.saveChanges()
+            context.v_save()
         }
         
         // Then execute the request

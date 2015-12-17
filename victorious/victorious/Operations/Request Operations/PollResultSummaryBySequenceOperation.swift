@@ -31,21 +31,21 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             
-            let sequence: VSequence = context.findOrCreateObject( ["remoteId" : String(self.sequenceID)] )
+            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.sequenceID)] )
             for pollResult in pollResults where pollResult.sequenceID != nil {
                 let uniqueElements = [
                     "answerId" : NSNumber(longLong: pollResult.answerID),
                     "sequenceId" : String(pollResult.sequenceID)
                 ]
-                let persistentResult: VPollResult = context.findOrCreateObject( uniqueElements )
+                let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
                 persistentResult.sequenceId = String(self.sequenceID)
                 persistentResult.sequence = sequence
             }
             
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

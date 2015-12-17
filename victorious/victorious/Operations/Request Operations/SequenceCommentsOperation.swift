@@ -39,16 +39,16 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         
         let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) } ?? []
         if !comments.isEmpty {
-            persistentStore.asyncFromBackground() { context in
+            persistentStore.backgroundContext.v_performBlock() { context in
                 var newComments = [VComment]()
                 for comment in comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
-                    let persistentComment: VComment = context.findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
+                    let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                     persistentComment.populate( fromSourceModel: comment )
                     newComments.append( persistentComment )
                 }
-                let sequence: VSequence = context.findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+                let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + newComments )
-                context.saveChanges()
+                context.v_save()
                 completion()
             }
         

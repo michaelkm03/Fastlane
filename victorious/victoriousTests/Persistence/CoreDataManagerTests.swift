@@ -197,7 +197,7 @@ class CoreDataManagerTests: XCTestCase {
         // Update the existing object in the background context, as if from a network response 
         self.coreDataManager.backgroundContext.performBlock {
             let moc = self.coreDataManager.backgroundContext
-            let request = NSFetchRequest(entityName: PersistentEntity.entityName() )
+            let request = NSFetchRequest(entityName: PersistentEntity.v_entityName() )
             request.fetchLimit = 1
             request.returnsObjectsAsFaults = false
             let results = try! moc.executeFetchRequest( request )

@@ -42,10 +42,10 @@ class RequestOperation: NSOperation, Queuable {
             requestContext = RequestContext(v_environment: currentEnvironment)
             baseURL = currentEnvironment.baseURL
             
-            let currentUserID = VUser.currentUser()?.identifier
+            let currentUserObjectID = VUser.currentUser()?.objectID
             let persistentStore: PersistentStoreType = MainPersistentStore()
-            authenticationContext = persistentStore.sync() { context in
-                if let identifier = currentUserID, let currentUser: VUser = context.getObject(identifier) {
+            authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
+                if let currentUserObjectID = currentUserObjectID, let currentUser: VUser = context.v_objectWithID(currentUserObjectID) {
                     return AuthenticationContext(v_currentUser: currentUser)
                 }
                 return nil

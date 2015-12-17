@@ -20,23 +20,23 @@ final class PollVoteOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        persistentStore.syncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
             guard let user = VUser.currentUser() else {
                 fatalError( "User must be logged in." )
             }
             
-            guard let sequence: VSequence = context.findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
+            guard let sequence: VSequence = context.v_findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
                 fatalError( "Cannot find sequence" )
             }
             
-            let pollResult: VPollResult = context.createObject()
+            let pollResult: VPollResult = context.v_createObject()
             pollResult.sequenceId = String(self.request.sequenceID)
             pollResult.answerId = NSNumber(longLong: self.request.answerID)
             pollResult.sequence = sequence
             pollResult.count = pollResult.count.integerValue + 1
             pollResult.user = user
             
-            context.saveChanges()
+            context.v_save()
         }
         
         // Then execute the request
