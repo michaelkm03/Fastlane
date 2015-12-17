@@ -320,19 +320,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     newAnonymousUser.remoteId = [NSNumber numberWithLongLong:[AgeGate anonymousUserID].longLongValue];
     newAnonymousUser.token = [AgeGate anonymousUserToken];
     
-    VLoginType loginType = VLogintypeAnonymous;
+    VLoginType loginType = VLoginTypeAnonymous;
     [self loggedInWithUser:newAnonymousUser loginType:loginType];
     
-    if ( self.mainUser != nil )
-    {
-        [[VObjectManager sharedManager] fetchUser:self.mainUser.remoteId
-                                      forceReload:YES
-                                 withSuccessBlock:nil
-                                        failBlock:nil];
-        return YES;
-    }
-    
-    return NO;
+    return self.mainUser != nil;
 }
 
 #pragma mark - LoggedIn
@@ -350,8 +341,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         
         [[[VStoredLogin alloc] init] saveLoggedInUserToDisk:self.mainUser loginType:loginType];
         
-        [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
-        [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
+        if ( ![AgeGate isAnonymousUser] )
+        {
+            [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
+            [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
+        }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     }
