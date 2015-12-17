@@ -141,9 +141,9 @@ class CoreDataManagerTests: XCTestCase {
         let callbackExpectation = self.expectationWithDescription("callback")
         
         // Insert a new object in the background context, as if from a network response
-        self.coreDataManager.backgroundContext.performBlock {
+        self.coreDataManager.backgroundContext.performBlock() {
             let moc = self.coreDataManager.backgroundContext
-            let entity = NSEntityDescription.entityForName( PersistentEntity.dataStoreEntityName(), inManagedObjectContext: moc)
+            let entity = NSEntityDescription.entityForName( PersistentEntity.v_entityName(), inManagedObjectContext: moc)
             let persistentEntity = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
             persistentEntity.newStringAttribute = self.text
             try! moc.save()

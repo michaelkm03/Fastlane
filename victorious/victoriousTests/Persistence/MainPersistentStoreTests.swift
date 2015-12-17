@@ -14,13 +14,13 @@ class MainPersistentStoreTests: XCTestCase {
     let persistentStore: PersistentStoreType = MainPersistentStore()
     
     func testSyncBasic() {
-        persistentStore.mainContext.v_performBlockAndWaitBasic() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             XCTAssert( NSThread.currentThread().isMainThread )
         }
         
         let expectation = self.expectationWithDescription("testSyncBasic")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.persistentStore.mainContext.v_performBlockAndWaitBasic() { context in
+            self.persistentStore.mainContext.v_performBlockAndWait() { context in
                 XCTAssert( NSThread.currentThread().isMainThread )
                 expectation.fulfill()
             }

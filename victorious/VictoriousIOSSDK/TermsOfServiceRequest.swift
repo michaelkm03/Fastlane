@@ -10,6 +10,10 @@ import SwiftyJSON
 
 public struct TermsOfServiceRequest: RequestType {
     
+    public init(){
+        // Just to be public
+    }
+    
     public var urlRequest: NSURLRequest {
         return NSURLRequest(URL: NSURL(string: "/api/tos")!)
     }

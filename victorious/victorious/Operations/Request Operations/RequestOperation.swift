@@ -29,27 +29,12 @@ class RequestOperation: NSOperation, Queuable {
     private(set) var error: NSError?
     
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
-
-        assert( NSThread.currentThread().isMainThread == false )
-        
-        var baseURL: NSURL?
-        var requestContext: RequestContext?
-        var authenticationContext: AuthenticationContext?
-        
-        dispatch_sync( dispatch_get_main_queue() ) {
-            
-            let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-            requestContext = RequestContext(v_environment: currentEnvironment)
-            baseURL = currentEnvironment.baseURL
-            
-            let currentUserObjectID = VUser.currentUser()?.objectID
-            let persistentStore: PersistentStoreType = MainPersistentStore()
-            authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-                if let currentUserObjectID = currentUserObjectID, let currentUser: VUser = context.v_objectWithID(currentUserObjectID) {
-                    return AuthenticationContext(v_currentUser: currentUser)
-                }
-                return nil
-            }
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(environment: currentEnvironment)
+        let baseURL = currentEnvironment.baseURL
+		
+		let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
+			return AuthenticationContext(currentUser: VUser.currentUser())
         }
         
         let networkStatus = VReachability.reachabilityForInternetConnection().currentReachabilityStatus()
@@ -65,11 +50,12 @@ class RequestOperation: NSOperation, Queuable {
             networkActivityIndicator.start()
             let executeSemphore = dispatch_semaphore_create(0)
             request.execute(
-                baseURL: baseURL!,
-                requestContext: requestContext!,
+                baseURL: baseURL,
+                requestContext: requestContext,
                 authenticationContext: authenticationContext,
                 callback: { (result, error) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
+                       
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
                             if let onError = onError {
@@ -77,11 +63,10 @@ class RequestOperation: NSOperation, Queuable {
                                     dispatch_semaphore_signal( executeSemphore )
                                 }
                             } else {
-                                print( "Error in operation: \(self.dynamicType):\n \(error)" )
                                 dispatch_semaphore_signal( executeSemphore )
                             }
-                        }
-                        else if let requestResult = result {
+                        
+                        } else if let requestResult = result {
                             if let onComplete = onComplete {
                                 onComplete( requestResult ) {
                                     dispatch_semaphore_signal( executeSemphore )
@@ -114,16 +99,16 @@ class RequestOperation: NSOperation, Queuable {
 }
 
 private extension AuthenticationContext {
-    init?( v_currentUser currentUser: VUser? ) {
+    init?( currentUser: VUser? ) {
         guard let currentUser = currentUser else {
             return nil
         }
-        self.init( userID: Int64(currentUser.remoteId.integerValue), token: currentUser.token)
+        self.init( userID: currentUser.remoteId.longLongValue, token: currentUser.token)
     }
 }
 
 private extension RequestContext {
-    init( v_environment environment: VEnvironment ) {
+    init( environment: VEnvironment ) {
         let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
         let buildNumber: String
         
