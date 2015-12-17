@@ -116,42 +116,31 @@
 
 - (void)showLegalInfoOptions
 {
-    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
     
-    VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
-    actionSheetViewController.dependencyManager = self.dependencyManager;
-    
-    [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
-    // Compose a terms of service action item
-    VActionItem *tosItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"ToSText", "")
-                                                        actionIcon:nil
-                                                        detailText:nil];
-    tosItem.selectionHandler = ^(VActionItem *item)
+    UIAlertAction *tosAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ToSText", "")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
     {
-        [actionSheetViewController dismissViewControllerAnimated:YES completion:^
-         {
-             [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController] animated:YES completion:nil];
-         }];
-    };
-    
-    [actionItems addObject:tosItem];
-    
-    // Compose a privacy policies action item
-    VActionItem *privacyItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Privacy Policy", "")
-                                                        actionIcon:nil
-                                                        detailText:nil];
-    privacyItem.selectionHandler = ^(VActionItem *item)
+        [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController] animated:YES completion:nil];
+    }];
+    UIAlertAction *privacyAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Privacy Policy", "")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
     {
-        [actionSheetViewController dismissViewControllerAnimated:YES completion:^
-         {
-             [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager] animated:YES completion:nil];
-         }];
-    };
+        [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager] animated:YES completion:nil];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
     
-    [actionItems addObject:privacyItem];
+    [alert addAction:tosAction];
+    [alert addAction:privacyAction];
+    [alert addAction:cancelAction];
     
-    [actionSheetViewController addActionItems:actionItems];
-    [self presentViewController:actionSheetViewController animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
