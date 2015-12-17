@@ -185,9 +185,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)registrationDidFinishedWithSuccess:(BOOL)success
 {
-    if ( self.completionBlock != nil )
+    if ( self.onCompletionBlock != nil )
     {
-        self.completionBlock( success );
+        self.onCompletionBlock( success );
     }
     
     if ( self.isRegisteredAsNewUser )
