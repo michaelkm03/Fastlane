@@ -326,6 +326,11 @@
 
 - (void)fetchUserinfo
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        return;
+    }
+    
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
