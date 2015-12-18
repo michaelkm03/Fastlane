@@ -221,7 +221,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self login:textField];
     }
     
-    return [self shouldLogin];
+    return [self shouldLoginForced:NO];
 }
 
 #pragma mark - Private Methods
@@ -270,7 +270,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)login:(id)sender
 {
-    if ([self shouldLogin])
+    if ([self shouldLoginForced:YES])
     {
         id <VLoginFlowControllerDelegate> flowControllerResponder = [self targetForAction:@selector(loginWithEmail:password:completion:)
                                                                                 withSender:self];
@@ -308,7 +308,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (BOOL)shouldLogin
+- (BOOL)shouldLoginForced:(BOOL)forced
 {
     NSError *validationError;
     BOOL shouldLogin = YES;
@@ -319,7 +319,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.emailField showInvalidText:validationError.localizedDescription
                                 animated:YES
                                    shake:YES
-                                  forced:YES];
+                                  forced:forced];
         shouldLogin = NO;
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
@@ -338,7 +338,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.passwordField showInvalidText:validationError.localizedDescription
                                        animated:YES
                                           shake:YES
-                                         forced:YES];
+                                         forced:forced];
         shouldLogin = NO;
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
