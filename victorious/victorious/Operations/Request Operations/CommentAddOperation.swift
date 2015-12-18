@@ -18,14 +18,17 @@ class CommentAddOperation: RequestOperation {
     
     private var optimisticCommentIdentifier: AnyObject?
     
-    init( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
+    private init( request: CommentAddRequest, commentParameters: CommentParameters, publishParameters: VPublishParameters?) {
+        self.request = request
         self.commentParameters = commentParameters
         self.publishParameters = publishParameters
-        
+    }
+    
+    convenience init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
         if let request = CommentAddRequest(parameters: commentParameters) {
-            self.request = request
+            self.init(request: request, commentParameters: commentParameters, publishParameters: publishParameters)
         } else {
-            fatalError( "Failed to create required request for operation." )
+            return nil
         }
     }
     
@@ -73,16 +76,18 @@ class CommentAddOperation: RequestOperation {
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         persistentStore.asyncFromBackground() { context in
+            defer {
+                completion()
+            }
             
             guard let identifier = self.optimisticCommentIdentifier,
                 let optimisticComment: VComment = context.getObject( identifier ) else {
-                fatalError( "Failed to load comment create optimistically during operation's execution." )
+                    return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
             optimisticComment.populate( fromSourceModel: comment )
             context.saveChanges()
-            completion()
         }
     }
     

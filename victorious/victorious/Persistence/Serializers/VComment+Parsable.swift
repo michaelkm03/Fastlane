@@ -15,21 +15,24 @@ extension VComment : PersistenceParsable {
         remoteId                = NSNumber(longLong: comment.commentID)
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
-        mediaType               = comment.mediaType?.rawValue
-        mediaUrl                = comment.mediaURL?.absoluteString
-        thumbnailUrl            = comment.thumbnailURL?.absoluteString
         flags                   = comment.flags
         dislikes                = NSNumber(longLong: comment.dislikes)
         flags                   = comment.flags
         likes                   = NSNumber(longLong: comment.likes)
-        mediaType               = comment.mediaType?.rawValue
-        mediaUrl                = comment.mediaURL?.absoluteString
         parentId                = NSNumber(longLong: comment.parentID)
         postedAt                = comment.postedAt
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         sequenceId              = String(comment.sequenceID)
-        userId                  = NSNumber(longLong:comment.userID)        
+        userId                  = NSNumber(longLong:comment.userID)
+        
+        if let media = comment.media {
+            mediaType           = media.type.rawValue
+            mediaUrl            = media.url.absoluteString
+            thumbnailUrl        = media.thumbnailURL.absoluteString
+            mediaWidth          = media.size.width
+            mediaHeight         = media.size.height
+        }
         
         // Set the sequence and inStreamSequence based on the comment's sequenceID if a Sequence object isn't set
         if sequence == nil {

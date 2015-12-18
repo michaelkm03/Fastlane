@@ -17,12 +17,13 @@ public struct PollResult {
 
 extension PollResult {
     public init?(json: JSON) {
-        guard let answerID = Int64(json["answer_id"].stringValue) else {
-            return nil
+        guard let answerID = json["answer_id"].int64,
+            let totalCount = json["total_count"].int64 else {
+                return nil
         }
         self.answerID = answerID
+        self.totalCount = totalCount
         
-        sequenceID = Int64(json["sequence_id"].stringValue)
-        totalCount = json["total_count"].int64 ?? 0
+        sequenceID = json["sequence_id"].int64
     }
 }
