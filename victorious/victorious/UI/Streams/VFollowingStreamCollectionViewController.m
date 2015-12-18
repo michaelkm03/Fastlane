@@ -14,7 +14,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
-@interface VFollowingStreamCollectionViewController () <VAccessoryNavigationSource>
+@interface VFollowingStreamCollectionViewController ()
 
 @end
 
@@ -90,63 +90,6 @@
     else
     {
         self.collectionView.backgroundView = nil;
-    }
-}
-
-#pragma mark - Anonymous User Actions
-
-- (void)showLegalInfoOptions
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *tosAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ToSText", "")
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action)
-    {
-        [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController] animated:YES completion:nil];
-    }];
-    UIAlertAction *privacyAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Privacy Policy", "")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action)
-    {
-        [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager] animated:YES completion:nil];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:nil];
-    
-    [alert addAction:tosAction];
-    [alert addAction:privacyAction];
-    [alert addAction:cancelAction];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-#pragma mark - VAccessoryNavigationSources
-
-- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
-{
-    if ([AgeGate isAnonymousUser] && [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo])
-    {
-        [self showLegalInfoOptions];
-    
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
-{
-    if ([AgeGate isAnonymousUser])
-    {
-        return [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo];
-    }
-    else
-    {
-        return ![menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo];
     }
 }
 
