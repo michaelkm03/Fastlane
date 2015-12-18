@@ -32,6 +32,7 @@ class CommentEditOperation: RequestOperation {
                 comment.text = self.text
                 context.saveChanges()
                 self.optimisticCommentIdentifier = comment.identifier
+            }
         }
         
         // Then fire and forget
