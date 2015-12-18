@@ -34,6 +34,9 @@ while getopts "a:e:c:" opt; do
         e)
             ENVIRONMENT=$OPTARG
             ;;
+        *)
+            show_usage
+            exit 1
     esac
 done
 
