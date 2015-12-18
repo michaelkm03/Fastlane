@@ -4414,6 +4414,7 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */,
 				A7AEF96C1A83F1C300A3D3A0 /* Cells */,
 				F06F10C31AC201B90062E1D1 /* Directory */,
 				C3E772241B4DD12A005809A5 /* Focus */,
@@ -4423,7 +4424,6 @@
 				03B83B5819E0988200DC04E4 /* Upload Progress View */,
 				A7AEF9931A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.h */,
 				A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */,
-				A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */,
 				A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */,
 				A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */,
 				A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */,
@@ -4434,14 +4434,14 @@
 				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
+				679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */,
 				F06B41B01B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.h */,
 				F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */,
+				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
 				F0FC97D01B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.h */,
 				F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
-				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
-				679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
