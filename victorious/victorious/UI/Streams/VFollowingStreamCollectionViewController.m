@@ -11,8 +11,6 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VNoContentView.h"
-#import "VActionSheetViewController.h"
-#import "VActionSheetTransitioningDelegate.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
