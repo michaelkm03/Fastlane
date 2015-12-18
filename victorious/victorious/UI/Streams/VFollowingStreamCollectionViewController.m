@@ -9,6 +9,7 @@
 #import "VFollowingStreamCollectionViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VNoContentView.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
 @interface VFollowingStreamCollectionViewController ()

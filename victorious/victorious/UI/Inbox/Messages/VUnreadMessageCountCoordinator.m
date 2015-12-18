@@ -8,6 +8,7 @@
 
 #import "VUnreadMessageCountCoordinator.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "victorious-Swift.h"
 
 @interface VUnreadMessageCountCoordinator ()
 
@@ -46,6 +47,10 @@
 
 - (void)updateUnreadMessageCount
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        return;
+    }
     dispatch_async(self.privateQueue, ^(void)
     {
         if (self.loadingUnreadMessageCount)

@@ -67,7 +67,7 @@ import Foundation
     //MARK: - Feature Disabling functions
     
     static func filterTabMenuItems(menuItems: [VNavigationMenuItem]) -> [VNavigationMenuItem] {
-        return menuItems.filter() { ["Home", "Channels", "Explore"].contains($0.title) }
+        return menuItems.filter() { ["Menu Home", "Menu Channels", "Menu Explore"].contains($0.identifier) }
     }
     
     static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
@@ -123,5 +123,27 @@ import Foundation
         let now = NSDate()
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
         return ageComponents.year < 13
+    }
+    
+    static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) {
+        let keyPath = "scaffold/menu/items/0/accessoryScreens"
+        let navigationBarItemTextColor = templateDecorator.templateValueForKeyPath("scaffold/navigationBarAppearance/\(VDependencyManagerMainTextColorKey)")
+        let accessoryButtonConfig = [
+            "title": "Legal Information",
+            "icon": [
+                "imageURL": "D_more"
+            ],
+            "selectedIcon": [
+                "imageURL": "D_more"
+            ],
+            "identifier": "Accessory Legal Information",
+            "position": "left",
+            "color.text": navigationBarItemTextColor
+        ]
+        
+        var accessoryItems = templateDecorator.templateValueForKeyPath(keyPath) as? [[String: AnyObject]] ?? []
+        accessoryItems.append(accessoryButtonConfig)
+        
+        templateDecorator.setTemplateValue(accessoryItems, forKeyPath: keyPath)
     }
 }

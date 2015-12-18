@@ -42,6 +42,7 @@ NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Fo
 NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
 NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
 NSString * const VDependencyManagerAccessorySettings            = @"Accessory Menu Settings";
+NSString * const VDependencyManagerAccessoryItemLegalInfo       = @"Accessory Legal Information";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 static const char kAssociatedObjectBadgeableBarButtonsKey;

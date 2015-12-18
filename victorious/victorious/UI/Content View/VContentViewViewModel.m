@@ -288,6 +288,14 @@
     {
         [self loadComments:VPageTypeFirst];
     }
+}
+
+- (void)fetchUserinfo
+{
+    if ([AgeGate isAnonymousUser])
+    {
+        return;
+    }
     
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
