@@ -16,6 +16,7 @@ cd <project_dir>/victorious/fastlane
 rbenv install
 gem install bundler
 bundle install
+gem install fastlane
 ```
 
 #### Environment variables
