@@ -9,24 +9,39 @@
 import Foundation
 
 class AnonymousLoginOperation: Operation {
-    override init() {
-        super.init()
-        qualityOfService = .UserInteractive
-    }
+    
+    private let persistentStore: PersistentStoreType = MainPersistentStore()
     
     override func start() {
         super.start()
         
-        if cancelled {
-            finishedExecuting()
-            return
+        defer {
+            self.finishedExecuting()
         }
         
         beganExecuting()
         
-        dispatch_async(dispatch_get_main_queue()) {
-//            VObjectManager.sharedManager().loginWithAnonymousUserToken()
-            self.finishedExecuting()
+        guard let retriedIDString = AgeGate.anonymousUserID(),
+            let retrivedUserID = Int64(retriedIDString) else {
+                return
+        }
+        let anonymousID = NSNumber(longLong: retrivedUserID)
+        let anonymousToken = AgeGate.anonymousUserToken()
+        let anonymousLoginType = VLoginType.Anonymous
+        
+        let _: VUser = persistentStore.sync() { context in
+            let user: VUser = context.findOrCreateObject([ "remoteId" : anonymousID ])
+            user.loginType = anonymousLoginType.rawValue
+            user.token = anonymousToken
+            
+            if user.status == nil {
+                user.status = "anonymous"
+            }
+            
+            user.setAsCurrentUser(inContext: context)
+            context.saveChanges()
+            
+            return user
         }
     }
 }
