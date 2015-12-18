@@ -125,8 +125,8 @@ import Foundation
         return ageComponents.year < 13
     }
     
-    static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) -> VTemplateDecorator {
-        
+    static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) {
+        let keyPath = "scaffold/menu/items/0/accessoryScreens"
         let accessoryButtonConfig = [
             "title": "Legal Information",
             "icon": [
@@ -139,12 +139,9 @@ import Foundation
             "position": "left"
         ]
         
-        let keyPath = "scaffold/menu/items/0/accessoryScreens"
         if var accessoryItems = templateDecorator.templateValueForKeyPath(keyPath) as? [[String: AnyObject]] {
             accessoryItems.append(accessoryButtonConfig)
             templateDecorator.setTemplateValue(accessoryItems, forKeyPath: keyPath)
         }
-        
-        return templateDecorator
     }
 }
