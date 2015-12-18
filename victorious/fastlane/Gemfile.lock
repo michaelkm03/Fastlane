@@ -253,6 +253,7 @@ GEM
       credentials_manager (>= 0.10.0)
       fastlane_core (>= 0.19.0)
       google-api-client (~> 0.8.6)
+    temporary_environment (0.1.0)
     terminal-notifier (1.6.3)
     terminal-table (1.4.5)
     thor (0.19.1)
@@ -294,6 +295,7 @@ DEPENDENCIES
   minitest
   minitest-rg
   pry
+  temporary_environment
   webmock
 
 BUNDLED WITH

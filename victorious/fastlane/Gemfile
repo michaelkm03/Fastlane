@@ -5,6 +5,7 @@ gem 'httparty'
 gem 'dotenv'
 gem 'colorize'
 gem 'fastlane'
+gem 'temporary_environment'
 
 group :development do
   gem 'pry', require: false

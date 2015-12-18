@@ -1,6 +1,7 @@
 FASTLANE_DIRECTORY = File.dirname(__FILE__)
 $LOAD_PATH.unshift(FASTLANE_DIRECTORY + '/lib')
 require 'vams'
+require 'temporary_environment'
 
 update_fastlane
 fastlane_version "1.36.0"
@@ -16,13 +17,6 @@ def prepare_metadata(client:, build_name:)
   metadata_path = File.join(FASTLANE_DIRECTORY, 'metadata')
   metadata.save(location: metadata_path, language: 'en-US')
   app_with_meta
-end
-
-def with_bundle_id(bundle_id:)
-  old_bundle_id = ENV['BUNDLE_ID']
-  ENV['BUNDLE_ID'] = bundle_id
-  yield
-  ENV['BUNDLE_ID'] = old_bundle_id
 end
 
 def clean_build_products
@@ -62,7 +56,7 @@ platform :ios do
         apply_config(build_name: app.build_name, environment: environment)
         app_with_meta = prepare_metadata(client: client, build_name: app.build_name)
 
-        with_bundle_id(bundle_id: app_with_meta.sanitized_bundle_id) do
+        TemporaryEnvironment.with_env_variable(key: 'BUNDLE_ID', value: app_with_meta.sanitized_bundle_id) do
           sigh
 
           gym(
@@ -76,11 +70,10 @@ platform :ios do
           ENV['FASTLANE_ITC_TEAM_NAME'] = ENV['FASTLANE_TEAM_NAME']
 
           app_icon             = VAMS::AppIcon.new(app: app_with_meta)
-          saved_icon_file_path = app_icon.save(location: FASTLANE_DIRECTORY)
-          old_app_icon_env     = ENV['APP_ICON_PATH']
-          ENV['APP_ICON_PATH'] = File.expand_path(saved_icon_file_path)
-          deliver(force: true)
-          ENV['APP_ICON_PATH'] = old_app_icon_env
+          saved_icon_file_path = File.expand_path(app_icon.save(location: FASTLANE_DIRECTORY))
+          TemporaryEnvironment.with_env_variable(key: 'APP_ICON_PATH', value: saved_icon_file_path) do
+            deliver(force: true)
+          end
 
           status = VAMS::SubmissionResult::Status::GOOD
           send_submission_result(app_id: app.app_id,
