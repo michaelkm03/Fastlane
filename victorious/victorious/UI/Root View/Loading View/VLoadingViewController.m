@@ -239,10 +239,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         // Add legal information accessory button to following stream if user is anonymous
         if ([AgeGate isAnonymousUser])
         {
-            NSString *keyPath = @"scaffold/menu/items/0/accessoryScreens";
-            NSMutableArray *accessoryItems = [NSMutableArray arrayWithArray:[templateDecorator templateValueForKeyPath:keyPath]];
-            [accessoryItems addObject:[AgeGate legalInfoAccessoryButtonConfig]];
-            [templateDecorator setTemplateValue:accessoryItems forKeyPath:keyPath];
+            templateDecorator = [AgeGate decorateTemplateForLegalInfoAccessoryButton:templateDecorator];
         }
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
