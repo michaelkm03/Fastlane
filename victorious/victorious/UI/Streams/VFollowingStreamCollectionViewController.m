@@ -13,9 +13,10 @@
 #import "VNoContentView.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
-@interface VFollowingStreamCollectionViewController ()
+@interface VFollowingStreamCollectionViewController () <VAccessoryNavigationSource>
 
 @end
 
@@ -141,6 +142,32 @@
     [alert addAction:cancelAction];
     
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - VAccessoryNavigationSources
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ([AgeGate isAnonymousUser] && [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo])
+    {
+        [self showLegalInfoOptions];
+    
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ([AgeGate isAnonymousUser])
+    {
+        return [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo];
+    }
+    else
+    {
+        return ![menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo];
+    }
 }
 
 @end
