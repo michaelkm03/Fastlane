@@ -33,7 +33,7 @@ class CommentFindOperation: RequestOperation {
     private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {
         self.pageNumber = response.pageNumber
         
-        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) } ?? []
+        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) }
         if !response.comments.isEmpty {
             persistentStore.asyncFromBackground() { context in
                 var comments = [VComment]()

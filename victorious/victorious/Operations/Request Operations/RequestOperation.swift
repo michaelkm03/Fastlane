@@ -26,15 +26,15 @@ class RequestOperation: NSOperation, Queuable {
     private(set) var error: NSError?
     
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
-
+        
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
-		
-		let authenticationContext = persistentStore.sync() { context in
-			return AuthenticationContext(currentUser: VUser.currentUser())
+        
+        let authenticationContext = persistentStore.sync() { context in
+            return AuthenticationContext(currentUser: VUser.currentUser())
         }
-		
+        
         networkActivityIndicator.start()
         
         let executeSemphore = dispatch_semaphore_create(0)
