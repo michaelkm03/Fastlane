@@ -141,7 +141,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore.mainContextBasic performBlockAndWait:^
+    {
+        [persistentStore.mainContext save:nil];
+    }];
 }
 
 #pragma mark - Testing Helpers

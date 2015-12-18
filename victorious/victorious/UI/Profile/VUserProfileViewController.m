@@ -319,7 +319,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowCounts
 {
-    // FIXME: [[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
+#warning FIXME:
+    //[[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
 }
 
 - (void)setInitialHeaderState

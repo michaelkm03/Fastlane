@@ -8,11 +8,11 @@
 
 #import "VUserCell.h"
 #import "VFollowResponder.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VFollowControl.h"
 #import "VDefaultProfileButton.h"
+#import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
 static const CGFloat kUserCellHeight = 51.0f;
@@ -137,7 +137,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 - (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button
-    VUser *me = [[VObjectManager sharedManager] mainUser];
+    VUser *me = [VUser currentUser];
     self.followControl.hidden = [self.user isEqual:me];
     VFollowControlState desiredControlState = [VFollowControl controlStateForFollowing:[me.following containsObject:self.user]];
     if ( self.followControl.controlState != desiredControlState )

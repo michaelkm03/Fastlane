@@ -11,9 +11,7 @@
 #import "VConstants.h"
 #import "MBProgressHUD.h"
 #import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager.h"
+#import "victorious-Swift.h"
 
 @interface VFollowersDataSource ()
 
@@ -46,14 +44,26 @@
 
 - (NSString *)noContentTitle
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"NoFollowersTitle", @"" ) : NSLocalizedString( @"ProfileNoFollowersTitle", @"" );
+    if ( self.user.isCurrentUser )
+    {
+        return NSLocalizedString( @"NoFollowersTitle", @"" );
+    }
+    else
+    {
+        return NSLocalizedString( @"ProfileNoFollowersTitle", @"" );
+    }
 }
 
 - (NSString *)noContentMessage
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"NoFollowersMessage", @"" ) : NSLocalizedString( @"ProfileNoFollowersMessage", @"" );
+    if ( self.user.isCurrentUser )
+    {
+        return NSLocalizedString( @"NoFollowersMessage", @"");
+    }
+    else
+    {
+        return NSLocalizedString( @"ProfileNoFollowersMessage", @"" );
+    }
 }
 
 - (UIImage *)noContentImage

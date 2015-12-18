@@ -53,8 +53,11 @@ class RequestOperation: NSOperation, Queuable {
                 baseURL: baseURL,
                 requestContext: requestContext,
                 authenticationContext: authenticationContext,
-                callback: { (result, error) -> () in
+                callback: { (result, error, alerts) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
+                        
+                        // FIXME:
+                        InterstitialManager.sharedInstance.registerAlerts( alerts )
                        
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
@@ -95,28 +98,5 @@ class RequestOperation: NSOperation, Queuable {
             }
         }
         queue.addOperation( self )
-    }
-}
-
-private extension AuthenticationContext {
-    init?( currentUser: VUser? ) {
-        guard let currentUser = currentUser else {
-            return nil
-        }
-        self.init( userID: currentUser.remoteId.longLongValue, token: currentUser.token)
-    }
-}
-
-private extension RequestContext {
-    init( environment: VEnvironment ) {
-        let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
-        let buildNumber: String
-        
-        if let buildNumberFromBundle = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
-            buildNumber = buildNumberFromBundle
-        } else {
-            buildNumber = ""
-        }
-        self.init(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
     }
 }

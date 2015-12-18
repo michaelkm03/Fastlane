@@ -6,6 +6,7 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+import Foundation
 import SwiftyJSON
 
 public struct FanLoyalty {

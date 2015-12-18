@@ -7,13 +7,13 @@
 //
 
 #import "VTrendingTagCell.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VHashTags.h"
 #import "VConstants.h"
 #import "VHashtag.h"
 #import "VFollowControl.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -73,9 +73,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (BOOL)isSubscribedToTag
 {
     BOOL subscribed = NO;
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
 
-    for (VHashtag *aTag in mainUser.hashtags)
+    for (VHashtag *aTag in [VUser currentUser].hashtags)
     {
         if ([aTag.tag isEqualToString:self.hashtag.tag])
         {

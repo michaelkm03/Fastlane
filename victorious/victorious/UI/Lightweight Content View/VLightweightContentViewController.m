@@ -11,14 +11,13 @@
 #import "VDependencyManager.h"
 #import "VSequence+Fetcher.h"
 #import "VCVideoPlayerViewController.h"
-#import "VObjectManager+Private.h"
-#import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VTabScaffoldViewController.h"
 #import "VTrackingConstants.h"
 #import "VTracking.h"
 #import "UIView+AutoLayout.h"
+#import "victorious-Swift.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -92,11 +91,37 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     
     if ( self.mediaUrl == nil )
     {
-        [self fetchMediaSequenceObject];
+        NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
+        [self fetchSequenceWithSequenceId:sequenceId completion:^(VSequence *_Nullable sequence, NSError *_Nullable error)
+         {
+             if ( error == nil )
+             {
+                 VNode *node = (VNode *)[sequence firstNode];
+                 VAsset *asset = [node httpLiveStreamingAsset];
+                 if (asset.dataURL != nil)
+                 {
+                     self.sequence = sequence;
+                     self.mediaUrl = asset.dataURL;
+                     [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
+                     [self showVideo];
+                 }
+                 else
+                 {
+                     if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+                     {
+                         [self.delegate failedToLoadSequenceInLightweightContentView:self];
+                     }
+                 }
+             }
+             else if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+             {
+                 [self.delegate failedToLoadSequenceInLightweightContentView:self];
+             }
+         }];
+        
+        // Check orientation and update button state
+        [self updateGetStartedButtonForCurrentOrientation];
     }
-    
-    // Check orientation and update button state
-    [self updateGetStartedButtonForCurrentOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -182,47 +207,6 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 }
 
 #pragma mark - Select media sequence
-
-- (void)fetchMediaSequenceObject
-{
-    NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-    if (sequenceId != nil)
-    {
-        [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                     inStreamWithStreamID:nil
-                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             VSequence *sequence = (VSequence *)resultObjects.firstObject;
-             VNode *node = (VNode *)[sequence firstNode];
-             VAsset *asset = [node httpLiveStreamingAsset];
-             if (asset.dataURL != nil)
-             {
-                 self.sequence = sequence;
-                 self.mediaUrl = asset.dataURL;
-                 [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
-                 [self showVideo];
-             }
-             else
-             {
-                 if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
-                 {
-                     [self.delegate failedToLoadSequenceInLightweightContentView:self];
-                 }
-             }
-         }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-         {
-             if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
-             {
-                 [self.delegate failedToLoadSequenceInLightweightContentView:self];
-             }
-         }];
-    }
-    else
-    {
-        self.mediaUrl = nil;
-    }
-}
 
 - (void)trackSequenceViewStart
 {

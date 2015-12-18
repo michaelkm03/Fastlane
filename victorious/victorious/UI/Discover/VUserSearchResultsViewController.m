@@ -9,8 +9,6 @@
 #import "victorious-Swift.h"
 #import "VUserSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDependencyManager.h"

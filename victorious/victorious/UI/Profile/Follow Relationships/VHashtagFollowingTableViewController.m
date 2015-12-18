@@ -23,6 +23,7 @@
 #import <KVOController/FBKVOController.h>
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -58,7 +59,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:[VUser currentUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updateFollowingHashtags)];
@@ -67,7 +68,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self updateUserHashtags:[[[[VObjectManager sharedManager] mainUser].hashtags array] copy]];
+    VUser *currentUser = [VUser currentUser];
+    [self updateUserHashtags:[currentUser.hashtags.array copy]];
     [self retrieveHashtagsForLoggedInUser];
 }
 
@@ -126,7 +128,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)updateFollowingHashtags
 {
-    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[[VObjectManager sharedManager] mainUser].hashtags copy]];
+    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[VUser currentUser].hashtags copy]];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags

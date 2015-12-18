@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct AchievementConstants {
     static let animatedBadgeKey = "animatedBadge"
@@ -44,14 +45,14 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     // MARK: - Public Properties
     
-    var achievementInterstitial: AchievementInterstitial! {
+    var alert: Alert! {
         didSet {
-            if let achievementInterstitial = achievementInterstitial {
-                descriptionLabel.text = achievementInterstitial.description
-                titleLabel.text = achievementInterstitial.title
-                animatedBadge?.levelNumberString = String(achievementInterstitial.level)
+            if let alert = alert {
+                descriptionLabel.text = alert.parameters.description
+                titleLabel.text = alert.parameters.title
+                animatedBadge?.levelNumberString = String(alert.parameters.userFanLoyalty.level)
                 
-                guard let iconURL = achievementInterstitial.icons.first where iconURL.absoluteString.characters.count > 0 else {
+                guard let iconURL = alert.parameters.icons.first where iconURL.absoluteString.characters.count > 0 else {
                     // In order to add space between the description label and the dismiss button
                     iconImageViewHeightConstraint.constant = 23
                     return
@@ -89,13 +90,15 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(self.achievementInterstitial.progressPercentage) / 100.0)
-        self.animatedBadge?.animateProgress(duration, endPercentage: self.achievementInterstitial.progressPercentage, completion: nil)
+        let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
+        self.animatedBadge?.animateProgress(duration, endPercentage: alert.parameters.userFanLoyalty.progress, completion: nil)
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears
-        VObjectManager.sharedManager().mainUser?.level = achievementInterstitial.level
-        VObjectManager.sharedManager().mainUser?.levelProgressPercentage = achievementInterstitial.progressPercentage
+        if let currentUser = VUser.currentUser() {
+            currentUser.level = alert.parameters.userFanLoyalty.level
+            currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
+        }
     }
     
     private func layoutContent() {

@@ -13,6 +13,8 @@ class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
     
+    private(set) var sequence: VSequence?
+    
     init( sequenceID: Int64) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
         super.init()
@@ -29,7 +31,11 @@ class SequenceFetchOperation: RequestOperation {
             let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
             persistentSequence.populate(fromSourceModel: sequence)
             context.v_save()
-            completion()
+            
+            self.persistentStore.mainContext.v_performBlockAndWait() { context in
+                self.sequence = context.v_findObjects([ "remoteId" : String(sequence.sequenceID) ]).first
+                completion()
+            }
         }
     }
 }

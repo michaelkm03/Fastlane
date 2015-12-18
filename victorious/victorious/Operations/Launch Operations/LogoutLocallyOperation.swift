@@ -37,7 +37,7 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation()
         remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
-        InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
+        InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )

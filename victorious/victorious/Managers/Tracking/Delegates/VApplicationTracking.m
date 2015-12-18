@@ -7,8 +7,6 @@
 //
 
 #import "VApplicationTracking.h"
-#import "VObjectManager+Private.h"
-#import "VTrackingURLRequest.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
@@ -50,6 +48,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VSDKURLMacroReplacement *macroReplacement;
 @property (nonatomic, strong, readwrite) TrackingRequestScheduler *requestScheduler;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -95,22 +94,9 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         
         _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         _requestScheduler = [[TrackingRequestScheduler alloc] init];
+        _dateFormatter = [[DefaultDateFormatter alloc] init];
     }
     return self;
-}
-
-- (NSDateFormatter *)dateFormatter
-{
-    static NSDateFormatter *dateFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      dateFormatter = [[NSDateFormatter alloc] init];
-                      dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-                      dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-                      dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-                  });
-    return dateFormatter;
 }
 
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
@@ -137,9 +123,9 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     return urls != nil && [urls isKindOfClass:[NSArray class]] && urls.count > 0;
 }
 
-- (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters
+- (BOOL)trackEventWithUrl:(NSString *)urlString andParameters:(NSDictionary *)parameters
 {
-    BOOL isUrlValid = url != nil && [url isKindOfClass:[NSString class]] && url.length > 0;
+    BOOL isUrlValid = urlString != nil && [urlString isKindOfClass:[NSString class]] && urlString.length > 0;
     if ( !isUrlValid )
     {
         return NO;
@@ -150,16 +136,19 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
-                                                           inString:url
+                                                           inString:urlString
                                         withCorrespondingParameters:completeParameters.copy];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
     }
     
-    
-    VObjectManager *objManager = [self applicationObjectManager];
-    VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
+    NSURLRequest *request;
+    NSURL *url = [NSURL URLWithString:urlWithMacrosReplaced];
+    if ( url != nil )
+    {
+        request = [self requestWithUrl:url];
+    }
     if ( request == nil )
     {
         return NO;
@@ -167,11 +156,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
     
     [self.requestScheduler scheduleRequest:request];
     return YES;
-}
-
-- (VObjectManager *)applicationObjectManager
-{
-    return [VObjectManager sharedManager];
 }
 
 - (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters
@@ -242,26 +226,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
         NSLog( @"Application Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
     }
 #endif
-}
-
-- (VTrackingURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
-{
-    NSParameterAssert( objectManager != nil );
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    if ( url == nil )
-    {
-#if APPLICATION_TRACKING_LOGGING_ENABLED
-        NSLog( @"Application Tracking :: ERROR :: Invalid URL %@.", urlString );
-#endif
-        return nil;
-    }
-    
-    VTrackingURLRequest *request = [VTrackingURLRequest requestWithURL:url];
-    [objectManager updateHTTPHeadersInRequest:request];
-    request.HTTPBody = nil;
-    request.HTTPMethod = @"GET";
-    return request;
 }
 
 // Adds template-driven tracking URLs that are not context-specific and read from dependency manager

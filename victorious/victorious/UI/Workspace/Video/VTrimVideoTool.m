@@ -11,11 +11,10 @@
 #import "VDependencyManager.h"
 #import "VVideoFrameRateComposition.h"
 #import <KVOController/FBKVOController.h>
-
 #import "VAssetThumbnailDataSource.h"
 #import "VCVideoPlayerViewController.h"
 #import "VUser.h"
-#import "VObjectManager+Users.h"
+#import "victorious-Swift.h"
 
 static const int32_t kDefaultTimeScale = 600;
 static const NSInteger kDefaultMaxTrimDuration = 15;
@@ -231,7 +230,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (void)setupMaxDuration
 {
-    NSNumber *userUploadDuration = [[VObjectManager sharedManager] mainUser].maxUploadDuration;
+    NSNumber *userUploadDuration = [VUser currentUser].maxUploadDuration;
     if (userUploadDuration != nil)
     {
         _maxDuration = userUploadDuration;

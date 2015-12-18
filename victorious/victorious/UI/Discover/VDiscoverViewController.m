@@ -35,6 +35,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -92,11 +93,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                                  name:kLoggedInChangedNotification
                                                object:nil];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:[VUser currentUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:[VUser currentUser]
                         keyPath:NSStringFromSelector(@selector(following))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedUsers)];
@@ -189,7 +190,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.trendingTags = hashtags;
     
     // If logged in, load any tags already being followed
-    if ([VObjectManager sharedManager].authorized)
+    if ( [VUser currentUser] != nil )
     {
         [self updatedFollowedTags];
     }
@@ -241,7 +242,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isShowingNoData
 {
-    BOOL tagFollowStatesAreValid = [[VObjectManager sharedManager] mainUser] == nil || self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [VUser currentUser] == nil || self.loadedUserFollowing;
     return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
@@ -450,7 +451,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isUserSubscribedToHashtag:(NSString *)tag
 {
-    for ( VHashtag *hashtag in [[VObjectManager sharedManager] mainUser].hashtags )
+    VUser *currentUser = [VUser currentUser];
+    for ( VHashtag *hashtag in currentUser.hashtags )
     {
         if ( [hashtag.tag isEqualToString:tag] )
         {

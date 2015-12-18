@@ -55,4 +55,12 @@ public extension VUser {
         let persistentStore: PersistentStoreType = MainPersistentStore()
         persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
     }
+    
+    func isCurrentUser() -> Bool {
+        if let currentUserRemoteId = VUser.currentUser()?.remoteId,
+            let remoteId = self.remoteId {
+                return remoteId == currentUserRemoteId
+        }
+        return false
+    }
 }

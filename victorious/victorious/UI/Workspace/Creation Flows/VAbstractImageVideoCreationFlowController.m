@@ -34,7 +34,6 @@
 
 // API driven behavior
 #import "VUser+Fetcher.h"
-#import "VObjectManager.h"
 
 // Dependencies
 #import "VDependencyManager.h"

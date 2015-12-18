@@ -44,4 +44,12 @@ class MainPersistentStore: NSObject, PersistentStoreType {
     var backgroundContext: NSManagedObjectContext {
         return MainPersistentStore.sharedCoreDataManager.backgroundContext
     }
+    
+    func mainContextBasic() ->NSManagedObjectContext {
+        return mainContext
+    }
+    
+    func backgroundContextBasic() ->NSManagedObjectContext {
+        return backgroundContext
+    }
 }

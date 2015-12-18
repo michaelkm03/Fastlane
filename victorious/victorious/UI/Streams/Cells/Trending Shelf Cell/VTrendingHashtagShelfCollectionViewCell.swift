@@ -129,7 +129,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe(VObjectManager.sharedManager().mainUser, keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
+        KVOController.observe( VUser.currentUser(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
     }
     
     override class func nibForCell() -> UINib {
@@ -149,8 +149,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             return
         }
         var controlState: VFollowControlState = .Unfollowed
-        if let mainUser = VObjectManager.sharedManager().mainUser
-            where mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+        if let currentUser = VUser.currentUser() where currentUser.isFollowingHashtagString(shelf.hashtagTitle) {
             controlState = .Followed
         }
         followControl.setControlState(controlState, animated: true)
@@ -159,12 +158,12 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     private func shouldUpdateFollowControlState(forChangeInfo changeInfo: [NSObject : AnyObject]?) -> Bool {
         guard let changeInfo = changeInfo else { return false }
         if let oldValue = changeInfo[NSKeyValueChangeOldKey] as? NSOrderedSet {
-            if let hashtags = VObjectManager.sharedManager().mainUser?.hashtags
+            if let hashtags = VUser.currentUser()?.hashtags
                 where oldValue.isEqualToOrderedSet(hashtags) {
                     return false // Old hashtags and new hashtags are identical, don't update
             }
         }
-        else if VObjectManager.sharedManager().mainUser?.hashtags == nil {
+        else if VUser.currentUser()?.hashtags == nil {
             return false // Hashtags was nil and continues to be nil, don't update
         }
         return true

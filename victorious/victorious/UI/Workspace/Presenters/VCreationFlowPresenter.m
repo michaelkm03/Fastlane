@@ -8,7 +8,6 @@
 
 #import "VCreationFlowPresenter.h"
 #import "VDependencyManager.h"
-#import "VObjectManager+Users.h"
 #import "VCreationFlowController.h"
 #import "VAlertController.h"
 #import "VCreateSheetViewController.h"

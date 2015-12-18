@@ -12,7 +12,6 @@
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
-#import "VObjectManager.h"
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"

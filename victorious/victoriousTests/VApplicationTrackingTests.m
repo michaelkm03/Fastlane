@@ -10,9 +10,6 @@
 #import "Nocilla.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VApplicationTracking.h"
-#import "VTrackingURLRequest.h"
-#import "VObjectManager.h"
-#import "VObjectManager+Private.h"
 #import "NSCharacterSet+VSDKURLParts.h"
 #import "VSDKURLMacroReplacement.h"
 #import "victorious-Swift.h"
@@ -35,7 +32,6 @@
 
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, assign) IMP sendRequestImp;
-@property (nonatomic, assign) IMP applicationObjectManagerImp;
 
 @end
 
@@ -44,12 +40,6 @@
 - (void)setUp
 {
     [super setUp];
-    
-    self.applicationObjectManagerImp = [VApplicationTracking v_swizzleMethod:@selector(applicationObjectManager)
-                                                                withBlock:(VObjectManager *)^
-                                     {
-                                         return [[VObjectManager alloc] init];
-                                     }];
     
     self.sendRequestImp = [VApplicationTracking v_swizzleMethod:@selector(sendRequest:)
                                                                 withBlock:^(NSURLRequest *request)
@@ -65,7 +55,6 @@
 
 - (void)tearDown
 {
-    [VApplicationTracking v_restoreOriginalImplementation:self.applicationObjectManagerImp forMethod:@selector(applicationObjectManager)];
     [VApplicationTracking v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequest:)];
     [self.applicationTracking.requestScheduler cancelAllQueuedRequests];
 

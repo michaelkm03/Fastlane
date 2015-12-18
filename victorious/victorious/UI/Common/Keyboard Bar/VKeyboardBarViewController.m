@@ -10,7 +10,6 @@
 
 #import "VMediaAttachmentPresenter.h"
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
 #import "VThemeManager.h"

@@ -31,6 +31,7 @@
 #import "VAlertController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
+#import "VApplicationTracking.h"
 #import "VAsset+Fetcher.h"
 #import "VAsset+RestKit.h"
 #import "VAuthorizationContext.h"

@@ -7,26 +7,16 @@
 //
 
 #import "VVideoCreationFlowController.h"
-
-// Capture
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VVideoCameraViewController.h"
-
-// Edit
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
-
-// User
-#import "VObjectManager+Users.h"
 #import "VUser.h"
-
-// Publish
 #import "VPublishParameters.h"
-
-// Dependencies
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 @import Photos;
 
@@ -125,7 +115,7 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
 
 - (BOOL)shouldSkipTrimmerForVideoLength
 {
-    if ([VObjectManager sharedManager].mainUser.isCreator.boolValue)
+    if ([VUser currentUser].isCreator.boolValue)
     {
         return self.currentVideoLength > kMaxVideoLengthForEditing;
     }

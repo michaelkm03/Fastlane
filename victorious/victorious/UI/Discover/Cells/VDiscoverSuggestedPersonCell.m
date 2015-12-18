@@ -10,9 +10,9 @@
 #import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
-#import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
+#import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
 @interface VDiscoverSuggestedPersonCell()
@@ -112,7 +112,7 @@
 - (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button
-    VUser *me = [[VObjectManager sharedManager] mainUser];
+    VUser *me = [VUser currentUser];
     self.followButton.hidden = (self.user == me);
     [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
     [self populateData];

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct Constants {
     static let distanceToContainerFromSide: CGFloat = 50
@@ -95,14 +96,14 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     // MARK: - Public Properties
     
-    var levelUpInterstitial: LevelUpInterstitial! {
+    var alert: Alert! {
         didSet {
-            if let levelUpInterstitial = levelUpInterstitial {
-                let currentLevel = levelUpInterstitial.level
+            if let alert = alert {
+                let currentLevel = alert.parameters.userFanLoyalty.level
                 badgeView?.levelNumberString = String(currentLevel - 1)
-                titleLabel.text = levelUpInterstitial.title
-                descriptionLabel.text = levelUpInterstitial.description
-                icons = levelUpInterstitial.icons
+                titleLabel.text = alert.parameters.title
+                descriptionLabel.text = alert.parameters.description
+                icons = alert.parameters.icons
             }
         }
     }
@@ -170,22 +171,26 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
                 }
             }
             
-            let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
-            videoPlayerItem.loop = false
-            videoPlayerItem.muted = true
-            self.videoBackground.setItem( videoPlayerItem )
+            if let videoURL = alert.parameters.backgroundVideoURL {
+                let videoPlayerItem = VVideoPlayerItem(URL: videoURL)
+                videoPlayerItem.loop = false
+                videoPlayerItem.muted = true
+                self.videoBackground.setItem( videoPlayerItem )
+            }
             
             // Assuming this level up alert contains the most up-to-date fanloyalty info,
             // we update the user's level and level progress when the interstitial appears
-            VObjectManager.sharedManager().mainUser?.level = levelUpInterstitial.level
-            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = levelUpInterstitial.progressPercentage
+            if let currentUser = VUser.currentUser() {
+                currentUser.level = alert.parameters.userFanLoyalty.level
+                currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
+            }
         }
     }
     
     private func upgradeBadgeNumber() {
         
-        if let levelUpInterstitial = self.levelUpInterstitial {
-            badgeView?.levelUp(String(levelUpInterstitial.level))
+        if let alert = self.alert {
+            badgeView?.levelUp( String(alert.parameters.userFanLoyalty.level) )
         }
         
         UIView.animateWithDuration(0.1,

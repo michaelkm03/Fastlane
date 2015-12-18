@@ -22,4 +22,14 @@ import Foundation
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
     var backgroundContext: NSManagedObjectContext { get }
+    
+    /// A context used primarily for reads that should only ever be accessed from the main queue.
+    /// To ensure this, always call `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
+    /// with this context.
+    func mainContextBasic() ->NSManagedObjectContext
+    
+    /// A context used primarily for asynchronous writes that should only ever be accessed from
+    /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
+    /// with this context.
+    func backgroundContextBasic() ->NSManagedObjectContext
 }
