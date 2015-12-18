@@ -127,6 +127,7 @@ import Foundation
     
     static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) {
         let keyPath = "scaffold/menu/items/0/accessoryScreens"
+        let navigationBarItemTextColor = templateDecorator.templateValueForKeyPath("scaffold/navigationBarAppearance/color.text")
         let accessoryButtonConfig = [
             "title": "Legal Information",
             "icon": [
@@ -136,7 +137,8 @@ import Foundation
                 "imageURL": "D_more"
             ],
             "identifier": "Accessory Legal Information",
-            "position": "left"
+            "position": "left",
+            "color.text": navigationBarItemTextColor
         ]
         
         if var accessoryItems = templateDecorator.templateValueForKeyPath(keyPath) as? [[String: AnyObject]] {
