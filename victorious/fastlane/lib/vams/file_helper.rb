@@ -18,6 +18,7 @@ module VAMS
       File.open(path, File::WRONLY | File::CREAT) do |file|
         file.write(text)
       end
+      path
     end
 
     def make_directory_if_needed(path:)

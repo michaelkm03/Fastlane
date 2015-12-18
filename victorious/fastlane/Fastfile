@@ -75,7 +75,12 @@ platform :ios do
           ENV['FASTLANE_ITC_TEAM_ID']   = ENV['FASTLANE_TEAM_ID']
           ENV['FASTLANE_ITC_TEAM_NAME'] = ENV['FASTLANE_TEAM_NAME']
 
+          app_icon             = VAMS::AppIcon.new(app: app_with_meta)
+          saved_icon_file_path = app_icon.save(location: FASTLANE_DIRECTORY)
+          old_app_icon_env     = ENV['APP_ICON_PATH']
+          ENV['APP_ICON_PATH'] = File.expand_path(saved_icon_file_path)
           deliver(force: true)
+          ENV['APP_ICON_PATH'] = old_app_icon_env
 
           status = VAMS::SubmissionResult::Status::GOOD
           send_submission_result(app_id: app.app_id,

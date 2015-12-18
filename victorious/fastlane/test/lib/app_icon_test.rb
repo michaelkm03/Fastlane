@@ -19,10 +19,11 @@ module VAMS
       stub_request(:get, logo_url_string).
         to_return(:status => 200, :body => fake_file_content, :headers => {})
 
-      app_icon = AppIcon.new(app: app)
-      location = TMP_DIR
-      app_icon.save(location: location, filename: logo_filename)
+      app_icon        = AppIcon.new(app: app)
+      location        = TMP_DIR
+      saved_icon_file = app_icon.save(location: location)
       assert_equal(fake_file_content, read_file(location, logo_filename))
+      assert_match(/#{logo_filename}/, File.expand_path(saved_icon_file))
     end
 
     def teardown

@@ -8,7 +8,7 @@ module VAMS
       @logo_image = app.original_logo_image
     end
 
-    def save(location:, filename:)
+    def save(location:)
       FileHelper.download_file(url_string: logo_image, location: location)
     end
   end
