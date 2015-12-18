@@ -341,11 +341,13 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         
         [[[VStoredLogin alloc] init] saveLoggedInUserToDisk:self.mainUser loginType:loginType];
         
-        if ( ![AgeGate isAnonymousUser] )
+        if ([AgeGate isAnonymousUser])
         {
-            [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
-            [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
+            return;
         }
+        
+        [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
+        [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     }
