@@ -20,7 +20,7 @@ static NSString * const kPlist = @"plist";
 @interface VEnvironmentManager()
 
 @property (nonatomic, readonly) NSArray *bundleEnvironments;
-@property (nonatomic, readonly) NSArray *userEnvironments;
+@property (nonatomic, strong) NSArray *userEnvironments;
 
 @end
 
@@ -37,14 +37,26 @@ static NSString * const kPlist = @"plist";
     return _sharedInstance;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        NSString *defaultEnvironment = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"VictoriousServerEnvironment"];
+        if (defaultEnvironment)
+        {
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment }];
+        }
+        
+        NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
+        NSArray *environments = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
+        _userEnvironments = environments ?: @[];
+    }
+    return self;
+}
+
 - (VEnvironment *)currentEnvironment
 {
-    NSString *defaultEnvironment = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"VictoriousServerEnvironment"];
-    if (defaultEnvironment)
-    {
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment }];
-    }
-    
     NSString *environmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
     return [self environmentWithName:environmentName];
 }
@@ -104,17 +116,10 @@ static NSString * const kPlist = @"plist";
     
     environment.isUserEnvironment = YES; // All added environments are considered user environments
     
-    NSArray *environments = [(self.userEnvironments ?: @[]) arrayByAddingObject:environment];
+    self.userEnvironments = [self.userEnvironments arrayByAddingObject:environment];
     NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
-    BOOL success = [NSKeyedArchiver archiveRootObject:environments toFile:filepath];
+    BOOL success = [NSKeyedArchiver archiveRootObject:self.userEnvironments toFile:filepath];
     return success;
-}
-
-- (NSArray *)userEnvironments
-{
-    NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
-    NSArray *environments = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
-    return environments;
 }
 
 - (NSString *)userEnvironmentsFilePathWithFilename:(NSString *)path

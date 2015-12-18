@@ -51,5 +51,6 @@
 @dynamic repostedSequences;
 @dynamic maxUploadDuration;
 @dynamic loginType;
+@dynamic notificationSettings;
 
 @end

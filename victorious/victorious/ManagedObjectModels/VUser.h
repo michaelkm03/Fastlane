@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VPollResult, VSequence, VUser;
+@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VNotificationSettings, VPollResult, VSequence, VUser;
 
 @interface VUser : NSManagedObject
 
@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSSet *repostedSequences;
 @property (nonatomic, retain) NSNumber *maxUploadDuration;
 @property (nonatomic, retain) NSNumber *loginType;
+@property (nonatomic, retain) VNotificationSettings *notificationSettings;
 
 @end
 
