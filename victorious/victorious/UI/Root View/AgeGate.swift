@@ -67,7 +67,7 @@ import Foundation
     //MARK: - Feature Disabling functions
     
     static func filterTabMenuItems(menuItems: [VNavigationMenuItem]) -> [VNavigationMenuItem] {
-        return menuItems.filter() { ["Home", "Channels", "Explore"].contains($0.title) }
+        return menuItems.filter() { ["Menu Home", "Menu Channels", "Menu Explore"].contains($0.identifier) }
     }
     
     static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
@@ -127,6 +127,7 @@ import Foundation
     
     static func decorateTemplateForLegalInfoAccessoryButton(templateDecorator: VTemplateDecorator) {
         let keyPath = "scaffold/menu/items/0/accessoryScreens"
+        let navigationBarItemTextColor = templateDecorator.templateValueForKeyPath("scaffold/navigationBarAppearance/\(VDependencyManagerMainTextColorKey)")
         let accessoryButtonConfig = [
             "title": "Legal Information",
             "icon": [
@@ -136,12 +137,13 @@ import Foundation
                 "imageURL": "D_more"
             ],
             "identifier": "Accessory Legal Information",
-            "position": "left"
+            "position": "left",
+            "color.text": navigationBarItemTextColor
         ]
         
-        if var accessoryItems = templateDecorator.templateValueForKeyPath(keyPath) as? [[String: AnyObject]] {
-            accessoryItems.append(accessoryButtonConfig)
-            templateDecorator.setTemplateValue(accessoryItems, forKeyPath: keyPath)
-        }
+        var accessoryItems = templateDecorator.templateValueForKeyPath(keyPath) as? [[String: AnyObject]] ?? []
+        accessoryItems.append(accessoryButtonConfig)
+        
+        templateDecorator.setTemplateValue(accessoryItems, forKeyPath: keyPath)
     }
 }
