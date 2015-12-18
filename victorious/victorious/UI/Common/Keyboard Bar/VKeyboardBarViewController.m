@@ -159,8 +159,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             return;
         }
     }
-    
-    [self.textView resignFirstResponder];
 
     if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:publishParameters:)])
     {
