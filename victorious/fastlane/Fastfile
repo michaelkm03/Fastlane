@@ -19,10 +19,11 @@ def prepare_metadata(client:, build_name:)
   app_with_meta
 end
 
-def clean_build_products
+def clean_build_products(icon_path: nil)
   clean_build_artifacts
   `git checkout #{FASTLANE_DIRECTORY}/../AppSpecific`
   `git checkout #{FASTLANE_DIRECTORY}/../fastlane/metadata/`
+  `rm #{icon_path}` if icon_path && File.exists?(icon_path)
 end
 
 def make_build_string(version:, build_number:)
@@ -48,9 +49,10 @@ platform :ios do
     client.apps_to_build.each do |app|
       clean_build_products
 
-      logger       = VAMS::ColoredLogger.new($stdout)
-      version      = ''
-      build_number = ''
+      logger               = VAMS::ColoredLogger.new($stdout)
+      version              = ''
+      build_number         = ''
+      saved_icon_file_path = nil
 
       begin
         apply_config(build_name: app.build_name, environment: environment)
@@ -95,7 +97,7 @@ platform :ios do
                                status: status)
         logger.error("Notified VAMS with status: #{status}")
       ensure
-        clean_build_products
+        clean_build_products(icon_path: saved_icon_file_path)
       end
     end
   end
