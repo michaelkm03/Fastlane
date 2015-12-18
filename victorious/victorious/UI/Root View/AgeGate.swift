@@ -124,4 +124,19 @@ import Foundation
         let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthday, toDate: now, options: NSCalendarOptions())
         return ageComponents.year < 13
     }
+    
+    static func legalInfoAccessoryButtonConfig() -> NSDictionary {
+        let accessoryButtonConfig = [
+            "title": "Legal Information",
+            "icon": [
+                "imageURL": "D_more"
+            ],
+            "selectedIcon": [
+                "imageURL": "D_more"
+            ],
+            "identifier": "Accessory Legal Information",
+            "position": "left"
+        ]
+        return accessoryButtonConfig
+    }
 }

@@ -41,16 +41,6 @@
                                                object:[VObjectManager sharedManager]];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if ([AgeGate isAnonymousUser])
-    {
-        [self addLegalInfoButton];
-    }
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -106,14 +96,6 @@
 }
 
 #pragma mark - Anonymous User Actions
-
-- (void)addLegalInfoButton
-{
-    UIBarButtonItem *legalInfoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"D_more"] style:UIBarButtonItemStylePlain target:self action:@selector(showLegalInfoOptions)];
-    NSMutableArray *leftItems = [NSMutableArray arrayWithArray:self.navigationItem.leftBarButtonItems];
-    [leftItems addObject:legalInfoButton];
-    [self.navigationItem setLeftBarButtonItems:leftItems];
-}
 
 - (void)showLegalInfoOptions
 {
