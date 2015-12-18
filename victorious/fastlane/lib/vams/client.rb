@@ -39,7 +39,7 @@ module VAMS
                                    protocol: @env.protocol,
                                    host:     @env.host,
                                    headers:  headers,
-                                   options:  post_data)
+                                   query:    post_data)
 
       json    = JSON.parse(response.body)
       payload = json['payload']
@@ -94,7 +94,7 @@ module VAMS
                                    host:     @env.host,
                                    protocol: @env.protocol,
                                    path:     endpoint,
-                                   body:     result,
+                                   query:    result,
                                    headers:  construct_headers(endpoint: endpoint, method: method))
       if !successful_response?(status_code: response.code)
         error_message = "Failed to save a status for #{result}. Here is the response from VAMS: #{response}}"
