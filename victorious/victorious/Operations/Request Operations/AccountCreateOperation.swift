@@ -43,7 +43,6 @@ class AccountCreateOperation: RequestOperation {
             user.token = response.token
             context.v_save()
             
-            let identifier = user.objectID
             dispatch_async( dispatch_get_main_queue() ) {
                 if let currentUser = VUser.currentUser() {
                     self.updateStoredCredentials( currentUser )

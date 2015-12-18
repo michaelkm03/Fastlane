@@ -42,7 +42,6 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
-@property (nonatomic, assign) BOOL isRefreshingFirstPage;
 
 @end
 
@@ -124,10 +123,6 @@
     if ( shouldRefresh )
     {
         [self refreshWithCompletion:nil];
-    }
-    else if ( self.isRefreshingFirstPage )
-    {
-        [self.refreshControl beginRefreshing];
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -237,8 +232,8 @@
     _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        self.streamDataSource.stream = currentStream;
-        //self.collectionView.dataSource = self.streamDataSource;
+        _streamDataSource.stream = currentStream;
+        _collectionView.dataSource = self.streamDataSource;
     }
 }
 
@@ -292,15 +287,14 @@
 {
     if (self.streamDataSource.isLoading)
     {
-        if ( !self.isRefreshingFirstPage )
-        {
-            [self.refreshControl endRefreshing];
-        }
+        [self.refreshControl endRefreshing];
         return;
     }
     
-    self.isRefreshingFirstPage = YES;
-    [self.refreshControl beginRefreshing];
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
+    {
+        [self.refreshControl beginRefreshing];
+    }
     
     const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
@@ -320,15 +314,12 @@
          {
              completionBlock();
          }
-         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         [self.collectionView reloadData];
      }
                             failure:^(NSError *error)
      {
-         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         // TODO: Show error in non-disruptive way
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
      }];
 }
 
@@ -411,7 +402,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-#warning FIXME:
+#warning FIXME: Bottom activity indicator
     /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
@@ -495,6 +486,11 @@
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
+}
+
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
+{
+    
 }
 
 @end

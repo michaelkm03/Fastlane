@@ -17,8 +17,6 @@
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
-NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamCollectionDataSourceDidChangeNotification";
-
 @implementation VStreamCollectionViewDataSource
 
 - (instancetype)initWithStream:(VStream *)stream
@@ -27,7 +25,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     if ( self != nil )
     {
         _visibleStreamItems = [[NSOrderedSet alloc] init];
-        self.stream = stream;
+        _stream = stream;
     }
     return self;
 }
@@ -44,13 +42,21 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (void)setVisibleStreamItems:(NSOrderedSet *)visibleStreamItems
 {
+    NSOrderedSet *oldValue = _visibleStreamItems;
+    NSOrderedSet *newValue;
     if ( self.suppressShelves )
     {
-        _visibleStreamItems = [self streamItemsWithoutShelvesFromStreamItems:visibleStreamItems];
+        newValue = [self streamItemsWithoutShelvesFromStreamItems:visibleStreamItems];
     }
     else
     {
-        _visibleStreamItems = visibleStreamItems;
+        newValue = visibleStreamItems;
+    }
+    
+    if ( newValue != oldValue )
+    {
+        _visibleStreamItems = newValue;
+        [self.delegate dataSource:self visibleStreamItemsDidUpdateFromOldValue:oldValue toNewValue:newValue];
     }
 }
 
@@ -80,28 +86,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
-- (void)removeStreamItem:(VStreamItem *)streamItem
-{
-#warning Create RequestOperation for this
-    NSMutableOrderedSet *tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.stream.streamItems];
-    [tempSet removeObject:streamItem];
-    self.stream.streamItems = tempSet;
-}
-
 - (NSUInteger)count
 {
     return self.visibleStreamItems.count;
-}
-
-- (void)unloadStream
-{
-#warning Create RequestOperation for this
-    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
-    [persistentStore.backgroundContext performBlock:^void {
-        self.stream.streamItems = [[NSOrderedSet alloc] init];
-        self.stream.marqueeItems = [[NSOrderedSet alloc] init];
-        [persistentStore.backgroundContext save:nil];
-    }];
 }
 
 - (NSInteger)sectionIndexForContent
@@ -123,7 +110,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return;
     }
     _hasHeaderCell = hasHeaderCell;
-    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -168,7 +154,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
     if ( isFooter && [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
-        return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+        return [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]
                                                               forIndexPath:indexPath];
     }

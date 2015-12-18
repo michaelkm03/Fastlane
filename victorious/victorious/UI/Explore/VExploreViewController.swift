@@ -105,11 +105,12 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
-        let dataSource = VStreamCollectionViewDataSource(stream: currentStream)
-        dataSource.delegate = self;
-        dataSource.collectionView = collectionView;
-        streamDataSource = dataSource
-        collectionView.dataSource = streamDataSource;
+        if let dataSource = streamDataSource {
+            dataSource.stream = currentStream
+            dataSource.delegate = self
+            collectionView.dataSource = dataSource
+        }
+        
         collectionView.backgroundColor = UIColor.clearColor()
         definesPresentationContext = true
     }

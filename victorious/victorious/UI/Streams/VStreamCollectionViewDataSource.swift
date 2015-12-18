@@ -39,46 +39,32 @@ public extension VStreamCollectionViewDataSource {
                 } else {
                     success()
                 }
-                let old = self.visibleStreamItems.array as? [VStreamItem] ?? []
-                let new = operation.results
-                
-                let section = self.sectionIndexForContent()
-                let combined = old + new
-                let change = UICollectionView.Change(
-                    deletedIndexPaths: nil,
-                    insertedIndexPaths: new.flatMap { combined.indexOf($0) }.map { NSIndexPath(forItem: Int($0), inSection: section) }
-                )
-                self.visibleStreamItems = NSOrderedSet(array: combined)
-                
-                self.collectionView?.reloadData()
-                
-                //self.collectionView?.applyChange( change )
+                let existing = self.visibleStreamItems
+                let loaded = operation.results
+                self.visibleStreamItems = NSOrderedSet(array: existing + loaded)
             }
             self.streamLoadOperation = operation
         }
     }
-}
-
-private extension UICollectionView {
     
-    struct Change {
-        let deletedIndexPaths:[NSIndexPath]?
-        let insertedIndexPaths:[NSIndexPath]?
-        
-        var hasChanges: Bool {
-            return self.deletedIndexPaths?.count > 0 || self.insertedIndexPaths?.count > 0
+    public func removeStreamItem(streamItem: VStreamItem) {
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.mainContext.v_performBlock() { context in
+            self.stream?.v_removeObject( streamItem, from: "streamItems" )
+            context.v_save()
+            
+            let updatedItems = self.visibleStreamItems.array.flatMap { $0 as? VStreamItem }.filter { $0 != streamItem }
+            self.visibleStreamItems = NSOrderedSet( array: updatedItems)
         }
     }
     
-    func applyChange( change: Change ) {
-        self.performBatchUpdates({
+    public func unloadStream() {
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.mainContext.v_performBlock() { context in
+            self.stream?.v_removeAllObjects( from: "streamItems" )
+            context.v_save()
             
-            if let insertedIndexPaths = change.insertedIndexPaths {
-                self.insertItemsAtIndexPaths( insertedIndexPaths )
-            }
-            if let deletedIndexPaths = change.deletedIndexPaths {
-                self.deleteItemsAtIndexPaths( deletedIndexPaths )
-            }
-        }, completion: nil)
+            self.visibleStreamItems = NSOrderedSet()
+        }
     }
 }

@@ -54,7 +54,23 @@ extension NSManagedObject {
             if relationship.ordered {
                 self.mutableOrderedSetValueForKey(relationshipName).removeObjectsInArray(objects)
             } else {
-                assert( false, "Cannot remove multiple objects from ordered relationship '\(relationshipName)'" )
+                assert( false, "Cannot remove multiple objects from unordered relationship '\(relationshipName)'" )
+            }
+        }
+    }
+    
+    func v_removeAllObjects( from relationshipName: String ) {
+        assert( self.entity.relationshipsByName.keys.contains( relationshipName ),
+            "Could not find a relationship for key '\(relationshipName)'" )
+        
+        for (name, relationship) in self.entity.relationshipsByName where name == relationshipName {
+            assert( relationship.toMany,
+                "Relationship with name '\(relationshipName)' is now a to-many relationship." )
+            
+            if relationship.ordered {
+                self.mutableOrderedSetValueForKey(relationshipName).removeAllObjects()
+            } else {
+                self.mutableSetValueForKey(relationshipName).removeAllObjects()
             }
         }
     }

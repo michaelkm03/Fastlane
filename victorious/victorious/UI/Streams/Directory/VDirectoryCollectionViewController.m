@@ -153,7 +153,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
     

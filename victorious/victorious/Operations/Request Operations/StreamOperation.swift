@@ -31,25 +31,28 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete, onError:self.onError )
     }
     
-    private func onError( error: NSError, completion:(()->())? ) {
+    private func onError( error: NSError, completion: ()->() ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
             self.results = loadPersistentItems()
             self.resultCount = self.results.count
+        
+        } else {
+            self.resultCount = 0
         }
-        completion?()
+        completion()
     }
     
     private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
-       persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
             let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
             let streamItems = VStreamItem.parseStreamItems(stream.items, managedObjectContext: context)
             persistentStream.v_addObjects( streamItems, to: "streamItems" )
             context.v_save()
-            completion()
         }
         
         self.results = loadPersistentItems()
         self.resultCount = self.results.count
+        
         completion()
     }
     
