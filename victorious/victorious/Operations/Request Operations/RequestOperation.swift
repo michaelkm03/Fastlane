@@ -12,6 +12,17 @@ import VictoriousCommon
 
 private let _defaultQueue = NSOperationQueue()
 
+class RequestOperationAlerts: NSObject {
+    static let didReceiveAlertsNotification = "com.getvictorious.RequestOperation.AlertResult.didReceiveAlertsNotification"
+    static let alertsKey = "com.getvictorious.RequestOperation.AlertResult.alertsKey"
+    
+    let alerts: [Alert]
+    
+    init(alerts: [Alert]) {
+        self.alerts = alerts
+    }
+}
+
 class RequestOperation: NSOperation, Queuable {
     
     static let errorDomain: String = "com.getvictorious.RequestOperation"
@@ -56,9 +67,12 @@ class RequestOperation: NSOperation, Queuable {
                 callback: { (result, error, alerts) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
                         
-                        // FIXME:
-                        InterstitialManager.sharedInstance.registerAlerts( alerts )
-                       
+                        // Handle alerts
+                        let name = RequestOperationAlerts.didReceiveAlertsNotification
+                        let userInfo = [ RequestOperationAlerts.alertsKey : RequestOperationAlerts(alerts: alerts) ]
+                        NSNotificationCenter.defaultCenter().postNotificationName( name, object: nil, userInfo: userInfo)
+                        
+                        // Handle error
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
                             if let onError = onError {
@@ -69,6 +83,7 @@ class RequestOperation: NSOperation, Queuable {
                                 dispatch_semaphore_signal( executeSemphore )
                             }
                         
+                        // Handle result
                         } else if let requestResult = result {
                             if let onComplete = onComplete {
                                 onComplete( requestResult ) {

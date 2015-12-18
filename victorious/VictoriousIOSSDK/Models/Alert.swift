@@ -28,7 +28,6 @@ public struct Alert {
         public let backgroundVideoURL: NSURL?
         public let description: String
         public let title: String
-        public let user: User
         public let userFanLoyalty: FanLoyalty
         public let icons: [NSURL]
     }
@@ -58,15 +57,14 @@ extension Alert.Parameters {
     public init?(json: JSON) {
         guard let description = json["description"].string,
             let title = json["title"].string,
-            let user = User(json: json["user"]),
-            let userFanLoyalty = user.fanLoyalty else {
+            let userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"] ) else {
                 return nil
         }
         self.userFanLoyalty = userFanLoyalty
-        self.description = description
-        self.title = title
-        self.user = user
-        self.icons = json["icons"].arrayValue.map { $0.stringValue }.flatMap { NSURL(string: $0) }
+        self.description    = description
+        self.title          = title
+        
+        icons               = json["icons"].arrayValue.map { $0.stringValue }.flatMap { NSURL(string: $0) }
         
         if let urlString = json["backgroundVideo"].string where !urlString.characters.isEmpty {
             self.backgroundVideoURL = NSURL(string: urlString)

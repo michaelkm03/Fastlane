@@ -11,36 +11,22 @@ import VictoriousIOSSDK
 
 extension Alert {
     
-    func viewControllerToPresent(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController? {
+    func viewController(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController? {
         switch self.alertType {
+            
         case .LevelUp:
-            if let levelUpVC = dependencyManager.levelUpViewController(alert: self) as? InterstitialViewController {
-                return levelUpVC
+            let tempalteValue = dependencyManager.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
+            if let viewController = tempalteValue as? LevelUpViewController {
+                viewController.alert = self
+                return viewController
             }
+            
         case .Achievement:
-            if let achievementVC = dependencyManager.achievementViewController(alert: self) as? InterstitialViewController {
+            let templateValue = dependencyManager.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen")
+            if let achievementVC = templateValue as? AchievementViewController {
+                achievementVC.alert = self
                 return achievementVC
             }
-        }
-        return nil
-    }
-}
-
-private extension VDependencyManager {
-    
-    func achievementViewController(alert alert: Alert) -> AchievementViewController? {
-        if let achievementVC = self.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen") as? AchievementViewController {
-            achievementVC.alert = alert
-            return achievementVC
-        }
-        
-        return nil
-    }
-    
-    func levelUpViewController(alert alert: Alert) -> LevelUpViewController? {
-        if let levelUpVC = self.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen") as? LevelUpViewController {
-            levelUpVC.alert = alert
-            return levelUpVC
         }
         
         return nil

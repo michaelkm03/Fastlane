@@ -24,7 +24,15 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     var shouldRegisterAlerts: Bool = true
     
     /// Returns the interstitial manager singelton
-    static let sharedInstance = InterstitialManager()
+    static let sharedInstance: InterstitialManager = {
+        let manager = InterstitialManager()
+        NSNotificationCenter.defaultCenter().addObserver(manager,
+            selector: "registerAlerts:",
+            name: RequestOperationAlerts.didReceiveAlertsNotification,
+            object: nil
+        )
+        return manager
+    }()
     
     /// The interstitial manager's dependency manager which it feeds to
     /// the interstitials in order to build their view controllers
@@ -42,9 +50,17 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     private var presentedInterstitial: InterstitialViewController?
     
+    
     /// Register an array of alerts to show as interstitials.
-    func registerAlerts(alerts: [Alert]) {
-        for alert in alerts where !registeredAlerts.contains({ $0 == alert }) && !shownAlerts.contains({ $0 == alert }) {
+    func registerAlerts( notification: NSNotification ) {
+        guard let alertsContainer = notification.userInfo?[ RequestOperationAlerts.alertsKey ] as? RequestOperationAlerts else {
+            return
+        }
+        
+        let newAlerts = alertsContainer.alerts.filter { alert in
+            !registeredAlerts.contains { $0 == alert } && !shownAlerts.contains { $0 == alert }
+        }
+        for alert in newAlerts {
             registeredAlerts.append(alert)
             if let interstitialListener = interstitialListener {
                 interstitialListener.newInterstitialHasBeenRegistered()
