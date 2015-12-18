@@ -411,6 +411,7 @@
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
+		679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */; };
 		67A42FC51BF2953A0087FBE9 /* FollowersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC41BF2953A0087FBE9 /* FollowersRequest.swift */; };
 		67A42FC71BF298050087FBE9 /* FollowersRequestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A42FC61BF298050087FBE9 /* FollowersRequestTest.swift */; };
 		67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */; };
@@ -11576,6 +11577,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */,
 				C30E3FA21BE959C200184F57 /* VAutomation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
