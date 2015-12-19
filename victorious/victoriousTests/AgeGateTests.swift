@@ -66,15 +66,15 @@ class AgeGateTests: XCTestCase {
     func testFilterTabMenuItems() {
         
         let inputItems = [
-            VNavigationMenuItem(title: "", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore2", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "fjdkslajkfld", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Channels", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "following", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "channel", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "home", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Home", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
+            VNavigationMenuItem(title: "foo", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Explore", identifier: "Menu Explore", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Explore2", identifier: "Menu Explore2", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "fjdkslajkfld", identifier: "Menu asdf", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Channels", identifier: "Menu Channels", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "following", identifier: "Menu following", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "channel", identifier: "Menu channel", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "home", identifier: "Menu home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Home", identifier: "Menu Home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
         ]
         
         let outputItems = AgeGate.filterTabMenuItems(inputItems)
