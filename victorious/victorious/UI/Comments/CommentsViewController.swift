@@ -380,10 +380,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 mediaType: self.publishParameters?.commentMediaAttachmentType,
                 realtimeComment: nil
             )
-            CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters).queue()
-            
-            self.keyboardBar?.clearTextAndResign()
-            self.publishParameters?.mediaToUploadURL = nil
+            if let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters) {
+                operation.queue()
+                self.keyboardBar?.clearTextAndResign()
+                self.publishParameters?.mediaToUploadURL = nil
+            }
         }
     }
     

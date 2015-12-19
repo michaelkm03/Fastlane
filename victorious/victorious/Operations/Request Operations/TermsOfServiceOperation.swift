@@ -22,6 +22,4 @@ class TermsOfServiceOperation: RequestOperation {
         resultHTMLString = htmlString
         completion()
     }
-    
 }
-

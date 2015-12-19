@@ -142,7 +142,10 @@ public extension VContentViewViewModel {
             mediaType: publishParameters.commentMediaAttachmentType,
             realtimeComment: realtimeComment
         )
-        CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters).queue()
+        
+        if let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters) {
+            operation.queue()
+        }
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {

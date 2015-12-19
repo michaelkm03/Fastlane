@@ -15,15 +15,9 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
     public let userID: Int64?
     public let sequenceID: Int64?
     
+    private let url: NSURL
+    
     public var urlRequest: NSURLRequest {
-        let url: NSURL
-        if let sequenceID = sequenceID {
-            url = NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!
-        } else if let userID = userID {
-            url = NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!
-        }  else {
-            abort()
-        }
         return NSURLRequest(URL:  url)
     }
     
@@ -31,18 +25,21 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
         self.paginator = paginator
         self.sequenceID = request.sequenceID
         self.userID = request.userID
+        self.url = request.url
     }
     
     public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = nil
         self.userID = userID
         self.paginator = paginator
+        self.url = NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!
     }
     
     public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.userID = nil
         self.paginator = paginator
+        url = NSURL(string: "/api/pollresult/summary_by_sequence/\(sequenceID)")!
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [PollResult] {

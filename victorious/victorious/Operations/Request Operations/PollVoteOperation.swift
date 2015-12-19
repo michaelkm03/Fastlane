@@ -21,12 +21,9 @@ final class PollVoteOperation: RequestOperation {
         
         // Peform optimistic changes before the request is executed
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
-            guard let user = VUser.currentUser() else {
-                fatalError( "User must be logged in." )
-            }
-            
-            guard let sequence: VSequence = context.v_findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
-                fatalError( "Cannot find sequence" )
+            guard let user = VUser.currentUser(),
+                let sequence: VSequence = context.v_findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
+                    return
             }
             
             let pollResult: VPollResult = context.v_createObject()
