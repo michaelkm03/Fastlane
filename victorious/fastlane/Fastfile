@@ -26,7 +26,7 @@ def clean_build_products(icon_path: nil)
   `rm #{icon_path}` if icon_path && File.exists?(icon_path)
 end
 
-def send_submission_result(app_id:, client:, version:, build_number:, status:)
+def send_submission_result(app_id:, client:, version:, build:, status:)
   result = VAMS::SubmissionResult.new(
     app_id:   app_id,
     datetime: Time.now,
@@ -46,8 +46,8 @@ platform :ios do
       clean_build_products
 
       logger               = VAMS::ColoredLogger.new($stdout)
-      version              = ''
-      build_number         = ''
+      version              = nil
+      build                = nil
       saved_icon_file_path = nil
 
       begin
@@ -61,8 +61,8 @@ platform :ios do
             scheme:               'release-victorious',
             codesigning_identity: 'iPhone Distribution: Victorious Inc. (82T26U698A)',
           )
-          version      = get_version_number(xcodeproj: 'victorious.xcodeproj')
-          build_number = get_build_number(xcodeproj:   'victorious.xcodeproj')
+          version = get_version_number(xcodeproj: 'victorious.xcodeproj')
+          build   = get_build_number(xcodeproj:   'victorious.xcodeproj')
 
           ENV['FASTLANE_ITC_TEAM_ID']   = ENV['FASTLANE_TEAM_ID']
           ENV['FASTLANE_ITC_TEAM_NAME'] = ENV['FASTLANE_TEAM_NAME']
@@ -74,11 +74,11 @@ platform :ios do
           end
 
           status = VAMS::SubmissionResult::Status::GOOD
-          send_submission_result(app_id:       app.app_id,
-                                 client:       client,
-                                 version:      version,
-                                 build_number: build_number,
-                                 status:       status)
+          send_submission_result(app_id:  app.app_id,
+                                 client:  client,
+                                 version: version,
+                                 build:   build,
+                                 status:  status)
           logger.info("Notified VAMS with status: #{status}")
         end
 
@@ -86,11 +86,11 @@ platform :ios do
         status = VAMS::SubmissionResult::Status::BAD
         logger.error(exception.message)
         logger.error(exception.backtrace.join("\n"))
-        send_submission_result(app_id:       app.app_id,
-                               client:       client,
-                               version:      version,
-                               build_number: build_number,
-                               status:       status)
+        send_submission_result(app_id:  app.app_id,
+                               client:  client,
+                               version: version,
+                               build:   build,
+                               status:  status)
         logger.error("Notified VAMS with status: #{status}")
       ensure
         clean_build_products(icon_path: saved_icon_file_path)
