@@ -26,10 +26,17 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+    }
+    
+    private func onError( error: NSError, completion:(()->()) ) {
+        self.resultCount = 0
+        completion()
     }
     
     private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
+        
+        self.resultCount = users.count
         
         persistentStore.backgroundContext.v_performBlock() { context in
             // Load the persistent models (VUser) from the provided networking models (User)

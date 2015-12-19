@@ -7022,9 +7022,6 @@
 				A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
-				A702C8561C1247C9001EE1D5 /* StreamOperation.swift */,
-				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
-				7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
 				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
 				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
@@ -7264,9 +7261,7 @@
 		A789F7251BF11F4900F5C87B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A72EDF901C03E5EC003D6177 /* NSNumber+Extensions.swift */,
 				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
-				A789F7261BF11F4900F5C87B /* NSManagedObject+Extensions.swift */,
 				A72EDF901C03E5EC003D6177 /* NSNumber+Extensions.swift */,
 			);
 			path = Utils;

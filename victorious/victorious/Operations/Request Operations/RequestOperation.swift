@@ -38,8 +38,6 @@ class RequestOperation: NSOperation, Queuable {
             return AuthenticationContext(currentUser: VUser.currentUser())
         }
         
-        networkActivityIndicator.start()
-        
         let networkStatus = VReachability.reachabilityForInternetConnection().currentReachabilityStatus()
         if networkStatus == .NotReachable {
             let error = NSError(

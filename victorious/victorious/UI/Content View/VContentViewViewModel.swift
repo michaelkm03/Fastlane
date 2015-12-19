@@ -104,9 +104,7 @@ public extension VContentViewViewModel {
         let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSeuqneceIntegerId )
         sequenceFetchOperation.queue() { error in
             
-            if let sequence: VSequence? = MainPersistentStore().mainContext.v_performBlockAndWait({ context in
-                return context.v_findObjects( [ "remoteId" : nextSequenceId ] ).first
-            }) where error == nil {
+            if let sequence = sequenceFetchOperation.loadedSequence where error == nil {
                 success( sequence )
             } else {
                 failure(error)

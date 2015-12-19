@@ -23,7 +23,12 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+    }
+    
+    private func onError( error: NSError, completion:(()->()) ) {
+        self.resultCount = 0
+        completion()
     }
     
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
