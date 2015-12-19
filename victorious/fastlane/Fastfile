@@ -26,15 +26,11 @@ def clean_build_products(icon_path: nil)
   `rm #{icon_path}` if icon_path && File.exists?(icon_path)
 end
 
-def make_build_string(version:, build_number:)
-  "#{version} (#{build_number})"
-end
-
-def send_submission_result(app_id:, client:, build:, status:)
+def send_submission_result(app_id:, client:, version:, build_number:, status:)
   result = VAMS::SubmissionResult.new(
     app_id:   app_id,
     datetime: Time.now,
-    build:    build,
+    build:    VAMS::BuildIdentifier.new(version: version, build: build).to_s,
     status:   status
   )
   client.submit_result(result: result)
@@ -78,11 +74,11 @@ platform :ios do
           end
 
           status = VAMS::SubmissionResult::Status::GOOD
-          send_submission_result(app_id: app.app_id,
-                                 client: client,
-                                 build:  make_build_string(version:      version,
-                                                           build_number: build_number),
-                                 status: status)
+          send_submission_result(app_id:       app.app_id,
+                                 client:       client,
+                                 version:      version,
+                                 build_number: build_number,
+                                 status:       status)
           logger.info("Notified VAMS with status: #{status}")
         end
 
@@ -90,11 +86,11 @@ platform :ios do
         status = VAMS::SubmissionResult::Status::BAD
         logger.error(exception.message)
         logger.error(exception.backtrace.join("\n"))
-        send_submission_result(app_id: app.app_id,
-                               client: client,
-                               build:  make_build_string(version:      version,
-                                                         build_number: build_number),
-                               status: status)
+        send_submission_result(app_id:       app.app_id,
+                               client:       client,
+                               version:      version,
+                               build_number: build_number,
+                               status:       status)
         logger.error("Notified VAMS with status: #{status}")
       ensure
         clean_build_products(icon_path: saved_icon_file_path)
