@@ -13,9 +13,9 @@ class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
     
-    private(set) var sequence: VSequence?
+    private(set) var loadedSequence: VSequence?
     
-    init( sequenceID: Int64) {
+    init(sequenceID: Int64) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
         super.init()
         self.qualityOfService = .UserInitiated
@@ -32,8 +32,11 @@ class SequenceFetchOperation: RequestOperation {
             persistentSequence.populate(fromSourceModel: sequence)
             context.v_save()
             
-            self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                self.sequence = context.v_findObjects([ "remoteId" : String(sequence.sequenceID) ]).first
+            let persistentSequenceID = persistentSequence.objectID
+            self.persistentStore.mainContext.v_performBlockAndWait { context in
+                if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
+                    self.loadedSequence = sequence
+                }
                 completion()
             }
         }

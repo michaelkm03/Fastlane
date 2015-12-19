@@ -14,7 +14,7 @@ public extension VLightweightContentViewController {
         if let sequenceID = Int64(sequenceId) {
             let op = SequenceFetchOperation( sequenceID: sequenceID )
             op.queue() { error in
-                completion( op.sequence, error )
+                completion( op.loadedSequence, error )
             }
         }
     }
