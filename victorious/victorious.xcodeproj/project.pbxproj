@@ -396,6 +396,17 @@
 		6779A2151BF55EF00024BBD0 /* PollResultBySequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2141BF55EF00024BBD0 /* PollResultBySequenceRequest.swift */; };
 		67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */; };
 		67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
+		67803E151C24D41F008CEC73 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
+		67803E161C24D430008CEC73 /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4BF6C1BFEA41300CD0338 /* MainPersistentStoreTests.swift */; };
+		67803E171C24D438008CEC73 /* PersistentStoreContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */; };
+		67803E181C24D452008CEC73 /* NSManagedObject+Extensions_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69BC01C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift */; };
+		67803E191C24D47B008CEC73 /* VAlertControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */; };
+		67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
+		67803E1B1C24D549008CEC73 /* VInStreamCommentCellContentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */; };
+		67803E1C1C24D549008CEC73 /* VInStreamCommentsShowMoreAttributesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13751B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m */; };
+		67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
+		67803E1E1C24D5C5008CEC73 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
+		67803E1F1C24D5C5008CEC73 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
 		6782EA791BF2AB19000C7C0D /* FollowingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */; };
@@ -11487,6 +11498,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67803E1E1C24D5C5008CEC73 /* VTagStringFormatterTests.m in Sources */,
+				67803E1F1C24D5C5008CEC73 /* VTagTests.m in Sources */,
+				67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */,
+				67803E1B1C24D549008CEC73 /* VInStreamCommentCellContentsTests.m in Sources */,
+				67803E1C1C24D549008CEC73 /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
+				67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */,
+				67803E191C24D47B008CEC73 /* VAlertControllerTests.m in Sources */,
+				67803E181C24D452008CEC73 /* NSManagedObject+Extensions_Tests.swift in Sources */,
+				67803E171C24D438008CEC73 /* PersistentStoreContextTests.swift in Sources */,
+				67803E161C24D430008CEC73 /* MainPersistentStoreTests.swift in Sources */,
+				67803E151C24D41F008CEC73 /* CoreDataManagerTests.swift in Sources */,
 				67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */,
 				67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */,
 				A7DCA4EE1C128A78004E35B4 /* VHashTagTextViewTests.m in Sources */,
