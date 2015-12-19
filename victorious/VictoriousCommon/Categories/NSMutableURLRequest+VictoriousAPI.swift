@@ -21,6 +21,7 @@ private struct HTTPHeader {
     static let osVersion = "X-Client-OS-Version"
     static let appVersion = "X-Client-App-Version"
     static let sessionID = "X-Client-Session-ID"
+    static let eventIndex = "X-Client-Event-Index"
     static let experimentIDs = "X-Client-Experiment-IDs"
     static let geoLocation = "X-Geo-Location"
     static let firstInstallDeviceID = "X-Client-Install-Device-ID"
@@ -81,10 +82,15 @@ extension NSMutableURLRequest {
     public func v_setAppVersionHeaderValue(appVersion: String) {
         setValue(appVersion, forHTTPHeaderField: HTTPHeader.appVersion)
     }
-
+    
     /// Sets the value of the "X-Client-Session-ID" header
     public func v_setSessionIDHeaderValue(sessionID: String) {
         setValue(sessionID, forHTTPHeaderField: HTTPHeader.sessionID)
+    }
+    
+    /// Sets the value of the "X-Client-Event-Index" header.  Used for tracking requests.
+    public func v_setEventIndex(eventIndex: Int) {
+        setValue( String(eventIndex), forHTTPHeaderField: HTTPHeader.eventIndex)
     }
     
     /// Sets the value of the "X-Client-Experiment-IDs" header
