@@ -300,8 +300,6 @@ extern NSString * const VTrackingKeyType;
 extern NSString * const VTrackingKeySubtype;
 extern NSString * const VTrackingKeyDuration; //< Milliseconds
 
-extern NSString * const VTrackingKeyRequestOrder;
-
 // Tracking Event Values
 // ContentType values
 extern NSString * const VTrackingValueGIF; 
