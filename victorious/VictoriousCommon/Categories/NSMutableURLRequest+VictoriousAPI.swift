@@ -88,7 +88,7 @@ extension NSMutableURLRequest {
         setValue(sessionID, forHTTPHeaderField: HTTPHeader.sessionID)
     }
     
-    /// Sets the value of the "X-Client-Session-ID" header
+    /// Sets the value of the "X-Client-Index-ID" header.  Used for tracking requests.
     public func v_setEventIndex(eventIndex: Int) {
         setValue( String(eventIndex), forHTTPHeaderField: HTTPHeader.eventIndex)
     }
