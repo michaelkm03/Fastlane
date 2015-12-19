@@ -11,19 +11,23 @@ import SwiftyJSON
 
 public struct FanLoyalty {
     public let points: Int64
-    public let level: Int
-    public let progress: Int
+    public let level: Int64
+    public let progress: Int64
+    public let tier: String?
+    public let name: String?
 }
 
 extension FanLoyalty {
     public init?(json: JSON) {
-        guard let points = json["points"].int64,
-            let level = json["level"].int,
-            let progress = json["progress"].int else {
+        guard let level = json["level"].int64,
+            let progress = json["progress"].int64 else {
                 return nil
         }
-        self.points = points
         self.level = level
         self.progress = progress
+        
+        self.points = json["points"].int64Value
+        self.name = json["name"].string
+        self.tier = json["tier"].string
     }
 }

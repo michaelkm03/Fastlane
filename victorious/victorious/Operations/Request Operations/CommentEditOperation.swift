@@ -31,9 +31,7 @@ class CommentEditOperation: RequestOperation {
             if let comment: VComment = context.v_findObjects( ["remoteId" : NSNumber(longLong:self.commentID)] ).first {
                 comment.text = self.text
                 context.v_save()
-                dispatch_sync( dispatch_get_main_queue() ) {
-                    self.optimisticCommentObjectID = comment.objectID
-                }
+                self.optimisticCommentObjectID = comment.objectID
             }
         }
         
@@ -48,11 +46,15 @@ class CommentEditOperation: RequestOperation {
     }
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
+        
         persistentStore.backgroundContext.v_performBlock() { context in
+            defer {
+                completion()
+            }
             
             guard let objectID = self.optimisticCommentObjectID,
                 let optimisticComment = context.objectWithID( objectID ) as? VComment else {
-                    fatalError( "Failed to load comment create optimistically during operation's execution." )
+                    return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties

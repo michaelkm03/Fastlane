@@ -182,7 +182,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             // we update the user's level and level progress when the interstitial appears
             if let currentUser = VUser.currentUser() {
                 currentUser.level = alert.parameters.userFanLoyalty.level
-                currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
+                currentUser.levelProgressPercentage = NSNumber(longLong: alert.parameters.userFanLoyalty.progress)
             }
         }
     }

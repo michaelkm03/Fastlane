@@ -81,7 +81,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     NSString *streamId = [url v_pathComponentAtIndex:3];
     
-    __block ContentViewContext *context = [[ContentViewContext alloc] init];
+    ContentViewContext *context = [[ContentViewContext alloc] init];
     context.streamId = streamId;
     context.commentId = commentId;
     context.viewController = self.scaffoldViewController.rootNavigationController;

@@ -91,13 +91,15 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
-        self.animatedBadge?.animateProgress(duration, endPercentage: alert.parameters.userFanLoyalty.progress, completion: nil)
+        self.animatedBadge?.animateProgress(duration,
+            endPercentage: Int(alert.parameters.userFanLoyalty.progress),
+            completion: nil)
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears
         if let currentUser = VUser.currentUser() {
             currentUser.level = alert.parameters.userFanLoyalty.level
-            currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
+            currentUser.levelProgressPercentage = NSNumber(longLong: alert.parameters.userFanLoyalty.progress)
         }
     }
     

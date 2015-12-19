@@ -85,7 +85,6 @@
 
 - (void)navigateToDeeplinkURL:(NSURL *)url
 {
-    
     if ( self.scaffold.presentedViewController != nil )
     {
         [self.scaffold dismissViewControllerAnimated:YES completion:^(void)

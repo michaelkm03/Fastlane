@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// An object that handles writing multipart form input for POST methods for /api/comment/add endpoint
 class CommentAddRequestBody: NSObject {
     
     struct Output {

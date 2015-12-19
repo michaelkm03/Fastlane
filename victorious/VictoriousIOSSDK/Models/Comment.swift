@@ -18,6 +18,13 @@ public enum MediaAttachmentType: String {
 
 public struct Comment {
     
+    public struct Media {
+        public let type: MediaAttachmentType
+        public let url: NSURL
+        public let size: CGSize
+        public let thumbnailURL: NSURL
+    }
+    
     private let dateFormatter: NSDateFormatter = {
         return NSDateFormatter(format: .Standard)
     }()
@@ -29,13 +36,10 @@ public struct Comment {
     public let shouldAutoplay: Bool?
     public let user: User
     public let text: String?
-    public let mediaType: MediaAttachmentType?
-    public let mediaURL: NSURL?
-    public let thumbnailURL: NSURL?
+    public let media: Media?
+    
     public let flags: Int?
     public let postedAt: NSDate
-    
-    public let mediaSize: CGSize
     public let realtime: Bool
     public let dislikes: Int64?
     public let likes: Int64?
@@ -60,10 +64,22 @@ extension Comment {
         self.user = user
         self.postedAt = postedAt
         
-        mediaSize = CGSize(
-            width: CGFloat(json["media_width"].floatValue),
-            height: CGFloat(json["media_height"].floatValue)
-        )
+        if let mediaWidth = json["media_width"].float,
+            let mediaHeight = json["media_height"].float,
+            let mediaType = MediaAttachmentType(rawValue: json["media_type"].stringValue),
+            let mediaURLString = json["media_url"].string,
+            let mediaURL = NSURL(string:mediaURLString),
+            let thumbnailURLString = json["thumbnail_url"].string,
+            let thumbnailURL = NSURL(string: thumbnailURLString) {
+                media = Comment.Media(
+                    type: mediaType,
+                    url: mediaURL,
+                    size: CGSize(width: CGFloat(mediaWidth), height: CGFloat(mediaHeight)),
+                    thumbnailURL: thumbnailURL
+                )
+        } else {
+            media = nil
+        }
         
         likes           = json["likes"].int64
         dislikes        = json["dislikes"].int64
@@ -73,9 +89,6 @@ extension Comment {
         displayOrder    = json["display_order"].int
         shouldAutoplay  = json["should_autoplay"].bool
         text            = json["text"].string
-        mediaType       = MediaAttachmentType(rawValue: json["media_type"].stringValue)
-        mediaURL        = NSURL(string: json["media_url"].stringValue)
-        thumbnailURL    = NSURL(string: json["thumbnail_url"].stringValue)
         flags           = Int(json["flags"].stringValue)
     }
 }

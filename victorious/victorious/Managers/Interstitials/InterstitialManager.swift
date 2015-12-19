@@ -87,7 +87,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
         
         if let dependencyManager = dependencyManager,
-            let viewController = alert.viewControllerToPresent(dependencyManager: dependencyManager) as? UIViewController,
+            let viewController = alert.viewController(dependencyManager: dependencyManager) as? UIViewController,
             let conformingViewController = viewController as? InterstitialViewController {
                 
                 presentedInterstitial = conformingViewController
