@@ -14,7 +14,7 @@
 #import "VDependencyManager.h"
 #import "VUsersViewController.h"
 #import "VUserIsFollowingDataSource.h"
-#import "VObjectManager.h"
+#import "victorious-Swift.h"
 
 @interface VProfileFollowingContainerViewController ()
 
@@ -75,8 +75,7 @@
 {
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
     self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
-    VUser *user = [VObjectManager sharedManager].mainUser;
-    self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:user];
+    self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:[VUser currentUser]];
     self.userFollowingViewController.usersViewContext = VUsersViewContextFollowing;
     
     self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];

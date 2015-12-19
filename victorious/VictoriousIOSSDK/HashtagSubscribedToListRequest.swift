@@ -1,5 +1,5 @@
 //
-//  FollowingHashtagsRequest.swift
+//  HashtagSubscribedToListRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/9/15.
@@ -10,15 +10,15 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of hashtags which the current user is following
-public struct FollowingHashtagsRequest: PaginatorPageable, ResultBasedPageable {
+public struct HashtagSubscribedToListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(paginator: StandardPaginator = StandardPaginator() ) {
+    public init(paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200) ) {
         self.paginator = paginator
     }
     
-    public init(request: FollowingHashtagsRequest, paginator: StandardPaginator ) {
+    public init(request: HashtagSubscribedToListRequest, paginator: StandardPaginator ) {
         self.paginator = paginator
     }
     

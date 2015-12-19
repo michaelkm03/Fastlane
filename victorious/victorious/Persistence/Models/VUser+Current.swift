@@ -55,4 +55,8 @@ public extension VUser {
         let persistentStore: PersistentStoreType = MainPersistentStore()
         persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
     }
+    
+    func isCurrentUser() -> Bool {
+        return self.isEqualToUser( VUser.currentUser() )
+    }
 }

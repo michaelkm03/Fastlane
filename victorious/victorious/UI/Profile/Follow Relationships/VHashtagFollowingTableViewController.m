@@ -8,10 +8,7 @@
 
 #import "VHashtagFollowingTableViewController.h"
 #import "VTrendingTagCell.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Sequence.h"
 #import "VNoContentTableViewCell.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VConstants.h"
@@ -23,6 +20,7 @@
 #import <KVOController/FBKVOController.h>
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -37,6 +35,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VPageLoaderObjC *pageLoader;
 
 @end
 
@@ -48,6 +47,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _pageLoader = [[VPageLoaderObjC alloc] init];
     }
     return self;
 }
@@ -58,7 +58,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:[VUser currentUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updateFollowingHashtags)];
@@ -67,8 +67,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self updateUserHashtags:[[[[VObjectManager sharedManager] mainUser].hashtags array] copy]];
-    [self retrieveHashtagsForLoggedInUser];
+    NSArray *hashtags = [[[VUser currentUser] hashtags] copy];
+    [self updateUserHashtags:hashtags];
+    [self loadHashtagsWithPageType:VPageTypeFirst];
 }
 
 - (void)updateBackground
@@ -90,43 +91,25 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     self.tableView.backgroundView = backgroundView;
 }
 
- #pragma mark - Get / Format Logged In Users Tags
-
-- (void)retrieveHashtagsForLoggedInUser
+- (void)loadHashtagsWithPageType:(VPageType)pageType
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        self.fetchedHashtags = YES;
-        [self updateUserHashtags:resultObjects];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
-}
-
-- (void)fetchNextPageOfUserHashtags
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateUserHashtags:resultObjects];
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeNext
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:nil];
+    [self.pageLoader loadPage:pageType
+              createOperation:^RequestOperation *_Nonnull
+     {
+         return [[FollowedHashtagsOperation alloc] init];
+     }
+                   completion:^(RequestOperation *_Nonnull operation, NSError *_Nullable error)
+     {
+         FollowedHashtagsOperation* followedHashtagsOperation = (FollowedHashtagsOperation *)operation;
+         self.fetchedHashtags = YES;
+         [self updateUserHashtags:followedHashtagsOperation.loadedHashtags];
+     }];
 }
 
 - (void)updateFollowingHashtags
 {
-    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[[VObjectManager sharedManager] mainUser].hashtags copy]];
+    NSArray *hashtags = [[[VUser currentUser] hashtags] copy];
+    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithArray:hashtags];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags
@@ -156,7 +139,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f) && !CGSizeEqualToSize(scrollView.contentSize, CGSizeZero))
     {
-        [self fetchNextPageOfUserHashtags];
+        [self loadHashtagsWithPageType:VPageTypeNext];
     }
 }
 

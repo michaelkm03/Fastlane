@@ -10,15 +10,13 @@
 #import "VUser.h"
 #import "VConstants.h"
 #import "MBProgressHUD.h"
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager.h"
+#import "victorious-Swift.h"
 
 @interface VFollowersDataSource ()
 
 @property (nonatomic, strong) VUser *user;
-@property (nonatomic, strong) NSArray *followersForUser;
+@property (nonatomic, strong) NSMutableOrderedSet *followersForUser;
+@property (nonatomic, strong) VPageLoaderObjC *pageLoader;
 
 @end
 
@@ -32,6 +30,7 @@
     if ( self != nil )
     {
         _user = user;
+        _pageLoader = [[VPageLoaderObjC alloc] init];
     }
     return self;
 }
@@ -46,14 +45,12 @@
 
 - (NSString *)noContentTitle
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"NoFollowersTitle", @"" ) : NSLocalizedString( @"ProfileNoFollowersTitle", @"" );
+    return self.user.isCurrentUser  ? NSLocalizedString( @"NoFollowersTitle", @"" ) : NSLocalizedString( @"ProfileNoFollowersTitle", @"" );
 }
 
 - (NSString *)noContentMessage
 {
-    const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"NoFollowersMessage", @"" ) : NSLocalizedString( @"ProfileNoFollowersMessage", @"" );
+    return self.user.isCurrentUser ? NSLocalizedString( @"NoFollowersMessage", @"" ) : NSLocalizedString( @"ProfileNoFollowersMessage", @"" );
 }
 
 - (UIImage *)noContentImage
@@ -61,30 +58,36 @@
     return [UIImage imageNamed:@"noFollowersIcon"];
 }
 
+
 - (void)refreshWithPageType:(VPageType)pageType completion:(void(^)(BOOL success, NSError *error))completion
 {
-    
-    [[VObjectManager sharedManager] loadFollowersForUser:self.user pageType:pageType
-                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [_pageLoader loadPage:pageType createOperation:^RequestOperation *_Nonnull
      {
-         if ( pageType == VPageTypeFirst )
+         return [[FollowersOfUserOperation alloc] initWithUserID:self.user.remoteId.longLongValue];
+     }
+               completion:^(RequestOperation *_Nonnull operation, NSError *_Nullable error)
+     {
+         if ( error == nil )
          {
-             self.followersForUser = @[];
+             FollowersOfUserOperation *followersOperation = (FollowersOfUserOperation *)operation;
+             if ( pageType == VPageTypeFirst )
+             {
+                 // Start fresh on the first page
+                 [self.followersForUser removeAllObjects];
+             }
+             [self.followersForUser addObjectsFromArray:followersOperation.loadedUsers];
          }
          
-         self.followersForUser = [self.followersForUser arrayByAddingObjectsFromArray:resultObjects];
-         
-         completion( YES, nil );
-     }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO, error );
+         if ( completion != nil )
+         {
+             completion( error != nil, error );
+         }
      }];
 }
 
 - (NSArray *)users
 {
-    return self.followersForUser;
+    return self.followersForUser.array;
 }
 
 @end
