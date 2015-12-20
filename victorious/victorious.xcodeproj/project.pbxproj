@@ -599,6 +599,7 @@
 		A710F3F91C273F690013D8B8 /* PageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F3F81C273F690013D8B8 /* PageLoader.swift */; };
 		A710F3FB1C2758A80013D8B8 /* VHashtagFollowingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F3FA1C2758A80013D8B8 /* VHashtagFollowingTableViewController.swift */; };
 		A710F3FD1C275AC70013D8B8 /* VUserIsFollowingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F3FC1C275AC70013D8B8 /* VUserIsFollowingDataSource.swift */; };
+		A710F3FF1C275D930013D8B8 /* VFollowersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A710F3FE1C275D930013D8B8 /* VFollowersDataSource.swift */; };
 		A716F3EB1C050A15003068A2 /* RequestErrorTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3EA1C050A15003068A2 /* RequestErrorTypeTests.swift */; };
 		A716F3EC1C05110D003068A2 /* PollResultSummaryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */; };
 		A716F3EE1C053A99003068A2 /* VNewContentViewController+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716F3ED1C053A99003068A2 /* VNewContentViewController+Actions.swift */; };
@@ -2718,6 +2719,7 @@
 		A710F3F81C273F690013D8B8 /* PageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageLoader.swift; sourceTree = "<group>"; };
 		A710F3FA1C2758A80013D8B8 /* VHashtagFollowingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VHashtagFollowingTableViewController.swift; sourceTree = "<group>"; };
 		A710F3FC1C275AC70013D8B8 /* VUserIsFollowingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserIsFollowingDataSource.swift; sourceTree = "<group>"; };
+		A710F3FE1C275D930013D8B8 /* VFollowersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowersDataSource.swift; sourceTree = "<group>"; };
 		A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A716F3EA1C050A15003068A2 /* RequestErrorTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorTypeTests.swift; sourceTree = "<group>"; };
 		A716F3ED1C053A99003068A2 /* VNewContentViewController+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNewContentViewController+Actions.swift"; sourceTree = "<group>"; };
@@ -7688,6 +7690,7 @@
 			children = (
 				A7724FCF1B3241D100B1BBB3 /* VFollowersDataSource.h */,
 				A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */,
+				A710F3FE1C275D930013D8B8 /* VFollowersDataSource.swift */,
 				A7F711E71AE1D5A00086F729 /* VHashtagFollowingTableViewController.h */,
 				A7F711E81AE1D5A00086F729 /* VHashtagFollowingTableViewController.m */,
 				A710F3FA1C2758A80013D8B8 /* VHashtagFollowingTableViewController.swift */,
@@ -10936,6 +10939,7 @@
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				A7F843771BFD5A0B004C3D55 /* PersistentStoreContextBasic.swift in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				A710F3FF1C275D930013D8B8 /* VFollowersDataSource.swift in Sources */,
 				D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */,
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,

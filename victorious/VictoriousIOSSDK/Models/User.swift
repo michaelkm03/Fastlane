@@ -22,19 +22,19 @@ public struct User {
     public let userID: Int64
     public let email: String?
     public let name: String?
-    public let status: ProfileStatus
+    public let status: ProfileStatus?
     public let location: String?
     public let tagline: String?
     public let fanLoyalty: FanLoyalty?
-    public let isCreator: Bool
-    public let isDirectMessagingDisabled: Bool
-    public let isFollowedByMainUser: Bool
+    public let isCreator: Bool?
+    public let isDirectMessagingDisabled: Bool?
+    public let isFollowedByMainUser: Bool?
     public let numberOfFollowers: Int64?
     public let numberOfFollowing: Int64?
-    public let profileImageURL: String
+    public let profileImageURL: String?
     public let tokenUpdatedAt: NSDate?
-    public let previewImageAssets: [ImageAsset]
-    public let maxVideoUploadDuration: Int64
+    public let previewImageAssets: [ImageAsset]?
+    public let maxVideoUploadDuration: Int64?
 }
 
 extension User {
@@ -66,13 +66,23 @@ extension User {
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
         isCreator                   = json["isCreator"].bool ?? false
-        isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool ?? false
+        isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false
-        numberOfFollowers           = Int64(json["number_of_followers"].stringValue)
-        numberOfFollowing           = Int64(json["number_of_following"].stringValue)
-        profileImageURL             = json["profile_image"].string ?? ""
-        tokenUpdatedAt              = dateFormatter.dateFromString(json["token_updated_at"].stringValue)
-        previewImageAssets          = json["preview"]["assets"].arrayValue.flatMap { ImageAsset(json: $0) }
-        maxVideoUploadDuration      = Int64(json["max_video_duration"].stringValue) ?? 0
+        numberOfFollowers           = json["number_of_followers"].int64
+        numberOfFollowing           = json["number_of_following"].int64
+        profileImageURL             = json["profile_image"].string
+        maxVideoUploadDuration      = json["max_video_duration"].int64
+        
+        if let dateString = json["token_updated_at"].string {
+            self.tokenUpdatedAt = dateFormatter.dateFromString(dateString)
+        } else {
+            self.tokenUpdatedAt = nil
+        }
+    
+        if let previewImageAssets = json["preview"]["assets"].array {
+            self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }
+        } else {
+            self.previewImageAssets = nil
+        }
     }
 }

@@ -14,9 +14,7 @@
 
 @interface VFollowersDataSource ()
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) NSMutableOrderedSet *followersForUser;
-@property (nonatomic, strong) PageLoader *pageLoader;
 
 @end
 
@@ -58,29 +56,18 @@
     return [UIImage imageNamed:@"noFollowersIcon"];
 }
 
-
 - (void)refreshWithPageType:(VPageType)pageType completion:(void(^)(BOOL success, NSError *error))completion
 {
-    [_pageLoader loadPage:pageType createOperation:^RequestOperation *_Nonnull
-     {
-         return [[FollowersOfUserOperation alloc] initWithUserID:self.user.remoteId.longLongValue];
-     }
-               completion:^(RequestOperation *_Nonnull operation, NSError *_Nullable error)
+    [self loadPage:pageType completion:^(NSArray<VUser *> *_Nonnull users, NSError *_Nullable error)
      {
          if ( error == nil )
          {
-             FollowersOfUserOperation *followersOperation = (FollowersOfUserOperation *)operation;
              if ( pageType == VPageTypeFirst )
              {
                  // Start fresh on the first page
                  [self.followersForUser removeAllObjects];
              }
-             [self.followersForUser addObjectsFromArray:followersOperation.loadedUsers];
-         }
-         
-         if ( completion != nil )
-         {
-             completion( error != nil, error );
+             [self.followersForUser addObjectsFromArray:users];
          }
      }];
 }

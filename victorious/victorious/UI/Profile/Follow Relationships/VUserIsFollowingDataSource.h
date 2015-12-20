@@ -10,7 +10,7 @@
 
 #import "VUsersDataSource.h"
 
-@class VUser;
+@class VUser, PageLoader;
 
 /**
  Data source for VUsersViewController that loads a list of users that the
@@ -24,5 +24,9 @@
 - (instancetype)initWithUser:(VUser *)user NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+@property (nonatomic, strong) PageLoader *pageLoader;
+
+@property (nonatomic, strong) VUser *user;
 
 @end

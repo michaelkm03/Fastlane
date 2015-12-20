@@ -10,7 +10,7 @@
 
 #import "VUsersDataSource.h"
 
-@class VUser;
+@class VUser, PageLoader;
 
 /**
  An object designed to be plugged in to an instance of VUsersViewController that
@@ -24,5 +24,9 @@
 - (instancetype)initWithUser:(VUser *)user NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+@property (nonatomic, strong) VUser *user;
+
+@property (nonatomic, strong) PageLoader *pageLoader;
 
 @end

@@ -14,9 +14,7 @@
 
 @interface VUserIsFollowingDataSource ()
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) NSMutableOrderedSet *followedUsers;
-@property (nonatomic, strong) PageLoader *pageLoader;
 
 @end
 
@@ -56,6 +54,22 @@
 - (UIImage *)noContentImage
 {
     return [UIImage imageNamed:@"noFollowersIcon"];
+}
+
+- (void)refreshWithPageType:(VPageType)pageType completion:(void(^)(BOOL success, NSError *error))completion
+{
+    [self loadPage:pageType completion:^(NSArray<VUser *> *_Nonnull users, NSError *_Nullable error)
+    {
+        if ( error == nil )
+        {
+            if ( pageType == VPageTypeFirst )
+            {
+                // Start fresh on the first page
+                [self.followedUsers removeAllObjects];
+            }
+            [self.followedUsers addObjectsFromArray:users];
+        }
+    }];
 }
 
 - (NSArray *)users

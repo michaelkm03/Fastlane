@@ -10,8 +10,16 @@ import Foundation
 
 public extension VUserIsFollowingDataSource {
     
-    func refreshWith( pageType pageType: VPageType, completion: (Bool, NSError?) -> () ) {
+    func loadPage( pageType: VPageType, completion: ([VUser], NSError?) -> () ) {
+        let userID = self.user.remoteId.longLongValue
         
+        self.pageLoader.loadPage( pageType,
+            createOperation: {
+                return UsersFollowedByUser(userID: userID)
+            },
+            completion:{ (operation, error) in
+                completion( operation?.loadedUsers ?? [], error )
+            }
+        )
     }
-    
 }
