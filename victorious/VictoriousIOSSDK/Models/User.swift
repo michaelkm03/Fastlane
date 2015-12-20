@@ -68,10 +68,10 @@ extension User {
         isCreator                   = json["isCreator"].bool ?? false
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false
-        numberOfFollowers           = json["number_of_followers"].int64
-        numberOfFollowing           = json["number_of_following"].int64
+        numberOfFollowers           = Int64(json["number_of_followers"].stringValue)
+        numberOfFollowing           = Int64(json["number_of_following"].stringValue)
         profileImageURL             = json["profile_image"].string
-        maxVideoUploadDuration      = json["max_video_duration"].int64
+        maxVideoUploadDuration      = Int64(json["max_video_duration"].stringValue)
         
         if let dateString = json["token_updated_at"].string {
             self.tokenUpdatedAt = dateFormatter.dateFromString(dateString)
