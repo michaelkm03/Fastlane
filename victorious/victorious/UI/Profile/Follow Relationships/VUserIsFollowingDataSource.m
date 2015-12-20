@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) NSMutableOrderedSet *followedUsers;
-@property (nonatomic, strong) VPageLoaderObjC *pageLoader;
+@property (nonatomic, strong) PageLoader *pageLoader;
 
 @end
 
@@ -30,7 +30,7 @@
     if ( self != nil )
     {
         _user = user;
-        _pageLoader = [[VPageLoaderObjC alloc] init];
+        _pageLoader = [[PageLoader alloc] init];
     }
     return self;
 }
@@ -56,32 +56,6 @@
 - (UIImage *)noContentImage
 {
     return [UIImage imageNamed:@"noFollowersIcon"];
-}
-
-- (void)refreshWithPageType:(VPageType)pageType completion:(void(^)(BOOL success, NSError *error))completion
-{
-    [_pageLoader loadPage:pageType createOperation:^RequestOperation *_Nonnull
-    {
-        return [[FollowersOfUserOperation alloc] initWithUserID:self.user.remoteId.longLongValue];
-    }
-               completion:^(RequestOperation *_Nonnull operation, NSError *_Nullable error)
-    {
-        if ( error == nil )
-        {
-            FollowersOfUserOperation *followersOperation = (FollowersOfUserOperation *)operation;
-            if ( pageType == VPageTypeFirst )
-            {
-                // Start fresh on the first page
-                [self.followedUsers removeAllObjects];
-            }
-            [self.followedUsers addObjectsFromArray:followersOperation.loadedUsers];
-        }
-        
-        if ( completion != nil )
-        {
-            completion( error != nil, error );
-        }
-    }];
 }
 
 - (NSArray *)users

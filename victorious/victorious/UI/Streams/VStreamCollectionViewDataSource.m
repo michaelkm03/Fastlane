@@ -26,6 +26,7 @@
     {
         _visibleStreamItems = [[NSOrderedSet alloc] init];
         _stream = stream;
+        _pageLoader = [[PageLoader alloc] init];
     }
     return self;
 }

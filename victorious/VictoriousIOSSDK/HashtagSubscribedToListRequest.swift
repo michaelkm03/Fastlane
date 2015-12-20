@@ -14,7 +14,7 @@ public struct HashtagSubscribedToListRequest: PaginatorPageable, ResultBasedPage
     
     public let paginator: StandardPaginator
     
-    public init(paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200) ) {
+    public init(paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
     }
     

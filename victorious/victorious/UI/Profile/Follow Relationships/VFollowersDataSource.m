@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) NSMutableOrderedSet *followersForUser;
-@property (nonatomic, strong) VPageLoaderObjC *pageLoader;
+@property (nonatomic, strong) PageLoader *pageLoader;
 
 @end
 
@@ -30,7 +30,7 @@
     if ( self != nil )
     {
         _user = user;
-        _pageLoader = [[VPageLoaderObjC alloc] init];
+        _pageLoader = [[PageLoader alloc] init];
     }
     return self;
 }

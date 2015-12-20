@@ -118,6 +118,8 @@
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
+        
+        _pageLoader = [[PageLoader alloc] init];
     }
     return self;
 }

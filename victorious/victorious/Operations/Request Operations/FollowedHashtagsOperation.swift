@@ -20,6 +20,11 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
+    convenience override init() {
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200)
+        self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
+    }
+    
     convenience init( hashtagID: Int64 ) {
         self.init( request: HashtagSubscribedToListRequest() )
     }

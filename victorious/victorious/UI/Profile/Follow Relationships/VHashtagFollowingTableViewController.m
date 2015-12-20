@@ -35,7 +35,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VPageLoaderObjC *pageLoader;
 
 @end
 
@@ -47,7 +46,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _pageLoader = [[VPageLoaderObjC alloc] init];
+        _pageLoader = [[PageLoader alloc] init];
     }
     return self;
 }
@@ -69,7 +68,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     [super viewWillAppear:animated];
     NSArray *hashtags = [[[VUser currentUser] hashtags] copy];
     [self updateUserHashtags:hashtags];
-    [self loadHashtagsWithPageType:VPageTypeFirst];
+    [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
 }
 
 - (void)updateBackground
@@ -89,21 +88,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     self.tableView.backgroundView = backgroundView;
-}
-
-- (void)loadHashtagsWithPageType:(VPageType)pageType
-{
-    [self.pageLoader loadPage:pageType
-              createOperation:^RequestOperation *_Nonnull
-     {
-         return [[FollowedHashtagsOperation alloc] init];
-     }
-                   completion:^(RequestOperation *_Nonnull operation, NSError *_Nullable error)
-     {
-         FollowedHashtagsOperation* followedHashtagsOperation = (FollowedHashtagsOperation *)operation;
-         self.fetchedHashtags = YES;
-         [self updateUserHashtags:followedHashtagsOperation.loadedHashtags];
-     }];
 }
 
 - (void)updateFollowingHashtags
@@ -139,7 +123,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f) && !CGSizeEqualToSize(scrollView.contentSize, CGSizeZero))
     {
-        [self loadHashtagsWithPageType:VPageTypeNext];
+        [self loadHashtagsWithPageType:VPageTypeNext completion:nil];
     }
 }
 

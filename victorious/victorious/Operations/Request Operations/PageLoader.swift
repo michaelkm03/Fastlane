@@ -8,12 +8,13 @@
 
 import Foundation
 
-class PageLoader<T: PaginatedOperation> {
+class PageLoader: NSObject {
     
     private (set) var currentOperation: RequestOperation?
     private (set) var isLoading: Bool = false
     
-    func loadPage( pageType: VPageType, createOperation:Void -> RequestOperation, completion: (operation: T, error: NSError?) -> Void ) {
+    func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
+        
         guard !isLoading else {
             return
         }
@@ -21,26 +22,20 @@ class PageLoader<T: PaginatedOperation> {
         let operationToQueue: RequestOperation?
         switch pageType {
         case .First:
-            operationToQueue = createOperation()
+            operationToQueue = createOperation() as? RequestOperation
         case .Next:
             operationToQueue = (self.currentOperation as? T)?.next() as? RequestOperation
         case .Previous:
             operationToQueue = (self.currentOperation as? T)?.prev() as? RequestOperation
         }
-        
-        if let operation = operationToQueue {
-            self.isLoading = true
-            operation.queue() { error in
-                self.isLoading = false
-                completion( operation: operation as! T, error: error )
-            }
+        if let operation = operationToQueue,
+            typedOperation = operationToQueue as? T {
+                self.currentOperation = operation
+                self.isLoading = true
+                operation.queue() { error in
+                    self.isLoading = false
+                    completion?( operation: typedOperation, error: error )
+                }
         }
-    }
-}
-
-@objc class VPageLoaderObjC: NSObject {
-    
-    func loadPage( pageType: VPageType, createOperation:Void -> RequestOperation, completion: (operation: RequestOperation, error: NSError?) -> Void ) {
-        
     }
 }

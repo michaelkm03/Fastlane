@@ -11,40 +11,34 @@ import VictoriousIOSSDK
 
 public extension VStreamCollectionViewDataSource {
     
+    var isLoading: Bool {
+        return self.pageLoader.isLoading
+    }
+    
     /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
-    public func loadPage( pageType: VPageType, withSuccess success:()->(), failure:(NSError?)->()) {
-        
-        let nextOperation: StreamOperation?
-        switch pageType {
-        case .First:
-            if let apiPath = self.stream?.apiPath  {
-                nextOperation = StreamOperation(apiPath: (apiPath) )
-            } else {
-                nextOperation = nil
-            }
-        case .Next:
-            nextOperation = self.streamLoadOperation?.next()
-        case .Previous:
-            nextOperation = self.streamLoadOperation?.prev()
+    public func loadPage( pageType: VPageType, completion:(NSError?)->()) {
+        guard let apiPath = self.stream?.apiPath else {
+            return
         }
         
-        if let operation = nextOperation {
-            self.isLoading = true
-            operation.queue() { error in
-                self.isLoading = false
+        self.pageLoader.loadPage( pageType,
+            createOperation: {
+                return StreamOperation(apiPath: (apiPath) )
+            },
+            completion: { (operation, error) in
                 if let error = error {
-                    failure( error )
-                } else {
-                    success()
+                    completion( error )
+                
+                } else if let operation = operation {
+                    let existing = self.visibleStreamItems
+                    let loaded = operation.results
+                    self.visibleStreamItems = NSOrderedSet(array: existing + loaded)
+                    completion( nil )
                 }
-                let existing = self.visibleStreamItems
-                let loaded = operation.results
-                self.visibleStreamItems = NSOrderedSet(array: existing + loaded)
             }
-            self.streamLoadOperation = operation
-        }
+        )
     }
     
     public func removeStreamItem(streamItem: VStreamItem) {
