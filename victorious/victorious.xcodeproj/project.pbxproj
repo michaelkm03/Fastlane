@@ -1208,7 +1208,7 @@
 		C3186DFB1BACF0E300F4BCFF /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */; };
 		C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */; };
 		C3209CA41BF148DD00EA229D /* TrendingHashtagRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */; };
-		C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */; };
+		C3209CA81BF1519F00EA229D /* HashtagSubscribedToListRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA71BF1519F00EA229D /* HashtagSubscribedToListRequestTests.swift */; };
 		C3209CAA1BF1520900EA229D /* HashtagSubscribedToListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CA91BF1520900EA229D /* HashtagSubscribedToListRequest.swift */; };
 		C3209CB01BF163F300EA229D /* HashtagSearchResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */; };
 		C3209CB21BF1644700EA229D /* HashtagSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */; };
@@ -3627,7 +3627,7 @@
 		C3186DFA1BACF0E300F4BCFF /* AchievementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
 		C3186DFC1BACF17100F4BCFF /* AchievementAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementAnimator.swift; sourceTree = "<group>"; };
 		C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingHashtagRequestTests.swift; sourceTree = "<group>"; };
-		C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingHashtagsRequestTests.swift; sourceTree = "<group>"; };
+		C3209CA71BF1519F00EA229D /* HashtagSubscribedToListRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSubscribedToListRequestTests.swift; sourceTree = "<group>"; };
 		C3209CA91BF1520900EA229D /* HashtagSubscribedToListRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSubscribedToListRequest.swift; sourceTree = "<group>"; };
 		C3209CAF1BF163F300EA229D /* HashtagSearchResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchResponseTests.swift; sourceTree = "<group>"; };
 		C3209CB11BF1644700EA229D /* HashtagSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchRequest.swift; sourceTree = "<group>"; };
@@ -5238,7 +5238,7 @@
 				67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */,
 				67A42FC61BF298050087FBE9 /* FollowersListRequestTest.swift */,
 				C32D8BD51BF2D36200AB5085 /* FollowHashtagRequestTests.swift */,
-				C3209CA71BF1519F00EA229D /* FollowingHashtagsRequestTests.swift */,
+				C3209CA71BF1519F00EA229D /* HashtagSubscribedToListRequestTests.swift */,
 				6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */,
 				C352CF371BF2834E00790921 /* FollowUserRequestTests.swift */,
 				C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */,
@@ -10460,7 +10460,7 @@
 				0300AA651BF29305000A121D /* AccountUpdateRequestTests.swift in Sources */,
 				67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */,
 				67FD54CB1BF69A5300CF52F7 /* DeleteConversationRequestTests.swift in Sources */,
-				C3209CA81BF1519F00EA229D /* FollowingHashtagsRequestTests.swift in Sources */,
+				C3209CA81BF1519F00EA229D /* HashtagSubscribedToListRequestTests.swift in Sources */,
 				A798259C1C0FB26500C53A07 /* CommentFindRequestTests.swift in Sources */,
 				67FD54C91BF69A4500CF52F7 /* DeleteCommentRequestTests.swift in Sources */,
 				A71F41F51C040A1A00131BE6 /* SequenceRepostersRequestTests.swift in Sources */,

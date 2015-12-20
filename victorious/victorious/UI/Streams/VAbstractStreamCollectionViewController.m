@@ -311,11 +311,11 @@
          }
          [self.refreshControl endRefreshing];
          
-         [self didFinishLoadingPageType:pageType];
+         [self didFinishLoadingWithPageType:pageType];
      }];
 }
 
-- (void)didFinishLoadingPageType:(VPageType)pageType
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
     // For subclasses
 }
