@@ -122,7 +122,7 @@
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VUser currentUser] != nil;
     if ( shouldRefresh )
     {
-        [self refreshWithCompletion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -271,7 +271,7 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self refreshWithCompletion:^
+    [self loadPage:VPageTypeFirst completion:^
      {
          [self updateRowCount];
      }];
@@ -283,9 +283,9 @@
     self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
+- (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if (self.streamDataSource.isLoading)
+    if ( self.streamDataSource.isLoading )
     {
         [self.refreshControl endRefreshing];
         return;
@@ -296,31 +296,28 @@
         [self.refreshControl beginRefreshing];
     }
     
-    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
-    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
-     ^{
+    [self.streamDataSource loadPage:VPageTypeFirst completion:^void(NSError *_Nullable error)
+     {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
-         BOOL viewIsVisible = self.parentViewController != nil;
-         if ( viewIsVisible )
+         if ( error != nil )
          {
-             if ( wasUserPostAllowed != self.currentStream.isUserPostAllowed.boolValue )
-             {
-                 [self updateNavigationItems];
-             }
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
          }
          
-         if (completionBlock)
+         if ( completion != nil )
          {
-             completionBlock();
+             completion();
          }
          [self.refreshControl endRefreshing];
-     }
-                            failure:^(NSError *error)
-     {
-         [self.refreshControl endRefreshing];
-#warning TODO: Show any REAL error (this excludes last page or no network errors)
+         
+         [self didFinishLoadingPageType:pageType];
      }];
+}
+
+- (void)didFinishLoadingPageType:(VPageType)pageType
+{
+    // For subclasses
 }
 
 - (void)positionRefreshControl
@@ -438,17 +435,19 @@
     
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
-    [self.streamDataSource loadPage:VPageTypeNext withSuccess:
-     ^{
-         __weak typeof(self) welf = self;
-         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                        {
-                            [welf.collectionView flashScrollIndicators];
-                        });
-     }
-                            failure:^(NSError *_Nullable error) {
-                                // TODO: Show error in non-disruptive way
-                            }];
+    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
+     {
+         [self flashScrollIndicatorsWithDelay:0.05f];
+     }];
+}
+
+- (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
+{
+    __weak typeof(self) welf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [welf.collectionView flashScrollIndicators];
+                   });
 }
 
 #pragma mark - UIScrollViewDelegate

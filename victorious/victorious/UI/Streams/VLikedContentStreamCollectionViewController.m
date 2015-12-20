@@ -69,7 +69,7 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
     if ( self.shouldRefreshOnView )
     {
         [self.refreshControl beginRefreshing];
-        [self refreshWithCompletion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
         self.shouldRefreshOnView = NO;
     }
 }
@@ -90,20 +90,8 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
     self.shouldRefreshOnView = YES;
 }
 
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
-{
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         
-         if ( completionBlock != nil )
-         {
-             completionBlock();
-         }
-     }];
-}
-
-- (void)dataSourceDidRefresh
+// This is an override of a superclass method
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
     if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {

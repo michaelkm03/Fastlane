@@ -137,14 +137,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
 }
 
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
+// This is an override of a superclass method
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         [self updateNavigationItems];
-         [self updateUserFollowingStatus];
-     }];
+    [self dataSourceDidRefresh];
+    [self updateNavigationItems];
+    [self updateUserFollowingStatus];
 }
 
 - (void)updateUserFollowingStatus

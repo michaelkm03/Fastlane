@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     
-    [self refreshWithCompletion:nil];
+    [self loadPage:VPageTypeFirst completion:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
@@ -48,24 +48,12 @@
     [self.streamDataSource unloadStream];
     if ( [VUser currentUser] != nil )
     {
-        [self refreshWithCompletion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
     }
 }
 
-- (void)refreshWithCompletion:(void(^)(void))completionBlock
-{
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         
-         if ( completionBlock != nil )
-         {
-             completionBlock();
-         }
-     }];
-}
-
-- (void)dataSourceDidRefresh
+// This is an override of a superclass method
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
     if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {

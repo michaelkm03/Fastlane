@@ -1220,7 +1220,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)reloadComments
 {
-    [self.viewModel loadComments:VPageTypeFirst];
+    [self.viewModel loadComments:VPageTypeFirst completion:nil];
 }
 
 - (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
@@ -1394,12 +1394,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)shouldLoadNextPage
 {
-    [self.viewModel loadComments:VPageTypeNext];
+    [self.viewModel loadComments:VPageTypeNext completion:nil];
 }
 
 - (void)shouldLoadPreviousPage
 {
-    [self.viewModel loadComments:VPageTypePrevious];
+    [self.viewModel loadComments:VPageTypePrevious completion:nil];
 }
 
 #pragma mark - VEndCardViewControllerDelegate
