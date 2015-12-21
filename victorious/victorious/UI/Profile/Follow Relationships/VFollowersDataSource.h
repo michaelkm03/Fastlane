@@ -10,7 +10,7 @@
 
 #import "VUsersDataSource.h"
 
-@class VUser, PageLoader;
+@class VUser, PaginatedDataSource;
 
 /**
  An object designed to be plugged in to an instance of VUsersViewController that
@@ -27,6 +27,6 @@
 
 @property (nonatomic, strong) VUser *user;
 
-@property (nonatomic, strong) PageLoader *pageLoader;
+@property (nonatomic, strong) PaginatedDataSource *paginatedDataSource;
 
 @end

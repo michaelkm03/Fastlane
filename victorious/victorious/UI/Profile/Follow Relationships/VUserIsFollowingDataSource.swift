@@ -13,7 +13,7 @@ public extension VUserIsFollowingDataSource {
     func loadPage( pageType: VPageType, completion: ([VUser], NSError?) -> () ) {
         let userID = self.user.remoteId.longLongValue
         
-        self.pageLoader.loadPage( pageType,
+        self.paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return UsersFollowedByUser(userID: userID)
             },

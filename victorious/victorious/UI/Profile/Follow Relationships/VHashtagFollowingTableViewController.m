@@ -46,7 +46,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _pageLoader = [[PageLoader alloc] init];
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }

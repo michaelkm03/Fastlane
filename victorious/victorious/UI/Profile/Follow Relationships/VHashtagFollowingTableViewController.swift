@@ -11,7 +11,7 @@ import Foundation
 public extension VHashtagFollowingTableViewController {
     
     public func loadHashtags( pageType pageType: VPageType, completion:(NSError? -> ())? ) {
-        self.pageLoader.loadPage( pageType,
+        self.paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return FollowedHashtagsOperation()
             },

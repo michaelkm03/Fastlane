@@ -35,21 +35,9 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
-@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation, PageLoader;
+@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation, PaginatedDataSource;
 
 @protocol VContentViewViewModelDelegate <NSObject>
-
-/**
- * Called whenever new comments are updated.
- * @param pageType The pagination context for which the comments fetch occurred.
- */
-- (void)didUpdateCommentsWithPageType:(VPageType)pageType;
-
-/**
- * Called when a page of comments is loaded that contains the comment Id,
- * currently designed to work with deep linking.
- */
-- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId;
 
 /**
  * Called whenever the server returns an updated state of this content.
@@ -153,7 +141,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
 @property (nonatomic, readonly) NSString *numberOfVotersText;
-@property (nonatomic, strong) PageLoader *pageLoader;
+@property (nonatomic, strong) PaginatedDataSource *commentsDataSource;
 @property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
 
 /**

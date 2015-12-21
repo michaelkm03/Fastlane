@@ -177,7 +177,7 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.paginatedDataSource.visibleItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
@@ -285,7 +285,7 @@
 
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if ( self.streamDataSource.isLoading )
+    if ( self.streamDataSource.paginatedDataSource.isLoading )
     {
         [self.refreshControl endRefreshing];
         return;
@@ -358,7 +358,7 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = !self.streamDataSource.isLoading;
+    const BOOL canLoadNextPage = !self.streamDataSource.paginatedDataSource.isLoading;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
@@ -428,7 +428,9 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isLoading)
+    if ( self.collectionView.visibleCells.count == 0 ||
+         self.streamDataSource.paginatedDataSource.visibleItems.count == 0 ||
+         self.streamDataSource.paginatedDataSource.isLoading )
     {
         return;
     }
@@ -485,11 +487,6 @@
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
-}
-
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
-{
-    
 }
 
 @end

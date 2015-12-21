@@ -53,7 +53,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
                     uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
                 }
                 if let sequenceID = pollResult.sequenceID {
-                    uniqueElements[ "sequenceId" ] = NSNumber(longLong: sequenceID)
+                    uniqueElements[ "sequenceId" ] = String(sequenceID)
                 }
                 guard !uniqueElements.isEmpty else {
                     continue

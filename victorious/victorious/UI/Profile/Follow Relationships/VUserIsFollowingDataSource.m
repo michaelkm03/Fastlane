@@ -28,7 +28,7 @@
     if ( self != nil )
     {
         _user = user;
-        _pageLoader = [[PageLoader alloc] init];
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
