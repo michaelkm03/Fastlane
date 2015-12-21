@@ -154,6 +154,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
              successBlock();
          }
          self.isLoading = NO;
+         
      }
                                                failBlock:^(NSOperation *operation, NSError *error)
      {

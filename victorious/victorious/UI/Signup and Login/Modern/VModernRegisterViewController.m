@@ -168,7 +168,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)onContinue:(id)sender
 {
-    if ([self shouldSignUp])
+    if ([self shouldSignUpForced:YES])
     {
         [self.view endEditing:YES];
         [self.delegate registerWithEmail:self.emailField.text
@@ -214,7 +214,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self onContinue:nil];
     }
     
-    return [self shouldSignUp];
+    return [self shouldSignUpForced:NO];
 }
 
 #pragma mark - Private Methods
@@ -259,7 +259,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (BOOL)shouldSignUp
+- (BOOL)shouldSignUpForced:(BOOL)forced
 {
     NSError *validationError;
     BOOL shouldSignup = YES;
@@ -269,7 +269,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.emailField showInvalidText:validationError.localizedDescription
                                 animated:YES
                                    shake:YES
-                                  forced:YES];
+                                  forced:forced];
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
@@ -283,7 +283,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.passwordField showInvalidText:validationError.localizedDescription
                                    animated:YES
                                       shake:YES
-                                     forced:YES];
+                                     forced:forced];
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
@@ -297,7 +297,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)signup
 {
     [self.view endEditing:YES];
-    if ([self shouldSignUp])
+    if ([self shouldSignUpForced:YES])
     {
         [self.delegate registerWithEmail:self.emailField.text
                                           password:self.passwordField.text

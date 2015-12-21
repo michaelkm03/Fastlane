@@ -7,24 +7,19 @@
 //
 
 #import "VModernLoginViewController.h"
-
-// Libraries
 #import <CCHLinkTextView/CCHLinkTextView.h>
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-
-// Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 #import "VDependencyManager+VTracking.h"
+#import "victorious-Swift.h"
 
 @import CoreText;
 
@@ -226,7 +221,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self login:textField];
     }
     
-    return [self shouldLogin];
+    return [self shouldLoginForced:NO];
 }
 
 #pragma mark - Private Methods
@@ -275,7 +270,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)login:(id)sender
 {
-    if ([self shouldLogin])
+    if ([self shouldLoginForced:YES])
     {
         id <VLoginFlowControllerDelegate> flowControllerResponder = [self targetForAction:@selector(loginWithEmail:password:completion:)
                                                                                 withSender:self];
@@ -313,7 +308,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (BOOL)shouldLogin
+- (BOOL)shouldLoginForced:(BOOL)forced
 {
     NSError *validationError;
     BOOL shouldLogin = YES;
@@ -324,7 +319,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.emailField showInvalidText:validationError.localizedDescription
                                 animated:YES
                                    shake:YES
-                                  forced:YES];
+                                  forced:forced];
         shouldLogin = NO;
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
@@ -343,7 +338,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         [self.passwordField showInvalidText:validationError.localizedDescription
                                        animated:YES
                                           shake:YES
-                                         forced:YES];
+                                         forced:forced];
         shouldLogin = NO;
         
         NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };

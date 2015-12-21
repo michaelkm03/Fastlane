@@ -20,6 +20,7 @@ extern NSString * const VTrackingEventApplicationFirstInstall; //< Backend mappi
 extern NSString * const VTrackingEventApplicationDidLaunch; //< Backend mapping: app-init
 extern NSString * const VTrackingEventApplicationDidEnterBackground; //< Backend mapping: app-stop; Params: SessionTime
 extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend mapping: app-start
+extern NSString * const VTrackingEventApplicationPerformanceMeasured; //< Backend mapping: app-time
 
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
@@ -294,6 +295,10 @@ extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level w
  */
 extern NSString * const VTrackingKeyErrorType;
 extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additional information about the error, value should be a string
+
+extern NSString * const VTrackingKeyType;
+extern NSString * const VTrackingKeySubtype;
+extern NSString * const VTrackingKeyDuration; //< Milliseconds
 
 // Tracking Event Values
 // ContentType values

@@ -14,6 +14,7 @@
 #import "VFollowControl.h"
 #import "VDefaultProfileButton.h"
 #import <KVOController/FBKVOController.h>
+#import "victorious-Swift.h"
 
 static const CGFloat kUserCellHeight = 51.0f;
 
@@ -44,6 +45,12 @@ static const CGFloat kUserCellHeight = 51.0f;
     [self.userButton addBorderWithWidth:1.0 andColor:[UIColor whiteColor]];
     self.userButton.dependencyManager = self.dependencyManager;
     self.contentView.backgroundColor = [UIColor clearColor];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.followControl removeFromSuperview];
+        self.followControl = nil;
+    }
 }
 
 #pragma mark - Public

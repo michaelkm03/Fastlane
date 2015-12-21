@@ -25,6 +25,7 @@
 #import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VInboxViewController.h"
+#import "victorious-Swift.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -337,6 +338,11 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)fetchNotificationCount
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        return;
+    }
+    
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
     };

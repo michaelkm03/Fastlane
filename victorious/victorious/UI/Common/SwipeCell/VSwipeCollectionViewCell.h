@@ -13,6 +13,8 @@
 
 @class VSwipeViewController;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A collection view cell subclass that provides integration with a VSwipeViewController
  instance to provide swipe-to-reveal utility button on the cell
@@ -26,17 +28,19 @@
  */
 - (void)setupSwipeView;
 
-@property (nonatomic, strong) VSwipeViewController *swipeViewController;
+@property (nonatomic, strong, nullable) VSwipeViewController *swipeViewController;
 
 /**
  A required delegate for integration with VSwipeViewController.
  */
-@property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> commentsUtilitiesDelegate;
+@property (nonatomic, weak, nullable) id<VCommentCellUtilitiesDelegate> commentsUtilitiesDelegate;
 
 /**
  A helper that handles responding to the edit, delete and flag utility
  buttons provided by VSipeViewController.
  */
-@property (nonatomic, strong) VCommentCellUtilitiesController *commentCellUtilitiesController;
+@property (nonatomic, strong, nullable) VCommentCellUtilitiesController *commentCellUtilitiesController;
 
 @end
+
+NS_ASSUME_NONNULL_END

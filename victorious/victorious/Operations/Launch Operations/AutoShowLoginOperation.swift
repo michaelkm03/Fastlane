@@ -58,21 +58,33 @@ class AutoShowLoginOperation: Operation {
         
         beganExecuting()
         
-        dispatch_async(dispatch_get_main_queue(), {
-            let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
-                withCompletion: { (success: Bool) in
-                    self.delegate?.hideLoginViewController() {
-                        self.finishedExecuting()
-                    }
-            })
+        dispatch_async(dispatch_get_main_queue()) {
+            
+            let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default) { success in
+                self.delegate?.hideLoginViewController() {
+                    self.finishedExecuting()
+                }
+            }
+            
+            let appTimingTracker = DefaultTimingTracker.sharedInstance()
+            
             if let loginVC = loginVC {
                 self.delegate?.showLoginViewController(loginVC)
-            }
-            else {
+                
+                // The following event will only be measured when auto login will be presented
+                appTimingTracker.endEvent(type: VAppTimingEventTypeShowRegistration)
+                
+                // Reset this event, since it's only valid when the login view won't be presented
+                appTimingTracker.resetEvent(type: VAppTimingEventTypeAppStart)
+                
+            } else {
                 // If the loginVC is nil we should not show and just finish up
                 self.finishedExecuting()
+                
+                // Reset this event, since it's only valid when the login view will be presented
+                appTimingTracker.resetEvent(type: VAppTimingEventTypeShowRegistration)
             }
-        })
+        }
     }
     
 }

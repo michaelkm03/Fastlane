@@ -59,6 +59,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
+@property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
 
@@ -76,6 +77,9 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
         _launchOperationQueue.maxConcurrentOperationCount = 1;
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
+        
+        [[DefaultTimingTracker sharedInstance] setDependencyManager:dependencyManager];
+        _appTimingTracker = [DefaultTimingTracker sharedInstance];
     }
     return self;
 }
@@ -156,7 +160,10 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupFirstLaunchOperations];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self setupFirstLaunchOperations];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

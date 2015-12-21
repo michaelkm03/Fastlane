@@ -92,4 +92,6 @@ extern NSString * const kLoggedInChangedNotification;
 
 - (BOOL)loginWithExistingToken;
 
+- (BOOL)loginWithAnonymousUserToken;
+
 @end

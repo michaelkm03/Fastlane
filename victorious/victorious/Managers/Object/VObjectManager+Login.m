@@ -313,6 +313,19 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     return NO;
 }
 
+- (BOOL)loginWithAnonymousUserToken
+{
+    VUser *newAnonymousUser = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    
+    newAnonymousUser.remoteId = [NSNumber numberWithLongLong:[AgeGate anonymousUserID].longLongValue];
+    newAnonymousUser.token = [AgeGate anonymousUserToken];
+    
+    VLoginType loginType = VLoginTypeAnonymous;
+    [self loggedInWithUser:newAnonymousUser loginType:loginType];
+    
+    return self.mainUser != nil;
+}
+
 #pragma mark - LoggedIn
 
 - (void)loggedInWithUser:(VUser *)user loginType:(VLoginType)loginType
@@ -327,6 +340,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
         
         [[[VStoredLogin alloc] init] saveLoggedInUserToDisk:self.mainUser loginType:loginType];
+        
+        if ([AgeGate isAnonymousUser])
+        {
+            return;
+        }
         
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
         [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];

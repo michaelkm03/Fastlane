@@ -119,6 +119,11 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     self.privacyPolicyButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationPrivacy;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - Storyboard
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

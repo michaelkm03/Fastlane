@@ -32,6 +32,7 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
 static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
+
 @implementation VUserManager
 
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock

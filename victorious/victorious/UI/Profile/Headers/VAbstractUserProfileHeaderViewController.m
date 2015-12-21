@@ -16,6 +16,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -207,6 +208,12 @@
     self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.primaryActionButton removeFromSuperview];
+        self.primaryActionButton = nil;
+    }
 }
 
 #pragma mark - Actions
