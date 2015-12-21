@@ -14,6 +14,7 @@
 #import "VConstants.h"
 #import "VUser.h"
 #import "VObjectManager+Users.h"
+#import "victorious-Swift.h"
 
 @interface VFollowingHelper ()
 
@@ -54,8 +55,8 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     NSParameterAssert(viewControllerToPresentOn != nil);
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
-    
-    BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
+
+    BOOL tryingToFollowSelf = [user.remoteId isEqual: VUser.currentUser.remoteId];
     
     if ( tryingToFollowSelf )
     {
