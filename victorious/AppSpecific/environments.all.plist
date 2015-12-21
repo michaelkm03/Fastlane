@@ -28,7 +28,7 @@
 	</dict>
 	<dict>
 		<key>appID</key>
-		<integer>81</integer>
+		<integer>1</integer>
 		<key>baseURL</key>
 		<string>https://api.getvictorious.com</string>
 		<key>name</key>

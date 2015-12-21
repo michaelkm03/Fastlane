@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>dev-Leachy Peachy</string>
+	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}dev-leachypeachy99</string>
+	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -29,11 +29,11 @@
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>Leachy Peachy Dev</string>
+	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
-	<string></string>
+	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
-	<string></string>
+	<string>Victorious-dev</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -66,9 +66,9 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string></string>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string></string>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
