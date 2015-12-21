@@ -40,10 +40,16 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
             
             let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.sequenceID)] )
             for pollResult in pollResults where pollResult.sequenceID != nil {
-                let uniqueElements = [
-                    "answerId" : NSNumber(longLong: pollResult.answerID),
-                    "sequenceId" : String(pollResult.sequenceID)
-                ]
+                var uniqueElements = [String : AnyObject]()
+                if let answerID = pollResult.answerID {
+                    uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
+                }
+                if let sequenceID = pollResult.sequenceID {
+                    uniqueElements[ "sequenceId" ] = NSNumber(longLong: sequenceID)
+                }
+                guard !uniqueElements.isEmpty else {
+                    continue
+                }
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
                 persistentResult.sequenceId = String(self.sequenceID)
