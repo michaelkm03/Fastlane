@@ -38,7 +38,7 @@ class PollResultSummaryRequestTests: XCTestCase {
         do {
             let pollResultRequest = PollResultSummaryRequest(userID: 101)
             
-            let results = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results: [PollResult] = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             if results.count == 15 {
                 XCTAssertEqual(results[0].sequenceID, 14609)
                 XCTAssertEqual(results[0].answerID, 744)
