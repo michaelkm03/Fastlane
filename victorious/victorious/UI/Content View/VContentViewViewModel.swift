@@ -30,9 +30,12 @@ public extension VContentViewViewModel {
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
                     let sequenceID = Int64(self.sequence.remoteId)!
-                    let operation = SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
-                    self.loadCommentsOperation = operation
-                })
+                    self.pageLoader.loadPage( .First, createOperation: {
+                        return SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
+                    })
+                }
+            )
+   
         } else {
             SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
                 // This is here to update the vote counts
@@ -68,30 +71,19 @@ public extension VContentViewViewModel {
         }
     }
     
-    func loadComments( pageType: VPageType ) {
-        guard !isLoadingComments else {
+    func loadComments( pageType: VPageType, completion:(NSError?->())? = nil ) {
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
             return
         }
         
-        let sequenceID = Int64(self.sequence.remoteId)!
-        
-        let operation: SequenceCommentsOperation?
-        switch pageType {
-        case .First:
-            operation =  SequenceCommentsOperation(sequenceID: sequenceID)
-        case .Next:
-            operation = loadCommentsOperation?.next()
-        case .Previous:
-            operation = loadCommentsOperation?.prev()
-        }
-        
-        if let currentOperation = operation {
-            loadCommentsOperation = currentOperation
-            isLoadingComments = true
-            currentOperation.queue() { error in
-                self.isLoadingComments = false
+        self.pageLoader.loadPage( pageType,
+            createOperation: {
+                return SequenceCommentsOperation(sequenceID: sequenceID)
+            },
+            completion: { (operation, error) in
+                completion?(error)
             }
-        }
+        )
     }
     
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
