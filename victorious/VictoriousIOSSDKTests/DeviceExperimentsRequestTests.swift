@@ -25,8 +25,8 @@ class DeviceExperimentsRequestTests: XCTestCase {
         
         do {
             let request = DeviceExperimentsRequest()
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
-            let firstExperiment = results.first!
+            let (experiments, _) = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let firstExperiment = experiments.first!
             XCTAssertEqual(firstExperiment.name, "shelves_variant_0")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")

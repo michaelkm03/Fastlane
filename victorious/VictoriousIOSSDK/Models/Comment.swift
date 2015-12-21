@@ -58,11 +58,11 @@ extension Comment {
                 return nil
         }
         
-        self.sequenceID     = sequenceID
-        self.commentID = commentID
-        self.userID = userID
-        self.user = user
-        self.postedAt = postedAt
+        self.sequenceID = sequenceID
+        self.commentID  = commentID
+        self.userID     = userID
+        self.user       = user
+        self.postedAt   = postedAt
         
         if let mediaWidth = json["media_width"].float,
             let mediaHeight = json["media_height"].float,

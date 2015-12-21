@@ -35,10 +35,8 @@ class PollResultTests: XCTestCase {
     
     func testInvalid() {
         let invalidJSONArray = [
-            JSON(["answer_id": false]),
-            JSON(["answer_id": "Nonsense answer_id"]),
-            JSON(["sequence_id": 104]),
-            JSON([])
+            JSON(["unrelated": false]),
+            JSON([]) // empty
         ]
         
         for invalidJSON in invalidJSONArray {
