@@ -22,7 +22,7 @@ public extension VContentViewViewModel {
         }
         
         if let deepLinkCommentId = self.deepLinkCommentId {
-            self.findComment( commendID: deepLinkCommentId,
+            self.loadComments( atPageForCommentID: deepLinkCommentId,
                 completion: { (pageNumber, error) in
                     guard let pageNumber = pageNumber else {
                         return
@@ -30,7 +30,7 @@ public extension VContentViewViewModel {
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
                     let sequenceID = Int64(self.sequence.remoteId)!
-                    self.pageLoader.loadPage( .First, createOperation: {
+                    self.paginatedLoader.loadPage( .First, createOperation: {
                         return SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
                     })
                 }
@@ -71,21 +71,6 @@ public extension VContentViewViewModel {
         }
     }
     
-    func loadComments( pageType: VPageType, completion:(NSError?->())? = nil ) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            return
-        }
-        
-        self.pageLoader.loadPage( pageType,
-            createOperation: {
-                return SequenceCommentsOperation(sequenceID: sequenceID)
-            },
-            completion: { (operation, error) in
-                completion?(error)
-            }
-        )
-    }
-    
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
         guard let nextSequenceId = self.endCardViewModel.nextSequenceId,
             let nextSeuqneceIntegerId = Int64(nextSequenceId) else {
@@ -100,17 +85,6 @@ public extension VContentViewViewModel {
                 success( sequence )
             } else {
                 failure(error)
-            }
-        }
-    }
-    
-    func findComment( commendID commentID: NSNumber, completion:(Int?, NSError?)->() ) {
-        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
-        operation.queue() { error in
-            if error == nil, let pageNumber = operation.pageNumber {
-                completion(pageNumber, nil)
-            } else {
-                completion(nil, error)
             }
         }
     }
@@ -147,6 +121,34 @@ public extension VContentViewViewModel {
                     let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
                 }
+        }
+    }
+    
+    // MARK: - CommentsDataSource
+    
+    func loadComments( pageType: VPageType, completion:(NSError?->())? = nil ) {
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
+            return
+        }
+        
+        self.paginatedLoader.loadPage( pageType,
+            createOperation: {
+                return SequenceCommentsOperation(sequenceID: sequenceID)
+            },
+            completion: { (operation, error) in
+                completion?(error)
+            }
+        )
+    }
+    
+    func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
+        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        operation.queue() { error in
+            if error == nil, let pageNumber = operation.pageNumber {
+                completion?(pageNumber, nil)
+            } else {
+                completion?(nil, error)
+            }
         }
     }
 }

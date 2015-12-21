@@ -24,9 +24,8 @@
     self = [self init];
     if ( self != nil )
     {
-        _visibleStreamItems = [[NSOrderedSet alloc] init];
         _stream = stream;
-        _pageLoader = [[PageLoader alloc] init];
+        _paginatedLoader = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -38,27 +37,24 @@
         return;
     }
     _suppressShelves = suppressShelves;
-    self.visibleStreamItems = _visibleStreamItems;
-}
-
-- (void)setVisibleStreamItems:(NSOrderedSet *)visibleStreamItems
-{
-    NSOrderedSet *oldValue = _visibleStreamItems;
-    NSOrderedSet *newValue;
-    if ( self.suppressShelves )
+    
+    if ( _suppressShelves )
     {
-        newValue = [self streamItemsWithoutShelvesFromStreamItems:visibleStreamItems];
+        [_paginatedLoader addFilter:^BOOL(id _Nonnull object)
+         {
+             VStreamItem *streamItem = (VStreamItem *)object;
+             return [streamItem isKindOfClass:[VStreamItem class]] && ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
+         }];
     }
     else
     {
-        newValue = visibleStreamItems;
+        [_paginatedLoader resetFilters];
     }
-    
-    if ( newValue != oldValue )
-    {
-        _visibleStreamItems = newValue;
-        [self.delegate dataSource:self visibleStreamItemsDidUpdateFromOldValue:oldValue toNewValue:newValue];
-    }
+}
+
+- (NSOrderedSet *)visibleStreamItems
+{
+    return self.paginatedLoader.visibleItems;
 }
 
 - (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems

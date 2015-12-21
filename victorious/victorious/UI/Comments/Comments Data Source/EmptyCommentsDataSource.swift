@@ -25,6 +25,5 @@ class EmtpyCommentsDataSource : CommentsDataSource {
     
     func loadComments( pageType: VPageType, completion:((NSError?)->())?) {}
     
-    func loadComments(commentID: NSNumber) {}
-    
+    func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {}
 }

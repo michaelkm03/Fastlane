@@ -9,6 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
+// TODO: Change name
+protocol ResultsOperation {
+    var results: [AnyObject]? { get }
+}
+
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
 protocol PaginatedOperation : class {

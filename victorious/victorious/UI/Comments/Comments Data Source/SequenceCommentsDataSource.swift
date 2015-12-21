@@ -12,10 +12,10 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     private let sequence: VSequence
     private let flaggedContent = VFlaggedContent()
-    private let pageLoader = PageLoader()
+    private let paginatedLoader = PaginatedDataSource()
     
     var isLoading: Bool {
-        return pageLoader.isLoading
+        return paginatedLoader.isLoading
     }
     
     var commentsArray: [VComment] {
@@ -41,12 +41,12 @@ class SequenceCommentsDataSource : CommentsDataSource {
         return 0
     }
     
-    func loadComments( pageType: VPageType, completion:(NSError?->())?) {
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?) {
         guard let sequenceID = Int64(self.sequence.remoteId) else {
             return
         }
         
-        self.pageLoader.loadPage( pageType,
+        self.paginatedLoader.loadPage( pageType,
             createOperation: {
                 return SequenceCommentsOperation(sequenceID: sequenceID)
             },
@@ -56,10 +56,14 @@ class SequenceCommentsDataSource : CommentsDataSource {
         )
     }
     
-    func loadComments(commentID: NSNumber) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            return
+    func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
+        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        operation.queue() { error in
+            if error == nil, let pageNumber = operation.pageNumber {
+                completion?(pageNumber, nil)
+            } else {
+                completion?(nil, error)
+            }
         }
-        CommentFindOperation(sequenceID: sequenceID, commentID: commentID.longLongValue ).queue()
     }
 }

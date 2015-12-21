@@ -9,12 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: RequestOperation, PaginatedOperation {
+final class StreamOperation: RequestOperation, PaginatedOperation, ResultsOperation {
     
     let request: StreamRequest
     private(set) var resultCount: Int?
     
-    private(set) var results = [VStreamItem]()
+    private(set) var results: [AnyObject]?
     
     private let apiPath: String
     
@@ -33,8 +33,9 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     private func onError( error: NSError, completion: ()->() ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = loadPersistentItems()
-            self.resultCount = self.results.count
+            let results = loadPersistentItems()
+            self.results = results
+            self.resultCount = results.count
         
         } else {
             self.resultCount = 0
@@ -50,8 +51,9 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             context.v_save()
         }
         
-        self.results = loadPersistentItems()
-        self.resultCount = self.results.count
+        let results = loadPersistentItems()
+        self.results = results
+        self.resultCount = results.count
         
         completion()
     }

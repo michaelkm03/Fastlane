@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation, PageLoader;
+@class VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation, PaginatedDataSource;
 
 /**
  *  Data delegate for the VStreamCollectionViewDataSource.
@@ -77,8 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, strong) VStream *stream;///< The stream object used to populate the collectionView
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
-@property (nonatomic, nonnull, strong) PageLoader *pageLoader;
-@property (nonatomic, strong) NSOrderedSet *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
+@property (nonatomic, nonnull, strong) PaginatedDataSource *paginatedLoader;
+@property (nonatomic, strong, readonly) NSOrderedSet *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
 
 /**
  *  Initializes the data source with a default stream.

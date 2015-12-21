@@ -16,6 +16,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
     private let sequenceID: Int64
     
+    private(set) var loadedComments: [VComment]?
+    
     required init( request: SequenceCommentsRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
@@ -49,7 +51,11 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
                 let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + newComments )
                 context.v_save()
-                completion()
+                
+                dispatch_async( dispatch_get_main_queue() ) {
+                    self.loadedComments = newComments
+                    completion()
+                }
             }
         
         } else {
