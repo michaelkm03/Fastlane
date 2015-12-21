@@ -8,12 +8,22 @@
 
 import Foundation
 
+@objc protocol PaginatedDataSourceDelegate {
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet)
+}
+
 @objc class PaginatedDataSource: NSObject {
     
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
     
-    private(set) var filteredItems = NSOrderedSet()
+    var delegate: PaginatedDataSourceDelegate?
+    
+    private(set) dynamic var visibleItems = NSOrderedSet() {
+        didSet {
+            self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
+        }
+    }
     
     private(set) var unfilteredItems = NSOrderedSet() {
         didSet {
@@ -24,10 +34,6 @@ import Foundation
     private typealias Filter = AnyObject -> Bool
     
     private var filters = [Filter]()
-    
-    var visibleItems: NSOrderedSet {
-        return filteredItems
-    }
     
     func addFilter( filter: AnyObject -> Bool  ) {
         filters.append( filter )
@@ -41,7 +47,7 @@ import Foundation
     
     func unload() {
         unfilteredItems = NSOrderedSet()
-        filteredItems = NSOrderedSet()
+        visibleItems = NSOrderedSet()
     }
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
@@ -55,9 +61,9 @@ import Foundation
         case .First:
             operationToQueue = createOperation() as? RequestOperation
         case .Next:
-            operationToQueue = (self.currentOperation as? T)?.next() as? RequestOperation
+            operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
         case .Previous:
-            operationToQueue = (self.currentOperation as? T)?.prev() as? RequestOperation
+            operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
         }
         
         if let operation = operationToQueue,
@@ -66,6 +72,7 @@ import Foundation
                 self.isLoading = true
                 operation.queue() { error in
                     self.isLoading = false
+                    
                     if let results = (operation as? ResultsOperation)?.results where results.count > 0 {
                         self.unfilteredItems = self.unfilteredItems.v_orderedSet( results, pageType: pageType)
                     }
@@ -75,10 +82,11 @@ import Foundation
     }
     
     private func applyFilters() {
-        var items = self.unfilteredItems.array
-        for filter in self.filters {
+        var items = unfilteredItems.array
+        for filter in filters {
             items = items.filter { filter($0) }
         }
+        visibleItems = NSOrderedSet(array: items)
     }
 }
 

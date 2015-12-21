@@ -9,8 +9,8 @@
 import Foundation
 import VictoriousIOSSDK
 
-// TODO: Change name
 protocol ResultsOperation {
+    // TODO:  Merge with `resultCount`?
     var results: [AnyObject]? { get }
 }
 

@@ -71,7 +71,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, PaginatedDataSourceDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -146,7 +146,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - VContentViewViewModelDelegate
 
-- (void)didUpdateCommentsWithPageType:(VPageType)pageType
+/*- (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
     VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
     [layout calculateCatchAndLockPoints];
@@ -215,8 +215,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             break;
         }
     }
-}
+}*/
 
+#warning TODO: REMOVE?
 - (void)didUpdateContent
 {
     if ( self.viewModel.monetizationPartner != VMonetizationPartnerNone )
@@ -228,6 +229,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.sequencePreviewView showLikeButton:YES];
 }
 
+#warning TODO: REMOVE?
 - (void)didUpdatePollsData
 {
     if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
@@ -377,6 +379,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    self.viewModel.commentsDataSource.delegate = self;
     
     self.commentCellReuseIdentifiers = [NSMutableArray new];
     
@@ -623,7 +626,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell withIndex:(NSInteger)index
 {
     commentCell.dependencyManager = self.dependencyManager;
-    commentCell.comment = self.viewModel.sequence.comments[index];
+    commentCell.comment = self.viewModel.commentsDataSource.visibleItems[ index ];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
     commentCell.commentsUtilitiesDelegate = self;
@@ -704,7 +707,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [welf presentViewController:lightbox  animated:YES completion:nil];
 }
 
-- (void)commentsDidLoad
+/*- (void)commentsDidLoad
 {
     void (^batchUpdates)() = ^
     {
@@ -723,7 +726,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
              [self.contentCollectionView performBatchUpdates:batchUpdates completion:nil];
          }];
     }
-}
+}*/
 
 #pragma mark - UICollectionViewDataSource
 
@@ -755,7 +758,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
         }
         case VContentViewSectionAllComments:
-            return (NSInteger)self.viewModel.sequence.comments.count;
+            return (NSInteger)self.viewModel.commentsDataSource.visibleItems.count;
         case VContentViewSectionCount:
             return 0;
     }
@@ -870,7 +873,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
-            VComment *comment = self.viewModel.sequence.comments[indexPath.row];
+            VComment *comment = self.viewModel.commentsDataSource.visibleItems[indexPath.row];
             NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
             
             if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
@@ -1031,7 +1034,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionAllComments:
         {
             const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
-            VComment *comment = self.viewModel.sequence.comments[indexPath.row];
+            VComment *comment = self.viewModel.commentsDataSource.visibleItems[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                           comment:comment
                                                          hasMedia:comment.commentMediaType != VCommentMediaTypeNoMedia
@@ -1062,7 +1065,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         case VContentViewSectionAllComments:
         {
             CGSize sizeWithComments = [VSectionHandleReusableView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-            return self.viewModel.sequence.comments.count > 0 ? sizeWithComments : CGSizeZero;
+            return self.viewModel.commentsDataSource.visibleItems.count > 0 ? sizeWithComments : CGSizeZero;
         }
         case VContentViewSectionCount:
             return CGSizeZero;
@@ -1089,7 +1092,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    const BOOL hasComments = self.viewModel.sequence.comments.count > 0;
+    const BOOL hasComments = self.viewModel.commentsDataSource.visibleItems.count > 0;
     if ( hasComments )
     {
         if ( !self.commentHighlighter.isAnimatingCellHighlight )
@@ -1331,7 +1334,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replyToComment:(VComment *)comment
 {
-    NSUInteger row = [self.viewModel.sequence.comments indexOfObject:comment];
+    NSUInteger row = [self.viewModel.commentsDataSource.visibleItems indexOfObject:comment];
     NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     
@@ -1686,6 +1689,35 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     self.closeButton.alpha = 1.0f;
     self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+}
+
+#pragma mark - PaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    if ( paginatedDataSource != self.viewModel.commentsDataSource )
+    {
+        return;
+    }
+    
+    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *deletedIndexPaths = [[NSMutableArray alloc] init];
+    for ( id item in newValue )
+    {
+        if ( [oldValue containsObject:item] )
+        {
+            continue;
+        }
+        NSInteger index = [newValue indexOfObject:item];
+        if ( index == NSNotFound )
+        {
+            continue;
+        }
+        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:VContentViewSectionAllComments]];
+    }
+    
+    [self.contentCollectionView insertItemsAtIndexPaths:insertedIndexPaths];
+    [self.contentCollectionView deleteItemsAtIndexPaths:deletedIndexPaths];
 }
 
 @end

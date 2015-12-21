@@ -119,7 +119,7 @@
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
         
-        _paginatedLoader = [[PaginatedDataSource alloc] init];
+        _commentsDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -231,26 +231,6 @@
     return ad_system;
 }
 */
-
-- (void)setDelegate:(id<VContentViewViewModelDelegate>)delegate
-{
-    _delegate = delegate;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:_sequence
-                        keyPath:@"comments"
-                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
-         if ( kind == NSKeyValueChangeSetting )
-         {
-             [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-         }
-#warning FIXME
-         [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-     }];
-}
 
 - (VUser *)user
 {

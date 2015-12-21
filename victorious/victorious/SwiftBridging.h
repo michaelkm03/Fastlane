@@ -24,6 +24,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 #import "UIViewController+VRootNavigationController.h"
+#import "UIViewController+VLayoutInsets.h"
 #import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"

@@ -15,7 +15,6 @@
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "victorious-Swift.h"
-#import <KVOController/FBKVOController.h>
 
 @implementation VStreamCollectionViewDataSource
 
@@ -25,7 +24,7 @@
     if ( self != nil )
     {
         _stream = stream;
-        _paginatedLoader = [[PaginatedDataSource alloc] init];
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -40,21 +39,16 @@
     
     if ( _suppressShelves )
     {
-        [_paginatedLoader addFilter:^BOOL(id _Nonnull object)
+        [_paginatedDataSource addFilter:^BOOL(id _Nonnull object)
          {
              VStreamItem *streamItem = (VStreamItem *)object;
-             return [streamItem isKindOfClass:[VStreamItem class]] && ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
+             return [streamItem isKindOfClass:[VStreamItem class]] && [streamItem.itemType isEqualToString:VStreamItemTypeShelf];
          }];
     }
     else
     {
-        [_paginatedLoader resetFilters];
+        [_paginatedDataSource resetFilters];
     }
-}
-
-- (NSOrderedSet *)visibleStreamItems
-{
-    return self.paginatedLoader.visibleItems;
 }
 
 - (NSOrderedSet *)streamItemsWithoutShelvesFromStreamItems:(NSOrderedSet *)streamItems
@@ -73,19 +67,19 @@
         return nil;
     }
     
-    return [self.visibleStreamItems objectAtIndex:indexPath.row];
+    return [self.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
     NSInteger section = self.hasHeaderCell ? 1 : 0;
-    NSUInteger index = [self.visibleStreamItems indexOfObject:streamItem];
+    NSUInteger index = [self.paginatedDataSource.visibleItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
 {
-    return self.visibleStreamItems.count;
+    return self.paginatedDataSource.visibleItems.count;
 }
 
 - (NSInteger)sectionIndexForContent

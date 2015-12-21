@@ -11,10 +11,6 @@ import VictoriousIOSSDK
 
 public extension VStreamCollectionViewDataSource {
     
-    var isLoading: Bool {
-        return self.paginatedLoader.isLoading
-    }
-    
     /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
@@ -23,7 +19,7 @@ public extension VStreamCollectionViewDataSource {
             return
         }
         
-        self.paginatedLoader.loadPage( pageType,
+        self.paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return StreamOperation(apiPath: (apiPath) )
             },
@@ -43,9 +39,8 @@ public extension VStreamCollectionViewDataSource {
         persistentStore.mainContext.v_performBlock() { context in
             self.stream?.v_removeObject( streamItem, from: "streamItems" )
             context.v_save()
-            
-            let updatedItems = self.visibleStreamItems.array.flatMap { $0 as? VStreamItem }.filter { $0 != streamItem }
-            //self.visibleStreamItems = NSOrderedSet( array: updatedItems)
+            // TODO: Make operation
+            // TODO: Update UI
         }
     }
     
@@ -54,8 +49,8 @@ public extension VStreamCollectionViewDataSource {
         persistentStore.mainContext.v_performBlock() { context in
             self.stream?.v_removeAllObjects( from: "streamItems" )
             context.v_save()
-            
-            //self.visibleStreamItems = NSOrderedSet()
+            // TODO: Make operation
+            // TODO: Update UI
         }
     }
 }

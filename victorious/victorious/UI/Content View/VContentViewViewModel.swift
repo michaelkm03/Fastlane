@@ -22,7 +22,7 @@ public extension VContentViewViewModel {
         }
         
         if let deepLinkCommentId = self.deepLinkCommentId {
-            self.loadComments( atPageForCommentID: deepLinkCommentId,
+            /*self.loadComments( atPageForCommentID: deepLinkCommentId,
                 completion: { (pageNumber, error) in
                     guard let pageNumber = pageNumber else {
                         return
@@ -30,11 +30,11 @@ public extension VContentViewViewModel {
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
                     let sequenceID = Int64(self.sequence.remoteId)!
-                    self.paginatedLoader.loadPage( .First, createOperation: {
+                    self._commentsDataSource.loadPage( .First, createOperation: {
                         return SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
                     })
                 }
-            )
+            )*/
    
         } else {
             SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
@@ -131,7 +131,7 @@ public extension VContentViewViewModel {
             return
         }
         
-        self.paginatedLoader.loadPage( pageType,
+        self.commentsDataSource.loadPage( pageType,
             createOperation: {
                 return SequenceCommentsOperation(sequenceID: sequenceID)
             },

@@ -126,7 +126,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     VUserProfileViewController *viewController = [self userProfileWithUser:[VUser currentUser] andDependencyManager:dependencyManager];
-    viewController.representsMainUser = @YES;
+    viewController.representsMainUser = YES;
     return viewController;
 }
 
