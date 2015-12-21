@@ -31,9 +31,11 @@
         "max_video_duration": 15
     },
     "text": "test",
-    "media_type": "",
-    "media_url": "",
-    "thumbnail_url": "",
+    "media_type": "image",
+    "media_url": "some_image.png",
+    "thumbnail_url": "some_image_sm.png",
+    "media_width": 100,
+    "media_height": 200,
     "flags": "0",
     "posted_at": "2015-11-12 02:18:54"
 }
