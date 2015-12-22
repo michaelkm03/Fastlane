@@ -446,3 +446,5 @@
 "LevelFormat" = "等級 %@";
 "LEVEL" = "等級";
 "TestAlertsViewControllerFooter" = "登錄警告後，請回到資料流或設定檔，並拖拉以重新整理。警告應該會隨即出現。";
+
+"Enter birthday before continuing" = "請先輸入您的生日再繼續使用：";
