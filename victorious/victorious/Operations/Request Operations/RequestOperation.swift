@@ -10,7 +10,11 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-private let _defaultQueue = NSOperationQueue()
+private let _defaultQueue: NSOperationQueue = {
+    var queue = NSOperationQueue()
+    queue.maxConcurrentOperationCount = 1
+    return queue
+}()
 
 class RequestOperation: NSOperation, Queuable {
     

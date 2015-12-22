@@ -76,6 +76,7 @@ import Foundation
                     if let results = (operation as? ResultsOperation)?.results where results.count > 0 {
                         self.unfilteredItems = self.unfilteredItems.v_orderedSet( results, pageType: pageType)
                     }
+                    
                     completion?( operation: typedOperation, error: error )
                 }
         }

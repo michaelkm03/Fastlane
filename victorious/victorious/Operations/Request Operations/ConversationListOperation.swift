@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     let request: ConversationListRequest
-    private(set) var resultCount: Int?
+    private(set) var results: [AnyObject]?
     
     required init( request: ConversationListRequest ) {
         self.request = request
@@ -27,21 +27,27 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     private func onError( error: NSError, completion:(()->()) ) {
-        self.resultCount = 0
+        self.results = []
         completion()
     }
     
     private func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
-        self.resultCount = conversations.count
         
         persistentStore.backgroundContext.v_performBlock() { context in
+            var persistentConversations = [VConversation]()
             for conversation in conversations {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
                 let persistentConversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )
+                persistentConversations.append( persistentConversation )
             }
             context.v_save()
-            completion()
+            
+            let objectIDs = persistentConversations.map { $0.objectID }
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = objectIDs.flatMap { context.objectWithID($0) as? VConversation }
+                completion()
+            }
         }
     }
 }

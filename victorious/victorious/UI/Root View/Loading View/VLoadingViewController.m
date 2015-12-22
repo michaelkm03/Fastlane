@@ -135,19 +135,12 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    /*VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
-    if (currentNetworkStatus == VNetworkStatusNotReachable)
+    VNetworkStatus currentNetworkStatus = [[VReachability reachabilityForInternetConnection] currentReachabilityStatus];
+    if ( self.priorNetworkStatus == VNetworkStatusNotReachable )
     {
-        [self showReachabilityNotice];
-    }
-    else if (self.priorNetworkStatus == VNetworkStatusNotReachable)
-    {
-        [self hideReachabilityNotice];
         [self startLoading];
     }
-    self.priorNetworkStatus = currentNetworkStatus;*/
-    
-    [self startLoading];
+    self.priorNetworkStatus = currentNetworkStatus;
 }
 
 #pragma mark - Loading

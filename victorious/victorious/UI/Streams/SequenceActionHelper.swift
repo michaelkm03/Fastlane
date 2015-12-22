@@ -17,7 +17,10 @@ import UIKit
                 completion?( error == nil )
             }
         } else {
-            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!).queue() { error in
+            guard let sequenceID = Int64(sequence.remoteId) else {
+                fatalError( "We have a big problem. Check the parsing code." )
+            }
+            LikeSequenceOperation( sequenceID: sequenceID ).queue() { error in
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,

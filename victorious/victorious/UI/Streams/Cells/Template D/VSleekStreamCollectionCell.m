@@ -398,7 +398,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ( [[self class] shouldShowCaptionForSequence:sequence withDependencyManager:self.dependencyManager] )
     {
         NSDictionary *attributes = [VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager];
-        captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
+#warning FIXME:
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        captionAttributedString = [[NSAttributedString alloc] initWithString:[dateFormatter stringFromDate:sequence.releasedAt] ?: @"(null)"
                                                                   attributes:attributes];
         UIFont *captionFont = attributes[NSFontAttributeName];
         self.captionTextView.textContainerInset = [captionFont v_fontSpecificTextViewInsets];

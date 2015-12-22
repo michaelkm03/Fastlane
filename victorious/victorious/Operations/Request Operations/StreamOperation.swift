@@ -9,10 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class StreamOperation: RequestOperation, PaginatedOperation, ResultsOperation {
+final class StreamOperation: RequestOperation, PaginatedOperation {
     
     let request: StreamRequest
-    private(set) var resultCount: Int?
     
     private(set) var results: [AnyObject]?
     
@@ -31,39 +30,47 @@ final class StreamOperation: RequestOperation, PaginatedOperation, ResultsOperat
         executeRequest( request, onComplete: self.onComplete, onError:self.onError )
     }
     
-    private func onError( error: NSError, completion: ()->() ) {
+    func onError( error: NSError, completion: ()->() ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            let results = loadPersistentItems()
-            self.results = results
-            self.resultCount = results.count
-        
-        } else {
-            self.resultCount = 0
+            self.results = fetchResults()
         }
         completion()
     }
     
-    private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+    func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+        
+        // Make changes on background queue
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            
+            // Parse stream
             let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
-            let streamItems = VStreamItem.parseStreamItems(stream.items, managedObjectContext: context)
-            persistentStream.v_addObjects( streamItems, to: "streamItems" )
+            persistentStream.populate(fromSourceModel: stream)
+            
+            // Parse stream items
+            var displayOrder = persistentStream.streamItems.count
+            let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
+            for streamItem in streamItems {
+                
+                // Handle some special properties here that determine proper display order
+                streamItem.displayOrder = displayOrder++
+                streamItem.streamId = stream.streamID
+            }
+            persistentStream.v_addObjects(streamItems, to: "streamItems")
             context.v_save()
+            
+            // Reload results from main queue
+            self.results = self.fetchResults()
+            completion()
         }
-        
-        let results = loadPersistentItems()
-        self.results = results
-        self.resultCount = results.count
-        
-        completion()
     }
     
-    private func loadPersistentItems() -> [VStreamItem] {
+    func fetchResults() -> [VStreamItem] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "streams" : [ "apiPath" : self.apiPath] ]
+            let uniqueProps = [ "streams" : [ "apiPath" : String(self.apiPath) ] ]
             let pagination = PersistentStorePagination(
                 itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber
+                pageNumber: self.request.paginator.pageNumber,
+                sortDescriptors: [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             )
             return context.v_findObjects( uniqueProps, pagination: pagination )
         }

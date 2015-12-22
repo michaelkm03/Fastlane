@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
     
     let request: PollResultSummaryRequest
-    var resultCount: Int?
+    var results: [AnyObject]?
     
     private let sequenceID: Int64
     
@@ -30,7 +30,7 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     }
     
     private func onError( error: NSError, completion:(()->()) ) {
-        self.resultCount = 0
+        self.results = []
         completion()
     }
     

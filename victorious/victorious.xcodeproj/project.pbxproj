@@ -576,7 +576,6 @@
 		A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */; };
 		A7078CDE1BFA7D2B008FB7FF /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */; };
 		A7078CEA1BFA8852008FB7FF /* ShowWorkspaceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */; };
-		A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */; };
 		A7078CF41BFBD969008FB7FF /* SequenceActionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */; };
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
@@ -1079,6 +1078,7 @@
 		A7DCA5181C128A78004E35B4 /* VUser+FetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C624961BFE43090086AF9E /* VUser+FetcherTests.m */; };
 		A7DCA51A1C128E8F004E35B4 /* NetworkActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA5191C128E8F004E35B4 /* NetworkActivityIndicator.swift */; };
 		A7DCA51C1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */; };
+		A7DCF0A71C28ECA000AFB66B /* VStreamCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAF01C038F7A00E8A26F /* VStreamCollectionViewDataSource.swift */; };
 		A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35EF1BB07D6A00C4DBC5 /* VContentAlertHelper.m */; };
 		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
@@ -1086,6 +1086,7 @@
 		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
 		A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */; };
 		A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */; };
+		A7DECF0C1C2A101E0070F07B /* PersistentStoreDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DECF0B1C2A101E0070F07B /* PersistentStoreDebugger.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2677,7 +2678,6 @@
 		A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CCB1BFA7D2B008FB7FF /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CE91BFA8852008FB7FF /* ShowWorkspaceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowWorkspaceOperation.swift; sourceTree = "<group>"; };
-		A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		A7078CF31BFBD969008FB7FF /* SequenceActionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceActionHelper.swift; sourceTree = "<group>"; };
 		A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequest.swift; sourceTree = "<group>"; };
 		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
@@ -3411,6 +3411,7 @@
 		A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsEmptyCell.swift; sourceTree = "<group>"; };
 		A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
+		A7DECF0B1C2A101E0070F07B /* PersistentStoreDebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreDebugger.swift; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -5092,7 +5093,6 @@
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
 				A76AEAF01C038F7A00E8A26F /* VStreamCollectionViewDataSource.swift */,
-				A7078CEF1BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift */,
 				676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */,
 			);
 			path = Streams;
@@ -7257,6 +7257,7 @@
 			children = (
 				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
 				A72EDF901C03E5EC003D6177 /* NSNumber+Extensions.swift */,
+				A7DECF0B1C2A101E0070F07B /* PersistentStoreDebugger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -10578,6 +10579,7 @@
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */,
+				A7DCF0A71C28ECA000AFB66B /* VStreamCollectionViewDataSource.swift in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				C3623E651B9F63BD002B121D /* AlertParser.swift in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
@@ -11216,7 +11218,6 @@
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				7979A0321C18B2FA00455FF8 /* DevicePreferencesOperation.swift in Sources */,
-				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
@@ -11474,6 +11475,7 @@
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,
 				A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */,
+				A7DECF0C1C2A101E0070F07B /* PersistentStoreDebugger.swift in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				A721E9461B572454000B7901 /* NSURL+VCustomScheme.m in Sources */,
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,

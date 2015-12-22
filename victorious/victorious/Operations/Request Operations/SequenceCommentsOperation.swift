@@ -9,14 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceCommentsOperation: RequestOperation, PaginatedOperation, ResultsOperation {
+final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
     var request: SequenceCommentsRequest
-    var resultCount: Int?
+    var results: [AnyObject]?
     
     private let sequenceID: Int64
-    
-    private(set) var results: [AnyObject]?
     
     required init( request: SequenceCommentsRequest ) {
         self.sequenceID = request.sequenceID
@@ -33,19 +31,15 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation, Res
     
     private func onError( error: NSError, completion:(()->()) ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            let results = loadPersistentItems()
-            self.results = results
-            self.resultCount = results.count
+            self.results = loadPersistentItems()
             
         } else {
-            self.resultCount = 0
+            self.results = []
         }
         completion()
     }
     
     private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
-        self.resultCount = comments.count
-        
         guard !comments.isEmpty else {
             completion()
             return
@@ -54,6 +48,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation, Res
         let flaggedCommentIDs: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) }
         let unflaggedCommens = comments.filter { flaggedCommentIDs.contains($0.commentID) == false }
         
+        // Make changes on background queue
         persistentStore.backgroundContext.v_performBlock() { context in
             var newComments = [VComment]()
             for comment in unflaggedCommens {
@@ -63,13 +58,12 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation, Res
             }
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
             sequence.v_addObjects( newComments, to: "comments")
-            // TODO: Sort here, we must!
             context.v_save()
             
-            dispatch_async( dispatch_get_main_queue() ) {
-                let results = self.loadPersistentItems()
-                self.results = results
-                self.resultCount = results.count
+            // Reload results from main queue
+            let objectIDs = newComments.map { $0.objectID }
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = objectIDs.flatMap { context.objectWithID($0) as? VComment }
                 completion()
             }
         }
@@ -77,10 +71,11 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation, Res
     
     private func loadPersistentItems() -> [VComment] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "sequenceId" : String(self.sequenceID) ] // FIXME: Use `sequence` property isntead of `sequenceId`
+            let uniqueProps = [ "sequenceId" : String(self.sequenceID) ]
             let pagination = PersistentStorePagination(
                 itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber
+                pageNumber: self.request.paginator.pageNumber,
+                sortDescriptors: [ NSSortDescriptor(key: "postedAt", ascending: false) ]
             )
             return context.v_findObjects( uniqueProps, pagination: pagination )
         }

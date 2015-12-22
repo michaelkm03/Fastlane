@@ -39,7 +39,6 @@
 @dynamic permissionsMask;
 @dynamic previewData;
 @dynamic previewType;
-@dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic adBreaks;

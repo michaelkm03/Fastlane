@@ -253,7 +253,6 @@
         <attribute name="permissionsMask" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repostCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trendingTopicName" optional="YES" attributeType="String" syncable="YES"/>
@@ -289,11 +288,13 @@
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
+        <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemSubType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="releasedAt" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
@@ -392,10 +393,10 @@
         <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Sequence" positionX="0" positionY="0" width="128" height="615"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="240"/>
+        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="270"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="570"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
