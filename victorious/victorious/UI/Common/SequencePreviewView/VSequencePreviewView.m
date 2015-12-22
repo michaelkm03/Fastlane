@@ -16,15 +16,15 @@
 #import "VHTMLSequncePreviewView.h"
 #import "VFailureSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
-#import "VSequenceExpressionsObserver.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
 
 @interface VSequencePreviewView()
 
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGesture;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGesture;
 @property (nonatomic, strong, readwrite) VContentLikeButton *likeButton;
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @end
 
@@ -259,18 +259,22 @@
     if (willShowLikeButton)
     {
         __weak typeof(self) welf = self;
-        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-        [self.expressionsObserver startObservingWithSequence:self.sequence onUpdate:^
-         {
-             __strong typeof(welf) strongSelf = welf;
-             [strongSelf.likeButton setActive:strongSelf.sequence.isLikedByMainUser.boolValue];
-             [strongSelf.likeButton setCount:strongSelf.sequence.likeCount.integerValue];
-         }];
+        NSArray *keyPaths = @[ NSStringFromSelector(@selector(hasReposted)),
+                               NSStringFromSelector(@selector(commentCount)),
+                               NSStringFromSelector(@selector(likeCount)),
+                               NSStringFromSelector(@selector(isLikedByMainUser)) ];
+        [self.KVOController observe:self.sequence keyPaths:keyPaths
+                            options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                              block:^(id observer, id object, NSDictionary *change) {
+                                  __strong typeof(welf) strongSelf = welf;
+                                  [strongSelf.likeButton setActive:strongSelf.sequence.isLikedByMainUser.boolValue];
+                                  [strongSelf.likeButton setCount:strongSelf.sequence.likeCount.integerValue];
+                              }];
         self.likeButton.hidden = NO;
     }
     else
     {
-        self.expressionsObserver = nil;
+        [self.KVOController unobserve:self.sequence];
         self.likeButton.hidden = YES;
     }
 }

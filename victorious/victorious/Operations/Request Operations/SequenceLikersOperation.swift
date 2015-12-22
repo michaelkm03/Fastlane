@@ -1,30 +1,30 @@
 //
-//  FollowersListOperation.swift
+//  SequenceLikersOperation.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 12/19/15.
+//  Created by Patrick Lynch on 12/21/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-final class FollowersOfUserOperation: RequestOperation, PaginatedOperation, ResultsOperation {
+final class SequenceLikersOperation: RequestOperation, PaginatedOperation, ResultsOperation {
     
-    let request: FollowersListRequest
+    let request: SequenceLikersRequest
     var resultCount: Int?
     
-    private var userID: Int64
+    private var sequenceID: Int64
     
     private(set) var results: [AnyObject]?
     
-    required init( request: FollowersListRequest ) {
-        self.userID = request.userID
+    required init( request: SequenceLikersRequest ) {
+        self.sequenceID = request.sequenceID
         self.request = request
     }
     
-    convenience init( userID: Int64 ) {
-        self.init( request: FollowersListRequest(userID: userID) )
+    convenience init( sequenceID: Int64 ) {
+        self.init( request: SequenceLikersRequest(sequenceID: sequenceID) )
     }
     
     override func main() {
@@ -47,14 +47,15 @@ final class FollowersOfUserOperation: RequestOperation, PaginatedOperation, Resu
         
         persistentStore.backgroundContext.v_performBlock() { context in
             
-            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber( longLong: self.userID ) ])
+            let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : String(self.sequenceID) ])
             
             for user in users {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
-                let follower: VUser = context.v_findOrCreateObject( uniqueElements )
-                follower.populate(fromSourceModel: user)
-                persistentUser.v_addObject( follower, to: "followers" )
+                let persistentUser: VUser = context.v_findOrCreateObject( uniqueElements )
+                persistentUser.populate(fromSourceModel: user)
+                persistentUser.v_addObject( sequence, to: "likedSequences" )
             }
+            
             context.v_save()
             
             dispatch_async( dispatch_get_main_queue() ) {
@@ -67,7 +68,13 @@ final class FollowersOfUserOperation: RequestOperation, PaginatedOperation, Resu
     }
     
     private func loadPersistentData() -> [VUser] {
-        // TODO: Load users who are following the main user
-        return []
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let uniqueProps = [ "likedSequences" : [ "remoteId" : String(self.sequenceID) ] ]
+            let pagination = PersistentStorePagination(
+                itemsPerPage: self.request.paginator.itemsPerPage,
+                pageNumber: self.request.paginator.pageNumber
+            )
+            return context.v_findObjects( uniqueProps, pagination: pagination )
+        }
     }
 }

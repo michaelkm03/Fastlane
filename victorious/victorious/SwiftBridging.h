@@ -10,6 +10,7 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
+
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
@@ -23,8 +24,8 @@
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-#import "UIViewController+VRootNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
+#import "UIViewController+VRootNavigationController.h"
 #import "VAbstractFilter.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
@@ -87,7 +88,6 @@
 #import "VFocusable.h"
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
-#import "VFollowersDataSource.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VHasManagedDependencies.h"
 #import "VHashTag.h"
@@ -187,12 +187,12 @@
 #import "VUser+Fetcher.h"
 #import "VUser+RestKit.h"
 #import "VUser.h"
-#import "VUserIsFollowingDataSource.h"
 #import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VUserTaggingTextStorage.h"
 #import "VUserTaggingTextStorageDelegate.h"
 #import "VUsersAndTagsSearchViewController.h"
+#import "VUsersDataSource.h"
 #import "VUtilityButtonCell.h"
 #import "VVideoLightboxViewController.h"
 #import "VVideoSequencePreviewView.h"

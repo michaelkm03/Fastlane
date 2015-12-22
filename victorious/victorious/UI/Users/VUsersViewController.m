@@ -15,14 +15,14 @@
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "victorious-Swift.h"
 
-@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
+@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder, PaginatedDataSourceDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
-@property (nonatomic, assign) BOOL canLoadNextPage;
 @property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
@@ -67,6 +67,12 @@
     [self.dependencyManager trackViewWillDisappear:self];
 }
 
+- (void)setUsersDataSource:(id<VUsersDataSource>)usersDataSource
+{
+    _usersDataSource = usersDataSource;
+    _usersDataSource.delegate = self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -106,12 +112,10 @@
     
     [self.noContentView resetInitialAnimationState];
     
-    self.canLoadNextPage = YES;
     [self refershControlAction:refreshControl];
     
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.extendedLayoutIncludesOpaqueBars = YES;
-    
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -119,33 +123,13 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)updateHasContent
-{
-    [self.collectionView reloadData];
-    
-    if ( self.usersDataSource.users.count == 0 )
-    {
-        self.noContentView.icon = self.usersDataSource.noContentImage;
-        self.noContentView.title = self.usersDataSource.noContentTitle;
-        self.noContentView.message = self.usersDataSource.noContentMessage;
-        
-        [self.noContentView animateTransitionIn];
-    }
-    else
-    {
-        [self.noContentView resetInitialAnimationState];
-    }
-}
-
 #pragma mark - Public
 
 - (void)refershControlAction:(UIRefreshControl *)refreshControl
 {
-    [self.usersDataSource refreshWithPageType:VPageTypeFirst completion:^(BOOL success, NSError *error)
+    [self.usersDataSource loadUsersWithPageType:VPageTypeFirst completion:^(NSError *error)
      {
-         self.canLoadNextPage = success;
          [refreshControl endRefreshing];
-         [self updateHasContent];
      }];
 }
 
@@ -191,28 +175,12 @@
 
 - (void)shouldLoadNextPage
 {
-    if ( !self.canLoadNextPage )
-    {
-        return;
-    }
-    self.canLoadNextPage = NO;
-    [self.usersDataSource refreshWithPageType:VPageTypeNext completion:^(BOOL success, NSError *error)
-     {
-         self.canLoadNextPage = success;
-         if ( success )
-         {
-             [self.collectionView reloadData];
-         }
-     }];
+    [self.usersDataSource loadUsersWithPageType:VPageTypeNext completion:nil];
 }
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = screenName?:self.sourceScreenName;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
@@ -226,11 +194,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                  withScreenName:sourceScreen];
 }
 
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
+- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = screenName?:self.sourceScreenName;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
@@ -252,6 +216,43 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                            @(VUsersViewContextLikers) : VFollowSourceScreenLikers
                            };
     return [dict objectForKey:@(self.usersViewContext)];
+}
+
+#pragma mark - PaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
+{
+    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *deletedIndexPaths = [[NSMutableArray alloc] init];
+    for ( id obj in newValue )
+    {
+        NSInteger index = [newValue indexOfObject:obj];
+        if ( [oldValue containsObject:obj] || index == NSNotFound )
+        {
+            continue;
+        }
+        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+    }
+    
+    for ( id obj in oldValue )
+    {
+        NSInteger index = [oldValue indexOfObject:obj];
+        if ( [newValue containsObject:obj] || index == NSNotFound )
+        {
+            continue;
+        }
+        [deletedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
+    }
+    
+    if ( newValue.count == 0 || oldValue.count == 0 )
+    {
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    }
+    else
+    {
+        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
+        [self.collectionView deleteItemsAtIndexPaths:deletedIndexPaths];
+    }
 }
 
 @end

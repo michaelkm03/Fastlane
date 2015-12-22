@@ -20,7 +20,7 @@ extension VUser: PersistenceParsable {
         tagline                     = user.tagline == nil ? tagline : user.tagline!
         isCreator                   = user.isCreator == nil ? isCreator : user.isCreator!
         isDirectMessagingDisabled   = user.isDirectMessagingDisabled == nil ? isDirectMessagingDisabled : user.isDirectMessagingDisabled!
-        isFollowedByMainUser        = user.isFollowedByMainUser == nil ? isDirectMessagingDisabled : user.isDirectMessagingDisabled!
+        isFollowedByMainUser        = user.isFollowedByMainUser == nil ? isFollowedByMainUser : user.isFollowedByMainUser!
         pictureUrl                  = user.profileImageURL == nil ? pictureUrl : user.profileImageURL!
         tokenUpdatedAt              = user.tokenUpdatedAt == nil ? tokenUpdatedAt : user.tokenUpdatedAt!
         maxUploadDuration           = user.maxVideoUploadDuration == nil ? maxUploadDuration : NSNumber( longLong: user.maxVideoUploadDuration)

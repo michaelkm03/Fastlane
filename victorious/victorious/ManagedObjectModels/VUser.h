@@ -45,6 +45,7 @@
 @property (nonatomic, retain) NSNumber *maxUploadDuration;
 @property (nonatomic, retain) NSNumber *loginType;
 @property (nonatomic, retain) VNotificationSettings *notificationSettings;
+@property (nonatomic, retain) NSOrderedSet *likedSequences;
 
 @end
 

@@ -24,10 +24,15 @@ class LikeSequenceOperation: RequestOperation {
         
         // Make data change optimistically before executing the request
         persistentStore.backgroundContext.v_performBlock() { context in
-            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
+            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+                return
+            }
+            
+            let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
             let sequences: [VSequence] = context.v_findObjects( uniqueElements )
             for sequence in sequences {
                 sequence.isLikedByMainUser = true
+                currentUser.v_addObject( sequence, to: "likedSequences" )
             }
             context.v_save()
         }

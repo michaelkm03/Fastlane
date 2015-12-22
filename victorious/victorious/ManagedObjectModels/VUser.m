@@ -52,5 +52,6 @@
 @dynamic maxUploadDuration;
 @dynamic loginType;
 @dynamic notificationSettings;
+@dynamic likedSequences;
 
 @end

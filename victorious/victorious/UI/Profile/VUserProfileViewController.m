@@ -32,8 +32,6 @@
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"
-#import "VFollowersDataSource.h"
-#import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
@@ -773,6 +771,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if (context == VUserProfileAttributesContext && [keyPath isEqualToString:NSStringFromSelector(@selector(isFollowedByMainUser))] && !self.representsMainUser)
     {
         [self reloadUserFollowingRelationship];
+        
+#warning FIXME: This gets called in an endless loop
         [self reloadUserFollowCounts];
         return;
     }

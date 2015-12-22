@@ -16,9 +16,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     
     private var userID: Int64
     
-    private let usersParser = UsersParser()
-    
-    private(set) var loadedUsers = [VUser]()
+    private(set) var results: [AnyObject]?
     
     required init( request: SubscribedToListRequest ) {
         self.userID = request.userID
@@ -34,15 +32,42 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     }
     
     private func onError( error: NSError, completion:(()->()) ) {
-        self.resultCount = 0
+        if error.code == RequestOperation.errorCodeNoNetworkConnection {
+            let results = loadPersistentData()
+            self.results = results
+            self.resultCount = results.count
+            
+        } else {
+            self.resultCount = 0
+        }
         completion()
     }
     
     private func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
-        self.resultCount = users.count
         
-        self.usersParser.parse( users, inStore: self.persistentStore ) { results in
-            self.loadedUsers = results
+        persistentStore.backgroundContext.v_performBlock() { context in
+            
+            let follower: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber( longLong: self.userID ) ])
+            
+            for user in users {
+                let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
+                let persistentUser: VUser = context.v_findOrCreateObject( uniqueElements )
+                persistentUser.populate(fromSourceModel: user)
+                persistentUser.v_addObject( follower, to: "followers" )
+            }
+            context.v_save()
+            
+            dispatch_async( dispatch_get_main_queue() ) {
+                let results = self.loadPersistentData()
+                self.results = results
+                self.resultCount = results.count
+                completion()
+            }
         }
+    }
+    
+    private func loadPersistentData() -> [VUser] {
+        // TODO: Load users who are followed by main user
+        return []
     }
 }

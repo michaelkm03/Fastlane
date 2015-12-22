@@ -73,7 +73,7 @@ extension NSManagedObjectContext {
     
     func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [NSManagedObject] {
         
-        let request = NSFetchRequest(entityName: entityName )
+        let request = NSFetchRequest(entityName: entityName)
         request.returnsObjectsAsFaults = false
         if let limit = limit {
             request.fetchLimit = limit.integerValue

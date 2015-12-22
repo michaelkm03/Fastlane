@@ -13,7 +13,6 @@
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
 #import "VUsersViewController.h"
-#import "VUserIsFollowingDataSource.h"
 #import "victorious-Swift.h"
 
 @interface VProfileFollowingContainerViewController ()

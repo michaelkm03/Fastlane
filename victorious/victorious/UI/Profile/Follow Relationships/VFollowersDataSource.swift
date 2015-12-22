@@ -8,18 +8,42 @@
 
 import Foundation
 
-public extension VFollowersDataSource {
+@objc class VFollowersDataSource: PaginatedDataSource, VUsersDataSource {
     
-    func loadPage( pageType: VPageType, completion: ([VUser], NSError?) -> () ) {
+    let user: VUser
+    
+    init( user: VUser ) {
+        self.user = user
+    }
+    
+    // MARK: - VUsersDataSource
+    
+    func users() -> NSOrderedSet {
+        return self.visibleItems
+    }
+    
+    func loadUsersWithPageType( pageType: VPageType, completion: (NSError? -> ())? = nil ) {
         let userID = self.user.remoteId.longLongValue
         
-        self.paginatedDataSource.loadPage( pageType,
+        self.loadPage( pageType,
             createOperation: {
                 return FollowersOfUserOperation(userID: userID)
             },
             completion:{ (operation, error) in
-                completion( operation?.loadedUsers ?? [], error )
+                completion?( error )
             }
         )
+    }
+    
+    func noContentTitle() -> String {
+        return self.user.isCurrentUser() ? NSLocalizedString( "NoFollowersTitle", comment: "" ) : NSLocalizedString( "ProfileNoFollowersTitle", comment: "" )
+    }
+    
+    func noContentMessage() -> String {
+        return self.user.isCurrentUser() ? NSLocalizedString( "NoFollowersMessage", comment: "" ) : NSLocalizedString( "ProfileNoFollowersMessage", comment: "" )
+    }
+    
+    func noContentImage() -> UIImage {
+        return UIImage(named: "noFollowersIcon" )!
     }
 }
