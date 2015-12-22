@@ -1,13 +1,5 @@
 module VAMS
   class Metadata
-    VAMS_TO_ITUNES_CATEGORIES    = {
-      'Books'             => 'Book',
-      'Catalogs'          => 'Apps.Catalogs',
-      'Food & Drink'      => 'Apps.Food_Drink',
-      'Health & Fitness'  => 'Healthcare_Fitness',
-      'Photo & Video'     => 'Photography',
-      'Social Networking' => 'SocialNetworking'
-    }
     CORE_ATTRIBUTES              = [:copyright,
                                     :primary_category,
                                     :secondary_category]
@@ -46,13 +38,7 @@ module VAMS
     private
 
     def retrieve_category(categories:, number:)
-      vams_category = find_category_string(categories: categories, number: number)
-      translate_vams_category_into_itunes_if_needed(category: vams_category)
-    end
-
-    def translate_vams_category_into_itunes_if_needed(category:)
-      translated_category = VAMS_TO_ITUNES_CATEGORIES[category]
-      translated_category ? translated_category : category
+      find_category_string(categories: categories, number: number)
     end
 
     def find_category_string(categories:, number:)

@@ -36,7 +36,7 @@ module VAMS
       build_name = 'LeachyPeachy'
       app = @client.app_by_build_name(build_name)
       assert_equal("75", app.app_id)
-      assert_equal(1, app.ios_app_categories['Books'])
+      assert_equal(1, app.ios_app_categories['Book'])
       assert_equal('com.getvictorious.${ProductPrefix}dev-leachypeachy99', app.bundle_id)
       assert_equal('com.getvictorious.dev-leachypeachy99',                 app.sanitized_bundle_id)
     end
