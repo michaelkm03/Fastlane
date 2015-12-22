@@ -74,8 +74,8 @@ module VAMS
     end
 
     def test_categories
-      location                  = TMP_DIR
-      language                  = 'en_US'
+      location = TMP_DIR
+      language = 'en_US'
       setup_and_save_metadata(category: 9, location: location, language: language)
       assert_equal('Healthcare_Fitness', read_file(location, 'primary_category.txt'))
 
@@ -101,7 +101,7 @@ module VAMS
     def setup_and_save_metadata(category:, location:, language:)
       clean_tmp_dir
       @app.ios_primary_category = category
-      metadata                 = Metadata.new(@app)
+      metadata                  = Metadata.new(@app)
       metadata.save(location: location, language: language)
     end
   end
