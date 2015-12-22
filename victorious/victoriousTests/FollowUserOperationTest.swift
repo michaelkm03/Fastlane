@@ -11,8 +11,9 @@ import XCTest
 
 class FollowUserOperationTest: XCTestCase {
     func testFollowingUser() {
-        let userToFollowID = 1
-        let screenName = "screenName"
-        let operation = FollowUserOperation(userToFollowID: userToFollowID, screenName: screenName)
+        let userToFollowID      = Int64(1)
+        let screenName          = "screenName"
+        let testPersistentStore = TestPersistentStore()
+        let operation           = FollowUserOperation(userToFollowID: userToFollowID, screenName: screenName, persistentStore: testPersistentStore)
     }
 }

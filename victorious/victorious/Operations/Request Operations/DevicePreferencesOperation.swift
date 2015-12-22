@@ -16,8 +16,9 @@ class DevicePreferencesOperation: RequestOperation {
     
     private var request: DevicePreferencesRequest
     
-    override init() {
+    override init(persistentStore: PersistentStoreType = MainPersistentStore()) {
         request = DevicePreferencesRequest()
+        super.init(persistentStore: persistentStore)
     }
     
     init(newPreferences: [NotificationPreference: Bool]) {

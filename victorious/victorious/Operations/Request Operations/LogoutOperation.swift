@@ -12,8 +12,8 @@ import VictoriousIOSSDK
 class LogoutOperation: RequestOperation {
     
     let request = LogoutRequest()
-    
-    override init() {
+
+    override init(persistentStore: PersistentStoreType = MainPersistentStore()) {
         super.init()
         self.qualityOfService = .UserInitiated
     }

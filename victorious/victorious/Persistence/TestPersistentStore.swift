@@ -1,15 +1,17 @@
 //
-//  TestPersistenceStore.swift
+//  TestPersistentStore.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/22/15.
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+@testable import victorious
+
 class TestPersistentStore: NSObject, PersistentStoreType {
 
     let persistentStorePath       = "victoriOS-test.sqlite"
-    let managedObjectModelName    = "victoriOS-test"
+    let managedObjectModelName    = "victoriOS"
     let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
 
     var mainContext: NSManagedObjectContext {
@@ -28,7 +30,8 @@ class TestPersistentStore: NSObject, PersistentStoreType {
             let persistentStoreURL = docsDirectoryURL.URLByAppendingPathComponent(persistentStorePath)
             let momFileName        = "\(managedObjectModelName).momd" as NSString
             let momFilePath        = momFileName.stringByAppendingPathComponent(managedObjectModelVersion)
-            guard let momURLInBundle = NSBundle.mainBundle().URLForResource(momFilePath, withExtension: "mom") else {
+
+            guard let momURLInBundle = NSBundle(forClass: self.dynamicType).URLForResource(momFilePath, withExtension: "mom") else {
                 fatalError("Cannot find managed object model (.mom) for URL in bundle: \(momFilePath)")
             }
 

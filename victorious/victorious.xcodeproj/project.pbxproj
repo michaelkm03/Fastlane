@@ -363,7 +363,8 @@
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
 		2B5C9810F9B3E583B2CCBC5C /* Pods_VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */; };
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
-		6269DC5B1C29DD200039F879 /* TestPersistenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269DC5A1C29DD200039F879 /* TestPersistenceStore.swift */; settings = {ASSET_TAGS = (); }; };
+		6269DC5C1C2A0ACF0039F879 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6269DC5A1C29DD200039F879 /* TestPersistentStore.swift */; settings = {ASSET_TAGS = (); }; };
+		6269DC5D1C2A0EFE0039F879 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
 		627AC06F1C2893A3002FB451 /* FollowUserOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627AC06E1C2893A3002FB451 /* FollowUserOperationTest.swift */; };
 		628681F51C287C9B00DEF638 /* FollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628681F41C287C9B00DEF638 /* FollowUserOperation.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
@@ -2401,7 +2402,7 @@
 		2FF26ACB7B7F5D83A0C89A42 /* Pods-VictoriousIOSSDK.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDK.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDK/Pods-VictoriousIOSSDK.stable.xcconfig"; sourceTree = "<group>"; };
 		3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VictoriousIOSSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
-		6269DC5A1C29DD200039F879 /* TestPersistenceStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistenceStore.swift; sourceTree = "<group>"; };
+		6269DC5A1C29DD200039F879 /* TestPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistentStore.swift; sourceTree = "<group>"; };
 		627AC06E1C2893A3002FB451 /* FollowUserOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperationTest.swift; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperation.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
@@ -7282,7 +7283,7 @@
 			isa = PBXGroup;
 			children = (
 				A74440291C03932B0026FBFC /* MainPersistentStore.swift */,
-				6269DC5A1C29DD200039F879 /* TestPersistenceStore.swift */,
+				6269DC5A1C29DD200039F879 /* TestPersistentStore.swift */,
 				A789F71A1BF11F4900F5C87B /* Models */,
 				A789F71D1BF11F4900F5C87B /* Parsers */,
 				A7F8436B1BFD5A0B004C3D55 /* PersistentStore */,
@@ -10855,7 +10856,6 @@
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A7039CF91C24CA9B0023DE6F /* ConversationListOperation.swift in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
-				6269DC5B1C29DD200039F879 /* TestPersistenceStore.swift in Sources */,
 				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
@@ -11695,6 +11695,8 @@
 				A7DCA4E81C128A78004E35B4 /* VExperienceEnhancerTests.m in Sources */,
 				A7DCA4F41C128A78004E35B4 /* VKeyboardInputAccessoryViewTests.m in Sources */,
 				A7DCA4EA1C128A78004E35B4 /* VFirstTimeInstallHelperTests.m in Sources */,
+				6269DC5D1C2A0EFE0039F879 /* victoriOS.xcdatamodeld in Sources */,
+				6269DC5C1C2A0ACF0039F879 /* TestPersistentStore.swift in Sources */,
 				A7DCA5181C128A78004E35B4 /* VUser+FetcherTests.m in Sources */,
 				A7DCA5151C128A78004E35B4 /* VVoteSettingManagerTests.m in Sources */,
 				A76AEA551BFED31B00E8A26F /* AVAsset+OrientationTests.m in Sources */,

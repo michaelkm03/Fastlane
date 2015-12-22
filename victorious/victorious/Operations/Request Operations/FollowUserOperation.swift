@@ -14,10 +14,11 @@ class FollowUserOperation: RequestOperation {
     private let userToFollowID: Int64
     private let screenName: String
 
-    init(userToFollowID: Int64, screenName: String) {
+    init(userToFollowID: Int64, screenName: String, persistentStore: PersistentStoreType = MainPersistentStore()) {
         self.userToFollowID = userToFollowID
-        self.screenName = screenName
-        self.request = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
+        self.screenName     = screenName
+        self.request        = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
+        super.init(persistentStore: persistentStore)
     }
 
     override func main() {

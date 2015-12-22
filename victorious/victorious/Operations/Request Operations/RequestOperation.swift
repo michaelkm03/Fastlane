@@ -28,9 +28,13 @@ class RequestOperation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     
-    let persistentStore: PersistentStoreType = MainPersistentStore()
+    let persistentStore: PersistentStoreType
     let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    
+
+    init(persistentStore: PersistentStoreType = MainPersistentStore()) {
+        self.persistentStore = persistentStore
+    }
+
     private(set) var error: NSError?
     
     var hasNetworkConnection: Bool {
