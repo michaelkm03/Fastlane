@@ -14,6 +14,5 @@ class FollowUserOperationTest: XCTestCase {
         let userToFollowID = 1
         let screenName = "screenName"
         let operation = FollowUserOperation(userToFollowID: userToFollowID, screenName: screenName)
-        
     }
 }
