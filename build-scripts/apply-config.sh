@@ -50,7 +50,7 @@ if [ $A_FLAG == true -a "$CONFIGURATION" == "" ]; then
 fi
 
 # Grab the latest assets and configuration data from VAMS.
-RESPONSE=$(python build-scripts/vams_prebuild.py $APP_NAME ios $ENVIRONMENT 2>&1)
+RESPONSE=$(python build-scripts/VAMS/vams_prebuild.py $APP_NAME ios $ENVIRONMENT 2>&1)
 RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
 RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
 # If no working folder is returned then exit
