@@ -44,23 +44,15 @@ class AccountCreateOperation: RequestOperation {
             context.saveChanges()
             
             let identifier = user.identifier
-            dispatch_async( dispatch_get_main_queue() ) {
-                let currentUser = self.setCurrentUser( identifier )!
-                self.updateStoredCredentials( currentUser )
-                self.notifyLoginChange( currentUser, isNewUser: response.newUser )
-                self.queueNextOperations( currentUser )
+            self.persistentStore.sync() { context in
+                if let user: VUser = context.getObject(identifier) {
+                    user.setAsCurrentUser()
+                    self.updateStoredCredentials( user )
+                    self.notifyLoginChange( user, isNewUser: response.newUser )
+                    self.queueNextOperations( user )
+                }
                 completion()
             }
-        }
-    }
-    
-    private func setCurrentUser( identifier: AnyObject ) -> VUser? {
-        return self.persistentStore.sync() { context in
-            if let persistentUser: VUser = context.getObject(identifier) {
-                persistentUser.setAsCurrentUser(inContext: context)
-                return persistentUser
-            }
-            return nil
         }
     }
     

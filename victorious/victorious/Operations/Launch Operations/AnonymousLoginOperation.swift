@@ -16,7 +16,7 @@ class AnonymousLoginOperation: Operation {
         super.start()
         
         defer {
-            self.finishedExecuting()
+            finishedExecuting()
         }
         
         beganExecuting()
@@ -29,7 +29,7 @@ class AnonymousLoginOperation: Operation {
         let anonymousToken = AgeGate.anonymousUserToken()
         let anonymousLoginType = VLoginType.Anonymous
         
-        let _: VUser = persistentStore.sync() { context in
+        persistentStore.asyncFromBackground() { context in
             let user: VUser = context.findOrCreateObject([ "remoteId" : anonymousID ])
             user.loginType = anonymousLoginType.rawValue
             user.token = anonymousToken
@@ -38,10 +38,9 @@ class AnonymousLoginOperation: Operation {
                 user.status = "anonymous"
             }
             
-            user.setAsCurrentUser(inContext: context)
+            user.setAsCurrentUser()
             context.saveChanges()
-            
-            return user
+            self.finishedExecuting()
         }
     }
 }
