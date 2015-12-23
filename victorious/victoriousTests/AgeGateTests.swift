@@ -18,7 +18,8 @@ class AgeGateTests: XCTestCase {
         static let anonymousUserToken = "AnonymousAccountUserToken"
     }
     
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let testUserDefaults = NSUserDefaults()
+
     private var isAgeGateEnabled: Bool {
         if let ageGateEnabled = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.ageGateEnabled) as? String {
             return ageGateEnabled.lowercaseString == "yes"
@@ -29,59 +30,62 @@ class AgeGateTests: XCTestCase {
 
     private let originalValueForBirthdayProvided = AgeGate.hasBirthdayBeenProvided()
     private let originalValueForIsAnonymousUser = AgeGate.isAnonymousUser()
-
-    override func tearDown() {
-        super.tearDown()
-        // Revert changes user default changes made by test cases
-        userDefaults.setBool(originalValueForBirthdayProvided, forKey: DictionaryKeys.birthdayProvidedByUser)
-        userDefaults.setBool(originalValueForIsAnonymousUser, forKey: DictionaryKeys.isAnonymousUser)
+    
+    override func setUp() {
+        super.setUp()
+        
+        // Swap out the default standard user defaults for ours
+        AgeGate.userDefaults = self.testUserDefaults
     }
     
     func testHasBirthdayBeenProvided() {
-        userDefaults.setValue(false, forKey: DictionaryKeys.birthdayProvidedByUser)
+        testUserDefaults.setValue(false, forKey: DictionaryKeys.birthdayProvidedByUser)
         XCTAssertEqual(AgeGate.hasBirthdayBeenProvided(), isAgeGateEnabled)
         
-        userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
+        testUserDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
         XCTAssertEqual(AgeGate.hasBirthdayBeenProvided(), isAgeGateEnabled)
     }
     
     func testIsAnonymousUser() {
-        userDefaults.setValue(false, forKey: DictionaryKeys.isAnonymousUser)
+        testUserDefaults.setValue(false, forKey: DictionaryKeys.isAnonymousUser)
         XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
         
-        userDefaults.setValue(true, forKey: DictionaryKeys.isAnonymousUser)
+        testUserDefaults.setValue(true, forKey: DictionaryKeys.isAnonymousUser)
         XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
     }
     
     func testSaveShouldUserBeAnonymous() {
         AgeGate.saveShouldUserBeAnonymous(false)
-        XCTAssertTrue(userDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
+        XCTAssertTrue(testUserDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
         XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
         
         AgeGate.saveShouldUserBeAnonymous(true)
-        XCTAssertTrue(userDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
+        XCTAssertTrue(testUserDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser))
         XCTAssertEqual(AgeGate.isAnonymousUser(), isAgeGateEnabled)
     }
     
     func testFilterTabMenuItems() {
-        
         let inputItems = [
             VNavigationMenuItem(title: "", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore2", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "fjdkslajkfld", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Channels", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "following", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "channel", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "home", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Home", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
+            VNavigationMenuItem(title: "Explore", identifier: "Explore", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Explore2", identifier: "Explore2", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Fjdkslajkfld", identifier: "Fjdkslajkfld", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Channels", identifier: "Channels", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Following", identifier: "Following", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Channel", identifier: "Channel", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
+            VNavigationMenuItem(title: "Home", identifier: "Home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
         ]
         
+        AgeGate.authorizedMenuItemIdentifiers = ["Home", "Channels", "Explore"]
+        let expectedCount = 3
+
         let outputItems = AgeGate.filterTabMenuItems(inputItems)
-        XCTAssertEqual(outputItems.count, 3)
-        XCTAssertEqual(outputItems[0].title, "Explore")
-        XCTAssertEqual(outputItems[1].title, "Channels")
-        XCTAssertEqual(outputItems[2].title, "Home")
+        XCTAssertEqual(outputItems.count, expectedCount)
+        if outputItems.count > expectedCount {
+            XCTAssertEqual(outputItems[0].title, "Explore")
+            XCTAssertEqual(outputItems[1].title, "Channels")
+            XCTAssertEqual(outputItems[2].title, "Home")
+        }
     }
     
     func testFilterMultipleContainerItems() {
