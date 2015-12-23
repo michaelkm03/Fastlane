@@ -10,7 +10,8 @@ import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
 
-    let request: FollowUserRequest
+    var onComplete: (() -> Void)?
+    private let request: FollowUserRequest
     private let userToFollowID: Int64
     private let screenName: String
 
@@ -22,13 +23,14 @@ class FollowUserOperation: RequestOperation {
     }
 
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.backgroundContext.v_performBlock { context in
             let userToFollowIDNumber = NSNumber(longLong: self.userToFollowID)
             let user: VUser = context.v_findOrCreateObject(["remoteId": userToFollowIDNumber])
             if user.status == nil {
                 user.status = "stored"
             }
             context.v_save()
+            self.onComplete?()
         }
     }
 }
