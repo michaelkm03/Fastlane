@@ -66,3 +66,6 @@ First thing, make sure tests pass:
 #### Ignore local chages
 
 Fastlane will exit early if you have some local changes. It's useful for running it in production, although it might be inconvenient for local development. In order to run fastlane with local changes use `IGNORE_DIRTY_GIT_STATE=1` environment variable in front of the fastlane command.
+
+#### Git Merging procedure
+Fastlane changes usually don't affect the iOS project structure and they are usually needed for production pushes. That's why the best practice is to branch off master. After a successfull code review, merge your changes back to master, then merge it into staging and then merge it into dev.
