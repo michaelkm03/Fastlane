@@ -48,7 +48,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     private var searchResultsViewController: VExploreSearchResultsViewController?
     
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager?
     private var trackingMinRequiredCellVisibilityRatio: CGFloat = 0
     
     private let contentPresenter = ContentViewPresenter()
@@ -169,7 +168,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     
     private func updateSectionRanges() {
         var tempRanges = [SectionRange]()
-        if let streamDataSource = streamDataSource, let streamItems = streamDataSource.visibleStreamItems.array as? [VStreamItem] {
+        if let streamDataSource = streamDataSource, let streamItems = streamDataSource.paginatedDataSource.visibleItems.array as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
@@ -492,8 +491,8 @@ extension VExploreViewController { //UICollectionViewDelegateFlowLayout
     
     private func streamItemFor(indexPath: NSIndexPath) -> VStreamItem? {
         let index = streamItemIndexFor(indexPath)
-        if let streamDataSource = streamDataSource where index < streamDataSource.visibleStreamItems.count {
-            return streamDataSource.visibleStreamItems[index] as? VStreamItem
+        if let streamDataSource = streamDataSource where index < streamDataSource.paginatedDataSource.visibleItems.count {
+            return streamDataSource.paginatedDataSource.visibleItems[index] as? VStreamItem
         }
         return nil
     }

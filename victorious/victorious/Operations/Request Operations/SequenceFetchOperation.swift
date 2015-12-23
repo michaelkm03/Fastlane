@@ -12,10 +12,9 @@ import VictoriousIOSSDK
 class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
+    var result: VSequence?
     
-    private(set) var loadedSequence: VSequence?
-    
-    init(sequenceID: Int64) {
+    init( sequenceID: String ) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
         super.init()
         self.qualityOfService = .UserInitiated
@@ -35,7 +34,7 @@ class SequenceFetchOperation: RequestOperation {
             let persistentSequenceID = persistentSequence.objectID
             self.persistentStore.mainContext.v_performBlockAndWait { context in
                 if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
-                    self.loadedSequence = sequence
+                    self.result = sequence
                 }
                 completion()
             }

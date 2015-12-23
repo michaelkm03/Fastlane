@@ -7,23 +7,18 @@
 //
 
 #import "VAbstractStreamCollectionViewController.h"
-
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
-
 #import "MBProgressHUD.h"
-
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
 
 //View Controllers
+#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
-
-//Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VAbstractFilter.h"
-
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
@@ -42,6 +37,8 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
+
+@property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
 @end
 
@@ -80,6 +77,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
+    
+    id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
+                                                                   timingTracker:timingTracker];
 }
 
 - (void)dealloc
@@ -177,7 +178,7 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.paginatedDataSource.visibleItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
@@ -232,8 +233,8 @@
     _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        _streamDataSource.stream = currentStream;
-        _collectionView.dataSource = self.streamDataSource;
+        self.streamDataSource.stream = currentStream;
+        self.collectionView.dataSource = self.streamDataSource;
     }
 }
 
@@ -285,7 +286,7 @@
 
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if ( self.streamDataSource.isLoading )
+    if ( self.streamDataSource.paginatedDataSource.isLoading )
     {
         [self.refreshControl endRefreshing];
         return;
@@ -296,7 +297,7 @@
         [self.refreshControl beginRefreshing];
     }
     
-    [self.streamDataSource loadPage:VPageTypeFirst completion:^void(NSError *_Nullable error)
+    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
@@ -309,9 +310,11 @@
          {
              completion();
          }
-         [self.refreshControl endRefreshing];
          
          [self didFinishLoadingPageType:pageType];
+         
+         [self.refreshControl endRefreshing];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
@@ -358,7 +361,7 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = !self.streamDataSource.isLoading;
+    const BOOL canLoadNextPage = !self.streamDataSource.paginatedDataSource.isLoading;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
@@ -399,12 +402,10 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-#warning FIXME: Bottom activity indicator
-    /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }*/
-    
+    }
     return CGSizeZero;
 }
 
@@ -428,16 +429,20 @@
 
 - (void)shouldLoadNextPage
 {
-    if (self.collectionView.visibleCells.count == 0 || self.streamDataSource.count == 0 || self.streamDataSource.isLoading)
+    if ( self.collectionView.visibleCells.count == 0 ||
+         self.streamDataSource.paginatedDataSource.visibleItems.count == 0 ||
+         self.streamDataSource.paginatedDataSource.isLoading )
     {
         return;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
+    __weak typeof(self) welf = self;
     [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
      {
-         [self flashScrollIndicatorsWithDelay:0.05f];
+         [welf.collectionView flashScrollIndicators];
+         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }];
 }
 
@@ -485,11 +490,6 @@
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
-}
-
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
-{
-    
 }
 
 @end

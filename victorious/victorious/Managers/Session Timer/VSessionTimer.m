@@ -87,6 +87,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     if ( [self shouldNewSessionStartNow] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
+        [self.delegate sessionTimerDidResetSession:self];
     }
     if ( self.firstLaunch )
     {

@@ -20,7 +20,7 @@ class SequenceUserInteractionsRequestTests: XCTestCase {
                 return
         }
         do {
-            let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: 16435, userID:5121)
+            let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: "16435", userID:5121)
             let result = try userInteractionsRequest.parseResponse(NSURLResponse(), toRequest: userInteractionsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertTrue(result)
         } catch {
@@ -29,7 +29,7 @@ class SequenceUserInteractionsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: 16435, userID:5121)
+        let userInteractionsRequest = SequenceUserInteractionsRequest(sequenceID: "16435", userID:5121)
         XCTAssertEqual(userInteractionsRequest.urlRequest.URL?.absoluteString, "/api/sequence/users_interactions/16435/5121")
     }
 

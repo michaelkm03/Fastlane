@@ -52,7 +52,8 @@
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong, readwrite) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) AppTimingContentHelper *appTimingHelper;
 
 @end
 
@@ -70,6 +71,9 @@
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
         _dependencyManager = context.destinationDependencyManager;
+        
+        id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+        _appTimingHelper = [[AppTimingContentHelper alloc] initWithTimingTracker:timingTracker];
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
@@ -119,7 +123,7 @@
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
         
-        _pageLoader = [[PageLoader alloc] init];
+        _commentsDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -231,26 +235,6 @@
     return ad_system;
 }
 */
-
-- (void)setDelegate:(id<VContentViewViewModelDelegate>)delegate
-{
-    _delegate = delegate;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:_sequence
-                        keyPath:@"comments"
-                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSKeyValueChange kind = (NSKeyValueChange) ((NSNumber *)change[ NSKeyValueChangeKindKey ]).unsignedIntegerValue;
-         if ( kind == NSKeyValueChangeSetting )
-         {
-             [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-         }
-#warning FIXME
-         [welf.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
-     }];
-}
 
 - (VUser *)user
 {

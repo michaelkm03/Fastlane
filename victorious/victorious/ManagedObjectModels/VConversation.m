@@ -20,5 +20,6 @@
 @dynamic lastMessageContentType;
 @dynamic messages;
 @dynamic user;
+@dynamic displayOrder;
 
 @end

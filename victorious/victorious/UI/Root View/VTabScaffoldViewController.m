@@ -42,6 +42,7 @@ static NSString * const kMenuKey = @"menu";
 @property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 @property (nonatomic, strong) ContentViewPresenter *contentViewPresenter;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
 
@@ -57,9 +58,10 @@ static NSString * const kMenuKey = @"menu";
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _hasSetupFirstLaunchOperations = NO;
         _contentViewPresenter = [[ContentViewPresenter alloc] init];
-        
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.maxConcurrentOperationCount = 1;
+        [[DefaultTimingTracker sharedInstance] setDependencyManager:dependencyManager];
+        _appTimingTracker = [DefaultTimingTracker sharedInstance];
     }
     return self;
 }
@@ -125,7 +127,10 @@ static NSString * const kMenuKey = @"menu";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupFirstLaunchOperations];
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        [self setupFirstLaunchOperations];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

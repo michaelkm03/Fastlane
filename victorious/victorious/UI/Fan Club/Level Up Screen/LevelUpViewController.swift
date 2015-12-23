@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 private struct Constants {
     static let distanceToContainerFromSide: CGFloat = 50
     static let collectionViewHeight: CGFloat = 80
-    static let badgeHeight = 150
+    static let badgeHeight = 155 // This needs to be slightly higher than in the mocks to accomodate for rounded corners
     static let badgeWidth = 135
 }
 
@@ -165,11 +165,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn() { completed in
-                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
-                    self.upgradeBadgeNumber()
-                }
-            }
+            animateIn()
             
             if let videoURL = alert.parameters.backgroundVideoURL {
                 let videoPlayerItem = VVideoPlayerItem(URL: videoURL)
@@ -190,7 +186,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     private func upgradeBadgeNumber() {
         
         if let alert = self.alert {
-            badgeView?.levelUp( String(alert.parameters.userFanLoyalty.level) )
+            // FIXME:
+            // badgeView?.levelUp( String(alert.parameters.userFanLoyalty.level) )
         }
         
         UIView.animateWithDuration(0.1,
@@ -224,7 +221,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Helpers
     
-    private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
+    private func animateIn() {
         
         // Title animation
         UIView.animateWithDuration(0.6,
@@ -248,7 +245,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             animations: {
                 self.badgeView?.transform = CGAffineTransformIdentity
             },
-            completion: badgeAnimationCompletion)
+            completion: nil)
         
         // Button animation
         UIView.animateWithDuration(0.6,

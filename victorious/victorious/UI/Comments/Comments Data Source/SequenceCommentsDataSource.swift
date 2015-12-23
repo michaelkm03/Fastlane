@@ -12,11 +12,8 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     private let sequence: VSequence
     private let flaggedContent = VFlaggedContent()
-    private let pageLoader = PageLoader()
-    
-    var isLoading: Bool {
-        return pageLoader.isLoading
-    }
+    private(set) var isLoadingComments: Bool = false
+    private var loadCommentsOperation: SequenceCommentsOperation?
     
     var commentsArray: [VComment] {
         return self.sequence.comments.array as? [VComment] ?? []
@@ -31,7 +28,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        return (self.sequence.comments.array as? [VComment] ?? [])[index]
+        return self.commentsArray[index]
     }
     
     func indexOfComment(comment: VComment) -> Int {
@@ -41,19 +38,29 @@ class SequenceCommentsDataSource : CommentsDataSource {
         return 0
     }
     
-    func loadComments( pageType: VPageType, completion:(NSError?->())?) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?) {
+        guard let sequenceID = Int64(self.sequence.remoteId) where !isLoadingComments else {
             return
         }
         
-        self.pageLoader.loadPage( pageType,
-            createOperation: {
-                return SequenceCommentsOperation(sequenceID: sequenceID)
-            },
-            completion: { (operation, error) in
+        let operation: SequenceCommentsOperation?
+        switch pageType {
+        case .First:
+            operation =  SequenceCommentsOperation(sequenceID: sequenceID)
+        case .Next:
+            operation = loadCommentsOperation?.next()
+        case .Previous:
+            operation = loadCommentsOperation?.prev()
+        }
+        
+        if let currentOperation = operation {
+            loadCommentsOperation = currentOperation
+            isLoadingComments = true
+            currentOperation.queue() { error in
+                self.isLoadingComments = false
                 completion?(error)
             }
-        )
+        }
     }
     
     func loadComments(commentID: NSNumber) {

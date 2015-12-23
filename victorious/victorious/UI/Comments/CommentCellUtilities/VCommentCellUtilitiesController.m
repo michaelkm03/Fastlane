@@ -16,6 +16,8 @@
 #import "VSequencePermissions.h"
 #import "victorious-Swift.h"
 
+#import "victorious-Swift.h"
+
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 @interface VCommentCellUtilitiesController()
@@ -74,6 +76,11 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     if ( !isCurrentUserOwnerOfComment && [self commentIsFlaggable:self.comment]  )
     {
         [mutableButtonConfigs addObject:sharedConfig.flagButtonConfig];
+    }
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        mutableButtonConfigs = [NSMutableArray arrayWithArray:[AgeGate filterCommentCellUtilities:mutableButtonConfigs]];
     }
     
     self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];

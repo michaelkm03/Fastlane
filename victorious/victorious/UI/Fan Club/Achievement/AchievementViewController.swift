@@ -151,14 +151,14 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         if let animatedBadge = animatedBadge {
             animatedBadge.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(animatedBadge)
-            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description][icon][button(64)]|"
+            verticalConstraintString = "V:|-23-[badgeView(70)]-29-[title]-20-[description]-[icon]-[button(64)]|"
             views = ["badgeView" : animatedBadge, "button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
             
             animatedBadge.v_addWidthConstraint(60)
             containerView.v_addCenterHorizontallyConstraintsToSubview(animatedBadge)
-        }
-        else {
-            verticalConstraintString = "V:|-23-[title]-20-[description][icon][button(40)]|"
+        
+        } else {
+            verticalConstraintString = "V:|-23-[title]-20-[description]-[icon]-[button(40)]|"
             views = ["button" : dismissButton, "icon" : iconImageView, "description" : descriptionLabel, "title" : titleLabel]
         }
         

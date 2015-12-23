@@ -44,6 +44,12 @@ class CoreDataManager: NSObject {
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
         
+        /*do {
+            try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL )
+        } catch {}*/
+        
+        print( "Initializing persistent store at URL: \(persistentStoreURL)" )
+        
         self.persistentStoreURL = persistentStoreURL
         self.currentModelVersion = currentModelVersion
         self.previousModelVersion = previousModelVersion
@@ -84,7 +90,7 @@ class CoreDataManager: NSObject {
         }
     }
 
-    func deleteAllData() {
+    func deletePersistentStore() {
         do {
             try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
         } catch {

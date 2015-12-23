@@ -11,6 +11,13 @@ import Foundation
 public struct PersistentStorePagination {
     let itemsPerPage: Int
     let pageNumber: Int
+    let sortDescriptors: [NSSortDescriptor]
+    
+    public init( itemsPerPage: Int, pageNumber: Int, sortDescriptors: [NSSortDescriptor] = [] ) {
+        self.itemsPerPage = itemsPerPage
+        self.pageNumber = pageNumber
+        self.sortDescriptors = sortDescriptors
+    }
 }
 
 /// A Swift-only generic implementation of the PersistentStoreContextBasic protocol that provides access to a single
@@ -41,6 +48,7 @@ extension NSManagedObjectContext {
             queryDictionary: queryDictionary,
             pageNumber: pagination?.pageNumber,
             itemsPerPage: pagination?.itemsPerPage,
+            sortDescriptors: pagination?.sortDescriptors ?? [],
             limit: limit
         ) as? [T] ?? []
     }
@@ -69,7 +77,11 @@ extension NSManagedObjectContext {
         return v_findObjects( queryDictionary, pagination: pagination, limit: nil)
     }
     
-    func findObjects<T: NSManagedObject>() -> [T] {
+    func v_findAllObjects<T: NSManagedObject>() -> [T] {
         return v_findObjects( nil, pagination: nil, limit: nil)
+    }
+    
+    func v_findAllObjects<T: NSManagedObject>( pagination pagination: PersistentStorePagination ) -> [T] {
+        return v_findObjects( nil, pagination: pagination, limit: nil)
     }
 }

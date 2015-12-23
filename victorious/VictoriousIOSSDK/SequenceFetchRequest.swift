@@ -13,7 +13,7 @@ public struct SequenceFetchRequest: RequestType {
     
     public let urlRequest: NSURLRequest
     
-    public init( sequenceID: Int64 ) {
+    public init( sequenceID: String ) {
         let url = NSURL(string:"/api/sequence/fetch")!.URLByAppendingPathComponent( String(sequenceID) )
         self.urlRequest = NSURLRequest(URL: url)
     }

@@ -15,6 +15,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
+#import "victorious-Swift.h"
 
 /**
  A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
@@ -40,6 +41,7 @@ NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Fo
 NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
 NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
 NSString * const VDependencyManagerAccessorySettings            = @"Accessory Menu Settings";
+NSString * const VDependencyManagerAccessoryItemLegalInfo       = @"Accessory Legal Information";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 static const char kAssociatedObjectBadgeableBarButtonsKey;
@@ -188,6 +190,11 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 - (BOOL)shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
 {
+    if ([AgeGate isAnonymousUser])
+    {
+        return [AgeGate isAccessoryItemAllowed:menuItem];
+    }
+    
     // If anyone in the responder chain can and does say no, then we don't display
     __block BOOL shouldDisplay = YES;
     [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)

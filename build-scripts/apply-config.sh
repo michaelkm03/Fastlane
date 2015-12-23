@@ -1,35 +1,56 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###########
 # Modifies an .xcarchive according to
 # an individual app configuration.
 ###########
 
 APP_NAME=$1
-A_FLAG=$2
-XCARCHIVE_PATH=$3
-CONFIGURATION=$4
+A_FLAG=false
+XCARCHIVE_PATH=""
+CONFIGURATION=""
+ENVIRONMENT="production"
 
-usage(){
+show_usage () {
     echo "Usage: `basename $0` <app name> [-a <archive path> <build configuration>]"
     echo ""
-    echo "If -a is specified, this script will modify an .xcarchive."
+    echo "If -a and -c are specified, this script will modify an .xcarchive."
     echo "Otherwise, the current source directory is modified."
+    echo ""
+    echo "if -e is specified it will use the provided environment, otherwise  the production VAMS API is used"
     echo ""
 }
 
+# Parse command line arguments
+OPTIND=2
+while getopts "a:e:c:" opt; do
+    case $opt in
+        a)
+            A_FLAG=true
+            XCARCHIVE_PATH=$OPTARG
+            ;;
+        c)
+            CONFIGURATION=$OPTARG
+            ;;
+        e)
+            ENVIRONMENT=$OPTARG
+            ;;
+    esac
+done
+
 if [ "$APP_NAME" == "" ]; then
-    usage
-    exit 1
+  show_usage
+  exit 1
 fi
 
-if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
-    echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
-    echo ""
-    exit 1
+if [ $A_FLAG == true -a "$CONFIGURATION" == "" ]; then
+  echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
+  echo ""
+  show_usage
+  exit 1
 fi
 
 # Grab the latest assets and configuration data from VAMS.
-RESPONSE=$(python build-scripts/vams_prebuild.py $APP_NAME ios 2>&1)
+RESPONSE=$(python build-scripts/vams_prebuild.py $APP_NAME ios $ENVIRONMENT 2>&1)
 RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
 RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
 # If no working folder is returned then exit
@@ -40,8 +61,7 @@ else
     FOLDER="$RESPONSE_MESSAGE"
 fi
 
-
-if [ "$A_FLAG" == "-a" ]; then
+if [ $A_FLAG == true ]; then
     if [ ! -d "$XCARCHIVE_PATH" ]; then
         echo "Archive \"$XCARCHIVE_PATH\" not found"
         exit 1
@@ -59,7 +79,7 @@ fi
 
 ### Modify Info.plist
 
-if [ "$A_FLAG" == "-a" ]; then
+if [ $A_FLAG == true ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
     if [ $? != 0 ]; then
         echo "ProductPrefix key not found in info.plist."

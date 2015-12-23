@@ -33,6 +33,12 @@ static const CGFloat kInviteCellHeight = 50.0f;
 {
     [self.profileButton addBorderWithWidth:1.0f andColor:[UIColor whiteColor]];
     self.contentView.backgroundColor = [UIColor clearColor];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.followUserControl removeFromSuperview];
+        self.followUserControl = nil;
+    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

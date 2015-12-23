@@ -13,15 +13,15 @@ class UnlikeSequenceOperation: RequestOperation {
     
     let request: UnlikeSequenceRequest
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
-    init( sequenceID: Int64 ){
+    init( sequenceID: String ){
         self.request = UnlikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
     override func main() {
-        let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
+        let uniqueElements = [ "remoteId" : self.sequenceID ]
         persistentStore.backgroundContext.v_performBlock() { context in
             let sequence: VSequence = context.v_findOrCreateObject( uniqueElements )
             sequence.isLikedByMainUser = false

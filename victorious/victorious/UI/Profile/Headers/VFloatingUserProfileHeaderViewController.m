@@ -15,6 +15,7 @@
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "VLaunchScreenProvider.h"
+#import "victorious-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -60,6 +61,12 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     [self setPrimaryActionButtonHidden:YES];
     
     self.secondaryActionButton.hidden = YES;
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.secondaryActionButton removeFromSuperview];
+        self.secondaryActionButton = nil;
+    }
     
     if ( self.state != VUserProfileHeaderStateUndefined )
     {

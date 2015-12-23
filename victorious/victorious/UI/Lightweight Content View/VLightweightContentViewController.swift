@@ -11,11 +11,10 @@ import Foundation
 public extension VLightweightContentViewController {
     
     public func fetchSequence( sequenceId sequenceId: String, completion:(VSequence?, NSError?) -> Void ) {
-        if let sequenceID = Int64(sequenceId) {
-            let op = SequenceFetchOperation( sequenceID: sequenceID )
-            op.queue() { error in
-                completion( op.loadedSequence, error )
-            }
+        
+        let op = SequenceFetchOperation( sequenceID: sequenceId )
+        op.queue() { error in
+            completion( op.result, error )
         }
     }
 }

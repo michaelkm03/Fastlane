@@ -35,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * permissionsMask;
 @property (nonatomic, retain, nullable) id previewData;
 @property (nonatomic, retain, nullable) NSString * previewType;
-@property (nonatomic, retain, nullable) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
 @property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
@@ -49,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) VUser * recentUser;
 @property (nonatomic, retain) NSOrderedSet * reposters;
 @property (nonatomic, retain, nullable) VTracking * tracking;
-@property (nonatomic, retain, nullable) VUser * user;
+@property (nonatomic, retain) VUser * user;
 @property (nonatomic, retain, nullable) NSSet * voteResults;
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
 @property (nonatomic, retain) NSNumber * isGifStyle;

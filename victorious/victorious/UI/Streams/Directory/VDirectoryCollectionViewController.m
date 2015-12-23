@@ -45,11 +45,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 /**
- *  The dependencyManager used to style the directory and its cells
- */
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-/**
  *  The marquee controller that will provide and manage marquee cells when a marquee is displayed
  */
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeController;
@@ -260,7 +255,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return [self.marqueeController desiredSizeWithCollectionViewBounds:localCollectionView.bounds];
     }
     
-    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row]];
+    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row]];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -359,7 +354,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return (UICollectionViewCell *)[self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
     }
     
-    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
+    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)localCollectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath

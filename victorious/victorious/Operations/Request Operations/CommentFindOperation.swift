@@ -15,12 +15,12 @@ class CommentFindOperation: RequestOperation {
     
     private let flaggedContent = VFlaggedContent()
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     private let commentID: Int64
     
     var pageNumber: Int?
     
-    init( sequenceID: Int64, commentID: Int64, itemsPerPage: Int = 15 ) {
+    init( sequenceID: String, commentID: Int64, itemsPerPage: Int = 15 ) {
         self.sequenceID = sequenceID
         self.commentID = commentID
         self.request = CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage)

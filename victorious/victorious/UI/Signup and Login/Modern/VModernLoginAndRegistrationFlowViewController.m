@@ -65,6 +65,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, strong) NSOperation *currentOperation;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
+@property (nonatomic, strong) DefaultTimingTracker *appTimingTracker;
 
 @end
 
@@ -103,6 +104,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _animator = [[VModernFlowControllerAnimationController alloc] init];
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
+        
+        _appTimingTracker = [DefaultTimingTracker sharedInstance];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
@@ -180,6 +183,25 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
+- (void)registrationDidFinishedWithSuccess:(BOOL)success
+{
+    if ( self.onCompletionBlock != nil )
+    {
+        self.onCompletionBlock( success );
+    }
+    
+    if ( self.isRegisteredAsNewUser )
+    {
+        [self.appTimingTracker endEventWithType:VAppTimingEventTypeSignup subtype:nil];
+        [self.appTimingTracker resetEventWithType:VAppTimingEventTypeLogin];
+    }
+    else
+    {
+        [self.appTimingTracker endEventWithType:VAppTimingEventTypeLogin subtype:nil];
+        [self.appTimingTracker resetEventWithType:VAppTimingEventTypeSignup];
+    }
+}
+
 #pragma mark - Gesture Target
 
 - (void)pannedFromLeftSideOfScreen:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer
@@ -232,21 +254,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
     if (self.presentingViewController != nil)
     {
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:^
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
          {
-             if (self.onCompletionBlock != nil)
-             {
-                 self.onCompletionBlock(NO);
-             }
+             [self registrationDidFinishedWithSuccess:NO];
          }];
     }
     else
     {
-        if (self.onCompletionBlock != nil)
-        {
-            self.onCompletionBlock(NO);
-        }
+        [self registrationDidFinishedWithSuccess:NO];
     }
 }
 
@@ -256,13 +271,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeEmail];
         
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     UIViewController<VLoginFlowScreen> *firstLoginScreen = [self.loginScreens firstObject];
     self.currentScreen = firstLoginScreen;
-    [self pushViewController:firstLoginScreen
-                    animated:YES];
+    [self pushViewController:firstLoginScreen animated:YES];
 }
 
 - (void)selectedRegister
@@ -272,10 +288,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeEmail];
+    
     UIViewController<VLoginFlowScreen> *firstRegistrationScreen = [self.registrationScreens firstObject];
     self.currentScreen = firstRegistrationScreen;
-    [self pushViewController:firstRegistrationScreen
-                    animated:YES];
+    [self pushViewController:firstRegistrationScreen animated:YES];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
@@ -287,6 +304,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeTwitter];
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeTwitter];
     
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self completion:^(ACAccount *twitterAccount)
@@ -338,6 +358,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
+    
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeFacebook];
+    [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeFacebook];
     
     FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
     if ( currentToken == nil ||
@@ -646,21 +669,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.view endEditing:YES];
     if (self.presentingViewController != nil)
     {
-        [self.presentingViewController dismissViewControllerAnimated:YES
-                                                          completion:^
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:^
          {
-             if (self.onCompletionBlock != nil)
-             {
-                 self.onCompletionBlock(success);
-             }
+             [self registrationDidFinishedWithSuccess:success];
          }];
     }
     else
     {
-        if (self.onCompletionBlock != nil)
-        {
-            self.onCompletionBlock(success);
-        }
+        [self registrationDidFinishedWithSuccess:success];
     }
 }
 
