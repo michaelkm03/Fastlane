@@ -33,6 +33,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "victorious-Swift.h"
 #import "VContentFittingPreviewView.h"
+#import "victorious-Swift.h"
 
 @import KVOController;
 
@@ -95,6 +96,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.captionZeroingHeightConstraint.constant = 0.0f;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.sleekActionView removeFromSuperview];
+        self.sleekActionView = nil;
+    }
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -134,7 +141,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              CGFloat previewHeight =  VCEIL( size.width  / [sequence previewAssetAspectRatio] );
              return CGSizeMake( 0.0f, previewHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        if ( ![AgeGate isAnonymousUser] )
+        {
+            [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        }
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
@@ -357,8 +367,21 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
     self.inStreamCommentsCollectionViewHeightConstraint.active = !hasComments;
     
-    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
-    self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
+    if ( ![AgeGate isAnonymousUser] )
+    {
+        self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+        self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
+    }
+    else
+    {
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.countsTextView
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.previewContainer 
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:5]];
+    }
 
     [super updateConstraints];
 }

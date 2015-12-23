@@ -26,6 +26,7 @@ extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
 extern NSString * const VDependencyManagerAccessoryItemMore;
 extern NSString * const VDependencyManagerAccessoryNewMessage;
 extern NSString * const VDependencyManagerAccessorySettings;
+extern NSString * const VDependencyManagerAccessoryItemLegalInfo;
 
 @interface VDependencyManager (VAccessoryScreens)
 

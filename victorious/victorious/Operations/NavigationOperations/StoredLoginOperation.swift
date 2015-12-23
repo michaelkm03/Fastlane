@@ -32,7 +32,7 @@ class StoredLoginOperation: Operation {
                 if user.status == nil {
                     user.status = "stored"
                 }
-                user.setAsCurrentUser(inContext: context)
+                user.setAsCurrentUser()
                 context.saveChanges()
                 return user
             }

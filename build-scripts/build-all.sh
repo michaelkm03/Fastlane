@@ -14,7 +14,7 @@ MD5=$(git rev-parse HEAD 2> /dev/null)
 shift 2
 
 usage(){
-    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] <app name(s)>"
+    echo "Usage: `basename $0` <scheme> <build configuration> [--prefix <prefix>] [--macros <macros>] [--vams_environment <environment>] <app name(s)>"
     exit 1
 }
 
@@ -40,6 +40,14 @@ if [ "$1" == "--macros" ]; then
 else
     MACROS=""
     MACROS_COMMAND=""
+fi
+
+if [ "$1" == "--vams_environment" ]; then
+    shift
+    VAMS_ENVIRONMENT_OPTIONS="-e $1"
+    shift
+else
+    VAMS_ENVIRONMENT_OPTIONS=""
 fi
 
 if [ $# == 0 ]; then
@@ -134,7 +142,7 @@ fi
 applyConfiguration(){
     echo "Configuring for $1"
 
-    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive -c $CONFIGURATION $VAMS_ENVIRONMENT_OPTIONS
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         return 1

@@ -41,9 +41,7 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
         remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
-        persistentStore.sync() { context in
-            VUser.clearCurrentUser(inContext: context)
-        }
+        VUser.clearCurrentUser()
         
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         

@@ -42,17 +42,27 @@ extension VUser {
     
     /// Strips the current user of its "current" status.  `currentUser()` method will
     /// now return nil until a new user has been set as current using method `setAsCurrent()`.
-    static func clearCurrentUser( inContext context: PersistentStoreContextBasic ) {
-        context.cacheObject( nil, forKey: VUser.cacheKey )
+    /// This method is thread safe, and will handle loading the user
+    /// from the proper context depending on which thread it is invoked.
+    static func clearCurrentUser() {
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.sync() { context in
+            context.cacheObject( nil, forKey: VUser.cacheKey )
+        }
     }
     
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as their can be only one.
-    func setAsCurrentUser( inContext context: PersistentStoreContextBasic ) {
-        context.cacheObject( self, forKey: VUser.cacheKey )
-    }
-    
-    private static func currentUser( inContext context: PersistentStoreContextBasic ) -> VUser? {
-        return context.cachedObjectForKey( VUser.cacheKey ) as? VUser
+    /// This method is thread safe, and will handle loading the user
+    /// from the proper context depending on which thread it is invoked.
+    func setAsCurrentUser() {
+        let identifier = self.identifier
+        
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.sync() { context in
+            if let user: VUser = context.getObject( identifier ) {
+                context.cacheObject( user, forKey: VUser.cacheKey )
+            }
+        }
     }
 }
