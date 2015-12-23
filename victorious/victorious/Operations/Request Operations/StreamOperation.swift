@@ -22,7 +22,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: Int64? = nil) {
+    convenience init( apiPath: String, sequenceID: String? = nil) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
     }
     

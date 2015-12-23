@@ -399,12 +399,10 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-#warning FIXME: Bottom activity indicator
-    /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }*/
-    
+    }
     return CGSizeZero;
 }
 

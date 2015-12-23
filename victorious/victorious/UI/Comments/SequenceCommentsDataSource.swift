@@ -18,13 +18,10 @@ class SequenceCommentsDataSource : PaginatedDataSource {
     }
     
     func loadComments( pageType: VPageType, completion:((NSError?)->())? = nil ) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            return
-        }
         
         self.loadPage( pageType,
             createOperation: {
-                return SequenceCommentsOperation(sequenceID: sequenceID)
+                return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
             completion: { (operation, error) in
                 completion?(error)
@@ -33,7 +30,7 @@ class SequenceCommentsDataSource : PaginatedDataSource {
     }
     
     func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
-        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        let operation = CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.longLongValue )
         operation.queue() { error in
             if error == nil, let pageNumber = operation.pageNumber {
                 completion?(pageNumber, nil)

@@ -363,7 +363,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
         if let sequence = self.sequence {
             let commentParameters = CommentParameters(
-                sequenceID: Int64(sequence.remoteId)!,
+                sequenceID: sequence.remoteId,
                 text: inputAccessoryView.composedText,
                 replyToCommentID: nil,
                 mediaURL: self.publishParameters?.mediaToUploadURL,

@@ -13,7 +13,7 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
     
     public let paginator: StandardPaginator
     public let userID: Int64?
-    public let sequenceID: Int64?
+    public let sequenceID: String?
     
     private let url: NSURL
     
@@ -35,7 +35,7 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
         self.url = NSURL(string: "/api/pollresult/summary_by_user/\(userID)")!
     }
     
-    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.userID = nil
         self.paginator = paginator

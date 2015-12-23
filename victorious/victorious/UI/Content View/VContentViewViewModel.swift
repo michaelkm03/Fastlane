@@ -11,18 +11,10 @@ import VictoriousIOSSDK
 
 public extension VContentViewViewModel {
     
-    var sequenceID: Int64 {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            // Change Sequence's `sequenceID` property at network layer
-            fatalError( "Failed to cast a a sequence's `remoteId` property from `String` to `Int64`.  FIXME: Change Sequence's `sequenceID` property at network layer" )
-        }
-        return sequenceID
-    }
-    
     func loadNetworkData() {
         
         if self.sequence.isPoll() {
-            PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
+            PollResultSummaryBySequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
                 self.delegate?.didUpdatePoll()
             }
         }
@@ -35,16 +27,15 @@ public extension VContentViewViewModel {
                     }
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
-                    let sequenceID = Int64(self.sequence.remoteId)!
-                    self._commentsDataSource.loadPage( .First, createOperation: {
-                        return SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
+                    self.commentsDataSource.loadPage( .First, createOperation: {
+                        return SequenceCommentsOperation(sequenceID: self.sequence.remoteId, pageNumber: pageNumber)
                     })
                 }
             )*/
             
         } else {
-            SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
-                // This is here to update the vote counts
+            SequenceFetchOperation( sequenceID: self.sequence.remoteId ).queue() { error in
+                // Update the vote/EBs thrown counts
                 self.experienceEnhancerController.updateData()
                 
                 // Sets up the monetization chain
@@ -59,8 +50,8 @@ public extension VContentViewViewModel {
             self.loadComments(.First)
         }
         
-        if let currentUserID = VUser.currentUser()?.remoteId.integerValue {
-            SequenceUserInterationsOperation(sequenceID: sequenceID, userID: Int64(currentUserID) ).queue() { error in
+        if let currentUserID = VUser.currentUser()?.remoteId.longLongValue {
+            SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
             
@@ -79,16 +70,14 @@ public extension VContentViewViewModel {
     
 
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
-        guard let nextSequenceId = self.endCardViewModel.nextSequenceId,
-            let nextSequenceIntegerID = Int64(nextSequenceId) else {
-                failure(nil)
-                return
+        guard let nextSequenceId = self.endCardViewModel.nextSequenceId else {
+            return
         }
         
-        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSequenceIntegerID )
+        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSequenceId )
         sequenceFetchOperation.queue() { error in
             
-            if let sequence = sequenceFetchOperation.loadedSequence where error == nil {
+            if let sequence = sequenceFetchOperation.result where error == nil {
                 success( sequence )
             } else {
                 failure(error)
@@ -97,7 +86,6 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
-        
         let realtimeComment: CommentParameters.RealtimeComment?
         if let time = currentTime?.doubleValue where time > 0.0,
             let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
@@ -107,7 +95,7 @@ public extension VContentViewViewModel {
         }
         
         let commentParameters = CommentParameters(
-            sequenceID: self.sequenceID,
+            sequenceID: self.sequence.remoteId,
             text: text,
             replyToCommentID: nil,
             mediaURL: publishParameters.mediaToUploadURL,
@@ -121,9 +109,8 @@ public extension VContentViewViewModel {
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
-        
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
-            let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
+            let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.longLongValue)
             operation.queue() { error in
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
@@ -134,13 +121,9 @@ public extension VContentViewViewModel {
     // MARK: - CommentsDataSource
     
     func loadComments( pageType: VPageType, completion:(NSError?->())? = nil ) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            return
-        }
-        
         self.commentsDataSource.loadPage( pageType,
             createOperation: {
-                return SequenceCommentsOperation(sequenceID: sequenceID)
+                return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
             },
             completion: { (operation, error) in
                 completion?(error)
@@ -149,13 +132,25 @@ public extension VContentViewViewModel {
     }
     
     func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
-        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        let operation = CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.longLongValue )
         operation.queue() { error in
             if error == nil, let pageNumber = operation.pageNumber {
                 completion?(pageNumber, nil)
             } else {
                 completion?(nil, error)
             }
+        }
+    }
+    
+    func flagSequence( completion completion: ((NSError?)->())? = nil ) {
+        FlagSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
+            completion?( error )
+        }
+    }
+    
+    func deleteSequence( completion completion: ((NSError?)->())? = nil ) {
+        DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
+            completion?( error )
         }
     }
 }

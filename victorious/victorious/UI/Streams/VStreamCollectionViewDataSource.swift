@@ -15,13 +15,13 @@ public extension VStreamCollectionViewDataSource {
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
     public func loadPage( pageType: VPageType, completion:(NSError?)->()) {
-        guard let apiPath = self.stream?.apiPath else {
+        guard let apiPath = self.stream.apiPath else {
             return
         }
         
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
-                return StreamOperation(apiPath: (apiPath) )
+                return StreamOperation(apiPath: apiPath)
             },
             completion: { (operation, error) in
                 if let error = error {
@@ -35,22 +35,10 @@ public extension VStreamCollectionViewDataSource {
     }
     
     public func removeStreamItem(streamItem: VStreamItem) {
-        let persistentStore: PersistentStoreType = MainPersistentStore()
-        persistentStore.mainContext.v_performBlock() { context in
-            self.stream?.v_removeObject( streamItem, from: "streamItems" )
-            context.v_save()
-            // TODO: Make operation
-            // TODO: Update UI
-        }
+        RemoteStreamItemOperation(streamItemID: streamItem.remoteId).queueOn( RequestOperation.sharedQueue )
     }
     
     public func unloadStream() {
-        let persistentStore: PersistentStoreType = MainPersistentStore()
-        persistentStore.mainContext.v_performBlock() { context in
-            self.stream?.v_removeAllObjects( from: "streamItems" )
-            context.v_save()
-            // TODO: Make operation
-            // TODO: Update UI
-        }
+        UnloadStreamItemOperation(streamID: self.stream.remoteId ).queueOn( RequestOperation.sharedQueue )
     }
 }

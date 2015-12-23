@@ -14,14 +14,14 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     let request: SequenceRepostersRequest
     var results: [AnyObject]?
     
-    private var sequenceID: Int64
+    private var sequenceID: String
     
     required init( request: SequenceRepostersRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
     }
     
-    convenience init( sequenceID: Int64 ) {
+    convenience init( sequenceID: String ) {
         self.init( request: SequenceRepostersRequest(sequenceID: sequenceID) )
     }
     

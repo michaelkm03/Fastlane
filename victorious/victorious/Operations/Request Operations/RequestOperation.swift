@@ -19,7 +19,8 @@ private let _defaultQueue: NSOperationQueue = {
 class RequestOperation: NSOperation, Queuable {
     
     static let errorDomain: String = "com.getvictorious.RequestOperation"
-    static let errorCodeNoNetworkConnection: Int = 9001
+    static let errorCodeNoNetworkConnection: Int    = 9001
+    static let errorCodeNoMoreResults: Int          = 9002
     
     var defaultQueue: NSOperationQueue { return _defaultQueue }
     

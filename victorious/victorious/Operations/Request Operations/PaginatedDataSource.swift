@@ -17,6 +17,11 @@ import Foundation
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
     
+    private var _didReachEndOfResults: Bool = false
+    func didReachEndOfResults() -> Bool {
+        return _didReachEndOfResults
+    }
+    
     var delegate: PaginatedDataSourceDelegate?
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
@@ -34,6 +39,15 @@ import Foundation
     private typealias Filter = AnyObject -> Bool
     
     private var filters = [Filter]()
+    
+    func canLoadPageType( pageType: VPageType ) -> Bool {
+        switch pageType {
+        case .Next:
+            return !_didReachEndOfResults
+        default:
+            return true
+        }
+    }
     
     func addFilter( filter: AnyObject -> Bool  ) {
         filters.append( filter )
@@ -60,14 +74,17 @@ import Foundation
         switch pageType {
         case .First:
             operationToQueue = createOperation() as? RequestOperation
-        case .Next:
+        case .Next where !_didReachEndOfResults:
             operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
         case .Previous:
             operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
+        default:
+            operationToQueue = nil
         }
         
         if let operation = operationToQueue,
             typedOperation = operationToQueue as? T {
+                self._didReachEndOfResults = false
                 self.currentOperation = operation
                 self.isLoading = true
                 operation.queue() { error in
@@ -75,6 +92,8 @@ import Foundation
                     
                     if let results = (operation as? ResultsOperation)?.results where results.count > 0 {
                         self.unfilteredItems = self.unfilteredItems.v_orderedSet( results, pageType: pageType)
+                    } else {
+                        self._didReachEndOfResults = true
                     }
                     
                     completion?( operation: typedOperation, error: error )

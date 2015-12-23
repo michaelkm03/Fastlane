@@ -13,9 +13,9 @@ class SequenceUserInterationsOperation: RequestOperation {
     
     var request: SequenceUserInteractionsRequest
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
-    init( sequenceID: Int64, userID: Int64 ) {
+    init( sequenceID: String, userID: Int64 ) {
         self.sequenceID = sequenceID
         self.request = SequenceUserInteractionsRequest(sequenceID: sequenceID, userID:userID)
     }

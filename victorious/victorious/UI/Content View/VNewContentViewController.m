@@ -176,7 +176,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.sequencePreviewView showLikeButton:YES];
 }
 
-- (void)didUpdatePollsData
+- (void)didUpdatePoll
 {
     if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
     {
@@ -652,27 +652,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [welf presentViewController:lightbox  animated:YES completion:nil];
 }
-
-/*- (void)commentsDidLoad
-{
-    void (^batchUpdates)() = ^
-    {
-        NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-        [self.contentCollectionView reloadSections:commentsIndexSet];
-    };
-    
-    if ( self.viewModel.sequence.comments.count == 0 || [self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] == 0 )
-    {
-        batchUpdates();
-    }
-    else
-    {
-        [UIView performWithoutAnimation:^
-         {
-             [self.contentCollectionView performBatchUpdates:batchUpdates completion:nil];
-         }];
-    }
-}*/
 
 #pragma mark - UICollectionViewDataSource
 

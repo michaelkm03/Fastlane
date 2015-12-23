@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Sequence: StreamItemType {
-    public let sequenceID: Int64
+    public let sequenceID: String
     public let category: Category
     public let user: User
     public let headline: String?
@@ -62,7 +62,7 @@ extension Sequence {
         // MARK: - Required data
         
         guard let category      = Category(rawValue: json["category"].stringValue),
-            let sequenceID      = Int64(json["id"].stringValue),
+            let sequenceID      = json["id"].string,
             let user            = User(json: json["user"]) else {
                 return nil
         }

@@ -59,7 +59,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
                 pageNumber: self.request.paginator.pageNumber,
                 sortDescriptors: [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             )
-            return context.v_findObjects([:], pagination: pagination )
+            return context.v_findAllObjects( pagination: pagination )
         }
     }
 }

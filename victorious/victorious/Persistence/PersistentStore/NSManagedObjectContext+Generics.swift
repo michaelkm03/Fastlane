@@ -77,7 +77,11 @@ extension NSManagedObjectContext {
         return v_findObjects( queryDictionary, pagination: pagination, limit: nil)
     }
     
-    func findObjects<T: NSManagedObject>() -> [T] {
+    func v_findAllObjects<T: NSManagedObject>() -> [T] {
         return v_findObjects( nil, pagination: nil, limit: nil)
+    }
+    
+    func v_findAllObjects<T: NSManagedObject>( pagination pagination: PersistentStorePagination ) -> [T] {
+        return v_findObjects( nil, pagination: pagination, limit: nil)
     }
 }

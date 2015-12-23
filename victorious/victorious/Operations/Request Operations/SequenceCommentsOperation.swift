@@ -14,14 +14,14 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     var request: SequenceCommentsRequest
     var results: [AnyObject]?
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
     required init( request: SequenceCommentsRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
     }
     
-    convenience init( sequenceID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( sequenceID: String, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init( request: SequenceCommentsRequest(sequenceID: sequenceID) )
     }
     
