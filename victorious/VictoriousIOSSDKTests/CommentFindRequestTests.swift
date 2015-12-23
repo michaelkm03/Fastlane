@@ -20,7 +20,7 @@ class CommentFindRequestTests: XCTestCase {
         }
         
         do {
-            let request = CommentFindRequest(sequenceID: 1, commentID: 1)
+            let request = CommentFindRequest(sequenceID: "1", commentID: 1)
             let result = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(result.comments.count, 2)
             XCTAssertEqual(result.comments[0].commentID, 28550)
@@ -34,7 +34,7 @@ class CommentFindRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let request = CommentFindRequest(sequenceID: 99, commentID: 1, itemsPerPage: 100)
+        let request = CommentFindRequest(sequenceID: "99", commentID: 1, itemsPerPage: 100)
         XCTAssertEqual(request.urlRequest.URL?.absoluteString, "/api/comment/find/99/1/100")
     }
 }

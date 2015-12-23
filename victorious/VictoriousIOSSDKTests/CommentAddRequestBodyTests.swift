@@ -22,7 +22,7 @@ class CommentAddRequestBodyTests: XCTestCase {
     
     func testTextOnly() {
         let parameters = CommentParameters(
-            sequenceID: 17100,
+            sequenceID: "17100",
             text: "test",
             replyToCommentID: 1564,
             mediaURL: nil,
@@ -37,7 +37,7 @@ class CommentAddRequestBodyTests: XCTestCase {
     
     func testRealtime() {
         let parameters = CommentParameters(
-            sequenceID: 17100,
+            sequenceID: "17100",
             text: "test",
             replyToCommentID: nil,
             mediaURL: nil,
@@ -57,7 +57,7 @@ class CommentAddRequestBodyTests: XCTestCase {
         }
         
         let parameters = CommentParameters(
-            sequenceID: 17100,
+            sequenceID: "17100",
             text: nil,
             replyToCommentID: nil,
             mediaURL: mockUserDataURL,
