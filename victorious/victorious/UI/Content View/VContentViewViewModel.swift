@@ -140,7 +140,7 @@ public extension VContentViewViewModel {
         }
         
         let commentParameters = CommentParameters(
-            sequenceID: Int64(sequence.remoteId)!,
+            sequenceID: self.sequenceID,
             text: text,
             replyToCommentID: nil,
             mediaURL: publishParameters.mediaToUploadURL,
