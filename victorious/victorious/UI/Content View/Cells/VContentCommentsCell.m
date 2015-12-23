@@ -164,7 +164,9 @@ static NSCache *_sharedImageCache = nil;
     
     self.mediaAssetOrientation = comment.assetOrientation;
     
-    self.commentBody = comment.text;
+#warning FIXME:
+    // self.commentBody = comment.text;
+    self.commentBody = [NSString stringWithFormat:@"%@", comment.displayOrder];
     self.commenterName = comment.user.name;
     self.commentersAvatarButton.user = comment.user;
     self.timestampText = [comment.postedAt timeSince];

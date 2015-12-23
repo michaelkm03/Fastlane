@@ -449,13 +449,11 @@
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
 		79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */; };
 		79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */; };
-		797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */; };
 		7979A02C1C18AB1800455FF8 /* TermsOfServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */; };
 		7979A02E1C18AC9800455FF8 /* VTOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02D1C18AC9800455FF8 /* VTOSViewController.swift */; };
 		7979A0301C18B10400455FF8 /* VNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */; };
 		7979A0321C18B2FA00455FF8 /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */; };
 		7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */; };
-		797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */; };
 		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
@@ -1087,6 +1085,7 @@
 		A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */; };
 		A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */; };
 		A7DECF0C1C2A101E0070F07B /* PersistentStoreDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DECF0B1C2A101E0070F07B /* PersistentStoreDebugger.swift */; };
+		A7DECF0E1C2A1DBC0070F07B /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DECF0D1C2A1DBC0070F07B /* SequenceCommentsDataSource.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2483,14 +2482,11 @@
 		797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldHidingHelper.m; sourceTree = "<group>"; };
 		79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequestTests.swift; sourceTree = "<group>"; };
 		79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequest.swift; sourceTree = "<group>"; };
-		797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsDataSource.swift; sourceTree = "<group>"; };
 		7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceOperation.swift; sourceTree = "<group>"; };
 		7979A02D1C18AC9800455FF8 /* VTOSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTOSViewController.swift; sourceTree = "<group>"; };
 		7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
 		7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+Parsable.swift"; sourceTree = "<group>"; };
-		797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCommmentsDataSource.h; sourceTree = "<group>"; };
-		797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCommmentsDataSource.m; sourceTree = "<group>"; };
 		797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequestTests.swift; sourceTree = "<group>"; };
 		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
@@ -3412,6 +3408,7 @@
 		A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7DECF0B1C2A101E0070F07B /* PersistentStoreDebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentStoreDebugger.swift; sourceTree = "<group>"; };
+		A7DECF0D1C2A1DBC0070F07B /* SequenceCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsDataSource.swift; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -4664,7 +4661,6 @@
 			isa = PBXGroup;
 			children = (
 				A7738B0A1A4B4A0D008EA973 /* CommentCellUtilities */,
-				797226631B7E9EC40023C851 /* Comments Data Source */,
 				79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */,
 				79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */,
 				A7E2EFD11A49066F00372547 /* EditComment.storyboard */,
@@ -4674,6 +4670,7 @@
 				C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */,
 				C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */,
 				C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */,
+				A7DECF0D1C2A1DBC0070F07B /* SequenceCommentsDataSource.swift */,
 				03C82F1D1A81DDA400190C7D /* User Tagging */,
 				C3E47F6D1B6990C30084FF65 /* VCommentTextAndMediaView.h */,
 				C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */,
@@ -6306,16 +6303,6 @@
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
 			);
 			path = Operations;
-			sourceTree = "<group>";
-		};
-		797226631B7E9EC40023C851 /* Comments Data Source */ = {
-			isa = PBXGroup;
-			children = (
-				797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */,
-				797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */,
-				797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */,
-			);
-			path = "Comments Data Source";
 			sourceTree = "<group>";
 		};
 		A601FB461B4354750050536C /* Creation Flows */ = {
@@ -10585,6 +10572,7 @@
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
+				A7DECF0E1C2A1DBC0070F07B /* SequenceCommentsDataSource.swift in Sources */,
 				A721E9191B572454000B7901 /* VNotificationSettings+Fetcher.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
@@ -10841,7 +10829,6 @@
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
-				797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */,
 				F027D8E41B9529E300BC6322 /* CHTCollectionViewWaterfallLayout+ColumnAccessor.m in Sources */,
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
@@ -10947,7 +10934,6 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
-				797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */,
 				67C5C53F1C03A8A000F99C8C /* SuggestedUsersOperation.swift in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,

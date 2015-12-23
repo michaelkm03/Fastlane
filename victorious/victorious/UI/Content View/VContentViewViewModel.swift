@@ -17,7 +17,7 @@ public extension VContentViewViewModel {
         
         if self.sequence.isPoll() {
             PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
-                self.delegate?.didUpdatePollsData()
+                self.delegate?.didUpdatePoll()
             }
         }
         
@@ -48,7 +48,7 @@ public extension VContentViewViewModel {
                 if self.endCardViewModel == nil {
                     self.updateEndcard()
                 }
-                self.delegate?.didUpdateContent()
+                self.delegate?.didUpdateSequence()
             }
             self.loadComments(.First)
         }

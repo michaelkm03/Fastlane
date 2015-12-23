@@ -29,9 +29,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
-    private func onError( error: NSError, completion:(()->()) ) {
+    func onError( error: NSError, completion:(()->()) ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = loadPersistentItems()
+            self.results = fetchResults()
             
         } else {
             self.results = []
@@ -39,8 +39,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         completion()
     }
     
-    private func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
+    func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
         guard !comments.isEmpty else {
+            self.results = []
             completion()
             return
         }
@@ -50,32 +51,38 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         
         // Make changes on background queue
         persistentStore.backgroundContext.v_performBlock() { context in
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            
             var newComments = [VComment]()
             for comment in unflaggedCommens {
                 let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                 persistentComment.populate( fromSourceModel: comment )
+                
+                // Handle some special properties here that determine proper display order
+                persistentComment.displayOrder = displayOrder++
+                
                 newComments.append( persistentComment )
             }
-            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
-            sequence.v_addObjects( newComments, to: "comments")
+            sequence.v_addObjects( newComments, to: "comments" )
             context.v_save()
             
             // Reload results from main queue
-            let objectIDs = newComments.map { $0.objectID }
-            self.persistentStore.mainContext.v_performBlock() { context in
-                self.results = objectIDs.flatMap { context.objectWithID($0) as? VComment }
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.results = self.fetchResults()
                 completion()
             }
         }
     }
     
-    private func loadPersistentItems() -> [VComment] {
+    func fetchResults() -> [VComment] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "sequenceId" : String(self.sequenceID) ]
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+            let uniqueProps = [ "sequence" : sequence ]
             let pagination = PersistentStorePagination(
                 itemsPerPage: self.request.paginator.itemsPerPage,
                 pageNumber: self.request.paginator.pageNumber,
-                sortDescriptors: [ NSSortDescriptor(key: "postedAt", ascending: false) ]
+                sortDescriptors: [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             )
             return context.v_findObjects( uniqueProps, pagination: pagination )
         }

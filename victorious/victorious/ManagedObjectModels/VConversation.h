@@ -21,6 +21,8 @@
 @property (nonatomic, retain) NSString * lastMessageContentType;
 @property (nonatomic, retain) NSOrderedSet *messages;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) NSNumber * displayOrder;
+
 @end
 
 @interface VConversation (CoreDataGeneratedAccessors)
@@ -35,4 +37,5 @@
 - (void)removeMessagesObject:(VMessage *)value;
 - (void)addMessages:(NSOrderedSet *)values;
 - (void)removeMessages:(NSOrderedSet *)values;
+
 @end
