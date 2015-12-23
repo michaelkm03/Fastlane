@@ -9,16 +9,16 @@
 import Foundation
 
 public struct FlagCommentRequest: RequestType {
-    private let commentID: Int64
-    
-    public init(commentID: Int64) {
-        self.commentID = commentID
-    }
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/flag")!)
         request.vsdk_addURLEncodedFormPost(["comment_id": NSNumber(longLong: commentID)])
-        
         return request
+    }
+    
+    private let commentID: Int64
+    
+    public init(commentID: Int64) {
+        self.commentID = commentID
     }
 }

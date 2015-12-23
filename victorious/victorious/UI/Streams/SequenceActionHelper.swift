@@ -12,12 +12,12 @@ import UIKit
     
     func likeSequence(sequence: VSequence, triggeringView: UIView, originViewController: UIViewController, dependencyManager: VDependencyManager, completion: ((Bool) -> Void)?) {
         
-        if sequence.isLikedByMainUser?.boolValue ?? false {
-            UnlikeSequenceOperation( sequenceID: Int64(sequence.remoteId)! ).queue() { error in
+        if sequence.isLikedByMainUser.boolValue {
+            UnlikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
                 completion?( error == nil )
             }
         } else {
-            LikeSequenceOperation( sequenceID: Int64(sequence.remoteId)!).queue() { error in
+            LikeSequenceOperation( sequenceID: sequence.remoteId ).queue() { error in
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidSelectLike )
                 dependencyManager.coachmarkManager().triggerSpecificCoachmarkWithIdentifier(
                     VLikeButtonCoachmarkIdentifier,
@@ -45,7 +45,8 @@ import UIKit
     }
     
     func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
-        FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)! ).queue() { error in
+        
+        FlagSequenceOperation(sequenceID: sequence.remoteId ).queue() { error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent( VTrackingEventFlagPostDidFail, parameters: params )

@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class DeleteSequenceRequestTests: XCTestCase {
     
     func testDeletingSequenceRequest() {
-        let mockSequenceID: Int64 = 101
+        let mockSequenceID: String = "101"
         let deleteRequest = DeleteSequenceRequest(sequenceID: mockSequenceID)
         let urlRequest = deleteRequest.urlRequest
         

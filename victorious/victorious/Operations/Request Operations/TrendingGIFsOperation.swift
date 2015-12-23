@@ -9,24 +9,28 @@
 import Foundation
 import VictoriousIOSSDK
 
+// TODO: Rename this and the request to `GIFSearchDefaultResults` or something...
 final class TrendingGIFsOperation: RequestOperation, PaginatedOperation {
     
     let request: TrendingGIFsRequest
     
-    private(set) var trendingGIFsResults: [GIFSearchResult] = []
-    private(set) var resultCount: Int?
+    private(set) var results: [AnyObject]?
     
     required init( request: TrendingGIFsRequest = TrendingGIFsRequest() ) {
         self.request = request
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+    }
+    
+    func onError( error: NSError, completion:()->() ) {
+        self.results = []
+        completion()
     }
     
     func onComplete(results: TrendingGIFsRequest.ResultType, completion: () -> ()) {
-        self.resultCount = results.count
-        self.trendingGIFsResults = results
+        self.results = results.map { GIFSearchResultObject($0) }
         completion()
     }
 }

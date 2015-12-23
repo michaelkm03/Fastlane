@@ -9,9 +9,13 @@
 import Foundation
 import VictoriousIOSSDK
 
+protocol ResultsOperation : class {
+    var results: [AnyObject]? { get }
+}
+
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedOperation : class {
+protocol PaginatedOperation : ResultsOperation {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -28,8 +32,6 @@ protocol PaginatedOperation : class {
     
     /// Returns a copy of this operation configured for loading previous page worth of data
     func prev() -> Self?
-
-    var resultCount: Int? { get }
 }
 
 extension PaginatedOperation {
@@ -45,10 +47,10 @@ extension PaginatedOperation {
 extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
-        guard let resultCount = self.resultCount else {
+        guard let results = self.results else {
             fatalError( "The `resultCount` property has not been set on the receiver (\(self.dynamicType)).  This is required in order to determine if there is a next page available.  I would suggest setting it in the completion closure provided to `RequestOperation`s `executeRequest(_:onComplete:onError:)` method." )
         }
-        if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: resultCount) {
+        if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: results.count) {
             return self.dynamicType.init(request: request)
         }
         return nil

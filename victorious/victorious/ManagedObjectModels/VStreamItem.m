@@ -26,5 +26,7 @@
 @dynamic marquees;
 @dynamic previewImageAssets;
 @dynamic streams;
+@dynamic releasedAt;
+@dynamic displayOrder;
 
 @end

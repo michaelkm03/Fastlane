@@ -23,11 +23,11 @@ public struct StreamPaginator: Paginator {
     public let pageNumber: Int
     public let itemsPerPage: Int
     public let apiPath: String
-    public let sequenceID: Int64?
+    public let sequenceID: String?
     
     private let urlMacroReplacer = VSDKURLMacroReplacement()
     
-    public init?(apiPath: String, sequenceID: Int64? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    public init?(apiPath: String, sequenceID: String? = nil, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.apiPath = apiPath
         self.sequenceID = sequenceID
         self.pageNumber = pageNumber

@@ -9,11 +9,11 @@
 #import "VEditCommentViewController.h"
 #import "VComment.h"
 #import "VThemeManager.h"
-#import "VObjectManager+Comment.h"
 #import "VAlertController.h"
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
 #import "UIView+AutoLayout.h"
+#import "victorious-Swift.h"
 
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
@@ -184,20 +184,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 - (IBAction)onConfirm:(id)sender
 {
-    self.comment.text = [self.textStorage databaseFormattedString];
-    
-    [[VObjectManager sharedManager] editComment:self.comment
-                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompleteEditComment];
-     }
-                                      failBlock:^(NSOperation *operation, NSError *error)
-     {
-         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditCommentDidFail parameters:params];
-         
-         VLog( @"Comment edit failed: %@", error.localizedDescription );
-     }];
+    [self editComment:self.comment withText:[self.textStorage databaseFormattedString]];
     
     if ( self.delegate != nil )
     {

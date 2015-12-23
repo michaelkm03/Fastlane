@@ -53,7 +53,6 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
     }
     self.requiresPurchase = NO;
     self.requiresHigherLevel = NO;
-    self.enabled = YES;
     self.unlockLevelLabel.hidden = YES;
     [self.unlockLevelLabel sizeToFit];
     [self.contentView bringSubviewToFront:self.unlockLevelLabel];
@@ -111,15 +110,6 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
     self.ballisticIconView.iconImage = experienceEnhancerIcon;
-}
-
-- (void)setEnabled:(BOOL)enabled
-{
-    _enabled = enabled;
-    [UIView animateWithDuration:0.3f animations:^
-     {
-         self.contentView.alpha = _enabled ? 1.0f : 0.5f;
-     }];
 }
 
 - (void)setRequiresPurchase:(BOOL)requiresPurchase

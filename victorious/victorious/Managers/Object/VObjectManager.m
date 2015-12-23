@@ -33,7 +33,6 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
-#import "VObjectManager+ContentModeration.h"
 
 static NSString * const kAlertsKey = @"alerts";
 
@@ -50,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
 @property (nonatomic, strong) NSString *sessionID;
 @property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
-@property (nonatomic, strong) AlertParser *alertParser;
+//@property (nonatomic, strong) AlertParser *alertParser;
 @property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, RKEntityMapping*> *mappingCache;
 
 @end
@@ -77,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
     
-    manager.alertParser = [[AlertParser alloc] init];
+    //manager.alertParser = [[AlertParser alloc] init];
     manager.shouldRegisterAlerts = YES;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
@@ -102,8 +101,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Create an initial session ID
     [manager resetSessionID];
-    
-    [manager refreshFlaggedContents];
 }
 
 + (NSDateFormatter *)dateFormatter
@@ -228,7 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
             id alerts = JSON[kAlertsKey];
             if (alerts != nil && [alerts isKindOfClass:[NSArray class]] && self.shouldRegisterAlerts && self.mainUser != nil)
             {
-                [self.alertParser parseAlertsWithPayload:alerts];
+                //[self.alertParser parseAlertsWithPayload:alerts];
             }
             
             successBlock(operation, JSON, mappedObjects);

@@ -11,7 +11,7 @@ import CoreData
 
 /// Defines an object represents a context of a persistent store, intended to abstract a CoreDAta-based
 /// persistent store but abstract enough to allow for varied, independent implementations.
-@objc protocol PersistentStoreContextBasic {
+/*@objc protocol PersistentStoreContextBasic {
     
     /// Writes all changes from any modified objects to the persistent store
     func saveChanges() -> Bool
@@ -35,13 +35,21 @@ import CoreData
     ///
     /// -parameter entityName String, the name or type of the entity to search for
     /// -parameter queryDictionary A dictionary of values that will be marshed into predicate used to search for matching objects
-    /// -parameter limit Int, the maximum nunber of result objects to return
-    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, limit: Int ) -> [PersistentStoreObject]
+    /// -parameter limit Int, the maximum nunber of result objects to return.  Use this to improve performance.
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [PersistentStoreObject]
     
+    /// Searches for objects matching the data in the query dictionary
+    ///
+    /// -parameter entityName String, the name or type of the entity to search for
+    /// -parameter queryDictionary A dictionary of values that will be marshed into predicate used to search for matching objects
+    /// -parameter limit Int, the maximum nunber of result objects to return.  Use this to improve performance.
+    /// -parameter pageNumber Int
+    /// -parameter itemsPerPage Int
+    func findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [PersistentStoreObject]
     
     /// Searches for an object matching the data in the query dictionary, or creates a new object
     /// and populates it with the data in the query dictionary.
-    func findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> PersistentStoreObject
+    func v_findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> PersistentStoreObject
     
     /// Place the object in a cache the keeps it in memory and retrievable by the provided key
     /// This improves performance and is convenient for objects that are accessed frequently, such as
@@ -56,4 +64,4 @@ import CoreData
     ///
     /// -parameter identifier Some identifying value used by the persistent store.
     func getObjectWithIdentifier(identifier: AnyObject) -> PersistentStoreObject?
-}
+}*/

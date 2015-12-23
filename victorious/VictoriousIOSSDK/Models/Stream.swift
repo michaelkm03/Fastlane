@@ -10,42 +10,49 @@ import Foundation
 import SwiftyJSON
 
 public struct Stream: StreamItemType {
+    
+    private let dateFormatter: NSDateFormatter = {
+        return NSDateFormatter(format: .Standard)
+    }()
+    
     public let streamID: String
-    public let name: String
+    public let name: String?
     public let title: String?
-    public let postCount: Int
+    public let postCount: Int?
     public let streamUrl: String?
-    public let items: [StreamItemType]
+    public let items: [StreamItemType]?
     public let streamContentType: StreamContentType?
     
     // MARK: - StreamItemType
     
-    public var remoteID: String {
+    public var streamItemID: String {
         return self.streamID
     }
     public let type: StreamContentType?
     public let subtype: StreamContentType?
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
-    public let previewImageAssets: [ImageAsset]
+    public let previewImageAssets: [ImageAsset]?
+    public let releasedAt: NSDate?
 }
 
 extension Stream {
     public init?(json: JSON) {
-        guard let streamID          = json["id"].string else {
-                return nil
+        guard let streamID = json["id"].string else {
+            return nil
         }
         self.streamID               = streamID
         
-        type                        = StreamContentType( rawValue: json["type"].stringValue )
-        subtype                     = StreamContentType( rawValue: json["subtype"].stringValue )
-        streamContentType           = StreamContentType( rawValue: json["stream_content_type"].stringValue ) ?? .None
-        name                        = json["name"].string ?? ""
-        title                       = json["title"].string ?? ""
-        postCount                   = json["postCount"].int ?? 0
-        streamUrl                   = json["streamUrl"].string ?? ""
+        releasedAt                  = dateFormatter.dateFromString(json["posted_at"].stringValue)
+        type                        = StreamContentType(rawValue: json["type"].stringValue)
+        subtype                     = StreamContentType(rawValue: json["subtype"].stringValue)
+        streamContentType           = StreamContentType(rawValue: json["stream_content_type"].stringValue)
+        name                        = json["name"].string
+        title                       = json["title"].string
+        postCount                   = json["postCount"].int
+        streamUrl                   = json["streamUrl"].string
         
-        items = ( json["items"].array ?? json["content"].array ?? []).flatMap {
+        items = (json["items"].array ?? json["content"].array)?.flatMap {
             let isStream = $0["items"].array != nil || $0["content"].array != nil
             return isStream ? Stream(json: $0) : Sequence(json:$0)
         }
@@ -53,7 +60,7 @@ extension Stream {
         // MARK: - StreamItemType
         
         previewTextPostAsset    = json["preview"].string
-        previewImageAssets      = (json["preview.assets"].array ?? []).flatMap { ImageAsset(json: $0) }
+        previewImageAssets      = json["preview.assets"].array?.flatMap { ImageAsset(json: $0) }
         
         let previewImage = json["preview_image"]
         previewImagesObject = (previewImage.array?.flatMap { $0.string } as? AnyObject) ?? previewImage.string as? AnyObject

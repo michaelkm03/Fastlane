@@ -13,6 +13,7 @@
 #import "VMultipleContainer.h"
 #import "VNavigationViewFloatingController.h"
 #import "VNavigationControllerScrollDelegate.h"
+#import "VHasManagedDependencies.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,13 +28,14 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
 /**
     The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
  */
 @property (nonatomic, strong, nullable) VStreamCollectionViewDataSource *streamDataSource;
 
-@property (nonatomic, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
+@property (nonatomic, null_unspecified, weak) IBOutlet UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
@@ -53,7 +55,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     A helper method to handle triggering the refresh and responding to success or failure.
  */
-- (void)refreshWithCompletion:(void(^ __nullable)(void))completionBlock;
+- (void)loadPage:(VPageType)pageType completion:(void(^ __nullable)(void))completionBlock;
 
 /**
     Intended to be called by subclasses on `collectionView:willDisplayCell:atIndexPath:` to

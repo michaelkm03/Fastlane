@@ -13,53 +13,69 @@ extension VSequence: PersistenceParsable {
     
     func populate( fromSourceModel streamItem: StreamItemType ) {
         guard let sequence = streamItem as? Sequence else {
-                return
+            return
         }
-        
+        remoteId                = String(sequence.sequenceID)
         category                = sequence.category.rawValue
-        commentCount            = sequence.commentCount
-        gifCount                = sequence.gifCount
-        hasReposted             = sequence.hasReposted
-        isComplete              = sequence.isComplete
-        isLikedByMainUser       = sequence.isLikedByMainUser
-        isRemix                 = sequence.isRemix
-        isRepost                = sequence.isRepost
-        likeCount               = sequence.likeCount
-        memeCount               = sequence.memeCount
-        name                    = sequence.name
-        nameEmbeddedInContent   = sequence.nameEmbeddedInContent
-        permissionsMask         = sequence.permissionsMask
-        previewImagesObject     = sequence.previewImagesObject
-        remoteId                = sequence.remoteID
-        repostCount             = sequence.repostCount
-        sequenceDescription     = sequence.sequenceDescription
+        
+        commentCount            = sequence.commentCount ?? commentCount
+        gifCount                = sequence.gifCount ?? gifCount
+        hasReposted             = sequence.hasReposted ?? hasReposted
+        isComplete              = sequence.isComplete ?? isComplete
+        isRemix                 = sequence.isRemix ?? isRemix
+        isRepost                = sequence.isRepost ?? isRepost
+        likeCount               = sequence.likeCount ?? likeCount
+        memeCount               = sequence.memeCount ?? memeCount
+        name                    = sequence.name ?? name
+        nameEmbeddedInContent   = sequence.nameEmbeddedInContent ?? nameEmbeddedInContent
+        permissionsMask         = sequence.permissionsMask ?? permissionsMask
+        previewImagesObject     = sequence.previewImagesObject ?? previewImagesObject
+        repostCount             = sequence.repostCount ?? repostCount
+        sequenceDescription     = sequence.sequenceDescription ?? sequenceDescription
+        releasedAt              = sequence.releasedAt ?? releasedAt
         
         if let trackingModel = sequence.tracking {
-            tracking = persistentStoreContext.createObject() as VTracking
+            tracking = v_managedObjectContext.v_createObject() as VTracking
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
         if let endCardModel = sequence.endCard {
-            endCard = persistentStoreContext.createObject() as VEndCard
+            endCard = v_managedObjectContext.v_createObject() as VEndCard
             endCard?.populate(fromSourceModel: endCardModel)
         }
         
-        user = persistentStoreContext.findOrCreateObject( [ "remoteId" : NSNumber( longLong: sequence.user.userID) ] ) as VUser
-        user?.populate(fromSourceModel: sequence.user)
+        let uniqueUserData = [ "remoteId" : NSNumber(longLong: sequence.user.userID) ]
+        self.user = v_managedObjectContext.v_findOrCreateObject( uniqueUserData ) as VUser
+        self.user.populate(fromSourceModel: sequence.user)
         
-        previewImageAssets = Set<VImageAsset>(sequence.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = self.persistentStoreContext.findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
-            imageAsset.populate( fromSourceModel: $0 )
-            return imageAsset
-        })
+        if let previewImageAssets = sequence.previewImageAssets {
+            self.previewImageAssets = Set<VImageAsset>(previewImageAssets.flatMap {
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                imageAsset.populate( fromSourceModel: $0 )
+                return imageAsset
+            })
+        }
         
-        nodes = NSOrderedSet(array: sequence.nodes.flatMap {
-            if let nodeID = NSNumber( v_longLong: Int64($0.nodeID)) {
-                let node: VNode = persistentStoreContext.findOrCreateObject([ "remoteId" : nodeID ])
-                node.populate( fromSourceModel: $0 )
-                return node
+        if let nodes = sequence.nodes {
+            self.nodes = NSOrderedSet(array: nodes.flatMap {
+                if let nodeID = NSNumber( v_longLong: Int64($0.nodeID)) {
+                    let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : nodeID ])
+                    node.populate( fromSourceModel: $0 )
+                    return node
+                }
+                return nil
+            })
+        }
+        
+        if let comments = sequence.comments {
+            let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.Comment)
+            let unflaggedComments = comments.filter { !flaggedIds.contains(String($0.commentID)) }
+            let persistentComments: [VComment] = unflaggedComments.map {
+                let comment: VComment = self.v_managedObjectContext.v_findOrCreateObject([ "remoteId" : String($0.commentID) ])
+                comment.populate(fromSourceModel: $0)
+                return comment
             }
-            return nil
-        })
+            self.v_addObjects( persistentComments, to: "comments")
+        }
     }
 }

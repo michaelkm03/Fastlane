@@ -19,30 +19,29 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if self.sections.count == 0 {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
+        if self.sections.count == 0,
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
                 self.configureNoContentCell( cell, forState: self.state )
                 return cell
-            }
         }
         
         let section = self.sections[ indexPath.section ]
-        let result = section.results[ indexPath.row ]
-        if section.isFullSize {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
-                cell.previewAssetUrl = NSURL(string: result.thumbnailStillURL)
-                cell.assetUrl = NSURL(string: result.mp4URL)
+        let resultObject = section.results[ indexPath.row ]
+        if section.isFullSize,
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
+                cell.previewAssetUrl = NSURL(string: resultObject.sourceResult.thumbnailStillURL)
+                cell.assetUrl = NSURL(string: resultObject.sourceResult.mp4URL)
                 return cell
-            }
-        }
-        else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
-            cell.assetUrl = NSURL(string: result.thumbnailStillURL)
+       
+        } else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
+            cell.assetUrl = NSURL(string: resultObject.sourceResult.thumbnailStillURL)
             
             if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
                 cell.selected = indexPathsForSelectedItems.contains( indexPath )
             }
             return cell
         }
+
         fatalError( "Could not find cell." ) 
     }
     

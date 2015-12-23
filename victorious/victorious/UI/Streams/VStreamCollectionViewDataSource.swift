@@ -14,33 +14,31 @@ public extension VStreamCollectionViewDataSource {
     /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
-    public func loadPage( pageType: VPageType, withSuccess success:()->(), failure:(NSError?)->()) {
-        
-        let nextOperation: StreamOperation?
-        switch pageType {
-        case .First:
-            if let apiPath = self.stream?.apiPath  {
-                nextOperation = StreamOperation(apiPath: (apiPath) )
-            } else {
-                nextOperation = nil
-            }
-        case .Next:
-            nextOperation = self.streamLoadOperation?.next()
-        case .Previous:
-            nextOperation = self.streamLoadOperation?.prev()
+    public func loadPage( pageType: VPageType, completion:(NSError?)->()) {
+        guard let apiPath = self.stream.apiPath else {
+            return
         }
         
-        if let operation = nextOperation {
-            self.isLoading = true
-            operation.queue() { error in
-                self.isLoading = false
+        self.paginatedDataSource.loadPage( pageType,
+            createOperation: {
+                return StreamOperation(apiPath: apiPath)
+            },
+            completion: { (operation, error) in
                 if let error = error {
-                    failure( error )
+                    completion( error )
+                
                 } else {
-                    success()
+                    completion( nil )
                 }
             }
-            self.streamLoadOperation = operation
-        }
+        )
+    }
+    
+    public func removeStreamItem(streamItem: VStreamItem) {
+        RemoteStreamItemOperation(streamItemID: streamItem.remoteId).queueOn( RequestOperation.sharedQueue )
+    }
+    
+    public func unloadStream() {
+        UnloadStreamItemOperation(streamID: self.stream.remoteId ).queueOn( RequestOperation.sharedQueue )
     }
 }

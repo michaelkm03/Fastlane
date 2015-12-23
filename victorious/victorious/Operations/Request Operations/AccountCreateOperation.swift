@@ -15,10 +15,9 @@ class AccountCreateOperation: RequestOperation {
     private let accountIdentifier: String?
     
     let request: AccountCreateRequest
-    private(set) var resultCount: Int?
+    private(set) var results: [AnyObject]?
     
     var isNewUser = false
-    var persistentUser: VUser?
     
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
         self.loginType = loginType
@@ -36,31 +35,22 @@ class AccountCreateOperation: RequestOperation {
         self.isNewUser = response.newUser
         
         // First, find or create the new user who just logged in
-        persistentStore.asyncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
+            user.setAsCurrentUser()
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
-            context.saveChanges()
+            context.v_save()
             
-            let identifier = user.identifier
             dispatch_async( dispatch_get_main_queue() ) {
-                let currentUser = self.setCurrentUser( identifier )!
-                self.updateStoredCredentials( currentUser )
-                self.notifyLoginChange( currentUser, isNewUser: response.newUser )
-                self.queueNextOperations( currentUser )
+                if let currentUser = VUser.currentUser() {
+                    self.updateStoredCredentials( currentUser )
+                    self.notifyLoginChange( currentUser, isNewUser: response.newUser )
+                    self.queueNextOperations( currentUser )
+                }
                 completion()
             }
-        }
-    }
-    
-    private func setCurrentUser( identifier: AnyObject ) -> VUser? {
-        return self.persistentStore.sync() { context in
-            if let persistentUser: VUser = context.getObject(identifier) {
-                persistentUser.setAsCurrentUser(inContext: context)
-                return persistentUser
-            }
-            return nil
         }
     }
     
@@ -79,7 +69,7 @@ class AccountCreateOperation: RequestOperation {
     
     private func queueNextOperations( currentUser: VUser ) {
         // Load more data from the network about the user
-        PollResultByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
+        PollResultSummaryByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
         ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }

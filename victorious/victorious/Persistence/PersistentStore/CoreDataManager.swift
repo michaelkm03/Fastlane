@@ -35,7 +35,7 @@ class CoreDataManager: NSObject {
     let currentModelVersion: ModelVersion
     let previousModelVersion: ModelVersion?
     let persistentStoreURL: NSURL
-    let storeType: String = NSInMemoryStoreType
+    let storeType: String = NSSQLiteStoreType
     
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
@@ -43,6 +43,12 @@ class CoreDataManager: NSObject {
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
+        
+        /*do {
+            try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL )
+        } catch {}*/
+        
+        print( "Initializing persistent store at URL: \(persistentStoreURL)" )
         
         self.persistentStoreURL = persistentStoreURL
         self.currentModelVersion = currentModelVersion
@@ -70,6 +76,7 @@ class CoreDataManager: NSObject {
         
         self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         self.backgroundContext.parentContext = self.mainContext
+        self.backgroundContext.mergePolicy = NSOverwriteMergePolicy
         
         super.init()
         
@@ -83,7 +90,7 @@ class CoreDataManager: NSObject {
         }
     }
 
-    func deleteAllData() {
+    func deletePersistentStore() {
         do {
             try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
         } catch {

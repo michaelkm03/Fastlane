@@ -26,12 +26,12 @@ class SequenceTests: XCTestCase {
         let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
         
-        XCTAssertEqual( sequence.sequenceID, 17143 )
+        XCTAssertEqual( sequence.sequenceID, "17143" )
         XCTAssertEqual( sequence.category, Sequence.Category.UGCVideoRepost )
         XCTAssertEqual( sequence.releasedAt, releasedAtDate )
         XCTAssertEqual( sequence.user.userID, Int64(3694) )
         XCTAssertEqual( sequence.parentUser?.userID, Int64(3694) )
-        XCTAssertEqual( sequence.nodes.count, 1 )
+        XCTAssertEqual( sequence.nodes?.count, 1 )
         XCTAssertEqual( sequence.type, StreamContentType.Sequence )
         XCTAssertEqual( sequence.subtype, StreamContentType.Video )
         XCTAssertEqual( sequence.name, "Patrick's Fantastic Sequence" )
@@ -54,9 +54,8 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.nameEmbeddedInContent, true)
         XCTAssertEqual( sequence.previewType, AssetType.Media )
         XCTAssertEqual( sequence.trendingTopicName, "Trending Topic!!")
-        XCTAssertEqual( sequence.comments.count, 1 )
-        XCTAssertEqual( sequence.voteResults.count, 2 )
-        XCTAssertEqual( sequence.recentComments.count, 1 )
+        XCTAssertEqual( sequence.comments?.count, 1 )
+        XCTAssertEqual( sequence.recentComments?.count, 1 )
     }
     
     func testDefaults() {
@@ -70,12 +69,12 @@ class SequenceTests: XCTestCase {
         let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
         
-        XCTAssertEqual( sequence.sequenceID, 17143 )
+        XCTAssertEqual( sequence.sequenceID, "17143" )
         XCTAssertEqual( sequence.category, Sequence.Category.UGCVideoRepost )
         XCTAssertEqual( sequence.releasedAt, releasedAtDate )
         XCTAssertEqual( sequence.type, StreamContentType.Sequence )
         XCTAssertEqual( sequence.subtype, StreamContentType.Video )
         XCTAssertEqual( sequence.user.userID, Int64(3694) )
-        XCTAssertEqual( sequence.nodes.count, 0 )
+        XCTAssertNil( sequence.nodes )
     }
 }

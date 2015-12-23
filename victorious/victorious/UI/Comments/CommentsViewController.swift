@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension VDependencyManager {
     
@@ -21,7 +22,7 @@ extension VDependencyManager {
     }
 }
 
-class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, CommentsDataSourceDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
+class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, PaginatedDataSourceDelegate {
 
     // MARK: - Factory Method
     
@@ -41,14 +42,24 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
+    /// A `CommentsDataSource` conformant object. Consumers should call methods on this variable when determining the state of the comments.
+    var dataSource: SequenceCommentsDataSource? {
+        didSet {
+            dataSource?.delegate = self
+        }
+    }
+    
     var sequence: VSequence? {
         didSet {
-            commentsDataSourceSwitcher.sequence = sequence
+            if let sequence = sequence {
+                dataSource = SequenceCommentsDataSource(sequence: sequence)
+            } else {
+                dataSource = nil
+            }
         }
     }
     
     // MARK: - Private Properties
-    private let commentsDataSourceSwitcher = CommentsDataSourceSwitchter()
     private var registeredCommentReuseIdentifiers = Set<String>()
     private let scrollPaginator = VScrollPaginator()
     private var publishParameters: VPublishParameters?
@@ -70,8 +81,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: Outlets
     
-    @IBOutlet private var collectionView: VInputAccessoryCollectionView!
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private weak var collectionView: VInputAccessoryCollectionView!
+    @IBOutlet private weak var imageView: UIImageView!
     
     // MARK: - UIViewController
     
@@ -80,7 +91,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
-        commentsDataSourceSwitcher.dataSource.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
         if let sequence = self.sequence {
             keyboardBar?.sequencePermissions = sequence.permissions
@@ -107,7 +117,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
         
         self.edgesForExtendedLayout = .Bottom
-        self.self.extendedLayoutIncludesOpaqueBars = true
+        self.extendedLayoutIncludesOpaqueBars = true
+        
+        dataSource?.loadComments( .First )
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -117,6 +129,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
 
         collectionView.accessoryView = keyboardBar
+        
+        if AgeGate.isAnonymousUser() {
+            collectionView.accessoryView?.hidden = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -177,10 +193,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let comment = commentsDataSourceSwitcher.dataSource.commentAtIndex(indexPath.item)
+        guard let comment = dataSource?.visibleItems[ indexPath.item ] as? VComment else {
+            fatalError( "Unable to find comment to display" )
+        }
+        
         let size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
             comment: comment,
-            hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
+            hasMedia: (comment.commentMediaType() != .NoMedia),
             dependencyManager: dependencyManager)
         return CGSize(width: view.bounds.width, height: size.height)
     }
@@ -188,11 +207,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        commentsDataSourceSwitcher.dataSource.loadNextPage()
+        dataSource?.loadComments( .Next )
     }
     
     func shouldLoadPreviousPage() {
-        commentsDataSourceSwitcher.dataSource.loadPreviousPage()
+        dataSource?.loadComments( .Previous )
     }
     
     // MARK: - VSwipeViewControllerDelegate
@@ -205,7 +224,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if let commentCells = collectionView.visibleCells() as? [VContentCommentsCell] {
             for cell in commentCells {
                 if cell != cellView {
-                    cell.swipeViewController.hideUtilityButtons()
+                    cell.swipeViewController?.hideUtilityButtons()
                 }
             }
         }
@@ -225,16 +244,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    // MARK: - VCommentCellUtilitiesDelegate
-    
-    func commentRemoved(comment: VComment) {
-        collectionView.performBatchUpdates({
-            let commentIndex = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
-            self.commentsDataSourceSwitcher.dataSource.removeCommentAtIndex(commentIndex)
-            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: commentIndex, inSection: 0)])
-            }, completion: nil)
-    }
-    
     func editComment(comment: VComment) {
         let editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
         editViewController.transitioningDelegate = modalTransitioningDelegate
@@ -243,9 +252,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func replyToComment(comment: VComment) {
+        guard let index = dataSource?.visibleItems.indexOfObject(comment) else {
+            return
+        }
         
-        let item = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
-        let indexPath = NSIndexPath(forItem: item, inSection: 0)
+        let indexPath = NSIndexPath(forItem: index, inSection: 0)
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: true)
         keyboardBar?.setReplyRecipient(comment.user)
         keyboardBar?.startEditing()
@@ -286,45 +297,47 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return commentsDataSourceSwitcher.dataSource.numberOfComments
+        return dataSource?.visibleItems.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let commentForIndexPath = commentsDataSourceSwitcher.dataSource.commentAtIndex(indexPath.item)
+        guard let commentForIndexPath = dataSource?.visibleItems[indexPath.item] as? VComment else {
+            fatalError( "Unable to find comment to display" )
+        }
+        
         let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(commentForIndexPath)
         if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
             collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
             registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
         }
-        
-        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell {
-            cell.dependencyManager = dependencyManager
-            cell.comment = commentForIndexPath
-            cell.commentAndMediaView?.textView?.tagTapDelegate = self
-            cell.swipeViewController.controllerDelegate = self
-            cell.commentsUtilitiesDelegate = self
-            cell.onUserProfileTapped = { [weak self] in
-                if let strongSelf = self {
-                    let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
-                    strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
-                }
-            }
-            cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
-                
-                guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView, previewImage = previewImage else {
-                    return
-                }
-                
-                strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
-                    previewImage: previewImage,
-                    isVideo: strongCell.mediaIsVideo,
-                    sourceView: commentAndMediaView)
-            }
-            return cell
+        guard let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell else {
+            fatalError("We must have registered a cell for this comment!")
         }
         
-        fatalError("We must have registered a cell for this comment!")
+        cell.dependencyManager = dependencyManager
+        cell.comment = commentForIndexPath
+        cell.commentAndMediaView?.textView?.tagTapDelegate = self
+        cell.swipeViewController?.controllerDelegate = self
+        cell.commentsUtilitiesDelegate = self
+        cell.onUserProfileTapped = { [weak self] in
+            if let strongSelf = self {
+                let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
+                strongSelf.navigationController?.pushViewController(profileViewController, animated: true)
+            }
+        }
+        cell.commentAndMediaView?.onMediaTapped = { [weak self, weak cell](previewImage: UIImage?) in
+            
+            guard let strongSelf = self, strongCell = cell, commentAndMediaView = strongCell.commentAndMediaView, previewImage = previewImage else {
+                return
+            }
+            
+            strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
+                previewImage: previewImage,
+                isVideo: strongCell.mediaIsVideo,
+                sourceView: commentAndMediaView)
+        }
+        return cell
     }
     
     // MARK: LightBox
@@ -349,66 +362,23 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         self.presentViewController(lightBox!, animated: true, completion: nil)
     }
     
-    // MARK: - CommentsDataSourceDelegate
-    
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if dataSource.numberOfComments == 0 {
-                self.noContentView?.animateTransitionIn()
-            }
-            else {
-                self.noContentView?.resetInitialAnimationState()
-            }
-            
-            switch self.collectionView.numberOfItemsInSection(0) {
-            case 0: // First load
-                self.collectionView.reloadData()
-            case dataSource.numberOfComments: // No change, no need to update
-                break
-            default: // There are changes that we need to update
-                self.collectionView.reloadData()
-                dispatch_after(0.1) {
-                    self.collectionView.flashScrollIndicators()
-                }
-            }
-            dispatch_after(0.1) {
-                self.focusHelper?.updateFocus()
-                self.updateInsetForKeyboardBarState()
-            }
-        }
-    }
-    
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkId: NSNumber) {
-        collectionView.reloadData()
-        focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
-    }
-
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
         if let sequence = self.sequence {
-            VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
-                publishParameters: self.publishParameters,
-                toSequence: sequence,
-                andParent: nil,
-                successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                    dispatch_async(dispatch_get_main_queue(), { () in
-                        self.collectionView.performBatchUpdates({ () in
-                            if let seqdataSource = self.commentsDataSourceSwitcher.dataSource as? SequenceCommentsDataSource {
-                                seqdataSource.sortInternalComments()
-                            }
-                            self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
-                            self.noContentView?.resetInitialAnimationState()
-                            }, completion: { (finished: Bool) -> Void in
-                                self.updateInsetForKeyboardBarState()
-                                self.focusHelper?.updateFocus()
-                        })
-                    })
-                }, failBlock: nil)
-            
-            self.keyboardBar?.clearTextAndResign()
-            self.publishParameters?.mediaToUploadURL = nil
+            let commentParameters = CommentParameters(
+                sequenceID: sequence.remoteId,
+                text: inputAccessoryView.composedText,
+                replyToCommentID: nil,
+                mediaURL: self.publishParameters?.mediaToUploadURL,
+                mediaType: self.publishParameters?.commentMediaAttachmentType,
+                realtimeComment: nil
+            )
+            if let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters) {
+                operation.queue()
+                self.keyboardBar?.clearTextAndResign()
+                self.publishParameters?.mediaToUploadURL = nil
+            }
         }
     }
     
@@ -505,5 +475,39 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         userTaggingDismissButton.removeFromSuperview()
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
+    }
+    
+    // MARK: - PaginatedDataSourceDelegate
+    
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        
+        if let noContentView = self.noContentView {
+            if newValue.count == 0 {
+                noContentView.animateTransitionIn()
+            } else {
+                noContentView.resetInitialAnimationState()
+            }
+        }
+        
+        var insertedIndexPaths = [NSIndexPath]()
+        for item in newValue where !oldValue.containsObject( item ) {
+            let index = newValue.indexOfObject( item )
+            insertedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
+        }
+        
+        var deletedIndexPaths = [NSIndexPath]()
+        for item in oldValue where !newValue.containsObject( item ) {
+            let index = oldValue.indexOfObject( item )
+            deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
+        }
+        
+        collectionView.insertItemsAtIndexPaths( insertedIndexPaths )
+        collectionView.deleteItemsAtIndexPaths( deletedIndexPaths )
+        
+        focusHelper?.updateFocus()
+        updateInsetForKeyboardBarState()
+        dispatch_after(0.1) {
+            self.collectionView.flashScrollIndicators()
+        }
     }
 }

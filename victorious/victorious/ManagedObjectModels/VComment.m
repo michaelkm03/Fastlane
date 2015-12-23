@@ -35,6 +35,6 @@
 @dynamic user;
 @dynamic mediaWidth;
 @dynamic mediaHeight;
-@dynamic isFlagged;
+@dynamic displayOrder;
 
 @end

@@ -30,7 +30,7 @@ class SequenceLikersRequestTests: XCTestCase {
         }
         
         do {
-            let sequenceLikers = SequenceLikersRequest(sequenceID: 1)
+            let sequenceLikers = SequenceLikersRequest(sequenceID: "1")
             let results = try sequenceLikers.parseResponse(NSURLResponse(), toRequest: sequenceLikers.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 3)
             XCTAssertEqual(results[0].userID, 405130)
@@ -45,7 +45,8 @@ class SequenceLikersRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let sequenceLikers = SequenceLikersRequest(sequenceID: 99, pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let sequenceLikers = SequenceLikersRequest(sequenceID: "99", paginator: paginator)
         XCTAssertEqual(sequenceLikers.urlRequest.URL?.absoluteString, "/api/sequence/liked_by_users/99/1/100")
     }
 }

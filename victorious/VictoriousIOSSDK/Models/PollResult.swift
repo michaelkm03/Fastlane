@@ -10,22 +10,19 @@ import Foundation
 import SwiftyJSON
 
 public struct PollResult {
-    public let sequenceID: Int64
-    public let answerID: Int64
-    
-    public init(sequenceID: Int64, answerID: Int64) {
-        self.sequenceID = sequenceID
-        self.answerID = answerID
-    }
+    public let sequenceID: String?
+    public let answerID: Int64?
+    public let totalCount: Int64?
 }
 
 extension PollResult {
     public init?(json: JSON) {
-        guard let sequenceID = Int64(json["sequence_id"].stringValue),
-            let answerID = Int64(json["answer_id"].stringValue) else {
-                return nil
+        answerID = Int64(json["answer_id"].stringValue)
+        totalCount = Int64(json["total_count"].stringValue)
+        sequenceID = json["sequence_id"].string
+        
+        if answerID == nil && totalCount == nil && sequenceID == nil {
+            return nil
         }
-        self.sequenceID = sequenceID
-        self.answerID = answerID
     }
 }

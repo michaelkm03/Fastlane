@@ -11,26 +11,34 @@ import VictoriousIOSSDK
 
 class FlagSequenceOperation: RequestOperation {
     
-    private let sequenceID: Int64
+    private let sequenceID: String
+    private let flaggedContent = VFlaggedContent()
     
     let request: FlagSequenceRequest
     
-    init( sequenceID: Int64 ) {
+    init( sequenceID: String ) {
         self.request = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
+    override func main() {
+        executeRequest( self.request )
+    }
+    
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
-            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
-            guard let sequence: VSequence = context.findObjects( uniqueElements, limit: 1).first else  {
-                fatalError( "Cannot find sequence!" )
+        persistentStore.backgroundContext.v_performBlock() { context in
+            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : String(self.sequenceID) ]).first else {
+                completion()
+                return
             }
-            // TODO: Use this property to filter out flagged content
-            // TODO: See about using this class for Comments, too
-            sequence.isFlagged = true
-            context.saveChanges()
-            completion()
+            
+            context.deleteObject( sequence )
+            context.v_save()
+            
+            dispatch_async( dispatch_get_main_queue() ) {
+                self.flaggedContent.addRemoteId( sequence.remoteId, toFlaggedItemsWithType: .StreamItem)
+                completion()
+            }
         }
     }
 }

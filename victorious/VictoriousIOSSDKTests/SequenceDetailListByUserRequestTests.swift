@@ -13,7 +13,8 @@ import SwiftyJSON
 class SequenceDetailListByUserRequestTests: XCTestCase {
     
     func testValidRequest() {
-        let sequenceList = SequenceDetailListByUserRequest(userID: 101, pageNumber: 102, itemsPerPage: 103)
+        let paginator = StandardPaginator(pageNumber: 102, itemsPerPage: 103)
+        let sequenceList = SequenceDetailListByUserRequest(userID: 101, paginator: paginator)
         XCTAssertEqual(sequenceList.urlRequest.URL?.absoluteString, "/api/sequence/detail_list_by_user/101/102/103")
     }
     
@@ -29,9 +30,9 @@ class SequenceDetailListByUserRequestTests: XCTestCase {
             let results = try sequenceListRequest.parseResponse(NSURLResponse(), toRequest: sequenceListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 3)
-            XCTAssertEqual(results[0].sequenceID, 17100)
-            XCTAssertEqual(results[1].sequenceID, 16503)
-            XCTAssertEqual(results[2].sequenceID, 16502)
+            XCTAssertEqual(results[0].sequenceID, "17100")
+            XCTAssertEqual(results[1].sequenceID, "16503")
+            XCTAssertEqual(results[2].sequenceID, "16502")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

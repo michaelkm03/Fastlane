@@ -15,7 +15,7 @@ import UIKit
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
     /// - parameter `selectedGIFSearchResult`: The selected GIF search result object
-    func GIFSearchResultSelected( selectedGIFSearchResult: SelectedGIFSearchResult)
+    func GIFSearchResultSelected( selectedGIFSearchResult: GIFSearchResultObject)
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API
@@ -85,20 +85,21 @@ class GIFSearchViewController: UIViewController {
     func exportSelectedItem( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
-            let networkGIFSearchResult = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
+            let gifSearchResulObject = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
             let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
             
-            self.mediaExporter.loadMedia( networkGIFSearchResult ) { (previewImage, mediaURL, error) in
+            self.mediaExporter.loadMedia( gifSearchResulObject ) { (previewImage, mediaURL, error) in
 
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    let selectedGIFResult = SelectedGIFSearchResult(networkingSearchResultModel: networkGIFSearchResult, previewImage: previewImage, mediaURL: mediaURL)
-                    self.delegate?.GIFSearchResultSelected( selectedGIFResult )
-                }
-                else {
+                    gifSearchResulObject.exportPreviewImage = previewImage
+                    gifSearchResulObject.exportMediaURL = mediaURL
+                    self.delegate?.GIFSearchResultSelected( gifSearchResulObject )
+               
+                } else {
                     let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
                     progressHUD.mode = .Text
                     progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
@@ -118,7 +119,7 @@ class GIFSearchViewController: UIViewController {
     
     func loadDefaultContent( pageType pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
-            self.searchDataSource.loadDefaultContent( pageType ) { (result) in
+            self.searchDataSource.performDefaultSearch( pageType ) { result in
                 self.updateViewWithResult( result )
             }
         }
@@ -126,7 +127,7 @@ class GIFSearchViewController: UIViewController {
     
     func performSearchWithText( searchText: String, pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
-            self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
+            self.searchDataSource.performSearchWithText( searchText, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
             }
         }

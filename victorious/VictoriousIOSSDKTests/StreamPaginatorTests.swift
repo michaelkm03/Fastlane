@@ -58,8 +58,7 @@ class StreamPaginatorTests: XCTestCase {
     func testPageHasNoNextPage() {
         let apiPath = "api/sequence/recent/%%SEQUENCE_ID%%/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
         let paginator =  StreamPaginator(apiPath: apiPath, sequenceID: "5", pageNumber: 1, itemsPerPage: 10)!
-        var nextPage = paginator.nextPage(0)
-        XCTAssertNil( nextPage )
+        XCTAssertNil( paginator.nextPage(0) )
     }
     
     func testPreviousPage() {

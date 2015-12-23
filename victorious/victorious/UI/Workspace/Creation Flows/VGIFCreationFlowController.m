@@ -128,13 +128,14 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - GIFSearchViewControllerDelegate
 
-- (void)GIFSearchResultSelected:(SelectedGIFSearchResult *)result
+- (void)GIFSearchResultSelected:(GIFSearchResultObject *)result
 {
     self.source = VCreationFlowSourceSearch;
-    self.publishParameters.width = result.width;
-    self.publishParameters.height = result.height;
+    self.publishParameters.width = result.assetSize.width;
+    self.publishParameters.height = result.assetSize.height;
     self.publishParameters.assetRemoteId = result.remoteID;
-    [self captureFinishedWithMediaURL:result.mediaURL previewImage:result.previewImage shouldSkipTrimmer:YES];
+    [self captureFinishedWithMediaURL:result.exportMediaURL
+                         previewImage:result.exportPreviewImage shouldSkipTrimmer:YES];
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate

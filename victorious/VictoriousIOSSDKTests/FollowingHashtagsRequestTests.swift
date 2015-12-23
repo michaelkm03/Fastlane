@@ -20,7 +20,8 @@ class FollowingHashtagsRequestTests: XCTestCase {
         }
         
         do {
-            let followingHashtags = FollowingHashtagsRequest(pageNumber: 1, itemsPerPage: 100)
+            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+            let followingHashtags = FollowingHashtagsRequest(paginator: paginator)
             let results = try followingHashtags.parseResponse(NSURLResponse(), toRequest: followingHashtags.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].hashtagID, 191)
@@ -33,7 +34,8 @@ class FollowingHashtagsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let followingHashtags = FollowingHashtagsRequest(pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let followingHashtags = FollowingHashtagsRequest(paginator: paginator)
         XCTAssertEqual(followingHashtags.urlRequest.URL?.absoluteString, "/api/hashtag/subscribed_to_list/1/100")
     }
 }

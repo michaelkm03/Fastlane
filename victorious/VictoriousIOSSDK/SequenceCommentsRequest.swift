@@ -13,7 +13,7 @@ import SwiftyJSON
 public struct SequenceCommentsRequest: PaginatorPageable, ResultBasedPageable {
     
     /// Comments will be retrieved for the sequence with this ID
-    public let sequenceID: Int64
+    public let sequenceID: String
     
     public let paginator: StandardPaginator
     
@@ -21,7 +21,7 @@ public struct SequenceCommentsRequest: PaginatorPageable, ResultBasedPageable {
         self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
-    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
         self.sequenceID = sequenceID
     }

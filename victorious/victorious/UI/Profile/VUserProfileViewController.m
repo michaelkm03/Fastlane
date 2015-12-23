@@ -126,7 +126,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     VUserProfileViewController *viewController = [self userProfileWithUser:[VUser currentUser] andDependencyManager:dependencyManager];
-    viewController.representsMainUser = @YES;
+    viewController.representsMainUser = YES;
     return viewController;
 }
 
@@ -149,16 +149,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
     
     [self updateProfileHeader];
-    [self refreshWithCompletion:nil];
+    [self loadPage:VPageTypeFirst completion:nil];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
-    
-    [self.KVOController observe:self.currentStream
-                        keyPath:@"sequences"
-                        options:NSKeyValueObservingOptionNew
-                        context:VUserProfileViewContext];
-    [self updateCollectionViewDataSource];
 }
 
 - (void)updateProfileHeader
@@ -460,26 +454,28 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
+#pragma mark - Superclass Overrides
+
+- (void)loadPage:(VPageType)pageType completion:(void (^)(void))completionBlock
 {
-    if ( self.user != nil )
+    if ( self.user == nil )
     {
-        void (^fullCompletionBlock)(void) = ^void(void)
-        {
-            if (self.streamDataSource.count)
-            {
-                [self shrinkHeaderAnimated:YES];
-            }
-            if ( completionBlock != nil )
-            {
-                completionBlock();
-            }
-            [self.profileHeaderViewController reloadProfileImage];
-            [self reloadUserFollowingRelationship];
-        };
-        [super refreshWithCompletion:fullCompletionBlock];
+        return;
     }
+    [super loadPage:pageType completion:completionBlock];
 }
+
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
+{
+    if ( self.streamDataSource.count > 0 )
+    {
+        [self shrinkHeaderAnimated:YES];
+    }
+    [self.profileHeaderViewController reloadProfileImage];
+    [self reloadUserFollowingRelationship];
+}
+
+#pragma mark -
 
 - (void)toggleFollowUser
 {
@@ -523,7 +519,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.representsMainUser )
     {
         self.user = [VUser currentUser];
-        [self updateCollectionViewDataSource];
     }
     else if ( [VUser currentUser] != nil )
     {
@@ -556,10 +551,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
-    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
-        self.currentStream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
-        [context saveChanges];
+    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+        [persistentStore.mainContext save:nil];
     }];
     
     [self updateProfileHeader];
@@ -752,12 +747,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
-}
-
-- (void)updateCollectionViewDataSource
-{
-    self.collectionView.dataSource = self.streamDataSource;
-    [self.collectionView addSubview:self.refreshControl];
 }
 
 - (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass

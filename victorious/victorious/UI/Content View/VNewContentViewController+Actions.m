@@ -7,33 +7,22 @@
 //
 
 #import "VNewContentViewController+Actions.h"
-
-// View Categories
 #import "UIActionSheet+VBlocks.h"
 #import "UIActionSheet+VBlocks.h"
-
-//TODO: abstract this out of VC
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VSequence+Fetcher.h"
-
-//Views
 #import "VNoContentView.h"
-
-// ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VUserProfileViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
-
-// Download
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "VDownloadManager.h"
 #import "VDownloadTaskInformation.h"
@@ -42,6 +31,9 @@
 #import "VAsset+Fetcher.h"
 #import "VAsset+VCachedData.h"
 #import "VAsset+VAssetCache.h"
+#import "victorious-Swift.h"
+
+#import "victorious-Swift.h"
 
 @interface VNewContentViewController ()
 
@@ -209,14 +201,9 @@
                                                                             onDestructiveButton:^
                                                             {
                                                                 [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-                                                                {
-                                                                    [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
-                                                                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                                                                     {
-                                                                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                         
-                                                                     }
-                                                                                                         failBlock:nil];
+                                                                 {
+                                                                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+                                                                     [self.viewModel deleteSequenceWithCompletion:nil];
                                                                 }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
@@ -239,13 +226,21 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action) {
-                     [[VObjectManager sharedManager] locallyRemoveSequence:self.viewModel.sequence];
-                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                 [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
+                 {
+                     [self.viewModel flagSequenceWithCompletion:^void(NSError *error)
+                      {
+                          [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                      }];
                  }];
              }];
         };
         [actionItems addObject:flagItem];
+    }
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        actionItems = [NSMutableArray arrayWithArray:[AgeGate filterMoreButtonItems:actionItems]];
     }
     
     [actionSheetViewController addActionItems:actionItems];

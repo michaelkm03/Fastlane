@@ -50,10 +50,15 @@ class AccountUpdateRequestBody: NSObject {
         if let tagline = profileUpdate?.tagline {
             try writer.appendPlaintext(tagline, withFieldName: "profile_tagline")
         }
+        
         if let profileImageURL = profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,
             let mimeType = profileImageURL.vsdk_mimeType {
-                try writer.appendFileWithName("profile_image.\(pathExtension)", contentType: mimeType, fileURL: profileImageURL, fieldName: "profile_image")
+                try writer.appendFileWithName("profile_image.\(pathExtension)",
+                    contentType: mimeType,
+                    fileURL: profileImageURL,
+                    fieldName: "profile_image"
+                )
         }
         
         try writer.finishWriting()

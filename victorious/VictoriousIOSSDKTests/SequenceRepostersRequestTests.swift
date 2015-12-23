@@ -20,7 +20,7 @@ class SequenceRepostersRequestTests: XCTestCase {
         }
         
         do {
-            let sequenceReposters = SequenceRepostersRequest(sequenceID: 1)
+            let sequenceReposters = SequenceRepostersRequest(sequenceID: "1")
             let results = try sequenceReposters.parseResponse(NSURLResponse(), toRequest: sequenceReposters.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 3)
             XCTAssertEqual(results[0].userID, 405130)
@@ -35,7 +35,8 @@ class SequenceRepostersRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let sequenceReposters = SequenceRepostersRequest(sequenceID: 99, pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let sequenceReposters = SequenceRepostersRequest(sequenceID: "99", paginator:paginator)
         XCTAssertEqual(sequenceReposters.urlRequest.URL?.absoluteString, "/api/repost/all/99/1/100")
     }
 }

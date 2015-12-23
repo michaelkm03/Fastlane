@@ -30,10 +30,11 @@ public enum StreamContentType: String {
 }
 
 public protocol StreamItemType {
-    var remoteID: String { get }
+    var streamItemID: String { get }
+    var releasedAt: NSDate? { get }
     var previewImagesObject: AnyObject? { get }
     var previewTextPostAsset: String? { get }
-    var previewImageAssets: [ImageAsset] { get }
+    var previewImageAssets: [ImageAsset]? { get}
     var type: StreamContentType? { get }
     var subtype: StreamContentType? { get }
 }

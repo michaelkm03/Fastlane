@@ -25,15 +25,15 @@ class StoredLoginOperation: Operation {
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
             
-            let user: VUser = persistentStore.sync() { context in
-                let user: VUser = context.findOrCreateObject([ "remoteId" : info.userRemoteId ])
+            let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
+                let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
                 user.loginType = info.lastLoginType.rawValue
                 user.token = info.token
                 if user.status == nil {
                     user.status = "stored"
                 }
-                user.setAsCurrentUser(inContext: context)
-                context.saveChanges()
+                context.v_save()
+                user.setAsCurrentUser()
                 return user
             }
             

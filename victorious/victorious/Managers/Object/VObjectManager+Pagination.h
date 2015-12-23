@@ -48,11 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Sequence
 
-- (RKManagedObjectRequestOperation *)loadStream:(VStream *)stream
-                                       pageType:(VPageType)pageType
-                                   successBlock:(nullable VSuccessBlock)success
-                                      failBlock:(nullable VFailBlock)fail;
-
 #pragma mark Following
 - (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser *)user
                                                  pageType:(VPageType)pageType

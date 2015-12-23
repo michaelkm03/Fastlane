@@ -48,14 +48,7 @@
         "likes": 5,
         "memes": 6,
         "quotes": 7,
-        "reposted_by_following": 8,
-          "pollresponses": [{
-            "id": "938",
-            "count": 2
-          }, {
-            "id": "937",
-            "count": 1
-          }],
+        "reposted_by_following": 8
     },
     "is_complete" : true,
     "trending_topic_name" : "Trending Topic!!",

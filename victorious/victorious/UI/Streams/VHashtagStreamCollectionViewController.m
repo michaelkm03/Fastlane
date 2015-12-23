@@ -61,15 +61,15 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     
     NSString *apiPath = [streamURL v_pathComponent];
-    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
-        stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         stream.name = [NSString stringWithFormat:@"#%@", hashtag];
-        [context saveChanges];
+        [persistentStore.mainContext save:nil];
     }];
     
     VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:stream];
@@ -80,6 +80,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     streamCollection.followControl.dependencyManager = dependencyManager;
     streamCollection.followControl.tintUnselectedImage = YES;
     streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        [streamCollection.followControl removeFromSuperview];
+        streamCollection.followControl = nil;
+    }
     
     return streamCollection;
 }
@@ -137,14 +143,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
 }
 
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
+// This is an override of a superclass method
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
-    [super refreshWithCompletion:^
-     {
-         [self dataSourceDidRefresh];
-         [self updateNavigationItems];
-         [self updateUserFollowingStatus];
-     }];
+    [self dataSourceDidRefresh];
+    [self updateNavigationItems];
+    [self updateUserFollowingStatus];
 }
 
 - (void)updateUserFollowingStatus

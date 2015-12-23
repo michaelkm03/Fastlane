@@ -29,8 +29,8 @@
 @dynamic hasReposted;
 @dynamic isComplete;
 @dynamic isLikedByMainUser;
+@dynamic hasBeenRepostedByMainUser;
 @dynamic isRemix;
-@dynamic isFlagged;
 @dynamic isRepost;
 @dynamic likeCount;
 @dynamic memeCount;
@@ -39,7 +39,6 @@
 @dynamic permissionsMask;
 @dynamic previewData;
 @dynamic previewType;
-@dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic adBreaks;

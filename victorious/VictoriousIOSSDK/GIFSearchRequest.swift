@@ -13,7 +13,6 @@ import SwiftyJSON
 public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
-    
     public let searchTerm: String
     
     public let paginator: StandardPaginator
@@ -22,7 +21,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.init( searchTerm: request.searchTerm, paginator: paginator )
     }
     
-    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
         let url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)

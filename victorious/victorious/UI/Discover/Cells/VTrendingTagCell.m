@@ -14,6 +14,7 @@
 #import "VHashtag.h"
 #import "VFollowControl.h"
 #import "VDependencyManager.h"
+#import "victorious-swift.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -51,6 +52,16 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 @end
 
 @implementation VTrendingTagCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    if ([AgeGate isAnonymousUser])
+    {
+        [self.followHashtagControl removeFromSuperview];
+        self.followHashtagControl = nil;
+    }
+}
 
 + (NSInteger)cellHeight
 {

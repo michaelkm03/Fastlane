@@ -59,15 +59,13 @@ class AlertParser: NSObject {
     /// - parameter configuration: A JSON dictionary containing all the configuration info for a level-up interstitial. If this information is invalid, this method returns nil.
     private static func levelUpInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> LevelUpInterstitial? {
         if let userInfo = paramsDict["user"] as? [String : AnyObject],
-            let levelInfo = userInfo["fanloyalty"] as? [String : AnyObject],
-            let levelNumber = levelInfo["level"] as? Int,
-            let progressPercentage = levelInfo["progress"] as? Int,
+            let fanLoyalty = FanLoyalty(dictionary: userInfo["fanloyalty"] as? [String : AnyObject]),
             let title = paramsDict["title"] as? String,
             let description = paramsDict["description"] as? String,
             let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
             let videoURLString = paramsDict["backgroundVideo"] as? String,
             let videoURL = NSURL(string: videoURLString) {
-                return LevelUpInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icons: icons, videoURL: videoURL)
+                return LevelUpInterstitial(remoteID: remoteID, fanLoyalty: fanLoyalty, title: title, description: description, icons: icons, videoURL: videoURL)
         }
         return nil
     }
@@ -77,13 +75,11 @@ class AlertParser: NSObject {
     /// - parameter configuration: A JSON dictionary containing all the configuration info for an achievement interstitial. If this information is invalid, this method returns nil.
     private static func achievementInterstitial( remoteID remoteID: Int, params paramsDict: [String : AnyObject] ) -> AchievementInterstitial? {
         if let userInfo = paramsDict["user"] as? [String : AnyObject],
-            let levelInfo = userInfo["fanloyalty"] as? [String : AnyObject],
-            let levelNumber = levelInfo["level"] as? Int,
-            let progressPercentage = levelInfo["progress"] as? Int,
             let title = paramsDict["title"] as? String,
             let icons = (paramsDict["icons"] as? [String])?.flatMap({ NSURL(string: $0) }),
             let description = paramsDict["description"] as? String {
-                return AchievementInterstitial(remoteID: remoteID, level: levelNumber, progressPercentage: progressPercentage, title: title, description: description, icons: icons)
+                let fanLoyalty = FanLoyalty(dictionary: userInfo["fanloyalty"] as? [String : AnyObject])
+                return AchievementInterstitial(remoteID: remoteID, fanLoyalty: fanLoyalty, title: title, description: description, icons: icons)
         }
         return nil
     }
