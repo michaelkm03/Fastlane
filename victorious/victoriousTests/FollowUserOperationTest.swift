@@ -26,7 +26,9 @@ class FollowUserOperationTest: XCTestCase {
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             let createdUsers: [VUser] = self.testPersistentStore.mainContext.v_findObjects(["remoteId": persitedFollowID])
-            XCTAssertEqual(1, createdUsers.count)
+            let userCreated = createdUsers[0]
+            XCTAssertEqual(1,        createdUsers.count)
+            XCTAssertEqual("stored", userCreated.status)
         }
     }
 }

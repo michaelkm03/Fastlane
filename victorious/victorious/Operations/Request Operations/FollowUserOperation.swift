@@ -25,7 +25,9 @@ class FollowUserOperation: RequestOperation {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
             let userToFollowIDNumber = NSNumber(longLong: self.userToFollowID)
             let user: VUser = context.v_findOrCreateObject(["remoteId": userToFollowIDNumber])
-            user.status = "stored"
+            if user.status == nil {
+                user.status = "stored"
+            }
             context.v_save()
         }
     }
