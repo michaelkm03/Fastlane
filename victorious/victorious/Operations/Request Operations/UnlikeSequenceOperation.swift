@@ -13,15 +13,14 @@ class UnlikeSequenceOperation: RequestOperation {
     
     let request: UnlikeSequenceRequest
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
-    init( sequenceID: Int64 ){
+    init( sequenceID: String ){
         self.request = UnlikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
     override func main() {
-        
         persistentStore.backgroundContext.v_performBlock() { context in
             guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
                 return

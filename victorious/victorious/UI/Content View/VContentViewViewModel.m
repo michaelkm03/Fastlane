@@ -52,7 +52,8 @@
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) VPollAnswer favoredAnswer;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong, readwrite) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+@property (nonatomic, strong) AppTimingContentHelper *appTimingHelper;
 
 @end
 
@@ -70,6 +71,9 @@
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
         _dependencyManager = context.destinationDependencyManager;
+        
+        id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+        _appTimingHelper = [[AppTimingContentHelper alloc] initWithTimingTracker:timingTracker];
         
         NSDictionary *configuration = @{ @"sequence" : _sequence };
         VDependencyManager *childDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:configuration];

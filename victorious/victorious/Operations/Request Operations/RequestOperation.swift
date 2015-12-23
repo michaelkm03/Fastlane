@@ -10,12 +10,17 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-private let _defaultQueue = NSOperationQueue()
+private let _defaultQueue: NSOperationQueue = {
+    var queue = NSOperationQueue()
+    queue.maxConcurrentOperationCount = 1
+    return queue
+}()
 
 class RequestOperation: NSOperation, Queuable {
     
     static let errorDomain: String = "com.getvictorious.RequestOperation"
-    static let errorCodeNoNetworkConnection: Int = 9001
+    static let errorCodeNoNetworkConnection: Int    = 9001
+    static let errorCodeNoMoreResults: Int          = 9002
     
     var defaultQueue: NSOperationQueue { return _defaultQueue }
     

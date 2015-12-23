@@ -48,6 +48,12 @@
         _selectedIconColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         _unselectedIconColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
         _menuItems = [dependencyManager menuItems];
+        
+        // Filter menu items for age gate if necessary
+        if ( [AgeGate isAnonymousUser] )
+        {
+            _menuItems = [AgeGate filterTabMenuItems:_menuItems];
+        }
     }
     return self;
 }

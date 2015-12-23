@@ -129,6 +129,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
 
         collectionView.accessoryView = keyboardBar
+        
+        if AgeGate.isAnonymousUser() {
+            collectionView.accessoryView?.hidden = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -220,7 +224,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if let commentCells = collectionView.visibleCells() as? [VContentCommentsCell] {
             for cell in commentCells {
                 if cell != cellView {
-                    cell.swipeViewController.hideUtilityButtons()
+                    cell.swipeViewController?.hideUtilityButtons()
                 }
             }
         }
@@ -314,7 +318,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.dependencyManager = dependencyManager
         cell.comment = commentForIndexPath
         cell.commentAndMediaView?.textView?.tagTapDelegate = self
-        cell.swipeViewController.controllerDelegate = self
+        cell.swipeViewController?.controllerDelegate = self
         cell.commentsUtilitiesDelegate = self
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
@@ -363,7 +367,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
         if let sequence = self.sequence {
             let commentParameters = CommentParameters(
-                sequenceID: Int64(sequence.remoteId)!,
+                sequenceID: sequence.remoteId,
                 text: inputAccessoryView.composedText,
                 replyToCommentID: nil,
                 mediaURL: self.publishParameters?.mediaToUploadURL,

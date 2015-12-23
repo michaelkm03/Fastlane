@@ -12,11 +12,11 @@ import VictoriousIOSSDK
 
 class DeleteSequenceOperation: RequestOperation {
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
     var request: DeleteSequenceRequest
     
-    init( sequenceID: Int64 ) {
+    init( sequenceID: String ) {
         self.request = DeleteSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
@@ -35,6 +35,53 @@ class DeleteSequenceOperation: RequestOperation {
             context.deleteObject( sequence )
             context.v_save()
             completion()
+        }
+    }
+}
+
+class RemoteStreamItemOperation: Operation {
+    
+    private let streamItemID: String
+    
+    let persistentStore: PersistentStoreType = MainPersistentStore()
+    
+    init( streamItemID: String) {
+        self.streamItemID = streamItemID
+    }
+    
+    override func main() {
+        persistentStore.backgroundContext.v_performBlock() { context in
+            guard let streamItem: VStreamItem = context.v_findObjects([ "remoteId" : self.streamItemID ]).first,
+                let streamID = streamItem.streamId,
+                let stream: VStream = context.v_findObjects([ "remoteId" : streamID ]).first else {
+                    return
+            }
+            
+            stream.v_removeObject( streamItem, from: "streamItems" )
+            context.v_save()
+        }
+    }
+}
+
+/// Deletes all the stream items in a stream, but leaves the stream unmodified
+class UnloadStreamItemOperation: Operation {
+    
+    private let streamID: String
+    
+    let persistentStore: PersistentStoreType = MainPersistentStore()
+    
+    init( streamID: String) {
+        self.streamID = streamID
+    }
+    
+    override func main() {
+        persistentStore.backgroundContext.v_performBlock() { context in
+            guard let stream: VStream = context.v_findObjects([ "remoteId" : self.streamID ]).first else {
+                return
+            }
+            
+            stream.v_removeAllObjects(from: "streamItems")
+            context.v_save()
         }
     }
 }

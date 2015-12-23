@@ -39,20 +39,14 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
-/**
- * Called whenever the server returns an updated state of this content.
- */
-- (void)didUpdateContent;
-
-/**
- * Called whenever new poll data is made available.
- */
-- (void)didUpdatePollsData;
+- (void)didUpdateSequence;
+- (void)didUpdatePoll;
+- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId;
 
 @end
 
 /**
- * The VContentViewViewModel is the interface between the UI layer for a given sequenceand
+ The VContentViewViewModel is the interface between the UI layer for a given sequenc eand
  the model layer for that same sequence. The ContentViewViewModel provides a convenient API
  for accesing the important information from model layer while hiding many implementation
  details from the UI.

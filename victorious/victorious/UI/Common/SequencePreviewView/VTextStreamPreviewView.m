@@ -126,13 +126,12 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
         NSString *text = textAsset.data;
         UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
         NSURL *imageUrl = [NSURL URLWithString:textAsset.backgroundImageUrl];
-        NSString *cacheKey = [[textAsset.backgroundImageUrl stringByAppendingString:textAsset.data] stringByAppendingString:textAsset.backgroundColor];
-        [self populateTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:cacheKey];
+        [self populateTextPostViewControllerText:text color:color backgroundImageURL:imageUrl];
     }
     [self updatePreviewBackgroundColor];
 }
 
-- (void)populateTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
+- (void)populateTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL
 {
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;

@@ -10,6 +10,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const VDependencyManagerPositionKey;
 extern NSString * const VDependencyManagerIdentifierKey;
 extern NSString * const VDependencyManagerDestinationKey;
@@ -61,3 +63,5 @@ extern NSString * const VDependencyManagerPositionRight;
 @property (nonatomic, assign, readonly) BOOL hasValidDestination;
 
 @end
+
+NS_ASSUME_NONNULL_END

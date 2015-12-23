@@ -83,7 +83,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, PaginatedDataSourceDelegate>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, PaginatedDataSourceDelegate, VAccessoryNavigationSource>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -1156,6 +1156,13 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         [self createNewPost];
         return NO;
     }
+    
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo] && [AgeGate isAnonymousUser] )
+    {
+        [self showLegalInfoOptions];
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -1172,6 +1179,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] && (self.presentingViewController != nil))
     {
         return NO;
+    }
+    
+    if ([menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemLegalInfo])
+    {
+        return [AgeGate isAnonymousUser];
     }
 
     return YES;

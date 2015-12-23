@@ -120,6 +120,12 @@
         [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         _likeButton.hidden = YES;
         
+        if ([AgeGate isAnonymousUser])
+        {
+            [_likeButton removeFromSuperview];
+            _likeButton = nil;
+        }
+        
         [self setGesturesEnabled:NO];
     }
     return self;

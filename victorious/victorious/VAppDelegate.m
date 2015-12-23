@@ -63,6 +63,10 @@
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
+    DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstance];
+    [appTimingTracker startEventWithType:VAppTimingEventTypeAppStart subtype:nil];
+    [appTimingTracker startEventWithType:VAppTimingEventTypeShowRegistration subtype:nil];
+    
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
@@ -127,7 +131,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    [self savePersistentChanges];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -141,7 +145,14 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+    [self savePersistentChanges];
+}
+
+- (void)savePersistentChanges
+{
+    // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
+    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    [[persistentStore mainContext] save:nil];
 }
 
 #pragma mark - Testing Helpers

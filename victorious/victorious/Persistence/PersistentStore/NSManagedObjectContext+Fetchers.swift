@@ -11,10 +11,9 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    func v_save() -> Bool {
+    func v_save() {
         do {
             try self.save()
-            return true
         } catch {
             if let object = (error as NSError).userInfo[ "NSValidationErrorObject" ] as? NSManagedObject {
                 print( "\t- Validation failed on object \(object.dynamicType)." )
@@ -29,7 +28,6 @@ extension NSManagedObjectContext {
             }
             fatalError( "Failed to save." )
         }
-        return false
     }
     
     func v_createObjectAndSaveWithEntityName( entityName: String, @noescape configurations: NSManagedObject -> Void ) -> NSManagedObject {
@@ -53,12 +51,13 @@ extension NSManagedObjectContext {
             queryDictionary: queryDictionary,
             pageNumber: nil,
             itemsPerPage: nil,
+            sortDescriptors: [],
             limit: NSNumber(integer: 1)
         )
         if let existingObject = objects.first {
             return existingObject
-        }
-        else {
+        
+        } else {
             let object = self.v_createObjectWithEntityName( entityName )
             for (key, value) in queryDictionary {
                 object.setValue(value, forKey: key)
@@ -68,10 +67,10 @@ extension NSManagedObjectContext {
     }
     
     func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [NSManagedObject] {
-        return v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, limit: nil)
+        return v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, sortDescriptors:[], limit: nil)
     }
     
-    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, limit: NSNumber? ) -> [NSManagedObject] {
+    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, sortDescriptors: [NSSortDescriptor], limit: NSNumber? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName)
         request.returnsObjectsAsFaults = false
@@ -80,7 +79,11 @@ extension NSManagedObjectContext {
         }
         if let itemsPerPage = itemsPerPage, let pageNumber = pageNumber {
             request.fetchLimit = itemsPerPage.integerValue
-            request.fetchOffset = pageNumber.integerValue * itemsPerPage.integerValue
+            request.fetchOffset = (pageNumber.integerValue-1) * itemsPerPage.integerValue
+        }
+        
+        if !sortDescriptors.isEmpty {
+            request.sortDescriptors = sortDescriptors
         }
         
         if let queryDictionary = queryDictionary {

@@ -48,7 +48,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
     private var searchResultsViewController: VExploreSearchResultsViewController?
     
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager?
     private var trackingMinRequiredCellVisibilityRatio: CGFloat = 0
     
     private let contentPresenter = ContentViewPresenter()

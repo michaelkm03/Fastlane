@@ -13,9 +13,9 @@ class LikeSequenceOperation: RequestOperation {
     
     let request: LikeSequenceRequest
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     
-    init( sequenceID: Int64 ){
+    init( sequenceID: String ){
         self.request = LikeSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
@@ -27,8 +27,7 @@ class LikeSequenceOperation: RequestOperation {
             guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
                 return
             }
-            
-            let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
+            let uniqueElements = [ "remoteId" : self.sequenceID ]
             let sequences: [VSequence] = context.v_findObjects( uniqueElements )
             for sequence in sequences {
                 sequence.isLikedByMainUser = true

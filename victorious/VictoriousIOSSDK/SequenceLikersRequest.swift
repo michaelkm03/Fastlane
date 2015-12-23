@@ -13,7 +13,7 @@ import SwiftyJSON
 public struct SequenceLikersRequest: PaginatorPageable, ResultBasedPageable {
     
     /// Likers will be retrieved for the sequence with this ID
-    public let sequenceID: Int64
+    public let sequenceID: String
     public let urlRequest: NSURLRequest
     
     public let paginator: StandardPaginator
@@ -22,7 +22,7 @@ public struct SequenceLikersRequest: PaginatorPageable, ResultBasedPageable {
         self.init( sequenceID: request.sequenceID, paginator: paginator )
     }
     
-    public init(sequenceID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(sequenceID: String, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = sequenceID
         self.paginator = paginator
         

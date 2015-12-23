@@ -27,7 +27,7 @@
 {
     VTOSViewController *tosViewController = [self termsOfServiceViewController];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tosViewController];
-    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:tosViewController action:@selector(pressedBack)];
+    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:tosViewController action:@selector(pressedBack)];
     tosViewController.navigationItem.leftBarButtonItem = dismissButton;
     return navigationController;
 }

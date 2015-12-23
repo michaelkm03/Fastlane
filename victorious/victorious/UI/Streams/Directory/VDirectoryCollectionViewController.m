@@ -45,11 +45,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 /**
- *  The dependencyManager used to style the directory and its cells
- */
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-/**
  *  The marquee controller that will provide and manage marquee cells when a marquee is displayed
  */
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeController;

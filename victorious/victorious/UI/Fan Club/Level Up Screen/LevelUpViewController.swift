@@ -11,7 +11,7 @@ import Foundation
 private struct Constants {
     static let distanceToContainerFromSide: CGFloat = 50
     static let collectionViewHeight: CGFloat = 80
-    static let badgeHeight = 150
+    static let badgeHeight = 155 // This needs to be slightly higher than in the mocks to accomodate for rounded corners
     static let badgeWidth = 135
 }
 
@@ -98,8 +98,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     var levelUpInterstitial: LevelUpInterstitial! {
         didSet {
             if let levelUpInterstitial = levelUpInterstitial {
-                let currentLevel = levelUpInterstitial.level
-                badgeView?.levelNumberString = String(currentLevel - 1)
+                let currentLevel = levelUpInterstitial.fanLoyalty.level
+                badgeView?.levelNumberString = String(currentLevel)
                 titleLabel.text = levelUpInterstitial.title
                 descriptionLabel.text = levelUpInterstitial.description
                 icons = levelUpInterstitial.icons
@@ -164,11 +164,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if !hasAppeared {
-            animateIn() { completed in
-                self.badgeView?.animateProgress(AnimationConstants.progressAnimation, endPercentage: 100) {
-                    self.upgradeBadgeNumber()
-                }
-            }
+            animateIn()
             
             let videoPlayerItem = VVideoPlayerItem(URL: levelUpInterstitial.videoURL)
             videoPlayerItem.loop = false
@@ -177,33 +173,8 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             
             // Assuming this level up alert contains the most up-to-date fanloyalty info,
             // we update the user's level and level progress when the interstitial appears
-            VObjectManager.sharedManager().mainUser?.level = levelUpInterstitial.level
-            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = levelUpInterstitial.progressPercentage
-        }
-    }
-    
-    private func upgradeBadgeNumber() {
-        
-        if let levelUpInterstitial = self.levelUpInterstitial {
-            badgeView?.levelUp(String(levelUpInterstitial.level))
-        }
-        
-        UIView.animateWithDuration(0.1,
-            delay: 0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.4,
-            options: [],
-            animations: {
-                self.badgeView?.transform = CGAffineTransformMakeScale(1.1, 1.1)
-            }) { (completed) in
-                self.badgeView?.resetProgress(true)
-                UIView.animateWithDuration(0.1,
-                    delay: 0,
-                    options: .CurveLinear,
-                    animations: {
-                        self.badgeView?.transform = CGAffineTransformIdentity
-                    },
-                    completion: nil)
+            VObjectManager.sharedManager().mainUser?.level = levelUpInterstitial.fanLoyalty.level
+            VObjectManager.sharedManager().mainUser?.levelProgressPercentage = levelUpInterstitial.fanLoyalty.progressPercentage
         }
     }
     
@@ -219,7 +190,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     /// MARK: Helpers
     
-    private func animateIn(badgeAnimationCompletion: ((Bool) -> Void)?) {
+    private func animateIn() {
         
         // Title animation
         UIView.animateWithDuration(0.6,
@@ -243,7 +214,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
             animations: {
                 self.badgeView?.transform = CGAffineTransformIdentity
             },
-            completion: badgeAnimationCompletion)
+            completion: nil)
         
         // Button animation
         UIView.animateWithDuration(0.6,

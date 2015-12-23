@@ -18,9 +18,15 @@
 
 @implementation VStreamCollectionViewDataSource
 
+- (instancetype)init
+{
+    NSAssert( NO, @"VStreamCollectionViewDataSource must be instantiated using the designated initializer that contains a `VStream` argument" );
+    return nil;
+}
+
 - (instancetype)initWithStream:(VStream *)stream
 {
-    self = [self init];
+    self = [super init];
     if ( self != nil )
     {
         _stream = stream;
