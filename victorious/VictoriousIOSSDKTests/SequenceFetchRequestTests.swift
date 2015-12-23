@@ -13,7 +13,7 @@ import SwiftyJSON
 class SequenceFetchRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
-        let id: Int64 = 3694
+        let id: String = "3694"
         let request =  SequenceFetchRequest(sequenceID: id )
         XCTAssertEqual( request.urlRequest.URL, NSURL(string: "/api/sequence/fetch/\(id)") )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
@@ -27,7 +27,7 @@ class SequenceFetchRequestTests: XCTestCase {
                 return
         }
         
-        let request =  SequenceFetchRequest(sequenceID: 17143)
+        let request =  SequenceFetchRequest(sequenceID: "17143")
         do {
             try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {

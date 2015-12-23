@@ -14,7 +14,7 @@ class PollResultTests: XCTestCase {
     
     func testValid() {
         let mockAnswerID = 101
-        let mockSequenceID = 102
+        let mockSequenceID = "102"
         let mockTotalCount = 103
         
         let validJSON = JSON([
@@ -28,7 +28,7 @@ class PollResultTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual( pollResult.sequenceID, Int64(mockSequenceID) )
+        XCTAssertEqual( pollResult.sequenceID, mockSequenceID )
         XCTAssertEqual( pollResult.answerID, Int64(mockAnswerID) )
         XCTAssertEqual( pollResult.totalCount, Int64(mockTotalCount) )
     }

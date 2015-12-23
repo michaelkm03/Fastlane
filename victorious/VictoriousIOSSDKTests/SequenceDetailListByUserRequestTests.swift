@@ -30,9 +30,9 @@ class SequenceDetailListByUserRequestTests: XCTestCase {
             let results = try sequenceListRequest.parseResponse(NSURLResponse(), toRequest: sequenceListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 3)
-            XCTAssertEqual(results[0].sequenceID, 17100)
-            XCTAssertEqual(results[1].sequenceID, 16503)
-            XCTAssertEqual(results[2].sequenceID, 16502)
+            XCTAssertEqual(results[0].sequenceID, "17100")
+            XCTAssertEqual(results[1].sequenceID, "16503")
+            XCTAssertEqual(results[2].sequenceID, "16502")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
