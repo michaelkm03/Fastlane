@@ -13,7 +13,8 @@ public extension VContentViewViewModel {
     
     var sequenceID: Int64 {
         guard let sequenceID = Int64(self.sequence.remoteId) else {
-            fatalError( "Failed to cast a a sequence's `remoteId` property from `String` to `Int64`" )
+            // Change Sequence's `sequenceID` property at network layer
+            fatalError( "Failed to cast a a sequence's `remoteId` property from `String` to `Int64`.  FIXME: Change Sequence's `sequenceID` property at network layer" )
         }
         return sequenceID
     }
