@@ -28,7 +28,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        return (self.sequence.comments.array as? [VComment] ?? [])[index]
+        return self.commentsArray[index]
     }
     
     func indexOfComment(comment: VComment) -> Int {

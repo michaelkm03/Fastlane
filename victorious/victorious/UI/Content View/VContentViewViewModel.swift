@@ -11,9 +11,14 @@ import VictoriousIOSSDK
 
 public extension VContentViewViewModel {
     
+    var sequenceID: Int64 {
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
+            fatalError( "Failed to cast a a sequence's `remoteId` property from `String` to `Int64`" )
+        }
+        return sequenceID
+    }
+    
     func loadNetworkData() {
-        
-        let sequenceID = Int64(self.sequence.remoteId)!
         
         if self.sequence.isPoll() {
             PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
@@ -29,8 +34,7 @@ public extension VContentViewViewModel {
                     }
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
-                    let sequenceID = Int64(self.sequence.remoteId)!
-                    let operation = SequenceCommentsOperation(sequenceID: sequenceID, pageNumber: pageNumber)
+                    let operation = SequenceCommentsOperation(sequenceID: self.sequenceID, pageNumber: pageNumber)
                     self.loadCommentsOperation = operation
                 })
         } else {
@@ -59,8 +63,8 @@ public extension VContentViewViewModel {
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
-                    let labelString = NSLocalizedString("followers", comment:"")
-                    self.followersText = "\(countString) \(labelString)"
+                    let labelFormat = NSLocalizedString("followersCount", comment:"")
+                    self.followersText = NSString(format: labelFormat, countString) as String
                 } else {
                     self.followersText = ""
                 }
@@ -72,8 +76,6 @@ public extension VContentViewViewModel {
         guard !isLoadingComments else {
             return
         }
-        
-        let sequenceID = Int64(self.sequence.remoteId)!
         
         let operation: SequenceCommentsOperation?
         switch pageType {
@@ -96,12 +98,12 @@ public extension VContentViewViewModel {
     
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
         guard let nextSequenceId = self.endCardViewModel.nextSequenceId,
-            let nextSeuqneceIntegerId = Int64(nextSequenceId) else {
+            let nextSequenceIntegerID = Int64(nextSequenceId) else {
                 failure(nil)
                 return
         }
         
-        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSeuqneceIntegerId )
+        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSequenceIntegerID )
         sequenceFetchOperation.queue() { error in
             
             if let sequence = sequenceFetchOperation.loadedSequence where error == nil {
@@ -113,7 +115,11 @@ public extension VContentViewViewModel {
     }
     
     func findComment( commendID commentID: NSNumber, completion:(Int?, NSError?)->() ) {
-        let operation = CommentFindOperation(sequenceID: Int64(self.sequence.remoteId)!, commentID: commentID.longLongValue )
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
+            return
+        }
+        
+        let operation = CommentFindOperation(sequenceID: sequenceID, commentID: commentID.longLongValue )
         operation.queue() { error in
             if error == nil, let pageNumber = operation.pageNumber {
                 completion(pageNumber, nil)
@@ -124,6 +130,7 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
+        
         let realtimeComment: CommentParameters.RealtimeComment?
         if let time = currentTime?.doubleValue where time > 0.0,
             let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
@@ -148,13 +155,12 @@ public extension VContentViewViewModel {
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         
-        if let sequenceID = Int64(self.sequence.remoteId),
-            let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
-                let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
-                operation.queue() { error in
-                    let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
-                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
-                }
+        if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
+            let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
+            operation.queue() { error in
+                let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
+                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+            }
         }
     }
 }
