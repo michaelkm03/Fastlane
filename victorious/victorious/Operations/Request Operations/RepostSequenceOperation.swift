@@ -23,20 +23,17 @@ class RepostSequenceOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        let semphore = dispatch_semaphore_create(0)
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
             guard let user = VUser.currentUser() else {
                 fatalError( "User must be logged in." )
             }
-            let node:VNode = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: self.nodeID) ] )
+            let node:VNode = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: self.nodeID) ] )
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.repostedSequences.insert( node.sequence )
             
-            context.saveChanges()
-            dispatch_semaphore_signal( semphore )
+            context.v_save()
         }
-        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
         
         // Then execute the request
         self.executeRequest( request )

@@ -21,12 +21,12 @@ class DeviceExperimentsOperation: RequestOperation {
     
     private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int64]), completion:() -> () ) {
         
-        persistentStore.asyncFromBackground(){ context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             for experiment in result.experiments {
-                let persistentExperiment: Experiment = context.findOrCreateObject(["id": NSNumber(longLong: experiment.id),
+                let persistentExperiment: Experiment = context.v_findOrCreateObject(["id": NSNumber(longLong: experiment.id),
                     "layerId": NSNumber(longLong: experiment.layerID)])
                 persistentExperiment.populate(fromSourceModel: experiment)
-                context.saveChanges()
+                context.v_save()
             }
             // Convert to Set<Int>
             for defaultID in result.defaultExperimentIDs {

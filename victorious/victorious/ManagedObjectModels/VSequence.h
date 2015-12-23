@@ -23,13 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * hasReposted;
-@property (nonatomic, retain, nullable) NSNumber * isComplete;
-@property (nonatomic, retain, nullable) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSNumber * isComplete;
+@property (nonatomic, retain) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSNumber * hasBeenRepostedByMainUser;
 @property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * memeCount;
-@property (nonatomic, retain) NSNumber * isFlagged;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain, nullable) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissionsMask;
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
 @property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
-@property (nonatomic, retain, nullable) NSOrderedSet * comments;
+@property (nonatomic, retain) NSOrderedSet * comments;
 @property (nonatomic, retain, nullable) VEndCard * endCard;
 @property (nonatomic, retain, nullable) NSSet * likers;
 @property (nonatomic, retain, nullable) NSOrderedSet * nodes;
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) VUser * parentUser;
 @property (nonatomic, retain, nullable) NSSet * pollResults;
 @property (nonatomic, retain, nullable) VUser * recentUser;
-@property (nonatomic, retain, nullable) NSSet * reposters;
+@property (nonatomic, retain) NSOrderedSet * reposters;
 @property (nonatomic, retain, nullable) VTracking * tracking;
 @property (nonatomic, retain, nullable) VUser * user;
 @property (nonatomic, retain, nullable) NSSet * voteResults;
@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addRepostersObject:(VUser *)value;
 - (void)removeRepostersObject:(VUser *)value;
-- (void)addReposters:(NSSet *)values;
-- (void)removeReposters:(NSSet *)values;
+- (void)addReposters:(NSOrderedSet *)values;
+- (void)removeReposters:(NSOrderedSet *)values;
 
 - (void)addVoteResultsObject:(VVoteResult *)value;
 - (void)removeVoteResultsObject:(VVoteResult *)value;

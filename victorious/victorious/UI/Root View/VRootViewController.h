@@ -42,6 +42,8 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 @property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;
 
+@property (nonatomic, strong, readonly) VDeeplinkReceiver *deepLinkReceiver;
+
 /**
  NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 
  set as the main window's rootViewController property. If no such instance exists,

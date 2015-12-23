@@ -35,7 +35,7 @@ class CoreDataManager: NSObject {
     let currentModelVersion: ModelVersion
     let previousModelVersion: ModelVersion?
     let persistentStoreURL: NSURL
-    let storeType: String = NSInMemoryStoreType
+    let storeType: String = NSSQLiteStoreType
     
     let mainContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
@@ -70,6 +70,7 @@ class CoreDataManager: NSObject {
         
         self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         self.backgroundContext.parentContext = self.mainContext
+        self.backgroundContext.mergePolicy = NSOverwriteMergePolicy
         
         super.init()
         

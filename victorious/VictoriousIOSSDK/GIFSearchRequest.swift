@@ -13,7 +13,6 @@ import SwiftyJSON
 public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
-    
     public let searchTerm: String
     
     public let paginator: StandardPaginator

@@ -29,20 +29,16 @@ class LogoutLocally: Operation {
         
         self.beganExecuting()
         
-        guard let currentUser = VUser.currentUser() else {
-            fatalError( "Cannot get current user." )
-        }
-        
         // Show the login again once we're logged out
         let loginOperation = ShowLoginOperation(originViewController: fromViewController, dependencyManager: dependencyManager)
         loginOperation.queueAfter( self, queue: Operation.defaultQueue )
         
         // Perform a fire-and-forget remote log out with the server
-        let remoteLogoutOperation = LogoutOperation( userIdentifier: currentUser.identifier )
+        let remoteLogoutOperation = LogoutOperation()
         remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
         VUser.clearCurrentUser()
-        
+
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )

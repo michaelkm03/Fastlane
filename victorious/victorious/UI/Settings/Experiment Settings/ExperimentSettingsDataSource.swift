@@ -85,7 +85,7 @@ class ExperimentSettingsDataSource: NSObject {
             }
             
             // Synchronously grab all experiments from the main queue context.
-            let experiments: [Experiment] = self.persistentStore.sync{ context in
+            let experiments: [Experiment] = self.persistentStore.mainContext.v_performBlockAndWait() { context in
                 return context.findObjects()
             }
             

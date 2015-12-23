@@ -34,7 +34,6 @@
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSNumber *mediaWidth;
 @property (nonatomic, retain) NSNumber *mediaHeight;
-@property (nonatomic, retain) NSNumber * isFlagged;
 
 @end
 

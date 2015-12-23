@@ -34,7 +34,8 @@ class FollowersRequestTest: XCTestCase {
     }
     
     func testRequest() {
-        let followersRequest = FollowersRequest(userID: 101, pageNumber: 102, itemsPerPage: 103)
+        let paginator = StandardPaginator(pageNumber: 102, itemsPerPage: 103)
+        let followersRequest = FollowersRequest(userID: 101, paginator: paginator)
         XCTAssertEqual(followersRequest.urlRequest.URL?.absoluteString, "/api/follow/followers_list/101/102/103")
     }
 }

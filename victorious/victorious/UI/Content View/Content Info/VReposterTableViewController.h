@@ -8,12 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VDependencyManager;
+NS_ASSUME_NONNULL_BEGIN
+
+@class VSequence, VDependencyManager, SequenceRepostersOperation;
 
 @interface VReposterTableViewController : UITableViewController
 
 - (id)initWithDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)setHasReposters:(BOOL)hasReposters;
 
 @property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong, nullable) SequenceRepostersOperation *repostersOperation;
 
 @end
+
+NS_ASSUME_NONNULL_END

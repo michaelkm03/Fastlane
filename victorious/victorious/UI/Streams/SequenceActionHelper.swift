@@ -12,7 +12,7 @@ import UIKit
     
     func likeSequence(sequence: VSequence, triggeringView: UIView, originViewController: UIViewController, dependencyManager: VDependencyManager, completion: ((Bool) -> Void)?) {
         
-        if sequence.isLikedByMainUser?.boolValue ?? false {
+        if sequence.isLikedByMainUser.boolValue {
             UnlikeSequenceOperation( sequenceID: Int64(sequence.remoteId)! ).queue() { error in
                 completion?( error == nil )
             }
@@ -45,6 +45,7 @@ import UIKit
     }
     
     func flagSequence( sequence: VSequence, fromViewController viewController: UIViewController, completion:((Bool) -> Void)? ) {
+        
         FlagSequenceOperation(sequenceID: Int64(sequence.remoteId)! ).queue() { error in
             if let error = error {
                 let params = [ VTrackingKeyErrorMessage : error.localizedDescription ?? "" ]

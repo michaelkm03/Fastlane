@@ -27,7 +27,6 @@
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
-@property (nonatomic, readwrite) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
@@ -38,7 +37,6 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
-@property (nonatomic, assign) BOOL isRefreshingFirstPage;
 
 @property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
@@ -126,10 +124,6 @@
     if ( shouldRefresh )
     {
         [self refreshWithCompletion:nil];
-    }
-    else if ( self.isRefreshingFirstPage )
-    {
-        [self.refreshControl beginRefreshing];
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -294,15 +288,14 @@
 {
     if (self.streamDataSource.isLoading)
     {
-        if ( !self.isRefreshingFirstPage )
-        {
-            [self.refreshControl endRefreshing];
-        }
+        [self.refreshControl endRefreshing];
         return;
     }
     
-    self.isRefreshingFirstPage = YES;
-    [self.refreshControl beginRefreshing];
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
+    {
+        [self.refreshControl beginRefreshing];
+    }
     
     [self.appTimingStreamHelper startStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
     
@@ -324,16 +317,14 @@
          {
              completionBlock();
          }
-         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
          [self.collectionView reloadData];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }
                             failure:^(NSError *error)
      {
-         self.isRefreshingFirstPage = NO;
          [self.refreshControl endRefreshing];
-         // TODO: Show error in non-disruptive way
+#warning TODO: Show any REAL error (this excludes last page or no network errors)
          
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
@@ -418,7 +409,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    // FIXME:
+#warning FIXME: Bottom activity indicator
     /*if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
@@ -508,6 +499,11 @@
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     return nil;
+}
+
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
+{
+    
 }
 
 @end

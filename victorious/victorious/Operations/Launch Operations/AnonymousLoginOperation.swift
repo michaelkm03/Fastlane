@@ -29,8 +29,8 @@ class AnonymousLoginOperation: Operation {
         let anonymousToken = AgeGate.anonymousUserToken()
         let anonymousLoginType = VLoginType.Anonymous
         
-        persistentStore.asyncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject([ "remoteId" : anonymousID ])
+        persistentStore.backgroundContext.v_performBlock { context in
+            let user: VUser = context.v_findOrCreateObject([ "remoteId" : anonymousID ])
             user.loginType = anonymousLoginType.rawValue
             user.token = anonymousToken
             
@@ -39,7 +39,7 @@ class AnonymousLoginOperation: Operation {
             }
             
             user.setAsCurrentUser()
-            context.saveChanges()
+            context.v_save()
             self.finishedExecuting()
         }
     }

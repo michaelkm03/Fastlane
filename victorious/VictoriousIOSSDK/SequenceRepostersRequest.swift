@@ -28,7 +28,7 @@ public struct SequenceRepostersRequest: PaginatorPageable, ResultBasedPageable {
         let url = NSURL(string: "/api/repost/all/\(String(self.sequenceID))")!
         let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
-        self.urlRequest = request
+        urlRequest = request
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [User] {

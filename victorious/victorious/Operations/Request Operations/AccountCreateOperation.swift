@@ -18,7 +18,6 @@ class AccountCreateOperation: RequestOperation {
     private(set) var resultCount: Int?
     
     var isNewUser = false
-    var persistentUser: VUser?
     
     init( request: AccountCreateRequest, loginType: VLoginType, accountIdentifier: String? = nil ) {
         self.loginType = loginType
@@ -36,20 +35,19 @@ class AccountCreateOperation: RequestOperation {
         self.isNewUser = response.newUser
         
         // First, find or create the new user who just logged in
-        persistentStore.asyncFromBackground() { context in
-            let user: VUser = context.findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
+            user.setAsCurrentUser()
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
-            context.saveChanges()
+            context.v_save()
             
-            let identifier = user.identifier
-            self.persistentStore.sync() { context in
-                if let user: VUser = context.getObject(identifier) {
-                    user.setAsCurrentUser()
-                    self.updateStoredCredentials( user )
-                    self.notifyLoginChange( user, isNewUser: response.newUser )
-                    self.queueNextOperations( user )
+            dispatch_async( dispatch_get_main_queue() ) {
+                if let currentUser = VUser.currentUser() {
+                    self.updateStoredCredentials( currentUser )
+                    self.notifyLoginChange( currentUser, isNewUser: response.newUser )
+                    self.queueNextOperations( currentUser )
                 }
                 completion()
             }
@@ -71,7 +69,7 @@ class AccountCreateOperation: RequestOperation {
     
     private func queueNextOperations( currentUser: VUser ) {
         // Load more data from the network about the user
-        PollResultByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
+        PollResultSummaryByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
         ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
     }
 }

@@ -50,11 +50,6 @@
 
 #pragma mark - VCommentCellUtilitiesDelegate
 
-- (void)commentRemoved:(VComment *)comment
-{
-    [self.commentsUtilitiesDelegate commentRemoved:comment];
-}
-
 - (void)editComment:(VComment *)comment
 {
     [self.commentsUtilitiesDelegate editComment:comment];

@@ -18,7 +18,7 @@ extension VStream: PersistenceParsable {
         name            = stream.name
         count           = stream.postCount
         
-        let streamItems = VStreamItem.parseStreamItems( stream.items, context: self.persistentStoreContext)
-        self.addObjects( streamItems, to: "streamItems" )
+        let streamItems = VStreamItem.parseStreamItems( stream.items, managedObjectContext: self.v_managedObjectContext )
+        self.v_addObjects( streamItems, to: "streamItems" )
     }
 }

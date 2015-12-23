@@ -11,8 +11,8 @@ import SwiftyJSON
 
 public struct SequenceUserInteractionsRequest: RequestType {
     
-    let sequenceID: Int64
-    let userID: Int64
+    public let sequenceID: Int64
+    public let userID: Int64
     
     public init(sequenceID: Int64, userID: Int64) {
         self.sequenceID = sequenceID

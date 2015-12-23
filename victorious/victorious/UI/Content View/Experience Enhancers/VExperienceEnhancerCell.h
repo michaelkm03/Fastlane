@@ -20,7 +20,6 @@ extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;
 @property (nonatomic, strong) UIImage *experienceEnhancerIcon;
 @property (nonatomic, assign) BOOL requiresPurchase;
-@property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, assign) CGFloat cooldownStartValue;

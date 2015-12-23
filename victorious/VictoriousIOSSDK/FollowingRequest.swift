@@ -27,7 +27,7 @@ public struct FollowingRequest: PaginatorPageable, ResultBasedPageable {
         self.init( userID: request.userID, paginator: request.paginator)
     }
     
-    private init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
         self.userID = userID
         self.paginator = paginator
         

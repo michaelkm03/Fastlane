@@ -10,11 +10,12 @@ import Foundation
 
 /// Marks all notifications as having been read
 public struct MarkAllNotificationsAsReadRequest: RequestType {
-    public let urlRequest: NSURLRequest
     
-    public init() {
+    public init() {}
+    
+    public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/notification/mark_all_notifications_read")!)
         request.HTTPMethod = "POST"
-        urlRequest = request
+        return request
     }
 }

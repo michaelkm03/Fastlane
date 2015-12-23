@@ -42,7 +42,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 @interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
-@property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 /**
@@ -55,8 +54,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @end
 
 @implementation VDirectoryCollectionViewController
-
-@synthesize collectionView = _collectionView;
 
 #pragma mark - Initializers
 
@@ -91,8 +88,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
-    UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
-    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     streamDirectory.marqueeController = marqueeController;
     streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];
@@ -124,12 +119,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
 }
 
-- (void)dealloc
-{
-    _collectionView.delegate = nil;
-    _collectionView.dataSource = nil;
-}
-
 #pragma mark - Shared setup
 
 - (void)viewDidLoad
@@ -159,7 +148,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
     

@@ -55,7 +55,6 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.previewType, AssetType.Media )
         XCTAssertEqual( sequence.trendingTopicName, "Trending Topic!!")
         XCTAssertEqual( sequence.comments.count, 1 )
-        XCTAssertEqual( sequence.voteResults.count, 2 )
         XCTAssertEqual( sequence.recentComments.count, 1 )
     }
     

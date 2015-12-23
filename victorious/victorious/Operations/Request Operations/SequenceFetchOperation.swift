@@ -13,8 +13,12 @@ class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
     
+    var loadedSequence: VSequence?
+    
     init( sequenceID: Int64) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
+        super.init()
+        self.qualityOfService = .UserInitiated
     }
     
     override func main() {
@@ -23,11 +27,19 @@ class SequenceFetchOperation: RequestOperation {
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
         
-        persistentStore.asyncFromBackground() { context in
-            let persistentSequence: VSequence = context.findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
+        persistentStore.backgroundContext.v_performBlock() { context in
+            let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
             persistentSequence.populate(fromSourceModel: sequence)
-            context.saveChanges()
-            completion()
+            context.v_save()
+            
+            let persistentSequenceID = persistentSequence.objectID
+            
+            self.persistentStore.mainContext.v_performBlockAndWait { context in
+                if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
+                    self.loadedSequence = sequence
+                }
+                completion()
+            }
         }
     }
 }

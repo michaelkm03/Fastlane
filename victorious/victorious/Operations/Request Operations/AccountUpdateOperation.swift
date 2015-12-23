@@ -37,10 +37,10 @@ class AccountUpdateOperation: RequestOperation {
     }
     
     override func main() {
+        
         // For profile updates, optimistically update everything right away
-        let semphore = dispatch_semaphore_create(0)
         if let profileUpdate = self.request.profileUpdate {
-            persistentStore.asyncFromBackground() { context in
+            persistentStore.backgroundContext.v_performBlockAndWait() { context in
                 guard let user = VUser.currentUser() else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
@@ -56,7 +56,7 @@ class AccountUpdateOperation: RequestOperation {
                     user.pictureUrl = imageURL.absoluteString
                     if let data = NSData(contentsOfURL: imageURL),
                         let image = UIImage(data: data) {
-                            let imageAsset: VImageAsset = context.createObject()
+                            let imageAsset: VImageAsset = context.v_createObject()
                             imageAsset.imageURL = imageURL.absoluteString
                             imageAsset.width = image.size.width
                             imageAsset.height = image.size.height
@@ -65,12 +65,11 @@ class AccountUpdateOperation: RequestOperation {
                             user.previewAssets.insert( imageAsset )
                     }
                 }
-                context.saveChanges()
-                dispatch_semaphore_signal( semphore )
+                context.v_save()
             }
         }
-        dispatch_semaphore_wait( semphore, DISPATCH_TIME_FOREVER )
         
+        // Then send out the request the server
         executeRequest( request, onComplete: self.onComplete )
     }
     

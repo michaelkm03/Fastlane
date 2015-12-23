@@ -19,34 +19,18 @@ protocol CommentsDataSource {
     
     /// The index of a particular comment.
     func indexOfComment(comment: VComment) -> Int
- 
-    /// A delgate to be informed of update events.
-    weak var delegate: CommentsDataSourceDelegate? { get set }
     
-    /// Attempts to load the first page of comments.
-    func loadFirstPage()
+    /// Loads comements with the specified page
+    func loadComments( pageType: VPageType, completion:((NSError?)->())?)
     
-    /// Attempts to load subsequent pages after the first page.
-    func loadNextPage()
-    
-    /// Attempts to load the previous page of comments from the current page.
-    func loadPreviousPage()
+    func loadComments( pageType: VPageType )
     
     /// Loads comements with a deepLink comment ID.
     func loadComments(deepLinkCommentID: NSNumber)
-    
-    /// Removes the comment from the data source. Note this is just to coordinate with commentCell which is doing the actual API request and deletion
-    func removeCommentAtIndex(index: Int)
-
 }
 
-protocol CommentsDataSourceDelegate: class {
-    
-    /// Informs the delegate that the data source updated the content of the comments.
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource)
-    
-    /// Informs the delegate that the data source updated the content of the comments in relation 
-    /// to a loadCommentsWithDeepLinkCommentID request.
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkId: NSNumber)
-    
+extension CommentsDataSource {
+    func loadComments( pageType: VPageType ) {
+        loadComments( pageType, completion: nil )
+    }
 }

@@ -38,8 +38,8 @@
 @dynamic token;
 @dynamic tokenUpdatedAt;
 @dynamic childSequences;
-@dynamic comments;
 @dynamic conversation;
+@dynamic comments;
 @dynamic followers;
 @dynamic following;
 @dynamic hashtags;

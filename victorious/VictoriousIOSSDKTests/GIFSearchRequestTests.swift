@@ -36,7 +36,8 @@ class GIFSearchRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let searchGIFs = GIFSearchRequest(searchTerm: "lol", pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let searchGIFs = GIFSearchRequest(searchTerm: "lol", paginator: paginator)
         XCTAssertEqual(searchGIFs.urlRequest.URL?.absoluteString, "/api/image/gif_search/lol/1/100")
     }
 }

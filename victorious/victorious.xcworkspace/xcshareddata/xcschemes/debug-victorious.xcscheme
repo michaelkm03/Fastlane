@@ -53,7 +53,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0370FBBC1B71B261009047B6"
@@ -63,7 +63,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
@@ -93,6 +93,16 @@
                BlueprintIdentifier = "EBEA19B51BC4A76C00878B18"
                BuildableName = "victoriousUITests.xctest"
                BlueprintName = "victoriousUITests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "03314F241BE3E2DF00EE74FD"
+               BuildableName = "VictoriousIOSSDKTests.xctest"
+               BlueprintName = "VictoriousIOSSDKTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </TestableReference>

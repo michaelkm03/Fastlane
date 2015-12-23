@@ -113,7 +113,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
-    
     streamCollection.currentStream = stream;
     return streamCollection;
 }
@@ -142,14 +141,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                    inURLString:url];
     }
     NSString *apiPath = [url v_pathComponent];
-    id<PersistentStoreTypeBasic>  persistentStore = [[MainPersistentStore alloc] init];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    [persistentStore syncBasic:^void(id<PersistentStoreContextBasic> context) {
-        stream = (VStream *)[context findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
+    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    [persistentStore.mainContext performBlockAndWait:^void {
+        stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-        [context saveChanges];
+        [persistentStore.mainContext save:nil];
     }];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -229,13 +228,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
-    if ( self.streamDataSource == nil )
-    {
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-        self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
-    }
+    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+    self.streamDataSource.delegate = self;
+    self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
     self.marqueeCellController.stream = self.currentStream;
@@ -243,9 +238,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
     self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    
-    self.collectionView.dataSource = self.streamDataSource;
-    self.streamDataSource.collectionView = self.collectionView;
     
     self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
@@ -256,15 +248,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] init];
         self.collectionView.collectionViewLayout = flowLayout;
     }
-    
-    [self.KVOController observe:self.streamDataSource
-                        keyPath:NSStringFromSelector(@selector(visibleStreamItems))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(dataSourceDidChange)];
-    [self.KVOController observe:self.streamDataSource
-                        keyPath:NSStringFromSelector(@selector(hasHeaderCell))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                         action:@selector(dataSourceDidChange)];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
@@ -370,15 +353,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     NSString *streamName = currentStream.name;
     self.navigationItem.title = streamName;
-    if ( self.streamDataSource == nil )
-    {
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
-        self.streamDataSource.delegate = self;
-    }
-    else
-    {
-        self.streamDataSource.stream = currentStream;
-    }
+    self.streamDataSource.stream = currentStream;
     [super setCurrentStream:currentStream];
 }
 
@@ -405,7 +380,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSArray *streamItems = self.streamDataSource.visibleStreamItems;
+    NSOrderedSet *streamItems = self.streamDataSource.visibleStreamItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -652,6 +627,35 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self updateCellVisibilityTracking];
 }
 
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
+{
+    NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
+    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
+    for ( id obj in newValue )
+    {
+        if ( [oldValue containsObject:obj] )
+        {
+            continue;
+        }
+        NSInteger index = [newValue indexOfObject:obj];
+        if ( index == NSNotFound )
+        {
+            continue;
+        }
+        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:contentSection]];
+    }
+    
+    if ( newValue.count == 0 || oldValue.count == 0 )
+    {
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:contentSection]];
+        [self updateNoContentViewAnimated:YES];
+    }
+    else
+    {
+        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
+    }
+}
+
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
@@ -778,16 +782,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 }
 
 #pragma mark - Actions
-
-- (void)setBackgroundImageWithURL:(NSURL *)url
-{    
-    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
-    
-    [newBackgroundView applyTintAndBlurToImageWithURL:url
-                                        withTintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    
-    self.collectionView.backgroundView = newBackgroundView;
-}
 
 - (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
@@ -1010,19 +1004,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 }
 
 #pragma mark - Notifications
-
-- (void)dataSourceDidChange
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        self.hasRefreshed = YES;
-        [self updateNoContentViewAnimated:YES];
-        
-        [self updateCellVisibilityTracking];
-        [self.marqueeCellController updateFocus];
-        [self.focusHelper updateFocus];
-    });
-}
 
 - (void)updateNoContentViewAnimated:(BOOL)animated
 {

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VAbstractFilter+RestKit.h"
 
-extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
+NS_ASSUME_NONNULL_BEGIN
 
 @class  VStream, VStreamItem, VStreamCollectionViewDataSource, StreamOperation;
 
@@ -19,6 +19,7 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @protocol VStreamCollectionDataDelegate <NSObject>
 
 @required
+
 /**
  *  Fetches a UICollectionViewCell for a VStreamItem
  *
@@ -28,6 +29,8 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
  *  @return an appropriate UICollectionViewCell for the given streamItem
  */
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath;
+
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue;
 
 @optional
 
@@ -71,13 +74,12 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @interface VStreamCollectionViewDataSource : NSObject <UICollectionViewDataSource>
 
 @property (nonatomic, weak) id<VStreamCollectionDataDelegate> delegate;
-@property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
-@property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
+@property (nonatomic, nullable, strong) VStream *stream;///< The stream object used to populate the collectionView
 @property (nonatomic) BOOL hasHeaderCell;///< If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 @property (nonatomic) BOOL suppressShelves; ///< When YES, shelves from the stream will not be displayed.
-@property (nonatomic, readonly) NSArray *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
-@property (nonatomic, strong) StreamOperation *streamLoadOperation;
+@property (nonatomic, nullable, strong) StreamOperation *streamLoadOperation;
 @property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, strong) NSOrderedSet *visibleStreamItems; ///< The array of stream items that are being displayed on screen.
 
 /**
  *  Initializes the data source with a default stream.
@@ -106,15 +108,10 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
  */
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem;
 
-/**
- *  Removes a certain stream item from the data source
- *
- *  @param streamItem Stream item to remove
- */
-- (void)removeStreamItem:(VStreamItem *)streamItem;
-
 - (NSUInteger)count; ///< Number of VStreamItems in self.stream
+
 - (NSInteger)sectionIndexForContent; ///< Returns either 0 or 1 depending on whether a header cell is present
-- (void)unloadStream;
 
 @end
+
+NS_ASSUME_NONNULL_END

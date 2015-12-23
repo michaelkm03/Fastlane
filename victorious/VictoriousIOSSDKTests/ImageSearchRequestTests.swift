@@ -32,7 +32,8 @@ class ImageSearchRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let searchImages = ImageSearchRequest(searchTerm: "surfer", pageNumber: 1, itemsPerPage: 100)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
+        let searchImages = ImageSearchRequest(searchTerm: "surfer", paginator: paginator)
         XCTAssertEqual(searchImages.urlRequest.URL?.absoluteString, "/api/image/search/surfer/1/100")
     }
 }

@@ -39,8 +39,32 @@ public extension VStreamCollectionViewDataSource {
                 } else {
                     success()
                 }
+                let existing = self.visibleStreamItems
+                let loaded = operation.results
+                self.visibleStreamItems = NSOrderedSet(array: existing + loaded)
             }
             self.streamLoadOperation = operation
+        }
+    }
+    
+    public func removeStreamItem(streamItem: VStreamItem) {
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.mainContext.v_performBlock() { context in
+            self.stream?.v_removeObject( streamItem, from: "streamItems" )
+            context.v_save()
+            
+            let updatedItems = self.visibleStreamItems.array.flatMap { $0 as? VStreamItem }.filter { $0 != streamItem }
+            self.visibleStreamItems = NSOrderedSet( array: updatedItems)
+        }
+    }
+    
+    public func unloadStream() {
+        let persistentStore: PersistentStoreType = MainPersistentStore()
+        persistentStore.mainContext.v_performBlock() { context in
+            self.stream?.v_removeAllObjects( from: "streamItems" )
+            context.v_save()
+            
+            self.visibleStreamItems = NSOrderedSet()
         }
     }
 }

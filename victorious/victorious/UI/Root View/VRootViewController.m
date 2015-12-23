@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
 @property (nonatomic, strong) VFollowingHelper *followHelper;

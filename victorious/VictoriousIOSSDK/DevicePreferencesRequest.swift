@@ -46,8 +46,6 @@ public struct NotificationPreference: OptionSetType, Hashable {
 
 public struct DevicePreferencesRequest: RequestType {
     
-    public let urlRequest: NSURLRequest
-    
     private let url = NSURL(string: "/api/device/preferences")!
     
     /// The value that this endpoint considers "true"
@@ -56,22 +54,30 @@ public struct DevicePreferencesRequest: RequestType {
     /// The value that this endpoint considers "false"
     private let falseValue = "0"
     
+    private let preferences: [NotificationPreference: Bool]?
+    
+    public var urlRequest: NSURLRequest {
+        let mutableURLRequest = NSMutableURLRequest(URL: url)
+        if let preferences = self.preferences {
+            var formpost: [String: String] = [:]
+            for preference in NotificationPreference.all {
+                if let shouldEnable = preferences[preference] {
+                    formpost[preference.stringValue] = shouldEnable ? trueValue : falseValue
+                }
+            }
+            mutableURLRequest.vsdk_addURLEncodedFormPost(formpost)
+        }
+        return mutableURLRequest
+    }
+    
     /// Use this initializer to retrieve the current list of preferences without making any changes
     public init() {
-        urlRequest = NSURLRequest(URL: url)
+        self.preferences = nil
     }
     
     /// Use this initializer to change the values of these preferences for the current user.
     public init(preferences: [NotificationPreference: Bool]) {
-        var formpost: [String: String] = [:]
-        for preference in NotificationPreference.all {
-            if let shouldEnable = preferences[preference] {
-                formpost[preference.stringValue] = shouldEnable ? trueValue : falseValue
-            }
-        }
-        let mutableURLRequest = NSMutableURLRequest(URL: url)
-        mutableURLRequest.vsdk_addURLEncodedFormPost(formpost)
-        urlRequest = mutableURLRequest
+        self.preferences = preferences
     }
     
     private func preferencesFromJSON(json: JSON) -> NotificationPreference {

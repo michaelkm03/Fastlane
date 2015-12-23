@@ -13,10 +13,7 @@ class LogoutOperation: RequestOperation {
     
     let request = LogoutRequest()
     
-    let userIdentifier: AnyObject
-    
-    init( userIdentifier: AnyObject ) {
-        self.userIdentifier = userIdentifier
+    override init() {
         super.init()
         self.qualityOfService = .UserInitiated
     }
@@ -26,22 +23,31 @@ class LogoutOperation: RequestOperation {
     }
     
     private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {
-        persistentStore.asyncFromBackground() { context in
-            guard let loggedOutUser: VUser = context.getObject(self.userIdentifier) else {
+        
+        guard let currentUserObjectID = VUser.currentUser()?.objectID else {
+            completion()
+            return
+        }
+        
+        VUser.clearCurrentUser()
+        
+        persistentStore.backgroundContext.v_performBlock() { context in
+            
+            guard let loggedOutUser: VUser = context.v_objectWithID( currentUserObjectID ) else {
                 fatalError()
             }
             
-            let conversations: [VConversation] = context.findObjects( [ "user" : loggedOutUser ])
+            let conversations: [VConversation] = context.v_findObjects( [ "user" : loggedOutUser ])
             for object in conversations {
-                context.destroy( object )
+                context.deleteObject( object )
             }
             
-            let pollResults: [VPollResult] = context.findObjects( [ "user" : loggedOutUser ])
+            let pollResults: [VPollResult] = context.v_findObjects( [ "user" : loggedOutUser ])
             for object in pollResults {
-                context.destroy( object )
+                context.deleteObject( object )
             }
             
-            context.saveChanges()
+            context.v_save()
             completion()
         }
     }

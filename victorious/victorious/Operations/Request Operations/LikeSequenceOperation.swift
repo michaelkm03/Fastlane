@@ -23,11 +23,13 @@ class LikeSequenceOperation: RequestOperation {
     override func main() {
         
         // Make data change optimistically before executing the request
-        persistentStore.asyncFromBackground() { context in
+        persistentStore.backgroundContext.v_performBlock() { context in
             let uniqueElements = [ "remoteId" : NSNumber( longLong: self.sequenceID) ]
-            let sequence: VSequence = context.findOrCreateObject( uniqueElements )
-            sequence.isLikedByMainUser = true
-            context.saveChanges()
+            let sequences: [VSequence] = context.v_findObjects( uniqueElements )
+            for sequence in sequences {
+                sequence.isLikedByMainUser = true
+            }
+            context.v_save()
         }
         
         // Now execute the request fire-and-forget style
