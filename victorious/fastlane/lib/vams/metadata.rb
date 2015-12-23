@@ -11,10 +11,9 @@ module VAMS
     attr_reader(*(CORE_ATTRIBUTES + LANGUAGE_SPECIFIC_ATTRIBUTES))
 
     def initialize(app)
-      @ios_app_categories = app.ios_app_categories
       @copyright          = app.copyright
-      @primary_category   = retrieve_category(categories: app.ios_app_categories, number: app.ios_primary_category)
-      @secondary_category = retrieve_category(categories: app.ios_app_categories, number: app.ios_secondary_category)
+      @primary_category   = retrieve_category(chosen_category: app.ios_primary_category)
+      @secondary_category = retrieve_category(chosen_category: app.ios_secondary_category)
       @description        = app.ios_description
       @keywords           = app.ios_keywords
       @privacy_url        = app.privacy_policy_url
@@ -37,15 +36,8 @@ module VAMS
 
     private
 
-    def retrieve_category(categories:, number:)
-      find_category_string(categories: categories, number: number)
-    end
-
-    def find_category_string(categories:, number:)
-      category_pair = categories.detect { |string, number_in_hash|
-        number_in_hash.to_i == number.to_i
-      }
-      category_pair.first if category_pair
+    def retrieve_category(chosen_category:)
+      chosen_category.keys.first.to_s
     end
 
     def save_text_into_file(text:, path:)

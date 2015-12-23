@@ -255,9 +255,13 @@
         "ios_ipa":null,
         "ios_keywords":null,
         "ios_launch_image":"http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/assets\/75\/ios\/LaunchImage@2x.png?a=12162015004427000000",
-        "ios_primary_category":null,
+        "ios_primary_category": {
+            "Apps.Food_Drink":7
+        },
         "ios_review_build_version":null,
-        "ios_secondary_category":null,
+        "ios_secondary_category": {
+            "Healthcare_Fitness":9
+        },
         "ios_testfairy_url":"http:\/\/my.testfairy.com\/download\/64VKGD1K70RJTC1DVM09M9T1QBDAEHZ0MS72ZAPK7579CGHQ\/getapp",
         "ios_testfairy_url_updated_at":null,
         "is_app_store_live":"no",
