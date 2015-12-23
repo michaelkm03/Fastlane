@@ -93,12 +93,9 @@ def fetchAppList(server):
                 state = ccodes.ColorCodes.OKGREEN + app_state.upper() + ccodes.ColorCodes.ENDC
             else:
                 state = ccodes.ColorCodes.OKBLUE + app_state.upper() + ccodes.ColorCodes.ENDC
-            print u'%s%s%s%s%s' % (
-                    ccodes.ColorCodes.HEADER + str(app_id).ljust(5) + ccodes.ColorCodes.ENDC,
-                    build_name.ljust(40),
-                    app_name.ljust(40),
-                    version.ljust(25),
-                    state)
+            print u' '.join((ccodes.ColorCodes.HEADER + app_id.ljust(5) + ccodes.ColorCodes.ENDC,
+                                             build_name.ljust(40), app_name.ljust(40), version.ljust(25),
+                                             state)).encode('utf-8').strip()
             app_count = app_count + 1
 
         print '-----------------------------------------------------------------------------------------------------------------------'
