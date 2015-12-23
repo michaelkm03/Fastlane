@@ -13,6 +13,7 @@
 #import "VMultipleContainer.h"
 #import "VNavigationViewFloatingController.h"
 #import "VNavigationControllerScrollDelegate.h"
+#import "VHasManagedDependencies.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
 /**
     The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.

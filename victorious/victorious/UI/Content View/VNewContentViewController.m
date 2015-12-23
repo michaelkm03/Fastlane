@@ -178,7 +178,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdatePoll
 {
-    if ( !self.viewModel.votingEnabled && !self.isBeingDismissed )
+    BOOL shouldShowPollResults = !self.viewModel.votingEnabled || [AgeGate isAnonymousUser];
+    if ( shouldShowPollResults && !self.isBeingDismissed )
     {
         [self.pollAnswerReceiver setAnswerAPercentage:self.viewModel.answerAPercentage animated:YES];
         [self.pollAnswerReceiver setAnswerBPercentage:self.viewModel.answerBPercentage animated:YES];
@@ -292,7 +293,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (self.viewModel.sequence.permissions.canComment )
+    if (self.viewModel.sequence.permissions.canComment)
     {
         NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
         VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
@@ -305,6 +306,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
+    }
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        self.textEntryView.hidden = YES;
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -558,6 +564,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:self.view.window];
     CGRect obscuredRectInOwnView = [self.view.window convertRect:obscuredRectInWindow toView:self.view];
     CGFloat bottomObscuredSize = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY(obscuredRectInOwnView);
+    if ([AgeGate isAnonymousUser])
+    {
+        bottomObscuredSize = 0.0f;
+    }
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
     [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
@@ -658,6 +668,27 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     VContentViewSection vSection = section;
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        switch (vSection)
+        {
+            case VContentViewSectionContent:
+                return 1;
+                break;
+            case VContentViewSectionPollQuestion:
+            case VContentViewSectionExperienceEnhancers:
+                return 0;
+                break;
+            case VContentViewSectionAllComments:
+                return (NSInteger)self.viewModel.sequence.comments.count;
+                break;
+            case VContentViewSectionCount:
+                return 0;
+                break;
+        }
+    }
+    
     switch (vSection)
     {
         case VContentViewSectionContent:

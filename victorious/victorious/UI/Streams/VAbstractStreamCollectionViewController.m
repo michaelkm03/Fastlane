@@ -7,23 +7,18 @@
 //
 
 #import "VAbstractStreamCollectionViewController.h"
-
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
-
 #import "MBProgressHUD.h"
-
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
 
 //View Controllers
+#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
-
-//Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VAbstractFilter.h"
-
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
@@ -42,6 +37,8 @@
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
+
+@property (nonatomic, strong) AppTimingStreamHelper *appTimingStreamHelper;
 
 @end
 
@@ -80,6 +77,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
+    
+    id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
+    self.appTimingStreamHelper = [[AppTimingStreamHelper alloc] initWithStreamId:self.streamDataSource.stream.streamId
+                                                                   timingTracker:timingTracker];
 }
 
 - (void)dealloc
@@ -296,7 +297,7 @@
         [self.refreshControl beginRefreshing];
     }
     
-    [self.streamDataSource loadPage:VPageTypeFirst completion:^void(NSError *_Nullable error)
+    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
@@ -309,9 +310,11 @@
          {
              completion();
          }
-         [self.refreshControl endRefreshing];
          
          [self didFinishLoadingPageType:pageType];
+         
+         [self.refreshControl endRefreshing];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
@@ -435,9 +438,11 @@
     
     self.shouldAnimateActivityViewFooter = YES;
     [self updateRowCount];
+    __weak typeof(self) welf = self;
     [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
      {
-         [self flashScrollIndicatorsWithDelay:0.05f];
+         [welf.collectionView flashScrollIndicators];
+         [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
      }];
 }
 

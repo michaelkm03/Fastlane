@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VTrackingDelegate.h"
 #import "VTrackingConstants.h"
+#import "VTracker.h"
 
 /**
  Receives and dispenses tracking events to any added services that conform to VTrackingDelegate.
@@ -30,7 +31,7 @@
     }
  }
  */
-@interface VTrackingManager : NSObject
+@interface VTrackingManager : NSObject <VTracker>
 
 + (VTrackingManager *)sharedInstance;
 

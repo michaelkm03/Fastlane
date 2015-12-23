@@ -79,7 +79,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             }
             
             if let dependencyManager = dependencyManager {
-                followControl.dependencyManager = dependencyManager
+                followControl?.dependencyManager = dependencyManager
                 
                 titleLabel.font = dependencyManager.titleFont
                 postsCountLabel.font = dependencyManager.postsCountFont
@@ -185,7 +185,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             if shelf.user.isFollowedByMainUser.boolValue {
                 controlState = .Followed
             }
-            followControl.setControlState(controlState, animated: true)
+            followControl?.setControlState(controlState, animated: true)
         }
     }
     

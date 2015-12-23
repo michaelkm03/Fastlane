@@ -81,6 +81,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     streamCollection.followControl.tintUnselectedImage = YES;
     streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];
     
+    if ([AgeGate isAnonymousUser])
+    {
+        [streamCollection.followControl removeFromSuperview];
+        streamCollection.followControl = nil;
+    }
+    
     return streamCollection;
 }
 

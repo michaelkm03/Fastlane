@@ -63,6 +63,7 @@
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.reuseIdentifiers = [NSMutableArray new];
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     // Initialize our focus helper
     self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];

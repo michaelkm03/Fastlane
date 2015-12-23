@@ -8,20 +8,13 @@
 
 import Foundation
 
-/**
-    A `UICollectionView` subclass to provide hooks into the `UIResponder
-    inputAccessoryView` infrastructure.
-*/
+/// A `UICollectionView` subclass to provide hooks into the `UIResponder
+/// inputAccessoryView` infrastructure.
 class VInputAccessoryCollectionView: UICollectionView {
     
-// MARK: Properties
-    
-    /**
-        The accessoryView to return as the collectionView's `inputAccessoryView`
-    */
+    /// The accessoryView to return as the collectionView's `inputAccessoryView`
     var accessoryView: UIView?
     
-// MARK: UIResponder Overrides
     override func canBecomeFirstResponder() -> Bool {
         return true;
     }

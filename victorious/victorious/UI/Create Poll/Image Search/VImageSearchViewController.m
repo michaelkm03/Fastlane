@@ -106,13 +106,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 {
     [super viewDidAppear:animated];
     
-    if ( ![self isReadyToSearch] )
-    {
-        [self.searchBar becomeFirstResponder];
-    }
-    
-    // Start searching immediately with empty string
-    [self performSearch];
+    [self.searchBar becomeFirstResponder];
 }
 
 - (BOOL)isReadyToSearch

@@ -33,6 +33,8 @@
 #import "VAsset+VAssetCache.h"
 #import "victorious-Swift.h"
 
+#import "victorious-Swift.h"
+
 @interface VNewContentViewController ()
 
 @property VSequenceActionController *sequenceActionController;
@@ -234,6 +236,11 @@
              }];
         };
         [actionItems addObject:flagItem];
+    }
+    
+    if ([AgeGate isAnonymousUser])
+    {
+        actionItems = [NSMutableArray arrayWithArray:[AgeGate filterMoreButtonItems:actionItems]];
     }
     
     [actionSheetViewController addActionItems:actionItems];

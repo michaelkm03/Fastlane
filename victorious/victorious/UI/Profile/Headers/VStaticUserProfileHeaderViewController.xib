@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VStaticUserProfileHeaderViewController">
@@ -66,7 +66,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="deh-3g-hYk" userLabel="Followers Count Label">
-                            <rect key="frame" x="0.0" y="13" width="235" height="21"/>
+                            <rect key="frame" x="0.0" y="13" width="240" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="ZoL-dD-71G"/>
@@ -75,7 +75,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mu0-ll-MRk">
-                            <rect key="frame" x="0.0" y="31" width="235" height="21"/>
+                            <rect key="frame" x="0.0" y="31" width="240" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="WKN-8A-mdi"/>
@@ -84,7 +84,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy6-BJ-bJh" userLabel="Following Count Label">
-                            <rect key="frame" x="365" y="13" width="235" height="21"/>
+                            <rect key="frame" x="360" y="13" width="240" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="D79-jU-URX"/>
@@ -93,7 +93,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjG-ri-5ts">
-                            <rect key="frame" x="365" y="31" width="235" height="21"/>
+                            <rect key="frame" x="360" y="31" width="240" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="zu0-pg-HBH"/>
@@ -114,15 +114,6 @@
                                 <action selector="pressedPrimaryAction:" destination="-1" eventType="touchUpInside" id="ZEa-cz-lfW"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ezs-M5-j6u" userLabel="Follower Button">
-                            <rect key="frame" x="0.0" y="0.0" width="240" height="60"/>
-                            <state key="normal">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="pressedFollowers:" destination="-1" eventType="touchUpInside" id="aSc-BE-3NT"/>
-                            </connections>
-                        </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-wg-hxI" userLabel="Following Button">
                             <rect key="frame" x="360" y="0.0" width="240" height="60"/>
                             <state key="normal">
@@ -132,22 +123,35 @@
                                 <action selector="pressedFollowing:" destination="-1" eventType="touchUpInside" id="Ieb-Fu-wIO"/>
                             </connections>
                         </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ezs-M5-j6u" userLabel="Follower Button">
+                            <rect key="frame" x="0.0" y="0.0" width="240" height="60"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="pressedFollowers:" destination="-1" eventType="touchUpInside" id="aSc-BE-3NT"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstItem="reE-xi-zdS" firstAttribute="leading" secondItem="Mu0-ll-MRk" secondAttribute="trailing" constant="5" id="1V9-q7-vCz"/>
                         <constraint firstItem="Ezs-M5-j6u" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="1kS-ML-EZ9"/>
-                        <constraint firstItem="vjG-ri-5ts" firstAttribute="leading" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="5" id="7Xa-6Q-H14"/>
+                        <constraint firstItem="vjG-ri-5ts" firstAttribute="leading" secondItem="PdG-wg-hxI" secondAttribute="leading" id="3ZR-cJ-xLH"/>
+                        <constraint firstItem="Mu0-ll-MRk" firstAttribute="trailing" secondItem="Ezs-M5-j6u" secondAttribute="trailing" id="48c-11-WYX"/>
+                        <constraint firstItem="deh-3g-hYk" firstAttribute="trailing" secondItem="Ezs-M5-j6u" secondAttribute="trailing" id="8TQ-zW-w8q"/>
                         <constraint firstAttribute="centerY" secondItem="reE-xi-zdS" secondAttribute="centerY" id="BYM-8l-fGx"/>
+                        <constraint firstItem="Ezs-M5-j6u" firstAttribute="width" secondItem="PdG-wg-hxI" secondAttribute="width" id="Dbc-jJ-dpW"/>
                         <constraint firstItem="u9S-Sj-DNg" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="Fur-fd-aK5"/>
                         <constraint firstAttribute="centerX" secondItem="reE-xi-zdS" secondAttribute="centerX" id="I8m-IB-ixb"/>
                         <constraint firstItem="vjG-ri-5ts" firstAttribute="top" secondItem="vy6-BJ-bJh" secondAttribute="bottom" constant="-3" id="LIC-Tq-aI1"/>
                         <constraint firstItem="Mu0-ll-MRk" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="MTx-ww-vBX"/>
+                        <constraint firstItem="vjG-ri-5ts" firstAttribute="trailing" secondItem="PdG-wg-hxI" secondAttribute="trailing" id="OWP-vH-mpj"/>
                         <constraint firstItem="vy6-BJ-bJh" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" constant="13" id="Rby-Hz-jLH"/>
                         <constraint firstItem="PdG-wg-hxI" firstAttribute="leading" secondItem="reE-xi-zdS" secondAttribute="trailing" id="Rhw-bJ-XS9"/>
                         <constraint firstAttribute="height" constant="60" id="TBs-fE-VoN"/>
                         <constraint firstItem="deh-3g-hYk" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="UBs-HK-P6L"/>
                         <constraint firstAttribute="trailing" secondItem="PdG-wg-hxI" secondAttribute="trailing" id="USd-y9-z9b"/>
+                        <constraint firstItem="vy6-BJ-bJh" firstAttribute="trailing" secondItem="PdG-wg-hxI" secondAttribute="trailing" id="VBY-xr-VOh"/>
                         <constraint firstAttribute="bottom" secondItem="PdG-wg-hxI" secondAttribute="bottom" id="aSo-fb-EJJ"/>
                         <constraint firstAttribute="trailing" secondItem="vjG-ri-5ts" secondAttribute="trailing" id="bZo-Kh-9mH"/>
                         <constraint firstAttribute="trailing" secondItem="u9S-Sj-DNg" secondAttribute="trailing" id="dOG-eX-hbb"/>
@@ -155,17 +159,23 @@
                         <constraint firstItem="deh-3g-hYk" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" constant="13" id="dZz-X0-JT1"/>
                         <constraint firstAttribute="trailing" secondItem="vy6-BJ-bJh" secondAttribute="trailing" id="eI3-d6-mWu"/>
                         <constraint firstItem="PdG-wg-hxI" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="eWt-La-mnL"/>
-                        <constraint firstItem="vy6-BJ-bJh" firstAttribute="leading" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="5" id="hJ2-sN-IMv"/>
                         <constraint firstItem="reE-xi-zdS" firstAttribute="leading" secondItem="Ezs-M5-j6u" secondAttribute="trailing" id="j9R-MV-YOE"/>
                         <constraint firstAttribute="bottom" secondItem="u9S-Sj-DNg" secondAttribute="bottom" id="k06-eD-6lL"/>
+                        <constraint firstItem="vy6-BJ-bJh" firstAttribute="leading" secondItem="PdG-wg-hxI" secondAttribute="leading" id="kuQ-Gf-0Ci"/>
                         <constraint firstItem="Mu0-ll-MRk" firstAttribute="top" secondItem="deh-3g-hYk" secondAttribute="bottom" constant="-3" id="lGe-aJ-yHf"/>
+                        <constraint firstItem="PdG-wg-hxI" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Ezs-M5-j6u" secondAttribute="trailing" constant="120" id="pyk-EO-ZbR"/>
                         <constraint firstItem="u9S-Sj-DNg" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="t6I-bE-X3g"/>
-                        <constraint firstItem="reE-xi-zdS" firstAttribute="leading" secondItem="deh-3g-hYk" secondAttribute="trailing" constant="5" id="vqq-x9-JfZ"/>
                         <constraint firstAttribute="bottom" secondItem="Ezs-M5-j6u" secondAttribute="bottom" id="wFV-iv-0Ua"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="OWP-vH-mpj"/>
+                            <exclude reference="VBY-xr-VOh"/>
+                        </mask>
+                    </variation>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
-                    <rect key="frame" x="20" y="201" width="560" height="142"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
+                    <rect key="frame" x="20" y="205" width="560" height="143"/>
                     <string key="text">Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>

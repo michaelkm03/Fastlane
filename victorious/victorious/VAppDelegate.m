@@ -63,6 +63,10 @@
         [[VRootViewController rootViewController] handleLocalNotification:localNotification];
     }
     
+    DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstance];
+    [appTimingTracker startEventWithType:VAppTimingEventTypeAppStart subtype:nil];
+    [appTimingTracker startEventWithType:VAppTimingEventTypeShowRegistration subtype:nil];
+    
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

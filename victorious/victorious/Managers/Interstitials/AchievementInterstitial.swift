@@ -12,8 +12,7 @@ import Foundation
 struct AchievementInterstitial: Interstitial {
     
     let remoteID: Int
-    let level: Int
-    let progressPercentage: Int
+    let fanLoyalty: FanLoyalty?
     let title: String
     let description: String
     let icons: [NSURL]
@@ -27,10 +26,9 @@ struct AchievementInterstitial: Interstitial {
     /// - parameter description: Description of the achievement
     /// - parameter icons: An array of icon URLs.
     /// If no URL is provided, no icon will be displayed
-    init(remoteID: Int, level: Int, progressPercentage: Int, title: String, description: String, icons: [NSURL]) {
+    init(remoteID: Int, fanLoyalty: FanLoyalty?, title: String, description: String, icons: [NSURL]) {
         self.remoteID = remoteID
-        self.level = level
-        self.progressPercentage = progressPercentage
+        self.fanLoyalty = fanLoyalty
         self.title = title
         self.description = description
         self.icons = icons
