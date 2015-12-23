@@ -205,6 +205,7 @@
 "Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
 "followers"             =   "Followers";
+"followersCount"        =   "%@ Followers"; // Where %@ is the quantity of followers, e.g. "10 Followers"
 "following"             =   "Following";
 "follow"                =   "Follow";
 

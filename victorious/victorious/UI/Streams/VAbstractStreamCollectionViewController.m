@@ -232,8 +232,8 @@
     _currentStream = currentStream;
     if ([self isViewLoaded])
     {
-        _streamDataSource.stream = currentStream;
-        _collectionView.dataSource = self.streamDataSource;
+        self.streamDataSource.stream = currentStream;
+        self.collectionView.dataSource = self.streamDataSource;
     }
 }
 

@@ -11,9 +11,15 @@ import VictoriousIOSSDK
 
 public extension VContentViewViewModel {
     
+    var sequenceID: Int64 {
+        guard let sequenceID = Int64(self.sequence.remoteId) else {
+            // Change Sequence's `sequenceID` property at network layer
+            fatalError( "Failed to cast a a sequence's `remoteId` property from `String` to `Int64`.  FIXME: Change Sequence's `sequenceID` property at network layer" )
+        }
+        return sequenceID
+    }
+    
     func loadNetworkData() {
-        
-        let sequenceID = Int64(self.sequence.remoteId)!
         
         if self.sequence.isPoll() {
             PollResultSummaryBySequenceOperation(sequenceID: sequenceID).queue() { error in
@@ -35,7 +41,7 @@ public extension VContentViewViewModel {
                     })
                 }
             )*/
-   
+            
         } else {
             SequenceFetchOperation( sequenceID: sequenceID ).queue() { error in
                 // This is here to update the vote counts
@@ -62,8 +68,8 @@ public extension VContentViewViewModel {
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
-                    let labelString = NSLocalizedString("followers", comment:"")
-                    self.followersText = "\(countString) \(labelString)"
+                    let labelFormat = NSLocalizedString("followersCount", comment:"")
+                    self.followersText = NSString(format: labelFormat, countString) as String
                 } else {
                     self.followersText = ""
                 }
@@ -71,14 +77,15 @@ public extension VContentViewViewModel {
         }
     }
     
+
     func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
         guard let nextSequenceId = self.endCardViewModel.nextSequenceId,
-            let nextSeuqneceIntegerId = Int64(nextSequenceId) else {
+            let nextSequenceIntegerID = Int64(nextSequenceId) else {
                 failure(nil)
                 return
         }
         
-        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSeuqneceIntegerId )
+        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSequenceIntegerID )
         sequenceFetchOperation.queue() { error in
             
             if let sequence = sequenceFetchOperation.loadedSequence where error == nil {
@@ -90,6 +97,7 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
+        
         let realtimeComment: CommentParameters.RealtimeComment?
         if let time = currentTime?.doubleValue where time > 0.0,
             let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
@@ -99,7 +107,7 @@ public extension VContentViewViewModel {
         }
         
         let commentParameters = CommentParameters(
-            sequenceID: Int64(sequence.remoteId)!,
+            sequenceID: self.sequenceID,
             text: text,
             replyToCommentID: nil,
             mediaURL: publishParameters.mediaToUploadURL,
@@ -114,13 +122,12 @@ public extension VContentViewViewModel {
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         
-        if let sequenceID = Int64(self.sequence.remoteId),
-            let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
-                let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
-                operation.queue() { error in
-                    let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
-                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
-                }
+        if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
+            let operation = PollVoteOperation(sequenceID: sequenceID, answerID: answer.remoteId.longLongValue)
+            operation.queue() { error in
+                let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
+                VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
+            }
         }
     }
     
