@@ -23,7 +23,7 @@ class StreamTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual( stream.remoteID, "13396" )
+        XCTAssertEqual( stream.streamID, "13396" )
         XCTAssertEqual( stream.type, StreamContentType.Shelf )
         XCTAssertEqual( stream.subtype, StreamContentType.Marquee )
         XCTAssertEqual( stream.streamContentType, StreamContentType.Sequence )
