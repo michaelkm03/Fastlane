@@ -57,7 +57,7 @@
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetOrientation" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="-1" syncable="YES"/>
+        <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -114,6 +114,18 @@
         <attribute name="layerName" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="FollowedHashtag" syncable="YES">
+        <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
+        <attribute name="userId" attributeType="Integer 64" syncable="YES"/>
+        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="followedHashtag" inverseEntity="Hashtag" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followedHashtags" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="FollowedUser" representedClassName=".VFollowedUser" syncable="YES">
+        <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
+        <attribute name="objectUserId" attributeType="Integer 64" syncable="YES"/>
+        <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
+        <relationship name="subjectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
         <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -129,7 +141,7 @@
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="hashtags" inverseEntity="User" syncable="YES"/>
+        <relationship name="followedHashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
     </entity>
     <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
         <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -261,7 +273,7 @@
         <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="endCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="parentSequence" inverseEntity="EndCard" syncable="YES"/>
-        <relationship name="likers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="likedSequences" inverseEntity="User" syncable="YES"/>
+        <relationship name="likers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="sequence" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="parentEndCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="nextSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
@@ -272,6 +284,12 @@
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="sequence" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
+    </entity>
+    <entity name="SequenceLiker" representedClassName=".VSequenceLiker" syncable="YES">
+        <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
+        <attribute name="sequenceId" attributeType="String" syncable="YES"/>
+        <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequenceContexts" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
         <attribute name="hasNewEditorializations" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -344,10 +362,9 @@
         <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
-        <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
-        <relationship name="hashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Hashtag" inverseName="user" inverseEntity="Hashtag" syncable="YES"/>
-        <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedHashtag" inverseName="user" inverseEntity="FollowedHashtag" syncable="YES"/>
+        <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedUser" inverseName="subjectUser" inverseEntity="FollowedUser" syncable="YES"/>
+        <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
         <relationship name="notificationSettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NotificationSettings" inverseName="owner" inverseEntity="NotificationSettings" syncable="YES"/>
@@ -355,6 +372,7 @@
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="sequenceContexts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserShelf" inverseName="user" inverseEntity="UserShelf" syncable="YES"/>
     </entity>
@@ -380,6 +398,8 @@
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="FollowedHashtag" positionX="225" positionY="-621" width="128" height="105"/>
+        <element name="FollowedUser" positionX="216" positionY="-630" width="128" height="105"/>
         <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="90"/>
@@ -396,6 +416,7 @@
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="SequenceLiker" positionX="198" positionY="-648" width="128" height="105"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="270"/>

@@ -9,21 +9,21 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class SequenceLikersOperation: RequestOperation, PaginatedOperation, ResultsOperation {
+final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceLikersRequest
-    var resultCount: Int?
     
-    private var sequenceID: Int64
+    private var sequenceID: String
     
     private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     required init( request: SequenceLikersRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
     }
     
-    convenience init( sequenceID: Int64 ) {
+    convenience init( sequenceID: String ) {
         self.init( request: SequenceLikersRequest(sequenceID: sequenceID) )
     }
     
@@ -33,48 +33,46 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation, Resul
     
     private func onError( error: NSError, completion:(()->()) ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            let results = loadPersistentData()
-            self.results = results
-            self.resultCount = results.count
-            
+            self.results = fetchResults()
         } else {
-            self.resultCount = 0
+            self.results = []
         }
         completion()
     }
     
     private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
-        
         persistentStore.backgroundContext.v_performBlock() { context in
-            
+            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+
             let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : String(self.sequenceID) ])
-            
             for user in users {
-                let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
-                let persistentUser: VUser = context.v_findOrCreateObject( uniqueElements )
+                let persistentUser: VUser = context.v_findOrCreateObject( ["remoteId" : NSNumber(longLong: user.userID)] )
                 persistentUser.populate(fromSourceModel: user)
-                persistentUser.v_addObject( sequence, to: "likedSequences" )
+
+                let uniqueElements = [ "sequence"  : sequence, "user" : persistentUser ]
+                let userSequenceContext: VSequenceLiker = context.v_findOrCreateObject( uniqueElements )
+                userSequenceContext.sequenceId = self.sequenceID
+                userSequenceContext.displayOrder = displayOrder++
+                sequence.v_addObject( userSequenceContext, to: "likers" )
             }
-            
             context.v_save()
             
-            dispatch_async( dispatch_get_main_queue() ) {
-                let results = self.loadPersistentData()
-                self.results = results
-                self.resultCount = results.count
-                completion()
-            }
+            self.results =  self.fetchResults()
+            completion()
         }
     }
     
-    private func loadPersistentData() -> [VUser] {
+    private func fetchResults() -> [VSequenceLiker] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "likedSequences" : [ "remoteId" : String(self.sequenceID) ] ]
-            let pagination = PersistentStorePagination(
-                itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber
+            let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                format: "sequenceId = %@",
+                argumentArray: [ self.sequenceID ],
+                paginator: self.request.paginator
             )
-            return context.v_findObjects( uniqueProps, pagination: pagination )
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest( fetchRequest )
         }
     }
 }

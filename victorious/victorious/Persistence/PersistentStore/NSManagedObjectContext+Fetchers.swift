@@ -60,7 +60,7 @@ extension NSManagedObjectContext {
         
         } else {
             let object = self.v_createObjectWithEntityName( entityName )
-            for (key, value) in queryDictionary {
+            for (key, value) in queryDictionary where !(value is [String : AnyObject]) {
                 object.setValue(value, forKey: key)
             }
             return object

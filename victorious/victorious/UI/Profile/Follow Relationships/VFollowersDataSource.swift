@@ -27,7 +27,7 @@ import Foundation
         
         self.loadPage( pageType,
             createOperation: {
-                return FollowersOfUserOperation(userID: userID)
+                return UsersFollowingUserOperation(userID: userID)
             },
             completion:{ (operation, error) in
                 completion?( error )

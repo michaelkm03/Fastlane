@@ -140,7 +140,10 @@
     NSString *identifier = [VUserCell suggestedReuseIdentifier];
     VUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
-    cell.user = self.usersDataSource.users[ indexPath.row ];
+    NSAssert( [self.usersDataSource.users[ indexPath.row ] conformsToProtocol:@protocol(VUserContext)],
+             @"A `VUsersViewController` is attemtping to display an object that does not conform to protocol `VUserContext" );
+    id<VUserContext> userContext = self.usersDataSource.users[ indexPath.row ];
+    cell.user = userContext.user;
     return cell;
 }
 
@@ -222,37 +225,7 @@
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    NSMutableArray *deletedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id obj in newValue )
-    {
-        NSInteger index = [newValue indexOfObject:obj];
-        if ( [oldValue containsObject:obj] || index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-    }
-    
-    for ( id obj in oldValue )
-    {
-        NSInteger index = [oldValue indexOfObject:obj];
-        if ( [newValue containsObject:obj] || index == NSNotFound )
-        {
-            continue;
-        }
-        [deletedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
-    }
-    
-    if ( newValue.count == 0 || oldValue.count == 0 )
-    {
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-    }
-    else
-    {
-        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
-        [self.collectionView deleteItemsAtIndexPaths:deletedIndexPaths];
-    }
+    [self.collectionView v_applyChangeInSection:0 from:oldValue to:newValue];
 }
 
 @end

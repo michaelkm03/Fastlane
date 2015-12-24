@@ -35,7 +35,7 @@
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
-@property (nonatomic, retain) NSOrderedSet *hashtags;
+@property (nonatomic, retain) NSOrderedSet *followedHashtags;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *notifications;
 @property (nonatomic, retain) NSSet *pollResults;

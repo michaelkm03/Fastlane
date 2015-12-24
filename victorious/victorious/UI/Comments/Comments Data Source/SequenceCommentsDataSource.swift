@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SequenceCommentsDataSource : CommentsDataSource {
+class SequenceCommentsDataSource : PaginatedDataSource {
     
     private let sequence: VSequence
     private let flaggedContent = VFlaggedContent()
@@ -38,35 +38,26 @@ class SequenceCommentsDataSource : CommentsDataSource {
         return 0
     }
     
-    func loadComments( pageType: VPageType, completion:((NSError?)->())?) {
-        guard let sequenceID = Int64(self.sequence.remoteId) where !isLoadingComments else {
-            return
-        }
-        
-        let operation: SequenceCommentsOperation?
-        switch pageType {
-        case .First:
-            operation =  SequenceCommentsOperation(sequenceID: sequenceID)
-        case .Next:
-            operation = loadCommentsOperation?.next()
-        case .Previous:
-            operation = loadCommentsOperation?.prev()
-        }
-        
-        if let currentOperation = operation {
-            loadCommentsOperation = currentOperation
-            isLoadingComments = true
-            currentOperation.queue() { error in
-                self.isLoadingComments = false
+    func loadComments( pageType: VPageType, completion:((NSError?)->())? = nil ) {
+        self.loadPage( pageType,
+            createOperation: {
+                return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
+            },
+            completion: { (operation, error) in
                 completion?(error)
             }
-        }
+        )
     }
     
-    func loadComments(commentID: NSNumber) {
-        guard let sequenceID = Int64(self.sequence.remoteId) else {
-            return
-        }
-        CommentFindOperation(sequenceID: sequenceID, commentID: commentID.longLongValue ).queue()
+    func loadComments( atPageForCommentID commentID: NSNumber, completion:((NSError?)->())? = nil ) {
+        // TODO:
+        /*self.loadPage( pageType,
+            createOperation: {
+                return CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.longLongValue )
+            },
+            completion: { (operation, error) in
+                completion?(error)
+            }
+        )*/
     }
 }

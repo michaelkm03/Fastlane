@@ -21,11 +21,10 @@ import Foundation
     }
     
     func loadUsersWithPageType( pageType: VPageType, completion: (NSError? -> ())? = nil ) {
-        let sequenceID = Int64(self.sequence.remoteId)!
         
         self.loadPage( pageType,
             createOperation: {
-                return SequenceLikersOperation(sequenceID: sequenceID)
+                return SequenceLikersOperation(sequenceID: self.sequence.remoteId)
             },
             completion:{ (operation, error) in
                 completion?( error )

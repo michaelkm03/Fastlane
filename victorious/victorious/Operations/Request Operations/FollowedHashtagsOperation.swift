@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     
     let request: HashtagSubscribedToListRequest
-    var resultCount: Int?
     
-    private(set) var loadedHashtags = [VHashtag]()
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     required init( request: HashtagSubscribedToListRequest ) {
         self.request = request
@@ -33,34 +33,57 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
-    private func onError( error: NSError, completion:(()->()) ) {
-        self.resultCount = 0
+    func onError( error: NSError, completion:(()->()) ) {
+        if error.code == RequestOperation.errorCodeNoNetworkConnection {
+            self.results = fetchResults()
+            
+        } else {
+            self.results = []
+        }
         completion()
     }
     
-    private func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
-        self.resultCount = hashtags.count
+    func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
+        guard let currentUser = VUser.currentUser() else {
+            completion()
+            return
+        }
+        
+        var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
         
         var hashtagObjectIDs = [NSManagedObjectID]()
-        
         persistentStore.backgroundContext.v_performBlock() { context in
             for hashtag in hashtags {
-                let uniqueElements = [ "remoteId" : NSNumber( longLong: hashtag.hashtagID ) ]
-                let hashtag: VHashtag = context.v_findOrCreateObject( uniqueElements )
+                let hashtag: VHashtag = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: hashtag.hashtagID ) ] )
                 hashtagObjectIDs.append( hashtag.objectID )
+                
+                let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( [ "user" : currentUser ] )
+                followedHashtag.userId = currentUser.remoteId
+                followedHashtag.displayOrder = displayOrder++
+                currentUser.v_addObject( followedHashtag, to: "hashtags" )
             }
             context.v_save()
             
-            self.persistentStore.mainContext.v_performBlock() { context in
-                var hashtags = [VHashtag]()
-                for objectID in hashtagObjectIDs {
-                    if let hashtag = context.objectWithID( objectID ) as? VHashtag {
-                        hashtags.append( hashtag )
-                    }
-                }
-                self.loadedHashtags = hashtags
-                completion()
-            }
+            self.results = self.fetchResults()
+            completion()
+        }
+    }
+    
+    func fetchResults() -> [VFollowedHashtag] {
+        guard let currentUser = VUser.currentUser() else {
+            return []
+        }
+        
+        return persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                format: "userId = %@",
+                argumentArray: [ currentUser.remoteId ],
+                paginator: self.request.paginator
+            )
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest( fetchRequest )
         }
     }
 }

@@ -195,7 +195,6 @@
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
 #import "VTwitterManager.h"
-#import "VUser+Fetcher.h"
 #import "VUser+RestKit.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"

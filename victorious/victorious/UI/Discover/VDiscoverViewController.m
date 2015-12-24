@@ -35,6 +35,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -91,12 +92,13 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                              selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
+    VUser *currentUser = [VUser currentUser];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:NSStringFromSelector(@selector(hashtags))
+    [self.KVOController observe:currentUser
+                        keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+    [self.KVOController observe:currentUser
                         keyPath:NSStringFromSelector(@selector(following))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedUsers)];
@@ -376,7 +378,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([self isUserSubscribedToHashtag:hashtag.tag])
+                if ([[VUser currentUser] isFollowingHashtagString:hashtag.tag] )
                 {
                     [self unsubscribeToTagAction:hashtag];
                 }
@@ -447,18 +449,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions
-
-- (BOOL)isUserSubscribedToHashtag:(NSString *)tag
-{
-    for ( VHashtag *hashtag in [[VObjectManager sharedManager] mainUser].hashtags )
-    {
-        if ( [hashtag.tag isEqualToString:tag] )
-        {
-            return YES;
-        }
-    }
-    return NO;
-}
 
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {

@@ -58,7 +58,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     [self configureTableView];
     
     [self.KVOController observe:[VUser currentUser]
-                        keyPath:NSStringFromSelector(@selector(hashtags))
+                        keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updateFollowingHashtags)];
 }
@@ -66,7 +66,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSArray *hashtags = [[[VUser currentUser] hashtags] copy];
+    NSArray *hashtags = [VUser currentUser].followedHashtags.array;
     [self updateUserHashtags:hashtags];
     [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
 }
@@ -92,7 +92,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)updateFollowingHashtags
 {
-    NSArray *hashtags = [[[VUser currentUser] hashtags] copy];
+    NSArray *hashtags = [VUser currentUser].followedHashtags.array;
     self.followingTagSet = [[NSMutableOrderedSet alloc] initWithArray:hashtags];
 }
 

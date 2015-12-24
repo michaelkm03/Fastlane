@@ -12,7 +12,7 @@
 #import "VHashtag+RestKit.h"
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
-#import "VUser+Fetcher.h"
+#import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
 
@@ -142,7 +142,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [mainUser addFollowedHashtag:hashtag];
+        //[mainUser addFollowedHashtag:hashtag];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
@@ -191,7 +191,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+        /*NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
 
         for (VHashtag *aTag in hashtagSet)
         {
@@ -202,7 +202,7 @@
                 [mainUser.managedObjectContext saveToPersistentStore:nil];
                 break;
             }
-        }
+        }*/
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowHashtag];
 
@@ -294,7 +294,7 @@
         
         if (hashtag[@"tag"] != nil)
         {
-            [mainUser addFollowedHashtag:hashtag[@"tag"]];
+            //[mainUser addFollowedHashtag:hashtag[@"tag"]];
         }
     }
 }
