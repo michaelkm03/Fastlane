@@ -13,8 +13,8 @@ enum TestPersitentStoreError: ErrorType {
 }
 
 class TestPersistentStore: NSObject, PersistentStoreType {
-    private let persistentStorePath       = "victoriOS-test.sqlite"
-    private let managedObjectModelName    = "victoriOS"
+    private let persistentStorePath = "victoriOS-test.sqlite"
+    private let managedObjectModelName = "victoriOS"
     private let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
     private let sharedCoreDataManager: CoreDataManager
     private let persistentStoreURL:    NSURL
@@ -47,7 +47,7 @@ class TestPersistentStore: NSObject, PersistentStoreType {
                 previousModelVersion: nil
             )
         } catch {
-            fatalError("Can't located the documents directory for testing")
+            fatalError("Can't locate the documents directory for testing")
         }
 
         super.init()
