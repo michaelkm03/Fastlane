@@ -11,9 +11,9 @@ import VictoriousIOSSDK
 class FollowUserOperation: RequestOperation {
 
     var onComplete: (() -> Void)?
-    private let request: FollowUserRequest
+    private let request:        FollowUserRequest
     private let userToFollowID: Int64
-    private let screenName: String
+    private let screenName:     String
 
     init(userToFollowID: Int64, screenName: String, persistentStore: PersistentStoreType = MainPersistentStore()) {
         self.userToFollowID = userToFollowID
