@@ -8,26 +8,31 @@
 
 import Foundation
 
+/// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
 @objc protocol PaginatedDataSourceDelegate {
+    
+    /// Called from a `PaginateddataSource` instance when new objects have been fetched and added to its backing store.
+    /// The `oldValue` and `newValue` parameters are designed to allow calling code to
+    /// precisely reload only what has changed instead of useing `reloadData()`.
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet)
 }
 
+/// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
+/// into an API that is more concise and reuable between any paginated view controllers that have
+/// a simple collection or table view layout.
 @objc class PaginatedDataSource: NSObject {
+    
+    private typealias Filter = AnyObject -> Bool
+    private var filters = [Filter]()
     
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
     
     private var _didReachEndOfResults: Bool = false
-    func didReachEndOfResults() -> Bool {
-        return _didReachEndOfResults
-    }
-    
-    var delegate: PaginatedDataSourceDelegate?
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
             if oldValue != visibleItems {
-                print( "didSet visibleItems :: from \(oldValue.count) to \(visibleItems.count)" )
                 self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
             }
         }
@@ -39,9 +44,13 @@ import Foundation
         }
     }
     
-    private typealias Filter = AnyObject -> Bool
+    // MARK: - Public API
     
-    private var filters = [Filter]()
+    func didReachEndOfResults() -> Bool {
+        return _didReachEndOfResults
+    }
+    
+    var delegate: PaginatedDataSourceDelegate?
     
     func canLoadPageType( pageType: VPageType ) -> Bool {
         switch pageType {
@@ -96,25 +105,24 @@ import Foundation
                 self.isLoading = true
                 operation.queue() { error in
                     self.isLoading = false
-                    
-                    if let operationWithResults = operation as? ResultsOperation,
-                        let results = operationWithResults.results {
-                            if operationWithResults.didResetResults {
-                                self.unfilteredItems = NSOrderedSet().v_orderedSet(results, pageType: pageType)
-                            }
-                            if results.count > 0 {
-                                self.unfilteredItems = self.unfilteredItems.v_orderedSet(results, pageType: pageType)
-                            }
-
-                    } else {
-                        print( "Paginated data source :: didReachEndOfResults" )
-                        self._didReachEndOfResults = true
-                    }
-                    
-                    print( "Paginated data source :: visible = \(self.visibleItems.print())\n" )
-                    
+                    self.onOperationComplete( typedOperation, pageType: pageType, error: error)
                     completion?( operation: typedOperation, error: error )
                 }
+        }
+    }
+    
+    // MARK: - Private helpers
+    
+    private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
+        if let results = operation.results {
+            if operation.didResetResults {
+                self.unfilteredItems = NSOrderedSet().v_orderedSet(results, pageType: pageType)
+            }
+            if results.count > 0 {
+                self.unfilteredItems = self.unfilteredItems.v_orderedSet(results, pageType: pageType)
+            } else {
+                self._didReachEndOfResults = true
+            }
         }
     }
     
@@ -128,17 +136,6 @@ import Foundation
 }
 
 private extension NSOrderedSet {
-    
-    func print() -> [String] {
-        return self.map {
-            if let object = $0 as? NSManagedObject,
-                let remoteId = object.valueForKey("remoteId") ,
-                let displayOrder = object.valueForKey("displayOrder") {
-                return "\(remoteId) (\(displayOrder))"
-            }
-            return ""
-        }
-    }
     
     func v_orderedSet( objects: [AnyObject], pageType: VPageType ) -> NSOrderedSet {
         switch pageType {
