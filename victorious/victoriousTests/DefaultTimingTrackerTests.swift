@@ -41,7 +41,8 @@ class DefaultTimingTrackerTests: XCTestCase {
             ]
         ]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: nil)
-        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance(dependencyManager: dependencyManager)
+        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance()
+        trackerWithDefaultURL.setDependencyManager( dependencyManager )
 		trackerWithDefaultURL.tracker = mockTracker
     }
     

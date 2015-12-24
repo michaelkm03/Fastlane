@@ -40,7 +40,7 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
         let moc = self.coreDataManager.mainContext
 
         let parent: PersistentEntity = {
-            let entity = NSEntityDescription.entityForName( PersistentEntity.dataStoreEntityName(), inManagedObjectContext: moc)
+            let entity = NSEntityDescription.entityForName( PersistentEntity.v_entityName(), inManagedObjectContext: moc)
             return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
         }()
         parent.newStringAttribute = "parent"
@@ -48,7 +48,7 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
         var children = [PersistentEntity]()
         for i in 0..<10 {
             let child: PersistentEntity = {
-                let entity = NSEntityDescription.entityForName( PersistentEntity.dataStoreEntityName(), inManagedObjectContext: moc)
+                let entity = NSEntityDescription.entityForName( PersistentEntity.v_entityName(), inManagedObjectContext: moc)
                 return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
             }()
             child.newStringAttribute = "child_\(i)"
@@ -57,17 +57,17 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
         
         XCTAssertEqual( parent.children.count, 0 )
         
-        parent.addObject( children[0], to: "children" )
+        parent.v_addObject( children[0], to: "children" )
         XCTAssertEqual( parent.children.count, 1 )
         XCTAssertEqual( parent.children.flatMap({ $0 as? PersistentEntity })[0], children[0] )
         XCTAssertNotNil( children[0].parent )
         XCTAssertEqual( children[0].parent, parent )
         
-        parent.removeObject( children[0], from: "children" )
+        parent.v_removeObject( children[0], from: "children" )
         XCTAssertNil( children[0].parent )
         XCTAssertEqual( parent.children.count, 0 )
         
-        parentv_addObjects( children, to: "children" )
+        parent.v_addObjects( children, to: "children" )
         XCTAssertEqual( parent.children.count, children.count )
         let persistentChidlren = parent.children.flatMap({ $0 as? PersistentEntity })
         XCTAssertEqual( persistentChidlren[0], children[0] )
@@ -77,7 +77,7 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
             XCTAssertEqual( children[i].parent, parent )
         }
         
-        parent.removeObjects( children, from: "children" )
+        parent.v_removeObjects( children, from: "children" )
         for i in 0..<children.count {
             XCTAssertNil( children[i].parent )
         }
@@ -90,18 +90,18 @@ class NSManagedObject_Extensions_Tests: XCTestCase {
         
         let moc = self.coreDataManager.mainContext
         let persistentEntity: PersistentEntity = {
-            let entity = NSEntityDescription.entityForName( PersistentEntity.dataStoreEntityName(), inManagedObjectContext: moc)
+            let entity = NSEntityDescription.entityForName( PersistentEntity.v_entityName(), inManagedObjectContext: moc)
             return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
         }()
         let transientEntity: TransientEntity = {
-            let entity = NSEntityDescription.entityForName( TransientEntity.dataStoreEntityName(), inManagedObjectContext: moc)
+            let entity = NSEntityDescription.entityForName( TransientEntity.v_entityName(), inManagedObjectContext: moc)
             return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! TransientEntity
         }()
         persistentEntity.transientEntity = transientEntity
         persistentEntity.newStringAttribute = text
         persistentEntity.dateAttribute = date
         
-        let shallowCopy = persistentEntity.shallowCopy() as! PersistentEntity
+        let shallowCopy = persistentEntity.v_shallowCopy() as! PersistentEntity
         XCTAssertNotEqual( shallowCopy, persistentEntity )
         XCTAssertNil( shallowCopy.transientEntity )
         XCTAssertEqual( shallowCopy.newStringAttribute, persistentEntity.newStringAttribute )

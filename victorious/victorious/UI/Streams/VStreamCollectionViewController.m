@@ -634,26 +634,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     // TODO: Create a halper with this stuff?  See VNewContentView & VUsersViewController
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id obj in newValue )
-    {
-        NSInteger index = [newValue indexOfObject:obj];
-        if ( [oldValue containsObject:obj] || index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:contentSection]];
-    }
-    
-    if ( newValue.count == 0 || oldValue.count == 0 )
-    {
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:contentSection]];
-        [self updateNoContentViewAnimated:YES];
-    }
-    else
-    {
-        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
-    }
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath

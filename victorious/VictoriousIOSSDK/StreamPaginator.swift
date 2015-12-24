@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct StreamPaginator: Paginator {
+public struct StreamPaginator: NumericPaginator {
     
     public enum Macro: String {
         case PageNumber     = "%%PAGE_NUM%%"

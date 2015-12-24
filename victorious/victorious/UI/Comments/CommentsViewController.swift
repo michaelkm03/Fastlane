@@ -489,20 +489,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             }
         }
         
-        var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue where !oldValue.containsObject( item ) {
-            let index = newValue.indexOfObject( item )
-            insertedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
-        }
-        
-        var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue where !newValue.containsObject( item ) {
-            let index = oldValue.indexOfObject( item )
-            deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
-        }
-        
-        collectionView.insertItemsAtIndexPaths( insertedIndexPaths )
-        collectionView.deleteItemsAtIndexPaths( deletedIndexPaths )
+        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue)
         
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()

@@ -394,10 +394,7 @@
 		6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6775E75A1C17C318007765B9 /* AgeGate.swift */; };
 		67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */; };
 		67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
-		67803E151C24D41F008CEC73 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73F1BF1211D00F5C87B /* CoreDataManagerTests.swift */; };
 		67803E161C24D430008CEC73 /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4BF6C1BFEA41300CD0338 /* MainPersistentStoreTests.swift */; };
-		67803E171C24D438008CEC73 /* PersistentStoreContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F73D1BF1211D00F5C87B /* PersistentStoreContextTests.swift */; };
-		67803E181C24D452008CEC73 /* NSManagedObject+Extensions_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69BC01C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift */; };
 		67803E191C24D47B008CEC73 /* VAlertControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */; };
 		67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
 		67803E1B1C24D549008CEC73 /* VInStreamCommentCellContentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */; };
@@ -570,7 +567,6 @@
 		A702C8571C1247C9001EE1D5 /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8561C1247C9001EE1D5 /* StreamOperation.swift */; };
 		A702C8591C125163001EE1D5 /* StreamItemParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C8581C125163001EE1D5 /* StreamItemParser.swift */; };
 		A702C85B1C126038001EE1D5 /* PaginatedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */; };
-		A702C85E1C127B80001EE1D5 /* QueueableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA511BFEBB8B00E8A26F /* QueueableTests.swift */; };
 		A70332641BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70332631BF5971500B36C76 /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		A7039CF91C24CA9B0023DE6F /* ConversationListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */; };
 		A7039CFA1C24CAB20023DE6F /* RepostSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */; };
@@ -586,7 +582,6 @@
 		A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */; };
 		A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */; };
 		A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */; };
-		A706FE281C23786900C2CBFF /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4BF6C1BFEA41300CD0338 /* MainPersistentStoreTests.swift */; };
 		A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */; };
 		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
@@ -943,7 +938,6 @@
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
 		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
-		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */; };
@@ -1007,7 +1001,6 @@
 		A7D69C161C0E49D300B462C3 /* PollResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C151C0E49D300B462C3 /* PollResult.swift */; };
 		A7D69C181C0E4A0C00B462C3 /* VPollResult+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */; };
 		A7D69C1C1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */; };
-		A7D69C241C0E51A000B462C3 /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
 		A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750119E335060072E87A /* VUploadTaskInformationTests.m */; };
 		A7D69C6A1C0E575B00B462C3 /* PollResultSummaryRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */; };
 		A7D69C6E1C0E68BF00B462C3 /* CommentAddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */; };
@@ -1044,7 +1037,6 @@
 		A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
 		A7DCA4D71C128A78004E35B4 /* VAlertControllerAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */; };
 		A7DCA4D81C128A78004E35B4 /* VAlertControllerBasicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F81A1FEDD100142F24 /* VAlertControllerBasicTests.m */; };
-		A7DCA4DB1C128A78004E35B4 /* VApplicationTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709640419F0738200CE6633 /* VApplicationTrackingTests.m */; };
 		A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */; };
 		A7DCA4DD1C128A78004E35B4 /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
 		A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */; };
@@ -1114,6 +1106,11 @@
 		A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */; };
 		A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB574C1AF8402A006AA1CF /* VURLDetector.m */; };
 		A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB57511AF9378C006AA1CF /* VTextPostCalloutHelper.m */; };
+		A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
+		A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */; };
+		A7EBF5171C2B77250080C7CF /* UnloadStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5161C2B77250080C7CF /* UnloadStreamOperation.swift */; };
+		A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */; };
+		A7EBF5231C2B8CA20080C7CF /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5221C2B8CA20080C7CF /* PaginatedDataSourceTests.swift */; };
 		A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1C51AD617480003E00A /* VImageToolController.m */; };
 		A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1C71AD617480003E00A /* VTextToolController.m */; };
 		A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1C91AD617480003E00A /* VToolController.m */; };
@@ -1707,6 +1704,13 @@
 			remoteInfo = VictoriousCommon;
 		};
 		A7DB4D301B7AB1D400199D10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
+		};
+		A7EBF5251C2B8CA20080C7CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
 			proxyType = 1;
@@ -2434,6 +2438,7 @@
 		676372EE1B8D633000A59705 /* ExploreMarqueeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeCollectionViewCell.swift; sourceTree = "<group>"; };
 		6775E75A1C17C318007765B9 /* AgeGate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGate.swift; sourceTree = "<group>"; };
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
+		6782EA781BF2AB19000C7C0D /* FollowingRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequest.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
 		6782EA801BF2C885000C7C0D /* LikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequestTests.swift; sourceTree = "<group>"; };
@@ -3461,6 +3466,12 @@
 		A7EB57501AF9378C006AA1CF /* VTextPostCalloutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostCalloutHelper.h; sourceTree = "<group>"; };
 		A7EB57511AF9378C006AA1CF /* VTextPostCalloutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostCalloutHelper.m; sourceTree = "<group>"; };
 		A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VURLSelectionResponder.h; sourceTree = "<group>"; };
+		A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+OrderedSetChanges.swift"; sourceTree = "<group>"; };
+		A7EBF5161C2B77250080C7CF /* UnloadStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnloadStreamOperation.swift; sourceTree = "<group>"; };
+		A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveStreamItemOperation.swift; sourceTree = "<group>"; };
+		A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousPersistenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7EBF5221C2B8CA20080C7CF /* PaginatedDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedDataSourceTests.swift; sourceTree = "<group>"; };
+		A7EBF5241C2B8CA20080C7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7ECC1C41AD617480003E00A /* VImageToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageToolController.h; sourceTree = "<group>"; };
 		A7ECC1C51AD617480003E00A /* VImageToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageToolController.m; sourceTree = "<group>"; };
 		A7ECC1C61AD617480003E00A /* VTextToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextToolController.h; sourceTree = "<group>"; };
@@ -4482,6 +4493,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7EBF51D1C2B8CA20080C7CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE171D731868BE64004E5202 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -4739,6 +4757,7 @@
 				A7B5144A1A4517A80074282F /* SwipeCell */,
 				A7738AFE1A4A35DF008EA973 /* Transitions */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
+				A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
 				B0D3D24D1B60527100871E55 /* VBadgeResponder.h */,
@@ -7056,6 +7075,7 @@
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
+				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
@@ -7064,26 +7084,28 @@
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */,
+				A710F3F81C273F690013D8B8 /* PaginatedDataSource.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
+				A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */,
+				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
 				A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
-				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
-				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
-				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
-				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
-				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
-				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
-				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
-				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A702C8561C1247C9001EE1D5 /* StreamOperation.swift */,
 				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
 				7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */,
+				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
+				A7EBF5161C2B77250080C7CF /* UnloadStreamOperation.swift */,
+				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
+				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
+				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
+				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
+				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -7664,6 +7686,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
+			isa = PBXGroup;
+			children = (
+				A7EBF5221C2B8CA20080C7CF /* PaginatedDataSourceTests.swift */,
+				A7EBF5241C2B8CA20080C7CF /* Info.plist */,
+			);
+			path = victoriousPersistenceTests;
+			sourceTree = "<group>";
+		};
 		A7ECC1C31AD617480003E00A /* Tool Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -7799,6 +7830,7 @@
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				0392694D1B5C720400FCD0AA /* downloadtemplate */,
 				03C1856219B42C9100E27D05 /* Fonts */,
+				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D781868BE64004E5202 /* Frameworks */,
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
@@ -7826,6 +7858,7 @@
 				03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */,
 				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
 				EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */,
+				A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9451,6 +9484,24 @@
 			productReference = A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7EBF5271C2B8CA20080C7CF /* Build configuration list for PBXNativeTarget "victoriousPersistenceTests" */;
+			buildPhases = (
+				A7EBF51C1C2B8CA20080C7CF /* Sources */,
+				A7EBF51D1C2B8CA20080C7CF /* Frameworks */,
+				A7EBF51E1C2B8CA20080C7CF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A7EBF5261C2B8CA20080C7CF /* PBXTargetDependency */,
+			);
+			name = victoriousPersistenceTests;
+			productName = victoriousPersistenceTests;
+			productReference = A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BE171D751868BE64004E5202 /* victorious */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE171DA81868BE64004E5202 /* Build configuration list for PBXNativeTarget "victorious" */;
@@ -9559,6 +9610,10 @@
 						CreatedOnToolsVersion = 6.4;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
+					A7EBF51F1C2B8CA20080C7CF = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = BE171D751868BE64004E5202;
+					};
 					BE171D751868BE64004E5202 = {
 						DevelopmentTeam = ABHRJGEGKA;
 						SystemCapabilities = {
@@ -9608,6 +9663,7 @@
 				03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
 				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				EBEA19B51BC4A76C00878B18 /* victoriousUITests */,
+				A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -9718,6 +9774,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A7DB4D281B7AB1D300199D10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7EBF51E1C2B8CA20080C7CF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -10632,6 +10695,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7EBF51C1C2B8CA20080C7CF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7EBF5231C2B8CA20080C7CF /* PaginatedDataSourceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE171D721868BE64004E5202 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -10647,6 +10718,7 @@
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
 				A721E9191B572454000B7901 /* VNotificationSettings+Fetcher.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
+				A7EBF5171C2B77250080C7CF /* UnloadStreamOperation.swift in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
 				C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */,
@@ -10823,6 +10895,7 @@
 				A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */,
+				A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
@@ -11173,6 +11246,7 @@
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,
+				A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */,
 				F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A7F8437E1BFE6B72004C3D55 /* VFlaggedContent.m in Sources */,
@@ -11604,10 +11678,7 @@
 				67803E1C1C24D549008CEC73 /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
 				67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */,
 				67803E191C24D47B008CEC73 /* VAlertControllerTests.m in Sources */,
-				67803E181C24D452008CEC73 /* NSManagedObject+Extensions_Tests.swift in Sources */,
-				67803E171C24D438008CEC73 /* PersistentStoreContextTests.swift in Sources */,
 				67803E161C24D430008CEC73 /* MainPersistentStoreTests.swift in Sources */,
-				67803E151C24D41F008CEC73 /* CoreDataManagerTests.swift in Sources */,
 				67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */,
 				67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */,
 				A7DCA4EE1C128A78004E35B4 /* VHashTagTextViewTests.m in Sources */,
@@ -11629,8 +11700,6 @@
 				A7DCA4EA1C128A78004E35B4 /* VFirstTimeInstallHelperTests.m in Sources */,
 				A7DCA5181C128A78004E35B4 /* VUser+FetcherTests.m in Sources */,
 				A7DCA5151C128A78004E35B4 /* VVoteSettingManagerTests.m in Sources */,
-				A7DCA4DB1C128A78004E35B4 /* VApplicationTrackingTests.m in Sources */,
-				A706FE281C23786900C2CBFF /* MainPersistentStoreTests.swift in Sources */,
 				A76AEA551BFED31B00E8A26F /* AVAsset+OrientationTests.m in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
@@ -11640,7 +11709,6 @@
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7D0ADBC1C0D45470018C63E /* VUserTaggingTextStorageTests.m in Sources */,
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
-				A7D69C241C0E51A000B462C3 /* VAppInfoTests.m in Sources */,
 				A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
 				A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */,
@@ -11648,6 +11716,7 @@
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
 				A7DCA5071C128A78004E35B4 /* VTagSensitiveTextViewTests.m in Sources */,
+				A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */,
 				A7DCA4D51C128A78004E35B4 /* VAbstractMediaLinkViewControllerTests.m in Sources */,
 				A7DCA4EF1C128A78004E35B4 /* VImageAssetFinderTests.m in Sources */,
 				A7DCA4F71C128A78004E35B4 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,
@@ -11670,14 +11739,11 @@
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
 				A7D0AD301C0D453D0018C63E /* NSDate+timeSinceTests.m in Sources */,
 				A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */,
-				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
 				A7DCA4E51C128A78004E35B4 /* VDiscoverViewControllerTests.m in Sources */,
 				A7D0AD311C0D453D0018C63E /* NSString+UnicodeTests.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
-				A702C85E1C127B80001EE1D5 /* QueueableTests.swift in Sources */,
 				A7DCA4D81C128A78004E35B4 /* VAlertControllerBasicTests.m in Sources */,
 				03949CEA1C1A0C490092B366 /* FanLoyaltyTests.swift in Sources */,
-				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */,
@@ -11756,6 +11822,11 @@
 			isa = PBXTargetDependency;
 			target = BE171D751868BE64004E5202 /* victorious */;
 			targetProxy = A7DB4D301B7AB1D400199D10 /* PBXContainerItemProxy */;
+		};
+		A7EBF5261C2B8CA20080C7CF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = A7EBF5251C2B8CA20080C7CF /* PBXContainerItemProxy */;
 		};
 		BE171D9D1868BE64004E5202 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -13420,6 +13491,100 @@
 			};
 			name = Release;
 		};
+		A7EBF5281C2B8CA20080C7CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = victoriousPersistenceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Debug;
+		};
+		A7EBF5291C2B8CA20080C7CF /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = victoriousPersistenceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = QA;
+		};
+		A7EBF52A1C2B8CA20080C7CF /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = victoriousPersistenceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Staging;
+		};
+		A7EBF52B1C2B8CA20080C7CF /* Stable */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = victoriousPersistenceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Stable;
+		};
+		A7EBF52C1C2B8CA20080C7CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = victoriousPersistenceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Release;
+		};
 		BE171DA61868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -14001,6 +14166,17 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A7EBF5271C2B8CA20080C7CF /* Build configuration list for PBXNativeTarget "victoriousPersistenceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7EBF5281C2B8CA20080C7CF /* Debug */,
+				A7EBF5291C2B8CA20080C7CF /* QA */,
+				A7EBF52A1C2B8CA20080C7CF /* Staging */,
+				A7EBF52B1C2B8CA20080C7CF /* Stable */,
+				A7EBF52C1C2B8CA20080C7CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		BE171D711868BE64004E5202 /* Build configuration list for PBXProject "victorious" */ = {
 			isa = XCConfigurationList;

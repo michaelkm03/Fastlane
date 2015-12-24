@@ -33,6 +33,10 @@ class RequestOperation: NSOperation, Queuable {
     
     private(set) var error: NSError?
     
+    var hasNetworkConnection: Bool {
+        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
+    }
+    
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
@@ -43,8 +47,7 @@ class RequestOperation: NSOperation, Queuable {
             return AuthenticationContext(currentUser: VUser.currentUser())
         }
         
-        let networkStatus = VReachability.reachabilityForInternetConnection().currentReachabilityStatus()
-        if networkStatus == .NotReachable {
+        if !hasNetworkConnection {
             let error = NSError(
                 domain: RequestOperation.errorDomain,
                 code: RequestOperation.errorCodeNoNetworkConnection,

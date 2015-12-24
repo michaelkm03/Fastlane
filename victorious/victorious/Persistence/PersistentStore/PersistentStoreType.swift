@@ -22,4 +22,8 @@ import Foundation
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
     var backgroundContext: NSManagedObjectContext { get }
+    
+    /// Deletes the file on disk at the persistent store URL
+    /// DANGER: This will irrevocably delete all local data!
+    func deletePersistentStore()
 }

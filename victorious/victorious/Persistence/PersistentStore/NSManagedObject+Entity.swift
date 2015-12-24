@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension NSManagedObject {
     
@@ -28,5 +29,21 @@ extension NSManagedObject {
             fatalError( "Attempt to access an `NSManagedObjectContext` instance that is `nil` on the receiver \(self.dynamicType).  This managed object has probably been deleted from the managed object context somewhere else in the application." )
         }
         return moc
+    }
+}
+
+extension NSPredicate {
+    
+    convenience init(format: String, argumentArray: [AnyObject]?, paginator: NumericPaginator ) {
+        let start = (paginator.pageNumber - 1) * paginator.itemsPerPage
+        let end = start + paginator.itemsPerPage
+        let connector = format.isEmpty ? "" : " && "
+        let paginationFormat = connector + "displayOrder >= %@ && displayOrder < %@"
+        let paginationArguments: [AnyObject] = [start, end]
+        self.init(format: format + paginationFormat, argumentArray: (argumentArray ?? []) + paginationArguments)
+    }
+    
+    convenience init(paginator: NumericPaginator ) {
+        self.init(format: "", argumentArray: [], paginator: paginator)
     }
 }
