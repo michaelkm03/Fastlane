@@ -10,9 +10,11 @@
 
 class TestPersistentStore: NSObject, PersistentStoreType {
 
-    let persistentStorePath       = "victoriOS-test.sqlite"
-    let managedObjectModelName    = "victoriOS"
-    let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
+    private let persistentStorePath       = "victoriOS-test.sqlite"
+    private let managedObjectModelName    = "victoriOS"
+    private let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
+    private let sharedCoreDataManager: CoreDataManager
+    private let persistentStoreURL:    NSURL
 
     var mainContext: NSManagedObjectContext {
         return sharedCoreDataManager.mainContext
@@ -22,14 +24,12 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         return sharedCoreDataManager.backgroundContext
     }
 
-    private let sharedCoreDataManager: CoreDataManager
-
     override init() {
         do {
             let docsDirectoryURL = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-            let persistentStoreURL = docsDirectoryURL.URLByAppendingPathComponent(persistentStorePath)
-            let momFileName        = "\(managedObjectModelName).momd" as NSString
-            let momFilePath        = momFileName.stringByAppendingPathComponent(managedObjectModelVersion)
+            persistentStoreURL = docsDirectoryURL.URLByAppendingPathComponent(persistentStorePath)
+            let momFileName    = "\(managedObjectModelName).momd" as NSString
+            let momFilePath    = momFileName.stringByAppendingPathComponent(managedObjectModelVersion)
 
             guard let momURLInBundle = NSBundle(forClass: self.dynamicType).URLForResource(momFilePath, withExtension: "mom") else {
                 fatalError("Cannot find managed object model (.mom) for URL in bundle: \(momFilePath)")
@@ -48,5 +48,13 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         }
 
         super.init()
+    }
+
+    func clear() {
+        do {
+            try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
+        } catch {
+            fatalError("Failed to clear the test persitent store at URL: \(persistentStoreURL)")
+        }
     }
 }

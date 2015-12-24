@@ -26,11 +26,17 @@ class FollowUserOperation: RequestOperation {
         persistentStore.backgroundContext.v_performBlock { context in
             let userToFollowIDNumber = NSNumber(longLong: self.userToFollowID)
             let user: VUser = context.v_findOrCreateObject(["remoteId": userToFollowIDNumber])
-            if user.status == nil {
-                user.status = "stored"
-            }
+            user.numberOfFollowers = self.initializeOrIncrease(number: user.numberOfFollowers)
             context.v_save()
             self.onComplete?()
+        }
+    }
+
+    private func initializeOrIncrease(number number: NSNumber?) -> NSNumber {
+        if let number = number {
+            return NSNumber(int: number.integerValue + 1)
+        } else {
+            return NSNumber(int: 1)
         }
     }
 }
