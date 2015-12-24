@@ -17,8 +17,8 @@ class FollowUserOperation: RequestOperation {
 
     init(userToFollowID: Int64, screenName: String, persistentStore: PersistentStoreType = MainPersistentStore()) {
         self.userToFollowID = userToFollowID
-        self.screenName     = screenName
-        self.request        = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
+        self.screenName = screenName
+        self.request = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
         super.init(persistentStore: persistentStore)
     }
 
