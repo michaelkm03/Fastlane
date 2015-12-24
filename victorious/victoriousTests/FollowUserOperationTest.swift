@@ -65,10 +65,9 @@ class FollowUserOperationTest: XCTestCase {
 
     private func queueExpectedOperation(operation operation: FollowUserOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
-        operation.onDataChangeCompletetionBlock = {
+        operation.queue() { error in
             expectation.fulfill()
         }
-        operation.queue()
         return expectation
     }
 }
