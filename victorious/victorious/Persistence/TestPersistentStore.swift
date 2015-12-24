@@ -54,10 +54,13 @@ class TestPersistentStore: NSObject, PersistentStoreType {
     }
 
     func clear() throws {
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
-        } catch {
-            throw TestPersitentStoreError.ClearFailed(storeURL: persistentStoreURL)
+        let fileManager = NSFileManager.defaultManager()
+        if let path = persistentStoreURL.path where fileManager.fileExistsAtPath(path) {
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
+            } catch {
+                throw TestPersitentStoreError.ClearFailed(storeURL: persistentStoreURL)
+            }
         }
     }
 }

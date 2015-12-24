@@ -9,7 +9,6 @@
 import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
-
     var onComplete: (() -> Void)?
     private let request:        FollowUserRequest
     private let userToFollowID: Int64
