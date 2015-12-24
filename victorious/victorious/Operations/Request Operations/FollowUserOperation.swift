@@ -9,7 +9,7 @@
 import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
-    var onComplete: (() -> Void)?
+    var onDataChangeCompletetionBlock: (() -> Void)?
     private let request:        FollowUserRequest
     private let userToFollowID: Int64
     private let screenName:     String
@@ -28,7 +28,7 @@ class FollowUserOperation: RequestOperation {
                 user.numberOfFollowers = self.initializeOrIncrease(number: user.numberOfFollowers)
                 context.v_save()
             }
-            self.onComplete?()
+            self.onDataChangeCompletetionBlock?()
         }
     }
 
