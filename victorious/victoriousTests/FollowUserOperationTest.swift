@@ -20,10 +20,10 @@ class FollowUserOperationTest: XCTestCase {
         let operation      = FollowUserOperation(userToFollowID: userID, screenName: screenName, persistentStore: testPersistentStore)
         let expectation    = expectationWithDescription("operation completed")
 
-        testPersistentStore.mainContext.v_createObjectAndSave { user in
+        let createdUser: VUser = testPersistentStore.mainContext.v_createObjectAndSave { user in
             user.remoteId = persitedUserID
             user.status   = "stored"
-        } as VUser
+        }
 
         operation.onComplete = {
             expectation.fulfill()
@@ -31,10 +31,11 @@ class FollowUserOperationTest: XCTestCase {
         operation.queue()
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
-            let createdUsers: [VUser] = self.testPersistentStore.mainContext.v_findObjects(["remoteId" : persitedUserID])
-            let userCreated = createdUsers[0]
-            XCTAssertEqual(1, createdUsers.count)
-            XCTAssertEqual(1, userCreated.numberOfFollowers)
+            guard let updatedUser: VUser = self.testPersistentStore.mainContext.objectWithID(createdUser.objectID) as? VUser else {
+                XCTFail("No user found after following a user")
+                return
+            }
+            XCTAssertEqual(1, updatedUser.numberOfFollowers)
         }
     }
 
