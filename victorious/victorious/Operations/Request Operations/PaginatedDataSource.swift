@@ -116,10 +116,10 @@ import Foundation
     private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
         if let results = operation.results {
             if operation.didResetResults {
-                self.unfilteredItems = NSOrderedSet().v_orderedSet(results, pageType: pageType)
+                self.unfilteredItems = NSOrderedSet().v_orderedSet( byAddingObjects: results, forPageType: pageType)
             }
             if results.count > 0 {
-                self.unfilteredItems = self.unfilteredItems.v_orderedSet(results, pageType: pageType)
+                self.unfilteredItems = self.unfilteredItems.v_orderedSet( byAddingObjects: results, forPageType: pageType)
             } else {
                 self._didReachEndOfResults = true
             }
@@ -137,7 +137,7 @@ import Foundation
 
 private extension NSOrderedSet {
     
-    func v_orderedSet( objects: [AnyObject], pageType: VPageType ) -> NSOrderedSet {
+    func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
         switch pageType {
             
         case .First: //< reset
