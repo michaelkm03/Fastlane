@@ -8,8 +8,11 @@
 
 @testable import victorious
 
-class TestPersistentStore: NSObject, PersistentStoreType {
+enum TestPersitentStoreError: ErrorType {
+    case ClearFailed(storeURL: NSURL)
+}
 
+class TestPersistentStore: NSObject, PersistentStoreType {
     private let persistentStorePath       = "victoriOS-test.sqlite"
     private let managedObjectModelName    = "victoriOS"
     private let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
@@ -50,11 +53,11 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         super.init()
     }
 
-    func clear() {
+    func clear() throws {
         do {
             try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
         } catch {
-            fatalError("Failed to clear the test persitent store at URL: \(persistentStoreURL)")
+            throw TestPersitentStoreError.ClearFailed(storeURL: persistentStoreURL)
         }
     }
 }
