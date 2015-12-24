@@ -25,9 +25,10 @@ class FollowUserOperation: RequestOperation {
     override func main() {
         persistentStore.backgroundContext.v_performBlock { context in
             let userToFollowIDNumber = NSNumber(longLong: self.userToFollowID)
-            let user: VUser          = context.v_findOrCreateObject(["remoteId" : userToFollowIDNumber])
-            user.numberOfFollowers   = self.initializeOrIncrease(number: user.numberOfFollowers)
-            context.v_save()
+            if let user: VUser = context.v_findObject(["remoteId" : userToFollowIDNumber]) {
+                user.numberOfFollowers = self.initializeOrIncrease(number: user.numberOfFollowers)
+                context.v_save()
+            }
             self.onComplete?()
         }
     }
