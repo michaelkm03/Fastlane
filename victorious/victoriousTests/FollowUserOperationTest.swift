@@ -10,8 +10,8 @@ import XCTest
 @testable import victorious
 
 class FollowUserOperationTest: XCTestCase {
-    let testPersistentStore  = TestPersistentStore()
-    let expectationThreshold = Double(10)
+    let testPersistentStore = TestPersistentStore()
+    let expectationThreshold: Double = 10
 
     func testFollowingAnExistentUser() {
         let userID         = Int64(1)
