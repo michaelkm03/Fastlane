@@ -11,6 +11,7 @@ import VictoriousIOSSDK
 
 protocol ResultsOperation : class {
     var results: [AnyObject]? { get }
+    var didResetResults: Bool { get }
 }
 
 /// Defines an object that can return copies of itself configured for loading next

@@ -26,7 +26,10 @@ import Foundation
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
-            self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
+            if oldValue != visibleItems {
+                print( "didSet visibleItems :: from \(oldValue.count) to \(visibleItems.count)" )
+                self.delegate?.paginatedDataSource( self, didUpdateVisibleItemsFrom: oldValue, to: visibleItems )
+            }
         }
     }
     
@@ -66,18 +69,22 @@ import Foundation
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading else {
+        guard !isLoading && self.canLoadPageType(pageType) else {
             return
         }
         
         let operationToQueue: RequestOperation?
         switch pageType {
+            
         case .First:
             operationToQueue = createOperation() as? RequestOperation
+            
         case .Next where !_didReachEndOfResults:
             operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
+            
         case .Previous:
             operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
+            
         default:
             operationToQueue = nil
         }
@@ -90,11 +97,21 @@ import Foundation
                 operation.queue() { error in
                     self.isLoading = false
                     
-                    if let results = (operation as? ResultsOperation)?.results where results.count > 0 {
-                        self.unfilteredItems = self.unfilteredItems.v_orderedSet( results, pageType: pageType)
+                    if let operationWithResults = operation as? ResultsOperation,
+                        let results = operationWithResults.results {
+                            if operationWithResults.didResetResults {
+                                self.unfilteredItems = NSOrderedSet().v_orderedSet(results, pageType: pageType)
+                            }
+                            if results.count > 0 {
+                                self.unfilteredItems = self.unfilteredItems.v_orderedSet(results, pageType: pageType)
+                            }
+
                     } else {
+                        print( "Paginated data source :: didReachEndOfResults" )
                         self._didReachEndOfResults = true
                     }
+                    
+                    print( "Paginated data source :: visible = \(self.visibleItems.print())\n" )
                     
                     completion?( operation: typedOperation, error: error )
                 }
@@ -111,6 +128,17 @@ import Foundation
 }
 
 private extension NSOrderedSet {
+    
+    func print() -> [String] {
+        return self.map {
+            if let object = $0 as? NSManagedObject,
+                let remoteId = object.valueForKey("remoteId") ,
+                let displayOrder = object.valueForKey("displayOrder") {
+                return "\(remoteId) (\(displayOrder))"
+            }
+            return ""
+        }
+    }
     
     func v_orderedSet( objects: [AnyObject], pageType: VPageType ) -> NSOrderedSet {
         switch pageType {

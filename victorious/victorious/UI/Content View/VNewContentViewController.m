@@ -1656,6 +1656,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     
+    // [self.contentCollectionView v_applyChangeInSection:VContentViewSectionAllComments from:oldValue to:newValue];
+    
     NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
     NSMutableArray *deletedIndexPaths = [[NSMutableArray alloc] init];
     for ( id item in newValue )

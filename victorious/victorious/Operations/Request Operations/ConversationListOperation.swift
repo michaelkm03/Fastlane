@@ -13,6 +13,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     let request: ConversationListRequest
     private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     required init( request: ConversationListRequest ) {
         self.request = request
@@ -54,12 +55,11 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     func fetchResults() -> [VConversation] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let pagination = PersistentStorePagination(
-                itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber,
-                sortDescriptors: [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            )
-            return context.v_findAllObjects( pagination: pagination )
+            let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(paginator: self.request.paginator)
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest( fetchRequest )
         }
     }
 }
