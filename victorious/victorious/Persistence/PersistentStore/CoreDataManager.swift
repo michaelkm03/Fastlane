@@ -44,10 +44,6 @@ class CoreDataManager: NSObject {
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
         
-        /*do {
-            try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL )
-        } catch {}*/
-        
         print( "Initializing persistent store at URL: \(persistentStoreURL)" )
         
         self.persistentStoreURL = persistentStoreURL
@@ -87,14 +83,6 @@ class CoreDataManager: NSObject {
             object: self.backgroundContext,
             queue: NSOperationQueue.mainQueue()) { [weak self] notification in
                 self?.mainContext.mergeChangesFromContextDidSaveNotification( notification )
-        }
-    }
-
-    func deletePersistentStore() {
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
-        } catch {
-            print( "Error deleting database: \(error)" )
         }
     }
 }

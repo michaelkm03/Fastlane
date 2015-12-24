@@ -27,8 +27,10 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
-    func onError( error: NSError, completion:(()->()) ) {
-        self.results = []
+    func onError( error: NSError, completion: ()->() ) {
+        if error.code == RequestOperation.errorCodeNoNetworkConnection {
+            self.results = fetchResults()
+        }
         completion()
     }
     
