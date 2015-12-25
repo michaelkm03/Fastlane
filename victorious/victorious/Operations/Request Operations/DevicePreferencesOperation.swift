@@ -15,14 +15,15 @@ class DevicePreferencesOperation: RequestOperation {
     var mainQueueSettings: VNotificationSettings?
     
     private var request: DevicePreferencesRequest
-    
-    override init(persistentStore: PersistentStoreType = MainPersistentStore()) {
+
+    override init() {
         request = DevicePreferencesRequest()
-        super.init(persistentStore: persistentStore)
+        super.init()
     }
-    
+
     init(newPreferences: [NotificationPreference: Bool]) {
         request = DevicePreferencesRequest(preferences: newPreferences)
+        super.init()
     }
     
     override func main() {

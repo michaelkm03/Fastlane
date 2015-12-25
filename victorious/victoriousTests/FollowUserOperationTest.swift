@@ -21,7 +21,8 @@ class FollowUserOperationTest: XCTestCase {
         super.setUp()
         testStore = TestPersistentStore()
         persitedUserID = NSNumber(longLong: userID)
-        operation = FollowUserOperation(userToFollowID: userID, screenName: screenName, persistentStore: testStore)
+        operation = FollowUserOperation(userToFollowID: userID, screenName: screenName)
+        operation.persistentStore = testStore
     }
 
     func testFollowingAnExistentUser() {

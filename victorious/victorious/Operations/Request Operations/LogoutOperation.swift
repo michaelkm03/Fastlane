@@ -13,7 +13,7 @@ class LogoutOperation: RequestOperation {
     
     let request = LogoutRequest()
 
-    override init(persistentStore: PersistentStoreType = MainPersistentStore()) {
+    override init() {
         super.init()
         self.qualityOfService = .UserInitiated
     }
