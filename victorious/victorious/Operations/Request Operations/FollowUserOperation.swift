@@ -30,6 +30,7 @@ class FollowUserOperation: RequestOperation {
                 userToFollow.numberOfFollowers = self.initializeOrIncrease(number: userToFollow.numberOfFollowers)
                 currentUser.numberOfFollowing = self.initializeOrIncrease(number: currentUser.numberOfFollowing)
                 currentUser.addFollowingObject(userToFollow)
+                userToFollow.isFollowedByMainUser = NSNumber(int: 1)
                 context.v_save()
             }
         }
