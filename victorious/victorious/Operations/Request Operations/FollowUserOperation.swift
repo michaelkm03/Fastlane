@@ -25,19 +25,11 @@ class FollowUserOperation: RequestOperation {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
             let persistedUserToFollowID = NSNumber(longLong: self.userToFollowID)
             let persistedCurrentUserID = NSNumber(longLong: self.currentUserID)
-            var needToSave = false
 
-            if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]) {
+            if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]), let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
                 userToFollow.numberOfFollowers = self.initializeOrIncrease(number: userToFollow.numberOfFollowers)
-                needToSave = true
-            }
-
-            if let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
                 currentUser.numberOfFollowing = self.initializeOrIncrease(number: currentUser.numberOfFollowing)
-                needToSave = true
-            }
-
-            if needToSave {
+                currentUser.addFollowingObject(userToFollow)
                 context.v_save()
             }
         }
