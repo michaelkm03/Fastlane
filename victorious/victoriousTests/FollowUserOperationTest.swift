@@ -56,9 +56,9 @@ class FollowUserOperationTest: XCTestCase {
 
     override func tearDown() {
         do {
-            try testStore.clear()
-        } catch TestPersitentStoreError.ClearFailed(let storeURL) {
-            XCTFail("Failed to clear the test persistent store at \(storeURL). Failing this test since it can cause test pollution.")
+            try testStore.deletePersistentStore()
+        } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
+            XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error). Failing this test since it can cause test pollution.")
         } catch {
             XCTFail("Something went wrong while clearing persitent store")
         }
