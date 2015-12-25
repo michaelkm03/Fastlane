@@ -11,34 +11,36 @@ import XCTest
 
 class FollowUserOperationTest: XCTestCase {
     let expectationThreshold: Double = 10
-    var persitedUserID: NSNumber!
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
-    let userID = Int64(1)
+    let userToFollowID = Int64(1)
+    let currentUserID = Int64(2)
     let screenName = "screenName"
 
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
-        persitedUserID = NSNumber(longLong: userID)
-        operation = FollowUserOperation(userToFollowID: userID, screenName: screenName)
+        operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
         operation.persistentStore = testStore
     }
 
     func testFollowingAnExistentUser() {
-        let createdUser: VUser = testStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = persitedUserID
-            user.status = "stored"
-        }
-
+        let createdCurrentUser = createUser(remoteId: currentUserID)
+        let createdUserToFollow = createUser(remoteId: userToFollowID)
         queueExpectedOperation(operation: operation)
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
-            guard let updatedUser: VUser = self.testStore.mainContext.objectWithID(createdUser.objectID) as? VUser else {
-                XCTFail("No user found after following a user")
+            guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
+                XCTFail("No user to follow found after following a user")
                 return
             }
-            XCTAssertEqual(1, updatedUser.numberOfFollowers)
+
+            guard let updatedCurrentUser = self.testStore.mainContext.objectWithID(createdCurrentUser.objectID) as? VUser else {
+                XCTFail("No current user found after following a user")
+                return
+            }
+            XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
+            XCTAssertEqual(1, updatedCurrentUser.numberOfFollowing)
         }
     }
 
@@ -70,5 +72,12 @@ class FollowUserOperationTest: XCTestCase {
             expectation.fulfill()
         }
         return expectation
+    }
+
+    private func createUser(remoteId remoteId: Int64) -> VUser {
+        return testStore.mainContext.v_createObjectAndSave { user in
+            user.remoteId = NSNumber(longLong: remoteId)
+            user.status = "stored"
+        } as VUser
     }
 }
