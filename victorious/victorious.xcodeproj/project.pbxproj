@@ -727,6 +727,9 @@
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
 		A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */; };
+		A7427B201C2F462B009D857E /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */; };
+		A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */; };
+		A7427B241C2F4653009D857E /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E31A0816D500339CB3 /* VPasswordValidator.m */; };
 		A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E61A08173B00339CB3 /* VEmailValidator.m */; };
 		A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E91A081FFF00339CB3 /* VStringValidator.m */; };
@@ -834,11 +837,8 @@
 		A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */; };
 		A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */; };
 		A76AEAE11C038E0000E8A26F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */; };
-		A76AEAE31C038E0000E8A26F /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */; };
 		A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */; };
-		A76AEAE61C038E0000E8A26F /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */; };
 		A76AEAE91C038E0000E8A26F /* SequenceCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */; };
-		A76AEAEA1C038E0000E8A26F /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */; };
 		A76AEAED1C038E0000E8A26F /* UnlikeSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */; };
 		A76AEAEE1C038E0000E8A26F /* UserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
@@ -3122,11 +3122,8 @@
 		A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequestBody.swift; sourceTree = "<group>"; };
 		A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
-		A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperation.swift; sourceTree = "<group>"; };
-		A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
 		A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsOperation.swift; sourceTree = "<group>"; };
-		A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchOperation.swift; sourceTree = "<group>"; };
 		A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoOperation.swift; sourceTree = "<group>"; };
 		A76AEAF01C038F7A00E8A26F /* VStreamCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamCollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -7085,11 +7082,9 @@
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
-				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
-				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
@@ -7099,7 +7094,6 @@
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
-				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
@@ -10752,6 +10746,7 @@
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
+				A7427B241C2F4653009D857E /* FlagSequenceOperation.swift in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
 				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
 				A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */,
@@ -10788,7 +10783,6 @@
 				F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */,
 				D8B44CD21ADCB3A4006340E8 /* VSleekStreamCollectionCell.m in Sources */,
 				A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */,
-				A76AEAE61C038E0000E8A26F /* LogoutOperation.swift in Sources */,
 				A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
@@ -10964,6 +10958,7 @@
 				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
+				A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */,
 				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
@@ -11170,6 +11165,7 @@
 				A7078CDA1BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */,
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
+				A7427B201C2F462B009D857E /* LogoutOperation.swift in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
@@ -11402,7 +11398,6 @@
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
-				A76AEAEA1C038E0000E8A26F /* SequenceFetchOperation.swift in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
@@ -11512,7 +11507,6 @@
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
-				A76AEAE31C038E0000E8A26F /* FlagSequenceOperation.swift in Sources */,
 				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
