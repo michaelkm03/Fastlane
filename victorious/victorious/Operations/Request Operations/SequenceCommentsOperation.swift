@@ -77,11 +77,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             sequence.v_addObjects( newComments, to: "comments" )
             context.v_save()
             
-            // Reload results from main queue
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
+            self.results = self.fetchResults()
+            completion()
         }
     }
     

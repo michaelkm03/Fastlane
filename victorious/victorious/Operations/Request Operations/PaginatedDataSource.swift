@@ -80,18 +80,16 @@ import Foundation
             operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
         }
         
-        if let operation = operationToQueue, typedOperation = operationToQueue as? T {
-            self.currentOperation = operation
+        if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
             self.isLoading = true
             operation.queue() { error in
                 self.isLoading = false
                 self.onOperationComplete( typedOperation, pageType: pageType, error: error)
                 completion?( operation: typedOperation, error: error )
             }
-            
-        } else {
-            self.currentOperation = nil
         }
+        
+        self.currentOperation = operationToQueue
     }
     
     // MARK: - Private helpers
