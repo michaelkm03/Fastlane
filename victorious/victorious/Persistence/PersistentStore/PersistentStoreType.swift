@@ -29,5 +29,5 @@ enum PersistentStoreError: ErrorType {
     
     /// Deletes the file on disk at the persistent store URL
     /// DANGER: This will irrevocably delete all local data!
-    optional func deletePersistentStore() throws
+    @objc(deletePersistentStoreAndReturnError:) func deletePersistentStore() throws
 }
