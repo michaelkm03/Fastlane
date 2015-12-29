@@ -43,7 +43,7 @@ class FollowUserOperationTest: XCTestCase {
             XCTAssertEqual(1, updatedCurrentUser.numberOfFollowing)
             XCTAssertEqual(1, updatedCurrentUser.following.count)
             XCTAssert(updatedCurrentUser.following.contains(updatedUserToFollow))
-            XCTAssertEqual(1, updatedUserToFollow.isFollowedByMainUser)
+            XCTAssertEqual(true, updatedUserToFollow.isFollowedByMainUser)
         }
     }
 
