@@ -11,6 +11,7 @@ import Foundation
 public extension VHashtagFollowingTableViewController {
     
     public func loadHashtags( pageType pageType: VPageType, completion:(NSError? -> ())? ) {
+        self.paginatedDataSource.delegate = self
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return FollowedHashtagsOperation()
@@ -19,5 +20,12 @@ public extension VHashtagFollowingTableViewController {
                 completion?(error)
             }
         )
+    }
+}
+
+extension VHashtagFollowingTableViewController: PaginatedDataSourceDelegate {
+
+    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        self.tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
     }
 }

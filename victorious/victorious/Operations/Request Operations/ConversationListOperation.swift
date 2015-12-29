@@ -49,7 +49,6 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
             }
             context.v_save()
             
-            // Reload results from main queue
             self.results = self.fetchResults()
             completion()
         }

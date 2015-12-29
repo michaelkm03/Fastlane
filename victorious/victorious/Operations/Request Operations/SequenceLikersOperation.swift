@@ -51,9 +51,9 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
 
                 let uniqueElements = [ "sequence"  : sequence, "user" : persistentUser ]
                 let userSequenceContext: VSequenceLiker = context.v_findOrCreateObject( uniqueElements )
-                userSequenceContext.sequenceId = self.sequenceID
+                userSequenceContext.sequence = sequence
+                userSequenceContext.user = persistentUser
                 userSequenceContext.displayOrder = displayOrder++
-                sequence.v_addObject( userSequenceContext, to: "likers" )
             }
             context.v_save()
             
@@ -62,17 +62,18 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    private func fetchResults() -> [VSequenceLiker] {
+    private func fetchResults() -> [VUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "sequenceId = %@",
+                format: "sequence.remoteId = %@",
                 argumentArray: [ self.sequenceID ],
                 paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
+            return results.map { $0.user }
         }
     }
 }

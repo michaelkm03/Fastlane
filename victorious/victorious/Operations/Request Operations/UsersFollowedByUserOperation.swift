@@ -46,16 +46,21 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
             
-            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber(longLong: self.userID) ])
+            let subjectUserId = NSNumber(longLong: self.userID)
+            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : subjectUserId] )
+            
             for user in users {
-                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : NSNumber(longLong: user.userID)] )
+                
+                // Load the user who is following self.userID
+                let objectUserId = NSNumber(longLong: user.userID)
+                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : objectUserId] )
                 objectUser.populate(fromSourceModel: user)
                 
                 let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
                 let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
-                followedUser.objectUserId = NSNumber(longLong: self.userID)
+                followedUser.objectUser = objectUser
+                followedUser.subjectUser = subjectUser
                 followedUser.displayOrder = displayOrder++
-                
                 subjectUser.v_addObject( followedUser, to: "followers" )
             }
             context.v_save()
@@ -65,17 +70,18 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [VFollowedUser] {
+    private func fetchResults() -> [VUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "objectUserId = %@",
+                format: "subjectUser.remoteId = %@",
                 argumentArray: [ NSNumber(longLong: self.userID) ],
                 paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
+            return results.flatMap { $0.objectUser }
         }
     }
 }

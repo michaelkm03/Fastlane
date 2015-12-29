@@ -21,7 +21,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience override init() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 200)
+        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
         self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
     }
     
@@ -44,23 +44,23 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     }
     
     func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
-        guard let currentUser = VUser.currentUser() else {
-            completion()
-            return
-        }
         
-        var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
-        
-        var hashtagObjectIDs = [NSManagedObjectID]()
         persistentStore.backgroundContext.v_performBlock() { context in
+            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+                completion()
+                return
+            }
+            
+            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            
             for hashtag in hashtags {
-                let hashtag: VHashtag = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: hashtag.hashtagID ) ] )
-                hashtagObjectIDs.append( hashtag.objectID )
+                let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
+                persistentHashtag.populate(fromSourceModel: hashtag)
                 
                 let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( [ "user" : currentUser ] )
-                followedHashtag.userId = currentUser.remoteId
+                followedHashtag.user = currentUser
+                followedHashtag.hashtag = persistentHashtag
                 followedHashtag.displayOrder = displayOrder++
-                currentUser.v_addObject( followedHashtag, to: "hashtags" )
             }
             context.v_save()
             
@@ -69,21 +69,22 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [VFollowedHashtag] {
-        guard let currentUser = VUser.currentUser() else {
-            return []
-        }
+    func fetchResults() -> [VHashtag] {
         
         return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+                return []
+            }
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "userId = %@",
+                format: "user.remoteId = %@",
                 argumentArray: [ currentUser.remoteId ],
                 paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )
+            return results.flatMap { $0.hashtag }
         }
     }
 }

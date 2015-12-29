@@ -14,7 +14,6 @@ public struct FollowersListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
 
-    /// Followers will be retrieved by this user ID
     public let userID: Int64
     
     public let paginator: StandardPaginator
@@ -23,7 +22,7 @@ public struct FollowersListRequest: PaginatorPageable, ResultBasedPageable {
         self.init( userID: request.userID, paginator: paginator )
     }
     
-    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30) ) {
         self.userID = userID
         self.paginator = paginator
         

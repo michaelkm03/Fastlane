@@ -12,5 +12,4 @@ class VSequenceLiker: NSManagedObject {
     @NSManaged var user: VUser
     @NSManaged var displayOrder: NSNumber
     @NSManaged var sequence: VSequence
-    @NSManaged var sequenceId: String
 }

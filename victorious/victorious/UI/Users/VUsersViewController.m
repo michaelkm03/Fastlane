@@ -140,10 +140,7 @@
     NSString *identifier = [VUserCell suggestedReuseIdentifier];
     VUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
-    NSAssert( [self.usersDataSource.users[ indexPath.row ] conformsToProtocol:@protocol(VUserContext)],
-             @"A `VUsersViewController` is attemtping to display an object that does not conform to protocol `VUserContext" );
-    id<VUserContext> userContext = self.usersDataSource.users[ indexPath.row ];
-    cell.user = userContext.user;
+    cell.user = self.usersDataSource.users[ indexPath.row ];
     return cell;
 }
 

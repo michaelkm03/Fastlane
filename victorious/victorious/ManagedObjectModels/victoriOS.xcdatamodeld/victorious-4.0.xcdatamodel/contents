@@ -114,15 +114,13 @@
         <attribute name="layerName" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="FollowedHashtag" syncable="YES">
+    <entity name="FollowedHashtag" representedClassName=".VFollowedHashtag" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <attribute name="userId" attributeType="Integer 64" syncable="YES"/>
-        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="followedHashtag" inverseEntity="Hashtag" syncable="YES"/>
+        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="followedHashtags" inverseEntity="Hashtag" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followedHashtags" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="FollowedUser" representedClassName=".VFollowedUser" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <attribute name="objectUserId" attributeType="Integer 64" syncable="YES"/>
         <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
         <relationship name="subjectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -141,7 +139,7 @@
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="followedHashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
+        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
     </entity>
     <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
         <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -287,7 +285,6 @@
     </entity>
     <entity name="SequenceLiker" representedClassName=".VSequenceLiker" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <attribute name="sequenceId" attributeType="String" syncable="YES"/>
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequenceContexts" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -398,8 +395,8 @@
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="FollowedHashtag" positionX="225" positionY="-621" width="128" height="105"/>
-        <element name="FollowedUser" positionX="216" positionY="-630" width="128" height="105"/>
+        <element name="FollowedHashtag" positionX="225" positionY="-621" width="128" height="90"/>
+        <element name="FollowedUser" positionX="216" positionY="-630" width="128" height="90"/>
         <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="90"/>
@@ -416,7 +413,7 @@
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
-        <element name="SequenceLiker" positionX="198" positionY="-648" width="128" height="105"/>
+        <element name="SequenceLiker" positionX="198" positionY="-648" width="128" height="90"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="270"/>

@@ -592,6 +592,7 @@
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
 		A7078D041BFC0929008FB7FF /* SequenceFetchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */; };
+		A709A3341C32F5ED00C8B8F9 /* VHashtag+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
 		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
@@ -2714,6 +2715,7 @@
 		A7078D031BFC0929008FB7FF /* SequenceFetchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SequenceFetchResponse.json; sourceTree = "<group>"; };
 		A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentViewViewModel.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
+		A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VHashtag+Parsable.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
 		A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableRow.h; sourceTree = "<group>"; };
@@ -7310,6 +7312,7 @@
 				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
 				A7F843691BFD4504004C3D55 /* VEndCard+Parsable.swift */,
 				A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */,
+				A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */,
 				A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */,
 				A7F843671BFD44EE004C3D55 /* VMessage+Parsable.swift */,
 				A789F7211BF11F4900F5C87B /* VNode+Parsable.swift */,
@@ -11472,6 +11475,7 @@
 				A721E9201B572454000B7901 /* VAdBreakFallback+RestKit.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				03E910831B96B032009CC937 /* TrendingTopicGradientView.swift in Sources */,
+				A709A3341C32F5ED00C8B8F9 /* VHashtag+Parsable.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,

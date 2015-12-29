@@ -145,6 +145,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager.h"
 #import "VPageType.h"
+#import "VHashtag.h"
 #import "VPaginationManager.h"
 #import "VPhotoFilter.h"
 #import "VPollResult.h"

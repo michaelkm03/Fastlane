@@ -11,13 +11,5 @@ import Foundation
 class VFollowedUser: NSManagedObject {
     @NSManaged var subjectUser: VUser
     @NSManaged var objectUser: VUser
-    @NSManaged var objectUserId: NSNumber
     @NSManaged var displayOrder: NSNumber
-}
-
-
-extension VFollowedUser: VUserContext {
-    var user: VUser {
-        return objectUser
-    }
 }

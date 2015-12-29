@@ -9,7 +9,6 @@
 import SwiftyJSON
 
 public struct Hashtag {
-    public let hashtagID: Int64
     public let tag: String
     public let amFollowing: Bool?
     public let count: Int?
@@ -17,21 +16,13 @@ public struct Hashtag {
 
 extension Hashtag {
     public init?(json: JSON) {
-        
-        if let hashtagIDString = json["id"].string,
-            let hashtagIDNumber = Int64(hashtagIDString) {
-                hashtagID = hashtagIDNumber
-        } else {
-            return nil
-        }
-        
-        if let tagString = json["tag"].string {
-            tag = tagString
+        if let tag = json["tag"].string {
+            self.tag = tag
         } else {
             return nil
         }
         
         amFollowing = json["am_following"].bool
-        count = json["count"].int ?? Int(json["count"].stringValue)
+        count = json["count"].int
     }
 }

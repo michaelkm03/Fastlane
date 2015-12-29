@@ -19,15 +19,11 @@ public struct SubscribedToListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(request: FollowersListRequest, paginator: StandardPaginator ) {
-        self.init( userID: request.userID, paginator: paginator )
-    }
-    
     public init( request: SubscribedToListRequest, paginator: StandardPaginator ) {
-        self.init( userID: request.userID, paginator: request.paginator)
+        self.init( userID: request.userID, paginator: paginator)
     }
     
-    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30) ) {
         self.userID = userID
         self.paginator = paginator
         
