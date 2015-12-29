@@ -26,7 +26,8 @@ class FollowUserOperation: RequestOperation {
             let persistedUserToFollowID = NSNumber(longLong: self.userToFollowID)
             let persistedCurrentUserID = NSNumber(longLong: self.currentUserID)
 
-            if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]), let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
+            if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]),
+                let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
                 userToFollow.numberOfFollowers = self.initializeOrIncrease(number: userToFollow.numberOfFollowers)
                 currentUser.numberOfFollowing = self.initializeOrIncrease(number: currentUser.numberOfFollowing)
                 currentUser.addFollowingObject(userToFollow)
