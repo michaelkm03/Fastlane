@@ -9,10 +9,11 @@
 import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
-    private let request:        FollowUserRequest
+    var trackingManager: VTracker = VTrackingManager.sharedInstance()
+    private let request: FollowUserRequest
     private let userToFollowID: Int64
-    private let currentUserID:  Int64
-    private let screenName:     String
+    private let currentUserID: Int64
+    private let screenName: String
 
     init(userToFollowID: Int64, currentUserID: Int64, screenName: String) {
         self.userToFollowID = userToFollowID
@@ -34,6 +35,8 @@ class FollowUserOperation: RequestOperation {
                 userToFollow.isFollowedByMainUser = true
                 context.v_save()
             }
+
+            self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser, parameters: [ : ])
         }
     }
 
