@@ -302,13 +302,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         return NO;
     }
     
-    UIViewController<VNavigationDestination> *destination = menuItem.destination;
     UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
-    
-    if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] && [destination shouldNavigateWithAlternateDestination:&destination] )
-    {
-        [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
-    }
+    [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
     
     return YES;
 }
