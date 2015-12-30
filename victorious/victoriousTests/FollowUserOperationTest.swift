@@ -65,6 +65,8 @@ class FollowUserOperationTest: XCTestCase {
             if let createdUsers: [VUser] = self.testStore.mainContext.v_findAllObjects() where createdUsers.count > 0 {
                 XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
             }
+            XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
+            XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
     }
 
