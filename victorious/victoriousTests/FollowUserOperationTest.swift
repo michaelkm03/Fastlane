@@ -14,6 +14,7 @@ class FollowUserOperationTest: XCTestCase {
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
+    var testRequestExecutor: TestRequestExecutor!
     let userToFollowID = Int64(1)
     let currentUserID = Int64(2)
     let screenName = "screenName"
@@ -23,8 +24,10 @@ class FollowUserOperationTest: XCTestCase {
         testStore = TestPersistentStore()
         operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
         testTrackingManager = TestTrackingManager()
+        testRequestExecutor = TestRequestExecutor()
         operation.persistentStore = testStore
         operation.trackingManager = testTrackingManager
+        operation.requestExecutor = testRequestExecutor
     }
 
     func testFollowingAnExistentUser() {
@@ -49,6 +52,7 @@ class FollowUserOperationTest: XCTestCase {
             XCTAssertEqual(true, updatedUserToFollow.isFollowedByMainUser)
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         }
     }
 

@@ -36,6 +36,7 @@ class FollowUserOperation: RequestOperation {
                 context.v_save()
             }
 
+            self.executeRequest(self.request)
             self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser, parameters: [ : ])
         }
     }
