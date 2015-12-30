@@ -16,7 +16,6 @@ class ActivityIndicatorTableViewCell: UITableViewCell {
         activityIndicator.startAnimating()
     }
     
-    
     class func suggestedReuseIdentifier() -> String {
         return "ActivityIndicatorTableViewCell"
     }

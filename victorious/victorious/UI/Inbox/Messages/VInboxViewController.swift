@@ -32,6 +32,4 @@ extension VInboxViewController: UserSearchViewControllerDelegate {
         
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
 }
-

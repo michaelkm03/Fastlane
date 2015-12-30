@@ -16,10 +16,9 @@ protocol UserListViewControllerDelegate: NSObjectProtocol {
     
     // Your delegate implementation should dismiss the UserListViewController
     func userListViewControllerDidSelectUserID(listViewController: UserListViewController, user: User)
-    
 }
 
-class UserListViewController : UIViewController, UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
+class UserListViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate {
     
     private struct Constants {
         static let userHashtagSearchKey = "userHashtagSearch"
@@ -75,11 +74,6 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchRe
         }
     }
     
-    //MARK: - UISearchResultsUpdating
-    
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-    }
-    
     //MARK: - UISearchBarDelegate
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -103,7 +97,6 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchRe
     //MARK: - Private Methods
     
     func configureSearchController(searchController: UISearchController) {
-        searchController.searchResultsUpdater = self
         searchController.searchBar.sizeToFit()
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
