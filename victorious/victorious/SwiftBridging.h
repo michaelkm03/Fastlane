@@ -207,3 +207,5 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+#import "VInboxViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
