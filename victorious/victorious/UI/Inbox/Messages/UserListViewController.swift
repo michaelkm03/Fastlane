@@ -11,7 +11,10 @@ import VictoriousIOSSDK
 
 protocol UserListViewControllerDelegate: NSObjectProtocol {
     
+    // Your delegate implementation should dismiss the UserListViewController
     func userListViewControllerDidSelectCancel()
+    
+    // Your delegate implementation should dismiss the UserListViewController
     func userListViewControllerDidSelectUserID(listViewController: UserListViewController, user: User)
     
 }

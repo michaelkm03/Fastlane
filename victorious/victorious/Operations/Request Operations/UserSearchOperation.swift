@@ -9,7 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-
 @objc class UserSearchResultObject: NSObject {
     let sourceResult: VictoriousIOSSDK.User
     
