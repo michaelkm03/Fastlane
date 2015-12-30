@@ -21,6 +21,7 @@ class MainPersistentStoreTests: XCTestCase {
         let expectation = self.expectationWithDescription("testSyncBasic")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.persistentStore.mainContext.v_performBlockAndWait() { context in
+                XCTAssertEqual( context, self.persistentStore.mainContext )
                 XCTAssert( NSThread.currentThread().isMainThread )
                 expectation.fulfill()
             }
@@ -35,9 +36,10 @@ class MainPersistentStoreTests: XCTestCase {
         }
         XCTAssert( result )
         
-        let expectation = self.expectationWithDescription("testSync")
+        let expectation = self.expectationWithDescription("")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             let result: Bool = self.persistentStore.mainContext.v_performBlockAndWait() { context in
+                XCTAssertEqual( context, self.persistentStore.mainContext )
                 XCTAssert( NSThread.currentThread().isMainThread )
                 return true
             }
@@ -48,24 +50,26 @@ class MainPersistentStoreTests: XCTestCase {
     }
     
     func testSyncFromBackground() {
-        weak var expectation = self.expectationWithDescription("testSyncFromBackground")
+        let expectation = self.expectationWithDescription("")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.persistentStore.backgroundContext.v_performBlockAndWait() { context in
+                XCTAssertEqual( context, self.persistentStore.backgroundContext )
                 XCTAssertFalse( NSThread.currentThread().isMainThread )
-                expectation?.fulfill()
+                expectation.fulfill()
             }
         }
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testAsyncFromBackground() {
-        weak var expectation = self.expectationWithDescription("testAsyncFromBackground")
+        let expectation = self.expectationWithDescription("")
         persistentStore.backgroundContext.v_performBlock() { context in
             XCTAssertFalse( NSThread.currentThread().isMainThread )
+            XCTAssertEqual( context, self.persistentStore.backgroundContext )
             dispatch_async( dispatch_get_main_queue() ) {
-                expectation?.fulfill()
+                expectation.fulfill()
             }
         }
-        waitForExpectationsWithTimeout(2) { error in }
+       waitForExpectationsWithTimeout(2, handler: nil)
     }
 }

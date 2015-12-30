@@ -70,7 +70,7 @@ class DefaultTimingTrackerTests: XCTestCase {
         }
         
         let duration = mockTracker.lastParams?[VTrackingKeyDuration] as? Float ?? 0.0
-        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 2.0)
+        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 5.0)
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeySubtype] as? String, eventSubtype )
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeyType] as? String, eventType )
     }
