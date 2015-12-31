@@ -29,23 +29,15 @@ class FollowUserOperation: RequestOperation {
 
             if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]),
                 let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
-                userToFollow.numberOfFollowers = self.initializeOrIncrease(number: userToFollow.numberOfFollowers)
-                currentUser.numberOfFollowing = self.initializeOrIncrease(number: currentUser.numberOfFollowing)
-                currentUser.addFollowingObject(userToFollow)
-                userToFollow.isFollowedByMainUser = true
-                context.v_save()
+                    userToFollow.numberOfFollowers = (userToFollow.numberOfFollowers?.integerValue ?? 0) + 1
+                    currentUser.numberOfFollowing = (currentUser.numberOfFollowing?.integerValue ?? 0) + 1
+                    currentUser.addFollowingObject(userToFollow)
+                    userToFollow.isFollowedByMainUser = true
+                    context.v_save()
             }
 
             self.executeRequest(self.request)
             self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser, parameters: [ : ])
-        }
-    }
-
-    private func initializeOrIncrease(number number: NSNumber?) -> NSNumber {
-        if let number = number {
-            return NSNumber(int: number.integerValue + 1)
-        } else {
-            return NSNumber(int: 1)
         }
     }
 }
