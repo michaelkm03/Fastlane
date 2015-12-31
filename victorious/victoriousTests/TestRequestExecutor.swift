@@ -9,7 +9,7 @@
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class TestRequestExecutor: RequestExecutable {
+class TestRequestExecutor: RequestExecutorType {
     var executeRequestCallCount = 0
 
     func executeRequest<T : RequestType>(request: T, onComplete: ((T.ResultType, () -> ()) -> ())?, onError: ((NSError, () -> ()) -> ())?, hasNetworkConnection: Bool) {

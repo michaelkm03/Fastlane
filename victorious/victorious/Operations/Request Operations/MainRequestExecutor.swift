@@ -1,5 +1,5 @@
 //
-//  RequestExecutor.swift
+//  MainRequestExecutor.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/29/15.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class RequestExecutor: RequestExecutable {
+class MainRequestExecutor: RequestExecutorType {
     let persistentStore: PersistentStoreType
     let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     init(persistentStore: PersistentStoreType) {

@@ -1,5 +1,5 @@
 //
-//  RequestExecutable.swift
+//  RequestExecutorType.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/29/15.
@@ -9,7 +9,7 @@
 import VictoriousIOSSDK
 
 /// Defines an interface for sending network requests
-protocol RequestExecutable {
+protocol RequestExecutorType {
     func executeRequest<T: RequestType>(request: T,
         onComplete: ((T.ResultType, ()->())->())?,
         onError: ((NSError, ()->())->())?,

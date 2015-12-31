@@ -29,8 +29,8 @@ class RequestOperation: NSOperation, Queuable {
     var mainQueueCompletionBlock: ((NSError?)->())?
     
     var persistentStore: PersistentStoreType = MainPersistentStore()
-    lazy var requestExecutor: RequestExecutable = {
-        return RequestExecutor(persistentStore: self.persistentStore)
+    lazy var requestExecutor: RequestExecutorType = {
+        return MainRequestExecutor(persistentStore: self.persistentStore)
     }()
 
     var hasNetworkConnection: Bool {
