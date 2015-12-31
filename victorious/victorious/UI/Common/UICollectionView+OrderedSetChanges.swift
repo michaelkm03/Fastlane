@@ -24,21 +24,15 @@ public extension UICollectionView {
             insertedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
         }
         
-        if oldValue.count > newValue.count {
-            print("DELETION")
-        }
-        
         var deletedIndexPaths = [NSIndexPath]()
         for item in oldValue where !newValue.containsObject( item ) {
             let index = oldValue.indexOfObject( item )
             deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
         }
         
-        UIView.animateWithDuration(0.0) {
-            self.performBatchUpdates({
-                self.insertItemsAtIndexPaths( insertedIndexPaths )
-                self.deleteItemsAtIndexPaths( deletedIndexPaths )
-            }, completion: nil)
-        }
+        self.performBatchUpdates({
+            self.insertItemsAtIndexPaths( insertedIndexPaths )
+            self.deleteItemsAtIndexPaths( deletedIndexPaths )
+        }, completion: nil)
     }
 }

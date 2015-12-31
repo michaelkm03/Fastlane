@@ -16,9 +16,8 @@ class CoreDataManagerTests: XCTestCase {
     let versionedModelName = "PersistenceTests"
     let pathHelper = CoreDataPathHelper()
     var coreDataManager: CoreDataManager!
-    
+    var objectForKVO: NSManagedObject!
     let testModelCount = 10
-    let testModelEntityName = "PersistentEntity"
     var modelVersions: [String : CoreDataManager.ModelVersion]!
     var persistentStoreURL: NSURL!
     
@@ -26,22 +25,25 @@ class CoreDataManagerTests: XCTestCase {
     let updatedText = "Goodbye cruel, cruel world!"
     var kvoContext: Void
     
+    override func tearDown() {
+        // CLEANUP: Delete any persistent stores created from previous test sequences
+        self.pathHelper.deleteItemAtURL( self.persistentStoreURL )
+
+        super.tearDown()
+    }
+    
     override func setUp() {
         super.setUp()
 
         self.persistentStoreURL = self.pathHelper.applicationDocumentsDirectory.URLByAppendingPathComponent( "\(self.versionedModelName).sqlite" )
         
         // SETUP: Delete any persistent stores created from previous test sequences
-        self.pathHelper.deleteFilesInDirectory( self.persistentStoreURL )
+        self.pathHelper.deleteItemAtURL( self.persistentStoreURL )
         
         self.modelVersions = [
             "1.0" : CoreDataManager.ModelVersion(
                 identifier: "1.0" ,
                 managedObjectModelURL: self.pathHelper.URLForManagedObjectModelInBundle(versionedModelName, modelVersion: "1.0")
-            ),
-            "1.1" : CoreDataManager.ModelVersion(
-                identifier: "1.1" ,
-                managedObjectModelURL: self.pathHelper.URLForManagedObjectModelInBundle(versionedModelName, modelVersion: "1.1")
             ),
             "2.0" : CoreDataManager.ModelVersion(
                 identifier: "2.0" ,
@@ -56,7 +58,7 @@ class CoreDataManagerTests: XCTestCase {
         var request: NSFetchRequest!
         var coreDataManager: CoreDataManager!
         
-        // PART 1: Create a core data manager with version 1.0
+        // Create a core data manager with version 1.0
         coreDataManager = CoreDataManager(
             persistentStoreURL: persistentStoreURL,
             currentModelVersion: modelVersions[ "1.0" ]!,
@@ -64,11 +66,7 @@ class CoreDataManagerTests: XCTestCase {
         )
         // Create some records to read later on
         for i in 0..<testModelCount {
-            let entity = NSEntityDescription.entityForName( testModelEntityName, inManagedObjectContext:coreDataManager.mainContext)
-            let model = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: coreDataManager.mainContext) as! PersistentEntity
-            model.numberAttribute = NSNumber(integer: i)
-            // Set the `stringAttribute` attribute in version 1.0
-            model.setValue( "\(i)", forKey: "stringAttribute" )
+            createBook_1_0( "Book_\(i)", by: "Author_\(i)", inContext: coreDataManager.mainContext )
         }
         do {
             try coreDataManager.mainContext.save()
@@ -77,52 +75,27 @@ class CoreDataManagerTests: XCTestCase {
             XCTFail( "Failed to save." )
         }
         
-        // PART 2: Create a core data manager with version 1.1 to allow lightweight migration to occur
-        coreDataManager = CoreDataManager(
-            persistentStoreURL: persistentStoreURL,
-            currentModelVersion: modelVersions[ "1.1" ]!,
-            previousModelVersion: modelVersions[ "1.0" ]!
-        )
-        
-        // Load the records we are expecting
-        request = NSFetchRequest(entityName: testModelEntityName)
-        request.returnsObjectsAsFaults = false
-        request.fetchLimit = testModelCount
-        request.sortDescriptors = [ NSSortDescriptor(key: "numberAttribute", ascending: true) ]
-        
-        // Ensure that the lightweight migration was successful by loading models with schema changes
-        let models = try! coreDataManager.mainContext.executeFetchRequest( request ) as! [PersistentEntity]
-        XCTAssertEqual( models.count, testModelCount )
-        for i in 0..<models.count {
-            let model = models[i]
-            // Ensure that the `stringAttribute` value has been mapping to `newStringAttribute` as configured in our mapping file
-            XCTAssertEqual( model.newStringAttribute, "\(i)" )
-            XCTAssertEqual( model.numberAttribute!.integerValue, i )
-        }
-        
-        // PART 3: Create a core data manager with version 2.0 of the datal model, for which we will add some custom
+        // Create a core data manager with version 2.0 of the datal model, for which we will add some custom
         // migration logic in class `PersitentEntityMigration_2_0`.
         coreDataManager = CoreDataManager(
             persistentStoreURL: persistentStoreURL,
             currentModelVersion: modelVersions[ "2.0" ]!,
-            previousModelVersion: modelVersions[ "1.1" ]!
+            previousModelVersion: modelVersions[ "1.0" ]!
         )
         
         // Load the records we are expecting
-        request = NSFetchRequest(entityName: testModelEntityName)
+        request = NSFetchRequest(entityName: "Book")
         request.returnsObjectsAsFaults = false
         request.fetchLimit = testModelCount
-        request.sortDescriptors = [ NSSortDescriptor(key: "numberAttribute", ascending: true) ]
+        request.sortDescriptors = [ NSSortDescriptor(key: "title", ascending: true) ]
         
         // Ensure that the customized migration was successful
-        let migratedModels = try! coreDataManager.mainContext.executeFetchRequest( request ) as! [PersistentEntity]
+        let migratedModels = try! coreDataManager.mainContext.executeFetchRequest( request ) as! [Book_2_0]
         XCTAssertEqual( migratedModels.count, testModelCount )
         for i in 0..<migratedModels.count {
             let model = migratedModels[i]
-            XCTAssertEqual( model.newStringAttribute, "\(i)" )
-            XCTAssertNotNil( model.transientEntity )
-            XCTAssertEqual( model.transientEntity!.stringAttribute, "\(i)" )
-            XCTAssertEqual( model.numberAttribute!.integerValue, i )
+            XCTAssertEqual( model.title, "Book_\(i)" )
+            XCTAssertEqual( model.author.name, "Author_\(i)" )
         }
     }
     
@@ -143,17 +116,15 @@ class CoreDataManagerTests: XCTestCase {
         // Insert a new object in the background context, as if from a network response
         self.coreDataManager.backgroundContext.performBlock() {
             let moc = self.coreDataManager.backgroundContext
-            let entity = NSEntityDescription.entityForName( PersistentEntity.v_entityName(), inManagedObjectContext: moc)
-            let persistentEntity = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
-            persistentEntity.newStringAttribute = self.text
+            let book = createBook_2_0( "Jurassic Park", by: "Michael Chrichton", inContext: moc )
             try! moc.save()
-            let insertedObjectId = persistentEntity.objectID
+            let insertedObjectId = book.objectID
             
             self.coreDataManager.mainContext.performBlock() {
-                let loadedEntity = try! self.coreDataManager.mainContext.existingObjectWithID( insertedObjectId ) as! PersistentEntity
+                let loadedEntity = try! self.coreDataManager.mainContext.existingObjectWithID( insertedObjectId ) as! Book_2_0
                 XCTAssert( NSThread.currentThread().isMainThread )
-                XCTAssertEqual( loadedEntity.objectID, persistentEntity.objectID )
-                XCTAssertEqual( loadedEntity.newStringAttribute, persistentEntity.newStringAttribute )
+                XCTAssertEqual( loadedEntity.objectID, book.objectID )
+                XCTAssertEqual( loadedEntity.title, book.title )
                 callbackExpectation.fulfill()
             }
         }
@@ -162,7 +133,8 @@ class CoreDataManagerTests: XCTestCase {
     }
     
     func testConcurrentUpdate() {
-        
+        let newTitle = "The Lost World"
+
         let versionIdentifier = "2.0"
         let momURL = pathHelper.URLForManagedObjectModelInBundle(versionedModelName, modelVersion: versionIdentifier)
         self.coreDataManager = CoreDataManager(
@@ -171,25 +143,23 @@ class CoreDataManagerTests: XCTestCase {
         )
         
         let moc = coreDataManager.mainContext
-        let entity = NSEntityDescription.entityForName( "PersistentEntity", inManagedObjectContext: moc)
-        let persistentEntity = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: moc) as! PersistentEntity
-        persistentEntity.newStringAttribute = self.text
+        self.objectForKVO = createBook_2_0( "Jurassic Park", by: "Michael Chrichton", inContext: moc )
         try! moc.save()
         
         // Observe changes to an attribute of that entity
         // See `observeValueForKeyPath(_:ofObject:change:context:)` for assertions
         let observationExpectation = self.expectationWithDescription("callback")
         
-        self.KVOController.observe( persistentEntity,
-            keyPath: "newStringAttribute",
-            options: [],
-            block: { [weak self] (observer, object, change) in
+        self.KVOController.observe( self.objectForKVO,  keyPath: "title",  options: [],
+            block: { (observer, object, change) in
                 
                 XCTAssert( NSThread.currentThread().isMainThread )
                 
-                let updatedEntity = object as! PersistentEntity
-                XCTAssertEqual( updatedEntity.newStringAttribute, self?.updatedText )
-                XCTAssertEqual( persistentEntity, updatedEntity )
+                let book = self.objectForKVO as! Book_2_0
+                
+                let updatedEntity = object as! Book_2_0
+                XCTAssertEqual( updatedEntity.title, newTitle )
+                XCTAssertEqual( book, updatedEntity )
                 
                 observationExpectation.fulfill()
         })
@@ -197,12 +167,13 @@ class CoreDataManagerTests: XCTestCase {
         // Update the existing object in the background context, as if from a network response 
         self.coreDataManager.backgroundContext.performBlock {
             let moc = self.coreDataManager.backgroundContext
-            let request = NSFetchRequest(entityName: PersistentEntity.v_entityName() )
-            request.fetchLimit = 1
+            let request = NSFetchRequest(entityName: "Book" )
             request.returnsObjectsAsFaults = false
             let results = try! moc.executeFetchRequest( request )
-            let persistentEntity = results.first as! PersistentEntity
-            persistentEntity.newStringAttribute = self.updatedText
+            let book = results.first as! Book_2_0
+            XCTAssertEqual( results.count, 1 )
+            XCTAssertEqual( book.objectID, self.objectForKVO!.objectID )
+            book.title = newTitle
             try! moc.save()
         }
         
