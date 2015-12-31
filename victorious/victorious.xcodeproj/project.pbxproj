@@ -363,14 +363,15 @@
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
 		2B5C9810F9B3E583B2CCBC5C /* Pods_VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */; };
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
-		6205AAB81C334D9300859145 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* RequestExecutor.swift */; settings = {ASSET_TAGS = (); }; };
-		6205AABA1C33541300859145 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB91C33541300859145 /* TestRequestExecutor.swift */; settings = {ASSET_TAGS = (); }; };
-		6269DC5D1C2A0EFE0039F879 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
+		6205AAB81C334D9300859145 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* RequestExecutor.swift */; };
+		6205AABA1C33541300859145 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB91C33541300859145 /* TestRequestExecutor.swift */; };
+		62192E371C34D0950033DFBF /* VFollowingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62192E361C34D0950033DFBF /* VFollowingHelper.swift */; };
+		6269DC5D1C2A0EFE0039F879 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		627AC06F1C2893A3002FB451 /* FollowUserOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627AC06E1C2893A3002FB451 /* FollowUserOperationTest.swift */; };
 		628681F51C287C9B00DEF638 /* FollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628681F41C287C9B00DEF638 /* FollowUserOperation.swift */; };
-		62E2406C1C3306A0001037C3 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2406B1C3306A0001037C3 /* TestPersistentStore.swift */; settings = {ASSET_TAGS = (); }; };
-		62E240751C330D9C001037C3 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E240741C330D9C001037C3 /* TestTrackingManager.swift */; settings = {ASSET_TAGS = (); }; };
-		62E2407B1C332125001037C3 /* RequestExecutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutable.swift */; settings = {ASSET_TAGS = (); }; };
+		62E2406C1C3306A0001037C3 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2406B1C3306A0001037C3 /* TestPersistentStore.swift */; };
+		62E240751C330D9C001037C3 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E240741C330D9C001037C3 /* TestTrackingManager.swift */; };
+		62E2407B1C332125001037C3 /* RequestExecutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutable.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
@@ -2408,6 +2409,7 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 		6205AAB91C33541300859145 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestExecutor.swift; sourceTree = "<group>"; };
+		62192E361C34D0950033DFBF /* VFollowingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowingHelper.swift; sourceTree = "<group>"; };
 		627AC06E1C2893A3002FB451 /* FollowUserOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperationTest.swift; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperation.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
@@ -8837,6 +8839,7 @@
 			isa = PBXGroup;
 			children = (
 				D8DF71EF1AFD987B002EA7A5 /* VFollowingHelper.h */,
+				62192E361C34D0950033DFBF /* VFollowingHelper.swift */,
 				D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */,
 				D8DF71EE1AFD987B002EA7A5 /* VFollowResponder.h */,
 				F06B41B61B7E6C95008709E8 /* VFollowResponder.m */,
@@ -11008,6 +11011,7 @@
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
+				62192E371C34D0950033DFBF /* VFollowingHelper.swift in Sources */,
 				F06B41AB1B7C3D8F008709E8 /* HashtagShelf+RestKit.swift in Sources */,
 				D8A411C21AE5B17A000A7229 /* VCreationInfoContainer.m in Sources */,
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
