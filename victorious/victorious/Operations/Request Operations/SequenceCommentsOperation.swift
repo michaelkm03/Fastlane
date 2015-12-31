@@ -55,7 +55,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             
             // If refreshing with a network connection, delete everything we have
-            if self.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
+            // TODO: revising how this fits into 4.0 architecture.
+            if self.requestExecutor.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
                 let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
                 for comment in existingComments {
                     context.deleteObject( comment )

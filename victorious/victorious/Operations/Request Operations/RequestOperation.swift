@@ -33,17 +33,12 @@ class RequestOperation: NSOperation, Queuable {
         return MainRequestExecutor(persistentStore: self.persistentStore)
     }()
 
-    var hasNetworkConnection: Bool {
-        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
-    }
-
     private(set) var error: NSError?
 
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
         requestExecutor.executeRequest(request,
             onComplete: onComplete,
-            onError: onError,
-            hasNetworkConnection: hasNetworkConnection)
+            onError: onError)
     }
     
     // MARK: - Queuable
