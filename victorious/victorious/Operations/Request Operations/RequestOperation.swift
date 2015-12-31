@@ -29,14 +29,12 @@ class RequestOperation: NSOperation, Queuable {
     var mainQueueCompletionBlock: ((NSError?)->())?
     
     var persistentStore: PersistentStoreType = MainPersistentStore()
-    var requestExecutor: RequestExecutable
+    lazy var requestExecutor: RequestExecutable = {
+        return RequestExecutor(persistentStore: self.persistentStore)
+    }()
+
     var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
-    }
-
-    override init() {
-        requestExecutor = RequestExecutor(persistentStore: persistentStore)
-        super.init()
     }
 
     private(set) var error: NSError?
