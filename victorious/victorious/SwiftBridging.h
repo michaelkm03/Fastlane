@@ -92,6 +92,7 @@
 #import "VFocusable.h"
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
+#import "VFollowingHelper.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VHasManagedDependencies.h"
 #import "VHashTag.h"

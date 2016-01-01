@@ -42,7 +42,11 @@ extension NSManagedObjectContext {
     func v_findOrCreateObject<T: NSManagedObject>( queryDictionary: [ String : AnyObject ] ) -> T {
         return self.v_findOrCreateObjectWithEntityName( T.v_entityName(), queryDictionary: queryDictionary ) as! T
     }
-    
+
+    func v_findObject<T: NSManagedObject>(queryDictionary: [String : AnyObject]) -> T? {
+        return v_findObjects(queryDictionary).first
+    }
+
     func v_findObjects<T: NSManagedObject>( queryDictionary: [ String : AnyObject ] ) -> [T] {
         return v_findObjectsWithEntityName( T.v_entityName(), queryDictionary: queryDictionary ) as? [T] ?? []
     }
