@@ -15,12 +15,8 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     private(set) var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
-    required init( request: ConversationListRequest ) {
+    required init( request: ConversationListRequest = ConversationListRequest()) {
         self.request = request
-    }
-    
-    override convenience init() {
-        self.init( request: ConversationListRequest() )
     }
     
     override func main() {
