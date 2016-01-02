@@ -8,18 +8,6 @@
 
 import Foundation
 
-public struct PersistentStorePagination {
-    let itemsPerPage: Int
-    let pageNumber: Int
-    let sortDescriptors: [NSSortDescriptor]
-    
-    public init( itemsPerPage: Int, pageNumber: Int, sortDescriptors: [NSSortDescriptor] = [] ) {
-        self.itemsPerPage = itemsPerPage
-        self.pageNumber = pageNumber
-        self.sortDescriptors = sortDescriptors
-    }
-}
-
 /// A Swift-only generic implementation of the PersistentStoreContextBasic protocol that provides access to a single
 /// Core Data managed object context.
 extension NSManagedObjectContext {
