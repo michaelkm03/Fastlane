@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+PersistentStoreContext.swift
+//  NSManagedObjectContext+Generics.swift
 //  VictoriousIOSSDK
 //
 //  Created by Patrick Lynch on 10/26/15.
