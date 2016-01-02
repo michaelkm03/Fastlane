@@ -377,6 +377,7 @@
 		6236F8801C36056A00746476 /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */; settings = {ASSET_TAGS = (); }; };
 		6236F8811C36057000746476 /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61D1C347A01008B875C /* MainPersistentStoreTests.swift */; settings = {ASSET_TAGS = (); }; };
 		623989841C3607F200D0E4D0 /* RequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623989831C3607F200D0E4D0 /* RequestOperationTests.swift */; settings = {ASSET_TAGS = (); }; };
+		623F5BB71C3754D70035DBCE /* HashtagSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623F5BB61C3754D70035DBCE /* HashtagSearchRequest.swift */; settings = {ASSET_TAGS = (); }; };
 		628681F51C287C9B00DEF638 /* FollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628681F41C287C9B00DEF638 /* FollowUserOperation.swift */; };
 		62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
@@ -998,7 +999,6 @@
 		A7D618EB1C2A7E49007F46EA /* FollowersListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D618EA1C2A7E49007F46EA /* FollowersListRequest.swift */; };
 		A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D618EC1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift */; };
 		A7D618EF1C2A7E5A007F46EA /* SubscribedToListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D618ED1C2A7E5A007F46EA /* SubscribedToListRequest.swift */; };
-		A7D69C0B1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = A7D69C0A1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel */; };
 		A7D69C0D1C0E33B600B462C3 /* SequenceLikersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 03BC6FB71BE84A6E00CFCBEE /* SequenceLikersResponse.json */; };
 		A7D69C0E1C0E33B600B462C3 /* InvalidConversationListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D081AD1BF18E4A00E8A0C5 /* InvalidConversationListResponse.json */; };
 		A7D69C0F1C0E33B600B462C3 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
@@ -1117,7 +1117,6 @@
 		A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */; };
 		A7EBF5171C2B77250080C7CF /* UnloadStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5161C2B77250080C7CF /* UnloadStreamOperation.swift */; };
 		A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */; };
-		A7EBF5231C2B8CA20080C7CF /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5221C2B8CA20080C7CF /* PaginatedDataSourceTests.swift */; };
 		A7EBF5301C2B98550080C7CF /* PaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */; };
 		A7EBF5331C2B99A20080C7CF /* VFollowersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5311C2B99A20080C7CF /* VFollowersDataSource.swift */; };
 		A7EBF5341C2B99A20080C7CF /* VUserIsFollowingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5321C2B99A20080C7CF /* VUserIsFollowingDataSource.swift */; };
@@ -2424,6 +2423,7 @@
 		6236F8771C36037200746476 /* AccountCreateOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountCreateOperationTests.swift; path = Operations/AccountCreateOperationTests.swift; sourceTree = "<group>"; };
 		6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestedUsersOperationTests.swift; path = Operations/SuggestedUsersOperationTests.swift; sourceTree = "<group>"; };
 		623989831C3607F200D0E4D0 /* RequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestOperationTests.swift; path = Operations/RequestOperationTests.swift; sourceTree = "<group>"; };
+		623F5BB61C3754D70035DBCE /* HashtagSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchRequest.swift; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperation.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62E2407A1C332125001037C3 /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
@@ -3411,8 +3411,6 @@
 		A7D618EA1C2A7E49007F46EA /* FollowersListRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersListRequest.swift; sourceTree = "<group>"; };
 		A7D618EC1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSubscribedToListRequest.swift; sourceTree = "<group>"; };
 		A7D618ED1C2A7E5A007F46EA /* SubscribedToListRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribedToListRequest.swift; sourceTree = "<group>"; };
-		A7D69BC01C0E276600B462C3 /* NSManagedObject+Extensions_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions_Tests.swift"; sourceTree = "<group>"; };
-		A7D69C0A1C0E2D1600B462C3 /* 1.1-2.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.1-2.0.xcmappingmodel"; sourceTree = "<group>"; };
 		A7D69C151C0E49D300B462C3 /* PollResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResult.swift; sourceTree = "<group>"; };
 		A7D69C171C0E4A0C00B462C3 /* VPollResult+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPollResult+Parsable.swift"; sourceTree = "<group>"; };
 		A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryBySequenceOperation.swift; sourceTree = "<group>"; };
@@ -5220,6 +5218,7 @@
 				C32D8BD71BF2D45500AB5085 /* FollowHashtagRequest.swift */,
 				C36C7F6E1BF27B6000B3174A /* FollowUserRequest.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
+				623F5BB61C3754D70035DBCE /* HashtagSearchRequest.swift */,
 				C32D8BEB1BF2E75B00AB5085 /* ImageSearchRequest.swift */,
 				03314F201BE3E2DE00EE74FD /* Info.plist */,
 				6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */,
@@ -7106,7 +7105,6 @@
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				628681F41C287C9B00DEF638 /* FollowUserOperation.swift */,
-				A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */,
 				6205AAB71C334D9300859145 /* MainRequestExecutor.swift */,
 				A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
@@ -10485,6 +10483,7 @@
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
 				A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */,
 				79D081AA1BF1615E00E8A0C5 /* Conversation.swift in Sources */,
+				623F5BB71C3754D70035DBCE /* HashtagSearchRequest.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */,
 				79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */,
