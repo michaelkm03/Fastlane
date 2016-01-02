@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat contentHeight = scrollView.contentSize.height;
-    if ( contentHeight == 0 || self.delegate == nil )
+    CGFloat containerHeight = scrollView.bounds.size.height;
+    if ( contentHeight < containerHeight || self.delegate == nil )
     {
         return;
     }

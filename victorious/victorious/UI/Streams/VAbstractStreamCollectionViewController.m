@@ -311,14 +311,14 @@
              completion();
          }
          
-         [self didFinishLoadingPageType:pageType];
+         [self didFinishLoadingWithPageType:pageType];
          
          [self.refreshControl endRefreshing];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
-- (void)didFinishLoadingPageType:(VPageType)pageType
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
     // For subclasses
 }

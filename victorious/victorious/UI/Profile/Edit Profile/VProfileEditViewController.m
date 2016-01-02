@@ -9,7 +9,6 @@
 #import "VProfileEditViewController.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
-#import "VObjectManager+Login.h"
 #import "VDependencyManager.h"
 #import "VUserProfileViewController.h"
 #import "victorious-Swift.h"

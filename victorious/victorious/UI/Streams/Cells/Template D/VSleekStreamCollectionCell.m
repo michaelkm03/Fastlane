@@ -20,7 +20,6 @@
 #import "VStreamCellHeader.h"
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
-#import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VInStreamCommentCellContents.h"
@@ -59,7 +58,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 @property (nonatomic, strong ) IBOutlet NSLayoutConstraint *captionZeroingHeightConstraint;
 @property (nonatomic, strong) UIView *dimmingContainer;
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
@@ -288,8 +286,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
-    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+    NSArray *keyPaths = @[ NSStringFromSelector(@selector(hasReposted)),
+                           NSStringFromSelector(@selector(commentCount)),
+                           NSStringFromSelector(@selector(likeCount)),
+                           NSStringFromSelector(@selector(isLikedByMainUser)) ];
+    [self.KVOController observe:self.sequence keyPaths:keyPaths
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                          block:^(id observer, id object, NSDictionary *change)
      {
          __strong VSleekStreamCollectionCell *strongSelf = welf;
          if ( strongSelf == nil )
