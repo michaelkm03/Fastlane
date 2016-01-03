@@ -18,6 +18,7 @@ class FollowUserOperationTest: XCTestCase {
     let userToFollowID = Int64(1)
     let currentUserID = Int64(2)
     let screenName = "screenName"
+    let operationHelper = RequestOperationHelper()
 
     override func setUp() {
         super.setUp()
@@ -31,9 +32,9 @@ class FollowUserOperationTest: XCTestCase {
     }
 
     func testFollowingAnExistentUser() {
-        let createdCurrentUser = createUser(remoteId: currentUserID)
-        let createdUserToFollow = createUser(remoteId: userToFollowID)
-        queueExpectedOperation(operation: operation)
+        let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let createdUserToFollow = operationHelper.createUser(remoteId: userToFollowID, persistentStore: testStore)
+        operationHelper.queueExpectedOperation(operation: operation)
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -60,7 +61,7 @@ class FollowUserOperationTest: XCTestCase {
         let existingUsers: [VUser] = self.testStore.mainContext.v_findAllObjects()
         XCTAssertEqual(0, existingUsers.count)
 
-        queueExpectedOperation(operation: operation)
+        operationHelper.queueExpectedOperation(operation: operation)
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             if let createdUsers: [VUser] = self.testStore.mainContext.v_findAllObjects() where createdUsers.count > 0 {
                 XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
@@ -71,28 +72,7 @@ class FollowUserOperationTest: XCTestCase {
     }
 
     override func tearDown() {
-        do {
-            try testStore.deletePersistentStore()
-        } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
-            XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error)." +
-                "Failing this test since it can cause test pollution.")
-        } catch {
-            XCTFail("Something went wrong while clearing persitent store")
-        }
-    }
-
-    private func queueExpectedOperation(operation operation: FollowUserOperation) -> XCTestExpectation {
-        let expectation = expectationWithDescription("operation completed")
-        operation.queue() { error in
-            expectation.fulfill()
-        }
-        return expectation
-    }
-
-    private func createUser(remoteId remoteId: Int64) -> VUser {
-        return testStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(longLong: remoteId)
-            user.status = "stored"
-        } as VUser
+        super.tearDown()
+        operationHelper.tearDownPersistentStore(store: testStore)
     }
 }
