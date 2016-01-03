@@ -30,7 +30,7 @@ class FollowUserOperationTest: XCTestCase {
         operation.requestExecutor = testRequestExecutor
     }
 
-    func testFollowingAnExistentUser() {
+    func __testFollowingAnExistentUser() {
         let createdCurrentUser = createUser(remoteId: currentUserID)
         let createdUserToFollow = createUser(remoteId: userToFollowID)
         queueExpectedOperation(operation: operation)
@@ -56,7 +56,7 @@ class FollowUserOperationTest: XCTestCase {
         }
     }
 
-    func testFollowingANonExistentUser() {
+    func __testFollowingANonExistentUser() {
         let existingUsers: [VUser] = self.testStore.mainContext.v_findAllObjects()
         XCTAssertEqual(0, existingUsers.count)
 
