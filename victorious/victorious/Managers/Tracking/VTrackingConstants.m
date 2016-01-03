@@ -301,7 +301,6 @@ NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";
 NSString * const VTrackingValueTrendingHashtags = @"TrendingHashtags";
 NSString * const VTrackingValueUserSearch = @"UserSearch";
 NSString * const VTrackingValueHashtagSearch = @"HashtagSearch";
-NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
 NSString * const VTrackingValueContentView = @"ContentView";
 NSString * const VTrackingValueStream = @"Stream";

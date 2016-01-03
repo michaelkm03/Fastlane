@@ -42,9 +42,6 @@ public extension VContentViewViewModel {
                 if (self.sequence.adBreaks?.count ?? 0) > 0 {
                     self.setupAdChain()
                 }
-                if self.endCardViewModel == nil {
-                    self.updateEndcard()
-                }
                 self.delegate?.didUpdateSequence()
             }
             self.loadComments(.First)
@@ -64,23 +61,6 @@ public extension VContentViewViewModel {
                 } else {
                     self.followersText = ""
                 }
-            }
-        }
-    }
-    
-
-    func loadNextSequence( success success:(VSequence?)->(), failure:(NSError?)->() ) {
-        guard let nextSequenceId = self.endCardViewModel.nextSequenceId else {
-            return
-        }
-        
-        let sequenceFetchOperation = SequenceFetchOperation( sequenceID: nextSequenceId )
-        sequenceFetchOperation.queue() { error in
-            
-            if let sequence = sequenceFetchOperation.result where error == nil {
-                success( sequence )
-            } else {
-                failure(error)
             }
         }
     }

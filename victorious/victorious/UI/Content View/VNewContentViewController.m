@@ -33,8 +33,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VEditCommentViewController.h"
 #import "VElapsedTimeFormatter.h"
-#import "VEndCard.h"
-#import "VEndCardActionModel.h"
 #import "VExperienceEnhancer.h"
 #import "VExperienceEnhancerBar.h"
 #import "VExperienceEnhancerBarCell.h"
@@ -71,7 +69,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, PaginatedDataSourceDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, VContentCellDelegate, PaginatedDataSourceDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -91,7 +89,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 @property (nonatomic, strong) VPublishParameters *publishParameters;
-@property (nonatomic, strong) VTransitionDelegate *endcardNextTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
@@ -127,8 +124,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
-    ContentViewNextTransition *endcardNextTransition = [[ContentViewNextTransition alloc] init];
-    contentViewController.endcardNextTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:endcardNextTransition];
     
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
@@ -735,10 +730,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.contentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]
                                                                          forIndexPath:indexPath];
             self.contentCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-            self.contentCell.endCardDelegate = self;
             self.contentCell.delegate = self;
-            
-            [self.viewModel updateEndcard];
             
             id<VContentPreviewViewReceiver> receiver = (id<VContentPreviewViewReceiver>)self.contentCell;
             id<VContentPreviewViewProvider> provider = (id<VContentPreviewViewProvider>)self.viewModel.context.contentPreviewProvider;
@@ -774,10 +766,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 self.videoPlayer = videoPreviewView.videoPlayer;
                 videoPreviewView.delegate = self;
                 [receiver setVideoPlayer:self.videoPlayer];
-                
-                // If the end card is going to show after the video finishes,
-                // set this to make a clean transition in for the end card
-                videoPreviewView.willShowEndCard = self.viewModel.endCardViewModel != nil;
             }
             
             return self.contentCell;
@@ -1361,121 +1349,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.viewModel loadComments:VPageTypePrevious completion:nil];
 }
 
-#pragma mark - VEndCardViewControllerDelegate
-
-- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
-{
-    [self.videoPlayer seekToTimeSeconds:0.0f];
-    [endCardViewController transitionOutAllWithBackground:YES completion:^
-     {
-         [self.contentCell hideEndCard];
-         [self.videoPlayer play];
-    }];
-}
-
-- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
-{
-    [endCardViewController transitionOutAllWithBackground:NO completion:nil];
-    
-    [self.viewModel loadNextSequenceWithSuccess:^(VSequence *sequence)
-     {
-         [self showNextSequence:sequence];
-         
-     }
-                                    failure:^(NSError *error)
-     {
-         [self.contentCell hideEndCard];
-         
-         [self presentViewController:[VContentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
-     }];
-}
-
-- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueEndCard forSessionParameterWithKey:VTrackingKeyContext];
-    
-    if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
-    {
-        [self.sequenceActionController showRemixOnViewController:self.navigationController
-                                                    withSequence:self.viewModel.sequence
-                                            andDependencyManager:self.dependencyManager
-                                                  preloadedImage:nil
-                                                defaultVideoEdit:VDefaultVideoEditGIF
-                                                      completion:^(BOOL finished)
-         {
-             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
-                              forSessionParameterWithKey:VTrackingKeyContext];
-         }];
-    }
-    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierMeme] )
-    {
-        [self.sequenceActionController showRemixOnViewController:self.navigationController
-                                                    withSequence:self.viewModel.sequence
-                                            andDependencyManager:self.dependencyManager
-                                                  preloadedImage:nil
-                                                defaultVideoEdit:VDefaultVideoEditSnapshot
-                                                      completion:^(BOOL finished)
-         {
-             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
-                              forSessionParameterWithKey:VTrackingKeyContext];
-         }];
-    }
-    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
-    {
-        [self.sequenceActionController repostActionFromViewController:self.navigationController
-                                                                 node:self.viewModel.currentNode
-                                                           completion:^(BOOL finished)
-         {
-             [actionCell showSuccessState];
-             actionCell.enabled = NO;
-             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
-                              forSessionParameterWithKey:VTrackingKeyContext];
-         }];
-    }
-    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
-    {
-        [self.sequenceActionController shareFromViewController:self.navigationController
-                                                      sequence:self.viewModel.sequence
-                                                          node:self.viewModel.currentNode
-                                                    completion:^
-         {
-             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
-                              forSessionParameterWithKey:VTrackingKeyContext];
-         }];
-    }
-}
-
-- (void)disableEndcardAutoplay
-{
-    [self.contentCell disableEndcardAutoplay];
-}
-
-- (void)showNextSequence:(VSequence *)nextSequence
-{
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
-    
-    ContentViewContext *context = [[ContentViewContext alloc] init];
-    context.sequence = nextSequence;
-    context.streamId = self.viewModel.streamId;
-    context.originDependencyManager = self.dependencyManager;
-    context.destinationDependencyManager = self.dependencyManager;
-    context.viewController = self;
-    
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
-    self.navigationController.delegate = contentViewController;
-    contentViewController.transitioningDelegate = self.endcardNextTransitionDelegate;
-    [self.navigationController pushViewController:contentViewController animated:YES];
-    
-    // Put back our current sequence preview
-    if ( self.viewModel.context.contentPreviewProvider != nil )
-    {
-        self.contentCell.sequencePreviewView.focusType = VFocusTypeNone;
-        [self.viewModel.context.contentPreviewProvider restorePreviewView:self.contentCell.sequencePreviewView];
-    }
-}
-
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
@@ -1498,10 +1371,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    return [self.endcardNextTransitionDelegate navigationController:navigationController
-                                   animationControllerForOperation:operation
-                                                fromViewController:fromVC
-                                                  toViewController:toVC];
+    return nil; //< Fix or remove this?  Previously had endcard transition stuff
 }
 
 #pragma mark - NSUserActivityDelegate
@@ -1605,7 +1475,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillAppear
 {
-    if ( !self.contentCell.isEndCardShowing && [self shouldShowAccessoryButtons] )
+    if ( [self shouldShowAccessoryButtons] )
     {
         self.closeButton.alpha = 1.0f;
         self.moreButton.alpha = 1.0f;
@@ -1614,7 +1484,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)animateAlongsideVideoToolbarWillDisappear
 {
-    if ( !self.contentCell.isEndCardShowing && !self.contentCell.isPlayingAd)
+    if ( !self.contentCell.isPlayingAd)
     {
         self.closeButton.alpha = 0.0f;
         self.moreButton.alpha = 0.0f;
@@ -1623,14 +1493,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoPlaybackDidFinish
 {
-    if (self.viewModel.endCardViewModel != nil)
-    {
-        if ( [self shouldShowAccessoryButtons] )
-        {
-            [self setAccessoryButtonsHidden:NO];
-        }
-        [self.contentCell showEndCardWithViewModel:self.viewModel.endCardViewModel];
-    }
     self.videoPlayerDidFinishPlayingOnce = YES;
 }
 

@@ -15,7 +15,6 @@
 #import "VUser+RestKit.h"
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
-#import "VEndCard+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VImageAsset+RestKit.h"
 #import "VEditorializationItem.h"
@@ -155,13 +154,8 @@
         RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                              toKeyPath:VSelectorName(tracking)
                                                                                            withMapping:[VTracking entityMapping]];
-        RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"endcard"
-                                                                                            toKeyPath:VSelectorName(endCard)
-                                                                                          withMapping:[VEndCard entityMapping]];
-        [mapping addPropertyMapping:voteResultMapping];
         [mapping addPropertyMapping:adBreaksMapping];
         [mapping addPropertyMapping:trackingMapping];
-        [mapping addPropertyMapping:endCardMapping];
         
         [VObjectManager sharedManager].mappingCache[entityMappingKey] = mapping;
     }

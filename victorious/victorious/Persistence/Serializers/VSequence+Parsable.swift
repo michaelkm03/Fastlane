@@ -39,11 +39,6 @@ extension VSequence: PersistenceParsable {
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
-        if let endCardModel = sequence.endCard {
-            endCard = v_managedObjectContext.v_createObject() as VEndCard
-            endCard?.populate(fromSourceModel: endCardModel)
-        }
-        
         let uniqueUserData = [ "remoteId" : NSNumber(longLong: sequence.user.userID) ]
         self.user = v_managedObjectContext.v_findOrCreateObject( uniqueUserData ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
