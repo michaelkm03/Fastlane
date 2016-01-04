@@ -17,7 +17,7 @@ import CoreData
 class CoreDataManager: NSObject {
     
     /// An object that points to the location to one version (.mom, created from an .xcmappingmodel)
-    /// of a verioned Core Data managed object model (.momd, from an .xcdatamodeld).  Note the 'd' in
+    /// of a versioned Core Data managed object model (.momd, from an .xcdatamodeld).  Note the 'd' in
     // the latter file extension, which indicates that the file is versioned.
     struct ModelVersion {
         /// The version identifier configured in the managed obejct model (e.g. "2.0")

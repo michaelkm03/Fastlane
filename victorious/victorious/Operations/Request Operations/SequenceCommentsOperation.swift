@@ -55,7 +55,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             
             // If refreshing with a network connection, delete everything we have
-            if self.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
+            // TODO: revising how this fits into 4.0 architecture.
+            if self.requestExecutor.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
                 let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
                 for comment in existingComments {
                     context.deleteObject( comment )
@@ -77,11 +78,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             sequence.v_addObjects( newComments, to: "comments" )
             context.v_save()
             
-            // Reload results from main queue
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults()
-                completion()
-            }
+            self.results = self.fetchResults()
+            completion()
         }
     }
     
@@ -90,9 +88,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "sequenceId == %@",
-                argumentArray: [self.sequenceID],
-                paginator: self.request.paginator
+                v_format: "sequenceId == %@",
+                v_argumentArray: [self.sequenceID],
+                v_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )

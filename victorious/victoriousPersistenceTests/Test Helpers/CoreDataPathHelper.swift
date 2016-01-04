@@ -21,11 +21,8 @@ struct CoreDataPathHelper {
         return urls.last!
     }
     
-    func deleteFilesInDirectory( directory: NSURL ) {
-        
-        for url in NSFileManager.defaultManager().enumeratorAtURL( directory, includingPropertiesForKeys: nil, options: [], errorHandler: nil )! {
-            do { try NSFileManager.defaultManager().removeItemAtURL( url as! NSURL ) }
-            catch {}
-        }
+    func deleteItemAtURL( url: NSURL ) {
+        do { try NSFileManager.defaultManager().removeItemAtURL( url ) }
+        catch {}
     }
 }

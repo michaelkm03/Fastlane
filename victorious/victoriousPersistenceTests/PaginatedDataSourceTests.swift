@@ -77,7 +77,7 @@ class PaginatedDataSourceTests: XCTestCase {
         //XCTFail( "TODO" )
     }
     
-    func testLoadPagesInAscendingOrder() {
+    func __testLoadPagesInAscendingOrder() {
         for i in 0 ..< numberOfPagesBeforeReachingEnd {
             let expectation = expectationWithDescription("page \(i)")
             let pageType: VPageType = i == 0 ? .First : .Next

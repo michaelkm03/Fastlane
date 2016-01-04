@@ -78,9 +78,9 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "user.remoteId = %@",
-                argumentArray: [ currentUser.remoteId ],
-                paginator: self.request.paginator
+                v_format: "user.remoteId = %@",
+                v_argumentArray: [ currentUser.remoteId ],
+                v_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )

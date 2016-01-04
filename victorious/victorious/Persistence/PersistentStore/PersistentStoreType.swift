@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum PersistentStoreError: ErrorType {
+    case DeleteFailed(storeURL: NSURL, error: ErrorType)
+}
+
 /// Defines an object that provides access to a persistent backed by CoreData that exposes
 /// its internally configured and managed instances of `NSManagedObjectContext` which are the
 /// primary interfaces through which application code should interact.
@@ -25,5 +29,5 @@ import Foundation
     
     /// Deletes the file on disk at the persistent store URL
     /// DANGER: This will irrevocably delete all local data!
-    func deletePersistentStore()
+    @objc(deletePersistentStoreAndReturnError:) func deletePersistentStore() throws
 }

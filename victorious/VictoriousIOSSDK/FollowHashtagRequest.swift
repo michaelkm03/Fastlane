@@ -25,12 +25,6 @@ public struct FollowHashtagRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int64 {
-        
-        guard let followRelationshipID = responseJSON["payload"]["followtag_id"].int64 else {
-            throw ResponseParsingError()
-        }
-        
-        return followRelationshipID
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {
     }
 }

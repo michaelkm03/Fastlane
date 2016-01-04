@@ -29,7 +29,7 @@ public extension UICollectionView {
             let index = oldValue.indexOfObject( item )
             deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
         }
-        
+
         UIView.performWithoutAnimation() {
             self.performBatchUpdates({
                 self.insertItemsAtIndexPaths( insertedIndexPaths )

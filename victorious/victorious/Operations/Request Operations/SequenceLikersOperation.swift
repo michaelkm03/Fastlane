@@ -67,9 +67,9 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                format: "sequence.remoteId = %@",
-                argumentArray: [ self.sequenceID ],
-                paginator: self.request.paginator
+                v_format: "sequence.remoteId = %@",
+                v_argumentArray: [ self.sequenceID ],
+                v_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VSequenceLiker] = context.v_executeFetchRequest( fetchRequest )
