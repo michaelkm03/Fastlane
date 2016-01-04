@@ -54,7 +54,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(paginator: self.request.paginator)
+            let predicate = NSPredicate(v_paginator: self.request.paginator)
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
         }
