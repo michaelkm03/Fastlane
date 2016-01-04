@@ -6,9 +6,13 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
-@testable import victorious
+import Foundation
 
+/// A concrete implementation of `PersistentStoreType` to be used for unit tests and automation tests.
+/// You may freely populate this persistent store with whatever data is required for a test as well
+/// as delete any or all of its contents.
 class TestPersistentStore: NSObject, PersistentStoreType {
+
     private let persistentStorePath = "victoriOS-test.sqlite"
     private let managedObjectModelName = "victoriOS"
     private let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
@@ -47,6 +51,9 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         }
 
         super.init()
+        
+        // Start every instance with a clean slate by deleting any existing persistent store
+        do { try self.deletePersistentStore() } catch { }
     }
 
     func deletePersistentStore() throws {

@@ -14,7 +14,7 @@ class RemoveStreamItemOperation: Operation {
     
     private let streamItemID: String
     
-    let persistentStore: PersistentStoreType = MainPersistentStore()
+    let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     init( streamItemID: String) {
         self.streamItemID = streamItemID

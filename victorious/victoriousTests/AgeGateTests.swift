@@ -66,7 +66,6 @@ class AgeGateTests: XCTestCase {
     
     func testFilterTabMenuItems() {
         let inputItems = [
-<<<<<<< HEAD
             VNavigationMenuItem(title: "", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
             VNavigationMenuItem(title: "Explore", identifier: "Explore", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
             VNavigationMenuItem(title: "Explore2", identifier: "Explore2", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
@@ -75,17 +74,6 @@ class AgeGateTests: XCTestCase {
             VNavigationMenuItem(title: "Following", identifier: "Following", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
             VNavigationMenuItem(title: "Channel", identifier: "Channel", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
             VNavigationMenuItem(title: "Home", identifier: "Home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
-=======
-            VNavigationMenuItem(title: "foo", identifier: "foo", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore", identifier: "Menu Explore", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Explore2", identifier: "Menu Explore2", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "fjdkslajkfld", identifier: "Menu asdf", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Channels", identifier: "Menu Channels", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "following", identifier: "Menu following", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "channel", identifier: "Menu channel", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "home", identifier: "Menu home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor()),
-            VNavigationMenuItem(title: "Home", identifier: "Menu Home", icon: UIImage(), selectedIcon: UIImage(), destination: UIViewController(), position: "bar", tintColor: UIColor())
->>>>>>> 11c60fe1fbadd7c642af7a409e4debf22f419228
         ]
         
         AgeGate.authorizedMenuItemIdentifiers = ["Home", "Channels", "Explore"]

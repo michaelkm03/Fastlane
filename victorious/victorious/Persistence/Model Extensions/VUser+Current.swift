@@ -22,6 +22,7 @@ public extension VUser {
     static func currentUser( inManagedObjectContext managedObjectContext: NSManagedObjectContext ) -> VUser? {
         
         let persistentStore: PersistentStoreType = MainPersistentStore()
+        
         guard let user = persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] as? VUser else {
             return nil
         }
