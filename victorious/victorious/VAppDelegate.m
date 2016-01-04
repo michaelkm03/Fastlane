@@ -44,6 +44,9 @@
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
+    /// Initialize the singleton and enable
+    [InterstitialManager sharedInstance].shouldRegisterAlerts = YES;
+    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
     

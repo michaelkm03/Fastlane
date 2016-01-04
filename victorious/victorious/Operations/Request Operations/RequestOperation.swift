@@ -16,17 +16,6 @@ private let _defaultQueue: NSOperationQueue = {
     return queue
 }()
 
-class RequestOperationAlerts: NSObject {
-    static let didReceiveAlertsNotification = "com.getvictorious.RequestOperation.AlertResult.didReceiveAlertsNotification"
-    static let alertsKey = "com.getvictorious.RequestOperation.AlertResult.alertsKey"
-    
-    let alerts: [Alert]
-    
-    init(alerts: [Alert]) {
-        self.alerts = alerts
-    }
-}
-
 class RequestOperation: NSOperation, Queuable {
     
     static let errorDomain: String = "com.getvictorious.RequestOperation"

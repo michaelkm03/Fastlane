@@ -9,6 +9,19 @@
 import Foundation
 import VictoriousIOSSDK
 
+/// A class wrapper for an array of `Alert` structs so that they can be passed through
+/// Objective-C runtime infrastructure such as `NSNotificationCenter`.
+class RequestAlerts: NSObject {
+    static let didReceiveAlertsNotification = "com.getvictorious.RequestOperation.AlertResult.didReceiveAlertsNotification"
+    static let alertsKey = "com.getvictorious.RequestOperation.AlertResult.alertsKey"
+    
+    let alerts: [Alert]
+    
+    init(alerts: [Alert]) {
+        self.alerts = alerts
+    }
+}
+
 struct MainRequestExecutor: RequestExecutorType {
     
     private let persistentStore: PersistentStoreType
@@ -48,7 +61,18 @@ struct MainRequestExecutor: RequestExecutorType {
                 requestContext: requestContext,
                 authenticationContext: authenticationContext,
                 callback: { (result, error, alerts) -> () in
-                   dispatch_async( dispatch_get_main_queue() ) {
+                    dispatch_async( dispatch_get_main_queue() ) {
+                        
+                        if !alerts.isEmpty {
+                            let wrappedAlerts = RequestAlerts(alerts: alerts)
+                            let userInfo = [ RequestAlerts.alertsKey : wrappedAlerts ];
+                            NSNotificationCenter.defaultCenter().postNotificationName(
+                                RequestAlerts.didReceiveAlertsNotification,
+                                object: nil,
+                                userInfo: userInfo
+                            )
+                        }
+                        
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
                             if let onError = onError {
