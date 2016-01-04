@@ -18,7 +18,7 @@ class FollowUserOperationTest: XCTestCase {
     let userToFollowID = Int64(1)
     let currentUserID = Int64(2)
     let screenName = "screenName"
-    let operationHelper = RequestOperationHelper()
+    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()

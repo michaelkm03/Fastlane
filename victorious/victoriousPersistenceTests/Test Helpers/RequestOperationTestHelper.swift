@@ -9,7 +9,7 @@ import XCTest
 @testable import victorious
 
 /// Helper class for testing a RequestOperation or it's subclass.
-class RequestOperationHelper {
+class RequestOperationTestHelper {
     func createUser(remoteId remoteId: Int64, persistentStore: PersistentStoreType) -> VUser {
         return persistentStore.mainContext.v_createObjectAndSave { user in
             user.remoteId = NSNumber(longLong: remoteId)
