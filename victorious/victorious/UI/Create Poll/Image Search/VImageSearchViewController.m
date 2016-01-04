@@ -272,12 +272,13 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf)
             {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ImageDownloadFailed", @"")
-                                                                    message:@""
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                          otherButtonTitles:nil];
-                [alertView show];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle: NSLocalizedString(@"ImageDownloadFailed", @"")
+                                                                                          message:@""
+                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:nil]];
+                [strongSelf presentViewController:alertController animated:YES completion:nil];
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             }
         }];

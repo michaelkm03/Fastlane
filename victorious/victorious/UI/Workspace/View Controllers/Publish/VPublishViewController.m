@@ -316,16 +316,16 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
         [hud hide:YES];
         
         if (error != nil)
-        {
-            UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
-                                                                     message:error.localizedDescription
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                              onCancelButton:^
-                                           {
-                                               [strongSelf closeOnComplete:NO];
-                                           }
-                                                  otherButtonTitlesAndBlocks:nil, nil];
-            [publishFailure show];
+        {           
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upload failure", @"")
+                                                                                     message:error.localizedDescription
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 [strongSelf closeOnComplete:NO];
+                                                             }]];
+            [strongSelf presentViewController:alertController animated:YES completion:nil];
         }
         else
         {
