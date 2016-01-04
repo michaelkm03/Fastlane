@@ -116,12 +116,13 @@
          [hudForView hide:YES];
          if (error != nil)
          {
-             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
-                                                                  message:error.localizedDescription
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                           onCancelButton:nil
-                                               otherButtonTitlesAndBlocks:nil, nil];
-             [errorAlert show];
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Render failure", @"")
+                                                                                      message:error.localizedDescription
+                                                                               preferredStyle:UIAlertControllerStyleAlert];
+             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:nil]];
+             [self presentViewController:alertController animated:YES completion:nil];
          }
          else
          {

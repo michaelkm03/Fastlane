@@ -77,12 +77,13 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     {
         if (error.code != kVFollowsRelationshipAlreadyExistsError)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                  otherButtonTitles:nil];
-            [alert show];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                                                     message:error.localizedDescription
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil]];
+            [viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
         }
         completion(user);
     };
@@ -126,12 +127,14 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"UnfollowError", @"")
+                                                                                 message:error.localizedDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
+        
         completion(user);
     };
     

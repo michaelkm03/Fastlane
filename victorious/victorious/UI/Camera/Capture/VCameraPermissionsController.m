@@ -71,12 +71,14 @@
     {
         errorMessage = NSLocalizedString(@"AccessCameraDenied", @"");
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:errorMessage
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:errorMessage
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
