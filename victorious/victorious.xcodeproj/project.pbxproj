@@ -367,7 +367,6 @@
 		5A6F11B71C386E8A000BF7F3 /* NSNumber+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B61C386E8A000BF7F3 /* NSNumber+Extensions.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		62192E371C34D0950033DFBF /* VFollowingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62192E361C34D0950033DFBF /* VFollowingHelper.swift */; };
-		6236F86E1C35FDFE00746476 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86D1C35FDFE00746476 /* TestPersistentStore.swift */; };
 		6236F8701C36016D00746476 /* FollowUserOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86F1C36016D00746476 /* FollowUserOperationTest.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
@@ -743,7 +742,6 @@
 		A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E31A0816D500339CB3 /* VPasswordValidator.m */; };
 		A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E61A08173B00339CB3 /* VEmailValidator.m */; };
 		A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E91A081FFF00339CB3 /* VStringValidator.m */; };
-		A744402A1C03932B0026FBFC /* MainPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74440291C03932B0026FBFC /* MainPersistentStore.swift */; };
 		A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */; };
 		A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */; };
 		A74679721BF6CC9B0026FD2E /* VStoredLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A746796F1BF6CC9B0026FD2E /* VStoredLogin.m */; };
@@ -847,7 +845,6 @@
 		A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */; };
 		A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */; };
 		A76AEAE11C038E0000E8A26F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */; };
-		A76AEAE31C038E0000E8A26F /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */; };
 		A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */; };
 		A76AEAE61C038E0000E8A26F /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */; };
 		A76AEAE91C038E0000E8A26F /* SequenceCommentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */; };
@@ -1114,6 +1111,10 @@
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
 		A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */; };
 		A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */; };
+		A7EB325E1C3B1993006C2783 /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
+		A7EB32611C3B1CE6006C2783 /* NSBundle+TestBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32601C3B1CE6006C2783 /* NSBundle+TestBundle.m */; };
+		A7EB32661C3B1FAC006C2783 /* MainPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */; };
+		A7EB32691C3B1FC1006C2783 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */; };
 		A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB574C1AF8402A006AA1CF /* VURLDetector.m */; };
 		A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB57511AF9378C006AA1CF /* VTextPostCalloutHelper.m */; };
 		A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
@@ -2409,7 +2410,6 @@
 		5A6F11B61C386E8A000BF7F3 /* NSNumber+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Extensions.swift"; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
 		62192E361C34D0950033DFBF /* VFollowingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowingHelper.swift; sourceTree = "<group>"; };
-		6236F86D1C35FDFE00746476 /* TestPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistentStore.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUserOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowUserOperationTest.swift; path = Operations/FollowUserOperationTest.swift; sourceTree = "<group>"; };
 		6236F8731C3602EE00746476 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestTrackingManager.swift; path = Managers/TestTrackingManager.swift; sourceTree = "<group>"; };
 		6236F8751C36030000746476 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestRequestExecutor.swift; path = Operations/TestRequestExecutor.swift; sourceTree = "<group>"; };
@@ -2961,7 +2961,6 @@
 		A743E7E81A081FFF00339CB3 /* VStringValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStringValidator.h; sourceTree = "<group>"; };
 		A743E7E91A081FFF00339CB3 /* VStringValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStringValidator.m; sourceTree = "<group>"; };
 		A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEmailValidatorTests.m; sourceTree = "<group>"; };
-		A74440291C03932B0026FBFC /* MainPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPersistentStore.swift; sourceTree = "<group>"; };
 		A746795D1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserHeaderLayoutManager.h; sourceTree = "<group>"; };
 		A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserHeaderLayoutManager.m; sourceTree = "<group>"; };
 		A74679661AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWebBrowser.h"; sourceTree = "<group>"; };
@@ -3130,7 +3129,6 @@
 		A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequestBody.swift; sourceTree = "<group>"; };
 		A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
-		A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceOperation.swift; sourceTree = "<group>"; };
 		A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperation.swift; sourceTree = "<group>"; };
 		A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
 		A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsOperation.swift; sourceTree = "<group>"; };
@@ -3468,6 +3466,10 @@
 		A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creator-avatar@2x.png"; sourceTree = "<group>"; };
 		A7E4EDED1A81A4B30035D6B1 /* VEndCardActionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEndCardActionModel.h; sourceTree = "<group>"; };
 		A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEndCardActionModel.m; sourceTree = "<group>"; };
+		A7EB325F1C3B1CE6006C2783 /* NSBundle+TestBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+TestBundle.h"; sourceTree = "<group>"; };
+		A7EB32601C3B1CE6006C2783 /* NSBundle+TestBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+TestBundle.m"; sourceTree = "<group>"; };
+		A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPersistentStore.swift; sourceTree = "<group>"; };
+		A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPersistentStore.swift; sourceTree = "<group>"; };
 		A7EB574A1AF82159006AA1CF /* VLoginType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VLoginType.h; sourceTree = "<group>"; };
 		A7EB574B1AF8402A006AA1CF /* VURLDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VURLDetector.h; sourceTree = "<group>"; };
 		A7EB574C1AF8402A006AA1CF /* VURLDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VURLDetector.m; sourceTree = "<group>"; };
@@ -7075,7 +7077,6 @@
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
-				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				628681F41C287C9B00DEF638 /* FollowUserOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
@@ -7298,7 +7299,6 @@
 		A789F7141BF11F4900F5C87B /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				A74440291C03932B0026FBFC /* MainPersistentStore.swift */,
 				A789F71A1BF11F4900F5C87B /* Models */,
 				A789F71D1BF11F4900F5C87B /* Parsers */,
 				A7F8436B1BFD5A0B004C3D55 /* PersistentStore */,
@@ -7380,8 +7380,6 @@
 				A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */,
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
-				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
-				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
 				A76711F31C1B6E54006568DF /* VEventTracker.h */,
 			);
 			path = Tracking;
@@ -7691,7 +7689,6 @@
 				A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */,
 				A7B0A6201C347A01008B875C /* PersistentStoreContextTests.swift */,
 				A7B0A6211C347A01008B875C /* QueueableTests.swift */,
-				6236F86D1C35FDFE00746476 /* TestPersistentStore.swift */,
 				A7B0A6231C347A01008B875C /* Sample Data */,
 				A7B0A62C1C347A01008B875C /* Test Helpers */,
 				A7EBF5241C2B8CA20080C7CF /* Info.plist */,
@@ -7802,14 +7799,16 @@
 			isa = PBXGroup;
 			children = (
 				A7F8436C1BFD5A0B004C3D55 /* CoreDataManager.swift */,
+				A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */,
 				A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */,
 				A706FE231C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift */,
 				A7F843701BFD5A0B004C3D55 /* NSManagedObject+Entity.swift */,
-				5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */,
 				A7F8436E1BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift */,
 				A7F8436D1BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift */,
 				A706FE211C23625400C2CBFF /* NSManagedObjectContext+Perform.swift */,
+				5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */,
 				A7F8436F1BFD5A0B004C3D55 /* PersistentStoreType.swift */,
+				A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */,
 			);
 			path = PersistentStore;
 			sourceTree = "<group>";
@@ -7923,6 +7922,8 @@
 				D800A6161AEEAA0F00F1A06A /* VCompatibility.h */,
 				0314D07719B4685C00FA363C /* VConstants.h */,
 				0314D07819B4685C00FA363C /* VConstants.m */,
+				A7EB325F1C3B1CE6006C2783 /* NSBundle+TestBundle.h */,
+				A7EB32601C3B1CE6006C2783 /* NSBundle+TestBundle.m */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -10712,7 +10713,6 @@
 				6236F8791C36037200746476 /* AccountCreateOperationTests.swift in Sources */,
 				6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */,
 				6236F8701C36016D00746476 /* FollowUserOperationTest.swift in Sources */,
-				6236F86E1C35FDFE00746476 /* TestPersistentStore.swift in Sources */,
 				6236F87A1C36037200746476 /* SuggestedUsersOperationTests.swift in Sources */,
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
@@ -10723,6 +10723,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7EB32661C3B1FAC006C2783 /* MainPersistentStore.swift in Sources */,
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
@@ -11032,6 +11033,7 @@
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
 				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
+				A7EB32611C3B1CE6006C2783 /* NSBundle+TestBundle.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				A76AEAE01C038E0000E8A26F /* AccountCreateOperation.swift in Sources */,
 				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
@@ -11187,6 +11189,7 @@
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
+				A7EB325E1C3B1993006C2783 /* FlagSequenceOperation.swift in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,
 				A75FAF1919E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m in Sources */,
 				0314D0AD19B4698800FA363C /* VObjectManager+Analytics.m in Sources */,
@@ -11224,7 +11227,6 @@
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */,
-				A744402A1C03932B0026FBFC /* MainPersistentStore.swift in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
 				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
@@ -11233,6 +11235,7 @@
 				A6DAEB5C1B4C786E00935EA0 /* VRemixPresenter.m in Sources */,
 				03960BBC1BB21418006815F6 /* VHashTagTextView.m in Sources */,
 				A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */,
+				A7EB32691C3B1FC1006C2783 /* TestPersistentStore.swift in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */,
@@ -11500,7 +11503,6 @@
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
-				A76AEAE31C038E0000E8A26F /* FlagSequenceOperation.swift in Sources */,
 				A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */,
 				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
