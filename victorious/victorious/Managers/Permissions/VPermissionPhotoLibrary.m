@@ -8,22 +8,22 @@
 
 #import "VPermissionPhotoLibrary.h"
 
-@import AssetsLibrary;
+@import Photos;
 
 @implementation VPermissionPhotoLibrary
 
 - (VPermissionState)permissionState
 {
-    ALAuthorizationStatus systemState = [ALAssetsLibrary authorizationStatus];
-    switch (systemState)
+    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+    switch (authorizationStatus)
     {
-        case ALAuthorizationStatusAuthorized:
-            return VPermissionStateAuthorized;
-        case ALAuthorizationStatusDenied:
-        case ALAuthorizationStatusRestricted:
-            return VPermissionStateSystemDenied;
-        case ALAuthorizationStatusNotDetermined:
+        case PHAuthorizationStatusNotDetermined:
             return VPermissionStateUnknown;
+        case PHAuthorizationStatusRestricted:
+        case PHAuthorizationStatusDenied:
+            return VPermissionStateSystemDenied;
+        case PHAuthorizationStatusAuthorized:
+            return VPermissionStateAuthorized;
     }
 }
 
@@ -37,25 +37,22 @@
     // Completion handler is required
     NSParameterAssert(completion != nil);
     
-    ALAssetsLibrary *assetsLibrary = [ALAssetsLibrary new];
-    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
-     {
-         if (group == nil)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
-                            {
-                                completion(YES, [self permissionState], nil);
-                                [self trackPermission:VTrackingValueAuthorized];
-                            });
-         }
-     } failureBlock:^(NSError *error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            completion(NO, [self permissionState], nil);
-                            [self trackPermission:VTrackingValueDenied];
-                        });
-     }];
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            if (status == PHAuthorizationStatusAuthorized)
+            {
+                completion(YES, [self permissionState], nil);
+                [self trackPermission:VTrackingValueAuthorized];
+            }
+            else
+            {
+                completion(NO, [self permissionState], nil);
+                [self trackPermission:VTrackingValueDenied];
+            }
+        });
+    }];
 }
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager

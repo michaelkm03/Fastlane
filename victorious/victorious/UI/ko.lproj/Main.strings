@@ -31,6 +31,9 @@
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "답변을 입력하세요...";
 
+/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "pAa-W5-W1B"; */
+"pAa-W5-W1B.text" = "가입하시면 다음에 동의하시는 것입니다:";
+
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "전송";
 
