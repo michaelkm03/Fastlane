@@ -29,7 +29,7 @@ class AccountCreateOperation: RequestOperation {
     // MARK: - Operation overrides
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( response: AccountCreateResponse, completion:()->() ) {

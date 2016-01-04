@@ -16,7 +16,7 @@ class DeviceExperimentsOperation: RequestOperation {
     private(set) var defaultExperimentIDs: Set<Int> = []
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int64]), completion:() -> () ) {

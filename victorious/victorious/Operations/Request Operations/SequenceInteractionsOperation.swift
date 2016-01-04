@@ -21,7 +21,7 @@ class SequenceUserInterationsOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
     private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {

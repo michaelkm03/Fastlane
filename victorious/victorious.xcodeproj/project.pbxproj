@@ -3081,7 +3081,7 @@
 		A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTimingStreamHelper.swift; sourceTree = "<group>"; };
 		A76711ED1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewAppTimingHelper.swift; sourceTree = "<group>"; };
 		A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTimingTrackerTests.swift; sourceTree = "<group>"; };
-		A76711F31C1B6E54006568DF /* VTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTracker.h; sourceTree = "<group>"; };
+		A76711F31C1B6E54006568DF /* VEventTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VEventTracker.h; sourceTree = "<group>"; };
 		A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewAppTimingHelperTests.swift; sourceTree = "<group>"; };
 		A76711FA1C1B7DD7006568DF /* TimingTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingTracker.swift; sourceTree = "<group>"; };
 		A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTimingStreamHelperTests.swift; sourceTree = "<group>"; };
@@ -7078,7 +7078,7 @@
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
-				A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */,
+				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				628681F41C287C9B00DEF638 /* FollowUserOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
@@ -7091,8 +7091,8 @@
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
 				A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */,
 				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
-				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				62E2407A1C332125001037C3 /* RequestExecutorType.swift */,
+				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
 				A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
@@ -7385,7 +7385,7 @@
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
 				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
-				A76711F31C1B6E54006568DF /* VTracker.h */,
+				A76711F31C1B6E54006568DF /* VEventTracker.h */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
