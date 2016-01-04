@@ -29,12 +29,12 @@ public func -=( inout lhs: NSNumber, rhs: Int64 ) -> NSNumber {
 }
 
 extension NSNumber {
-    
+
     convenience init?( v_longLong longLong: Int64? ) {
         if let longLong = longLong {
-            self.init( longLong: longLong )
+		    self.init( longLong: longLong )
         } else {
-            return nil
+		    return nil
         }
     }
 }

@@ -15,12 +15,8 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     private(set) var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
-    required init( request: ConversationListRequest ) {
+    required init( request: ConversationListRequest = ConversationListRequest()) {
         self.request = request
-    }
-    
-    override convenience init() {
-        self.init( request: ConversationListRequest() )
     }
     
     override func main() {
@@ -59,7 +55,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(paginator: self.request.paginator)
+            let predicate = NSPredicate(v_paginator: self.request.paginator)
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
         }

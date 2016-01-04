@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class LogoutOperation: RequestOperation {
     
     let request = LogoutRequest()
-    
+
     override init() {
         super.init()
         self.qualityOfService = .UserInitiated

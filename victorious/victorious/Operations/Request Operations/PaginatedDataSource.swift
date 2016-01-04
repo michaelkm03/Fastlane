@@ -28,8 +28,6 @@ import Foundation
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
     
-    private var _didReachEndOfResults: Bool = false
-    
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
             if oldValue != visibleItems {
@@ -46,20 +44,7 @@ import Foundation
     
     // MARK: - Public API
     
-    func didReachEndOfResults() -> Bool {
-        return _didReachEndOfResults
-    }
-    
     var delegate: PaginatedDataSourceDelegate?
-    
-    func canLoadPageType( pageType: VPageType ) -> Bool {
-        switch pageType {
-        case .Next:
-            return !_didReachEndOfResults
-        default:
-            return true
-        }
-    }
     
     func addFilter( filter: AnyObject -> Bool  ) {
         filters.append( filter )
@@ -78,7 +63,7 @@ import Foundation
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading && self.canLoadPageType(pageType) else {
+        guard !isLoading else {
             return
         }
         
@@ -88,41 +73,38 @@ import Foundation
         case .First:
             operationToQueue = createOperation() as? RequestOperation
             
-        case .Next where !_didReachEndOfResults:
+        case .Next:
             operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
             
         case .Previous:
             operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
-            
-        default:
-            operationToQueue = nil
         }
         
-        if let operation = operationToQueue,
-            typedOperation = operationToQueue as? T {
-                self._didReachEndOfResults = false
-                self.currentOperation = operation
-                self.isLoading = true
-                operation.queue() { error in
-                    self.isLoading = false
-                    self.onOperationComplete( typedOperation, pageType: pageType, error: error)
-                    completion?( operation: typedOperation, error: error )
-                }
+        if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
+            self.isLoading = true
+            operation.queue() { error in
+                self.isLoading = false
+                self.onOperationComplete( typedOperation, pageType: pageType, error: error)
+                completion?( operation: typedOperation, error: error )
+            }
         }
+        
+        self.currentOperation = operationToQueue
     }
     
     // MARK: - Private helpers
     
     private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
-        if let results = operation.results {
-            if operation.didResetResults {
-                self.unfilteredItems = NSOrderedSet().v_orderedSet( byAddingObjects: results, forPageType: pageType)
-            }
-            if results.count > 0 {
-                self.unfilteredItems = self.unfilteredItems.v_orderedSet( byAddingObjects: results, forPageType: pageType)
-            } else {
-                self._didReachEndOfResults = true
-            }
+        guard let results = operation.results else {
+            return
+        }
+        
+        if operation.didResetResults {
+            self.unfilteredItems = NSOrderedSet().v_orderedSet( byAddingObjects: results, forPageType: pageType)
+        }
+        
+        if !results.isEmpty {
+            self.unfilteredItems = self.unfilteredItems.v_orderedSet( byAddingObjects: results, forPageType: pageType)
         }
     }
     

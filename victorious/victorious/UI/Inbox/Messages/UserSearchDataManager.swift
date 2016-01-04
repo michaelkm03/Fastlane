@@ -62,10 +62,10 @@ class UserSearchDataManager: NSObject {
     }
     
     /// Returns whether or not there is a nother page to load, i.e. we are not already at the end of the stream.
-    func canLoadNextPage() -> Bool {
-        guard paginatedDataSource.isLoading == false else {
-            return false
-        }
-        return self.paginatedDataSource.canLoadPageType(.Next)
-    }
+//    func canLoadNextPage() -> Bool {
+//        guard paginatedDataSource.isLoading == false else {
+//            return false
+//        }
+//        return self.paginatedDataSource.canLoadPageType(.Next)
+//    }
 }

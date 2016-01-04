@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+PersistentStoreContext.swift
+//  NSManagedObjectContext+Generics.swift
 //  VictoriousIOSSDK
 //
 //  Created by Patrick Lynch on 10/26/15.
@@ -7,18 +7,6 @@
 //
 
 import Foundation
-
-public struct PersistentStorePagination {
-    let itemsPerPage: Int
-    let pageNumber: Int
-    let sortDescriptors: [NSSortDescriptor]
-    
-    public init( itemsPerPage: Int, pageNumber: Int, sortDescriptors: [NSSortDescriptor] = [] ) {
-        self.itemsPerPage = itemsPerPage
-        self.pageNumber = pageNumber
-        self.sortDescriptors = sortDescriptors
-    }
-}
 
 /// A Swift-only generic implementation of the PersistentStoreContextBasic protocol that provides access to a single
 /// Core Data managed object context.
@@ -42,7 +30,11 @@ extension NSManagedObjectContext {
     func v_findOrCreateObject<T: NSManagedObject>( queryDictionary: [ String : AnyObject ] ) -> T {
         return self.v_findOrCreateObjectWithEntityName( T.v_entityName(), queryDictionary: queryDictionary ) as! T
     }
-    
+
+    func v_findObject<T: NSManagedObject>(queryDictionary: [String : AnyObject]) -> T? {
+        return v_findObjects(queryDictionary).first
+    }
+
     func v_findObjects<T: NSManagedObject>( queryDictionary: [ String : AnyObject ] ) -> [T] {
         return v_findObjectsWithEntityName( T.v_entityName(), queryDictionary: queryDictionary ) as? [T] ?? []
     }

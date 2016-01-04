@@ -144,9 +144,9 @@ class UserSearchDataManagerTableViewAdapter: NSObject, UITableViewDataSource, UI
         guard let userSearchDataManager = userSearchDataManager else {
             return
         }
-        guard userSearchDataManager.canLoadNextPage() else {
-            return
-        }
+//        guard userSearchDataManager.canLoadNextPage() else {
+//            return
+//        }
         
         userSearchDataManager.loadPage(.Next, withCompletion: { [weak self] error in
             guard let strongSelf = self else {
