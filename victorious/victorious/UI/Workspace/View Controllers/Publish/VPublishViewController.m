@@ -322,7 +322,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                                style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                             handler:^(UIAlertAction *action) {
                                                                  [strongSelf closeOnComplete:NO];
                                                              }]];
             [strongSelf presentViewController:alertController animated:YES completion:nil];
