@@ -8,12 +8,12 @@
 
 #import "VApplicationTracking.h"
 #import "VObjectManager+Private.h"
-#import "VTrackingURLRequest.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
 
+@import VictoriousCommon;
 @import VictoriousIOSSDK;
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
@@ -39,7 +39,6 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 static NSString * const kMacroDuration               = @"%%DURATION%%";
 static NSString * const kMacroType                   = @"%%TYPE%%";
 static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
-static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -89,8 +88,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
                                     VTrackingKeyErrorDetails       : kMacroErrorDetails,
                                     VTrackingKeyType               : kMacroType,
                                     VTrackingKeySubtype            : kMacroSubtype,
-                                    VTrackingKeyDuration           : kMacroDuration,
-                                    VTrackingKeyRequestOrder       : kMacroRequestOrder };
+                                    VTrackingKeyDuration           : kMacroDuration };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
@@ -158,8 +156,7 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
         return NO;
     }
     
-    VTrackingURLRequest *request = [self requestWithUrl:url withParameters:parameters];
-    
+    NSURLRequest *request = [self requestWithUrl:url withParameters:parameters];
     if ( request == nil )
     {
         return NO;
@@ -248,18 +245,13 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
 #endif
 }
 
-- (nullable VTrackingURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters
+- (nullable NSURLRequest *)requestWithUrl:(NSString *)urlString withParameters:(NSDictionary *)parameters
 {
     VObjectManager *objectManager = [self applicationObjectManager];
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
     
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
-    
-    if ( [urlString containsString:kMacroRequestOrder] )
-    {
-        completeParameters[ VTrackingKeyRequestOrder ] = @(self.orderOfNextRequest);
-    }
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:urlString
@@ -274,10 +266,11 @@ static NSString * const kMacroRequestOrder           = @"%%REQUEST_ORDER%%";
         return nil;
     }
     
-    VTrackingURLRequest *request = [VTrackingURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [objectManager updateHTTPHeadersInRequest:request];
     request.HTTPBody = nil;
     request.HTTPMethod = @"GET";
+    [request v_setEventIndex:self.orderOfNextRequest];
     return request;
 }
 

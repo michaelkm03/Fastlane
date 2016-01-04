@@ -31,6 +31,9 @@
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Tippe eine Antwort...";
 
+/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "pAa-W5-W1B"; */
+"pAa-W5-W1B.text" = "Mit der Anmeldung akzeptierst du:";
+
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "Senden";
 

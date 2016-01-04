@@ -23,25 +23,47 @@ import colorcodes as ccodes
 # Supress compiled files
 sys.dont_write_bytecode = True
 
-_APPLIST_ENDPOINT = '/api/app/apps'
+_APPLIST_ENDPOINT = '/api/app/apps_list'
+_GOOGLE_PLAY_STORE_PREFIX = 'https://play.google.com/store/apps/details?id='
+
+
+def retrieveGooglePlayVersion(google_play_id):
+    """Retrieves the Google Play version by scraping it from the web.
+
+    Returns:
+        Version string or empty string if failure.
+    """
+    version = ''
+    play_store_response = requests.get(_GOOGLE_PLAY_STORE_PREFIX + google_play_id).text
+    version_start_tag = '<div class="content" itemprop="softwareVersion">'
+    version_end_tag = '</div>'
+
+    start = play_store_response.find(version_start_tag)
+    if start != -1:
+        end = play_store_response.find(version_end_tag, start)
+        if end != -1:
+            version = play_store_response[(start + len(version_start_tag)):end].strip()
+    return version
 
 
 def fetchAppList(server):
-    """
-    Retrieves the list of ACTIVE (Locked or Unlocked) apps from VAMS
+    """Retrieves the list of ACTIVE (Locked or Unlocked) apps from VAMS.
 
+    Returns:
+        List of app info on active apps.
     """
 
     # Calculate request hash
     url = '%s%s' % (_DEFAULT_HOST, _APPLIST_ENDPOINT)
-    req_hash = vams.calcAuthHash(_APPLIST_ENDPOINT, 'GET')
+    date = vams.createDateString()
+    req_hash = vams.calcAuthHash(_APPLIST_ENDPOINT, 'GET', date)
 
     auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
 
     headers = {
-        'Authorization':auth_header,
-        'User-Agent':vams._DEFAULT_USERAGENT,
-        'Date':vams._DEFAULT_HEADER_DATE
+        'Authorization': auth_header,
+        'User-Agent': vams._DEFAULT_USERAGENT,
+        'Date': date
     }
     response = requests.get(url, headers=headers)
     json_obj = response.json()
@@ -49,13 +71,21 @@ def fetchAppList(server):
 
     if error_code == 0:
         app_count = 0
-        print '\nVAMS Active Apps List\n---------------------------------------------------------------------------------------------'
-        print 'id   Build Name                              Name                                    Status\n---------------------------------------------------------------------------------------------'
-        for app in json_obj['payload']:
+        print '\nVAMS Active Apps List'
+        print '-----------------------------------------------------------------------------------------------------------------------'
+        print 'id   Build Name                              Name                                    Live Version (Google)    Status'
+        print '-----------------------------------------------------------------------------------------------------------------------'
+        payload = json_obj['payload']
+        for app in payload:
             app_id = app['app_id']
-            app_state = app['app_state'] or ""
-            app_name = app['app_name'] or ""
-            build_name = app['build_name'] or ""
+            app_state = app['app_state'] if 'app_state' in app else ''
+            app_name = app['app_name'] if 'app_name' in app else ''
+            build_name = app['build_name'] if 'build_name' in app else ''
+            google_play_id = app['google_play_id'] if 'google_play_id' in app else ''
+
+            version = ''
+            if google_play_id is not None and google_play_id != '':
+                version = retrieveGooglePlayVersion(google_play_id)
 
             if app_state == vams._STATE_LOCKED:
                 state = ccodes.ColorCodes.FAIL + app_state.upper() + ccodes.ColorCodes.ENDC
@@ -63,11 +93,15 @@ def fetchAppList(server):
                 state = ccodes.ColorCodes.OKGREEN + app_state.upper() + ccodes.ColorCodes.ENDC
             else:
                 state = ccodes.ColorCodes.OKBLUE + app_state.upper() + ccodes.ColorCodes.ENDC
-            print '%s%s%s%s' % (ccodes.ColorCodes.HEADER + str(app_id).ljust(5) + ccodes.ColorCodes.ENDC, build_name.ljust(40), app_name.ljust(40), state)
+            print u' '.join((ccodes.ColorCodes.HEADER + app_id.ljust(5) + ccodes.ColorCodes.ENDC,
+                                             build_name.ljust(40), app_name.ljust(40), version.ljust(25),
+                                             state)).encode('utf-8').strip()
             app_count = app_count + 1
 
-        print '---------------------------------------------------------------------------------------------'
+        print '-----------------------------------------------------------------------------------------------------------------------'
         print 'Total of %s Apps\nEnvironment: %s\n' % (app_count, server.upper())
+
+        return payload
 
     else:
         print 'No app data found. Uhh... obviously, something went wrong.'
