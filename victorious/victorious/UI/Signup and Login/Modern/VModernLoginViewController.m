@@ -296,12 +296,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                      {
                          message = NSLocalizedString(@"Invalid email address or password", @"");
                      }
-                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                     message:message
-                                                                    delegate:nil
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                           otherButtonTitles:nil];
-                     [alert show];
+                     
+                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                                              message:message
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                         style:UIAlertActionStyleDefault
+                                                                       handler:nil]];
+                     [self presentViewController:alertController animated:YES completion:nil];
                  }
              }
          }];
