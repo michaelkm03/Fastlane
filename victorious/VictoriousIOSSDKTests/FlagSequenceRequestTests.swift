@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class FlagSequenceRequestTests: XCTestCase {
     
     func testFlaggingSequenceRequest() {
-        let mockSequenceID: Int64 = 101
+        let mockSequenceID: String = "101"
         let flagRequest = FlagSequenceRequest(sequenceID: mockSequenceID)
         let urlRequest = flagRequest.urlRequest
         

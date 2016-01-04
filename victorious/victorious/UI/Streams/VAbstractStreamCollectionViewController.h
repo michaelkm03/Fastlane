@@ -55,7 +55,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     A helper method to handle triggering the refresh and responding to success or failure.
  */
-- (void)refreshWithCompletion:(void(^ __nullable)(void))completionBlock;
+- (void)loadPage:(VPageType)pageType completion:(void(^ __nullable)(void))completionBlock;
 
 /**
     Intended to be called by subclasses on `collectionView:willDisplayCell:atIndexPath:` to

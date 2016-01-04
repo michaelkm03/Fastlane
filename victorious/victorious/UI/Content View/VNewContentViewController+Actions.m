@@ -203,7 +203,7 @@
                                                                 [self.presentingViewController dismissViewControllerAnimated:YES completion:^
                                                                  {
                                                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self deleteSequence:self.viewModel.sequence completion:nil];
+                                                                     [self.viewModel deleteSequenceWithCompletion:nil];
                                                                 }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
@@ -228,7 +228,7 @@
              {
                  [self.sequenceActionController flagSheetFromViewController:contentViewController sequence:self.viewModel.sequence completion:^(UIAlertAction *action)
                  {
-                     [self flagSequence:self.viewModel.sequence completion:^void(NSError *error)
+                     [self.viewModel flagSequenceWithCompletion:^void(NSError *error)
                       {
                           [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                       }];

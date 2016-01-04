@@ -15,17 +15,22 @@
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "victorious-Swift.h"
-#import <KVOController/FBKVOController.h>
 
 @implementation VStreamCollectionViewDataSource
 
+- (instancetype)init
+{
+    NSAssert( NO, @"VStreamCollectionViewDataSource must be instantiated using the designated initializer that contains a `VStream` argument" );
+    return nil;
+}
+
 - (instancetype)initWithStream:(VStream *)stream
 {
-    self = [self init];
+    self = [super init];
     if ( self != nil )
     {
-        _visibleStreamItems = [[NSOrderedSet alloc] init];
         _stream = stream;
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -37,26 +42,18 @@
         return;
     }
     _suppressShelves = suppressShelves;
-    self.visibleStreamItems = _visibleStreamItems;
-}
-
-- (void)setVisibleStreamItems:(NSOrderedSet *)visibleStreamItems
-{
-    NSOrderedSet *oldValue = _visibleStreamItems;
-    NSOrderedSet *newValue;
-    if ( self.suppressShelves )
+    
+    if ( _suppressShelves )
     {
-        newValue = [self streamItemsWithoutShelvesFromStreamItems:visibleStreamItems];
+        [_paginatedDataSource addFilter:^BOOL(id _Nonnull object)
+         {
+             VStreamItem *streamItem = (VStreamItem *)object;
+             return [streamItem isKindOfClass:[VStreamItem class]] && [streamItem.itemType isEqualToString:VStreamItemTypeShelf];
+         }];
     }
     else
     {
-        newValue = visibleStreamItems;
-    }
-    
-    if ( newValue != oldValue )
-    {
-        _visibleStreamItems = newValue;
-        [self.delegate dataSource:self visibleStreamItemsDidUpdateFromOldValue:oldValue toNewValue:newValue];
+        [_paginatedDataSource resetFilters];
     }
 }
 
@@ -76,19 +73,19 @@
         return nil;
     }
     
-    return [self.visibleStreamItems objectAtIndex:indexPath.row];
+    return [self.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
     NSInteger section = self.hasHeaderCell ? 1 : 0;
-    NSUInteger index = [self.visibleStreamItems indexOfObject:streamItem];
+    NSUInteger index = [self.paginatedDataSource.visibleItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
 - (NSUInteger)count
 {
-    return self.visibleStreamItems.count;
+    return self.paginatedDataSource.visibleItems.count;
 }
 
 - (NSInteger)sectionIndexForContent

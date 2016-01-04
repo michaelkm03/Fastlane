@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum PersistentStoreError: ErrorType {
+    case DeleteFailed(storeURL: NSURL, error: ErrorType)
+}
+
 /// Defines an object that provides access to a persistent backed by CoreData that exposes
 /// its internally configured and managed instances of `NSManagedObjectContext` which are the
 /// primary interfaces through which application code should interact.
@@ -22,4 +26,24 @@ import Foundation
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
     var backgroundContext: NSManagedObjectContext { get }
+    
+    /// Deletes the file on disk at the persistent store URL
+    /// DANGER: This will irrevocably delete all local data!
+    @objc(deletePersistentStoreAndReturnError:) func deletePersistentStore() throws
+}
+
+/// An object that provides functions for finding an appropriate concrete implementation
+/// of `PersistentStoreType` for using in unit tests and application code.
+class PersistentStoreSelector: NSObject {
+    
+    /// Returns the primary persistent store used by this application and appropriate for its
+    /// environment.
+    class var mainPersistentStore: PersistentStoreType {
+        
+        if NSBundle.v_testBundle() != nil {
+            return TestPersistentStore()
+        } else {
+            return MainPersistentStore()
+        }
+    }
 }

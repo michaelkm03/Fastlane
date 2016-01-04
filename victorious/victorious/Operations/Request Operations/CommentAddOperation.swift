@@ -64,7 +64,7 @@ class CommentAddOperation: RequestOperation {
                 self.optimisticCommentObjectID = comment.objectID
             }
         }
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
             parameters: [

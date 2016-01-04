@@ -10,14 +10,18 @@ import XCTest
 import Nocilla
 @testable import victorious
 
-class MockTracker: NSObject, VTracker {
+class MockTracker: NSObject, VEventTracker {
     
     var lastEvent: String!
     var lastParams: [NSObject : AnyObject]!
     
-    func trackEvent(eventName: String!, parameters: [NSObject : AnyObject]!) {
+    func trackEvent(eventName: String, parameters: [NSObject : AnyObject] ) {
         lastEvent = eventName
         lastParams = parameters
+    }
+    func trackEvent(eventName: String  ) {
+        lastEvent = eventName
+        lastParams = nil
     }
 }
 
@@ -41,7 +45,8 @@ class DefaultTimingTrackerTests: XCTestCase {
             ]
         ]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: nil)
-        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance(dependencyManager: dependencyManager)
+        trackerWithDefaultURL = DefaultTimingTracker.sharedInstance()
+        trackerWithDefaultURL.setDependencyManager( dependencyManager )
 		trackerWithDefaultURL.tracker = mockTracker
     }
     
@@ -69,7 +74,7 @@ class DefaultTimingTrackerTests: XCTestCase {
         }
         
         let duration = mockTracker.lastParams?[VTrackingKeyDuration] as? Float ?? 0.0
-        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 2.0)
+        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 5.0)
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeySubtype] as? String, eventSubtype )
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeyType] as? String, eventType )
     }

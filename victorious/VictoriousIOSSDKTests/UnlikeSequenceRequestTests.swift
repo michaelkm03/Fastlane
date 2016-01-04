@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class UnlikeSequenceRequestTests: XCTestCase {
     
     func testRequest() {
-        let mockSequenceID: Int64 = 101
+        let mockSequenceID: String = "101"
         let unlikeRequest = UnlikeSequenceRequest(sequenceID: mockSequenceID)
         let urlRequest = unlikeRequest.urlRequest
         

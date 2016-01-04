@@ -31,12 +31,6 @@ public struct FollowUserRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int64 {
-        
-        guard let followRelationshipID = responseJSON["payload"]["follow_relationship_id"].int64 else {
-            throw ResponseParsingError()
-        }
-        
-        return followRelationshipID
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {
     }
 }

@@ -10,8 +10,8 @@ import UIKit
 
 extension VContentDeepLinkHandler {
     
-    func loadSequence( sequenceID: NSString, completion:((NSError?)->())? ) {
-        SequenceFetchOperation(sequenceID: Int64(sequenceID as String)! ).queue() { error in
+    func loadSequence( sequenceID: String, completion:((NSError?)->())? ) {
+        SequenceFetchOperation(sequenceID: sequenceID ).queue() { error in
             completion?( error )
         }
     }

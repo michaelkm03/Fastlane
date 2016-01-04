@@ -11,18 +11,18 @@ import VictoriousIOSSDK
 
 class FlagSequenceOperation: RequestOperation {
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     private let flaggedContent = VFlaggedContent()
     
     let request: FlagSequenceRequest
     
-    init( sequenceID: Int64 ) {
+    init( sequenceID: String ) {
         self.request = FlagSequenceRequest(sequenceID: sequenceID)
         self.sequenceID = sequenceID
     }
     
     override func main() {
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {

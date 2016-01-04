@@ -39,10 +39,10 @@
 @dynamic permissionsMask;
 @dynamic previewData;
 @dynamic previewType;
-@dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic adBreaks;
+// TODO: Coments (and any other paginated to-many relationship) can be an unordered set now since we will always be ordering through fretch requests and pagination
 @dynamic comments;
 @dynamic endCard;
 @dynamic likers;

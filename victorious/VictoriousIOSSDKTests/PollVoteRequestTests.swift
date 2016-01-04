@@ -13,7 +13,7 @@ class PollVoteRequestTests: XCTestCase {
     
     func testAnsweringActionRequest() {
         let mockAnswerID: Int64 = 101
-        let mockSequenceID: Int64 = 102
+        let mockSequenceID: String = "102"
         
         let pollVoteRequest = PollVoteRequest(sequenceID: mockSequenceID, answerID: mockAnswerID)
         let urlRequest = pollVoteRequest.urlRequest

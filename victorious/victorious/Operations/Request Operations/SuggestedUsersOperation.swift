@@ -16,7 +16,7 @@ class SuggestedUsersOperation: RequestOperation {
     private(set) var suggestedUsers: [VSuggestedUser] = []
     
     override func main() {
-        executeRequest( self.request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( users: [SuggestedUser], completion:()->() ) {

@@ -32,7 +32,7 @@ public struct Comment {
     public let commentID: Int64
     public let displayOrder: Int?
     public let userID: Int64
-    public let sequenceID: Int64
+    public let sequenceID: String
     public let shouldAutoplay: Bool?
     public let user: User
     public let text: String?
@@ -51,7 +51,7 @@ extension Comment {
     public init?(json: JSON) {
         
         guard let commentID = Int64(json["id"].stringValue),
-            let sequenceID = Int64(json["sequence_id"].stringValue),
+            let sequenceID = json["sequence_id"].string,
             let userID = Int64(json["user_id"].stringValue),
             let user = User(json: json["user"]),
             let postedAt = dateFormatter.dateFromString(json["posted_at"].stringValue) else {
