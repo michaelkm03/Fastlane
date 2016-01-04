@@ -39,7 +39,7 @@ class RequestOperation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     
-    var persistentStore: PersistentStoreType = MainPersistentStore()
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     lazy var requestExecutor: RequestExecutorType = {
         return MainRequestExecutor(persistentStore: self.persistentStore)

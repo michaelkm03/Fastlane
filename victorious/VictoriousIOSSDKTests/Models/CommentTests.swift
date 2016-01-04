@@ -29,7 +29,7 @@ class CommentTests: XCTestCase {
         XCTAssertEqual(comment.user.name, "Ryan Higa")
         XCTAssertEqual(comment.text, "test")
         XCTAssertEqual(comment.flags, 0)
-        let dateFormatter = NSDateFormatter(format: .Standard)
+        let dateFormatter = NSDateFormatter(v_format: .Standard)
         XCTAssertEqual(dateFormatter.stringFromDate(comment.postedAt), "2015-11-12 02:18:54")
         
         if let media = comment.media {

@@ -40,7 +40,6 @@ public struct User {
 extension User {
     public init?(json: JSON) {
         let userIDFromJSON: Int64
-        let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
         
         // Check for "id" as either a string or a number, because the back-end is inconsistent.
         if let userIDString = json["id"].string,
@@ -74,7 +73,7 @@ extension User {
         maxVideoUploadDuration      = Int64(json["max_video_duration"].stringValue)
         
         if let dateString = json["token_updated_at"].string {
-            self.tokenUpdatedAt = dateFormatter.dateFromString(dateString)
+            self.tokenUpdatedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(dateString)
         } else {
             self.tokenUpdatedAt = nil
         }

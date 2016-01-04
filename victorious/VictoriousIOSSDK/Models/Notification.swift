@@ -12,10 +12,6 @@ import SwiftyJSON
 /// A struct representing a notification
 public struct Notification {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
     public let body: String?
     public let createdAt: NSDate
     public let deeplink: String?
@@ -31,7 +27,7 @@ public struct Notification {
     public init?(json: JSON) {
         
         guard let createdAtDateString = json["created_at"].string,
-            let createdAtDate = dateFormatter.dateFromString(createdAtDateString),
+            let createdAtDate = NSDateFormatter.v_defaultDateFormatter.dateFromString(createdAtDateString),
             let notificationID = json["id"].int64,
             let subjectString = json["subject"].string,
             let sender = User(json: json["created_by"]) else {
@@ -47,7 +43,7 @@ public struct Notification {
         imageURL = json["creator_profile_image_url"].string
         isRead = Bool(json["is_read"].stringValue)
         type = json["type"].string
-        updatedAt = dateFormatter.dateFromString(json["updated_at"].stringValue)
+        updatedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["updated_at"].stringValue)
         displayOrder = json["display_order"].int
     }
 }

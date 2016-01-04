@@ -12,10 +12,6 @@ import XCTest
 
 class AlertTests: XCTestCase {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
     func testValid() {
         guard let url = NSBundle(forClass: self.dynamicType).URLForResource("Alert", withExtension: "json" ),
             let mockData = NSData(contentsOfURL: url) else {
@@ -29,7 +25,7 @@ class AlertTests: XCTestCase {
         
         XCTAssertEqual( alert.alertID, 1341 )
         XCTAssertEqual( alert.alertType, AlertType.LevelUp )
-        XCTAssertEqual( dateFormatter.stringFromDate( alert.dateAcknowledged!), "2015-12-18 20:40:43" )
+        XCTAssertEqual( NSDateFormatter.v_defaultDateFormatter.stringFromDate( alert.dateAcknowledged!), "2015-12-18 20:40:43" )
         XCTAssertEqual( alert.parameters.backgroundVideoURL?.absoluteString, "http://www.video.com" )
         XCTAssertEqual( alert.parameters.description, "Level up!" )
         XCTAssertEqual( alert.parameters.title, "Alert Title" )

@@ -20,10 +20,6 @@ public func ==(lhs: Alert, rhs: Alert) -> Bool {
 
 public struct Alert {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
     public struct Parameters {
         public let backgroundVideoURL: NSURL?
         public let description: String
@@ -49,7 +45,7 @@ extension Alert {
         self.alertType = alertType
         self.parameters = parameters
         self.alertID = alertID
-        self.dateAcknowledged = self.dateFormatter.dateFromString(json["acknowledged_at"].stringValue)
+        self.dateAcknowledged = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["acknowledged_at"].stringValue)
     }
 }
 

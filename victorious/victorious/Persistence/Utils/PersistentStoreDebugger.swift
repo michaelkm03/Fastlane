@@ -12,7 +12,7 @@ import Foundation
     
     let persistentStore: PersistentStoreType
     
-    init( persistentStore: PersistentStoreType = MainPersistentStore() ) {
+    init( persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore ) {
         self.persistentStore = persistentStore
     }
     

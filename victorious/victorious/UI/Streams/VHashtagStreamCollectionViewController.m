@@ -62,7 +62,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
