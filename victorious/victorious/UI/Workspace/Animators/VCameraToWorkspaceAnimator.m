@@ -19,12 +19,15 @@ static const NSTimeInterval kCameraShutterAnimationDuration = 0.55;
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    [[transitionContext containerView] addSubview:fromViewController.view];
-    [[transitionContext containerView] addSubview:toViewController.view];
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    CGRect finalRectForToViewController = [transitionContext finalFrameForViewController:toViewController];
+    
+    [[transitionContext containerView] addSubview:fromView];
+    [[transitionContext containerView] addSubview:toView];
+    toView.frame = finalRectForToViewController;
+    
     toView.alpha = 0.0f;
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f

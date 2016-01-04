@@ -446,3 +446,5 @@
 "LevelFormat" = "NIVEAU %@";
 "LEVEL" = "NIVEAU";
 "TestAlertsViewControllerFooter" = "Après vous être inscrit à une alerte, retournez sur le stream ou sur le profil et tirez pour actualiser. L'alerte devrait apparaître.";
+
+"Enter birthday before continuing" = "Veuillez saisir votre date de naissance avant de continuer : ";

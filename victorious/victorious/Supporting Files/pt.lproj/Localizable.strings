@@ -446,3 +446,5 @@
 "LevelFormat" = "NÍVEL %@";
 "LEVEL" = "NÍVEL";
 "TestAlertsViewControllerFooter" = "Depois de registrar um alerta, volte ao fluxo ou perfil e arraste para atualizar. O alerta deve aparecer.";
+
+"Enter birthday before continuing" = "Insira a data do seu aniversário antes de continuar: ";

@@ -446,3 +446,5 @@
 "LevelFormat" = "MỨC %@";
 "LEVEL" = "MỨC";
 "TestAlertsViewControllerFooter" = "Sau khi bạn đăng ký một cảnh báo, hãy quay trở lại luồng thông tin hoặc hồ sơ và kéo để làm mới. Cảnh báo sẽ xuất hiện.";
+
+"Enter birthday before continuing" = "Vui lòng nhập ngày sinh của bạn trước khi tiếp tục: ";
