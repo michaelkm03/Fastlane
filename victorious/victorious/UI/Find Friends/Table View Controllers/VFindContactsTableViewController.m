@@ -12,24 +12,15 @@
 #import "VPermission.h"
 #import "VPermissionsTrackingHelper.h"
 
-@import AddressBook;
+@import Contacts;
 
 @interface VFindContactsTableViewController ()
 
-@property (nonatomic) ABAddressBookRef addressBook;
 @property (nonatomic, strong) VPermissionsTrackingHelper *permissionTrackingHelper;
 
 @end
 
 @implementation VFindContactsTableViewController
-
-- (void)dealloc
-{
-    if (_addressBook)
-    {
-        CFRelease(_addressBook); _addressBook = NULL;
-    }
-}
 
 - (void)viewDidLoad
 {
@@ -40,49 +31,21 @@
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
 }
 
-- (void)setAddressBook:(ABAddressBookRef)addressBook
-{
-    if (_addressBook)
-    {
-        CFRelease(_addressBook);
-    }
-    _addressBook = addressBook ? CFRetain(addressBook) : NULL;
-}
-
 - (void)connectToSocialNetworkWithPossibleUserInteraction:(BOOL)userInteraction completion:(void (^)(BOOL, NSError *))completionBlock
 {
-    ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
-    switch (authStatus)
+    CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    switch (authorizationStatus)
     {
-        case kABAuthorizationStatusAuthorized:
+        case CNAuthorizationStatusAuthorized:
         {
-            ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
-            if (addressBook)
+            if (completionBlock)
             {
-                self.addressBook = addressBook;
-                CFRelease(addressBook);
-                
-                if ( self.addressBook != nil )
-                {
-                    NSArray *contacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(self.addressBook);
-                    NSDictionary *params = @{ VTrackingKeyCount : @(contacts.count) };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidImportDeviceContacts parameters:params];
-                }
-                
-                if (completionBlock)
-                {
-                    completionBlock(YES, nil);
-                }
-                
-            }
-            else if (completionBlock)
-            {
-                completionBlock(NO, nil);
+                completionBlock(YES, nil);
             }
             break;
         }
             
-        case kABAuthorizationStatusDenied:
+        case CNAuthorizationStatusDenied:
         {
             if (completionBlock)
             {
@@ -99,7 +62,7 @@
             }
             break;
         }
-        case kABAuthorizationStatusRestricted:
+        case CNAuthorizationStatusRestricted:
         {
             if (completionBlock)
             {
@@ -117,47 +80,25 @@
             break;
         }
             
-        case kABAuthorizationStatusNotDetermined:
+        case CNAuthorizationStatusNotDetermined:
         {
             if (userInteraction)
             {
-                ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
-                ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^(void)
-                    {
-                        
-                        NSString *trackingState;
-
-                        if (granted)
-                        {
-                            if (addressBook)
-                            {
-                                trackingState = VTrackingValueAuthorized;
-                                self.addressBook = addressBook;
-                                if (completionBlock)
-                                {
-                                    completionBlock(YES, nil);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            trackingState = VTrackingValueDenied;
-                        }
-                        [self.permissionTrackingHelper permissionsDidChange:VTrackingValueContactsDidAllow permissionState:trackingState];
-
-                        if (completionBlock)
-                        {
-                            completionBlock(NO, nil);
-                        }
-                        
-                        if (addressBook)
-                        {
-                            CFRelease(addressBook);
-                        }
-                    });
-                });
+                CNContactStore *store = [[CNContactStore alloc] init];
+                [store requestAccessForEntityType:CNEntityTypeContacts
+                                completionHandler:^(BOOL granted, NSError * _Nullable error)
+                 {
+                     dispatch_async(dispatch_get_main_queue(), ^
+                     {
+                         NSString *permissionTrackingState = granted ? VTrackingValueAuthorized : VTrackingValueDenied;
+                         [self.permissionTrackingHelper permissionsDidChange:VTrackingValueContactsDidAllow
+                                                             permissionState:permissionTrackingState];
+                         if (completionBlock != nil)
+                         {
+                             completionBlock(granted, nil);
+                         }
+                     });
+                 }];
             }
             else if (completionBlock)
             {
@@ -174,26 +115,37 @@
     {
         return;
     }
-    if (!self.addressBook)
+
+    CNContactStore *contactStore = [[CNContactStore alloc] init];
+    NSError *error = nil;
+    NSArray<CNContainer *> *containers = [contactStore containersMatchingPredicate:nil
+                                                                             error:&error];
+    NSMutableArray<CNContact *> *allContacts = [[NSMutableArray alloc] init];
+    if (containers == nil)
     {
-        completionBlock(nil, nil);
-        return;
+        [self trackFoundUsersCount:0];
+    }
+    else
+    {
+        for (CNContainer *container in containers)
+        {
+            NSPredicate *fetchPredicate = [CNContact predicateForContactsInContainerWithIdentifier:container.identifier];
+            
+            NSArray<CNContact *> *containerResults = [contactStore unifiedContactsMatchingPredicate:fetchPredicate
+                                                                                        keysToFetch:@[CNContactEmailAddressesKey]
+                                                                                              error:&error];
+            [allContacts addObjectsFromArray:containerResults];
+        }
+        [self trackFoundUsersCount:allContacts.count];
     }
     
-    NSArray *allContacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(self.addressBook);
-    NSMutableArray *allEmailAddresses = [[NSMutableArray alloc] initWithCapacity:allContacts.count];
-    
-    for (NSUInteger i = 0; i < [allContacts count]; i++)
+    NSMutableArray *allEmailAddresses = [[NSMutableArray alloc] init];
+    for (CNContact *contact in allContacts)
     {
-        ABRecordRef person = (__bridge ABRecordRef)allContacts[i];
-        ABMultiValueRef emailAddresses = ABRecordCopyValue(person, kABPersonEmailProperty);
-        for (CFIndex j = 0; j < ABMultiValueGetCount(emailAddresses); j++)
+        for (CNLabeledValue *emailValue in contact.emailAddresses)
         {
-            NSString *emailAddress = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(emailAddresses, j);
-            [allEmailAddresses addObject:emailAddress];
+            [allEmailAddresses addObject:emailValue.value];
         }
-        
-        CFRelease(emailAddresses);
     }
     
     if (allEmailAddresses.count)
@@ -212,6 +164,13 @@
     {
         completionBlock(@[], nil);
     }
+}
+
+- (void)trackFoundUsersCount:(NSUInteger)count
+{
+    NSDictionary *params = @{ VTrackingKeyCount : @(count) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidImportDeviceContacts
+                                       parameters:params];
 }
 
 - (NSString *)headerTextForNewFriendsSection
