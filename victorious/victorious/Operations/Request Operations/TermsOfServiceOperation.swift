@@ -15,7 +15,7 @@ class TermsOfServiceOperation: RequestOperation {
     var resultHTMLString: String?
     
     override func main() {
-        executeRequest(request, onComplete: self.onComplete)
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( htmlString: TermsOfServiceRequest.ResultType, completion: () -> () ) {

@@ -12,14 +12,14 @@ import VictoriousIOSSDK
 class LogoutOperation: RequestOperation {
     
     let request = LogoutRequest()
-    
+
     override init() {
         super.init()
         self.qualityOfService = .UserInitiated
     }
     
     override func main() {
-        executeRequest( self.request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {

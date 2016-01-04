@@ -12,7 +12,7 @@ import Foundation
 @objc class KVODebugger: NSObject {
     
     /// Parses the `change` dictionary and prints out the change that has been observed
-    class func printObservation( keyPath keyPath: String, object: NSObject, change: NSDictionary?) {
+    class func debug_printObservation( keyPath keyPath: String, object: NSObject, change: NSDictionary?) {
         let objectType = NSStringFromClass(object.classForCoder)
         if let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
             let kind = NSKeyValueChange(rawValue:value) {

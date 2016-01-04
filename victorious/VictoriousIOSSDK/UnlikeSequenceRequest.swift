@@ -9,15 +9,15 @@
 import Foundation
 
 public struct UnlikeSequenceRequest: RequestType {
-    public let sequenceID: Int64
+    public let sequenceID: String
     
-    public init (sequenceID: Int64) {
+    public init (sequenceID: String) {
         self.sequenceID = sequenceID
     }
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/sequence/unlike")!)
-        let unlikedSequenceInfo = [ "sequence_id": NSNumber(longLong: sequenceID) ]
+        let unlikedSequenceInfo = [ "sequence_id": sequenceID ]
         urlRequest.vsdk_addURLEncodedFormPost(unlikedSequenceInfo)
         
         return urlRequest

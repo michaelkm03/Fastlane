@@ -20,10 +20,10 @@ public struct CommentFindRequest: RequestType {
     
     public let urlRequest: NSURLRequest
     
-    private let sequenceID: Int64
+    private let sequenceID: String
     private let commentID: Int64
     
-    public init( sequenceID: Int64, commentID: Int64, itemsPerPage: Int = 15 ) {
+    public init( sequenceID: String, commentID: Int64, itemsPerPage: Int = 15 ) {
         self.sequenceID = sequenceID
         self.commentID = commentID
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/find")! )

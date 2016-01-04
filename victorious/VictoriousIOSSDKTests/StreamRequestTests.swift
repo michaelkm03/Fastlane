@@ -27,7 +27,7 @@ class StreamRequestTests: XCTestCase {
     
     func testComplexStreamRequest() {
         
-        let sequenceID: Int64 = 321321
+        let sequenceID: String = "321321"
         var request = StreamRequest( apiPath: streamWithSequenceAPIPath, sequenceID: sequenceID )!
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/\(sequenceID)/0/1/15" )
         

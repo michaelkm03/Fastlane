@@ -19,7 +19,7 @@ protocol ExperimentSettingsDataSourceDelegate: class {
 
 class ExperimentSettingsDataSource: NSObject {
     
-    private let persistentStore = MainPersistentStore()
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     weak var delegate:ExperimentSettingsDataSourceDelegate?
     
@@ -86,7 +86,7 @@ class ExperimentSettingsDataSource: NSObject {
             
             // Synchronously grab all experiments from the main queue context.
             let experiments: [Experiment] = self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                return context.findObjects()
+                return context.v_findAllObjects()
             }
             
             // If we have (internal) user configured experiments use those, otherwise use defaults returned from the operation.

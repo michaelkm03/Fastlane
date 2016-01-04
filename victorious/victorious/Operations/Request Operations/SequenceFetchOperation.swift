@@ -13,16 +13,16 @@ class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
     
-    var loadedSequence: VSequence?
+    var result: VSequence?
     
-    init( sequenceID: Int64) {
+    init( sequenceID: String ) {
         self.request = SequenceFetchRequest(sequenceID: sequenceID)
         super.init()
         self.qualityOfService = .UserInitiated
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
@@ -36,7 +36,7 @@ class SequenceFetchOperation: RequestOperation {
             
             self.persistentStore.mainContext.v_performBlockAndWait { context in
                 if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
-                    self.loadedSequence = sequence
+                    self.result = sequence
                 }
                 completion()
             }

@@ -41,11 +41,6 @@ extern NSString * const VObjectManagerSearchContextDiscover; ///< A search conte
                                         successBlock:(VSuccessBlock)success
                                            failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)followUser:(VUser *)user
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
-                                     fromScreen:(NSString *)screenName;
-
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail

@@ -12,47 +12,38 @@ import VictoriousIOSSDK
 final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceRepostersRequest
-    var resultCount: Int?
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
-    private var sequenceID: Int64
+    private var sequenceID: String
     
     required init( request: SequenceRepostersRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
     }
     
-    convenience init( sequenceID: Int64 ) {
+    convenience init( sequenceID: String ) {
         self.init( request: SequenceRepostersRequest(sequenceID: sequenceID) )
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:(()->()) ) {
-        self.resultCount = 0
+        self.results = []
         completion()
     }
     
     private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        self.resultCount = users.count
-        
         persistentStore.backgroundContext.v_performBlock() { context in
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
-            let sortedUsers = users.sort {
-                return ($0.name ?? "").localizedCaseInsensitiveCompare($1.name ?? "") == .OrderedAscending
-            }
-            for user in sortedUsers {
+            for user in users {
                 let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
-                let reposter: VUser
-                if let existingUser: VUser = context.v_findObjects( uniqueElements, limit: 1 ).first {
-                    reposter = existingUser
-                } else {
-                    reposter = context.v_createObject()
-                    reposter.populate(fromSourceModel: user )
-                }
+                let reposter: VUser = context.v_findOrCreateObject( uniqueElements )
+                reposter.populate(fromSourceModel: user )
                 reposters.append( reposter )
             }
             
@@ -62,7 +53,11 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             sequence.v_addObjects( reposters, to: "reposters" )
             context.v_save()
             
-            completion()
+            let objectIDs = reposters.map { $0.objectID }
+            self.persistentStore.mainContext.v_performBlock() { context in
+                self.results = objectIDs.flatMap { context.objectWithID($0) as? VUser }
+                completion()
+            }
         }
     }
 }

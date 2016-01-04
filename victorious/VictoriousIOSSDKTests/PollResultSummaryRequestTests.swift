@@ -13,7 +13,7 @@ import SwiftyJSON
 class PollResultSummaryRequestTests: XCTestCase {
     
     func testRequestBySequence() {
-        let mockSequenceID: Int64 = 101
+        let mockSequenceID: String = "101"
         let pollResultRequest = PollResultSummaryRequest(sequenceID: mockSequenceID)
         let urlRequest = pollResultRequest.urlRequest
         
@@ -40,11 +40,11 @@ class PollResultSummaryRequestTests: XCTestCase {
             
             let results: [PollResult] = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             if results.count == 15 {
-                XCTAssertEqual(results[0].sequenceID, 14609)
+                XCTAssertEqual(results[0].sequenceID, "14609")
                 XCTAssertEqual(results[0].answerID, 744)
-                XCTAssertEqual(results[1].sequenceID, 15064)
+                XCTAssertEqual(results[1].sequenceID, "15064")
                 XCTAssertEqual(results[1].answerID, 834)
-                XCTAssertEqual(results[2].sequenceID, 15585)
+                XCTAssertEqual(results[2].sequenceID, "15585")
                 XCTAssertEqual(results[2].answerID, 855)
             } else {
                 XCTAssertEqual(results.count, 15)
@@ -62,7 +62,7 @@ class PollResultSummaryRequestTests: XCTestCase {
         }
         
         do {
-            let pollResultRequest = PollResultSummaryRequest(sequenceID: 101)
+            let pollResultRequest = PollResultSummaryRequest(sequenceID: "101")
             
             let results = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
@@ -78,7 +78,7 @@ class PollResultSummaryRequestTests: XCTestCase {
     func testInvalidResponseUser() {
         do {
             let data = "{ \"payload\" : [{},{}] }".dataUsingEncoding(NSUTF8StringEncoding)!
-            let pollResultRequest = PollResultSummaryRequest(sequenceID: 101)
+            let pollResultRequest = PollResultSummaryRequest(sequenceID: "101")
             
             let results = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: data, responseJSON: JSON(data: data) )
             XCTAssertEqual(results.count, 0)
@@ -90,7 +90,7 @@ class PollResultSummaryRequestTests: XCTestCase {
     func testInvalidResponseSequence() {
         do {
             let data = "{ \"payload\" : [{},{}] }".dataUsingEncoding(NSUTF8StringEncoding)!
-            let pollResultRequest = PollResultSummaryRequest(sequenceID: 101)
+            let pollResultRequest = PollResultSummaryRequest(sequenceID: "101")
             
             let results = try pollResultRequest.parseResponse(NSURLResponse(), toRequest: pollResultRequest.urlRequest, responseData: data, responseJSON: JSON(data: data) )
             XCTAssertEqual(results.count, 0)

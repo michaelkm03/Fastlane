@@ -12,7 +12,9 @@ import VictoriousIOSSDK
 final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperation {
     
     let request: PollResultSummaryRequest
-    var resultCount: Int?
+    
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private let userID: Int64
     
@@ -26,16 +28,15 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:()->() ) {
-        self.resultCount = 0
+        self.results = []
         completion()
     }
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
-        self.resultCount = pollResults.count
         
         persistentStore.backgroundContext.v_performBlock() { context in
             defer {
@@ -53,7 +54,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
                     uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
                 }
                 if let sequenceID = pollResult.sequenceID {
-                    uniqueElements[ "sequenceId" ] = NSNumber(longLong: sequenceID)
+                    uniqueElements[ "sequenceId" ] = String(sequenceID)
                 }
                 guard !uniqueElements.isEmpty else {
                     continue
