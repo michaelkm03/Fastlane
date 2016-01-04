@@ -37,7 +37,7 @@
 "PasswordValidation"    =   "Passwort ist weniger als 8 Zeichen";
 "PasswordNotMatching"   =   "Passwörter stimmen nicht überein";
 "LoginFail"             =   "Anmeldung fehlgeschlagen";
-"GenericFailMessage"    =   "Ups! Etwas ist schief gegangen.";
+"GenericFailMessage"    =   "Ups! Da stimmt etwas nicht.";
 "FacebookLoginFailed"   =   "Ups! Facebook-Anmeldung fehlgeschlagen. Bitte nochmal versuchen.";
 "SignupFail"            =   "Kontoerstellung fehlgeschlagen";
 "You're not logged in!" =   "Du bist nicht angemeldet!";
@@ -446,3 +446,4 @@
 "LevelFormat" = "LEVEL %@";
 "LEVEL" = "LEVEL";
 "TestAlertsViewControllerFooter" = "Wenn du eine Benachrichtigung registrierst hast, kehre zum Stream oder Profil zurück und ziehe nach unten, um sie zu aktualisieren. Dann erscheint die Benachrichtigung.";
+"Enter birthday before continuing" = "Bitte gib deinen Geburtstag ein, bevor du fortfährst:";
