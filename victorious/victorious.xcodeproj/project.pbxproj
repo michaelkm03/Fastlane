@@ -378,7 +378,7 @@
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		673CBBD01C04FC5600703932 /* VSuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */; };
 		673CBBD41C0514CD00703932 /* SuggestedUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CBBD31C0514CD00703932 /* SuggestedUsersOperationTests.swift */; };
-		673CFA7C1C0E314000523B97 /* TrendingGIFsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */; };
+		673CFA7C1C0E314000523B97 /* GIFSearchDefaultResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673CFA7B1C0E314000523B97 /* GIFSearchDefaultResultsOperation.swift */; };
 		674252FC1BBB032400267E29 /* StatusBarStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */; };
 		6755C8A51BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */; };
 		6759555B1BF145B000D40A87 /* SuggestedUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */; };
@@ -2415,7 +2415,7 @@
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
 		673CBBCF1C04FC5600703932 /* VSuggestedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUser.swift; sourceTree = "<group>"; };
 		673CBBD31C0514CD00703932 /* SuggestedUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestedUsersOperationTests.swift; path = RequestOperations/SuggestedUsersOperationTests.swift; sourceTree = "<group>"; };
-		673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingGIFsOperation.swift; sourceTree = "<group>"; };
+		673CFA7B1C0E314000523B97 /* GIFSearchDefaultResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDefaultResultsOperation.swift; sourceTree = "<group>"; };
 		674252FB1BBB032400267E29 /* StatusBarStyleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarStyleTests.swift; sourceTree = "<group>"; };
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		6759555A1BF145B000D40A87 /* SuggestedUsersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequest.swift; sourceTree = "<group>"; };
@@ -7036,37 +7036,37 @@
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
+				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
-				6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A76AEAD31C038E0000E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
+				673CFA7B1C0E314000523B97 /* GIFSearchDefaultResultsOperation.swift */,
+				6794E6061C0CE1A900791CA0 /* GIFSearchOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				A76AEAD61C038E0000E8A26F /* LogoutOperation.swift */,
+				A710F3F81C273F690013D8B8 /* PaginatedDataSource.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
 				A767120C1C1F7BCF006568DF /* PollVoteOperation.swift */,
+				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
 				A76AEADA1C038E0000E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
+				A702C8561C1247C9001EE1D5 /* StreamOperation.swift */,
+				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
+				7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
 				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
 				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
-				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
-				A76AEA3D1BFEBA0500E8A26F /* RepostSequenceOperation.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
-				A710F3F81C273F690013D8B8 /* PaginatedDataSource.swift */,
-				A702C8561C1247C9001EE1D5 /* StreamOperation.swift */,
-				67C5C53E1C03A8A000F99C8C /* SuggestedUsersOperation.swift */,
-				673CFA7B1C0E314000523B97 /* TrendingGIFsOperation.swift */,
-				7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -10727,7 +10727,7 @@
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
-				673CFA7C1C0E314000523B97 /* TrendingGIFsOperation.swift in Sources */,
+				673CFA7C1C0E314000523B97 /* GIFSearchDefaultResultsOperation.swift in Sources */,
 				F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,

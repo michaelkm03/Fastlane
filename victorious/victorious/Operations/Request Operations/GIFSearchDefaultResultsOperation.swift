@@ -1,5 +1,5 @@
 //
-//  TrendingGIFsOperation.swift
+//  GIFSearchDefaultResultsOperation.swift
 //  victorious
 //
 //  Created by Tian Lan on 12/1/15.
@@ -9,8 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-// TODO: Rename this and the request to `GIFSearchDefaultResults` or something...
-final class TrendingGIFsOperation: RequestOperation, PaginatedOperation {
+final class GIFSearchDefaultResultsOperation: RequestOperation, PaginatedOperation {
     
     let request: TrendingGIFsRequest
     

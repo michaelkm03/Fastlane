@@ -31,7 +31,7 @@ class GIFSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
     private var mostRecentSearchOperation: GIFSearchOperation?
-    private var mostRecentTrendingOperation: TrendingGIFsOperation?
+    private var mostRecentTrendingOperation: GIFSearchDefaultResultsOperation?
     
     enum State: Int {
         case None, Loading, Content, Error, NoResults
@@ -89,10 +89,10 @@ class GIFSearchDataSource: NSObject {
         }
         self.state = .Loading
         
-        let nextOperation: TrendingGIFsOperation?
+        let nextOperation: GIFSearchDefaultResultsOperation?
         switch pageType {
         case .First:
-            nextOperation = TrendingGIFsOperation()
+            nextOperation = GIFSearchDefaultResultsOperation()
         case .Next:
             nextOperation = self.mostRecentTrendingOperation?.next()
         case .Previous:
