@@ -52,9 +52,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
-    BOOL tryingToFollowSelf = user.isCurrentUser;
-    
-    if ( tryingToFollowSelf )
+    if ( user.isCurrentUser )
     {
         completion(user);
         return;
@@ -83,13 +81,13 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
         }
         completion(user);
     };
-    
-    // Add user at backend
+
     NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
-    [[VObjectManager sharedManager] followUser:user
-                                  successBlock:successBlock
-                                     failBlock:failureBlock
-                                    fromScreen:sourceScreen];
+    [self followUserWithUserToFollowID:user.remoteId
+                         currentUserID:[VUser currentUser].remoteId
+                            screenName:sourceScreen
+                          successBlock:successBlock
+                             failBlock:failureBlock];
 }
 
 - (void)unfollowUser:(VUser *)user

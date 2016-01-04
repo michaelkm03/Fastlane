@@ -33,7 +33,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VUsersViewController.h"
-#import "VLikersDataSource.h"
 #import "victorious-Swift.h"
 
 @interface VSequenceActionController ()

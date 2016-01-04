@@ -632,31 +632,9 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
+    // TODO: Create a halper with this stuff?  See VNewContentView & VUsersViewController
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id obj in newValue )
-    {
-        if ( [oldValue containsObject:obj] )
-        {
-            continue;
-        }
-        NSInteger index = [newValue indexOfObject:obj];
-        if ( index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:contentSection]];
-    }
-    
-    if ( newValue.count == 0 || oldValue.count == 0 )
-    {
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:contentSection]];
-        [self updateNoContentViewAnimated:YES];
-    }
-    else
-    {
-        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
-    }
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath

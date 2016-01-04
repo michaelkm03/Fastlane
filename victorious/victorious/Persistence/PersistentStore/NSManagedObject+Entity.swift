@@ -7,15 +7,17 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension NSManagedObject {
     
     class func v_entityName() -> String {
-        let className = (NSStringFromClass(self) as NSString)
+        var className = (NSStringFromClass(self) as NSString)
         if className.pathExtension.characters.count > 0 {
-            return className.pathExtension
+            className = className.pathExtension
         }
-        else if className.substringToIndex(1) == "V" {
+        
+        if className.substringToIndex(1) == "V" {
             return className.substringFromIndex(1)
         }
         else {

@@ -28,4 +28,24 @@ extension NSManagedObjectContext {
         }
         return result!
     }
+    
+    /// Executes a fetch request exactly as by calling `executeFetchRequest(_:)` except that any
+    /// errors are caught internally and an empty array is results as a result
+    func v_executeFetchRequest<T: NSManagedObject>(request: NSFetchRequest) -> [T] {
+        let results: [T]
+        do {
+            results = try executeFetchRequest( request ) as? [T] ?? []
+        } catch {
+            results = []
+        }
+        return results
+    }
+    
+    func v_executeRequest(request: NSPersistentStoreRequest) -> NSPersistentStoreResult? {
+        do {
+            return try executeRequest( request )
+        } catch {
+        }
+        return nil
+    }
 }

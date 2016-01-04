@@ -207,7 +207,6 @@ NS_ASSUME_NONNULL_BEGIN
             {
                 JSON[kVPayloadKey] = @{@"objects":payload};
             }
-            
             successBlock(operation, JSON, mappedObjects);
         }
         else if (error.errorCode)

@@ -391,7 +391,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
         if (hashtagShelf.amFollowing.boolValue && hashtagShelf.hashtagTitle != nil)
         {
-            [mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
+            //[mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
         }
     }
 }
@@ -415,7 +415,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         if ([payload[@"am_following"] boolValue] && stream.hashtag != nil)
         {
             // Stream ID is the hashtag
-            [mainUser addFollowedHashtag:streamItem.streamId];
+            //[mainUser addFollowedHashtag:streamItem.streamId];
         }
     }
 }

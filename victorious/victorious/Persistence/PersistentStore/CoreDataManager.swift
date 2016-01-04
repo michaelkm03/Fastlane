@@ -17,7 +17,7 @@ import CoreData
 class CoreDataManager: NSObject {
     
     /// An object that points to the location to one version (.mom, created from an .xcmappingmodel)
-    /// of a verioned Core Data managed object model (.momd, from an .xcdatamodeld).  Note the 'd' in
+    /// of a versioned Core Data managed object model (.momd, from an .xcdatamodeld).  Note the 'd' in
     // the latter file extension, which indicates that the file is versioned.
     struct ModelVersion {
         /// The version identifier configured in the managed obejct model (e.g. "2.0")
@@ -43,10 +43,6 @@ class CoreDataManager: NSObject {
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     
     init( persistentStoreURL: NSURL, currentModelVersion: ModelVersion, previousModelVersion: ModelVersion? = nil ) {
-        
-        /*do {
-            try NSFileManager.defaultManager().removeItemAtURL( persistentStoreURL )
-        } catch {}*/
         
         print( "Initializing persistent store at URL: \(persistentStoreURL)" )
         
@@ -87,14 +83,6 @@ class CoreDataManager: NSObject {
             object: self.backgroundContext,
             queue: NSOperationQueue.mainQueue()) { [weak self] notification in
                 self?.mainContext.mergeChangesFromContextDidSaveNotification( notification )
-        }
-    }
-
-    func deletePersistentStore() {
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL( self.persistentStoreURL )
-        } catch {
-            print( "Error deleting database: \(error)" )
         }
     }
 }

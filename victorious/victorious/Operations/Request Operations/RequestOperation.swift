@@ -39,72 +39,15 @@ class RequestOperation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     
-    let persistentStore: PersistentStoreType = MainPersistentStore()
-    let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    
+    var persistentStore: PersistentStoreType = MainPersistentStore()
+    lazy var requestExecutor: RequestExecutorType = {
+        return MainRequestExecutor(persistentStore: self.persistentStore)
+    }()
+
     private(set) var error: NSError?
-    
+
     final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        let baseURL = currentEnvironment.baseURL
-        
-        let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VUser.currentUser())
-        }
-        
-        let networkStatus = VReachability.reachabilityForInternetConnection().currentReachabilityStatus()
-        if networkStatus == .NotReachable {
-            let error = NSError(
-                domain: RequestOperation.errorDomain,
-                code: RequestOperation.errorCodeNoNetworkConnection,
-                userInfo: nil
-            )
-            onError?( error, {} )
-            
-        } else {
-            networkActivityIndicator.start()
-            let executeSemphore = dispatch_semaphore_create(0)
-            request.execute(
-                baseURL: baseURL,
-                requestContext: requestContext,
-                authenticationContext: authenticationContext,
-                callback: { (result, error, alerts) -> () in
-                    dispatch_async( dispatch_get_main_queue() ) {
-                        
-                        // Handle alerts
-                        let name = RequestOperationAlerts.didReceiveAlertsNotification
-                        let userInfo = [ RequestOperationAlerts.alertsKey : RequestOperationAlerts(alerts: alerts) ]
-                        NSNotificationCenter.defaultCenter().postNotificationName( name, object: nil, userInfo: userInfo)
-                        
-                        // Handle error
-                        if let error = error as? RequestErrorType {
-                            let nsError = NSError( error )
-                            if let onError = onError {
-                                onError( nsError ) {
-                                    dispatch_semaphore_signal( executeSemphore )
-                                }
-                            } else {
-                                dispatch_semaphore_signal( executeSemphore )
-                            }
-                        
-                        // Handle result
-                        } else if let requestResult = result {
-                            if let onComplete = onComplete {
-                                onComplete( requestResult ) {
-                                    dispatch_semaphore_signal( executeSemphore )
-                                }
-                            } else {
-                                dispatch_semaphore_signal( executeSemphore )
-                            }
-                        }
-                    }
-                }
-            )
-            dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
-            networkActivityIndicator.stop()
-        }
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
     }
     
     // MARK: - Queuable

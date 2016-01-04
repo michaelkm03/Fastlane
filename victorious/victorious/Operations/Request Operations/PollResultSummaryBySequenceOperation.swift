@@ -12,7 +12,8 @@ import VictoriousIOSSDK
 final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOperation {
     
     let request: PollResultSummaryRequest
-    var results: [AnyObject]?
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private let sequenceID: String
     

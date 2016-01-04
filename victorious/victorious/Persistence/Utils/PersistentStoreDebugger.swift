@@ -18,21 +18,21 @@ import Foundation
     
     func debug_printStreams() {
         self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            let allStreams: [VStream] = context.v_findObjects(limit: 0)
-            print( "\n\nThere are \(allStreams.count) streams." )
+            let allStreams: [VStream] = context.v_findAllObjects()
+            print( "There are \(allStreams.count) streams." )
             for stream in allStreams {
                 print( "\t- \"\(stream.apiPath)\" :: \(stream.streamItems.count) stream items." )
             }
             
-            let allSequences: [VSequence] = context.v_findObjects(limit: 0)
-            print( "\n\nThere are \(allSequences.count) sequences." )
+            let allSequences: [VSequence] = context.v_findAllObjects()
+            print( "There are \(allSequences.count) sequences." )
         }
     }
     
     func debug_printSequences() {
         self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            let allSequences: [VSequence] = context.v_findObjects(limit: 0)
-            print( "\n\nThere are \(allSequences.count) sequences." )
+            let allSequences: [VSequence] = context.v_findAllObjects()
+            print( "There are \(allSequences.count) sequences." )
             
             for sequence in allSequences {
                 print( "\t- \"\(sequence.name ?? "")\" :: \(sequence.comments.count) comments." )
@@ -42,8 +42,8 @@ import Foundation
     
     func debug_printComments() {
         self.persistentStore.mainContext.v_performBlockAndWait() { context in
-            let allComments: [VComment] = context.v_findObjects(limit: 0)
-            print( "\n\nThere are \(allComments.count) comments." )
+            let allComments: [VComment] = context.v_findAllObjects()
+            print( "There are \(allComments.count) comments." )
         }
     }
 }

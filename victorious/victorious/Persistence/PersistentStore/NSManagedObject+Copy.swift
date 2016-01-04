@@ -1,5 +1,5 @@
 //
-//  NSManagedObject+Extensions.swift
+//  NSManagedObject+Copy.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/9/15.

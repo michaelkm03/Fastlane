@@ -16,6 +16,7 @@ class AccountCreateOperation: RequestOperation {
     
     let request: AccountCreateRequest
     private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     var isNewUser = false
     
@@ -71,5 +72,9 @@ class AccountCreateOperation: RequestOperation {
         // Load more data from the network about the user
         PollResultSummaryByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
         ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
+        
+        // TODO: Think of some other things we can load here just to get the objects into the persistence store
+        // so that they are avilable offline.  Perhaps current user's liked sequences, profile stream, settings, user info fetches
+        // for any others with whom a conversation is active.
     }
 }
