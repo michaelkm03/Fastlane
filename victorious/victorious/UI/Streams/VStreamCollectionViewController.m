@@ -520,11 +520,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         if ( directory == nil )
         {
             //We have no directory to show, just do nothing
-            [[[UIAlertView alloc] initWithTitle:nil
-                                        message:NSLocalizedString(@"GenericFailMessage", nil)
-                                       delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                              otherButtonTitles:nil] show];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                     message:NSLocalizedString(@"GenericFailMessage", nil)
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil]];
+            [self presentViewController:alertController animated:YES completion:nil];
+            
             return;
         }
         
