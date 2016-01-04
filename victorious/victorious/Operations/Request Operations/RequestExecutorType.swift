@@ -10,8 +10,6 @@ import VictoriousIOSSDK
 
 /// Defines an interface for sending network requests
 protocol RequestExecutorType {
-    var hasNetworkConnection: Bool { get }
-    func executeRequest<T: RequestType>(request: T,
-        onComplete: ((T.ResultType, ()->())->())?,
-        onError: ((NSError, ()->())->())?)
+    
+    func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?)
 }

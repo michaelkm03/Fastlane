@@ -9,17 +9,20 @@
 import Foundation
 import VictoriousIOSSDK
 
-class SuggestedUsersOperation: RequestOperation {
+class SuggestedUsersOperation: RequestOperation, ResultsOperation {
     
     let request = SuggestedUsersRequest()
     
     private(set) var suggestedUsers: [VSuggestedUser] = []
     
+    var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
+    
     override func main() {
-        executeRequest( self.request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( users: [SuggestedUser], completion:()->() ) {
+    func onComplete( users: [SuggestedUser], completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
             
@@ -38,13 +41,13 @@ class SuggestedUsersOperation: RequestOperation {
             
             // Now reload on the main thread using the main context
             dispatch_async( dispatch_get_main_queue() ) {
-                self.suggestedUsers = self.suggestedUsersFromMainContext( suggestedUsers )
+                self.results = self.fetchResults( suggestedUsers )
                 completion()
             }
         }
     }
     
-    private func suggestedUsersFromMainContext( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
+    func fetchResults( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
         var output = [VSuggestedUser]()
         persistentStore.mainContext.v_performBlockAndWait() { context in
             for suggestedUser in suggestedUsers {

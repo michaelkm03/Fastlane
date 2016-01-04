@@ -68,16 +68,16 @@ class PaginatedDataSourceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-
-    func testFilters() {
-        // XCTFail( "TODO" )
+    
+    /*func testFilters() {
+        // TODO
     }
 
     func testUnload() {
-        //XCTFail( "TODO" )
-    }
+    // TODO
+    }*/
     
-    func __testLoadPagesInAscendingOrder() {
+    func testLoadPagesInAscendingOrder() {
         for i in 0 ..< numberOfPagesBeforeReachingEnd {
             let expectation = expectationWithDescription("page \(i)")
             let pageType: VPageType = i == 0 ? .First : .Next

@@ -22,7 +22,6 @@ class HashtagTests: XCTestCase {
             XCTFail("Hashtag initializer failed")
             return
         }
-        XCTAssertEqual(hashtag.hashtagID, 760)
         XCTAssertEqual(hashtag.tag, "surfing")
         XCTAssertEqual(hashtag.count, 1)
         XCTAssertEqual(hashtag.amFollowing, false)

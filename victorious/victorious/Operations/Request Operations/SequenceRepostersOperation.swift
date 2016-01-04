@@ -27,7 +27,7 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:(()->()) ) {
