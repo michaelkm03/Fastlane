@@ -9,11 +9,12 @@ A set of global variables to be shared and set between the vams_prebuild and vam
 The Hash calculating code was "borrowed" from Frank Zhao (frank@getvictorious.com).
 https://github.com/TouchFrame/TestAutomation/blob/master/backEndApiDriver.py
 """
+
+import hashlib
 import requests
 import subprocess
-from subprocess import Popen,PIPE
-import hashlib
 import sys
+import uuid
 
 def init():
     # Supress compiled files
@@ -30,7 +31,6 @@ def init():
     global _DEBUG_USERAGENT
     global _DEFAULT_USERAGENT
     global _DEFAULT_HEADERS
-    global _DEFAULT_HEADER_DATE
     global _DEFAULT_PLATFORM
     global _PRODUCTION_HOST
     global _STAGING_HOST
@@ -58,12 +58,12 @@ def init():
     _DEBUG_VAMS_USER = 'vicky@example.com'
     _DEBUG_VAMS_PASSWORD = 'abc123456'
 
-    _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
-                         'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
-    _DEBUG_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
-                         'Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
+    device_id = str(uuid.uuid4())
+    _DEFAULT_USERAGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:%s build:1' % device_id)
+    _DEBUG_USERAGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:%s build:1' % device_id)
     _DEFAULT_HEADERS = ''
-    _DEFAULT_HEADER_DATE = createDateString()
 
     _PLATFORM_ANDROID = 'android'
     _PLATFORM_IOS = 'ios'
@@ -94,7 +94,7 @@ def createDateString():
         A date formatted string
     """
 
-    date_obj = Popen(['date'], stdout=PIPE)
+    date_obj = subprocess.Popen(['date'], stdout=subprocess.PIPE)
     date_list = date_obj.communicate()[0].split()
 
     return ' '.join(date_list)
@@ -155,7 +155,7 @@ def authenticateUser(host):
     }
     headers = {
         'User-Agent': useragent,
-        'Date': _DEFAULT_HEADER_DATE
+        'Date': createDateString()
     }
     response = requests.post(url, data=postData, headers=headers)
     json = response.json()
@@ -195,7 +195,7 @@ def setAuthenticationToken(json_object):
         _DEFAULT_VAMS_USERID = json_object['user_id']
 
 
-def calcAuthHash(endpoint, reqMethod):
+def calcAuthHash(endpoint, reqMethod, date):
     """
     Calculates the Victorious backend authentication hash
 
@@ -205,11 +205,15 @@ def calcAuthHash(endpoint, reqMethod):
     :param reqMethod:
         The request method type 'GET' or 'POST'
 
+    :param date:
+        Date string sent as the Date HTTP header
+
     :return:
         A SHA1 hash used to authenticate subsequent requests
     """
-    return hashlib.sha1(_DEFAULT_HEADER_DATE + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
-                        reqMethod).hexdigest()
+    return hashlib.sha1(
+            date + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
+            reqMethod).hexdigest()
 
 
 def assetFetcher(url, filename):
@@ -226,4 +230,3 @@ def assetFetcher(url, filename):
     if len(response.content) > 0:
         with open(filename, 'wb') as outfile:
             outfile.write(response.content)
-

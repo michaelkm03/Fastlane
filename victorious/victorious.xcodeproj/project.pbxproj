@@ -636,7 +636,6 @@
 		A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
 		A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A720054B1A030D9300285A9C /* VTrackingConstants.m */; };
 		A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A72005591A030E4700285A9C /* VApplicationTracking.m */; };
-		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
 		A721E7521B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */; };
 		A721E7541B56059A000B7901 /* GIFSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */; };
 		A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8621B572452000B7901 /* AVAsset+Orientation.m */; };
@@ -2760,8 +2759,6 @@
 		A72005581A030E4700285A9C /* VApplicationTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VApplicationTracking.h; sourceTree = "<group>"; };
 		A72005591A030E4700285A9C /* VApplicationTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTracking.m; sourceTree = "<group>"; };
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
-		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
-		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
 		A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchDataSource+CollectionViewDataSource.swift"; sourceTree = "<group>"; };
 		A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Layout.swift"; sourceTree = "<group>"; };
 		A721E8611B572452000B7901 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
@@ -7405,8 +7402,6 @@
 				A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */,
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
-				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
-				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
 				A76711F31C1B6E54006568DF /* VTracker.h */,
 			);
 			path = Tracking;
@@ -10804,7 +10799,6 @@
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
-				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A7039CF91C24CA9B0023DE6F /* ConversationListOperation.swift in Sources */,
