@@ -194,20 +194,25 @@
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 UIActionSheet *confirmDeleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
-                                                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                                                                 onCancelButton:nil
-                                                                         destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
-                                                                            onDestructiveButton:^
-                                                            {
-                                                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-                                                                 {
-                                                                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self deleteSequence:self.viewModel.sequence completion:nil];
-                                                                }];
-                                                            }
-                                                                     otherButtonTitlesAndBlocks:nil, nil];
-                 [confirmDeleteActionSheet showInView:self.view];
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
+                                                                                          message:nil
+                                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+                 
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:nil]];
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                                     style:UIAlertActionStyleDestructive
+                                                                   handler:^(UIAlertAction *action)
+                                             {
+                                                 [self.presentingViewController dismissViewControllerAnimated:YES completion:^
+                                                  {
+                                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+                                                      [self deleteSequence:self.viewModel.sequence completion:nil];
+                                                  }];
+                                             }]];
+                 
+                 [self presentViewController:alertController animated:YES completion:nil];
              }];
         };
         [actionItems addObject:deleteItem];
