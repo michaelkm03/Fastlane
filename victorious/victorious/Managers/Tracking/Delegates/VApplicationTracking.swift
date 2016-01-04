@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 public extension VApplicationTracking {
     
-    public func request( url url: NSURL ) -> NSURLRequest? {
+    /*public func request( url url: NSURL ) -> NSURLRequest? {
         let mutableRequest = NSMutableURLRequest(URL: url)
         mutableRequest.HTTPBody = nil
         mutableRequest.HTTPMethod = "GET"
@@ -35,5 +35,5 @@ public extension VApplicationTracking {
         }
         
         return mutableRequest.copy() as? NSURLRequest
-    }
+    }*/
 }

@@ -20,7 +20,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
     func onError( error: NSError, completion: ()->() ) {

@@ -35,7 +35,7 @@ class FlagCommentOperation: RequestOperation {
         }
         
         // Execute request with callbacks
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError)
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError)
     }
     
     private func onError( error: NSError, completion:()->() ) {

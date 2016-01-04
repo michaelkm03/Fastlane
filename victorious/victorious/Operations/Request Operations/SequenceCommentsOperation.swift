@@ -27,7 +27,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
     func onError( error: NSError, completion:(()->()) ) {
@@ -56,7 +56,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             
             // If refreshing with a network connection, delete everything we have
             // TODO: revising how this fits into 4.0 architecture.
-            if self.requestExecutor.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
+            if self.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
                 let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
                 for comment in existingComments {
                     context.deleteObject( comment )
@@ -95,5 +95,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
         }
+    }
+    
+    private var hasNetworkConnection: Bool {
+        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
     }
 }

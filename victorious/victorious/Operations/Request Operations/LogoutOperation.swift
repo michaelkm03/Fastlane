@@ -19,7 +19,7 @@ class LogoutOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {

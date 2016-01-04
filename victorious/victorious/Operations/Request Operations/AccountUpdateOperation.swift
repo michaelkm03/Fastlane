@@ -71,7 +71,7 @@ class AccountUpdateOperation: RequestOperation {
         }
         
         // Then send out the request the server
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {

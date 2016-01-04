@@ -27,7 +27,7 @@ class CommentFindOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
     private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {

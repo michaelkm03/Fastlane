@@ -49,7 +49,7 @@ extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
     
     func next() -> Self? {
         guard let results = self.results else {
-            fatalError( "The `resultCount` property has not been set on the receiver (\(self.dynamicType)).  This is required in order to determine if there is a next page available.  I would suggest setting it in the completion closure provided to `RequestOperation`s `executeRequest(_:onComplete:onError:)` method." )
+            fatalError( "The `resultCount` property has not been set on the receiver (\(self.dynamicType)).  This is required in order to determine if there is a next page available.  I would suggest setting it in the completion closure provided to `RequestOperation`s `requestExecutor.executeRequest(_:onComplete:onError:)` method." )
         }
         if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: results.count) {
             return self.dynamicType.init(request: request)

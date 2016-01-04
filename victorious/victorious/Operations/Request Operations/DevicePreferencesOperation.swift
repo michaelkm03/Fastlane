@@ -27,7 +27,7 @@ class DevicePreferencesOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( result: DevicePreferencesRequest.ResultType, completion: () -> () ) {

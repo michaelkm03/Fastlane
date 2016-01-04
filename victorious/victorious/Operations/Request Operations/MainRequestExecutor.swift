@@ -10,17 +10,21 @@ import Foundation
 import VictoriousIOSSDK
 
 class MainRequestExecutor: RequestExecutorType {
-    let persistentStore: PersistentStoreType
-    let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    var hasNetworkConnection: Bool {
+    
+    private let persistentStore: PersistentStoreType
+    private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    
+    private var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
     }
 
     init(persistentStore: PersistentStoreType) {
         self.persistentStore = persistentStore
     }
-
-    final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
+    
+    func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {}
+    
+    /*func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
 
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
@@ -73,7 +77,7 @@ class MainRequestExecutor: RequestExecutorType {
             dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
             networkActivityIndicator.stop()
         }
-    }
+    }*/
 }
 
 private extension RequestContext {

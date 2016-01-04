@@ -22,7 +22,7 @@ class DeleteSequenceOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
     func onComplete( stream: DeleteSequenceRequest.ResultType, completion:()->() ) {

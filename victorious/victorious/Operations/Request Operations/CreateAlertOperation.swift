@@ -18,6 +18,6 @@ class CreateAlertOperation: RequestOperation {
     }
     
     override func main() {
-        self.executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }

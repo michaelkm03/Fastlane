@@ -30,7 +30,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
     func onError( error: NSError, completion:(()->()) ) {

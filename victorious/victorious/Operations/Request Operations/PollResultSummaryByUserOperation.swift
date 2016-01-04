@@ -28,7 +28,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:()->() ) {
