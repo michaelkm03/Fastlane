@@ -34,7 +34,10 @@ class FollowUserOperationTest: XCTestCase {
     func testFollowingAnExistentUser() {
         let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
         let createdUserToFollow = operationHelper.createUser(remoteId: userToFollowID, persistentStore: testStore)
-        operationHelper.queueExpectedOperation(operation: operation)
+        let expectation = expectationWithDescription("operation expectation")
+        operation.queue { error in
+            expectation.fulfill()
+        }
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -61,7 +64,11 @@ class FollowUserOperationTest: XCTestCase {
         let existingUsers: [VUser] = self.testStore.mainContext.v_findAllObjects()
         XCTAssertEqual(0, existingUsers.count)
 
-        operationHelper.queueExpectedOperation(operation: operation)
+        let expectation = expectationWithDescription("operation expectation")
+        operation.queue { error in
+            expectation.fulfill()
+        }
+
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             if let createdUsers: [VUser] = self.testStore.mainContext.v_findAllObjects() where createdUsers.count > 0 {
                 XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")

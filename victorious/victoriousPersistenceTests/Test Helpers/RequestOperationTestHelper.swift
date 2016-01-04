@@ -27,11 +27,4 @@ class RequestOperationTestHelper {
             XCTFail("Something went wrong while clearing persitent store")
         }
     }
-
-    func queueExpectedOperation(operation operation: RequestOperation, expectation: XCTestExpectation = XCTestExpectation()) -> XCTestExpectation {
-        operation.queue() { error in
-            expectation.fulfill()
-        }
-        return expectation
-    }
 }
