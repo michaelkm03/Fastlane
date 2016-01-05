@@ -12,13 +12,11 @@
 #import "VRootViewController.h"
 
 #define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_EVENT_ALERTS_ENABLED 0
-#define TRACKING_START_END_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
 #define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
 #define TRACKING_VIEW_SESSION_LOGGING_ENABLED 0
 
-#if TRACKING_LOGGING_ENABLED || TRACKING_QUEUE_LOGGING_ENABLED || TRACKING_ALERTS_ENABLED || TRACKING_VIEW_SESSION_LOGGING_ENABLED || TRACKING_SESSION_VALUE_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED || TRACKING_QUEUE_LOGGING_ENABLED || TRACKING_VIEW_SESSION_LOGGING_ENABLED || TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
@@ -121,22 +119,6 @@
     return output;
 }
 
-- (BOOL)showTrackingEventAlerts
-{
-#if TRACKING_EVENT_ALERTS_ENABLED
-    return YES;
-#endif
-    return _showTrackingEventAlerts;
-}
-
-- (BOOL)showTrackingStartEndAlerts
-{
-#if TRACKING_START_END_ALERTS_ENABLED
-    return YES;
-#endif
-    return _showTrackingStartEndAlerts;
-}
-
 #pragma mark - Session Parameters
 
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
@@ -177,25 +159,6 @@
 #if TRACKING_LOGGING_ENABLED
     NSLog( @"*** TRACKING (%lu delegates) ***\n>>> %@ <<< %@\n", (unsigned long)self.delegates.count, eventName, [self stringFromDictionary:completeParams] );
 #endif
-    
-    if ( self.showTrackingEventAlerts )
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                       {
-                           UIAlertController *alertController = [UIAlertController alertControllerWithTitle:eventName
-                                                                                                    message:[self stringFromDictionary:completeParams]
-                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                           [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                               style:UIAlertActionStyleDefault
-                                                                             handler:nil]];
-                           VRootViewController *rootVC = [VRootViewController rootViewController];
-                           if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
-                           {
-                               [rootVC dismissViewControllerAnimated:NO completion:nil];
-                           }
-                           [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
-                       });
-    }
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
@@ -270,27 +233,6 @@
 {
     [self endEvent:eventName];
     
-    if ( self.showTrackingStartEndAlerts )
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                       {
-                           UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Event Started"
-                                                                                                    message:eventName
-                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                           [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                               style:UIAlertActionStyleDefault
-                                                                             handler:nil]];
-                           
-                           VRootViewController *rootVC = [VRootViewController rootViewController];
-                           if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
-                           {
-                               [rootVC dismissViewControllerAnimated:NO completion:nil];
-                           }
-                           [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
-                       });
-        NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-    }
-    
     VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
     self.durationEvents[ eventName ] = event;
     
@@ -308,27 +250,6 @@
     __block VTrackingEvent *event = self.durationEvents[ eventName ];
     if ( event )
     {
-        if ( self.showTrackingStartEndAlerts )
-        {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                           {
-                               UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Event Ended"
-                                                                                                        message:eventName
-                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
-                               [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                                   style:UIAlertActionStyleDefault
-                                                                                 handler:nil]];
-                               
-                               VRootViewController *rootVC = [VRootViewController rootViewController];
-                               if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
-                               {
-                                   [rootVC dismissViewControllerAnimated:NO completion:nil];
-                               }
-                               [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
-                           });
-            NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-        }
-        
         __block NSTimeInterval duration = ABS( [event.dateCreated timeIntervalSinceNow] );
         [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
          {
