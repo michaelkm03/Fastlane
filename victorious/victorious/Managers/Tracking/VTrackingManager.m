@@ -9,9 +9,10 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 #import "VTrackingEventLog.h"
+#import "VRootViewController.h"
 
 #define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_EVENT_ALERTS_ENABLED 0
+#define TRACKING_EVENT_ALERTS_ENABLED 1
 #define TRACKING_START_END_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
 #define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
@@ -181,8 +182,18 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
-                           [[[UIAlertView alloc] initWithTitle:eventName message:[self stringFromDictionary:completeParams]
-                                                      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                           UIAlertController *alertController = [UIAlertController alertControllerWithTitle:eventName
+                                                                                                    message:[self stringFromDictionary:completeParams]
+                                                                                             preferredStyle:UIAlertControllerStyleAlert];
+                           [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                               style:UIAlertActionStyleDefault
+                                                                             handler:nil]];
+                           VRootViewController *rootVC = [VRootViewController rootViewController];
+                           if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
+                           {
+                               [rootVC dismissViewControllerAnimated:NO completion:nil];
+                           }
+                           [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
                        });
     }
     
@@ -263,7 +274,19 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
-                           [[[UIAlertView alloc] initWithTitle:@"Event Started" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                           UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Event Started"
+                                                                                                    message:eventName
+                                                                                             preferredStyle:UIAlertControllerStyleAlert];
+                           [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                               style:UIAlertActionStyleDefault
+                                                                             handler:nil]];
+                           
+                           VRootViewController *rootVC = [VRootViewController rootViewController];
+                           if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
+                           {
+                               [rootVC dismissViewControllerAnimated:NO completion:nil];
+                           }
+                           [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
                        });
         NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
     }
@@ -289,7 +312,19 @@
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                            {
-                               [[[UIAlertView alloc] initWithTitle:@"Event Ended" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                               UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Event Ended"
+                                                                                                        message:eventName
+                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
+                               [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                   style:UIAlertActionStyleDefault
+                                                                                 handler:nil]];
+                               
+                               VRootViewController *rootVC = [VRootViewController rootViewController];
+                               if ([rootVC.presentedViewController isKindOfClass:[UIAlertController class]])
+                               {
+                                   [rootVC dismissViewControllerAnimated:NO completion:nil];
+                               }
+                               [rootVC.presentedViewController presentViewController:alertController animated:YES completion:nil];
                            });
             NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
         }
