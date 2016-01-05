@@ -61,10 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Session Values
 
 /**
- Adds a new parameter that will be passed to all tracking calls until cleared. To clear a
- previously set parameter, pass nil for value.
+ Adds a new parameter that will be passed to all tracking calls until cleared.
  */
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key;
+
+/**
+ Removes a value for a parameter if it exists.
+ */
+- (void)clearValueForSessionParameterWithKey:(NSString *)key;
 
 /**
  Clears all session properties

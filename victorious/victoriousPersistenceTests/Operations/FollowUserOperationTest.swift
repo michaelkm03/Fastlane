@@ -15,14 +15,14 @@ class FollowUserOperationTest: XCTestCase {
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
-    let userToFollowID = Int64(1)
+    let userID = Int64(1)
     let currentUserID = Int64(2)
     let screenName = "screenName"
 
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
-        operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
+        operation = FollowUserOperation(userID: userID, screenName: screenName)
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
         operation.persistentStore = testStore
@@ -32,7 +32,7 @@ class FollowUserOperationTest: XCTestCase {
 
     func __testFollowingAnExistentUser() {
         let createdCurrentUser = createUser(remoteId: currentUserID)
-        let createdUserToFollow = createUser(remoteId: userToFollowID)
+        let createdUserToFollow = createUser(remoteId: userID)
         queueExpectedOperation(operation: operation)
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in

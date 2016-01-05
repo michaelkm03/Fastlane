@@ -20,7 +20,7 @@ class FollowUserRequestTests: XCTestCase {
         }
         
         do {
-            let followUser = FollowUserRequest(userToFollowID: 5107, screenName: "profile")
+            let followUser = FollowUserRequest(userID: 5107, screenName: "profile")
             try followUser.parseResponse(NSURLResponse(), toRequest: followUser.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
@@ -31,7 +31,7 @@ class FollowUserRequestTests: XCTestCase {
         
         let targetUserID: Int64 = 5107
         
-        let followUser = FollowUserRequest(userToFollowID: targetUserID, screenName: "profile")
+        let followUser = FollowUserRequest(userID: targetUserID, screenName: "profile")
         let request = followUser.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/follow/add")

@@ -18,7 +18,6 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
-#import "VHashtagResponder.h"
 #import "VFollowControl.h"
 #import "victorious-Swift.h"
 
@@ -140,15 +139,17 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             return;
         }
         [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
-
+        
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if ([self isUserSubscribedToHashtag:hashtag.tag])
+        if ([[VUser currentUser] isFollowingHashtagString:hashtag.tag] )
         {
-            [self unsubscribeToTagAction:hashtag];
+            RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
+            [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
         }
         else
         {
-            [self subscribeToTagAction:hashtag];
+            RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
+            [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
         }
     };
     customCell.dependencyManager = self.dependencyManager;
@@ -178,36 +179,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
     VFollowedHashtag *followedHashtag = [[VUser currentUser].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     return followedHashtag != nil;
-}
-
-- (void)subscribeToTagAction:(VHashtag *)hashtag
-{
-    // TODO: Don't use these responder chain methods anymore, just queue operations directly from here
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }
-                failureBlock:^(NSError *error)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }];
-}
-
-- (void)unsubscribeToTagAction:(VHashtag *)hashtag
-{
-    // TODO: Don't use these responder chain methods anymore, just queue operations directly from here
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }
-                  failureBlock:^(NSError *error)
-     {
-         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-     }];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond

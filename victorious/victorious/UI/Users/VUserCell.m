@@ -7,7 +7,6 @@
 //
 
 #import "VUserCell.h"
-#import "VFollowResponder.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
@@ -63,13 +62,13 @@ static const CGFloat kUserCellHeight = 51.0f;
     }
     
     [self.KVOController unobserve:_user
-                          keyPath:NSStringFromSelector(@selector(followers))];
+                          keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     
     _user = user;
     
     __weak typeof(self) welf = self;
     [self.KVOController observe:user
-                       keyPaths:@[NSStringFromSelector(@selector(followers))]
+                        keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
@@ -99,59 +98,27 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    if ( sender.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
+    long long userId = self.user.remoteId.longLongValue;
+    NSString *screenName = @"";
     
-    void (^authorizedBlock)() = ^
+    RequestOperation *operation;
+    if ( self.user.isFollowedByMainUser.boolValue )
     {
-        [sender setControlState:VFollowControlStateLoading
-                       animated:YES];
-    };
-    
-    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
-    {
-        [self updateFollowingAnimated:YES];
-    };
-    
-    if (sender.controlState == VFollowControlStateFollowed)
-    {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder unfollowUser:self.user
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock
-                   fromViewController:nil
-                       withScreenName:nil];
+        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder followUser:self.user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock
-                 fromViewController:nil
-                     withScreenName:nil];
+        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
+
+    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    // If this is the currently logged in user, then hide the follow button
-    VUser *me = [[VObjectManager sharedManager] mainUser];
-    self.followControl.hidden = [self.user isEqual:me];
-    VFollowControlState desiredControlState = [VFollowControl controlStateForFollowing:[me.following containsObject:self.user]];
-    if ( self.followControl.controlState != desiredControlState )
-    {
-        [self.followControl setControlState:desiredControlState
-                                   animated:animated];
-    }
+    self.followControl.hidden = [self.user isCurrentUser];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
+    [self.followControl setControlState:controlState animated:animated];
 }
 
 @end

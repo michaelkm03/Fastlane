@@ -233,51 +233,26 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 - (void)updateFollowStatus
 {
-    [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue] animated:YES];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.sequence.user.isFollowedByMainUser.boolValue];
+    [self.followControl setControlState:controlState animated:controlState];
 }
 
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    if ( sender.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
+    long long userId = self.sequence.user.remoteId.longLongValue;
+    NSString *screenName = VFollowSourceScreenSleekCell;
     
-    void (^authorizedBlock)() = ^
+    RequestOperation *operation;
+    if ( self.sequence.user.isFollowedByMainUser.boolValue )
     {
-        [sender setControlState:VFollowControlStateLoading
-                       animated:YES];
-    };
-    
-    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
-    {
-        [self updateFollowStatus];
-    };
-    
-    if ( sender.controlState == VFollowControlStateFollowed )
-    {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder unfollowUser:self.sequence.user
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock
-                   fromViewController:nil
-                       withScreenName:VFollowSourceScreenSleekCell];
+        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-        
-        [followResponder followUser:self.sequence.user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock
-                 fromViewController:nil
-                     withScreenName:VFollowSourceScreenSleekCell];
+        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
+    
+    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
 }
 
 #pragma mark - Internal Methods

@@ -143,17 +143,16 @@
 
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
 {
-    if ( value == nil )
-    {
-        [self.sessionParameters removeObjectForKey:key];
-    }
-    else
-    {
-        self.sessionParameters[key] = value;
-    }
+    self.sessionParameters[key] = value;
+    
 #if TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
     NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", [self stringFromDictionary:self.sessionParameters] );
 #endif
+}
+
+- (void)clearValueForSessionParameterWithKey:(NSString *)key
+{
+    [self.sessionParameters removeObjectForKey:key];
 }
 
 - (void)clearSessionParameters

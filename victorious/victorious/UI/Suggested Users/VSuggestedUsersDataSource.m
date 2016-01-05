@@ -11,7 +11,6 @@
 #import "VObjectManager+Discover.h"
 #import "VDependencyManager.h"
 #import "VUser.h"
-#import "VFollowResponder.h"
 #import "VSuggestedUserRetryCell.h"
 #import "victorious-Swift.h"
 

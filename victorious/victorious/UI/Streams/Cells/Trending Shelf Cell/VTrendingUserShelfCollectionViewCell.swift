@@ -181,10 +181,8 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override func updateFollowControlState() {
         if let shelf = shelf as? UserShelf {
-            var controlState: VFollowControlState = .Unfollowed
-            if shelf.user.isFollowedByMainUser.boolValue {
-                controlState = .Followed
-            }
+            let isFollowed = shelf.user.isFollowedByMainUser.boolValue
+            let controlState: VFollowControlState = isFollowed ? .Followed : .Unfollowed
             followControl?.setControlState(controlState, animated: true)
         }
     }
@@ -209,37 +207,20 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        let target: VFollowResponder = typedResponder()
+        guard let shelf = shelf as? UserShelf else {
+            fatalError("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
+        }
+        
         switch followControl.controlState {
         case .Unfollowed:
-            if let shelf = shelf as? UserShelf {
-                    followControl.setControlState(.Loading, animated: true)
-                    target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
-                        followControl.controlState = .Loading
-                        },
-                        andCompletion: { [weak self] (user: VUser) -> Void in
-                            if let strongSelf = self {
-                                strongSelf.updateFollowControlState()
-                            }
-                        }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
-            }
-            else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to follow non-UserShelf shelf")
+            let operation = UnfollowUserOperation( userID: shelf.user.remoteId.longLongValue, screenName: VFollowSourceScreenTrendingUserShelf )
+            operation.queue() { error in
+                self.updateFollowControlState()
             }
         case .Followed:
-            if let shelf = shelf as? UserShelf {
-                followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.unfollowUser(shelf.user, withAuthorizedBlock: { () -> Void in
-                    followControl.controlState = VFollowControlState.Loading
-                    },
-                    andCompletion: { [weak self] (user: VUser) -> Void in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
-            }
-            else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
+            let operation = FollowUserOperation( userID: shelf.user.remoteId.longLongValue, screenName: VFollowSourceScreenTrendingUserShelf )
+            operation.queue() { error in
+                self.updateFollowControlState()
             }
         case .Loading:
             break
