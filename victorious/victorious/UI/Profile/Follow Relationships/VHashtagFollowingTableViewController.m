@@ -176,7 +176,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (BOOL)isUserSubscribedToHashtag:(NSString *)tag
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
-    VFollowedHashtag *followedHashtag = [[VUser currentUser].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     return followedHashtag != nil;
 }
 

@@ -112,7 +112,7 @@
 - (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button
-    VUser *me = [VUser currentUser];
+    VUser *me = [VCurrentUser user];
     self.followButton.hidden = (self.user == me);
     [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
     [self populateData];

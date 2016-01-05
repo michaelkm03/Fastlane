@@ -54,7 +54,7 @@
 
 - (BOOL)canReceiveDeeplinks
 {
-    return self.scaffold != nil && [VUser currentUser] != nil;
+    return self.scaffold != nil && [VCurrentUser user] != nil;
 }
 
 - (void)queueDeeplink:(NSURL *)url

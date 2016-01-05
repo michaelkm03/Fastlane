@@ -273,8 +273,6 @@
 // Check for hashtags that we're following
 - (void)parseResponseToCheckForFollowedHashtags:(NSDictionary *)response checkFollowingFlag:(BOOL)checkFlag
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
     if (![response[@"payload"] isKindOfClass:[NSDictionary class]])
     {
         return;

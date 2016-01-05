@@ -47,12 +47,12 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
             
             let objectUserId =  NSNumber(longLong: self.userID)
             let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : objectUserId ])
-            
             for user in results {
                 
                 // Load the user who is following self.userID
                 let subjectUserId = NSNumber(longLong: user.userID)
                 let subjectUser: VUser = context.v_findOrCreateObject( ["remoteId" : subjectUserId] )
+                subjectUser.isFollowedByMainUser = true
                 subjectUser.populate(fromSourceModel: user)
 
                 // Find or create the following relationship

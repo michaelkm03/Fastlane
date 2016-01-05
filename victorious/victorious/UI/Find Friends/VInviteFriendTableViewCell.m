@@ -66,7 +66,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
-    NSInteger mainUserID = [VUser currentUser].remoteId.integerValue;
+    NSInteger mainUserID = [VCurrentUser user].remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
     [self updateFollowStatusAnimated:NO];

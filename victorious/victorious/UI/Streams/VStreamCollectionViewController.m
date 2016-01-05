@@ -730,7 +730,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && [VUser currentUser] != nil )
+    if ( sequence.permissions.canRepost && [VCurrentUser user] != nil )
     {
         return YES;
     }

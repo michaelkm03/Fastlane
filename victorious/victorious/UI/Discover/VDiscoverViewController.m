@@ -92,7 +92,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                              selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
-    VUser *currentUser = [VUser currentUser];
+    VUser *currentUser = [VCurrentUser user];
     
     [self.KVOController observe:currentUser
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
@@ -192,7 +192,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.trendingTags = hashtags;
     
     // If logged in, load any tags already being followed
-    if ( [VUser currentUser] != nil )
+    if ( [VCurrentUser user] != nil )
     {
         [self updatedFollowedTags];
     }
@@ -244,7 +244,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isShowingNoData
 {
-    BOOL tagFollowStatesAreValid = [VUser currentUser] == nil || self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [VCurrentUser user] == nil || self.loadedUserFollowing;
     return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
@@ -379,7 +379,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([[VUser currentUser] isFollowingHashtagString:hashtag.tag] )
+                if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
                 {
                     [self unsubscribeToTagAction:hashtag];
                 }
@@ -495,7 +495,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
 {
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
     for (UITableViewCell *cell in self.tableView.visibleCells)
     {

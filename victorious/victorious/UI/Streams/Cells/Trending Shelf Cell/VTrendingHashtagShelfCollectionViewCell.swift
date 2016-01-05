@@ -129,7 +129,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         hashtagTextView.contentInset = UIEdgeInsetsZero
         hashtagTextView.linkDelegate = self
         
-        KVOController.observe( VUser.currentUser(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
+        KVOController.observe( VCurrentUser.user(), keyPath: "hashtags", options:NSKeyValueObservingOptions.Old, action: Selector("handleUserHashtagsArrayChange:"))
     }
     
     override class func nibForCell() -> UINib {
@@ -149,7 +149,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             return
         }
         var controlState: VFollowControlState = .Unfollowed
-        if let currentUser = VUser.currentUser()
+        if let currentUser = VCurrentUser.user()
             where currentUser.isFollowingHashtagString(shelf.hashtagTitle) {
                 controlState = .Followed
         }
@@ -162,12 +162,12 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
         
         if let oldValue = changeInfo[NSKeyValueChangeOldKey] as? NSOrderedSet {
-            if let hashtags = VUser.currentUser()?.followedHashtags
+            if let hashtags = VCurrentUser.user()?.followedHashtags
                 where oldValue.isEqualToOrderedSet(hashtags) {
                     return false // Old hashtags and new hashtags are identical, don't update
             }
        
-        } else if VUser.currentUser()?.followedHashtags == nil {
+        } else if VCurrentUser.user()?.followedHashtags == nil {
             return false // Hashtags was nil and continues to be nil, don't update
         }
         return true

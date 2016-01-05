@@ -39,7 +39,7 @@ class LogoutLocally: Operation {
         
         InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
         
-        VUser.clearCurrentUser()
+        VCurrentUser.clear()
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )

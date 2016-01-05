@@ -51,7 +51,6 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     NSParameterAssert(viewControllerToPresentOn != nil);
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
-    
     if ( user.isCurrentUser )
     {
         completion(user);
@@ -84,7 +83,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
     NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
     [self followUserWithUserToFollowID:user.remoteId
-                         currentUserID:[VUser currentUser].remoteId
+                         currentUserID:[VCurrentUser user].remoteId
                             screenName:sourceScreen
                           successBlock:successBlock
                              failBlock:failureBlock];

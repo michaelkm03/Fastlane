@@ -22,7 +22,7 @@ public extension VApplicationTracking {
         
         let persistentStore: PersistentStoreType = MainPersistentStore()
         let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VUser.currentUser())
+            return AuthenticationContext(currentUser: VCurrentUser.user())
         }
         
         if let requestURLString = mutableRequest.URL?.absoluteString {

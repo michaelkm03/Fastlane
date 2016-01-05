@@ -45,7 +45,7 @@ class AccountCreateOperation: RequestOperation {
             context.v_save()
             
             dispatch_async( dispatch_get_main_queue() ) {
-                if let currentUser = VUser.currentUser() {
+                if let currentUser = VCurrentUser.user() {
                     self.updateStoredCredentials( currentUser )
                     self.notifyLoginChange( currentUser, isNewUser: response.newUser )
                     self.queueNextOperations( currentUser )

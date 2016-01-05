@@ -104,7 +104,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     self.followingEnabled = NO;
     
-    [self.KVOController observe:[VUser currentUser]
+    [self.KVOController observe:[VCurrentUser user]
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
@@ -155,7 +155,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", self.selectedHashtag.lowercaseString];
-    VFollowedHashtag *followedHashtag = [[VUser currentUser].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     BOOL followingHashtag = followedHashtag != nil;
     if ( followingHashtag != self.followingSelectedHashtag)
     {

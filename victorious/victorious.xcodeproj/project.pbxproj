@@ -717,6 +717,7 @@
 		A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */; };
 		A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */; };
 		A721E9751B5822FD000B7901 /* GIFSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */; };
+		A722B9441C3B79AA0014BA42 /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		A7245F051C04101F00187825 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */; };
 		A7245F071C04105400187825 /* SequenceRepostersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7245F061C04105400187825 /* SequenceRepostersOperation.swift */; };
 		A7245F091C04E66E00187825 /* FlagSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */; };
@@ -1111,7 +1112,6 @@
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
 		A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */; };
 		A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */; };
-		A7EB325E1C3B1993006C2783 /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		A7EB32611C3B1CE6006C2783 /* NSBundle+TestBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32601C3B1CE6006C2783 /* NSBundle+TestBundle.m */; };
 		A7EB32661C3B1FAC006C2783 /* MainPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32641C3B1FAC006C2783 /* MainPersistentStore.swift */; };
 		A7EB32691C3B1FC1006C2783 /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */; };
@@ -1130,7 +1130,7 @@
 		A7EBF53C1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */; };
 		A7EBF53E1C2B9BDD0080C7CF /* VLlikersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53D1C2B9BDD0080C7CF /* VLlikersDataSource.swift */; };
 		A7EBF5401C2B9BF80080C7CF /* SequenceLikersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */; };
-		A7EBF5681C2F3BF40080C7CF /* VUser+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */; };
+		A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */; };
 		A7EBF5691C2F3BF40080C7CF /* VUser+FollowedHashtags.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */; };
 		A7EBF56A1C2F3BF40080C7CF /* VFollowedHashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5651C2F3BF40080C7CF /* VFollowedHashtag.swift */; };
 		A7EBF56B1C2F3BF40080C7CF /* VFollowedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5661C2F3BF40080C7CF /* VFollowedUser.swift */; };
@@ -3502,7 +3502,7 @@
 		A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsOperation.swift; sourceTree = "<group>"; };
 		A7EBF53D1C2B9BDD0080C7CF /* VLlikersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLlikersDataSource.swift; sourceTree = "<group>"; };
 		A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceLikersOperation.swift; sourceTree = "<group>"; };
-		A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Current.swift"; sourceTree = "<group>"; };
+		A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCurrentUser.swift; sourceTree = "<group>"; };
 		A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+FollowedHashtags.swift"; sourceTree = "<group>"; };
 		A7EBF5651C2F3BF40080C7CF /* VFollowedHashtag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowedHashtag.swift; sourceTree = "<group>"; };
 		A7EBF5661C2F3BF40080C7CF /* VFollowedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowedUser.swift; sourceTree = "<group>"; };
@@ -7123,10 +7123,10 @@
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */,
-				A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */,
 				628681F41C287C9B00DEF638 /* FollowUserOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
 				6205AAB71C334D9300859145 /* MainRequestExecutor.swift */,
+				A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
 				A7D69C1B1C0E510800B462C3 /* PollResultSummaryBySequenceOperation.swift */,
 				A767120A1C1F7A7C006568DF /* PollResultSummaryByUserOperation.swift */,
@@ -7146,12 +7146,12 @@
 				A7EBF5161C2B77250080C7CF /* UnloadStreamOperation.swift */,
 				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
-				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */,
+				A76AEA381BFEBA0500E8A26F /* AccountCreateOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -7738,7 +7738,7 @@
 		A7EBF5611C2F3BF40080C7CF /* Model Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */,
+				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
 				A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */,
 			);
 			path = "Model Extensions";
@@ -11074,7 +11074,7 @@
 				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
-				A7EBF5681C2F3BF40080C7CF /* VUser+Current.swift in Sources */,
+				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
@@ -11249,7 +11249,6 @@
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
-				A7EB325E1C3B1993006C2783 /* FlagSequenceOperation.swift in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,
 				A75FAF1919E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m in Sources */,
 				A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */,
@@ -11639,6 +11638,7 @@
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
+				A722B9441C3B79AA0014BA42 /* FlagSequenceOperation.swift in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
 				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,

@@ -104,7 +104,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
-    [[VTrackingManager sharedInstance] clearSessionParameters];
+    [[VTrackingManager sharedInstance] clearAllSessionParameterValues];
     
 }
 

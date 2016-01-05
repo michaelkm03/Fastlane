@@ -97,7 +97,7 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
         
         // Assuming this achievement contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears
-        if let currentUser = VUser.currentUser() {
+        if let currentUser = VCurrentUser.user() {
             currentUser.level = NSNumber(longLong: alert.parameters.userFanLoyalty.level)
             currentUser.levelProgressPercentage = NSNumber(longLong: alert.parameters.userFanLoyalty.progress)
         }
