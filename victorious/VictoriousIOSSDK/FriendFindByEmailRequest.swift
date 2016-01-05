@@ -32,9 +32,4 @@ public class FriendFindByEmailRequest: RequestType {
         return foundUsersJSON.flatMap({ return User(json: $0) })
     }
     
-    private func tempFile() -> NSURL {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }
-    
 }
