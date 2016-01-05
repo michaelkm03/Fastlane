@@ -1122,7 +1122,7 @@
 		A7EBF53C1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */; };
 		A7EBF53E1C2B9BDD0080C7CF /* VLlikersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53D1C2B9BDD0080C7CF /* VLlikersDataSource.swift */; };
 		A7EBF5401C2B9BF80080C7CF /* SequenceLikersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */; };
-		A7EBF5681C2F3BF40080C7CF /* VUser+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */; };
+		A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */; };
 		A7EBF5691C2F3BF40080C7CF /* VUser+FollowedHashtags.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */; };
 		A7EBF56A1C2F3BF40080C7CF /* VFollowedHashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5651C2F3BF40080C7CF /* VFollowedHashtag.swift */; };
 		A7EBF56B1C2F3BF40080C7CF /* VFollowedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5661C2F3BF40080C7CF /* VFollowedUser.swift */; };
@@ -3489,7 +3489,7 @@
 		A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowedHashtagsOperation.swift; sourceTree = "<group>"; };
 		A7EBF53D1C2B9BDD0080C7CF /* VLlikersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLlikersDataSource.swift; sourceTree = "<group>"; };
 		A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceLikersOperation.swift; sourceTree = "<group>"; };
-		A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Current.swift"; sourceTree = "<group>"; };
+		A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCurrentUser.swift; sourceTree = "<group>"; };
 		A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+FollowedHashtags.swift"; sourceTree = "<group>"; };
 		A7EBF5651C2F3BF40080C7CF /* VFollowedHashtag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowedHashtag.swift; sourceTree = "<group>"; };
 		A7EBF5661C2F3BF40080C7CF /* VFollowedUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowedUser.swift; sourceTree = "<group>"; };
@@ -7713,7 +7713,7 @@
 		A7EBF5611C2F3BF40080C7CF /* Model Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A7EBF5621C2F3BF40080C7CF /* VUser+Current.swift */,
+				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
 				A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */,
 			);
 			path = "Model Extensions";
@@ -11049,7 +11049,7 @@
 				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
-				A7EBF5681C2F3BF40080C7CF /* VUser+Current.swift in Sources */,
+				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
