@@ -22,7 +22,7 @@ class SequenceFetchOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {

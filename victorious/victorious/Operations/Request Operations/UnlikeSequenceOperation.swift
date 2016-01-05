@@ -29,6 +29,6 @@ class UnlikeSequenceOperation: RequestOperation {
         }
         
         // Now execute the request fire-and-forget style
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }

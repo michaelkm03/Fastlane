@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 # Author: Lawrence H. Leach - Sr. Software Engineer
 # Note: Hash calculating code was "borrowed" from Frank Zhao.
-# Date: 07/01/2015
+# Date: 10/15/2015
 # Copyright 2015 Victorious Inc. All Rights Reserved.
 
 """
@@ -24,6 +24,7 @@ import shutil
 import os
 import tempfile
 import vams_common as vams
+import pprint
 
 # Supress compiled files
 sys.dont_write_bytecode = True
@@ -33,26 +34,10 @@ _DEFAULT_HOST = ''
 
 _WORKING_DIRECTORY = ''
 
-_CONSOLE_OUTPUT = False
+_CONSOLE_OUTPUT = True
 
 
-def assetFetcher(url, filename):
-    """
-    Requests an asset using a provided url and writes it to a folder
-    :param url:
-        The url of the asset to download
-
-    :param filename:
-        The filename / location to write the downloaded asset to
-    """
-
-    response = requests.get(url)
-    if len(response.content) > 0:
-        with open(filename, 'wb') as outfile:
-            outfile.write(response.content)
-
-
-def proccessAppAssets(app_name, json):
+def ProccessAppDetails(app_name, json):
     """
     Processes the app design assets for a given platform.
 
@@ -92,7 +77,7 @@ def proccessAppAssets(app_name, json):
             if _CONSOLE_OUTPUT:
                 print '%s (%s)' % (asset_name, platform_assets[asset])
 
-            assetFetcher(img_url, new_file)
+            vams.assetFetcher(img_url, new_file)
 
             current_cnt = current_cnt+1
 
@@ -102,50 +87,6 @@ def proccessAppAssets(app_name, json):
 
     # Now set the app config data
     setAppConfig(app_name, json)
-
-
-def retrieveAppDetails(app_name):
-    """
-    Collects all of the design assets for a given app
-
-    :param app_name:
-        The app name of the app whose assets to be downloaded.
-
-    :return:
-        0 = Success
-        1 = Error
-    """
-
-    # Calculate request hash
-    uri = '%s/%s' % (_ASSETS_ENDPOINT, app_name)
-    url = '%s%s' % (_DEFAULT_HOST, uri)
-    req_hash = vams.calcAuthHash(uri, 'GET')
-
-    auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
-    headers = {
-        'Authorization':auth_header,
-        'User-Agent':vams._DEFAULT_USERAGENT,
-        'Date':vams._DEFAULT_HEADER_DATE
-    }
-    response = requests.get(url, headers=headers)
-    json = response.json()
-    error_code = json['error']
-
-    if error_code == 0:
-        proccessAppAssets(app_name, json)
-
-    else:
-        response_message = 'No updated data for "%s" found in the Victorious backend' % app_name
-        if _CONSOLE_OUTPUT:
-            print response_message
-
-        cleanUp()
-
-        if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
-            shutil.rmtree(_WORKING_DIRECTORY)
-            sys.exit('1|%s' % response_message)
-
-        sys.exit(1)
 
 
 def setAppConfig(app_name, json_obj):
@@ -198,7 +139,6 @@ def setAppConfig(app_name, json_obj):
         print ''
 
 
-
 def downloadProvisioningProfiles(json):
     """
     Downloads the QA and Staging Provisioning Profiles from VAMS and writes them to a local location.
@@ -214,13 +154,13 @@ def downloadProvisioningProfiles(json):
         if _CONSOLE_OUTPUT:
             print 'Downloading QA Provisioning Profile...'
         qa_profile = '%s/%s' % (_WORKING_DIRECTORY, vams._QA_PROVISIONING_PROFILE)
-        assetFetcher(qa_profile_url, qa_profile)
+        vams.assetFetcher(qa_profile_url, qa_profile)
 
     if staging_proifle_url:
         if _CONSOLE_OUTPUT:
             print 'Downloading Staging Provisioning Profile...'
         staging_profile = '%s/%s' % (_WORKING_DIRECTORY, vams._STAGING_PROVISIONING_PROFILE)
-        assetFetcher(staging_proifle_url, staging_profile)
+        vams.assetFetcher(staging_proifle_url, staging_profile)
 
 
 def downloadKeystoreFile(app_name, json):
@@ -243,86 +183,107 @@ def downloadKeystoreFile(app_name, json):
             print ''
 
         keystore_file = '%s/%s' % (_WORKING_DIRECTORY, new_file)
-        assetFetcher(keystore_url, keystore_file)
+        vams.assetFetcher(keystore_url, keystore_file)
+
+
+def FetchAppDetails(app_name):
+    """
+    Collects all of the design assets for a given app
+
+    :param app_name:
+        The app name of the app whose assets to be downloaded.
+
+    :return:
+        0 = Success
+        1 = Error
+    """
+
+    # Calculate request hash
+    uri = '%s/%s' % (_ASSETS_ENDPOINT, app_name)
+    url = '%s%s' % (_DEFAULT_HOST, uri)
+    date = vams.createDateString()
+    req_hash = vams.calcAuthHash(uri, 'GET', date)
+
+    auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
+    headers = {
+        'Authorization': auth_header,
+        'User-Agent': vams._DEFAULT_USERAGENT,
+        'Date': date
+    }
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    error_code = json['error']
+
+    if error_code == 0:
+        if _CONSOLE_OUTPUT:
+            pprint.pprint(json)
+            #ProccessAppDetails(app_name, json)
+
+    else:
+        response_message = 'No app data for "%s" was located in VAMS' % app_name
+        if _CONSOLE_OUTPUT:
+            print response_message
+
+        cleanUp()
+
+        if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
+            shutil.rmtree(_WORKING_DIRECTORY)
+            sys.exit('1|%s' % response_message)
+
+        sys.exit(1)
 
 
 def cleanUp():
     subprocess.call('find . -name \'*.pyc\' -delete', shell=True)
 
 
-def showProperUsage():
+def ShowProperUsage():
         print ''
-        print 'Usage: ./vams_prebuild.py <app_name> <platform> <environment> <port>'
+        print 'Usage: ./fetch-app.py <app_name> <environment> <port>'
         print ''
         print '<app_name> is the name of the application data to retrieve from VAMS.'
         print '<config_path> is the path on disk where the application data is to be written to.'
-        print '<platform> is the OS platform for which the assets need to be downloaded for. Choices = android OR ios'
         print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
         print '<port> OPTIONAL: Will only be used if <environment> is set to local'
         print ''
         print 'NOTES: '
-        print '* If no <platform> parameter is provided, the script will assume ANDROID.'
         print '* If no <environment> parameter is provided, the script will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
+        print './fetch-app.py awesomeness     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
+        print './fetch-app.py awesomeness qa  <-- will use QA'
         print ''
         sys.exit(1)
 
 
 def main(argv):
-    if len(argv) < 3:
-        showProperUsage()
+    if len(argv) < 2:
+        ShowProperUsage()
 
     vams.init()
 
     app_name = argv[1]
 
-    global _WORKING_DIRECTORY
-    _WORKING_DIRECTORY = vams._DEFAULT_CONFIG_DIRECTORY
 
-    platform = argv[2]
-    if platform == vams._PLATFORM_IOS:
-        vams._DEFAULT_PLATFORM = vams._PLATFORM_IOS
-        app_path = tempfile.mkdtemp()
-        _WORKING_DIRECTORY = app_path
-
-
-    if len(argv) == 4:
-        server = argv[3]
+    if len(argv) == 3:
+        server = argv[2]
     else:
         server = ''
 
-    if len(argv) == 5:
-        vams._DEFAULT_LOCAL_PORT = argv[4]
+    if len(argv) == 4:
+        vams._DEFAULT_LOCAL_PORT = argv[3]
+
 
     global _DEFAULT_HOST
-    if server.lower() == 'dev':
-        _DEFAULT_HOST = vams._DEV_HOST
-    elif server.lower() == 'qa':
-        _DEFAULT_HOST = vams._QA_HOST
-    elif server.lower() == 'staging':
-        _DEFAULT_HOST = vams._STAGING_HOST
-    elif server.lower() == 'production':
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
-    elif server.lower() == 'localhost':
-        _DEFAULT_HOST = "%s:%s" % (vams._LOCAL_HOST, vams._DEFAULT_LOCAL_PORT)
-    else:
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
+    _DEFAULT_HOST = vams.GetVictoriousHost(server)
 
-    global _CONSOLE_OUTPUT
-    if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        _CONSOLE_OUTPUT = True
-
-
-    # Uncomment the following twolines to display the host being accessed
     if _CONSOLE_OUTPUT:
         print 'Using host: %s' % _DEFAULT_HOST
 
+    # Authenticate with VAMS and fetch the app details
     if vams.authenticateUser(_DEFAULT_HOST):
-        retrieveAppDetails(app_name)
+        FetchAppDetails(app_name)
     else:
         exit_message = 'There was a problem authenticating with the Victorious backend. Exiting now...'
         if _CONSOLE_OUTPUT:
@@ -332,11 +293,7 @@ def main(argv):
         sys.exit(error_string)
 
     response_message = 'App Data & Assets Downloaded from VAMS Successfully'
-    if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
-        response_message = '0|%s' % _WORKING_DIRECTORY
-        sys.exit(response_message)
-    elif vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        return 0
+    sys.exit(response_message)
 
 
 if __name__ == '__main__':

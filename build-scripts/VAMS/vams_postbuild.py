@@ -12,6 +12,7 @@ This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousAndroid
 https://github.com/TouchFrame/VictoriousiOS
 """
+
 import requests
 import sys
 import subprocess
@@ -43,7 +44,8 @@ def postTestFairyURL(app_name, testfairy_url):
     # Calculate request hash
     uri = '%s/%s' % (_VICTORIOUS_ENDPOINT, app_name)
     url = '%s%s' % (_DEFAULT_HOST, uri)
-    req_hash = vams.calcAuthHash(uri, 'POST')
+    date = vams.createDateString()
+    req_hash = vams.calcAuthHash(uri, 'POST', date)
 
     field_name = 'android_testfairy_url'
     if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
@@ -53,7 +55,7 @@ def postTestFairyURL(app_name, testfairy_url):
     headers = {
         'Authorization': auth_header,
         'User-Agent': vams._DEFAULT_USERAGENT,
-        'Date': vams._DEFAULT_HEADER_DATE
+        'Date': date
     }
     postData = {
         'build_name': app_name,
@@ -65,8 +67,10 @@ def postTestFairyURL(app_name, testfairy_url):
     json = response.json()
     error_code = json['error']
 
-    if not error_code == 0:
-        error_message = 'An error occurred posting the Test Fairy URL for %s.' % app_name
+    if error_code != 0:
+        error_message = (
+                'Error occurred posting the Test Fairy URL for %s: %s %s' %
+                (app_name, error_code, json['message']))
         if _CONSOLE_OUTPUT:
             print error_message
         sys.exit('1|%s' % error_message)
@@ -133,18 +137,7 @@ def main(argv):
         vams._DEFAULT_LOCAL_PORT = argv[5]
 
     global _DEFAULT_HOST
-    if server.lower() == 'dev':
-        _DEFAULT_HOST = vams._DEV_HOST
-    elif server.lower() == 'qa':
-        _DEFAULT_HOST = vams._QA_HOST
-    elif server.lower() == 'staging':
-        _DEFAULT_HOST = vams._STAGING_HOST
-    elif server.lower() == 'production':
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
-    elif server.lower() == 'localhost':
-        _DEFAULT_HOST = '%s:%s' % (vams._LOCAL_HOST, vams._LOCAL_PORT)
-    else:
-        _DEFAULT_HOST = vams._PRODUCTION_HOST
+    _DEFAULT_HOST = vams.GetVictoriousHost(server)
 
     if _CONSOLE_OUTPUT:
         print ''
@@ -159,8 +152,9 @@ def main(argv):
             print exit_message
         sys.exit(exit_message)
 
-    
-    sys.exit('\nTest Fairy URL Posted to VAMS Successfully for %s\n' % app_name)
+    if _CONSOLE_OUTPUT:
+        print '\nTest Fairy URL Posted to VAMS Successfully for %s\n' % app_name
+    sys.exit(0)
 
 
 if __name__ == '__main__':

@@ -11,7 +11,7 @@ import XCTest
 
 class MainPersistentStoreTests: XCTestCase {
     
-    let persistentStore: PersistentStoreType = MainPersistentStore()
+    let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     func testSyncBasic() {
         persistentStore.mainContext.v_performBlockAndWait() { context in

@@ -62,8 +62,8 @@ class CoreDataManager: NSObject {
                     NSInferMappingModelAutomaticallyOption : true
                 ]
             )
-        }
-        catch {
+       
+        } catch {
             fatalError( "Failed to create persistent store.  If using a persistent store, either the managed object model and persistent store URLs provided are invalid, or a migration failed between a current and previous mapping model failed.  If you are using a mapping model, double check that all attributes and relationships are being migrated properly.  Caught error: \(error)" )
         }
         

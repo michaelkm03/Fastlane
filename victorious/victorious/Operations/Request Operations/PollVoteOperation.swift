@@ -37,6 +37,6 @@ final class PollVoteOperation: RequestOperation {
         }
         
         // Then execute the request
-        self.executeRequest( request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
