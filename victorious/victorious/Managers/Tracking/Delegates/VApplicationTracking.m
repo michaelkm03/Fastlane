@@ -229,9 +229,8 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         return;
     }
     
-    NSURLResponse *response = nil;
-    NSError *connectionError = nil;
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request];
+    [dataTask resume];
     
 #if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )

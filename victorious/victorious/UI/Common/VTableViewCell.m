@@ -15,7 +15,7 @@
 {
     [super awakeFromNib];
     
-    [[UIImageView appearanceWhenContainedIn:[self class], nil]
+    [[UIImageView appearanceWhenContainedInInstancesOfClasses:@[[self class]]]
      setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]];
     
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
