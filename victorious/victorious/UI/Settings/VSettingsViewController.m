@@ -54,7 +54,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
-@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate, ForceLoginOperationDelegate>
+@interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, ForceLoginOperationDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
@@ -456,12 +456,22 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                        message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                              otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                                                 message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SetupButton", @"Setup")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+                                    }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -484,15 +494,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [deviceInfo appendFormat:@"%@ %@ (%@)", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
     
     return deviceInfo;
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.cancelButtonIndex != buttonIndex)
-    {
-        // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
-    }
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate

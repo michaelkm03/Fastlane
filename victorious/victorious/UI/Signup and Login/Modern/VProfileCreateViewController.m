@@ -329,13 +329,13 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
+                                                                             message:error.localizedDescription
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
     
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
@@ -389,19 +389,20 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectExitCreateProfile];
     
     // Show Error Message
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                       message:NSLocalizedString(@"ProfileAborted", @"")
-                             cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                onCancelButton:nil
-                    otherButtonTitlesAndBlocks:nil];
-    
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^(void)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
-        [self exitWithSuccess:NO];
-    }];
-    
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                                             message:NSLocalizedString(@"ProfileAborted", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
+                                    [self exitWithSuccess:NO];
+                                }]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (BOOL)shouldCreateProfile
@@ -433,13 +434,14 @@
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
     
-    // Show Error Message
-    UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                       message:errorMsg
-                                                      delegate:nil
-                                             cancelButtonTitle:nil
-                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    [alert show];
+    // Show Error Message    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                                             message:errorMsg
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 
     [MBProgressHUD hideHUDForView:self.view
                          animated:YES];
