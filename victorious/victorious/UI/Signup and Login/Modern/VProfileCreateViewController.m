@@ -17,7 +17,6 @@
 #import "VObjectManager+Websites.h"
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
-#import "UIAlertView+VBlocks.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
 #import "VLocationManager.h"

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIActionSheet+VBlocks.h"
 #import "VUploadManager.h"
 #import "VUploadProgressView.h"
 #import "VUploadProgressViewController.h"

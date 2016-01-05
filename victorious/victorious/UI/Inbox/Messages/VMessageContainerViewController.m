@@ -16,7 +16,6 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
 #import "VUser.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VUserTaggingTextStorage.h"
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"

@@ -23,7 +23,6 @@
 #import "VNoContentView.h"
 #import "VFacebookActivity.h"
 #import "NSString+VParseHelp.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VLoginAndRegistration.h"

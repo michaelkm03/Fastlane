@@ -14,7 +14,6 @@
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
-#import "UIAlertView+VBlocks.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NSURL+MediaType.h"
 #import "VPublishSaveCollectionViewCell.h"

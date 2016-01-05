@@ -14,8 +14,6 @@
 #import "CIImage+VImage.h"
 #import "NSURL+MediaType.h"
 #import "UIImageView+Blurring.h"
-#import "UIAlertView+VBlocks.h"
-#import "UIActionSheet+VBlocks.h"
 
 #import "VVideoToolController.h"
 #import "VImageToolController.h"

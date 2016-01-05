@@ -8,7 +8,6 @@
 
 #import "VPurchaseViewController.h"
 #import "VPurchaseManager.h"
-#import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"
 #import "VPurchaseStringMaker.h"
@@ -134,9 +133,14 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
-    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
-    [alertConroller presentInViewController:self animated:YES completion:nil];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showRestoringWithMessage:(NSString *)message
@@ -179,22 +183,24 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 {
     NSString *title = [self.stringMaker localizedSuccessTitleWithProductsCount:productIdentifiers.count];
     NSString *message = [self.stringMaker localizedSuccessMessageWithProductsCount:productIdentifiers.count];
-    [self showAlertWithTitle:title message:message handler:^(VAlertAction *action)
-    {
-        // If the product for which this view controller was instantiated was returned during
-        // a purchase restore, then we should dismiss since there's no need to buy it anymore
-        if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
-        {
-            [self.delegate purchaseDidFinish:YES];
-        }
-    }];
-}
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void(^)(VAlertAction *))handler
-{
-    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:handler]];
-    [alertConroller presentInViewController:self animated:YES completion:nil];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    // If the product for which this view controller was instantiated was returned during
+                                    // a purchase restore, then we should dismiss since there's no need to buy it anymore
+                                    if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
+                                    {
+                                        [self.delegate purchaseDidFinish:YES];
+                                    }
+                                }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - IB Actions

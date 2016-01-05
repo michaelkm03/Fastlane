@@ -30,7 +30,6 @@
 #import "VAbstractMarqueeController.h"
 #import "VActionItem.h"
 #import "VAbstractStreamCollectionViewController.h"
-#import "VAlertController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
 #import "VAppTimingEventType.h"

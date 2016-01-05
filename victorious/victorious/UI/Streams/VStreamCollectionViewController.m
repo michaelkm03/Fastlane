@@ -15,7 +15,6 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
-#import "VAlertController.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"

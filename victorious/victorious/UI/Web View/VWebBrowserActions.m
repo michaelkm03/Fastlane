@@ -8,7 +8,6 @@
 
 #import "victorious-Swift.h"
 #import "VWebBrowserActions.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VSequence+Fetcher.h"
 
 @import Social;
