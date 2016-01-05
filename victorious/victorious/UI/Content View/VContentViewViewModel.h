@@ -35,36 +35,18 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
-@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation;
+@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation, PaginatedDataSource;
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
-/**
- * Called whenever new comments are updated.
- * @param pageType The pagination context for which the comments fetch occurred.
- */
-- (void)didUpdateCommentsWithPageType:(VPageType)pageType;
-
-/**
- * Called when a page of comments is loaded that contains the comment Id,
- * currently designed to work with deep linking.
- */
+- (void)didUpdateSequence;
+- (void)didUpdatePoll;
 - (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId;
-
-/**
- * Called whenever the server returns an updated state of this content.
- */
-- (void)didUpdateContent;
-
-/**
- * Called whenever new poll data is made available.
- */
-- (void)didUpdatePollsData;
 
 @end
 
 /**
- * The VContentViewViewModel is the interface between the UI layer for a given sequenceand
+ The VContentViewViewModel is the interface between the UI layer for a given sequenc eand
  the model layer for that same sequence. The ContentViewViewModel provides a convenient API
  for accesing the important information from model layer while hiding many implementation
  details from the UI.
@@ -153,7 +135,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, readonly) CGFloat answerAPercentage;
 @property (nonatomic, readonly) CGFloat answerBPercentage;
 @property (nonatomic, readonly) NSString *numberOfVotersText;
-@property (nonatomic, strong) SequenceCommentsOperation *loadCommentsOperation;
+@property (nonatomic, strong) PaginatedDataSource *commentsDataSource;
 @property (nonatomic, assign, readonly) VPollAnswer favoredAnswer; //< By the current user.
 
 /**

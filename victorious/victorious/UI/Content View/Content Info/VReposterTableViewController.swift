@@ -11,14 +11,11 @@ import UIKit
 extension VReposterTableViewController {
     
     func loadReposters( pageType pageType: VPageType, sequence: VSequence ) {
-        guard let sequenceID = Int64(sequence.remoteId) else {
-            return
-        }
         
         let operation: SequenceRepostersOperation?
         switch pageType {
         case .First:
-            operation = SequenceRepostersOperation(sequenceID: sequenceID )
+            operation = SequenceRepostersOperation(sequenceID: sequence.remoteId )
         case .Next:
             operation = self.repostersOperation?.next()
         case .Previous:

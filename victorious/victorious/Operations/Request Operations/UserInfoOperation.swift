@@ -18,7 +18,7 @@ class UserInfoOperation: RequestOperation {
     }
     
     override func main() {
-        self.executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {

@@ -13,7 +13,7 @@ import XCTest
 class CommentAddRequestTests: XCTestCase {
     
     let textOnlyParameters = CommentParameters(
-        sequenceID: 17100,
+        sequenceID: "17100",
         text: "test",
         replyToCommentID: 1564,
         mediaURL: nil,
@@ -30,7 +30,7 @@ class CommentAddRequestTests: XCTestCase {
     
     func testRealtimeRequest() {
         let params = CommentParameters(
-            sequenceID: 17100,
+            sequenceID: "17100",
             text: "test",
             replyToCommentID: nil,
             mediaURL: nil,
@@ -51,7 +51,7 @@ class CommentAddRequestTests: XCTestCase {
         }
         
         let params = CommentParameters(
-            sequenceID: 17100,
+            sequenceID: "17100",
             text: nil,
             replyToCommentID: nil,
             mediaURL: mockUserDataURL,

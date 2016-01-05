@@ -9,15 +9,15 @@
 import Foundation
 
 public struct DeleteSequenceRequest: RequestType {
-    public let sequenceID: Int64
+    public let sequenceID: String
     
-    public init(sequenceID: Int64) {
+    public init(sequenceID: String) {
         self.sequenceID = sequenceID
     }
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/sequence/remove")!)
-        request.vsdk_addURLEncodedFormPost(["sequence_id" : NSNumber(longLong: sequenceID)])
+        request.vsdk_addURLEncodedFormPost(["sequence_id" : sequenceID])
         
         return request
     }

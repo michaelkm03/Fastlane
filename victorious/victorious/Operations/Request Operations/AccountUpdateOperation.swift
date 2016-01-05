@@ -14,7 +14,8 @@ class AccountUpdateOperation: RequestOperation {
     private let storedPassword = VStoredPassword()
     
     let request: AccountUpdateRequest
-    private(set) var resultCount: Int?
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     required init( request: AccountUpdateRequest ) {
         self.request = request
@@ -70,7 +71,7 @@ class AccountUpdateOperation: RequestOperation {
         }
         
         // Then send out the request the server
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {

@@ -35,5 +35,6 @@
 @dynamic user;
 @dynamic mediaWidth;
 @dynamic mediaHeight;
+@dynamic displayOrder;
 
 @end

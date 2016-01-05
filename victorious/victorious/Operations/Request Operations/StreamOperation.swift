@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 final class StreamOperation: RequestOperation, PaginatedOperation {
     
     let request: StreamRequest
-    private(set) var resultCount: Int?
     
-    private(set) var results = [VStreamItem]()
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private let apiPath: String
     
@@ -23,47 +23,57 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: Int64? = nil) {
+    convenience init( apiPath: String, sequenceID: String? = nil) {
         self.init( request: StreamRequest(apiPath: apiPath, sequenceID: sequenceID)! )
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError:self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:self.onError )
     }
     
-    private func onError( error: NSError, completion: ()->() ) {
+    func onError( error: NSError, completion: ()->() ) {
         if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = loadPersistentItems()
-            self.resultCount = self.results.count
-        
-        } else {
-            self.resultCount = 0
+            self.results = fetchResults()
         }
         completion()
     }
     
-    private func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+    func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
+        
+        // Make changes on background queue
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            
+            // Parse stream
             let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
-            let streamItems = VStreamItem.parseStreamItems(stream.items, managedObjectContext: context)
-            persistentStream.v_addObjects( streamItems, to: "streamItems" )
+            persistentStream.populate(fromSourceModel: stream)
+            
+            // Parse stream items
+            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
+            for streamItem in streamItems {
+                streamItem.displayOrder = displayOrder++
+                streamItem.streamId = stream.streamID
+            }
+            persistentStream.v_addObjects(streamItems, to: "streamItems")
             context.v_save()
+            
+            // Reload results from main queue
+            self.results = self.fetchResults()
+            completion()
         }
-        
-        self.results = loadPersistentItems()
-        self.resultCount = self.results.count
-        
-        completion()
     }
     
-    private func loadPersistentItems() -> [VStreamItem] {
+    func fetchResults() -> [VStreamItem] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "streams" : [ "apiPath" : self.apiPath] ]
-            let pagination = PersistentStorePagination(
-                itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber
+            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                v_format: "ANY self.streams.apiPath = %@",
+                v_argumentArray: [ self.apiPath ],
+                v_paginator: self.request.paginator
             )
-            return context.v_findObjects( uniqueProps, pagination: pagination )
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest( fetchRequest )
         }
     }
 }

@@ -13,7 +13,7 @@ final class PollVoteOperation: RequestOperation {
     
     var request: PollVoteRequest
     
-    init(sequenceID: Int64, answerID: Int64) {
+    init(sequenceID: String, answerID: Int64) {
         self.request = PollVoteRequest(sequenceID: sequenceID, answerID: answerID)
     }
     
@@ -37,6 +37,6 @@ final class PollVoteOperation: RequestOperation {
         }
         
         // Then execute the request
-        self.executeRequest( request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }

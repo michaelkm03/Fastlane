@@ -13,9 +13,9 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StreamPaginator
     public let apiPath: String
-    public let sequenceID: Int64?
+    public let sequenceID: String?
     
-    public init?( apiPath: String, sequenceID: Int64?, paginator: StreamPaginator? = nil ) {
+    public init?( apiPath: String, sequenceID: String?, paginator: StreamPaginator? = nil ) {
         if let paginator = paginator ?? StreamPaginator(apiPath: apiPath, sequenceID: sequenceID) {
             self.init( apiPath: apiPath, sequenceID: sequenceID, paginator: paginator )
         } else {
@@ -23,7 +23,7 @@ public struct StreamRequest: PaginatorPageable, ResultBasedPageable {
         }
     }
     
-    public init( apiPath: String, sequenceID: Int64?, paginator: StreamPaginator ) {
+    public init( apiPath: String, sequenceID: String?, paginator: StreamPaginator ) {
         self.paginator = paginator
         self.apiPath = apiPath
         self.sequenceID = sequenceID

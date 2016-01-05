@@ -31,12 +31,12 @@ class StreamTests: XCTestCase {
         XCTAssertEqual( stream.title, "Marquee" )
         XCTAssertEqual( stream.postCount, 2 )
         XCTAssertEqual( stream.streamUrl, "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/13396/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%" )
-        XCTAssertEqual( stream.items.count, 3 )
-        XCTAssertEqual( stream.items.filter { $0 is Sequence }.count, 2)
-        XCTAssertEqual( stream.items.filter { $0 is Stream }.count, 1)
+        XCTAssertEqual( stream.items?.count, 3 )
+        XCTAssertEqual( stream.items?.filter { $0 is Sequence }.count, 2)
+        XCTAssertEqual( stream.items?.filter { $0 is Stream }.count, 1)
         XCTAssertEqual( (stream.previewImagesObject as! [String]).count, 3 )
         XCTAssertEqual( stream.previewTextPostAsset, "http://media-dev-public.s3-website-us-west-1.amazonaws.com/f4c9b9fc3564e4af36e61e5b1ce78ec2/thumbnail-00001.jpg" )
-        XCTAssertEqual( stream.previewImageAssets.count, 0 )
+        XCTAssertNil( stream.previewImageAssets )
     }
     
     func testDefaults() {
@@ -47,14 +47,14 @@ class StreamTests: XCTestCase {
                 return
         }
         
-        XCTAssertEqual( stream.name, "" )
-        XCTAssertEqual( stream.title, "" )
-        XCTAssertEqual( stream.postCount, 0 )
-        XCTAssertEqual( stream.streamUrl, "" )
-        XCTAssertEqual( stream.items.count, 0 )
+        XCTAssertNil( stream.name )
+        XCTAssertNil( stream.title )
+        XCTAssertNil( stream.postCount )
+        XCTAssertNil( stream.streamUrl )
+        XCTAssertNil( stream.items )
         XCTAssertNil( stream.previewImagesObject )
         XCTAssertNil( stream.previewTextPostAsset )
-        XCTAssertEqual( stream.previewImageAssets.count, 0 )
+        XCTAssertNil( stream.previewImageAssets )
     }
     
     func testInvalid() {

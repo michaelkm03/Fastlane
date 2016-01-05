@@ -82,7 +82,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, PaginatedDataSourceDelegate, VAccessoryNavigationSource>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -143,7 +143,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -229,6 +229,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
+    self.streamDataSource.paginatedDataSource.delegate = self;
     self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
@@ -379,7 +380,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSOrderedSet *streamItems = self.streamDataSource.visibleStreamItems;
+    NSOrderedSet *streamItems = self.streamDataSource.paginatedDataSource.visibleItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -629,33 +630,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self updateCellVisibilityTracking];
 }
 
-- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource visibleStreamItemsDidUpdateFromOldValue:(NSOrderedSet *)oldValue toNewValue:(NSOrderedSet *)newValue
+#pragma mark - PaginatedDataSourceDelegate
+
+- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id obj in newValue )
-    {
-        if ( [oldValue containsObject:obj] )
-        {
-            continue;
-        }
-        NSInteger index = [newValue indexOfObject:obj];
-        if ( index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:contentSection]];
-    }
-    
-    if ( newValue.count == 0 || oldValue.count == 0 )
-    {
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:contentSection]];
-        [self updateNoContentViewAnimated:YES];
-    }
-    else
-    {
-        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
-    }
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
@@ -666,7 +646,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                             atIndexPath:indexPath];
     }
     
-    VSequence *sequence = (VSequence *)[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row];
+    VSequence *sequence = (VSequence *)[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {
@@ -1016,7 +996,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     void (^noContentUpdates)(void);
     
-    if ( self.streamDataSource.visibleStreamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
+    if ( self.streamDataSource.paginatedDataSource.visibleItems.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
         {
