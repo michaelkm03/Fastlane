@@ -1,5 +1,5 @@
 //
-//  TrendingGIFsOperationTests.swift
+//  GIFSearchDefaultResultsOperationTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 12/2/15.
@@ -11,14 +11,14 @@ import SwiftyJSON
 import VictoriousIOSSDK
 @testable import victorious
 
-class TrendingGIFsOperationTests: XCTestCase {
+class GIFSearchDefaultResultsOperationTests: XCTestCase {
     
     func testEmptyResult() {
         let result: TrendingGIFsRequest.ResultType = []
-        let operation = TrendingGIFsOperation()
+        let operation = GIFSearchDefaultResultsOperation()
         operation.onComplete(result){ }
         
-        XCTAssertTrue(operation.trendingGIFsResults.isEmpty)
+        XCTAssertNil( operation.results )
         XCTAssertNil( operation.next() )
         XCTAssertNil( operation.prev() )
     }
@@ -33,12 +33,15 @@ class TrendingGIFsOperationTests: XCTestCase {
             "remote_id": "1001"
         ]
         let result: TrendingGIFsRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
-        let operation = TrendingGIFsOperation()
+        let operation = GIFSearchDefaultResultsOperation()
         operation.onComplete(result){ }
-        
-        XCTAssertEqual(operation.trendingGIFsResults.count, 1)
-        XCTAssertEqual(operation.trendingGIFsResults[0].remoteID, "1001")
-        XCTAssertNotNil( operation.next() )
-        XCTAssertNotNil( operation.prev() )
+        if let defaultResults = operation.results {
+            XCTAssertEqual(defaultResults.count, 1)
+            XCTAssertEqual(defaultResults[0].remoteID(), "1001")
+            XCTAssertNotNil( operation.next() )
+            XCTAssertNotNil( operation.prev() )
+        } else {
+            XCTFail()
+        }
     }
 }
