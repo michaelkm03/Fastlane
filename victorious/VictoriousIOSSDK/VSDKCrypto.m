@@ -24,3 +24,18 @@ NSString *vsdk_sha1(NSString *plaintextString)
     }
     return hashedString;
 }
+
+NSString *vsdk_sha256(NSString *plaintextString)
+{
+    const char *plaintext = [plaintextString UTF8String];
+    unsigned char hash[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(plaintext, (CC_LONG)strlen(plaintext), hash);
+    
+    NSUInteger hashedStringLength = CC_SHA256_DIGEST_LENGTH * 2;
+    NSMutableString *hashedString = [NSMutableString stringWithCapacity:hashedStringLength];
+    for (NSInteger i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
+    {
+        [hashedString appendFormat:@"%02x", hash[i]];
+    }
+    return hashedString;
+}

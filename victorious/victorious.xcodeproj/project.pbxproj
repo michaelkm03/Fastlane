@@ -485,6 +485,9 @@
 		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
+		798AA5941C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */; };
+		798AA5961C3B429900D267C3 /* FriendFindByEmailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798AA5951C3B429900D267C3 /* FriendFindByEmailOperation.swift */; };
+		798AA5981C3B448600D267C3 /* VFindContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798AA5971C3B448600D267C3 /* VFindContactsTableViewController.swift */; };
 		7992DF671C17ACCF004007A1 /* DeviceExperimentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */; };
 		7992DF691C17ADFE004007A1 /* DeviceExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */; };
 		7992DF6B1C17B174004007A1 /* DeviceExperimentsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */; };
@@ -2537,6 +2540,9 @@
 		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
 		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
+		798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailRequest.swift; sourceTree = "<group>"; };
+		798AA5951C3B429900D267C3 /* FriendFindByEmailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailOperation.swift; sourceTree = "<group>"; };
+		798AA5971C3B448600D267C3 /* VFindContactsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFindContactsTableViewController.swift; sourceTree = "<group>"; };
 		7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsRequest.swift; sourceTree = "<group>"; };
 		7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperiment.swift; sourceTree = "<group>"; };
 		7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsRequestTests.swift; sourceTree = "<group>"; };
@@ -5256,6 +5262,7 @@
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
 				A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */,
 				A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */,
+				798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -7105,6 +7112,7 @@
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
+				798AA5951C3B429900D267C3 /* FriendFindByEmailOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -8544,6 +8552,7 @@
 				D85B70461B0EAF3F0038CA5B /* VFindFriendsTableViewController.m */,
 				D85B704B1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.h */,
 				D85B704C1B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m */,
+				798AA5971C3B448600D267C3 /* VFindContactsTableViewController.swift */,
 			);
 			path = "Table View Controllers";
 			sourceTree = "<group>";
@@ -10438,6 +10447,7 @@
 				A72EDF961C03FA17003D6177 /* FollowCountRequest.swift in Sources */,
 				C32D8BDC1BF2D59D00AB5085 /* UnfollowHashtagRequest.swift in Sources */,
 				79D081BA1BF1A0DF00E8A0C5 /* Message.swift in Sources */,
+				798AA5941C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift in Sources */,
 				A72EDF8F1C03E4D0003D6177 /* LogoutRequest.swift in Sources */,
 				A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */,
 				79D081A81BF15CD200E8A0C5 /* ConversationListRequest.swift in Sources */,
@@ -11267,6 +11277,7 @@
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,
+				798AA5961C3B429900D267C3 /* FriendFindByEmailOperation.swift in Sources */,
 				A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */,
 				F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
@@ -11360,6 +11371,7 @@
 				A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
 				C3D4E83F1BBDCF39000AD70A /* UIFont+Layout.swift in Sources */,
+				798AA5981C3B448600D267C3 /* VFindContactsTableViewController.swift in Sources */,
 				F0411E841B4AE5D300557176 /* VAbstractCrossFadingView.m in Sources */,
 				A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,

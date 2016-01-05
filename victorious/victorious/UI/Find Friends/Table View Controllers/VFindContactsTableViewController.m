@@ -11,6 +11,7 @@
 #import "VObjectManager+Users.h"
 #import "VPermission.h"
 #import "VPermissionsTrackingHelper.h"
+#import "victorious-swift.h"
 
 @import Contacts;
 
@@ -150,15 +151,11 @@
     
     if (allEmailAddresses.count)
     {
-        [[VObjectManager sharedManager] findFriendsByEmails:allEmailAddresses
-                                           withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            completionBlock(resultObjects, nil);
-        }
-                                                  failBlock:^(NSOperation *operation, NSError *error)
-        {
-            completionBlock(nil, error);
-        }];
+        [self findFriendsByEmails:allEmailAddresses
+                       completion:^(NSArray<VUser *> *_Nullable results, NSError *_Nullable error)
+         {
+             completionBlock(results, error);
+         }];
     }
     else
     {
