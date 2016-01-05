@@ -95,7 +95,7 @@ static NSString * const kMenuKey = @"menu";
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
     
-    if ( [VUser currentUser] != nil )
+    if ( [VCurrentUser user] != nil )
     {
         [self configureTabBar];
     }

@@ -50,7 +50,7 @@ public extension VContentViewViewModel {
             self.loadComments(.First)
         }
         
-        if let currentUserID = VUser.currentUser()?.remoteId.longLongValue {
+        if let currentUserID = VCurrentUser.user()?.remoteId.longLongValue {
             SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }

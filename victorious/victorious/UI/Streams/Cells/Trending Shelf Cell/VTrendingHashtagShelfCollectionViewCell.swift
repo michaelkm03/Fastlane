@@ -149,7 +149,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             return
         }
         var controlState: VFollowControlState
-        if VUser.currentUser()?.isFollowingHashtagString(shelf.hashtagTitle) == true {
+        if VCurrentUser.user()?.isFollowingHashtagString(shelf.hashtagTitle) == true {
             controlState = .Followed
         } else {
             controlState = .Unfollowed
@@ -163,12 +163,12 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
         
         if let oldValue = changeInfo[NSKeyValueChangeOldKey] as? NSOrderedSet {
-            if let hashtags = VUser.currentUser()?.followedHashtags
+            if let hashtags = VCurrentUser.user()?.followedHashtags
                 where oldValue.isEqualToOrderedSet(hashtags) {
                     return false // Old hashtags and new hashtags are identical, don't update
             }
         }
-        else if VUser.currentUser()?.followedHashtags == nil {
+        else if VCurrentUser.user()?.followedHashtags == nil {
             return false // Hashtags was nil and continues to be nil, don't update
         }
         return true

@@ -24,7 +24,7 @@ class LikeSequenceOperation: RequestOperation {
         
         // Make data change optimistically before executing the request
         persistentStore.backgroundContext.v_performBlock() { context in
-            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }
             let uniqueElements = [ "remoteId" : self.sequenceID ]

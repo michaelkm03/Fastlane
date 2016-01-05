@@ -141,7 +141,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if ([[VUser currentUser] isFollowingHashtagString:hashtag.tag] )
+        if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
         {
             RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
             [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
@@ -177,7 +177,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (BOOL)isUserSubscribedToHashtag:(NSString *)tag
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
-    VFollowedHashtag *followedHashtag = [[VUser currentUser].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     return followedHashtag != nil;
 }
 

@@ -177,7 +177,7 @@
     
     [self.trackingMgr setValue:param1Value forSessionParameterWithKey:param1Key];
     [self.trackingMgr setValue:param2Value forSessionParameterWithKey:param2Key];
-    [self.trackingMgr clearSessionParameters];
+    [self.trackingMgr clearAllSessionParameterValues];
     
     [self.trackingMgr trackEvent:@"some_event"];
     XCTAssertNil(delegate.paramsReceived[param1Key]);

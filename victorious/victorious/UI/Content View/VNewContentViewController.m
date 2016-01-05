@@ -454,11 +454,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
     }
 
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContentType];
     
     if ( self.isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     }
     
 #if HANDOFFENABLED

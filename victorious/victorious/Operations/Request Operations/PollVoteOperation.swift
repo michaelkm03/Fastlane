@@ -21,7 +21,7 @@ final class PollVoteOperation: RequestOperation {
         
         // Peform optimistic changes before the request is executed
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
-            guard let user = VUser.currentUser(),
+            guard let user = VCurrentUser.user(),
                 let sequence: VSequence = context.v_findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
                     return
             }

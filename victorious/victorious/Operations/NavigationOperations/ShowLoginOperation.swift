@@ -38,7 +38,7 @@ class ShowLoginOperation: Operation {
             
             self.beganExecuting()
             
-            if VUser.currentUser() != nil {
+            if VCurrentUser.user() != nil {
                 // User is already logged in, proceed onward
                 self.finishedExecuting()
             }

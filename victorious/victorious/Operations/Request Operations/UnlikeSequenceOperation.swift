@@ -22,7 +22,7 @@ class UnlikeSequenceOperation: RequestOperation {
     
     override func main() {
         persistentStore.backgroundContext.v_performBlock() { context in
-            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }
             

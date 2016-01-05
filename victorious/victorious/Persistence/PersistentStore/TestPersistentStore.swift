@@ -51,9 +51,6 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         }
 
         super.init()
-        
-        // Start every instance with a clean slate by deleting any existing persistent store
-        do { try self.deletePersistentStore() } catch { }
     }
 
     func deletePersistentStore() throws {

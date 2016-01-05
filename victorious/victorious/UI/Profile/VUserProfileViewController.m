@@ -77,7 +77,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     viewController.dependencyManager = dependencyManager;
     [viewController addLoginStatusChangeObserver];
     
-    VUser *mainUser = [VUser currentUser];
+    VUser *mainUser = [VCurrentUser user];
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
     if ( isCurrentUser )
     {
@@ -119,7 +119,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
     }
     
-    VUserProfileViewController *viewController = [self userProfileWithUser:[VUser currentUser] andDependencyManager:dependencyManager];
+    VUserProfileViewController *viewController = [self userProfileWithUser:[VCurrentUser user] andDependencyManager:dependencyManager];
     viewController.representsMainUser = YES;
     return viewController;
 }
@@ -258,7 +258,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     
     self.navigationViewfloatingController.animationEnabled = NO;
 }
@@ -343,7 +343,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    if ( [VUser currentUser] != nil )
+    if ( [VCurrentUser user] != nil )
     {
         header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
@@ -496,9 +496,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.representsMainUser )
     {
-        self.user = [VUser currentUser];
+        self.user = [VCurrentUser user];
     }
-    else if ( [VUser currentUser] != nil )
+    else if ( [VCurrentUser user] != nil )
     {
         [self reloadUserFollowingRelationship];
     }
@@ -764,7 +764,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refresh:(UIRefreshControl *)sender
 {
-    NSNumber *mainUserId = [VUser currentUser].remoteId;
+    NSNumber *mainUserId = [VCurrentUser user].remoteId;
     const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
     const BOOL wasTriggeredByUIElement = sender != nil;
     if ( wasTriggeredByUIElement && hasUserData )
@@ -788,8 +788,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     const BOOL didNavigateFromInbox = [self navigationHistoryContainsInbox];
-    const BOOL isCurrentUserLoggedIn = [VUser currentUser] != nil;
-    const BOOL isCurrentUser = self.user != nil && self.user == [VUser currentUser];
+    const BOOL isCurrentUserLoggedIn = [VCurrentUser user] != nil;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VCurrentUser user];
     
     if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
