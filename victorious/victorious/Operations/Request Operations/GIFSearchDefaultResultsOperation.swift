@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 final class GIFSearchDefaultResultsOperation: RequestOperation, PaginatedOperation {
     
     let request: TrendingGIFsRequest
+    private(set) var didResetResults: Bool = false
     
     private(set) var results: [AnyObject]?
     
@@ -20,7 +21,7 @@ final class GIFSearchDefaultResultsOperation: RequestOperation, PaginatedOperati
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
     func onError( error: NSError, completion:()->() ) {

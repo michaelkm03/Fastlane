@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 final class GIFSearchOperation: RequestOperation, PaginatedOperation {
     
     let request: GIFSearchRequest
+    private(set) var didResetResults: Bool = false
 
     private(set) var results: [AnyObject]?
     
@@ -27,7 +28,7 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
     func onError( error: NSError, completion:()->() ) {
