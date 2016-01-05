@@ -18,9 +18,13 @@ class GIFSearchOperationTests: XCTestCase {
         let operation = GIFSearchOperation(searchTerm: "fun")
         operation.onComplete(result){ }
         
-        XCTAssertNil( operation.results )
-        XCTAssertNil( operation.next() )
-        XCTAssertNil( operation.prev() )
+        if let searchResults = operation.results {
+            XCTAssertTrue( searchResults.isEmpty)
+            XCTAssertNil( operation.next() )
+            XCTAssertNil( operation.prev() )
+        } else {
+            XCTFail()
+        }
     }
 
     func testValidResult() {
@@ -39,7 +43,7 @@ class GIFSearchOperationTests: XCTestCase {
             XCTAssertEqual( searchResults.count, 1)
             XCTAssertEqual( searchResults[0].remoteID(), "1001" )
             XCTAssertNotNil( operation.next() )
-            XCTAssertNotNil( operation.prev() )
+            XCTAssertNil( operation.prev() )
         } else {
             XCTFail()
         }
