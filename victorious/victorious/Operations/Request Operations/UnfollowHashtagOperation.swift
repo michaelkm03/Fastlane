@@ -35,6 +35,8 @@ class UnfollowHashtagOperation: RequestOperation {
                 context.deleteObject( followedHashtag )
             }
             
+            context.v_save()
+            
             self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
             self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
         }
