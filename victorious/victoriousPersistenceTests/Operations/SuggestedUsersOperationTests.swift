@@ -28,13 +28,7 @@ class SuggestedUsersOperationTests: XCTestCase {
     }
 
     func testGetSuggestedUsers() {
-        let expectation = expectationWithDescription("operation expectation")
-        operation.queue { error in
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        }
+        operation.main()
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 }
