@@ -16,14 +16,11 @@
  */
 typedef NS_ENUM( NSUInteger, VTrackingSetting )
 {
-    VTrackingSettingShowEventAlerts,
-    VTrackingSettingShowStartEndEventAlerts,
     VTrackingSettingCount
 };
 
 typedef NS_ENUM( NSInteger, VTrackingSettingsSection )
 {
-    VTrackingSettingsSectionAlerts,
     VTrackingSettingsSectionEventLog,
     VTrackingSettingsSectionCount
 };
@@ -54,9 +51,6 @@ typedef NS_ENUM( NSInteger, VTrackingSettingsSection )
 {
     switch ( section )
     {
-        case VTrackingSettingsSectionAlerts:
-            return VTrackingSettingCount;
-            
         case VTrackingSettingsSectionEventLog:
             return self.eventLog.events.count;
             
@@ -69,21 +63,8 @@ typedef NS_ENUM( NSInteger, VTrackingSettingsSection )
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VTrackingSetting setting = (VTrackingSetting)indexPath.row;
-    
     switch (indexPath.section)
     {
-        case VTrackingSettingsSectionAlerts:
-        {
-            static NSString * const reuseID = @"trackingCell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID forIndexPath:indexPath];
-            cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-            cell.textLabel.text = [self displayNameForSetting:setting];
-            cell.accessoryType = [self valueForSetting:setting] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            return cell;
-        }
-            break;
-            
         case VTrackingSettingsSectionEventLog:
         {
             static NSString * const reuseID = @"trackingCell";
@@ -107,33 +88,13 @@ typedef NS_ENUM( NSInteger, VTrackingSettingsSection )
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case VTrackingSettingsSectionAlerts:
-        {
-            VTrackingSetting setting = (VTrackingSetting)indexPath.row;
-            
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [self setValue:![self valueForSetting:setting] forSetting:setting];
-            cell.accessoryType = [self valueForSetting:setting] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
-            break;
-            
-        default:
-            break;
-    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch ( section )
     {
-        case VTrackingSettingsSectionAlerts:
-            return @"Alert Settings"; // Debug only, non-localized
-            break;
-            
         case VTrackingSettingsSectionEventLog:
             return @"Event Log"; // Debug only, non-localized
             
@@ -147,49 +108,6 @@ typedef NS_ENUM( NSInteger, VTrackingSettingsSection )
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return VTrackingSettingsSectionCount;
-}
-
-- (BOOL)valueForSetting:(VTrackingSetting)setting
-{
-    switch (setting)
-    {
-        case VTrackingSettingShowEventAlerts:
-            return [VTrackingManager sharedInstance].showTrackingEventAlerts;
-        case VTrackingSettingShowStartEndEventAlerts:
-            return [VTrackingManager sharedInstance].showTrackingStartEndAlerts;
-        default:
-            return NO;
-    }
-}
-
-- (void)setValue:(BOOL)value forSetting:(VTrackingSetting)setting
-{
-    switch (setting)
-    {
-        case VTrackingSettingShowEventAlerts:
-            [VTrackingManager sharedInstance].showTrackingEventAlerts = value;
-            break;
-        case VTrackingSettingShowStartEndEventAlerts:
-            [VTrackingManager sharedInstance].showTrackingStartEndAlerts = value;
-            break;
-        default:
-            break;
-    }
-}
-
-- (NSString *)displayNameForSetting:(VTrackingSetting)setting
-{
-    switch (setting)
-    {
-        case VTrackingSettingShowEventAlerts:
-            return @"Events and Parameters"; // Debug only, non-localized
-        case VTrackingSettingShowStartEndEventAlerts:
-            return @"Start/End Events (Google Analytics)"; // Debug only, non-localized
-        default:
-            break;
-    }
-    
-    return nil;
 }
 
 @end
