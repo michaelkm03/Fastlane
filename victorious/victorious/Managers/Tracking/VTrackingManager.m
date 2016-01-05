@@ -52,6 +52,9 @@
 
 @implementation VTrackingManager
 
+@synthesize showTrackingEventAlerts = _showTrackingEventAlerts;
+@synthesize showTrackingStartEndAlerts = _showTrackingStartEndAlerts;
+
 + (VTrackingManager *)sharedInstance
 {
     static VTrackingManager *instance;

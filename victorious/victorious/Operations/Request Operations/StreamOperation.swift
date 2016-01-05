@@ -14,6 +14,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     let request: StreamRequest
     
     private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private let apiPath: String
     
@@ -27,7 +28,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError:self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:self.onError )
     }
     
     func onError( error: NSError, completion: ()->() ) {
@@ -64,13 +65,15 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     func fetchResults() -> [VStreamItem] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueProps = [ "streams" : [ "apiPath" : String(self.apiPath) ] ]
-            let pagination = PersistentStorePagination(
-                itemsPerPage: self.request.paginator.itemsPerPage,
-                pageNumber: self.request.paginator.pageNumber,
-                sortDescriptors: [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                v_format: "ANY self.streams.apiPath = %@",
+                v_argumentArray: [ self.apiPath ],
+                v_paginator: self.request.paginator
             )
-            return context.v_findObjects( uniqueProps, pagination: pagination )
+            fetchRequest.predicate = predicate
+            return context.v_executeFetchRequest( fetchRequest )
         }
     }
 }

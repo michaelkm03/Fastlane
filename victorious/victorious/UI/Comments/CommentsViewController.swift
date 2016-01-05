@@ -83,6 +83,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     @IBOutlet private weak var collectionView: VInputAccessoryCollectionView!
     @IBOutlet private weak var imageView: UIImageView!
+    private var refreshControl: UIRefreshControl?
     
     // MARK: - UIViewController
     
@@ -116,10 +117,23 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
         }
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        refreshControl.addTarget( self, action: "onRefresh", forControlEvents: .ValueChanged)
+        self.collectionView.addSubview( refreshControl )
+        self.collectionView.alwaysBounceVertical = true
+        self.refreshControl = refreshControl
+        self.onRefresh()
+        
         self.edgesForExtendedLayout = .Bottom
         self.extendedLayoutIncludesOpaqueBars = true
-        
-        dataSource?.loadComments( .First )
+    }
+    
+    func onRefresh() {
+        self.refreshControl?.beginRefreshing()
+        dataSource?.loadComments( .First ) { error in
+            self.refreshControl?.endRefreshing()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -211,7 +225,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func shouldLoadPreviousPage() {
-        dataSource?.loadComments( .Previous )
+        // FIXME: This is being called unexpectedly
+        //dataSource?.loadComments( .Previous )
     }
     
     // MARK: - VSwipeViewControllerDelegate
@@ -489,20 +504,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             }
         }
         
-        var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue where !oldValue.containsObject( item ) {
-            let index = newValue.indexOfObject( item )
-            insertedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
-        }
-        
-        var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue where !newValue.containsObject( item ) {
-            let index = oldValue.indexOfObject( item )
-            deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: 0) )
-        }
-        
-        collectionView.insertItemsAtIndexPaths( insertedIndexPaths )
-        collectionView.deleteItemsAtIndexPaths( deletedIndexPaths )
+        collectionView.v_applyChangeInSection(0, from: oldValue, to: newValue)
         
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()

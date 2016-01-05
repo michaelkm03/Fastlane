@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+PersistentStoreContextBasic.swift
+//  NSManagedObjectContext+Fetchers.swift
 //  Persistence
 //
 //  Created by Patrick Lynch on 10/15/15.
@@ -46,14 +46,15 @@ extension NSManagedObjectContext {
         return NSManagedObject(entity: entity, insertIntoManagedObjectContext: self) as NSManagedObject
     }
     
+    func v_deleteObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? = nil ) {
+        let existingObjects = self.v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary )
+        for object in existingObjects {
+            self.deleteObject( object )
+        }
+    }
+    
     func v_findOrCreateObjectWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> NSManagedObject {
-        let objects = self.v_findObjectsWithEntityName( entityName,
-            queryDictionary: queryDictionary,
-            pageNumber: nil,
-            itemsPerPage: nil,
-            sortDescriptors: [],
-            limit: NSNumber(integer: 1)
-        )
+        let objects = self.v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary )
         if let existingObject = objects.first {
             return existingObject
         
@@ -66,25 +67,14 @@ extension NSManagedObjectContext {
         }
     }
     
-    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ] ) -> [NSManagedObject] {
-        return v_findObjectsWithEntityName( entityName, queryDictionary: queryDictionary, pageNumber: nil, itemsPerPage: nil, sortDescriptors:[], limit: nil)
+    func v_findAllObjectsWithEntityName( entityName: String ) -> [NSManagedObject] {
+        return v_findObjectsWithEntityName( entityName, queryDictionary: nil )
     }
     
-    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]?, pageNumber: NSNumber?, itemsPerPage: NSNumber?, sortDescriptors: [NSSortDescriptor], limit: NSNumber? ) -> [NSManagedObject] {
+    func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? ) -> [NSManagedObject] {
         
         let request = NSFetchRequest(entityName: entityName )
         request.returnsObjectsAsFaults = false
-        if let limit = limit {
-            request.fetchLimit = limit.integerValue
-        }
-        if let itemsPerPage = itemsPerPage, let pageNumber = pageNumber {
-            request.fetchLimit = itemsPerPage.integerValue
-            request.fetchOffset = (pageNumber.integerValue-1) * itemsPerPage.integerValue
-        }
-        
-        if !sortDescriptors.isEmpty {
-            request.sortDescriptors = sortDescriptors
-        }
         
         if let queryDictionary = queryDictionary {
             let arguments = NSMutableArray()

@@ -25,3 +25,10 @@ public protocol Paginator {
     /// the implementation-specific logic for doing so.
     func addPaginationArgumentsToRequest(request: NSMutableURLRequest)
 }
+
+/// Defines are more domain-specific paginator that exposes its internal numeric
+/// values that affect result size and offset
+public protocol NumericPaginator: Paginator {
+    var pageNumber: Int { get }
+    var itemsPerPage: Int { get }
+}

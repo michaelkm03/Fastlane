@@ -36,7 +36,7 @@ class CommentEditOperation: RequestOperation {
         }
         
         // Then fire and forget
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:()->() ) {

@@ -13,7 +13,8 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     
     let request: PollResultSummaryRequest
     
-    var results: [AnyObject]?
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private let userID: Int64
     
@@ -27,7 +28,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:()->() ) {

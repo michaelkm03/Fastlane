@@ -10,9 +10,11 @@ import Foundation
 import VictoriousIOSSDK
 
 @objc class VSuggestedUser: NSObject, PersistenceParsable {
+    
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    
     private(set) var user: VUser?
     private(set) var recentSequences: [VSequence] = []
-    private let persistentStore = MainPersistentStore()
     
     func populate(fromSourceModel suggestedUser: SuggestedUser) {
         persistentStore.backgroundContext.v_performBlockAndWait() { context in

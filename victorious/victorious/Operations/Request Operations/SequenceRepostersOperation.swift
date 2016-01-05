@@ -12,7 +12,8 @@ import VictoriousIOSSDK
 final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceRepostersRequest
-    var results: [AnyObject]?
+    private(set) var results: [AnyObject]?
+    private(set) var didResetResults: Bool = false
     
     private var sequenceID: String
     
@@ -26,7 +27,7 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:(()->()) ) {

@@ -20,25 +20,29 @@ import Foundation
         static let anonymousUserID = "AnonymousAccountUserID"
         static let anonymousUserToken = "AnonymousAccountUserToken"
     }
+
+    // MARK: - External dependencies with defaults
+
+    static var userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    static var authorizedMenuItemIdentifiers: [String] = ["Menu Home", "Menu Channels", "Menu Explore"]
     
-    //MARK: - NSUserDefaults functions
+    // MARK: - NSUserDefaults functions
     
     static func hasBirthdayBeenProvided() -> Bool {
-        return isAgeGateEnabled() && NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.birthdayProvidedByUser)
+        return isAgeGateEnabled() && AgeGate.userDefaults.boolForKey(DictionaryKeys.birthdayProvidedByUser)
     }
     
     static func isAnonymousUser() -> Bool {
-        return isAgeGateEnabled() && NSUserDefaults.standardUserDefaults().boolForKey(DictionaryKeys.isAnonymousUser)
+        return isAgeGateEnabled() && AgeGate.userDefaults.boolForKey(DictionaryKeys.isAnonymousUser)
     }
     
     static func saveShouldUserBeAnonymous(anonymous: Bool) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
-        userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)
-        userDefaults.synchronize()
+        AgeGate.userDefaults.setValue(true, forKey: DictionaryKeys.birthdayProvidedByUser)
+        AgeGate.userDefaults.setValue(anonymous, forKey: DictionaryKeys.isAnonymousUser)
+        AgeGate.userDefaults.synchronize()
     }
     
-    //MARK: - Info.plist functions
+    // MARK: - Info.plist functions
     
     static func isAgeGateEnabled() -> Bool {
         if let ageGateEnabled = NSBundle.mainBundle().objectForInfoDictionaryKey(DictionaryKeys.ageGateEnabled) as? String {
@@ -64,10 +68,10 @@ import Foundation
         }
     }
     
-    //MARK: - Feature Disabling functions
+    // MARK: - Feature Disabling functions
     
     static func filterTabMenuItems(menuItems: [VNavigationMenuItem]) -> [VNavigationMenuItem] {
-        return menuItems.filter() { ["Menu Home", "Menu Channels", "Menu Explore"].contains($0.identifier) }
+        return menuItems.filter() { AgeGate.authorizedMenuItemIdentifiers.contains($0.identifier) }
     }
     
     static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
@@ -117,7 +121,7 @@ import Foundation
         return !actionItemBlackList.contains(actionName)
     }
     
-    //MARK: - Age Gate Business Logic functions
+    // MARK: - Age Gate Business Logic functions
     
     static func isUserYoungerThan(age: Int, forBirthday birthday: NSDate) -> Bool {
         let now = NSDate()

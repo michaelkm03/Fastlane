@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct StandardPaginator: Paginator {
+public struct StandardPaginator: NumericPaginator {
     
     public let pageNumber: Int
     public let itemsPerPage: Int

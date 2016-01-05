@@ -144,7 +144,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -633,30 +633,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id obj in newValue )
-    {
-        if ( [oldValue containsObject:obj] )
-        {
-            continue;
-        }
-        NSInteger index = [newValue indexOfObject:obj];
-        if ( index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:contentSection]];
-    }
-    
-    if ( newValue.count == 0 || oldValue.count == 0 )
-    {
-        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:contentSection]];
-        [self updateNoContentViewAnimated:YES];
-    }
-    else
-    {
-        [self.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
-    }
+    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
