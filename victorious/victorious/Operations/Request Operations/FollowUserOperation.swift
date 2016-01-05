@@ -26,19 +26,27 @@ class FollowUserOperation: RequestOperation {
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
             let persistedUserToFollowID = NSNumber(longLong: self.userToFollowID)
-            let persistedCurrentUserID = NSNumber(longLong: self.currentUserID)
 
-            if let userToFollow: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]),
-                let currentUser: VUser = context.v_findObject(["remoteId" : persistedCurrentUserID]) {
-                    userToFollow.numberOfFollowers = (userToFollow.numberOfFollowers?.integerValue ?? 0) + 1
-                    currentUser.numberOfFollowing = (currentUser.numberOfFollowing?.integerValue ?? 0) + 1
-                    currentUser.addFollowingObject(userToFollow)
-                    userToFollow.isFollowedByMainUser = true
-                    context.v_save()
+            if let objectUser: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]),
+                let subjectUser = VUser.currentUser(inManagedObjectContext: context) {
+                    
+                    objectUser.numberOfFollowers = (objectUser.numberOfFollowers?.integerValue ?? 0) + 1
+                    subjectUser.numberOfFollowing = (subjectUser.numberOfFollowing?.integerValue ?? 0) + 1
+                    
+                    // Find or create the following relationship
+                    let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
+                    let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
+                    followedUser.objectUser = objectUser
+                    followedUser.subjectUser = subjectUser
+                    
+                    // By setting display order to -1, the user will appear at the top
+                    // of each list of fetched results until a refresh of the followers list
+                    // comes back from the server with updated display order
+                    followedUser.displayOrder = -1
+                    
+                    self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
+                    self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser, parameters: [ : ])
             }
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser, parameters: [ : ])
         }
     }
 }
