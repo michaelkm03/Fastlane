@@ -364,7 +364,7 @@
 		2B5C9810F9B3E583B2CCBC5C /* Pods_VictoriousIOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7DD149504C712984FE8C6B /* Pods_VictoriousIOSSDK.framework */; };
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		5A6F11B51C386D87000BF7F3 /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */; };
-		5A6F11B71C386E8A000BF7F3 /* NSNumber+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B61C386E8A000BF7F3 /* NSNumber+Extensions.swift */; };
+		5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		62192E371C34D0950033DFBF /* VFollowingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62192E361C34D0950033DFBF /* VFollowingHelper.swift */; };
 		6236F8701C36016D00746476 /* FollowUserOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86F1C36016D00746476 /* FollowUserOperationTest.swift */; };
@@ -2410,7 +2410,7 @@
 		3464CCA9E80BEFFB473C1438 /* Pods_VictoriousIOSSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VictoriousIOSSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Pagination.swift"; sourceTree = "<group>"; };
-		5A6F11B61C386E8A000BF7F3 /* NSNumber+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Extensions.swift"; sourceTree = "<group>"; };
+		5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Operators.swift"; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
 		62192E361C34D0950033DFBF /* VFollowingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFollowingHelper.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUserOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowUserOperationTest.swift; path = Operations/FollowUserOperationTest.swift; sourceTree = "<group>"; };
@@ -7342,7 +7342,7 @@
 			isa = PBXGroup;
 			children = (
 				A79825971C0FADAD00C53A07 /* KVODebugger.swift */,
-				5A6F11B61C386E8A000BF7F3 /* NSNumber+Extensions.swift */,
+				5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -11625,7 +11625,7 @@
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
 				A7D047941B97AE140091F366 /* ContentViewPresenter.swift in Sources */,
-				5A6F11B71C386E8A000BF7F3 /* NSNumber+Extensions.swift in Sources */,
+				5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */,
 				C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
