@@ -13,7 +13,7 @@ final class PollVoteOperation: RequestOperation {
     
     var request: PollVoteRequest
     
-    init(sequenceID: String, answerID: Int64) {
+    init(sequenceID: String, answerID: Int) {
         self.request = PollVoteRequest(sequenceID: sequenceID, answerID: answerID)
     }
     

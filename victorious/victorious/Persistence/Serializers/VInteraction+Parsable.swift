@@ -20,7 +20,7 @@ extension VInteraction: PersistenceParsable {
         type            = interaction.type
         
         answers = NSOrderedSet( array: interaction.answers.flatMap {
-            let uniqueElements = [ "remoteId" : NSNumber(longLong: Int64($0.answerID) )! ]
+            let uniqueElements = [ "remoteId" : NSNumber(longLong: Int($0.answerID) )! ]
             let answer: VAnswer = self.v_managedObjectContext.v_findOrCreateObject( uniqueElements )
             answer.populate( fromSourceModel: $0 )
             return answer

@@ -26,7 +26,7 @@ class UnlikeSequenceOperation: RequestOperation {
                 return
             }
             
-            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             sequence.isLikedByMainUser = false
             sequence.v_removeObject( currentUser, from: "likers" )
             context.v_save()

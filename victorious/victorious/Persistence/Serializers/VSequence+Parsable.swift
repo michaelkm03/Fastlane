@@ -44,8 +44,7 @@ extension VSequence: PersistenceParsable {
             endCard?.populate(fromSourceModel: endCardModel)
         }
         
-        let uniqueUserData = [ "remoteId" : NSNumber(longLong: sequence.user.userID) ]
-        self.user = v_managedObjectContext.v_findOrCreateObject( uniqueUserData ) as VUser
+        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
         self.user.populate(fromSourceModel: sequence.user)
         
         if let previewImageAssets = sequence.previewImageAssets {
@@ -58,12 +57,9 @@ extension VSequence: PersistenceParsable {
         
         if let nodes = sequence.nodes {
             self.nodes = NSOrderedSet(array: nodes.flatMap {
-                if let nodeID = NSNumber( v_longLong: Int64($0.nodeID)) {
-                    let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : nodeID ])
-                    node.populate( fromSourceModel: $0 )
-                    return node
-                }
-                return nil
+                let node: VNode = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.nodeID ])
+                node.populate( fromSourceModel: $0 )
+                return node
             })
         }
         

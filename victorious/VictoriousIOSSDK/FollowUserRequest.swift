@@ -13,12 +13,12 @@ import SwiftyJSON
 public struct FollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to follow
-    public let userToFollowID: Int64
+    public let userToFollowID: Int
     
     // The name of the screen from which you're following this user
     public let screenName: String
     
-    public init(userToFollowID: Int64, screenName: String) {
+    public init(userToFollowID: Int, screenName: String) {
         self.userToFollowID = userToFollowID
         self.screenName = screenName
     }

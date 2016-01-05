@@ -53,7 +53,7 @@ class SequenceCommentsDataSource : PaginatedDataSource {
         // TODO:
         /*self.loadPage( pageType,
             createOperation: {
-                return CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.longLongValue )
+                return CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.integerValue )
             },
             completion: { (operation, error) in
                 completion?(error)

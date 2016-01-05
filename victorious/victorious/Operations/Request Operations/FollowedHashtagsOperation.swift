@@ -25,7 +25,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
     }
     
-    convenience init( hashtagID: Int64 ) {
+    convenience init( hashtagID: Int ) {
         self.init( request: HashtagSubscribedToListRequest() )
     }
     

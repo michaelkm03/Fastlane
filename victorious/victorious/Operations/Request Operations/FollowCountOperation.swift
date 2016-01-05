@@ -12,14 +12,14 @@ import VictoriousIOSSDK
 class FollowCountOperation: RequestOperation {
     
     var request: FollowCountRequest
-    private let userID: Int64
+    private let userID: Int
     
     required init( request: FollowCountRequest ) {
         self.userID = request.userID
         self.request = request
     }
     
-    convenience init( userID: Int64 ) {
+    convenience init( userID: Int ) {
         self.init( request: FollowCountRequest(userID: userID) )
     }
     

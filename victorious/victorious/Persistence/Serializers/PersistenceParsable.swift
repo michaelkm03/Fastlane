@@ -22,7 +22,7 @@ protocol PersistenceParsable {
 }
 
 extension NSNumber {
-    convenience init?( longLong value: Int64? ) {
+    convenience init?( longLong value: Int? ) {
         if let value = value {
             self.init( longLong: value )
         } else {

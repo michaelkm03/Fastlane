@@ -11,10 +11,10 @@ import SwiftyJSON
 /// Request for editing a particular comment
 public struct CommentEditRequest: RequestType {
     
-    public let commentID: Int64
+    public let commentID: Int
     public let text: String
     
-    public init(commentID: Int64, text: String) {
+    public init(commentID: Int, text: String) {
         self.commentID = commentID
         self.text = text
     }
