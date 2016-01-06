@@ -153,9 +153,13 @@
 - (void)clearValueForSessionParameterWithKey:(NSString *)key
 {
     [self.sessionParameters removeObjectForKey:key];
+    
+#if TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
+    NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", [self stringFromDictionary:self.sessionParameters] );
+#endif
 }
 
-- (void)clearSessionParameters
+- (void)clearAllSessionParameterValues
 {
     [self.sessionParameters removeAllObjects];
 }

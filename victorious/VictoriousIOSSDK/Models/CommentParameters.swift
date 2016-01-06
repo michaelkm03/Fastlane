@@ -13,9 +13,9 @@ public struct CommentParameters {
     
     public struct RealtimeComment {
         public let time: Double
-        public let assetID: Int64
+        public let assetID: Int
         
-        public init( time: Double, assetID: Int64 ) {
+        public init( time: Double, assetID: Int ) {
             self.time = time
             self.assetID = assetID
         }
@@ -23,12 +23,12 @@ public struct CommentParameters {
     
     public let sequenceID: String
     public let text: String?
-    public let replyToCommentID: Int64?
+    public let replyToCommentID: Int?
     public let mediaURL: NSURL?
     public let mediaType: MediaAttachmentType?
     public let realtimeComment: RealtimeComment?
     
-    public init( sequenceID: String, text: String?, replyToCommentID: Int64?, mediaURL: NSURL?, mediaType: MediaAttachmentType?, realtimeComment: RealtimeComment? ) {
+    public init( sequenceID: String, text: String?, replyToCommentID: Int?, mediaURL: NSURL?, mediaType: MediaAttachmentType?, realtimeComment: RealtimeComment? ) {
         self.sequenceID = sequenceID
         self.text = text
         self.replyToCommentID = replyToCommentID

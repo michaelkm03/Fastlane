@@ -12,7 +12,7 @@ import XCTest
 class BatchFollowUsersRequestTests: XCTestCase {
     
     func testRequest() {
-        let userIDsToFollow: [Int64] = [266, 3787]
+        let userIDsToFollow: [Int] = [266, 3787]
         let batchFollowRequest = BatchFollowUsersRequest(usersToFollow: userIDsToFollow)
         
         let request = batchFollowRequest.urlRequest

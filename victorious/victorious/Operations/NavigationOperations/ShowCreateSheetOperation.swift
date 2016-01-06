@@ -24,7 +24,7 @@ import UIKit
         super.init()
         
         // If required, first queue a login operation upon which this operation will depenend
-        if VUser.currentUser() == nil {
+        if VCurrentUser.user() == nil {
             let loginOperation = ShowLoginOperation(
                 originViewController: originViewController,
                 dependencyManager: dependencyManager,

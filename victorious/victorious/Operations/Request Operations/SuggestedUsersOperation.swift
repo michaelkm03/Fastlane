@@ -28,10 +28,10 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in
-                let user: VUser = context.v_findOrCreateObject(["remoteId": NSNumber(longLong: sourceModel.user.userID)])
+                let user: VUser = context.v_findOrCreateObject(["remoteId": sourceModel.user.userID])
                 user.populate(fromSourceModel: sourceModel.user)
                 let recentSequences: [VSequence] = sourceModel.recentSequences.flatMap {
-                    let sequence: VSequence = context.v_findOrCreateObject(["remoteId": String($0.sequenceID)])
+                    let sequence: VSequence = context.v_findOrCreateObject(["remoteId": $0.sequenceID])
                     sequence.populate(fromSourceModel: $0)
                     return sequence
                 }
@@ -39,11 +39,8 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
             }
             context.v_save()
             
-            // Now reload on the main thread using the main context
-            dispatch_async( dispatch_get_main_queue() ) {
-                self.results = self.fetchResults( suggestedUsers )
-                completion()
-            }
+            self.results = self.fetchResults( suggestedUsers )
+            completion()
         }
     }
     

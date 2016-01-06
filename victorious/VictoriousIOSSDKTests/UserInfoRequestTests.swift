@@ -13,7 +13,7 @@ import SwiftyJSON
 class UserInfoRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
-        let id: Int64 = 3694
+        let id: Int = 3694
         let request =  UserInfoRequest(userID: id )
         XCTAssertEqual( request.urlRequest.URL, NSURL(string: "/api/userinfo/fetch/\(id)") )
         XCTAssertEqual( request.userID, id )
@@ -28,7 +28,7 @@ class UserInfoRequestTests: XCTestCase {
                 return
         }
         
-        let id: Int64 = 3694
+        let id: Int = 3694
         let request =  UserInfoRequest(userID: id)
         let user: User
         do {

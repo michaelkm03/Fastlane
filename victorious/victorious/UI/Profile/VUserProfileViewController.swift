@@ -10,7 +10,7 @@ import UIKit
 
 extension VUserProfileViewController {
     
-    func fetchUserInfo( userID userID: Int64, completion:((NSError?)->())) -> NSOperation {
+    func fetchUserInfo( userID userID: Int, completion:((NSError?)->())) -> NSOperation {
         let operation = UserInfoOperation( userID: userID )
         operation.queue() { error in
             completion( error )

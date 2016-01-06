@@ -29,8 +29,8 @@ class PollResultTests: XCTestCase {
         }
         
         XCTAssertEqual( pollResult.sequenceID, mockSequenceID )
-        XCTAssertEqual( pollResult.answerID, Int64(mockAnswerID) )
-        XCTAssertEqual( pollResult.totalCount, Int64(mockTotalCount) )
+        XCTAssertEqual( pollResult.answerID, Int(mockAnswerID) )
+        XCTAssertEqual( pollResult.totalCount, Int(mockTotalCount) )
     }
     
     func testInvalid() {

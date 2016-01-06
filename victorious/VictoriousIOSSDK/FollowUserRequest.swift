@@ -14,7 +14,7 @@ public struct FollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to follow
     public let userID: Int64
-    
+
     // The name of the screen from which you're following this user
     public let screenName: String
     

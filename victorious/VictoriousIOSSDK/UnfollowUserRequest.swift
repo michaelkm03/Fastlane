@@ -14,7 +14,7 @@ public struct UnfollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to unfollow
     public let userID: Int64
-    
+
     // The name of the screen from which you're unfollowing this user
     public let screenName: String
     

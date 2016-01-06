@@ -41,15 +41,13 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             for user in users {
-                let uniqueElements = [ "remoteId" : NSNumber( longLong: user.userID ) ]
-                let reposter: VUser = context.v_findOrCreateObject( uniqueElements )
+                let reposter: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ] )
                 reposter.populate(fromSourceModel: user )
                 reposters.append( reposter )
             }
             
             // Add the loaded persistent models to the sequence as `reposters`
-            let uniqueElements = [ "remoteId" : String(self.sequenceID) ]
-            let sequence: VSequence = context.v_findOrCreateObject(uniqueElements)
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             sequence.v_addObjects( reposters, to: "reposters" )
             context.v_save()
             

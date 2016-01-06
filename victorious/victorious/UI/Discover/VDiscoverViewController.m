@@ -90,7 +90,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                              selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
-    VUser *currentUser = [VUser currentUser];
+    VUser *currentUser = [VCurrentUser user];
     
     [self.KVOController observe:currentUser
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
@@ -376,7 +376,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([[VUser currentUser] isFollowingHashtagString:hashtag.tag] )
+                if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
                 {
                     RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
                     [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];

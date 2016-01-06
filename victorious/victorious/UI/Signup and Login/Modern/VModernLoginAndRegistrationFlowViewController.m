@@ -471,7 +471,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
          [weakSelf queueLoginOperationWithEmail:email password:password completion:^(NSError *_Nullable error) {
              if ( error == nil )
              {
-                 BOOL completeProfile = [[VUser currentUser].status isEqualToString:kUserStatusComplete];
+                 BOOL completeProfile = [[VCurrentUser user].status isEqualToString:kUserStatusComplete];
                  completion(YES, completeProfile, nil);
                  if (completeProfile)
                  {

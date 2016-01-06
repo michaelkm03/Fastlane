@@ -50,12 +50,12 @@ public extension VContentViewViewModel {
             self.loadComments(.First)
         }
         
-        if let currentUserID = VUser.currentUser()?.remoteId.longLongValue {
+        if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
             SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in
                 self.hasReposted = self.sequence.hasBeenRepostedByMainUser.boolValue
             }
             
-            FollowCountOperation(userID: Int64(currentUserID)).queue() { error in
+            FollowCountOperation(userID: Int(currentUserID)).queue() { error in
                 let followerCount = self.user.numberOfFollowers?.integerValue ?? 0
                 if followerCount > 0 {
                     let countString = self.largeNumberFormatter.stringForInteger(followerCount)
@@ -88,7 +88,7 @@ public extension VContentViewViewModel {
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
         let realtimeComment: CommentParameters.RealtimeComment?
         if let time = currentTime?.doubleValue where time > 0.0,
-            let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.longLongValue {
+            let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.integerValue {
                 realtimeComment = CommentParameters.RealtimeComment( time: time, assetID: assetID )
         } else {
             realtimeComment = nil
@@ -110,7 +110,7 @@ public extension VContentViewViewModel {
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
         if let answer: VAnswer = self.sequence.answerModelForPollAnswer( pollAnswer ) {
-            let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.longLongValue)
+            let operation = PollVoteOperation(sequenceID: self.sequence.remoteId, answerID: answer.remoteId.integerValue)
             operation.queue() { error in
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
@@ -132,7 +132,7 @@ public extension VContentViewViewModel {
     }
     
     func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
-        let operation = CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.longLongValue )
+        let operation = CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.integerValue )
         operation.queue() { error in
             if error == nil, let pageNumber = operation.pageNumber {
                 completion?(pageNumber, nil)

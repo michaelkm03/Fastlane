@@ -13,7 +13,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     
     let request: SubscribedToListRequest
     
-    private var userID: Int64
+    private var userID: Int
     
     private(set) var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
@@ -23,7 +23,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
         self.request = request
     }
     
-    convenience init( userID: Int64 ) {
+    convenience init( userID: Int ) {
         self.init( request: SubscribedToListRequest(userID: userID) )
     }
     
@@ -46,14 +46,12 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
             
-            let subjectUserId = NSNumber(longLong: self.userID)
-            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : subjectUserId] )
+            let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
             
             for user in users {
                 
                 // Load the user who is following self.userID
-                let objectUserId = NSNumber(longLong: user.userID)
-                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : objectUserId] )
+                let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
                 objectUser.populate(fromSourceModel: user)
                 
                 let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
@@ -76,7 +74,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
                 v_format: "subjectUser.remoteId = %@",
-                v_argumentArray: [ NSNumber(longLong: self.userID) ],
+                v_argumentArray: [ self.userID ],
                 v_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate

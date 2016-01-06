@@ -74,7 +74,7 @@
 {
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
     self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
-    self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:[VUser currentUser]];
+    self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:[VCurrentUser user]];
     self.userFollowingViewController.usersViewContext = VUsersViewContextFollowing;
     
     self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];

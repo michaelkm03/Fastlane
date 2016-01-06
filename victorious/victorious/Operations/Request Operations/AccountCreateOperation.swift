@@ -32,12 +32,12 @@ class AccountCreateOperation: RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( response: AccountCreateResponse, completion:()->() ) {
+    func onComplete( response: AccountCreateResponse, completion:()->() ) {
         self.isNewUser = response.newUser
         
         // First, find or create the new user who just logged in
         persistentStore.backgroundContext.v_performBlock() { context in
-            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: response.user.userID) ])
+            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : response.user.userID ])
             user.setAsCurrentUser()
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
@@ -45,7 +45,7 @@ class AccountCreateOperation: RequestOperation {
             context.v_save()
             
             dispatch_async( dispatch_get_main_queue() ) {
-                if let currentUser = VUser.currentUser() {
+                if let currentUser = VCurrentUser.user() {
                     self.updateStoredCredentials( currentUser )
                     self.notifyLoginChange( currentUser, isNewUser: response.newUser )
                     self.queueNextOperations( currentUser )
@@ -70,7 +70,7 @@ class AccountCreateOperation: RequestOperation {
     
     private func queueNextOperations( currentUser: VUser ) {
         // Load more data from the network about the user
-        PollResultSummaryByUserOperation( userID: currentUser.remoteId.longLongValue ).queueAfter( self, queue: Operation.defaultQueue )
+        PollResultSummaryByUserOperation( userID: currentUser.remoteId.integerValue ).queueAfter( self, queue: Operation.defaultQueue )
         ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
         
         // TODO: Think of some other things we can load here just to get the objects into the persistence store

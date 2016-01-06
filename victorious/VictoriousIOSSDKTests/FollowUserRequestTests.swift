@@ -29,7 +29,7 @@ class FollowUserRequestTests: XCTestCase {
     
     func testRequest() {
         
-        let targetUserID: Int64 = 5107
+        let targetUserID: Int = 5107
         
         let followUser = FollowUserRequest(userID: targetUserID, screenName: "profile")
         let request = followUser.urlRequest

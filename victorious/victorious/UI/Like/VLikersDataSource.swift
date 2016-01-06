@@ -1,5 +1,5 @@
 //
-//  VLlikersDataSource.swift
+//  VLikersDataSource.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/21/15.

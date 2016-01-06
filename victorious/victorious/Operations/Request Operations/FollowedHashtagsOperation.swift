@@ -25,7 +25,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
     }
     
-    convenience init( hashtagID: Int64 ) {
+    convenience init( hashtagID: Int ) {
         self.init( request: HashtagSubscribedToListRequest() )
     }
     
@@ -46,7 +46,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
-            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 completion()
                 return
             }
@@ -72,7 +72,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     func fetchResults() -> [VHashtag] {
         
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return []
             }
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())

@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 extension VPollResult: PersistenceParsable {
     
     func populate( fromSourceModel pollResult: PollResult ) {
-        self.answerId = NSNumber( longLong: pollResult.answerID )
-        self.sequenceId = String(pollResult.sequenceID)
+        self.answerId = pollResult.answerID
+        self.sequenceId = pollResult.sequenceID
     }
 }

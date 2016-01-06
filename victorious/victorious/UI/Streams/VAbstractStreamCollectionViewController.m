@@ -120,7 +120,7 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VUser currentUser] != nil;
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
     if ( shouldRefresh )
     {
         [self loadPage:VPageTypeFirst completion:nil];

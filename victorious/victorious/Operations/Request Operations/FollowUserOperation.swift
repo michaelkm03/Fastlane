@@ -10,40 +10,51 @@ import Foundation
 import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
-    var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
+
+    var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
     private let request: FollowUserRequest
+    private let screenName: String
     private let userID: Int64
     
     required init(userID: Int64, screenName: String) {
         self.userID = userID
         self.request = FollowUserRequest(userID: userID, screenName: screenName)
+
+    init(userToFollowID: Int, currentUserID: Int, screenName: String) {
+        self.userToFollowID = userToFollowID
+        self.currentUserID = currentUserID
+        self.screenName = screenName
+        self.request = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
     }
     
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-            let persistedUserID = NSNumber(longLong: self.userID)
-            
-            guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,
-                let subjectUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let objectUser: VUser = context.v_findObject( ["remoteId" : self.userToFollowID] ),
+                let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
             }
             
+            objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
+            subjectUser.numberOfFollowing = subjectUser.numberOfFollowing + 1
             objectUser.isFollowedByMainUser = true
-            objectUser.numberOfFollowers = (objectUser.numberOfFollowers?.integerValue ?? 0) + 1
-            subjectUser.numberOfFollowing = (subjectUser.numberOfFollowing?.integerValue ?? 0) + 1
             
             // Find or create the following relationship
             let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
             let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
             followedUser.objectUser = objectUser
             followedUser.subjectUser = subjectUser
+
+            // By setting display order to -1, the user will appear at the top
+            // of each list of fetched results until a refresh of the followers list
+            // comes back from the server with updated display order
             followedUser.displayOrder = -1
             
             context.v_save()
-            
+
             self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidFollowUser)
         }
+            
+        self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
     }
 }

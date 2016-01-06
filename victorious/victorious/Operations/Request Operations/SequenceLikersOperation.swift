@@ -44,9 +44,9 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
 
-            let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : String(self.sequenceID) ])
+            let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])
             for user in users {
-                let persistentUser: VUser = context.v_findOrCreateObject( ["remoteId" : NSNumber(longLong: user.userID)] )
+                let persistentUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID ] )
                 persistentUser.populate(fromSourceModel: user)
 
                 let uniqueElements = [ "sequence"  : sequence, "user" : persistentUser ]

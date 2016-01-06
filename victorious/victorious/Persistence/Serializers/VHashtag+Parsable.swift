@@ -13,6 +13,6 @@ extension VHashtag: PersistenceParsable {
     
     func populate( fromSourceModel hashtag: Hashtag ) {
         tag = hashtag.tag
-        count = hashtag.count == nil ? count : NSNumber(longLong: hashtag.count!)
+        count = hashtag.count ?? count
     }
 }
