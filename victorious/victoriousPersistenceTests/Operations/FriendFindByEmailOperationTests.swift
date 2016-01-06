@@ -28,9 +28,9 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTests {
         let expectation = expectationWithDescription("FriendFindByOnComplete")
 
         let user = User(userID: self.testUserID)
-        self.operation.onComplete([user], completion: { () -> () in
+        self.operation.onComplete([user]) {
             expectation.fulfill()
-        })
+        }
         
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             guard let results = self.operation.results,
