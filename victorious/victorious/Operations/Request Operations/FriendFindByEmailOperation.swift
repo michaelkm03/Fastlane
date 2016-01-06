@@ -17,8 +17,16 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
     private var resultObjectIDs = [NSManagedObjectID]()
     private let request: FriendFindByEmailRequest
     
-    init(emails: [String]) {
-        self.request = FriendFindByEmailRequest(emails: emails)
+    init(request: FriendFindByEmailRequest) {
+        self.request = request
+    }
+    
+    convenience init?(emails: [String]) {
+        if let request = FriendFindByEmailRequest(emails: emails) {
+            self.init(request: request)
+        } else {
+            return nil
+        }
     }
     
     override func main() {

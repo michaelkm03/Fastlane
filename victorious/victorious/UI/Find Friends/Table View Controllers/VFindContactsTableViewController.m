@@ -151,11 +151,9 @@
     
     if (allEmailAddresses.count > 0)
     {
-        FriendFindByEmailOperation *operation = [[FriendFindByEmailOperation alloc] initWithEmails:allEmailAddresses];
-        [operation queueOn:RequestOperation.sharedQueue
-           completionBlock:^(NSError *_Nullable error)
+        [self findFriendsByEmails:allEmailAddresses
+                       completion:^(NSArray<VUser *> *_Nullable results, NSError *_Nullable error)
          {
-             NSArray *results = operation.results;
              completionBlock(results, error);
          }];
     }

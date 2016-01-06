@@ -13,7 +13,11 @@ public class FriendFindByEmailRequest: RequestType {
     
     private let sha256Emails: [String]
     
-    public init( emails: [String] ) {
+    public init?( emails: [String] ) {
+        guard !emails.isEmpty else {
+            self.sha256Emails = []
+            return nil
+        }
         self.sha256Emails = emails.map{ vsdk_sha256($0) }
     }
     

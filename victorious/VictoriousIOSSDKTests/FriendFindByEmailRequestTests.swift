@@ -15,8 +15,12 @@ class FriendFindByEmailRequestTests: XCTestCase {
     func testRequest() {
         
         let emails = ["h@h.hh", "mike@msena.com"]
-        let request = FriendFindByEmailRequest(emails: emails)
+        let request = FriendFindByEmailRequest(emails: emails)!
         XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/friend/find_by_email"))
+        
+        let emptyEmails = [String]()
+        let shouldBeNilRequest = FriendFindByEmailRequest(emails: emptyEmails)
+        XCTAssertNil(shouldBeNilRequest)
     }
 
 }
