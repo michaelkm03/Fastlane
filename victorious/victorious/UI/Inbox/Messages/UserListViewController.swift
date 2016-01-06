@@ -56,10 +56,10 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
             switch searchState {
             case .Default:
                 noResultsView.hidden = true
-                tableView.hidden = false
+                tableView.hidden = true
             case .LoadingInitial:
                 noResultsView.hidden = true
-                tableView.hidden = false
+                tableView.hidden = true
             case .LoadingSubsequent:
                 noResultsView.hidden = true
                 tableView.hidden = false
@@ -126,6 +126,9 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         userSearchDataSource.bindCell(cell, forIndexPath: indexPath)
+        if let cell = cell as? UserSearchResultTableViewCell {
+            cell.dependencyManager = dependencyManager
+        }
     }
     
     //MARK: - UISearchBarDelegate
