@@ -115,6 +115,14 @@
                BlueprintName = "victoriousPersistenceTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "GIFSearchDefaultResultsOperationTests">
+               </Test>
+               <Test
+                  Identifier = "GIFSearchOperationTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
