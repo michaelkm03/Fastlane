@@ -23,9 +23,7 @@ class TrendingHashtagRequestTests: XCTestCase {
             let trendingHashtagRequest = TrendingHashtagRequest()
             let results = try trendingHashtagRequest.parseResponse(NSURLResponse(), toRequest: trendingHashtagRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
-            XCTAssertEqual(results[0].hashtagID, 760)
             XCTAssertEqual(results[0].tag, "surfing")
-            XCTAssertEqual(results[1].hashtagID, 761)
             XCTAssertEqual(results[1].tag, "bikes")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")

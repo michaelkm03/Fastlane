@@ -11,7 +11,7 @@ import SwiftyJSON
 
 public struct Interaction {
     public let question: String
-    public let remoteID: Int64
+    public let remoteID: Int
     public let startTime: Double
     public let timeout: Double
     public let type: String
@@ -22,7 +22,7 @@ public struct Interaction {
 extension Interaction {
     public init?(json: JSON) {
         guard let displayOrder  = json["display_order"].int,
-            let remoteID        = Int64(json["interaction_id"].string ?? "") ,
+            let remoteID        = Int(json["interaction_id"].string ?? "") ,
             let question        = json["question"].string,
             let type            = json["type"].string else {
             return nil

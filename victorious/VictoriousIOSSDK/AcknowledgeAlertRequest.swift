@@ -10,7 +10,7 @@ import SwiftyJSON
 
 public struct AcknowledgeAlertRequest: RequestType {
 
-    public let alertID: Int64
+    public let alertID: Int
     private static let basePath = NSURL(string: "/api/alert/acknowledge")!
     
     public var urlRequest: NSURLRequest {
@@ -20,7 +20,7 @@ public struct AcknowledgeAlertRequest: RequestType {
         return urlRequest
     }
     
-    public init(alertID: Int64) {
+    public init(alertID: Int) {
         self.alertID = alertID
     }
     

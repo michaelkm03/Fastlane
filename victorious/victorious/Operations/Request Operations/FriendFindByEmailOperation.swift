@@ -37,7 +37,7 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
         
         persistentStore.backgroundContext.v_performBlock() { context in
             for foundFriend in results {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": NSNumber(longLong: foundFriend.userID)])
+                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
                 persistentUser.populate(fromSourceModel: foundFriend)
                 self.resultObjectIDs.append(persistentUser.objectID)
             }

@@ -22,7 +22,6 @@
 #import "VCompatibility.h"
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
-#import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
@@ -46,7 +45,6 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 @property (nonatomic, strong) VInsetActionView *actionView;
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, strong) UIView *separatorView;
 
@@ -304,17 +302,11 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
     
-    __weak typeof(self) welf = self;
-    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
-     {
-         typeof(self) strongSelf = welf;
-         [strongSelf updateCountsTextViewForSequence:sequence];
-         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.likeButton
-                                                      selected:sequence.isLikedByMainUser.boolValue];
-         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.repostButton
-                                                      selected:sequence.hasReposted.boolValue];
-     }];
+    [self updateCountsTextViewForSequence:sequence];
+    [self.actionButtonAnimationController setButton:self.actionView.likeButton
+                                           selected:sequence.isLikedByMainUser.boolValue];
+    [self.actionButtonAnimationController setButton:self.actionView.repostButton
+                                           selected:sequence.hasReposted.boolValue];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence

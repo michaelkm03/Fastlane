@@ -9,16 +9,16 @@
 import Foundation
 
 public struct RepostSequenceRequest: RequestType {
-    public let nodeID: Int64
+    public let nodeID: Int
     
-    public init (nodeID: Int64) {
+    public init (nodeID: Int) {
         self.nodeID = nodeID
     }
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/repost/create")!)
         urlRequest.HTTPMethod = "POST"
-        let repostSequenceInfo = [ "parent_node_id": NSNumber(longLong: nodeID) ]
+        let repostSequenceInfo = [ "parent_node_id": nodeID ]
         urlRequest.vsdk_addURLEncodedFormPost(repostSequenceInfo)
         
         return urlRequest

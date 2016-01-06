@@ -21,13 +21,18 @@ class FollowUserOperationTest: BaseRequestOperationTests {
 
         operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
         operation.persistentStore = testStore
-        operation.trackingManager = testTrackingManager
+        operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
+        VCurrentUser.persistentStore = testStore
     }
 
-    func __testFollowingAnExistentUser() {
+    func testFollowingAnExistentUser() {
+        
         let createdCurrentUser = createUser(remoteId: currentUserID)
+        createdCurrentUser.setAsCurrentUser()
+        
         let createdUserToFollow = createUser(remoteId: userToFollowID)
+
         queueExpectedOperation(operation: operation)
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
@@ -35,23 +40,34 @@ class FollowUserOperationTest: BaseRequestOperationTests {
                 XCTFail("No user to follow found after following a user")
                 return
             }
-
-            guard let updatedCurrentUser = self.testStore.mainContext.objectWithID(createdCurrentUser.objectID) as? VUser else {
+            guard let currentUser = VCurrentUser.user() else {
                 XCTFail("No current user found after following a user")
                 return
             }
+            
             XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
-            XCTAssertEqual(1, updatedCurrentUser.numberOfFollowing)
-            XCTAssertEqual(1, updatedCurrentUser.following.count)
-            XCTAssert(updatedCurrentUser.following.contains(updatedUserToFollow))
+            XCTAssertEqual(1, updatedUserToFollow.followers.count)
+            if updatedUserToFollow.followers.count == 1, let user = Array(updatedUserToFollow.followers)[0] as? VUser {
+                XCTAssertEqual( user, updatedUserToFollow )
+            }
+            
+            XCTAssertEqual(1, currentUser.numberOfFollowing)
+            XCTAssertEqual(1, currentUser.following.count)
+            if currentUser.following.count == 1, let user = Array(currentUser.following)[0] as? VUser {
+                XCTAssertEqual(user, updatedUserToFollow)
+            }
+            
             XCTAssertEqual(true, updatedUserToFollow.isFollowedByMainUser)
+            
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
-            XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
+            if self.testTrackingManager.trackEventCalls.count >= 1 {
+                XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
+            }
             XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         }
     }
 
-    func __testFollowingANonExistentUser() {
+    func testFollowingANonExistentUser() {
         let existingUsers: [VUser] = self.testStore.mainContext.v_findAllObjects()
         XCTAssertEqual(0, existingUsers.count)
 
@@ -61,7 +77,10 @@ class FollowUserOperationTest: BaseRequestOperationTests {
                 XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
             }
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
-            XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
+            if self.testTrackingManager.trackEventCalls.count >= 1 {
+                XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
+            }
+            XCTAssertEqual(0, self.testRequestExecutor.executeRequestCallCount)
         }
     }
 
@@ -73,9 +92,9 @@ class FollowUserOperationTest: BaseRequestOperationTests {
         return expectation
     }
 
-    private func createUser(remoteId remoteId: Int64) -> VUser {
+    private func createUser(remoteId remoteId: Int) -> VUser {
         return testStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(longLong: remoteId)
+            user.remoteId = remoteId
             user.status = "stored"
         } as VUser
     }

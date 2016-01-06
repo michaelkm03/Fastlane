@@ -21,7 +21,7 @@ extension VAsset: PersistenceParsable {
         mimeType                = asset.mimeType
         playerControlsDisabled  = asset.playerControlsDisabled
         remoteContentId         = asset.remoteContentID
-        remoteId                = NSNumber( longLong: asset.assetID)
+        remoteId                = asset.assetID
         remotePlayback          = asset.remotePlayback
         remoteSource            = asset.remoteSource
         speed                   = asset.speed

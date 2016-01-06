@@ -14,11 +14,11 @@ class CommentEditOperation: RequestOperation {
     var request: CommentEditRequest
     
     private let text: String
-    private let commentID: Int64
+    private let commentID: Int
     
     private var optimisticCommentObjectID: NSManagedObjectID?
     
-    init( commentID: Int64, text: String ) {
+    init( commentID: Int, text: String ) {
         self.commentID = commentID
         self.text = text
         self.request = CommentEditRequest(commentID: commentID, text: text)
@@ -28,7 +28,7 @@ class CommentEditOperation: RequestOperation {
         
         // Optimistically edit the comment before sending request
         persistentStore.backgroundContext.v_performBlock() { context in
-            if let comment: VComment = context.v_findObjects( ["remoteId" : NSNumber(longLong:self.commentID)] ).first {
+            if let comment: VComment = context.v_findObjects( ["remoteId" : self.commentID] ).first {
                 comment.text = self.text
                 context.v_save()
                 self.optimisticCommentObjectID = comment.objectID

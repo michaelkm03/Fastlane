@@ -56,7 +56,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
 
-    NSNumber *currentUserId = VUser.currentUser.remoteId;
+    NSNumber *currentUserId = VCurrentUser.user.remoteId;
     BOOL tryingToFollowSelf = [user.remoteId isEqual: currentUserId];
     
     if ( tryingToFollowSelf )

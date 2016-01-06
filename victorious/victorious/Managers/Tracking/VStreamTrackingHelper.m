@@ -71,13 +71,13 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 - (void)onStreamViewWillDisappearWithStream:(VStream *)stream isBeingDismissed:(BOOL)isBeingDismissed
 {
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyStreamId];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyStreamId];
     
     [self resetCellVisibilityTracking];
     
     if ( isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     }
 }
 

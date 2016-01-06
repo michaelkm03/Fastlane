@@ -47,7 +47,7 @@
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.streamDataSource unloadStream];
-    if ( [VUser currentUser] != nil )
+    if ( [VCurrentUser user] != nil )
     {
         [self loadPage:VPageTypeFirst completion:nil];
     }

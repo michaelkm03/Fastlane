@@ -15,7 +15,6 @@
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VVideoCameraViewController.h"
-#import "victorious-Swift.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -129,13 +128,14 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - GIFSearchViewControllerDelegate
 
-- (void)GIFSearchResultSelected:(GIFSearchResult *)result previewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+- (void)GIFSearchResultSelected:(GIFSearchResultObject *)result
 {
     self.source = VCreationFlowSourceSearch;
-    self.publishParameters.width = result.width.integerValue;
-    self.publishParameters.height = result.height.integerValue;
-    self.publishParameters.assetRemoteId = result.remoteId;
-    [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
+    self.publishParameters.width = result.assetSize.width;
+    self.publishParameters.height = result.assetSize.height;
+    self.publishParameters.assetRemoteId = result.remoteID;
+    [self captureFinishedWithMediaURL:result.exportMediaURL
+                         previewImage:result.exportPreviewImage shouldSkipTrimmer:YES];
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate

@@ -12,25 +12,28 @@ import VictoriousIOSSDK
 extension VUser: PersistenceParsable {
     
     func populate( fromSourceModel user: User ) {
-        remoteId                    = NSNumber( longLong: user.userID)
-        email                       = user.email
-        name                        = user.name
-        status                      = user.status.rawValue
-        location                    = user.location
-        tagline                     = user.tagline
-        isCreator                   = user.isCreator
-        isDirectMessagingDisabled   = user.isDirectMessagingDisabled
-        isFollowedByMainUser        = user.isFollowedByMainUser
-        numberOfFollowers           = NSNumber( v_longLong: user.numberOfFollowers )
-        numberOfFollowing           = NSNumber( v_longLong: user.numberOfFollowing )
-        pictureUrl                  = user.profileImageURL
-        tokenUpdatedAt              = user.tokenUpdatedAt
-        maxUploadDuration           = NSNumber( longLong: user.maxVideoUploadDuration)
+        remoteId                    = user.userID ?? user.userID
+        status                      = user.status?.rawValue ?? status
+        email                       = user.email ?? email
+        name                        = user.name ?? name
+        location                    = user.location ?? location
+        tagline                     = user.tagline ?? tagline
+        isCreator                   = user.isCreator ?? isCreator
+        isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
+        isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
+        pictureUrl                  = user.profileImageURL ?? pictureUrl
+        tokenUpdatedAt              = user.tokenUpdatedAt ?? tokenUpdatedAt
+        maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
+        numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
+        numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
         
-        previewAssets = Set<VImageAsset>(user.previewImageAssets.flatMap {
-            let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
-            imageAsset.populate( fromSourceModel: $0 )
-            return imageAsset
-        })
+        if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
+            let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.url.absoluteString ])
+                imageAsset.populate( fromSourceModel: $0 )
+                return imageAsset
+            }
+            self.v_addObjects( newPreviewAssets, to: "previewAssets" )
+        }
     }
 }

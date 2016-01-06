@@ -38,9 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Forwards a tracking event to any added VTrackingDelegate instanced.
  */
-- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters;
+- (void)trackEvent:(NSString *_Nullable)eventName parameters:(NSDictionary *_Nullable)parameters;
 
-- (void)trackEvent:(NSString *)eventName;
+- (void)trackEvent:(NSString *_Nullable)eventName;
 
 @optional
 
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  are used to utilize fields from this dictionary.
  @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.
  */
-- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId;
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *_Nullable)parameters eventId:(NSString *)eventId;
 
 /**
  Removes events from queue and tracks thems using trackEvent:parameters
@@ -61,15 +61,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Session Values
 
 /**
- Adds a new parameter that will be passed to all tracking calls until cleared. To clear a
- previously set parameter, pass nil for value.
+ Adds a new parameter that will be passed to all tracking calls until cleared.
  */
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key;
 
 /**
+ Clears a session parameter if it existied, otherwise does nothing.
+ */
+- (void)clearValueForSessionParameterWithKey:(NSString *)key;
+
+/**
  Clears all session properties
  */
-- (void)clearSessionParameters;
+- (void)clearAllSessionParameterValues;
 
 #pragma mark - Delegates
 

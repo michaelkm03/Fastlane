@@ -34,7 +34,7 @@ class DevicePreferencesOperation: RequestOperation {
         persistentStore.backgroundContext.v_performBlock() { context in
             
             // Grab the background current user's notificationSettings, creating if none already exist
-            let currentUser = VUser.currentUser()
+            let currentUser = VCurrentUser.user()
             let newSettings: VNotificationSettings = currentUser?.notificationSettings ?? context.v_createObject()
             currentUser?.notificationSettings = newSettings
             newSettings.populate(fromSourceModel: result)
@@ -42,7 +42,7 @@ class DevicePreferencesOperation: RequestOperation {
             
             self.persistentStore.mainContext.performBlockAndWait() { context in
                 // Provide the main queue current user for calling code.
-                let mainQueueCurrentUser = VUser.currentUser()
+                let mainQueueCurrentUser = VCurrentUser.user()
                 self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
                 completion()
             }

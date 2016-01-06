@@ -9,10 +9,10 @@
 import Foundation
 
 public struct FlagConversationRequest: RequestType {
-    public let conversationID: Int64
+    public let conversationID: Int
     private static let basePath = NSURL(string: "/api/message/flag")!
     
-    public init(conversationID: Int64) {
+    public init(conversationID: Int) {
         self.conversationID = conversationID
     }
     
