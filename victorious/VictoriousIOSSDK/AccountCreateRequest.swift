@@ -80,7 +80,13 @@ public struct AccountCreateResponse {
     /// Details on the new account
     public let user: User
     
-    /// false if the credentials provided matched an existing 
+    /// false if the credentials provided matched an existing
     /// account, true if a truly new account was created.
     public let newUser: Bool
+    
+    public init( token: String, user: User, newUser: Bool ) {
+        self.token = token
+        self.user = user
+        self.newUser = newUser
+    }
 }

@@ -13,9 +13,9 @@ import SwiftyJSON
 public struct BatchFollowUsersRequest: RequestType {
     
     /// The IDs of the users you'd like to follow
-    public let usersToFollow: [Int64]
+    public let usersToFollow: [Int]
     
-    public init(usersToFollow: [Int64]) {
+    public init(usersToFollow: [Int]) {
         self.usersToFollow = usersToFollow
     }
     
@@ -23,7 +23,7 @@ public struct BatchFollowUsersRequest: RequestType {
         let url = NSURL(string: "/api/follow/batchadd")!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        let converted = NSDictionary(dictionary: ["target_user_ids" : usersToFollow.map { NSNumber(longLong: $0) }])
+        let converted = NSDictionary(dictionary: ["target_user_ids" : usersToFollow.map{ $0 }] )
         request.vsdk_addURLEncodedFormPost(converted)
         return request
     }

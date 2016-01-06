@@ -75,10 +75,10 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     }
     
     private func trackEvent( event: AppTimingEvent ) {
-        let durationMs = Int64(NSDate().timeIntervalSinceDate( event.dateStarted ) * 1000.0)
+        let durationMs = Int(NSDate().timeIntervalSinceDate( event.dateStarted ) * 1000.0)
         let params: [NSObject : AnyObject] = [
             VTrackingKeyUrls : self.urls,
-            VTrackingKeyDuration : NSNumber(longLong: durationMs),
+            VTrackingKeyDuration : durationMs,
             VTrackingKeyType : event.type,
             VTrackingKeySubtype : event.subtype ?? ""
         ]

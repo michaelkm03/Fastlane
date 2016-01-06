@@ -33,7 +33,7 @@ class CommentAddOperation: RequestOperation {
     }
     
     override func main() {
-        guard let currentUserId = VUser.currentUser()?.remoteId else {
+        guard let currentUserId = VCurrentUser.user()?.remoteId else {
             return
         }
         
@@ -43,7 +43,7 @@ class CommentAddOperation: RequestOperation {
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
-            comment.user = VUser.currentUser()
+            comment.user = VCurrentUser.user()
             if let realtime = self.commentParameters.realtimeComment {
                 comment.realtime = NSNumber(float: Float(realtime.time))
             }

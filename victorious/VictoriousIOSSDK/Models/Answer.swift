@@ -13,13 +13,13 @@ public struct Answer {
     public let isCorrect: Bool
     public let label: String
     public let mediaUrl: String
-    public let answerID: String
+    public let answerID: Int
     public let thumbnailUrl: String
 }
 
 extension Answer {
     public init?(json: JSON) {
-        guard let answerID      = json["answer_id"].string,
+        guard let answerID      = Int(json["answer_id"].stringValue),
             let label           = json["label"].string,
             let mediaUrl        = json["label_media_url"].string,
             let thumbnailUrl    = json["label_thumbnail_url"].string else {

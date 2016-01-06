@@ -13,10 +13,10 @@ class FlagCommentOperation: RequestOperation {
     
     var request: FlagCommentRequest
     
-    private let commentID: Int64
+    private let commentID: Int
     private let flaggedContent = VFlaggedContent()
     
-    init( commentID: Int64 ) {
+    init( commentID: Int ) {
         self.commentID = commentID
         self.request = FlagCommentRequest(commentID: commentID)
     }
@@ -27,7 +27,7 @@ class FlagCommentOperation: RequestOperation {
         
         // Perform data changes optimistically
         persistentStore.backgroundContext.v_performBlock() { context in
-            let uniqueElements = [ "remoteId" : NSNumber( longLong: self.commentID) ]
+            let uniqueElements = [ "remoteId" : self.commentID ]
             if let comment: VComment = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( comment )
                 context.v_save()

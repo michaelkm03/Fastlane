@@ -10,9 +10,9 @@ import Foundation
 import SwiftyJSON
 
 public struct FollowCountRequest: RequestType {
-    public let userID: Int64
+    public let userID: Int
     
-    public init (userID: Int64) {
+    public init (userID: Int) {
         self.userID = userID
     }
     
@@ -21,8 +21,8 @@ public struct FollowCountRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> FollowCount {
-        guard let followingCount = Int64(responseJSON["payload"]["subscribed_to"].stringValue),
-            let followersCount = Int64(responseJSON["payload"]["followers"].stringValue) else {
+        guard let followingCount = Int(responseJSON["payload"]["subscribed_to"].stringValue),
+            let followersCount = Int(responseJSON["payload"]["followers"].stringValue) else {
                 throw ResponseParsingError()
         }
         return FollowCount(followingCount: followingCount, followersCount: followersCount)
@@ -30,6 +30,6 @@ public struct FollowCountRequest: RequestType {
 }
 
 public struct FollowCount {
-    public let followingCount: Int64
-    public let followersCount: Int64
+    public let followingCount: Int
+    public let followersCount: Int
 }

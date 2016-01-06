@@ -385,21 +385,17 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     if ([shelf isKindOfClass:[HashtagShelf class]])
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        
         // Check if we're following the hashtag
         HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
         if (hashtagShelf.amFollowing.boolValue && hashtagShelf.hashtagTitle != nil)
         {
-            [mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
+            //[mainUser addFollowedHashtag:hashtagShelf.hashtagTitle];
         }
     }
 }
 
 - (void)checkStreamForHashtags:(VStreamItem *)streamItem fullResponse:(NSDictionary *)fullResponse
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-
     // We're a stream, we need to check if we're a hashtag stream
     if ( [streamItem isKindOfClass:[VStream class]] )
     {
@@ -415,7 +411,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         if ([payload[@"am_following"] boolValue] && stream.hashtag != nil)
         {
             // Stream ID is the hashtag
-            [mainUser addFollowedHashtag:streamItem.streamId];
+            //[mainUser addFollowedHashtag:streamItem.streamId];
         }
     }
 }

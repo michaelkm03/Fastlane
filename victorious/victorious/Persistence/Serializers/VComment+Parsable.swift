@@ -12,19 +12,19 @@ import VictoriousIOSSDK
 extension VComment : PersistenceParsable {
     
     func populate( fromSourceModel comment: Comment ) {
-        remoteId                = NSNumber(longLong: comment.commentID)
+        remoteId                = comment.commentID
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         flags                   = comment.flags
-        dislikes                = NSNumber(longLong: comment.dislikes)
+        dislikes                = comment.dislikes
         flags                   = comment.flags
-        likes                   = NSNumber(longLong: comment.likes)
-        parentId                = NSNumber(longLong: comment.parentID)
+        likes                   = comment.likes
+        parentId                = comment.parentID
         postedAt                = comment.postedAt
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         sequenceId              = String(comment.sequenceID)
-        userId                  = NSNumber(longLong:comment.userID)
+        userId                  = comment.userID
         
         if let media = comment.media {
             mediaType           = media.type.rawValue
@@ -36,15 +36,14 @@ extension VComment : PersistenceParsable {
         
         // Set the sequence and inStreamSequence based on the comment's sequenceID if a Sequence object isn't set
         if sequence == nil {
-            sequence = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : String(comment.sequenceID) ]) as VSequence
+            sequence = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : comment.sequenceID ]) as VSequence
             inStreamSequence = sequence
         }
         
         // Set the user based on the comment's user if a User object isn't set
         if user == nil {
-            user = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : NSNumber(longLong:comment.user.userID) ]) as VUser
+            user = v_managedObjectContext.v_findOrCreateObject([ "remoteId" : comment.user.userID ]) as VUser
             user.populate( fromSourceModel: comment.user )
         }
-        
     }
 }

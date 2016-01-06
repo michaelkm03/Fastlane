@@ -10,9 +10,9 @@ import SwiftyJSON
 
 public struct GIFSearchResult {
     public let gifURL: String
-    public let gifSize: Int64?
+    public let gifSize: Int?
     public let mp4URL: String
-    public let mp4Size: Int64?
+    public let mp4Size: Int?
     public let frames: Int?
     public let width: Int
     public let height: Int
@@ -39,8 +39,8 @@ extension GIFSearchResult {
         height = heightNumber
         thumbnailStillURL = thumbnailStillURLString
         remoteID = remoteIDString
-        gifSize = json["gif_size"].int64
-        mp4Size = json["mp4_size"].int64
+        gifSize = json["gif_size"].int
+        mp4Size = json["mp4_size"].int
         frames = json["frames"].int
         thumbnailURL = json["thumbnail"].string
     }

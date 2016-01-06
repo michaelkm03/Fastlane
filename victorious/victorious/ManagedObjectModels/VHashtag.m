@@ -14,6 +14,5 @@
 
 @dynamic count;
 @dynamic tag;
-@dynamic user;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  FollowingHashtagsRequestTests.swift
+//  HashtagSubscribedToListRequestTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/9/15.
@@ -10,7 +10,7 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class FollowingHashtagsRequestTests: XCTestCase {
+class HashtagSubscribedToListRequestTests: XCTestCase {
     
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("FollowingHashtagsResponse", withExtension: "json"),
@@ -21,7 +21,7 @@ class FollowingHashtagsRequestTests: XCTestCase {
         
         do {
             let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-            let followingHashtags = FollowingHashtagsRequest(paginator: paginator)
+            let followingHashtags = HashtagSubscribedToListRequest(paginator: paginator)
             let results = try followingHashtags.parseResponse(NSURLResponse(), toRequest: followingHashtags.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].hashtagID, 191)
@@ -35,7 +35,7 @@ class FollowingHashtagsRequestTests: XCTestCase {
     
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-        let followingHashtags = FollowingHashtagsRequest(paginator: paginator)
+        let followingHashtags = HashtagSubscribedToListRequest(paginator: paginator)
         XCTAssertEqual(followingHashtags.urlRequest.URL?.absoluteString, "/api/hashtag/subscribed_to_list/1/100")
     }
 }
