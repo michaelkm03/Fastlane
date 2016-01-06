@@ -1,5 +1,5 @@
 //
-//  FollowingRequestTests.swift
+//  SubscribedToListRequestTests.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/10/15.
@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 import SwiftyJSON
 
-class FollowingRequestTests: XCTestCase {
+class SubscribedToListRequestTests: XCTestCase {
     
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("FollowersResponse", withExtension: "json"),
@@ -19,7 +19,7 @@ class FollowingRequestTests: XCTestCase {
                 return
         }
         do {
-            let followingRequest = FollowingRequest(userID: 100)
+            let followingRequest = SubscribedToListRequest(userID: 100)
             let results = try followingRequest.parseResponse(NSURLResponse(), toRequest: followingRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 3)
             XCTAssertEqual(results[0].userID, 576)
@@ -35,7 +35,7 @@ class FollowingRequestTests: XCTestCase {
     
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 102, itemsPerPage: 103)
-        let followingRequest = FollowingRequest(userID: 101, paginator: paginator)
+        let followingRequest = SubscribedToListRequest(userID: 101, paginator: paginator)
         XCTAssertEqual(followingRequest.urlRequest.URL?.absoluteString, "/api/follow/subscribed_to_list/101/102/103")
     }
 }

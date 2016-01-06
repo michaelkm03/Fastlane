@@ -16,11 +16,11 @@ class CommentFindOperation: RequestOperation {
     private let flaggedContent = VFlaggedContent()
     
     private let sequenceID: String
-    private let commentID: Int64
+    private let commentID: Int
     
     var pageNumber: Int?
     
-    init( sequenceID: String, commentID: Int64, itemsPerPage: Int = 15 ) {
+    init( sequenceID: String, commentID: Int, itemsPerPage: Int = 15 ) {
         self.sequenceID = sequenceID
         self.commentID = commentID
         self.request = CommentFindRequest(sequenceID: sequenceID, commentID: commentID, itemsPerPage: itemsPerPage)
@@ -33,7 +33,7 @@ class CommentFindOperation: RequestOperation {
     private func onComplete( response: CommentFindRequest.ResultType, completion:()->() ) {
         self.pageNumber = response.pageNumber
         
-        let flaggedCommentIds: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) }
+        let flaggedCommentIds: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
         if !response.comments.isEmpty {
             persistentStore.backgroundContext.v_performBlock() { context in
                 var comments = [VComment]()
@@ -42,7 +42,7 @@ class CommentFindOperation: RequestOperation {
                     persistentComment.populate( fromSourceModel: comment )
                     comments.append( persistentComment )
                 }
-                let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : String(self.sequenceID) ] )
+                let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
                 sequence.comments = NSOrderedSet( array: sequence.comments.array + comments )
                 context.v_save()
             }

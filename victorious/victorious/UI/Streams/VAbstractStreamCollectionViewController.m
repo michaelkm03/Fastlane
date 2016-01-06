@@ -119,7 +119,7 @@
     
     [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
-    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VUser currentUser] != nil;
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
     if ( shouldRefresh )
     {
         [self loadPage:VPageTypeFirst completion:nil];
@@ -310,14 +310,14 @@
              completion();
          }
          
-         [self didFinishLoadingPageType:pageType];
+         [self didFinishLoadingWithPageType:pageType];
          
          [self.refreshControl endRefreshing];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
-- (void)didFinishLoadingPageType:(VPageType)pageType
+- (void)didFinishLoadingWithPageType:(VPageType)pageType
 {
     // For subclasses
 }

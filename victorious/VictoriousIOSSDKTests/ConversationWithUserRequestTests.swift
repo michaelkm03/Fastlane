@@ -29,7 +29,7 @@ class ConversationWithUserRequestTests: XCTestCase {
         }
         
         let conversationWithUserRequest = ConversationWithUserRequest(userID: 4823)
-        let result: (conversationID: Int64, messages: [Message]) = try! conversationWithUserRequest.parseResponse(NSURLResponse(), toRequest: conversationWithUserRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+        let result: (conversationID: Int, messages: [Message]) = try! conversationWithUserRequest.parseResponse(NSURLResponse(), toRequest: conversationWithUserRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         
         XCTAssertEqual(result.messages.count, 1)
         XCTAssertEqual(result.conversationID, 3809)

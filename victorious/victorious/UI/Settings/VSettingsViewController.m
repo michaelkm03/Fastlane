@@ -242,7 +242,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
-    if ([VUser currentUser] != nil)
+    if ([VCurrentUser user] != nil)
     {
         [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
         self.logoutButton.style = VButtonStyleSecondary;
@@ -270,12 +270,12 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-    return [VUser currentUser] != nil && likeButtonOn;
+    return [VCurrentUser user] != nil && likeButtonOn;
 }
 
 - (BOOL)showChangePassword
 {
-    VUser *currentUer = [VUser currentUser];
+    VUser *currentUer = [VCurrentUser user];
     if ( currentUer == nil )
     {
         return NO;
@@ -324,7 +324,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (IBAction)logout:(id)sender
 {
-    if ( [VUser currentUser] != nil )
+    if ( [VCurrentUser user] != nil )
     {
         // Logout
         Operation *operation = [[LogoutLocally alloc] initFromViewController:self dependencyManager:self.dependencyManager];
@@ -384,7 +384,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        BOOL shouldShow = self.showTestAlertCell && [VUser currentUser] != nil;
+        BOOL shouldShow = self.showTestAlertCell && [VCurrentUser user] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
@@ -393,7 +393,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        BOOL shouldShow = self.showPushNotificationSettings && [VUser currentUser] != nil;
+        BOOL shouldShow = self.showPushNotificationSettings && [VCurrentUser user] != nil;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)

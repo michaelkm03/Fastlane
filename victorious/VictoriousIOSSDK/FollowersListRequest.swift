@@ -1,5 +1,5 @@
 //
-//  FollowersRequest.swift
+//  FollowersListRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/10/15.
@@ -10,20 +10,19 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users who follows a specific user
-public struct FollowersRequest: PaginatorPageable, ResultBasedPageable {
+public struct FollowersListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
 
-    /// Followers will be retrieved by this user ID
-    public let userID: Int64
+    public let userID: Int
     
     public let paginator: StandardPaginator
     
-    public init(request: FollowersRequest, paginator: StandardPaginator ) {
+    public init(request: FollowersListRequest, paginator: StandardPaginator ) {
         self.init( userID: request.userID, paginator: paginator )
     }
     
-    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30) ) {
         self.userID = userID
         self.paginator = paginator
         

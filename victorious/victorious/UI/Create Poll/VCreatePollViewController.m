@@ -216,7 +216,7 @@ static char KVOContext;
     
     if ( self.isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     }
 }
 

@@ -634,6 +634,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
+    // TODO: Create a halper with this stuff?  See VNewContentView & VUsersViewController
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
     [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
@@ -731,7 +732,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && [VUser currentUser] != nil )
+    if ( sequence.permissions.canRepost && [VCurrentUser user] != nil )
     {
         return YES;
     }

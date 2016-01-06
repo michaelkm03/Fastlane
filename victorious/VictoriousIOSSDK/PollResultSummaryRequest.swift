@@ -12,7 +12,7 @@ import SwiftyJSON
 public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
     
     public let paginator: StandardPaginator
-    public let userID: Int64?
+    public let userID: Int?
     public let sequenceID: String?
     
     private let url: NSURL
@@ -28,7 +28,7 @@ public struct PollResultSummaryRequest: ResultBasedPageable, PaginatorPageable {
         self.url = request.url
     }
     
-    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int, paginator: StandardPaginator = StandardPaginator() ) {
         self.sequenceID = nil
         self.userID = userID
         self.paginator = paginator

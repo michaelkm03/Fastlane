@@ -60,7 +60,7 @@ extension NSManagedObjectContext {
         
         } else {
             let object = self.v_createObjectWithEntityName( entityName )
-            for (key, value) in queryDictionary {
+            for (key, value) in queryDictionary where !(value is [String : AnyObject]) {
                 object.setValue(value, forKey: key)
             }
             return object
@@ -73,7 +73,7 @@ extension NSManagedObjectContext {
     
     func v_findObjectsWithEntityName( entityName: String, queryDictionary: [ String : AnyObject ]? ) -> [NSManagedObject] {
         
-        let request = NSFetchRequest(entityName: entityName )
+        let request = NSFetchRequest(entityName: entityName)
         request.returnsObjectsAsFaults = false
         
         if let queryDictionary = queryDictionary {

@@ -29,7 +29,7 @@ class MainRequestExecutor: RequestExecutorType {
         let baseURL = currentEnvironment.baseURL
 
         let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VUser.currentUser())
+            return AuthenticationContext(currentUser: VCurrentUser.user())
         }
 
         if !hasNetworkConnection {
@@ -97,6 +97,6 @@ private extension AuthenticationContext {
         guard let currentUser = currentUser else {
             return nil
         }
-        self.init( userID: currentUser.remoteId.longLongValue, token: currentUser.token)
+        self.init( userID: currentUser.remoteId.integerValue, token: currentUser.token)
     }
 }

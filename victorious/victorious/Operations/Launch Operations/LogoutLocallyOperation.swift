@@ -37,7 +37,7 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation()
         remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
-        VUser.clearCurrentUser()
+        VCurrentUser.clear()
 
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         

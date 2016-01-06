@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class RepostSequenceRequestTests: XCTestCase {
     
     func testRequest() {
-        let mockNodeID: Int64 = 101
+        let mockNodeID: Int = 101
         let repostRequest = RepostSequenceRequest(nodeID: mockNodeID)
         let urlRequest = repostRequest.urlRequest
         
