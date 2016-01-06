@@ -23,7 +23,7 @@ class GIFSearchOperationTests: XCTestCase {
             XCTAssertNil( operation.next() )
             XCTAssertNil( operation.prev() )
         } else {
-            XCTFail()
+            XCTFail("operation.reesults should not be nil")
         }
     }
 
@@ -45,7 +45,24 @@ class GIFSearchOperationTests: XCTestCase {
             XCTAssertNotNil( operation.next() )
             XCTAssertNil( operation.prev() )
         } else {
-            XCTFail()
+            XCTFail("operation.reesults should not be nil")
+        }
+    }
+
+    func testOnError() {
+        let operation = GIFSearchOperation(searchTerm: "fun")
+        
+        var completionBlockExecuted = false
+        
+        operation.onError(NSError(domain: "test", code: 1, userInfo: nil)) {
+            completionBlockExecuted = true
+        }
+
+        XCTAssertTrue(completionBlockExecuted)
+        if let searchResults = operation.results {
+            XCTAssertTrue(searchResults.isEmpty)
+        } else {
+            XCTFail("operation.reesults should not be nil")
         }
     }
 }

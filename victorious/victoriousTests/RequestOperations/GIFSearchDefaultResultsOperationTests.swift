@@ -48,4 +48,21 @@ class GIFSearchDefaultResultsOperationTests: XCTestCase {
             XCTFail()
         }
     }
+
+    func testOnError() {
+        let operation = GIFSearchDefaultResultsOperation()
+        
+        var completionBlockExecuted = false
+        
+        operation.onError(NSError(domain: "test", code: 1, userInfo: nil)) {
+            completionBlockExecuted = true
+        }
+        
+        XCTAssertTrue(completionBlockExecuted)
+        if let defaultResults = operation.results {
+            XCTAssertTrue(defaultResults.isEmpty)
+        } else {
+            XCTFail("operation.reesults should not be nil")
+        }
+    }
 }
