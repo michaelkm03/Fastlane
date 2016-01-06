@@ -51,6 +51,11 @@
                BlueprintName = "victoriousTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "VPasswordValidationTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
