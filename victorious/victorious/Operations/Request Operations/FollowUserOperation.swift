@@ -25,7 +25,7 @@ class FollowUserOperation: RequestOperation {
 
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-            guard let objectUser: VUser = context.v_findObject( ["remoteId" : self.userToFollowID] ),
+            guard let objectUser: VUser = context.v_findObjects( ["remoteId" : self.userID] ).first,
                 let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
             }

@@ -25,7 +25,7 @@ class UnfollowUserOperation: RequestOperation {
             let persistedUserID = NSNumber(integer: self.userID)
             
             guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,
-                let subjectUser = VUser.currentUser(inManagedObjectContext: context) else {
+                let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
             }
             

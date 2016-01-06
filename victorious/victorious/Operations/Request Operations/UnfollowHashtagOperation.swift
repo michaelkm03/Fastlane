@@ -21,7 +21,7 @@ class UnfollowHashtagOperation: RequestOperation {
     
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-            guard let currentUser = VUser.currentUser(inManagedObjectContext: context) else {
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }
             
