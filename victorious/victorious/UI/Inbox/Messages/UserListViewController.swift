@@ -138,7 +138,7 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         // Peform Search
         if let searchBarText = searchBar.text {
-            userSearchDataSource.searchQuery = searchBarText
+            userSearchDataSource.searchWithNewSearchQuery(searchBarText)
         }
     }
     
@@ -153,23 +153,26 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     func dataSourceDidUpdate(dataSource: UserSearchDataSource) {
         updateCurrentSearchState()
         tableView.reloadData()
+        tableView.flashScrollIndicators()
     }
     
     //MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
+        // Bail early if we are loading already
+        guard !userSearchDataSource.isLoading else {
+            return
+        }
         
-        userSearchDataSource.loadPage(.Next, completion: { [weak self] error in
+        userSearchDataSource.loadNextPage({ [weak self] error in
             guard let strongSelf = self else {
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
                 strongSelf.updateCurrentSearchState()
-                strongSelf.tableView.reloadData()
-                strongSelf.tableView.flashScrollIndicators()
             })
         })
-        // Se we see the loading next page indicator
+        // So we see the loading next page indicator
         self.tableView.reloadData()
         updateCurrentSearchState()
     }

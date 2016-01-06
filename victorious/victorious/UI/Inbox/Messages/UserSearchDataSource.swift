@@ -29,39 +29,39 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
         return paginatedDataSource.isLoading
     }
     
-    var searchQuery: String? {
-        didSet {
-            guard let searchQuery = searchQuery else {
-                return
-            }
-            let operation = UserSearchOperation(queryString: searchQuery)
-            paginatedDataSource.loadPage(.First,
-                createOperation: {
-                    return operation
-                }, completion: { [weak self](operation, error) in
-                    if let strongSelf = self,
-                        delegate = strongSelf.delegate {
-                            delegate.dataSourceDidUpdate(strongSelf)
-                    }
-                }
-            )
-            paginatedDataSource.unload()
-            delegate?.dataSourceDidUpdate(self)
-        }
-    }
+    private(set) var searchQuery: String?
     
     //MARK: - API
     
-    func loadPage(page: VPageType, completion: (NSError?) -> ()) {
+    func searchWithNewSearchQuery(searchQuery: String) {
+        self.searchQuery = searchQuery
+        guard let operation = UserSearchOperation(queryString: searchQuery) else {
+            return
+        }
         
-        guard let searchQuery = searchQuery else {
+        paginatedDataSource.loadPage(.First,
+            createOperation: {
+                return operation
+            }, completion: { [weak self](operation, error) in
+                if let strongSelf = self,
+                    delegate = strongSelf.delegate {
+                        delegate.dataSourceDidUpdate(strongSelf)
+                }
+            }
+        )
+        paginatedDataSource.unload()
+        delegate?.dataSourceDidUpdate(self)
+    }
+    
+    func loadNextPage(completion: (NSError?) -> Void) {
+        
+        guard let searchQuery = searchQuery,
+            let operation = UserSearchOperation(queryString: searchQuery) else {
             completion(nil)
             return
         }
         
-        //TODO: Update UserSearchOperation to be failable like Comment Add or Message send then optional throw up to here
-        let operation = UserSearchOperation(queryString: searchQuery)
-        self.paginatedDataSource.loadPage(page,
+        self.paginatedDataSource.loadPage(.Next,
             createOperation: {
                 return operation
             },
@@ -72,7 +72,6 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
                 }
             }
         )
-        delegate?.dataSourceDidUpdate(self)
     }
     
     func userForIndexPath(indexPath: NSIndexPath) -> VictoriousIOSSDK.User? {
