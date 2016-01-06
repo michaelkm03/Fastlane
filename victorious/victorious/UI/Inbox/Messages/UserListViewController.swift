@@ -18,7 +18,15 @@ protocol UserListViewControllerDelegate: NSObjectProtocol {
     func userListViewControllerDidSelectUserID(listViewController: UserListViewController, user: User)
 }
 
-class UserListViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate {
+class UserListViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, UserSearchDataSourceDelegate {
+    
+    private enum UserSearchState {
+        case Default
+        case LoadingInitial
+        case LoadingSubsequent
+        case NoResults
+        case FoundUsers
+    }
     
     private struct Constants {
         static let userHashtagSearchKey = "userHashtagSearch"
@@ -29,16 +37,52 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     weak var delegate : UserListViewControllerDelegate?
     var dependencyManager: VDependencyManager?
     
-    private var userSearchDataManagerTableViewAdapter: UserSearchDataManagerTableViewAdapter?
+    private let userSearchDataSource = UserSearchDataSource()
     private let searchController = UISearchController(searchResultsController: nil)
     
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var noResultsView: UIView!
     @IBOutlet private var noResultsTitleLabel: UILabel!
     @IBOutlet private var noResultsMessageLabel: UILabel!
+
+    private lazy var scrollPaginator: VScrollPaginator = {
+        let paginator = VScrollPaginator()
+        paginator.delegate = self
+        return paginator
+    }()
+    
+    private var searchState = UserSearchState.Default {
+        didSet {
+            switch searchState {
+            case .Default:
+                noResultsView.hidden = true
+                tableView.hidden = false
+            case .LoadingInitial:
+                noResultsView.hidden = true
+                tableView.hidden = false
+            case .LoadingSubsequent:
+                noResultsView.hidden = true
+                tableView.hidden = false
+            case .NoResults:
+                noResultsView.hidden = false
+                tableView.hidden = true
+            case .FoundUsers:
+                noResultsView.hidden = true
+                tableView.hidden = false
+            }
+        }
+    }
+    
+    //MARK: - UIViewController
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userSearchDataSource.delegate = self
         
         // NO RESULTS VIEW
         noResultsTitleLabel.font = dependencyManager?.fontForKey(VDependencyManagerHeading1FontKey)
@@ -48,22 +92,15 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
         configureSearchBar(searchController.searchBar)
         
         navigationItem.titleView = searchController.searchBar
-        
-        userSearchDataManagerTableViewAdapter = UserSearchDataManagerTableViewAdapter(tableView: self.tableView,
-            dependencyManager: self.dependencyManager!,
-            noResultsView: self.noResultsView, userSelectionHandler: { [weak self]user in
-                if let strongSelf = self {
-                    strongSelf.delegate?.userListViewControllerDidSelectUserID(strongSelf, user: user)
-                }
-        })
-        self.tableView.dataSource = userSearchDataManagerTableViewAdapter
-        self.tableView.delegate = userSearchDataManagerTableViewAdapter
+
+        self.tableView.dataSource = userSearchDataSource
+        self.tableView.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        userSearchDataManagerTableViewAdapter?.updateCurrentSearchState()
+        updateCurrentSearchState()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -72,6 +109,23 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
         dispatch_after(0.01) { () -> () in
             self.searchController.searchBar.becomeFirstResponder()
         }
+    }
+    
+    //MARK: - UITableViewDelegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let user = userSearchDataSource.userForIndexPath(indexPath) else {
+            return
+        }
+        delegate?.userListViewControllerDidSelectUserID(self, user: user)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        userSearchDataSource.bindCell(cell, forIndexPath: indexPath)
     }
     
     //MARK: - UISearchBarDelegate
@@ -84,7 +138,7 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         // Peform Search
         if let searchBarText = searchBar.text {
-            userSearchDataManagerTableViewAdapter?.searchQuery = searchBarText
+            userSearchDataSource.searchQuery = searchBarText
         }
     }
     
@@ -93,8 +147,55 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     func didPresentSearchController(searchController: UISearchController) {
         searchController.searchBar.becomeFirstResponder()
     }
+    
+    //MARK: - UserSearchDataSourceDelegate
+    
+    func dataSourceDidUpdate(dataSource: UserSearchDataSource) {
+        updateCurrentSearchState()
+        tableView.reloadData()
+    }
+    
+    //MARK: - VScrollPaginatorDelegate
+    
+    func shouldLoadNextPage() {
+        
+        userSearchDataSource.loadPage(.Next, completion: { [weak self] error in
+            guard let strongSelf = self else {
+                return
+            }
+            dispatch_async(dispatch_get_main_queue(), {
+                strongSelf.updateCurrentSearchState()
+                strongSelf.tableView.reloadData()
+                strongSelf.tableView.flashScrollIndicators()
+            })
+        })
+        // Se we see the loading next page indicator
+        self.tableView.reloadData()
+        updateCurrentSearchState()
+    }
 
     //MARK: - Private Methods
+    
+    func updateCurrentSearchState() {
+        guard userSearchDataSource.searchQuery != nil else {
+            self.searchState = .Default
+            return
+        }
+        
+        if userSearchDataSource.isLoading {
+            if userSearchDataSource.visibleItems.count == 0 {
+                self.searchState = .LoadingInitial
+            } else {
+                self.searchState = .LoadingSubsequent
+            }
+        } else {
+            if userSearchDataSource.visibleItems.count == 0 {
+                self.searchState = .NoResults
+            } else {
+                self.searchState = .FoundUsers
+            }
+        }
+    }
     
     func configureSearchController(searchController: UISearchController) {
         searchController.searchBar.sizeToFit()

@@ -35,7 +35,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest(request, onComplete: self.onComplete, onError: self.onError)
+        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: self.onError)
     }
     
     private func onError( error: NSError, completion: ()->() ) {
