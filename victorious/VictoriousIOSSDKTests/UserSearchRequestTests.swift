@@ -37,8 +37,12 @@ class UserSearchRequestTests: XCTestCase {
             return
         }
         XCTAssertEqual(results.count, 15)
-        XCTAssertEqual(results[0].userID, 97)
-        XCTAssertEqual(results[0].name, "Daily Grace")
+        if let firstUser = results.first {
+            XCTAssertEqual(firstUser.userID, 97)
+            XCTAssertEqual(firstUser.name, "Daily Grace")
+        } else {
+            XCTFail("should have at least one user")
+        }
     }
 
 }
