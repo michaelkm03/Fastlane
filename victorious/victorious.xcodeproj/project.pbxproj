@@ -470,8 +470,7 @@
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
 		79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */; };
 		79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */; };
-		797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */; };
-		7979A02C1C18AB1800455FF8 /* TermsOfServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02B1C18AB1800455FF8 /* TermsOfServiceOperation.swift */; };
+		797226691B7E9F920023C851 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		7979A02E1C18AC9800455FF8 /* VTOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02D1C18AC9800455FF8 /* VTOSViewController.swift */; };
 		7979A0301C18B10400455FF8 /* VNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */; };
 		7979A0321C18B2FA00455FF8 /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */; };
@@ -5244,7 +5243,6 @@
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
-				A7039CE61C248CF40023DE6F /* Requests */,
 				03314F3F1BE3E6E800EE74FD /* RequestType.swift */,
 				C3E7C1021BF416DF00AFE545 /* SendMessageRequest.swift */,
 				C323C3B01BF559DE00681059 /* SequenceCommentsRequest.swift */,
@@ -6508,13 +6506,6 @@
 			path = Animators;
 			sourceTree = "<group>";
 		};
-		A7039CE61C248CF40023DE6F /* Requests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Requests;
-			sourceTree = "<group>";
-		};
 		A705646019E737A5004A8387 /* HelveticaNeue */ = {
 			isa = PBXGroup;
 			children = (
@@ -7387,9 +7378,10 @@
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
-				A76711E41C1B4F47006568DF /* Performance */,
 				A72005571A030E4700285A9C /* Delegates */,
+				A76711E41C1B4F47006568DF /* Performance */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
+				A76711F31C1B6E54006568DF /* VEventTracker.h */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
 				B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */,
 				A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */,
@@ -7403,7 +7395,6 @@
 				A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */,
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
-				A76711F31C1B6E54006568DF /* VEventTracker.h */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -11145,8 +11136,7 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7BA220A1BA78A3000F2CD37 /* VContentPreviewViewProvider.swift in Sources */,
 				C3D6CCB21B7D175B008644DD /* VideoTrackingEvent.swift in Sources */,
-				797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */,
-				67C5C53F1C03A8A000F99C8C /* SuggestedUsersOperation.swift in Sources */,
+				797226691B7E9F920023C851 /* (null) in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,
 				D85B70711B0EAF3F0038CA5B /* VFindContactsTableViewController.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
