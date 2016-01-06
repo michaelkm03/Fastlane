@@ -13,12 +13,12 @@ import SwiftyJSON
 public struct UnfollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to unfollow
-    public let userID: Int64
+    public let userID: Int
 
     // The name of the screen from which you're unfollowing this user
     public let screenName: String
     
-    public init(userID: Int64, screenName: String) {
+    public init(userID: Int, screenName: String) {
         self.userID = userID
         self.screenName = screenName
     }

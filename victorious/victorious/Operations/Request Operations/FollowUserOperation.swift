@@ -15,19 +15,14 @@ class FollowUserOperation: RequestOperation {
     
     private let request: FollowUserRequest
     private let screenName: String
-    private let userID: Int64
+    private let userID: Int
     
-    required init(userID: Int64, screenName: String) {
+    required init(userID: Int, screenName: String) {
         self.userID = userID
-        self.request = FollowUserRequest(userID: userID, screenName: screenName)
-
-    init(userToFollowID: Int, currentUserID: Int, screenName: String) {
-        self.userToFollowID = userToFollowID
-        self.currentUserID = currentUserID
         self.screenName = screenName
-        self.request = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
+        self.request = FollowUserRequest(userID: userID, screenName: screenName)
     }
-    
+
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
             guard let objectUser: VUser = context.v_findObject( ["remoteId" : self.userToFollowID] ),

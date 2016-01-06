@@ -13,16 +13,16 @@ class UnfollowUserOperation: RequestOperation {
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
     private let request: UnfollowUserRequest
-    private let userID: Int64
+    private let userID: Int
     
-    init( userID: Int64, screenName: String ) {
+    init( userID: Int, screenName: String ) {
         self.userID = userID
         self.request = UnfollowUserRequest(userID: userID, screenName: screenName)
     }
     
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-            let persistedUserID = NSNumber(longLong: self.userID)
+            let persistedUserID = NSNumber(integer: self.userID)
             
             guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,
                 let subjectUser = VUser.currentUser(inManagedObjectContext: context) else {

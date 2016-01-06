@@ -12,15 +12,15 @@ import XCTest
 class UnfollowUserOperationTests: XCTestCase {
     var operation: UnfollowUserOperation!
     var testStore: TestPersistentStore!
-    let userToUnfollowID = Int64(1)
-    let currentUserID = Int64(2)
+    let userID = 1
+    let currentUserID = 2
     let screenName = "screenName"
     let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
         testStore = TestPersistentStore()
-        operation = UnfollowUserOperation(userToUnfollowID: userToUnfollowID, currentUserID: currentUserID, screenName: screenName)
+        operation = UnfollowUserOperation(userID: userID, screenName: screenName)
     }
 
     func testUnfollowingAnExistingUser() {
