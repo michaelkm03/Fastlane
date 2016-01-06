@@ -230,7 +230,7 @@
                                                                              message:NSLocalizedString(@"Missing Content Message", nil)
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self.scaffold presentViewController:alertController animated:YES completion:nil];
 }

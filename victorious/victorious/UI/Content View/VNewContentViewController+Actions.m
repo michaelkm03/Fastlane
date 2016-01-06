@@ -203,7 +203,8 @@
                                                                      style:UIAlertActionStyleDestructive
                                                                    handler:^(UIAlertAction *action)
                                              {
-                                                 [self.presentingViewController dismissViewControllerAnimated:YES completion:^
+                                                 [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                                                   completion:^
                                                   {
                                                       [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
                                                                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
