@@ -15,17 +15,18 @@ class FollowUserOperationTest: XCTestCase {
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
-    let userToFollowID: Int = 1
+    let userID: Int = 1
     let currentUserID: Int = 2
     let screenName = "screenName"
     let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
+        self.continueAfterFailure = false
         testStore = TestPersistentStore()
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
-        operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
+        operation = FollowUserOperation(userID: userID, screenName: screenName)
         operation.persistentStore = testStore
         operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
@@ -33,10 +34,10 @@ class FollowUserOperationTest: XCTestCase {
     }
 
     func testFollowingAnExistentUser() {
-        let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID)
+        let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
         createdCurrentUser.setAsCurrentUser()
         
-        let createdUserToFollow = operationHelper.createUser(remoteId: userToFollowID)
+        let createdUserToFollow = operationHelper.createUser(remoteId: userID, persistentStore: testStore)
         operation.main()
 
         guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -66,15 +67,6 @@ class FollowUserOperationTest: XCTestCase {
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
-        XCTAssertEqual(1, updatedCurrentUser.numberOfFollowing)
-        XCTAssertEqual(1, updatedCurrentUser.following.count)
-        XCTAssert(updatedCurrentUser.following.contains(updatedUserToFollow))
-        XCTAssertEqual(true, updatedUserToFollow.isFollowedByMainUser)
-        XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
-        XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
-        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
     }
 
     func testFollowingANonExistentUser() {

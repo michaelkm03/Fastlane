@@ -10,9 +10,9 @@ import XCTest
 
 /// Helper class for testing a RequestOperation or it's subclass.
 class RequestOperationTestHelper {
-    func createUser(remoteId remoteId: Int64, persistentStore: PersistentStoreType) -> VUser {
+    func createUser(remoteId remoteId: Int, persistentStore: PersistentStoreType) -> VUser {
         return persistentStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(longLong: remoteId)
+            user.remoteId = NSNumber(integer: remoteId)
             user.status = "stored"
             } as VUser
     }
