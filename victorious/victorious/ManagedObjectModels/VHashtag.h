@@ -15,15 +15,5 @@
 
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * tag;
-@property (nonatomic, retain) NSSet *user;
-
-@end
-
-@interface VHashtag (CoreDataGeneratedAccessors)
-
-- (void)addUserObject:(VUser *)value;
-- (void)removeUserObject:(VUser *)value;
-- (void)addUser:(NSSet *)values;
-- (void)removeUser:(NSSet *)values;
 
 @end

@@ -11,11 +11,11 @@ import VictoriousIOSSDK
 
 class RepostSequenceOperation: RequestOperation {
     
-    private let nodeID: Int64
+    private let nodeID: Int
     
     var request: RepostSequenceRequest
     
-    init( nodeID: Int64 ) {
+    init( nodeID: Int ) {
         self.nodeID = nodeID
         self.request = RepostSequenceRequest(nodeID: nodeID)
     }
@@ -24,10 +24,10 @@ class RepostSequenceOperation: RequestOperation {
         
         // Peform optimistic changes before the request is executed
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
-            guard let user = VUser.currentUser() else {
+            guard let user = VCurrentUser.user() else {
                 fatalError( "User must be logged in." )
             }
-            let node:VNode = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: self.nodeID) ] )
+            let node:VNode = context.v_findOrCreateObject( [ "remoteId" : self.nodeID ] )
             node.sequence.hasReposted = true
             node.sequence.repostCount += 1
             user.repostedSequences.insert( node.sequence )

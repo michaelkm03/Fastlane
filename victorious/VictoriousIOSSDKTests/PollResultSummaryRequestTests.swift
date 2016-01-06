@@ -21,7 +21,7 @@ class PollResultSummaryRequestTests: XCTestCase {
     }
     
     func testRequestByUser() {
-        let mockUserID: Int64 = 101
+        let mockUserID: Int = 101
         let pollResultRequest = PollResultSummaryRequest(userID: mockUserID)
         let urlRequest = pollResultRequest.urlRequest
         

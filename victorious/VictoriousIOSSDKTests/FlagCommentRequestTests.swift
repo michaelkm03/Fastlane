@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class FlagCommentRequestTests: XCTestCase {
     
     func testFlaggingCommentRequest() {
-        let mockCommentID: Int64 = 1001
+        let mockCommentID: Int = 1001
         let flagRequest = FlagCommentRequest(commentID: mockCommentID)
         let urlRequest = flagRequest.urlRequest
         

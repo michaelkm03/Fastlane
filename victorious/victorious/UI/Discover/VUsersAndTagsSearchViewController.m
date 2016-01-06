@@ -150,7 +150,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     if ( self.isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
     }
 }
 

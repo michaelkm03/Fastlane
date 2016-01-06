@@ -11,9 +11,9 @@ import SwiftyJSON
 
 public struct UserInfoRequest: RequestType {
     
-    let userID: Int64
+    let userID: Int
     
-    public init( userID: Int64 ) {
+    public init( userID: Int ) {
         self.userID = userID
     }
     

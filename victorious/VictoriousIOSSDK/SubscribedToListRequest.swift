@@ -1,5 +1,5 @@
 //
-//  FollowingRequest.swift
+//  SubscribedToListRequest.swift
 //  victorious
 //
 //  Created by Tian Lan on 11/10/15.
@@ -10,24 +10,20 @@ import Foundation
 import SwiftyJSON
 
 /// Retrieves a list of users followed by a specific user
-public struct FollowingRequest: PaginatorPageable, ResultBasedPageable {
+public struct SubscribedToListRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
     
     /// Users being followed will be retrieved by this user ID
-    public let userID: Int64
+    public let userID: Int
     
     public let paginator: StandardPaginator
     
-    public init(request: FollowersRequest, paginator: StandardPaginator ) {
-        self.init( userID: request.userID, paginator: paginator )
+    public init( request: SubscribedToListRequest, paginator: StandardPaginator ) {
+        self.init( userID: request.userID, paginator: paginator)
     }
     
-    public init( request: FollowingRequest, paginator: StandardPaginator ) {
-        self.init( userID: request.userID, paginator: request.paginator)
-    }
-    
-    public init(userID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(userID: Int, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 30) ) {
         self.userID = userID
         self.paginator = paginator
         
