@@ -25,7 +25,7 @@ extension VInboxViewController: UserSearchViewControllerDelegate {
     
     func userSearchViewController(userSearchViewController: UserSearchViewController, didSelectUser user: User) {
         // TODO: hacky glue code to get user search working on new persistence layer. Remove this once Conversation/Inbox doesn't require VUSer objects
-        let user = MainPersistentStore().mainContext.v_findObjectsWithEntityName(VUser.v_entityName(), queryDictionary: ["remoteId": NSNumber(longLong: user.userID)]).first
+        let user = MainPersistentStore().mainContext.v_findObjectsWithEntityName(VUser.v_entityName(), queryDictionary: ["remoteId": NSNumber(integer: user.userID)]).first
         if let user = user as? VUser {
             displayConversationForUser(user, animated: true)
         }

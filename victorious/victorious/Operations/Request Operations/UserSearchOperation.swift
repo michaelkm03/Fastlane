@@ -58,7 +58,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
             }
             
             for networkUser in result {
-                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber(longLong: networkUser.userID)])
+                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber(integer: networkUser.userID)])
                 localUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()
