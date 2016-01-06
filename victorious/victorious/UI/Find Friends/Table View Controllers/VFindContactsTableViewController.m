@@ -87,7 +87,7 @@
             {
                 CNContactStore *store = [[CNContactStore alloc] init];
                 [store requestAccessForEntityType:CNEntityTypeContacts
-                                completionHandler:^(BOOL granted, NSError * _Nullable error)
+                                completionHandler:^(BOOL granted, NSError *_Nullable error)
                  {
                      dispatch_async(dispatch_get_main_queue(), ^
                      {
@@ -149,11 +149,13 @@
         }
     }
     
-    if (allEmailAddresses.count)
+    if (allEmailAddresses.count > 0)
     {
-        [self findFriendsByEmails:allEmailAddresses
-                       completion:^(NSArray<VUser *> *_Nullable results, NSError *_Nullable error)
+        FriendFindByEmailOperation *operation = [[FriendFindByEmailOperation alloc] initWithEmails:allEmailAddresses];
+        [operation queueOn:RequestOperation.sharedQueue
+           completionBlock:^(NSError *_Nullable error)
          {
+             NSArray *results = operation.results;
              completionBlock(results, error);
          }];
     }

@@ -9,10 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindByEmailOperation: RequestOperation {
+class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
 
-    private(set) var results: [VUser]?
+    private(set) var results: [AnyObject]?
+    var didResetResults = false
     
+    private var resultObjectIDs = [NSManagedObjectID]()
     private let emails: [String]
     private let request: FriendFindByEmailRequest
     
@@ -31,15 +33,18 @@ class FriendFindByEmailOperation: RequestOperation {
             for foundFriend in results {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": NSNumber(longLong: foundFriend.userID)])
                 persistentUser.populate(fromSourceModel: foundFriend)
+                self.resultObjectIDs.append(persistentUser.objectID)
             }
             context.v_save()
             
             self.persistentStore.mainContext.v_performBlock() { context in
                 
                 var mainQueueUsers = [VUser]()
-                for foundFriend in results {
-                    let mainQueuePersistentUser: VUser = context.v_findOrCreateObject(["remoteId": NSNumber(longLong: foundFriend.userID)])
-                    mainQueueUsers.append(mainQueuePersistentUser)
+                for foundFriendObjectID in self.resultObjectIDs {
+                    let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
+                    if let mainQueuePersistentUser = mainQueuePersistentUser {
+                         mainQueueUsers.append(mainQueuePersistentUser)
+                    }
                 }
                 self.results = mainQueueUsers
                 completion()

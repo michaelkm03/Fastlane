@@ -11,11 +11,9 @@ import SwiftyJSON
 
 public class FriendFindByEmailRequest: RequestType {
     
-    let emails: [String]
     private let sha256Emails: [String]
     
     public init( emails: [String] ) {
-        self.emails = emails
         self.sha256Emails = emails.map{ vsdk_sha256($0) }
     }
     
