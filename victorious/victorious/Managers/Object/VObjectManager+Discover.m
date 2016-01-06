@@ -12,7 +12,7 @@
 #import "VHashtag+RestKit.h"
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
-#import "VUser+Fetcher.h"
+#import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
 
@@ -104,7 +104,7 @@
     };
 
     NSAssert([NSThread isMainThread], @"This VAbstractFilter object is intended to be called on the main thread");
-    VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:[NSString stringWithFormat:@"/api/hashtag/subscribed_to_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
+    VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:[NSString stringWithFormat:@"/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 
@@ -142,7 +142,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [mainUser addFollowedHashtag:hashtag];
+        //[mainUser addFollowedHashtag:hashtag];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
@@ -191,7 +191,7 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+        /*NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
 
         for (VHashtag *aTag in hashtagSet)
         {
@@ -202,7 +202,7 @@
                 [mainUser.managedObjectContext saveToPersistentStore:nil];
                 break;
             }
-        }
+        }*/
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowHashtag];
 
@@ -273,8 +273,6 @@
 // Check for hashtags that we're following
 - (void)parseResponseToCheckForFollowedHashtags:(NSDictionary *)response checkFollowingFlag:(BOOL)checkFlag
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
     if (![response[@"payload"] isKindOfClass:[NSDictionary class]])
     {
         return;
@@ -294,7 +292,7 @@
         
         if (hashtag[@"tag"] != nil)
         {
-            [mainUser addFollowedHashtag:hashtag[@"tag"]];
+            //[mainUser addFollowedHashtag:hashtag[@"tag"]];
         }
     }
 }

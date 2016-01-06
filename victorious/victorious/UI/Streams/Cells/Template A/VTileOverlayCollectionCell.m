@@ -18,7 +18,6 @@
 #import "VStreamCellHeader.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
-#import "VSequenceExpressionsObserver.h"
 #import "VActionButton.h"
 #import "VSequenceCountsTextView.h"
 #import "NSString+VParseHelp.h"
@@ -48,7 +47,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
 @property (nonatomic, strong) VStreamCellHeader *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButton *likeButton;
 @property (nonatomic, strong) VActionButton *commentButton;
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
@@ -260,13 +258,8 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     
-    __weak typeof(self) welf = self;
-    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
-    {
-        welf.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-        [welf updateCountsTextViewForSequence:sequence];
-    }];
+    self.likeButton.selected = sequence.isLikedByMainUser.boolValue;
+    [self updateCountsTextViewForSequence:sequence];
 }
 
 - (void)setHighlighted:(BOOL)highlighted

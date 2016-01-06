@@ -28,18 +28,13 @@ class RequestOperation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     
-    var persistentStore: PersistentStoreType = MainPersistentStore()
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    
     lazy var requestExecutor: RequestExecutorType = {
         return MainRequestExecutor(persistentStore: self.persistentStore)
     }()
 
     private(set) var error: NSError?
-
-    final func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())? = nil, onError: ((NSError, ()->())->())? = nil ) {
-        requestExecutor.executeRequest(request,
-            onComplete: onComplete,
-            onError: onError)
-    }
     
     // MARK: - Queuable
     

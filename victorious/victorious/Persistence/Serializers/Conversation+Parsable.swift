@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 extension VConversation: PersistenceParsable {
     
     func populate( fromSourceModel conversation: Conversation ) {
-        isRead                      = conversation.isRead
-        postedAt                    = conversation.postedAt
-        remoteId                    = NSNumber( longLong: conversation.conversationID)
-        messages                    = NSOrderedSet()
+        isRead      = conversation.isRead
+        postedAt    = conversation.postedAt
+        remoteId    = conversation.conversationID
+        messages    = NSOrderedSet()
     }
 }

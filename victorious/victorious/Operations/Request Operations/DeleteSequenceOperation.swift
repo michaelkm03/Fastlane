@@ -22,12 +22,12 @@ class DeleteSequenceOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
     
     func onComplete( stream: DeleteSequenceRequest.ResultType, completion:()->() ) {
         persistentStore.backgroundContext.v_performBlock() { context in
-            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : String(self.sequenceID) ]).first else {
+            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
                 completion()
                 return
             }

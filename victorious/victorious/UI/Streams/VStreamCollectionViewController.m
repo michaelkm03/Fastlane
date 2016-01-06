@@ -144,7 +144,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType>  persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -632,6 +632,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
 {
+    // TODO: Create a halper with this stuff?  See VNewContentView & VUsersViewController
     NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
     [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
 }
@@ -729,7 +730,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if ( sequence.permissions.canRepost && [VUser currentUser] != nil )
+    if ( sequence.permissions.canRepost && [VCurrentUser user] != nil )
     {
         return YES;
     }

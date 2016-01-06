@@ -16,15 +16,15 @@ class DeviceExperimentsOperation: RequestOperation {
     private(set) var defaultExperimentIDs: Set<Int> = []
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int64]), completion:() -> () ) {
+    private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]), completion:() -> () ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
             for experiment in result.experiments {
-                let persistentExperiment: Experiment = context.v_findOrCreateObject(["id": NSNumber(longLong: experiment.id),
-                    "layerId": NSNumber(longLong: experiment.layerID)])
+                let uniqueElements = [ "id" : experiment.id, "layerId" : experiment.layerID ]
+                let persistentExperiment: Experiment = context.v_findOrCreateObject(uniqueElements)
                 persistentExperiment.populate(fromSourceModel: experiment)
                 context.v_save()
             }

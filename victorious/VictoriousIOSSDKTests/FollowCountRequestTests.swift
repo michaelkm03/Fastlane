@@ -13,7 +13,7 @@ import SwiftyJSON
 class FollowCountRequestTests: XCTestCase {
     
     func testRequest() {
-        let mockUserID: Int64 = 101
+        let mockUserID: Int = 101
         let followCountRequest = FollowCountRequest(userID: mockUserID)
         XCTAssertEqual(followCountRequest.urlRequest.URL?.absoluteString, "/api/follow/counts/101")
     }

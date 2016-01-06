@@ -42,7 +42,7 @@ class AccountUpdateOperation: RequestOperation {
         // For profile updates, optimistically update everything right away
         if let profileUpdate = self.request.profileUpdate {
             persistentStore.backgroundContext.v_performBlockAndWait() { context in
-                guard let user = VUser.currentUser() else {
+                guard let user = VCurrentUser.user() else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
                 
@@ -71,7 +71,7 @@ class AccountUpdateOperation: RequestOperation {
         }
         
         // Then send out the request the server
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( sequence: AccountUpdateRequest.ResultType, completion:()->() ) {

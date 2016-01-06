@@ -57,7 +57,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     
     // Eventually the backend will include this logic in a permissions mask property for a VComment
     // Until then, we do the logic here
-    BOOL isCurrentUserOwnerOfComment = [[VUser currentUser] isEqual:self.comment.user];
+    BOOL isCurrentUserOwnerOfComment = [[VCurrentUser user] isEqual:self.comment.user];
     
     if ( !isCurrentUserOwnerOfComment )
     {
@@ -102,7 +102,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 - (BOOL)commentIsFlaggable:(VComment *)comment
 {
-    return ![comment.userId isEqualToNumber:[VUser currentUser].remoteId];;
+    return ![comment.userId isEqualToNumber:[VCurrentUser user].remoteId];;
 }
 
 #pragma mark - VSwipeViewCellDelegate

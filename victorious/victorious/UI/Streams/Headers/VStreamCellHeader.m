@@ -130,7 +130,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     _sequence = sequence;
     
-    BOOL isPostedByMainUser = [self.sequence.user isEqual:[VUser currentUser]];
+    BOOL isPostedByMainUser = [self.sequence.user isEqual:[VCurrentUser user]];
     BOOL isAlreadyFollowingPoster = self.sequence.user.isFollowedByMainUser.boolValue;
     BOOL isAnonymousUser = [AgeGate isAnonymousUser];
     BOOL shouldShowFollowControl = !isPostedByMainUser && !isAlreadyFollowingPoster && !isAnonymousUser;

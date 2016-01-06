@@ -16,19 +16,19 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     private(set) var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
-    private let userID: Int64
+    private let userID: Int
     
     required init( request: PollResultSummaryRequest ) {
         self.userID = request.userID!
         self.request = request
     }
     
-    convenience init( userID: Int64, pageNumber: Int = 1, itemsPerPage: Int = 15) {
+    convenience init( userID: Int, pageNumber: Int = 1, itemsPerPage: Int = 15) {
         self.init( request: PollResultSummaryRequest(userID: userID) )
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onError( error: NSError, completion:()->() ) {
@@ -44,17 +44,17 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
             }
             
             // Update the user
-            guard let user: VUser = context.v_findObjects( [ "remoteId" :  NSNumber(longLong: self.userID) ] ).first else {
+            guard let user: VUser = context.v_findObjects( [ "remoteId" :  self.userID ] ).first else {
                 return
             }
             
             for pollResult in pollResults {
                 var uniqueElements = [String : AnyObject]()
                 if let answerID = pollResult.answerID {
-                    uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
+                    uniqueElements[ "answerId" ] = answerID
                 }
                 if let sequenceID = pollResult.sequenceID {
-                    uniqueElements[ "sequenceId" ] = String(sequenceID)
+                    uniqueElements[ "sequenceId" ] = sequenceID
                 }
                 guard !uniqueElements.isEmpty else {
                     continue

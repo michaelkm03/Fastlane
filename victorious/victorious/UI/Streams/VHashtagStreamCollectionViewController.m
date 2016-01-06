@@ -21,7 +21,6 @@
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VUser+Fetcher.h"
 #import "VHashtag+RestKit.h"
 #import "victorious-Swift.h"
 
@@ -59,12 +58,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         streamURL = [macroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kHashtagURLMacro: hashtag } inURLString:streamURL];
     }
     
-    
     NSString *apiPath = [streamURL v_pathComponent];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -106,8 +104,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     self.followingEnabled = NO;
     
-    [self.KVOController observe:[VUser currentUser]
-                        keyPath:NSStringFromSelector(@selector(hashtags))
+    [self.KVOController observe:[VCurrentUser user]
+                        keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
 }
@@ -156,9 +154,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSAssert( self.selectedHashtag != nil, @"To present this view controller, there must be a selected hashtag." );
     NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
-    VHashtag *hashtag = [[VUser currentUser].hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    BOOL followingHashtag = hashtag != nil;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", self.selectedHashtag.lowercaseString];
+    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    BOOL followingHashtag = followedHashtag != nil;
     if ( followingHashtag != self.followingSelectedHashtag)
     {
         self.followingSelectedHashtag = followingHashtag;

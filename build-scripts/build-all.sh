@@ -79,7 +79,7 @@ build(){
     if [ -f "victorious.app.dSYM.zip" ]; then
         rm -f victorious.app.dSYM.zip
     fi
-    
+
     if [ -f "$BUILDINFO_PLIST" ]; then
         rm -f "$BUILDINFO_PLIST"
     fi
@@ -110,7 +110,7 @@ build(){
 
     # Change back to top folder
     popd > /dev/null
-    
+
     # Write build info
     /usr/libexec/PlistBuddy -x -c "Add :commit string $MD5" "$BUILDINFO_PLIST"
     /usr/libexec/PlistBuddy -x -c "Add :scheme string $SCHEME" "$BUILDINFO_PLIST"
@@ -126,7 +126,7 @@ if [ "$MD5" != "" -a -d "victorious.xcarchive" -a -f "$BUILDINFO_PLIST" ]; then
     PREVIOUS_CONFIGURATION=$(/usr/libexec/PlistBuddy -c "Print :configuration" "$BUILDINFO_PLIST")
     PREVIOUS_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :prefix" "$BUILDINFO_PLIST")
     PREVIOUS_MACROS=$(/usr/libexec/PlistBuddy -c "Print :macros" "$BUILDINFO_PLIST")
-    
+
     if [ "$PREVIOUS_MD5" == "$MD5" -a "$PREVIOUS_SCHEME" == "$SCHEME" -a "$PREVIOUS_CONFIGURATION" == "$CONFIGURATION" -a "$PREVIOUS_PREFIX" == "$SPECIAL_PREFIX" -a "$PREVIOUS_MACROS" == "$MACROS" ]; then
         SKIP_BUILD="yes"
     fi

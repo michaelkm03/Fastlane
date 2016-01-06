@@ -21,14 +21,18 @@ class UnlikeSequenceOperation: RequestOperation {
     }
     
     override func main() {
-        let uniqueElements = [ "remoteId" : self.sequenceID ]
         persistentStore.backgroundContext.v_performBlock() { context in
-            let sequence: VSequence = context.v_findOrCreateObject( uniqueElements )
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
+            
+            let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             sequence.isLikedByMainUser = false
+            sequence.v_removeObject( currentUser, from: "likers" )
             context.v_save()
         }
         
         // Now execute the request fire-and-forget style
-        executeRequest( self.request )
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }

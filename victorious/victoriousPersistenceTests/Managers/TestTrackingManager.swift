@@ -9,10 +9,22 @@
 import XCTest
 @testable import victorious
 
-class TestTrackingManager: NSObject, VTracker {
-    var trackEventCalls = [(eventName: String?, parameters: [NSObject : AnyObject]?)]()
+struct TrackingManagerCall {
+    let eventName: String?
+    let parameters: [NSObject : AnyObject]?
+}
 
-    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]?) {
-        self.trackEventCalls.append(eventName: eventName, parameters: parameters)
+class TestTrackingManager: NSObject, VEventTracker {
+    
+    var trackEventCalls = [TrackingManagerCall]()
+    
+    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]? ) {
+        let call = TrackingManagerCall(eventName: eventName, parameters: parameters)
+        self.trackEventCalls.append( call )
+    }
+    
+    func trackEvent(eventName: String?) {
+        let call = TrackingManagerCall(eventName: eventName, parameters: nil)
+        self.trackEventCalls.append( call )
     }
 }

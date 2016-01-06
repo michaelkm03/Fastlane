@@ -13,7 +13,7 @@ class LogoutLocally: Operation {
     let fromViewController: UIViewController
     let dependencyManager: VDependencyManager
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     required init(fromViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.fromViewController = fromViewController
@@ -37,7 +37,7 @@ class LogoutLocally: Operation {
         let remoteLogoutOperation = LogoutOperation()
         remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
         
-        VUser.clearCurrentUser()
+        VCurrentUser.clear()
 
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         

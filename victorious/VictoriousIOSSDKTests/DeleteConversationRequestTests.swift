@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class DeleteConversationRequestTests: XCTestCase {
     
     func testDeletingConversationRequest() {
-        let mockConversationID: Int64 = 10001
+        let mockConversationID: Int = 10001
         let deleteRequest = DeleteConversationRequest(conversationID: mockConversationID)
         let urlRequest = deleteRequest.urlRequest
         

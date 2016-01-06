@@ -26,7 +26,7 @@ public struct Sequence: StreamItemType {
     public let isRemix: Bool?
     public let isRepost: Bool?
     public let nameEmbeddedInContent: Bool?
-    public let parentUserID: Int64?
+    public let parentUserID: Int?
     public let permissionsMask: Int?
     public let previewData: AnyObject?
     public let previewType: AssetType?
@@ -43,7 +43,7 @@ public struct Sequence: StreamItemType {
     // MARK: - StreamItemType
     
     public var streamItemID: String {
-        return String(self.sequenceID)
+        return self.sequenceID
     }
     public let previewImagesObject: AnyObject?
     public let previewTextPostAsset: String?
@@ -93,7 +93,7 @@ extension Sequence {
         hasReposted             = json["has_reposted"].bool
         isGifStyle              = json["is_gif_style"].bool
         trendingTopicName       = json["trending_topic_name"].string
-        parentUserID            = json["parent_user"].int64
+        parentUserID            = json["parent_user"].int
         adBreaks                = json["ad_breaks"].array?.flatMap { AdBreak(json: $0) }
         comments                = json["comments"].array?.flatMap { Comment(json: $0) }
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }

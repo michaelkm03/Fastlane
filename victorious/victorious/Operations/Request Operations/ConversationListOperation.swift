@@ -20,7 +20,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
     }
     
     func onError( error: NSError, completion: ()->() ) {
@@ -37,7 +37,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
             
             var persistentConversations = [VConversation]()
             for conversation in conversations {
-                let uniqueElements = [ "remoteId" : NSNumber( longLong: conversation.conversationID) ]
+                let uniqueElements = [ "remoteId" : conversation.conversationID ]
                 let persistentConversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 persistentConversation.populate( fromSourceModel: conversation )
                 persistentConversation.displayOrder = displayOrder++
@@ -45,7 +45,6 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
             }
             context.v_save()
             
-            // Reload results from main queue
             self.results = self.fetchResults()
             completion()
         }

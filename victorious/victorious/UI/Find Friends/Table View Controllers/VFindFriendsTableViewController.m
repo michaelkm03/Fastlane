@@ -86,7 +86,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (BOOL)prefersStatusBarHidden

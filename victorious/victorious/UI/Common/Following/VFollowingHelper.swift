@@ -13,8 +13,8 @@ extension VFollowingHelper {
         successBlock: VSuccessBlock,
         failBlock: VFailBlock) {
 
-        let operation = FollowUserOperation(userToFollowID: userToFollowID.longLongValue,
-            currentUserID: currentUserID.longLongValue,
+        let operation = FollowUserOperation(userToFollowID: userToFollowID.integerValue,
+            currentUserID: currentUserID.integerValue,
             screenName: screenName)
 
         operation.queue() { error in

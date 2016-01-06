@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: Operation {
     
-    private let persistentStore: PersistentStoreType = MainPersistentStore()
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
     
     override func start() {
         super.start()
@@ -37,7 +37,7 @@ class StoredLoginOperation: Operation {
                 return user
             }
             
-            let id = Int64(user.remoteId.integerValue)
+            let id = Int(user.remoteId.integerValue)
             UserInfoOperation( userID: id ).queueAfter( self, queue: Operation.defaultQueue )
         }
         else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),

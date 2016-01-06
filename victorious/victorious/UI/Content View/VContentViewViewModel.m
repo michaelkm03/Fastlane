@@ -430,7 +430,7 @@
 
 - (BOOL)votingEnabled
 {
-    for (VPollResult *result in [VUser currentUser].pollResults)
+    for (VPollResult *result in [VCurrentUser user].pollResults)
     {
         if ([result.sequenceId isEqualToString:self.sequence.remoteId])
         {
@@ -511,7 +511,7 @@
     }
     else
     {
-        for (VPollResult *result in [VUser currentUser].pollResults)
+        for (VPollResult *result in [VCurrentUser user].pollResults)
         {
             NSNumber *answerARemoteID = [self answerA].remoteId;
             if ([result.sequenceId isEqualToString:self.sequence.remoteId] && answerARemoteID != nil)

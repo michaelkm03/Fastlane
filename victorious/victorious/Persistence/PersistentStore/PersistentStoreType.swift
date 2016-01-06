@@ -31,3 +31,19 @@ enum PersistentStoreError: ErrorType {
     /// DANGER: This will irrevocably delete all local data!
     @objc(deletePersistentStoreAndReturnError:) func deletePersistentStore() throws
 }
+
+/// An object that provides functions for finding an appropriate concrete implementation
+/// of `PersistentStoreType` for using in unit tests and application code.
+class PersistentStoreSelector: NSObject {
+    
+    /// Returns the primary persistent store used by this application and appropriate for its
+    /// environment.
+    class var mainPersistentStore: PersistentStoreType {
+        
+        if NSBundle.v_testBundle() != nil {
+            return TestPersistentStore()
+        } else {
+            return MainPersistentStore()
+        }
+    }
+}

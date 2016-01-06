@@ -37,7 +37,7 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     /// Setter allowing calling code to provide an object to which the actual tracking
     /// request execution will be delegated once a performance event has been
     /// recorded and its duration calculated.  Defaults to using `VTrackingManager`.
-    var tracker: VTracker? = VTrackingManager.sharedInstance()
+    var tracker: VEventTracker? = VTrackingManager.sharedInstance()
     
     /// Singleton initializer.  An internally-defined default URL will be used to track events if one has not been
     /// provided by calling `sharedInstance(dependencyManager:tracker:)`.  In the latter case, the value is read
@@ -75,10 +75,10 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     }
     
     private func trackEvent( event: AppTimingEvent ) {
-        let durationMs = Int64(NSDate().timeIntervalSinceDate( event.dateStarted ) * 1000.0)
+        let durationMs = Int(NSDate().timeIntervalSinceDate( event.dateStarted ) * 1000.0)
         let params: [NSObject : AnyObject] = [
             VTrackingKeyUrls : self.urls,
-            VTrackingKeyDuration : NSNumber(longLong: durationMs),
+            VTrackingKeyDuration : durationMs,
             VTrackingKeyType : event.type,
             VTrackingKeySubtype : event.subtype ?? ""
         ]

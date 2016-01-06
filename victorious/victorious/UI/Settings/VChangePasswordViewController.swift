@@ -14,7 +14,7 @@ extension VChangePasswordViewController {
     func updatePassword( currentPassword current: String, newPassword new: String, completion: ((NSError?)->())? ) -> NSOperation? {
         let updateOperation = AccountUpdateOperation(
             passwordUpdate: PasswordUpdate(
-                email: VUser.currentUser()!.email!,
+                email: VCurrentUser.user()!.email!,
                 passwordCurrent: current,
                 passwordNew: new
             )

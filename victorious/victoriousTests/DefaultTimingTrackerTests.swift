@@ -10,14 +10,18 @@ import XCTest
 import Nocilla
 @testable import victorious
 
-class MockTracker: NSObject, VTracker {
+class MockTracker: NSObject, VEventTracker {
     
     var lastEvent: String!
     var lastParams: [NSObject : AnyObject]!
     
-    func trackEvent(eventName: String!, parameters: [NSObject : AnyObject]!) {
+    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]? ) {
         lastEvent = eventName
         lastParams = parameters
+    }
+    func trackEvent(eventName: String?  ) {
+        lastEvent = eventName
+        lastParams = nil
     }
 }
 

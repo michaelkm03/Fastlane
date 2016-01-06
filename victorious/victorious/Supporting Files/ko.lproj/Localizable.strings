@@ -446,3 +446,5 @@
 "LevelFormat" = "레벨 %@";
 "LEVEL" = "레벨";
 "TestAlertsViewControllerFooter" = "알림을 등록한 후에, 스트림이나 프로필로 돌아가서 화면을 당겨서 새로고침을 하세요. 알림이 나타납니다.";
+
+"Enter birthday before continuing" = "계속 진행하기 전에 자신의 생년월일을 입력하세요.";

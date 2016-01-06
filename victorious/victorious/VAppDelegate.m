@@ -8,7 +8,6 @@
 
 #import "VAppDelegate.h"
 #import "VReachability.h"
-
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -19,9 +18,8 @@
 #import "VConstants.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
-
 #import <Crashlytics/Crashlytics.h>
-
+#import "NSBundle+TestBundle.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"
@@ -35,7 +33,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ( ![self shouldCompleteLaunch] )
+    NSBundle *testBundle = [NSBundle v_testBundle];
+    if ( testBundle != nil && !testBundle.v_shouldCompleteLaunch )
     {
         return YES;
     }
@@ -151,41 +150,8 @@
 - (void)savePersistentChanges
 {
     // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
-    id<PersistentStoreType> persistentStore = [[MainPersistentStore alloc] init];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
     [[persistentStore mainContext] save:nil];
-}
-
-#pragma mark - Testing Helpers
-
-- (BOOL)shouldCompleteLaunch
-{
-    NSBundle *testBundle = [self testBundle];
-    if ( testBundle != nil )
-    {
-        NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
-        return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
-    }
-    return YES;
-}
-
-- (nullable NSBundle *)testBundle
-{
-    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-    NSString *injectBundlePath = environment[@"XCInjectBundle"];
-    
-    if ( [[injectBundlePath pathExtension] isEqualToString:@"xctest"] )
-    {
-        NSBundle *bundleInCorrectLocation = [NSBundle bundleWithPath:injectBundlePath];
-
-        if ( bundleInCorrectLocation != nil )
-        {
-            return bundleInCorrectLocation;
-        }
-        NSString *bundleName = [injectBundlePath lastPathComponent];
-        NSString *alternateBundlePath = [NSTemporaryDirectory() stringByAppendingPathComponent:bundleName];
-        return [NSBundle bundleWithPath:alternateBundlePath];
-    }
-    return nil;
 }
 
 @end

@@ -83,7 +83,7 @@ class QueueableTests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func __testQueueAfterQueueBefore() {
+    func testQueueAfterQueueBefore() {
         let expectation = self.expectationWithDescription("testQueueAfterQueueBefore")
         var completedOperations = [MockOperation]()
 

@@ -446,3 +446,5 @@
 "LevelFormat" = "レベル%@";
 "LEVEL" = "レベル";
 "TestAlertsViewControllerFooter" = "アラート登録後、ストリームまたはプロフィールに戻り、引っ張ってリフレッシュします。これでアラートが表示されるはずです。";
+
+"Enter birthday before continuing" = "先に進む前に、あなたの誕生日を入力してください";

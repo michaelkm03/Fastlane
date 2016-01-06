@@ -145,9 +145,6 @@
                                                                                 toKeyPath:@"parentUser"
                                                                               withMapping:[VUser entityMapping]]];
         
-        RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
-                                                                                               toKeyPath:VSelectorName(voteResults)
-                                                                                             withMapping:[VVoteResult entityMapping]];
         RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
                                                                                              toKeyPath:VSelectorName(adBreaks)
                                                                                            withMapping:[VAdBreak entityMapping]];

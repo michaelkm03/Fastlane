@@ -19,17 +19,17 @@ class LogoutOperation: RequestOperation {
     }
     
     override func main() {
-        executeRequest( self.request, onComplete: self.onComplete )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {
         
-        guard let currentUserObjectID = VUser.currentUser()?.objectID else {
+        guard let currentUserObjectID = VCurrentUser.user()?.objectID else {
             completion()
             return
         }
         
-        VUser.clearCurrentUser()
+        VCurrentUser.clear()
         
         persistentStore.backgroundContext.v_performBlock() { context in
             
