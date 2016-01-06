@@ -36,51 +36,6 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Id-tf-fNM">
-                                <rect key="frame" x="0.0" y="138" width="600" height="260"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO USERS FOUND" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="h3N-Km-Jkq">
-                                        <rect key="frame" x="170" y="102" width="260" height="23"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="260" id="W1K-Xk-lDo"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We weren't able to find that user. You can try again or go to that user's profile and send a message from there!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="IEA-Xp-rzr">
-                                        <rect key="frame" x="160" y="138" width="280" height="82"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="280" id="WdY-b8-Cuv"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-icon" translatesAutoresizingMaskIntoConstraints="NO" id="gEl-hO-OlW">
-                                        <rect key="frame" x="275" y="0.0" width="51" height="74"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="74" id="8b6-m8-RXg"/>
-                                            <constraint firstAttribute="width" constant="51" id="tOe-Z8-utN"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="IEA-Xp-rzr" secondAttribute="bottom" constant="40" id="DWV-u8-Ocs"/>
-                                    <constraint firstItem="h3N-Km-Jkq" firstAttribute="centerX" secondItem="3Id-tf-fNM" secondAttribute="centerX" id="EpQ-HY-OGt"/>
-                                    <constraint firstItem="h3N-Km-Jkq" firstAttribute="top" secondItem="3Id-tf-fNM" secondAttribute="top" constant="102" id="RWs-T0-7p0"/>
-                                    <constraint firstItem="IEA-Xp-rzr" firstAttribute="centerX" secondItem="h3N-Km-Jkq" secondAttribute="centerX" id="beo-CC-2rA"/>
-                                    <constraint firstItem="IEA-Xp-rzr" firstAttribute="top" secondItem="h3N-Km-Jkq" secondAttribute="bottom" constant="13" id="ctK-Nq-Poo"/>
-                                    <constraint firstItem="h3N-Km-Jkq" firstAttribute="top" secondItem="gEl-hO-OlW" secondAttribute="bottom" constant="28" id="jwU-Xj-wYq"/>
-                                    <constraint firstItem="gEl-hO-OlW" firstAttribute="top" secondItem="3Id-tf-fNM" secondAttribute="top" id="kD7-IU-olQ"/>
-                                    <constraint firstAttribute="centerX" secondItem="gEl-hO-OlW" secondAttribute="centerX" id="uIn-B3-gid"/>
-                                </constraints>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="51" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="s41-OE-17n">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <animations/>
@@ -156,20 +111,14 @@
                         <animations/>
                         <color key="backgroundColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3Id-tf-fNM" firstAttribute="leading" secondItem="hlU-lq-p6l" secondAttribute="leadingMargin" constant="-20" id="EdE-g0-u7G"/>
                             <constraint firstAttribute="trailing" secondItem="s41-OE-17n" secondAttribute="trailing" id="PJq-1X-6oD"/>
                             <constraint firstItem="u0Z-1q-6V3" firstAttribute="top" secondItem="s41-OE-17n" secondAttribute="bottom" id="V0V-q5-LLq"/>
-                            <constraint firstItem="3Id-tf-fNM" firstAttribute="centerY" secondItem="hlU-lq-p6l" secondAttribute="centerY" id="Vhy-An-1i0"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3Id-tf-fNM" secondAttribute="trailing" constant="-20" id="Yu9-cm-Oyk"/>
                             <constraint firstItem="s41-OE-17n" firstAttribute="top" secondItem="K6t-5C-F9z" secondAttribute="bottom" id="dme-ub-h7z"/>
                             <constraint firstItem="s41-OE-17n" firstAttribute="leading" secondItem="hlU-lq-p6l" secondAttribute="leading" id="jYI-hL-ytv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fjT-Xt-8dW"/>
                     <connections>
-                        <outlet property="noResultsMessageLabel" destination="IEA-Xp-rzr" id="qhh-x9-gqN"/>
-                        <outlet property="noResultsTitleLabel" destination="h3N-Km-Jkq" id="zmJ-KD-koN"/>
-                        <outlet property="noResultsView" destination="3Id-tf-fNM" id="CvO-z0-SRb"/>
                         <outlet property="tableView" destination="s41-OE-17n" id="Q1W-L1-xN7"/>
                     </connections>
                 </viewController>
@@ -178,7 +127,4 @@
             <point key="canvasLocation" x="2092" y="857"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="user-icon" width="51" height="74"/>
-    </resources>
 </document>

@@ -41,9 +41,17 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     private let searchController = UISearchController(searchResultsController: nil)
     
     @IBOutlet private var tableView: UITableView!
-    @IBOutlet private var noResultsView: UIView!
-    @IBOutlet private var noResultsTitleLabel: UILabel!
-    @IBOutlet private var noResultsMessageLabel: UILabel!
+    
+    private lazy var noContentView: VNoContentView = {
+        let view: VNoContentView = VNoContentView.v_fromNib()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.icon = UIImage(named: "user-icon")
+        view.title = NSLocalizedString("NoUserSearchResultsTitle", comment:"")
+        view.message = NSLocalizedString("NoUserSearchResultsMessage", comment:"")
+        view.resetInitialAnimationState()
+        view.setDependencyManager( self.dependencyManager! )
+        return view
+    }()
 
     private lazy var scrollPaginator: VScrollPaginator = {
         let paginator = VScrollPaginator()
@@ -62,9 +70,6 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
         
         dataSource.delegate = self
         
-        noResultsTitleLabel.font = dependencyManager?.fontForKey(VDependencyManagerHeading1FontKey)
-        noResultsMessageLabel.font = dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
-        
         searchController.searchBar.sizeToFit()
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
@@ -75,6 +80,9 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
         
         dependencyManager?.configureSearchBar(searchController.searchBar)
         searchController.searchBar.delegate = self
+        
+        view.insertSubview(noContentView, belowSubview: tableView)
+        view.v_addFitToParentConstraintsToSubview(noContentView)
         
         navigationItem.titleView = searchController.searchBar
 
@@ -170,13 +178,21 @@ class UserListViewController : UIViewController, UISearchBarDelegate, UISearchCo
     private func onSearchStateUpdated() {
         switch self.state {
         case .NoResults:
-            noResultsView.hidden = false
+            let wasHidden = noContentView.hidden
+            noContentView.hidden = false
             tableView.hidden = true
+            
+            if wasHidden {
+                noContentView.resetInitialAnimationState()
+            }
+            noContentView.animateTransitionIn()
+            
         case .Error:
-            noResultsView.hidden = true
+            noContentView.hidden = true
             tableView.hidden = true
+            
         default:
-            noResultsView.hidden = true
+            noContentView.hidden = true
             tableView.hidden = false
         }
         
