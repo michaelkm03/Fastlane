@@ -23,15 +23,18 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     private(set) var didResetResults = false
     
     let request: UserSearchRequest
-    private let queryString: String
+    private let escapedQueryString: String
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.queryString = request.queryString
+        self.escapedQueryString = request.queryString
     }
     
-    convenience init( queryString: String ) {
-        self.init(request: UserSearchRequest(query: queryString))
+    convenience init?( queryString: String ) {
+        guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+            return nil
+        }
+        self.init(request: UserSearchRequest(query: escapedString))
     }
     
     override func main() {
