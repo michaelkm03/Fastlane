@@ -25,10 +25,6 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         self.init( request: HashtagSubscribedToListRequest( paginator: paginator ) )
     }
     
-    convenience init( hashtagID: Int ) {
-        self.init( request: HashtagSubscribedToListRequest() )
-    }
-    
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }

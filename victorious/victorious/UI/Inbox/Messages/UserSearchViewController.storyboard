@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6Dt-aI-8Kt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6Dt-aI-8Kt">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -13,6 +13,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="VTV-wT-0a5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -40,6 +41,7 @@
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO USERS FOUND" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="h3N-Km-Jkq">
                                         <rect key="frame" x="170" y="102" width="260" height="23"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="260" id="W1K-Xk-lDo"/>
                                         </constraints>
@@ -49,6 +51,7 @@
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We weren't able to find that user. You can try again or go to that user's profile and send a message from there!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="IEA-Xp-rzr">
                                         <rect key="frame" x="160" y="138" width="280" height="82"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="280" id="WdY-b8-Cuv"/>
                                         </constraints>
@@ -58,12 +61,14 @@
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user-icon" translatesAutoresizingMaskIntoConstraints="NO" id="gEl-hO-OlW">
                                         <rect key="frame" x="275" y="0.0" width="51" height="74"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="74" id="8b6-m8-RXg"/>
                                             <constraint firstAttribute="width" constant="51" id="tOe-Z8-utN"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="IEA-Xp-rzr" secondAttribute="bottom" constant="40" id="DWV-u8-Ocs"/>
@@ -78,7 +83,8 @@
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="51" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="s41-OE-17n">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserSearchResultTableViewCell" rowHeight="51" id="9SE-cK-7ny" customClass="UserSearchResultTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="51"/>
@@ -89,6 +95,7 @@
                                             <subviews>
                                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oe3-hA-rxR" customClass="VDefaultProfileButton">
                                                     <rect key="frame" x="16" y="9" width="32" height="32"/>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="bl2-WQ-Rao"/>
@@ -97,11 +104,13 @@
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKA-MJ-hKV">
                                                     <rect key="frame" x="64" y="15" width="512" height="21"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="DKA-MJ-hKV" secondAttribute="trailing" constant="16" id="QYw-62-vJO"/>
                                                 <constraint firstItem="oe3-hA-rxR" firstAttribute="centerY" secondItem="sEz-mb-BIk" secondAttribute="centerY" id="fdG-Nb-kZS"/>
@@ -110,6 +119,7 @@
                                                 <constraint firstItem="oe3-hA-rxR" firstAttribute="leading" secondItem="sEz-mb-BIk" secondAttribute="leading" constant="16" id="xU3-XT-JWh"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <connections>
                                             <outlet property="profileButton" destination="oe3-hA-rxR" id="vlM-fl-Fd3"/>
                                             <outlet property="usernameLabel" destination="DKA-MJ-hKV" id="gK7-3Z-IxY"/>
@@ -124,14 +134,17 @@
                                             <subviews>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ARh-KU-zeX">
                                                     <rect key="frame" x="290" y="15" width="20" height="20"/>
+                                                    <animations/>
                                                 </activityIndicatorView>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="ARh-KU-zeX" firstAttribute="centerY" secondItem="vOZ-RD-m9Y" secondAttribute="centerY" id="Q5s-1M-WQD"/>
                                                 <constraint firstItem="ARh-KU-zeX" firstAttribute="centerX" secondItem="vOZ-RD-m9Y" secondAttribute="centerX" id="WOa-ML-x9x"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="ARh-KU-zeX" id="bes-ce-Uyt"/>
@@ -140,7 +153,8 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="3Id-tf-fNM" firstAttribute="leading" secondItem="hlU-lq-p6l" secondAttribute="leadingMargin" constant="-20" id="EdE-g0-u7G"/>
                             <constraint firstAttribute="trailing" secondItem="s41-OE-17n" secondAttribute="trailing" id="PJq-1X-6oD"/>

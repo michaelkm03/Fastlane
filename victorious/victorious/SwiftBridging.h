@@ -10,7 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
@@ -74,6 +73,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager.h"
@@ -100,6 +100,7 @@
 #import "VHashTag.h"
 #import "VHashTagTextView.h"
 #import "VHashTags.h"
+#import "VHashtag.h"
 #import "VHashtagFollowingTableViewController.h"
 #import "VHashtagResponder.h"
 #import "VHashtagSelectionResponder.h"
@@ -109,6 +110,7 @@
 #import "VImageAssetFinder.h"
 #import "VImageLightboxViewController.h"
 #import "VImageSequencePreviewView.h"
+#import "VInboxViewController.h"
 #import "VInlineSearchTableViewController.h"
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VInsetMarqueeController.h"
@@ -147,7 +149,6 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager.h"
 #import "VPageType.h"
-#import "VHashtag.h"
 #import "VPaginationManager.h"
 #import "VPhotoFilter.h"
 #import "VPollResult.h"
@@ -212,5 +213,3 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
-#import "VInboxViewController.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"

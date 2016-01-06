@@ -8,6 +8,9 @@
 
 import Foundation
 
+// TODO: Anbstract into protocol!
+// TODO: Finish tests for
+
 /// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
 @objc protocol PaginatedDataSourceDelegate {
     
@@ -27,6 +30,7 @@ import Foundation
     
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
+    var clearsVisibleItemsBeforeLoadingFirstPage: Bool = false
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
@@ -61,6 +65,11 @@ import Foundation
         visibleItems = NSOrderedSet()
     }
     
+    func cancelCurrentOperation() {
+        currentOperation?.cancel()
+        currentOperation = nil
+    }
+    
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
         guard !isLoading else {
@@ -82,6 +91,11 @@ import Foundation
         
         if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
             self.isLoading = true
+            
+            if clearsVisibleItemsBeforeLoadingFirstPage && pageType == .First {
+                unload()
+            }
+            
             operation.queue() { error in
                 self.isLoading = false
                 self.onOperationComplete( typedOperation, pageType: pageType, error: error)
