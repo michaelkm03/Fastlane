@@ -13,7 +13,7 @@ final class PollVoteOperation: RequestOperation {
     
     var request: PollVoteRequest
     
-    init(sequenceID: String, answerID: Int64) {
+    init(sequenceID: String, answerID: Int) {
         self.request = PollVoteRequest(sequenceID: sequenceID, answerID: answerID)
     }
     
@@ -22,13 +22,13 @@ final class PollVoteOperation: RequestOperation {
         // Peform optimistic changes before the request is executed
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
             guard let user = VCurrentUser.user(),
-                let sequence: VSequence = context.v_findObjects( [ "remoteId" : String(self.request.sequenceID)] ).first else {
+                let sequence: VSequence = context.v_findObjects( [ "remoteId" : self.request.sequenceID ] ).first else {
                     return
             }
             
             let pollResult: VPollResult = context.v_createObject()
             pollResult.sequenceId = String(self.request.sequenceID)
-            pollResult.answerId = NSNumber(longLong: self.request.answerID)
+            pollResult.answerId = self.request.answerID
             pollResult.sequence = sequence
             pollResult.count = pollResult.count.integerValue + 1
             pollResult.user = user

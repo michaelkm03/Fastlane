@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Message {
-    public let messageID: Int64
+    public let messageID: Int
     public let sender: User?
     public let text: String?
     public let isRead: Bool?
@@ -28,7 +28,7 @@ extension Message {
 
         // Parse Required Fields
         if let messageIDString = json["message_id"].string,
-           let messageIDNumber = Int64(messageIDString) {
+           let messageIDNumber = Int(messageIDString) {
             self.messageID = messageIDNumber
         } else {
             return nil

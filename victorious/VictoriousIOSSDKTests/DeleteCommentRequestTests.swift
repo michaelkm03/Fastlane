@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class DeleteCommentRequestTests: XCTestCase {
     
     func testDeletingCommentWithoutReasonRequest() {
-        let mockCommentID: Int64 = 1001
+        let mockCommentID: Int = 1001
         let deleteRequest = DeleteCommentRequest(commentID: mockCommentID, removalReason: nil)
         let urlRequest = deleteRequest.urlRequest
         
@@ -29,7 +29,7 @@ class DeleteCommentRequestTests: XCTestCase {
     }
     
     func testDeletingCommentWithReasonRequest() {
-        let mockCommentID: Int64 = 1002
+        let mockCommentID: Int = 1002
         let mockRemovalReason = "I just feel like to"
         let deleteRequest = DeleteCommentRequest(commentID: mockCommentID, removalReason: mockRemovalReason)
         let urlRequest = deleteRequest.urlRequest

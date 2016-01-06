@@ -96,8 +96,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
                 presentingViewController.presentViewController(viewController, animated: true, completion: nil)
                 shownAlerts.append( alert )
                 isShowingInterstital = true
-                
-                AcknowledgeAlertOperation( alertID: Int64(alert.alertID) ).queue()
         }
     }
     

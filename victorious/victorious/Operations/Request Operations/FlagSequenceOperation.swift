@@ -27,7 +27,7 @@ class FlagSequenceOperation: RequestOperation {
     
     func onComplete( stream: FlagSequenceRequest.ResultType, completion:()->() ) {
         persistentStore.backgroundContext.v_performBlock() { context in
-            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : String(self.sequenceID) ]).first else {
+            guard let sequence: VSequence = context.v_findObjects([ "remoteId" : self.sequenceID ]).first else {
                 completion()
                 return
             }

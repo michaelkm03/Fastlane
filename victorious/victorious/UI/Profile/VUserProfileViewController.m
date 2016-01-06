@@ -311,7 +311,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)reloadUserFollowCounts
 {
-    RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.longLongValue];
+    RequestOperation *operation = [[FollowCountOperation alloc] initWithUserID:self.user.remoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 

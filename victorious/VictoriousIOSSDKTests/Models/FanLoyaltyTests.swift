@@ -23,7 +23,7 @@ class FanLoyaltyTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(fanLoyalty.points, Int64(2764))
+        XCTAssertEqual(fanLoyalty.points, Int(2764))
         XCTAssertEqual(fanLoyalty.level, 7)
         XCTAssertEqual(fanLoyalty.progress, 24)
     }

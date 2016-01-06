@@ -12,13 +12,13 @@ public struct FlagCommentRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/flag")!)
-        request.vsdk_addURLEncodedFormPost(["comment_id": NSNumber(longLong: commentID)])
+        request.vsdk_addURLEncodedFormPost(["comment_id": commentID])
         return request
     }
     
-    private let commentID: Int64
+    private let commentID: Int
     
-    public init(commentID: Int64) {
+    public init(commentID: Int) {
         self.commentID = commentID
     }
 }

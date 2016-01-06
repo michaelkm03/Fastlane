@@ -13,7 +13,7 @@ class AcknowledgeAlertOperation: RequestOperation {
     
     let request: AcknowledgeAlertRequest
     
-    init(alertID: Int64) {
+    init(alertID: Int) {
         self.request = AcknowledgeAlertRequest(alertID: alertID)
     }
     

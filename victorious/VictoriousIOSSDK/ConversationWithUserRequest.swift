@@ -13,10 +13,10 @@ import SwiftyJSON
 // in user has an existing conversation with the passed in userID.
 public struct ConversationWithUserRequest: RequestType {
 
-    public let userID: Int64
+    public let userID: Int
     private static let basePath = NSURL(string: "/api/message/conversation_with_user")!
     
-    public init(userID: Int64) {
+    public init(userID: Int) {
         self.userID = userID
     }
     
@@ -27,10 +27,10 @@ public struct ConversationWithUserRequest: RequestType {
         return urlRequest
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int64, messages: [Message]) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int, messages: [Message]) {
         guard let messagesArrayJSON = responseJSON["payload"]["messages"].array,
               let conversationIDString = responseJSON["payload"]["conversation_id"].string,
-              let conversationID = Int64(conversationIDString) else {
+              let conversationID = Int(conversationIDString) else {
             throw ResponseParsingError()
         }
         let messages = messagesArrayJSON.flatMap{Message(json: $0)}

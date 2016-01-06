@@ -10,7 +10,7 @@ import Foundation
 
 public struct AcknowledgeAlertRequest: RequestType {
 
-    public let alertID: Int64
+    public let alertID: Int
     
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/alert/acknowledge")!)
@@ -19,7 +19,7 @@ public struct AcknowledgeAlertRequest: RequestType {
         return urlRequest
     }
     
-    public init(alertID: Int64) {
+    public init(alertID: Int) {
         self.alertID = alertID
     }
 }

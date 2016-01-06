@@ -11,10 +11,10 @@ import UIKit
 public extension VCommentCellUtilitiesController {
     
     func flagComment( comment: VComment ) {
-        FlagCommentOperation(commentID: comment.remoteId.longLongValue).queue()
+        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue()
     }
     
     func deleteComment( comment: VComment ) {
-        FlagCommentOperation(commentID: comment.remoteId.longLongValue).queue()
+        FlagCommentOperation(commentID: comment.remoteId.integerValue).queue()
     }
 }

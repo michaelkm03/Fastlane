@@ -10,10 +10,10 @@ import Foundation
 
 public struct MarkConversationReadRequest : RequestType {
 
-    public let conversationID: Int64
+    public let conversationID: Int
     private static let basePath = NSURL(string: "/api/message/mark_conversation_read")!
     
-    public init(conversationID: Int64) {
+    public init(conversationID: Int) {
         self.conversationID = conversationID
     }
     

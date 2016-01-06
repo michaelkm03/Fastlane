@@ -22,10 +22,9 @@ class AnonymousLoginOperation: Operation {
         beganExecuting()
         
         guard let retriedIDString = AgeGate.anonymousUserID(),
-            let retrivedUserID = Int64(retriedIDString) else {
+            let anonymousID = Int(retriedIDString) else {
                 return
         }
-        let anonymousID = NSNumber(longLong: retrivedUserID)
         let anonymousToken = AgeGate.anonymousUserToken()
         let anonymousLoginType = VLoginType.Anonymous
         

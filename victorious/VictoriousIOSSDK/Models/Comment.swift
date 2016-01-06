@@ -25,9 +25,9 @@ public struct Comment {
         public let thumbnailURL: NSURL
     }
 
-    public let commentID: Int64
+    public let commentID: Int
     public let displayOrder: Int?
-    public let userID: Int64
+    public let userID: Int
     public let sequenceID: String
     public let shouldAutoplay: Bool?
     public let user: User
@@ -37,18 +37,18 @@ public struct Comment {
     public let flags: Int?
     public let postedAt: NSDate
     public let realtime: Bool
-    public let dislikes: Int64?
-    public let likes: Int64?
-    public let parentID: Int64?
+    public let dislikes: Int?
+    public let likes: Int?
+    public let parentID: Int?
 }
 
 extension Comment {
     
     public init?(json: JSON) {
         
-        guard let commentID = Int64(json["id"].stringValue),
+        guard let commentID = Int(json["id"].stringValue),
             let sequenceID = json["sequence_id"].string,
-            let userID = Int64(json["user_id"].stringValue),
+            let userID = Int(json["user_id"].stringValue),
             let user = User(json: json["user"]),
             let postedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["posted_at"].stringValue) else {
                 return nil
@@ -77,10 +77,10 @@ extension Comment {
             media = nil
         }
         
-        likes           = json["likes"].int64
-        dislikes        = json["dislikes"].int64
+        likes           = json["likes"].int
+        dislikes        = json["dislikes"].int
         realtime        = json["realtime"].boolValue
-        parentID        = json["parent_id"].int64
+        parentID        = json["parent_id"].int
         
         displayOrder    = json["display_order"].int
         shouldAutoplay  = json["should_autoplay"].bool
