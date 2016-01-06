@@ -8,9 +8,11 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
 class FriendFindByEmailOperationTests: BaseRequestOperationTests {
-    
+    let expectationThreshold: Double = 10
+    let testUserID: Int = 1
     var operation: FriendFindByEmailOperation!
     let emails = ["h@h.hh", "mike@msena.com"]
 
@@ -18,10 +20,26 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTests {
         super.setUp()
 
         operation = FriendFindByEmailOperation(emails:emails)
+        operation.persistentStore = testStore
     }
     
-    func testSomething() {
-        //TODO: finish me
+    func testResults() {
+        
+        let expectation = expectationWithDescription("FriendFindByOnComplete")
+
+        let user = User(userID: self.testUserID)
+        self.operation.onComplete([user], completion: { () -> () in
+            expectation.fulfill()
+        })
+        
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            guard let results = self.operation.results,
+                let firstResult = results.first as? VUser else {
+                XCTFail("We should have results here")
+                return
+            }
+            XCTAssertEqual(firstResult.remoteId.integerValue, self.testUserID)
+        }
     }
 
 }

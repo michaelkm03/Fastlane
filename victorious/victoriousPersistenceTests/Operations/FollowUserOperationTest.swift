@@ -84,14 +84,6 @@ class FollowUserOperationTest: BaseRequestOperationTests {
         }
     }
 
-    private func queueExpectedOperation(operation operation: FollowUserOperation) -> XCTestExpectation {
-        let expectation = expectationWithDescription("operation completed")
-        operation.queue() { error in
-            expectation.fulfill()
-        }
-        return expectation
-    }
-
     private func createUser(remoteId remoteId: Int) -> VUser {
         return testStore.mainContext.v_createObjectAndSave { user in
             user.remoteId = remoteId

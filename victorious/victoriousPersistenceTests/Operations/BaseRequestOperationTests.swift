@@ -33,4 +33,12 @@ class BaseRequestOperationTests: XCTestCase {
         }
     }
 
+    func queueExpectedOperation(operation operation: RequestOperation) -> XCTestExpectation {
+        let expectation = expectationWithDescription("operation completed")
+        operation.queue() { error in
+            expectation.fulfill()
+        }
+        return expectation
+    }
+    
 }

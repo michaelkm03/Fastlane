@@ -33,7 +33,7 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
         requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
     }
     
-    private func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
+    internal func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
             for foundFriend in results {

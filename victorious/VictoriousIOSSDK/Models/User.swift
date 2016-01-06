@@ -86,3 +86,25 @@ extension User {
         }
     }
 }
+
+extension User {
+    // Used for testing purposes
+    internal init(userID: Int) {
+        self.userID = userID
+        self.email = nil
+        self.name = nil
+        self.status = ProfileStatus.Complete
+        self.location = nil
+        self.tagline = nil
+        self.fanLoyalty = nil
+        self.isCreator = nil
+        self.isDirectMessagingDisabled = nil
+        self.isFollowedByMainUser = nil
+        self.numberOfFollowers = nil
+        self.numberOfFollowing = nil
+        self.profileImageURL = nil
+        self.tokenUpdatedAt = nil
+        self.previewImageAssets = nil
+        self.maxVideoUploadDuration = nil
+    }
+}
