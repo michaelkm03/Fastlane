@@ -16,12 +16,12 @@ import UIKit
 /// Encapsulates information needed to execute authenticated requests to the Victorious API
 public struct AuthenticationContext {
     /// The user ID, as returned by a successful login or account create call.
-    public let userID: Int64
+    public let userID: Int
     
     /// An authorization token, as returned by a successful login or account create call.
     public let token: String
     
-    public init(userID: Int64, token: String) {
+    public init(userID: Int, token: String) {
         self.userID = userID
         self.token = token
     }

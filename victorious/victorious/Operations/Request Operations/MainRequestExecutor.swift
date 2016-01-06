@@ -120,6 +120,6 @@ private extension AuthenticationContext {
         guard let currentUser = currentUser else {
             return nil
         }
-        self.init( userID: currentUser.remoteId.longLongValue, token: currentUser.token)
+        self.init( userID: currentUser.remoteId.integerValue, token: currentUser.token)
     }
 }

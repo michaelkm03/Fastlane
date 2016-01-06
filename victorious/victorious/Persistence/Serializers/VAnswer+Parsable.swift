@@ -15,7 +15,7 @@ extension VAnswer: PersistenceParsable {
         isCorrect       = answer.isCorrect
         label           = answer.label
         mediaUrl        = answer.mediaUrl
-        remoteId        = NSNumber(longLong: Int64(answer.answerID) )
+        remoteId        = answer.answerID
         thumbnailUrl    = answer.thumbnailUrl
     }
 }

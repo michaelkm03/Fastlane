@@ -10,8 +10,8 @@ import Foundation
 import SwiftyJSON
 
 public struct Conversation {
-    public let conversationID: Int64
-    public let previewMessageID: Int64
+    public let conversationID: Int
+    public let previewMessageID: Int
     public var isRead: Bool?
     public let recipient: User
     public let previewMessageText: String?
@@ -24,8 +24,8 @@ public struct Conversation {
 extension Conversation {
     
     public init?(json: JSON) {
-        if let conversationID = json["conversation_id"].int64,
-            let messageIDNumber = Int64(json["message_id"].stringValue),
+        if let conversationID = json["conversation_id"].int,
+            let messageIDNumber = Int(json["message_id"].stringValue),
             let recipientUser = User(json:json["other_interlocutor_user"]),
             let postedAtString = json["posted_at"].string {
                 self.conversationID = conversationID

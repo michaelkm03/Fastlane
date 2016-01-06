@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class PollVoteRequestTests: XCTestCase {
     
     func testAnsweringActionRequest() {
-        let mockAnswerID: Int64 = 101
+        let mockAnswerID: Int = 101
         let mockSequenceID: String = "102"
         
         let pollVoteRequest = PollVoteRequest(sequenceID: mockSequenceID, answerID: mockAnswerID)

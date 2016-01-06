@@ -19,7 +19,7 @@ public struct Notification {
     public let isRead: Bool?
     public let type: String?
     public let updatedAt: NSDate?
-    public let remoteID: Int64
+    public let remoteID: Int
     public let subject: String
     public let displayOrder: Int?
     public let user: User
@@ -28,7 +28,7 @@ public struct Notification {
         
         guard let createdAtDateString = json["created_at"].string,
             let createdAtDate = NSDateFormatter.v_defaultDateFormatter.dateFromString(createdAtDateString),
-            let notificationID = json["id"].int64,
+            let notificationID = json["id"].int,
             let subjectString = json["subject"].string,
             let sender = User(json: json["created_by"]) else {
                 return nil

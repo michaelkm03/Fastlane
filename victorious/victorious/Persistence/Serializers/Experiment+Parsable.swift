@@ -12,12 +12,12 @@ import VictoriousIOSSDK
 extension Experiment: PersistenceParsable {
     
     func populate(fromSourceModel sourceModel: DeviceExperiment) {   
-        name = sourceModel.name
-        id = NSNumber(longLong: sourceModel.id)
-        bucketType = sourceModel.bucketType
-        bucketCount = NSNumber(longLong: sourceModel.numberOfBuckets)
-        layerId = NSNumber(longLong: sourceModel.layerID)
-        layerName = sourceModel.layerName
+        name        = sourceModel.name
+        id          = sourceModel.id
+        bucketType  = sourceModel.bucketType
+        bucketCount = sourceModel.numberOfBuckets
+        layerId     = sourceModel.layerID
+        layerName   = sourceModel.layerName
     }
     
 }

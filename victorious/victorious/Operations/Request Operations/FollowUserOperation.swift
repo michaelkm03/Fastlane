@@ -13,11 +13,11 @@ class FollowUserOperation: RequestOperation {
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
     private let request: FollowUserRequest
-    private let userToFollowID: Int64
-    private let currentUserID: Int64
+    private let userToFollowID: Int
+    private let currentUserID: Int
     private let screenName: String
 
-    init(userToFollowID: Int64, currentUserID: Int64, screenName: String) {
+    init(userToFollowID: Int, currentUserID: Int, screenName: String) {
         self.userToFollowID = userToFollowID
         self.currentUserID = currentUserID
         self.screenName = screenName
@@ -26,15 +26,14 @@ class FollowUserOperation: RequestOperation {
 
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-            let persistedUserToFollowID = NSNumber(longLong: self.userToFollowID)
 
-            guard let objectUser: VUser = context.v_findObject(["remoteId" : persistedUserToFollowID]),
+            guard let objectUser: VUser = context.v_findObject( ["remoteId" : self.userToFollowID] ),
                 let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
             }
             
-            objectUser.numberOfFollowers = (objectUser.numberOfFollowers?.integerValue ?? 0) + 1
-            subjectUser.numberOfFollowing = (subjectUser.numberOfFollowing?.integerValue ?? 0) + 1
+            objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
+            subjectUser.numberOfFollowing = subjectUser.numberOfFollowing + 1
             objectUser.isFollowedByMainUser = true
             
             // Find or create the following relationship

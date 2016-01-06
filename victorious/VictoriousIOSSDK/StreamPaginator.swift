@@ -47,7 +47,7 @@ public struct StreamPaginator: NumericPaginator {
             Macro.ItemsPerPage.rawValue : String(itemsPerPage)
         ]
         if let sequenceID = sequenceID {
-            dictionary[ Macro.SequenceID.rawValue ] = String(sequenceID)
+            dictionary[ Macro.SequenceID.rawValue ] = sequenceID
         }
         if let urlString = urlMacroReplacer.urlByReplacingMacrosFromDictionary( dictionary, inURLString: apiPath) {
             request.URL = NSURL(string: urlString)

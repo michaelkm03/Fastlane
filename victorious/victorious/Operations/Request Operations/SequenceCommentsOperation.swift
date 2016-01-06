@@ -48,7 +48,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         }
         
         // Filter flagged comments here so that they never even make it into the persistent store
-        let flaggedCommentIDs: [Int64] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int64($0) }
+        let flaggedCommentIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
         let unflaggedComments = comments.filter { flaggedCommentIDs.contains($0.commentID) == false }
         
         // Make changes on background queue

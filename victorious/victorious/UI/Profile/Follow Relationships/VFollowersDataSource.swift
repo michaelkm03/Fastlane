@@ -23,7 +23,7 @@ import Foundation
     }
     
     func loadUsersWithPageType( pageType: VPageType, completion: (NSError? -> ())? = nil ) {
-        let userID = self.user.remoteId.longLongValue
+        let userID = self.user.remoteId.integerValue
         
         self.loadPage( pageType,
             createOperation: {

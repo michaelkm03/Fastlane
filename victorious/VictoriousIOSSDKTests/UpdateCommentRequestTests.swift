@@ -14,7 +14,7 @@ class CommentEditRequestTests: XCTestCase {
     
     func testRequest() {
         
-        let fakeCommentID = 99 as Int64
+        let fakeCommentID = 99 as Int
         let fakeCommentText = "problems"
         
         let updateCommentRequest = CommentEditRequest(commentID: fakeCommentID, text: fakeCommentText)
@@ -38,7 +38,7 @@ class CommentEditRequestTests: XCTestCase {
                 return
         }
         
-        let fakeCommentID = 99 as Int64
+        let fakeCommentID = 99 as Int
         let fakeCommentText = "problems"
         
         let updateCommentRequest = CommentEditRequest(commentID: fakeCommentID, text: fakeCommentText)

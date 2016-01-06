@@ -12,7 +12,7 @@ import SwiftyJSON
 /// Sends a message to a recipient.
 public class SendMessageRequest: RequestType {
     
-    public let recipientID: Int64
+    public let recipientID: Int
     public let text: String?
     public let mediaURL: NSURL?
     public let mediaType: MediaAttachmentType?
@@ -52,7 +52,7 @@ public class SendMessageRequest: RequestType {
         return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
     }
     
-    public init?(recipientID: Int64, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
+    public init?(recipientID: Int, text: String?, mediaAttachmentType: MediaAttachmentType?, mediaURL: NSURL?) {
         
         self.recipientID = recipientID
         self.text = text
@@ -72,10 +72,10 @@ public class SendMessageRequest: RequestType {
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int64, messageID: Int64) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int, messageID: Int) {
         let payload = responseJSON["payload"]
-        guard let conversationID = Int64(payload["conversation_id"].string ?? ""),
-            let messageID = payload["message_id"].int64 else {
+        guard let conversationID = Int(payload["conversation_id"].string ?? ""),
+            let messageID = payload["message_id"].int else {
                 throw ResponseParsingError()
         }
         return (conversationID, messageID)

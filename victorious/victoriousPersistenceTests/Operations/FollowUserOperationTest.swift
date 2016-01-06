@@ -15,8 +15,8 @@ class FollowUserOperationTest: XCTestCase {
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
-    let userToFollowID: Int64 = 1
-    let currentUserID: Int64 = 2
+    let userToFollowID: Int = 1
+    let currentUserID: Int = 2
     let screenName = "screenName"
 
     override func setUp() {
@@ -108,9 +108,9 @@ class FollowUserOperationTest: XCTestCase {
         return expectation
     }
 
-    private func createUser(remoteId remoteId: Int64) -> VUser {
+    private func createUser(remoteId remoteId: Int) -> VUser {
         return testStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(longLong: remoteId)
+            user.remoteId = remoteId
             user.status = "stored"
         } as VUser
     }

@@ -39,11 +39,11 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
         
         persistentStore.backgroundContext.v_performBlock() { context in
             
-            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.sequenceID)] )
+            let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : self.sequenceID] )
             for pollResult in pollResults where pollResult.sequenceID != nil {
                 var uniqueElements = [String : AnyObject]()
                 if let answerID = pollResult.answerID {
-                    uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
+                    uniqueElements[ "answerId" ] = answerID
                 }
                 if let sequenceID = pollResult.sequenceID {
                     uniqueElements[ "sequenceId" ] = sequenceID
@@ -53,7 +53,7 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
                 }
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel:pollResult)
-                persistentResult.sequenceId = String(self.sequenceID)
+                persistentResult.sequenceId = self.sequenceID
                 persistentResult.sequence = sequence
             }
             
