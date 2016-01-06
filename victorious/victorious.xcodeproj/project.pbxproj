@@ -459,6 +459,7 @@
 		79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
+		7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		795270F01C3488AD00BD41F1 /* VInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795270EF1C3488AD00BD41F1 /* VInboxViewController.swift */; };
 		795270F31C34895600BD41F1 /* UserSearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 795270F11C34895600BD41F1 /* UserSearchViewController.storyboard */; };
@@ -2525,6 +2526,7 @@
 		7925A50C1BCDC20100BCA649 /* VCrashlyticsLogTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrashlyticsLogTracking.h; sourceTree = "<group>"; };
 		7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrashlyticsLogTracking.m; sourceTree = "<group>"; };
 		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserSearchOperationTests.swift; path = Operations/UserSearchOperationTests.swift; sourceTree = "<group>"; };
 		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		795270EF1C3488AD00BD41F1 /* VInboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VInboxViewController.swift; sourceTree = "<group>"; };
 		795270F11C34895600BD41F1 /* UserSearchViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserSearchViewController.storyboard; sourceTree = "<group>"; };
@@ -7231,6 +7233,7 @@
 				623989831C3607F200D0E4D0 /* RequestOperationTests.swift */,
 				6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */,
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
+				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -10763,6 +10766,7 @@
 				6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */,
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
+				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
