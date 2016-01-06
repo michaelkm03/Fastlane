@@ -491,7 +491,6 @@
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		798AA5911C3B033D00D267C3 /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798AA5901C3B033D00D267C3 /* LogoutOperation.swift */; };
-		798AA5921C3B037E00D267C3 /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		7992DF671C17ACCF004007A1 /* DeviceExperimentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */; };
 		7992DF691C17ADFE004007A1 /* DeviceExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */; };
 		7992DF6B1C17B174004007A1 /* DeviceExperimentsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */; };
@@ -749,7 +748,7 @@
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
 		A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */; };
-		A7427B201C2F462B009D857E /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */; };
+		A7427B201C2F462B009D857E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */; };
 		A7427B241C2F4653009D857E /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
 		A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E31A0816D500339CB3 /* VPasswordValidator.m */; };
@@ -7114,12 +7113,10 @@
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
-				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
 				A7EBF53B1C2B9AD30080C7CF /* FollowedHashtagsOperation.swift */,
 				628681F41C287C9B00DEF638 /* FollowUserOperation.swift */,
 				A76AEA3B1BFEBA0500E8A26F /* LikeSequenceOperation.swift */,
-				A76AEA3C1BFEBA0500E8A26F /* LogoutOperation.swift */,
 				6205AAB71C334D9300859145 /* MainRequestExecutor.swift */,
 				A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */,
 				A702C85A1C126038001EE1D5 /* PaginatedOperation.swift */,
@@ -7131,7 +7128,6 @@
 				62E2407A1C332125001037C3 /* RequestExecutorType.swift */,
 				A702C8541C12462A001EE1D5 /* RequestOperation.swift */,
 				A76AEAD91C038E0000E8A26F /* SequenceCommentsOperation.swift */,
-				A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */,
 				A72EDF971C03FA73003D6177 /* SequenceInteractionsOperation.swift */,
 				A7EBF53F1C2B9BF80080C7CF /* SequenceLikersOperation.swift */,
 				A7245F061C04105400187825 /* SequenceRepostersOperation.swift */,
@@ -10937,7 +10933,6 @@
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
-				798AA5921C3B037E00D267C3 /* FlagSequenceOperation.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -11229,7 +11224,7 @@
 				A7078CDA1BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A76AEAE41C038E0000E8A26F /* FollowCountOperation.swift in Sources */,
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
-				A7427B201C2F462B009D857E /* LogoutOperation.swift in Sources */,
+				A7427B201C2F462B009D857E /* (null) in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
