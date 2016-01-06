@@ -336,7 +336,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
 }

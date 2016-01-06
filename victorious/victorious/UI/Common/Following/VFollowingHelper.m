@@ -83,7 +83,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                                                                                      message:error.localizedDescription
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                style:UIAlertActionStyleDefault
+                                                                style:UIAlertActionStyleCancel
                                                               handler:nil]];
             [viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
         }
@@ -133,7 +133,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
                                                                                  message:error.localizedDescription
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                            style:UIAlertActionStyleDefault
+                                                            style:UIAlertActionStyleCancel
                                                           handler:nil]];
         [viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
         

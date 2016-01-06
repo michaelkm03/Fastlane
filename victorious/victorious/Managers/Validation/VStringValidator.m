@@ -27,7 +27,7 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
                                                                              message:error.localizedDescription
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [viewController presentViewController:alertController animated:YES completion:nil];
 }

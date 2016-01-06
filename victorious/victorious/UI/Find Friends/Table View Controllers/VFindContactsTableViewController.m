@@ -94,7 +94,7 @@
                                                                                          message:NSLocalizedString(@"AccessContactsDenied", @"")
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                    style:UIAlertActionStyleDefault
+                                                                    style:UIAlertActionStyleCancel
                                                                   handler:nil]];
                 [self presentViewController:alertController animated:YES completion:nil];
             }
@@ -112,7 +112,7 @@
                                                                                          message:NSLocalizedString(@"AccessContactsRestricted", @"")
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                    style:UIAlertActionStyleDefault
+                                                                    style:UIAlertActionStyleCancel
                                                                   handler:nil]];
                 [self presentViewController:alertController animated:YES completion:nil];
             }

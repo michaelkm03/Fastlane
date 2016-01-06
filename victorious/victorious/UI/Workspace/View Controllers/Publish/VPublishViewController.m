@@ -320,7 +320,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
                                                                                      message:error.localizedDescription
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                style:UIAlertActionStyleDefault
+                                                                style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction *action)
                                         {
                                             [strongSelf closeOnComplete:NO];

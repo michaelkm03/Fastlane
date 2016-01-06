@@ -197,7 +197,7 @@
                                                                                    preferredStyle:UIAlertControllerStyleActionSheet];
                  
                  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
-                                                                     style:UIAlertActionStyleDefault
+                                                                     style:UIAlertActionStyleCancel
                                                                    handler:nil]];
                  [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"DeleteButton", @"")
                                                                      style:UIAlertActionStyleDestructive

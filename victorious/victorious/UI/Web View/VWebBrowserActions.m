@@ -107,7 +107,7 @@
     
     // Setup cancel button here to ensure it is on the bottom of the action sheet
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [viewController presentViewController:alertController animated:YES completion:nil];
 }

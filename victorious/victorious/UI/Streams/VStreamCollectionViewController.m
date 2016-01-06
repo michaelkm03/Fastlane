@@ -524,7 +524,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                                      message:NSLocalizedString(@"GenericFailMessage", nil)
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                style:UIAlertActionStyleDefault
+                                                                style:UIAlertActionStyleCancel
                                                               handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
             

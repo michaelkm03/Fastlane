@@ -280,7 +280,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                  message:NSLocalizedString(@"UserBannedMessage", @"")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                            style:UIAlertActionStyleDefault
+                                                            style:UIAlertActionStyleCancel
                                                           handler:nil]];
         [[VRootViewController rootViewController] presentViewController:alertController animated:YES completion:nil];
     }

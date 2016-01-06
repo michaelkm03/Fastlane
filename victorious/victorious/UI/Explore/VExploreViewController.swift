@@ -628,7 +628,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             else {
                 // No directory to show, alert the user
                 let alertController = UIAlertController(title: nil, message: NSLocalizedString("GenericFailMessage", comment: ""), preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: nil))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }

@@ -76,7 +76,7 @@
                                                                              message:errorMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
 }

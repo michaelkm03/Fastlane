@@ -39,7 +39,7 @@ extension VNotificationSettingsViewController {
                 let message = NSLocalizedString("ErrorPushNotificationsNotSavedMessage", comment: "" )
 
                 let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Default, handler: nil))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
                 navigationController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }

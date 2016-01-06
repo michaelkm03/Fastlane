@@ -138,7 +138,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -189,7 +189,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action)
                                 {
                                     // If the product for which this view controller was instantiated was returned during
