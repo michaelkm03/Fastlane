@@ -12,14 +12,30 @@ import SwiftyJSON
 
 class FriendFindByEmailRequestTests: XCTestCase {
 
-    func testRequest() {
+    var request: FriendFindByEmailRequest!
+    
+    override func setUp() {
+        super.setUp()
         
         let emails = ["h@h.hh", "mike@msena.com"]
-        let request = FriendFindByEmailRequest(emails: emails)!
+        guard let request = FriendFindByEmailRequest(emails: emails) else {
+            XCTFail("This request should not fail in it's initializer")
+            return
+        }
+        self.request = request
+    }
+    
+    func testRequest() {
         XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/friend/find_by_email"))
         
         let emptyEmails = [String]()
         let shouldBeNilRequest = FriendFindByEmailRequest(emails: emptyEmails)
+        XCTAssertNil(shouldBeNilRequest)
+    }
+    
+    func testShouldFailInitializer() {
+        let emails = [String]()
+        let shouldBeNilRequest = FriendFindByEmailRequest(emails: emails)
         XCTAssertNil(shouldBeNilRequest)
     }
 
@@ -30,9 +46,6 @@ class FriendFindByEmailRequestTests: XCTestCase {
                 XCTFail("Error reading mock json data")
                 return
         }
-        
-        let emails = ["h@h.hh", "mike@msena.com"]
-        let request = FriendFindByEmailRequest(emails: emails)!
         
         do {
             let foundFriends = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
