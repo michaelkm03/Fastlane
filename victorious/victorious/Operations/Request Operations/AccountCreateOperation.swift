@@ -32,7 +32,7 @@ class AccountCreateOperation: RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( response: AccountCreateResponse, completion:()->() ) {
+    func onComplete( response: AccountCreateResponse, completion:()->() ) {
         self.isNewUser = response.newUser
         
         // First, find or create the new user who just logged in

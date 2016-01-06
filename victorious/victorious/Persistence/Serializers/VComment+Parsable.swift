@@ -12,19 +12,19 @@ import VictoriousIOSSDK
 extension VComment : PersistenceParsable {
     
     func populate( fromSourceModel comment: Comment ) {
-        remoteId                = NSNumber(longLong: comment.commentID)
+        remoteId                = comment.commentID
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         flags                   = comment.flags
-        dislikes                = NSNumber(longLong: comment.dislikes)
+        dislikes                = comment.dislikes
         flags                   = comment.flags
-        likes                   = NSNumber(longLong: comment.likes)
-        parentId                = NSNumber(longLong: comment.parentID)
+        likes                   = comment.likes
+        parentId                = comment.parentID
         postedAt                = comment.postedAt
         shouldAutoplay          = comment.shouldAutoplay
         text                    = comment.text
         sequenceId              = String(comment.sequenceID)
-        userId                  = NSNumber(longLong:comment.userID)
+        userId                  = comment.userID
         
         if let media = comment.media {
             mediaType           = media.type.rawValue

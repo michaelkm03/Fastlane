@@ -110,7 +110,7 @@ class FollowUserOperationTest: XCTestCase {
 
     private func createUser(remoteId remoteId: Int) -> VUser {
         return testStore.mainContext.v_createObjectAndSave { user in
-            user.remoteId = NSNumber(longLong: remoteId)
+            user.remoteId = remoteId
             user.status = "stored"
         } as VUser
     }

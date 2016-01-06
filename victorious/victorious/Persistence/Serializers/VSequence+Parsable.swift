@@ -15,7 +15,7 @@ extension VSequence: PersistenceParsable {
         guard let sequence = streamItem as? Sequence else {
             return
         }
-        remoteId                = String(sequence.sequenceID)
+        remoteId                = sequence.sequenceID
         category                = sequence.category.rawValue
         
         commentCount            = sequence.commentCount ?? commentCount

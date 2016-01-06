@@ -33,7 +33,7 @@ import UIKit
     }
     
     func repostNode( node: VNode, completion: ((Bool) -> Void)?) {
-        RepostSequenceOperation(nodeID: Int(node.remoteId.integerValue) ).queue { error in
+        RepostSequenceOperation(nodeID: node.remoteId.integerValue ).queue { error in
             if let _ = error {
                 let params = [ VTrackingKeyErrorMessage : error?.localizedDescription ?? "" ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventRepostDidFail, parameters:params )

@@ -43,7 +43,7 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
             for pollResult in pollResults where pollResult.sequenceID != nil {
                 var uniqueElements = [String : AnyObject]()
                 if let answerID = pollResult.answerID {
-                    uniqueElements[ "answerId" ] = NSNumber(longLong: answerID)
+                    uniqueElements[ "answerId" ] = answerID
                 }
                 if let sequenceID = pollResult.sequenceID {
                     uniqueElements[ "sequenceId" ] = sequenceID
