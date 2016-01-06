@@ -23,4 +23,29 @@ class FriendFindByEmailRequestTests: XCTestCase {
         XCTAssertNil(shouldBeNilRequest)
     }
 
+    func testParseResponse() {
+        
+        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("FriendFindByEmailResponse", withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+                XCTFail("Error reading mock json data")
+                return
+        }
+        
+        let emails = ["h@h.hh", "mike@msena.com"]
+        let request = FriendFindByEmailRequest(emails: emails)!
+        
+        do {
+            let foundFriends = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            XCTAssertFalse(foundFriends.isEmpty)
+            if let firstUser = foundFriends.first {
+                XCTAssertEqual(firstUser.name, "Mikes")
+            } else {
+                XCTFail("we should have at least one user here")
+            }
+        } catch {
+            XCTFail("parseResponse is not supposed to throw")
+            return
+        }
+    }
+    
 }
