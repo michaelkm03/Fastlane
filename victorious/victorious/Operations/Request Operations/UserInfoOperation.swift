@@ -13,7 +13,7 @@ class UserInfoOperation: RequestOperation {
     
     let request: UserInfoRequest
     
-    init( userID: Int64 ) {
+    init( userID: Int ) {
         self.request = UserInfoRequest(userID: userID)
     }
     
@@ -23,7 +23,7 @@ class UserInfoOperation: RequestOperation {
     
     private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
         persistentStore.backgroundContext.v_performBlock() { context in
-            let persistentUser: VUser = context.v_findOrCreateObject( [ "remoteId" : NSNumber( longLong: user.userID) ])
+            let persistentUser: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ])
             persistentUser.populate(fromSourceModel: user)
             context.v_save()
             completion()

@@ -12,16 +12,15 @@ import VictoriousIOSSDK
 extension VInteraction: PersistenceParsable {
     
     func populate( fromSourceModel interaction: Interaction ) {
-        nodeId          = NSNumber(longLong: interaction.remoteID)
+        nodeId          = interaction.remoteID
         question        = interaction.question
-        remoteId        = NSNumber(longLong: interaction.remoteID)
+        remoteId        = interaction.remoteID
         startTime       = NSNumber(double: interaction.startTime)
         timeout         = NSNumber(double: interaction.timeout)
         type            = interaction.type
         
         answers = NSOrderedSet( array: interaction.answers.flatMap {
-            let uniqueElements = [ "remoteId" : NSNumber(longLong: Int64($0.answerID) )! ]
-            let answer: VAnswer = self.v_managedObjectContext.v_findOrCreateObject( uniqueElements )
+            let answer: VAnswer = self.v_managedObjectContext.v_findOrCreateObject(  [ "remoteId" : $0.answerID ] )
             answer.populate( fromSourceModel: $0 )
             return answer
         })

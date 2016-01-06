@@ -14,7 +14,7 @@ class UnfollowUserRequestTests: XCTestCase {
     
     func testRequest() {
         
-        let targetUserID: Int64 = 5107
+        let targetUserID: Int = 5107
         
         let unfollowUser = UnfollowUserRequest(userToUnfollowID: targetUserID, screenName: "profile")
         let request = unfollowUser.urlRequest

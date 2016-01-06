@@ -9,10 +9,10 @@
 import Foundation
 
 public struct DeleteCommentRequest: RequestType {
-    public let commentID: Int64
+    public let commentID: Int
     public let removalReason: String?
     
-    public init(commentID: Int64, removalReason: String?) {
+    public init(commentID: Int, removalReason: String?) {
         self.commentID = commentID
         self.removalReason = removalReason
     }
@@ -20,7 +20,7 @@ public struct DeleteCommentRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/remove")!)
         
-        var commentInfo: [String: AnyObject] = ["comment_id": NSNumber(longLong: commentID)]
+        var commentInfo: [String: AnyObject] = ["comment_id": commentID]
         if let reason = removalReason {
             commentInfo["removal_reason"] = reason
         }

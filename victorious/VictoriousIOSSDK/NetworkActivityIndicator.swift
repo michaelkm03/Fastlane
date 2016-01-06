@@ -37,6 +37,10 @@ public class NetworkActivityIndicator {
     }
     
     func update() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = visible
+        let newValue = visible
+        let oldValue = UIApplication.sharedApplication().networkActivityIndicatorVisible
+        if oldValue != newValue {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = newValue
+        }
     }
 }

@@ -20,13 +20,3 @@ protocol PersistenceParsable {
     ///   may be created or existing objects retrieved during serialization
     func populate( fromSourceModel sourceModel: SourceModelType )
 }
-
-extension NSNumber {
-    convenience init?( longLong value: Int64? ) {
-        if let value = value {
-            self.init( longLong: value )
-        } else {
-            return nil
-        }
-    }
-}

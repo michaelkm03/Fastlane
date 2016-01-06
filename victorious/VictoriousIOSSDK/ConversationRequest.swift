@@ -15,7 +15,7 @@ public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
     private static let basePath = NSURL(string: "/api/message/conversation/")!
     
     /// The conversation for this request
-    public let conversationID: Int64
+    public let conversationID: Int
     private static let descPathParameter = "desc"
     
     public let paginator: StandardPaginator
@@ -24,7 +24,7 @@ public struct ConversationRequest: PaginatorPageable, ResultBasedPageable {
         self.init( conversationID: request.conversationID, paginator: request.paginator)
     }
     
-    public init(conversationID: Int64, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(conversationID: Int, paginator: StandardPaginator = StandardPaginator() ) {
         self.conversationID = conversationID
         self.paginator = paginator
     }

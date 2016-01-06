@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 
 public struct Node {
-    public let nodeID: String
+    public let nodeID: Int
     public let shareUrlPath: NSURL?
     public let assets: [Asset]
     public let interactions: [Interaction]
@@ -18,7 +18,7 @@ public struct Node {
 
 extension Node {
     public init?(json: JSON) {
-        guard let nodeID = json["node_id"].string else {
+        guard let nodeID = Int(json["node_id"].stringValue) else {
             return nil
         }
         self.nodeID     = nodeID

@@ -42,7 +42,7 @@
 @dynamic comments;
 @dynamic followers;
 @dynamic following;
-@dynamic hashtags;
+@dynamic followedHashtags;
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;
@@ -52,5 +52,6 @@
 @dynamic maxUploadDuration;
 @dynamic loginType;
 @dynamic notificationSettings;
+@dynamic likedSequences;
 
 @end

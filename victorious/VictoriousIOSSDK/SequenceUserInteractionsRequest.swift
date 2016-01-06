@@ -12,16 +12,16 @@ import SwiftyJSON
 public struct SequenceUserInteractionsRequest: RequestType {
     
     public let sequenceID: String
-    public let userID: Int64
+    public let userID: Int
     
-    public init(sequenceID: String, userID: Int64) {
+    public init(sequenceID: String, userID: Int) {
         self.sequenceID = sequenceID
         self.userID = userID
     }
     
     public var urlRequest: NSURLRequest {
         let basePath = NSURL(string: "/api/sequence/users_interactions")!
-        let fullURL = basePath.URLByAppendingPathComponent(String(self.sequenceID)).URLByAppendingPathComponent(String(self.userID))
+        let fullURL = basePath.URLByAppendingPathComponent(self.sequenceID).URLByAppendingPathComponent(String(self.userID))
         return NSURLRequest(URL: fullURL)
     }
     

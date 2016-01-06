@@ -8,10 +8,7 @@
 
 #import "VHashtagFollowingTableViewController.h"
 #import "VTrendingTagCell.h"
-#import "VObjectManager+Discover.h"
-#import "VObjectManager+Sequence.h"
 #import "VNoContentTableViewCell.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VConstants.h"
@@ -23,6 +20,7 @@
 #import <KVOController/FBKVOController.h>
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
+#import "victorious-Swift.h"
 
 @import MBProgressHUD;
 
@@ -30,12 +28,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 @interface VHashtagFollowingTableViewController ()
 
-@property (nonatomic, strong) NSMutableOrderedSet *userTags;
-@property (nonatomic, strong) NSMutableOrderedSet *followingTagSet;
-@property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL fetchedHashtags;
-
-@property (nonatomic, weak) MBProgressHUD *failureHud;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -48,6 +41,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _paginatedDataSource = [[PaginatedDataSource alloc] init];
     }
     return self;
 }
@@ -58,23 +52,13 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:NSStringFromSelector(@selector(hashtags))
-                        options:NSKeyValueObservingOptionNew
-                         action:@selector(updateFollowingHashtags)];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self updateUserHashtags:[[[[VObjectManager sharedManager] mainUser].hashtags array] copy]];
-    [self retrieveHashtagsForLoggedInUser];
+    [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
 }
 
 - (void)updateBackground
 {
     UIView *backgroundView = nil;
-    if ( self.userTags.count == 0 && self.fetchedHashtags )
+    if ( self.paginatedDataSource.visibleItems.count == 0 && self.fetchedHashtags )
     {
         VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
         if ( [notFollowingView respondsToSelector:@selector(setDependencyManager:)] )
@@ -88,53 +72,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     self.tableView.backgroundView = backgroundView;
-}
-
- #pragma mark - Get / Format Logged In Users Tags
-
-- (void)retrieveHashtagsForLoggedInUser
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        self.fetchedHashtags = YES;
-        [self updateUserHashtags:resultObjects];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
-}
-
-- (void)fetchNextPageOfUserHashtags
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateUserHashtags:resultObjects];
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeNext
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:nil];
-}
-
-- (void)updateFollowingHashtags
-{
-    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[[VObjectManager sharedManager] mainUser].hashtags copy]];
-}
-
-- (void)updateUserHashtags:(NSArray *)hashtags
-{
-    self.userTags = [[NSMutableOrderedSet alloc] initWithArray:hashtags];
-    self.followingTagSet = [self.userTags mutableCopy];
-    [self updateBackground];
-    [self.tableView reloadData];
 }
 
 #pragma mark - UI setup
@@ -156,7 +93,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f) && !CGSizeEqualToSize(scrollView.contentSize, CGSizeZero))
     {
-        [self fetchNextPageOfUserHashtags];
+        [self loadHashtagsWithPageType:VPageTypeNext completion:nil];
     }
 }
 
@@ -169,11 +106,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.userTags != nil)
-    {
-        return [self.userTags count];
-    }
-    return 0;
+    return self.paginatedDataSource.visibleItems.count;
 }
 
 #pragma mark - UITableViewDelegate Methods
@@ -186,7 +119,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
-    VHashtag *hashtag = self.userTags[ indexPath.row ];
+    
+    VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
     [customCell setHashtag:hashtag];
     customCell.dependencyManager = self.dependencyManager;
     
@@ -225,7 +159,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Show hashtag stream
-    VHashtag *hashtag = self.userTags[ indexPath.row ];
+    VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
     [self showStreamWithHashtag:hashtag];
 }
 
@@ -241,18 +175,14 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (BOOL)isUserSubscribedToHashtag:(NSString *)tag
 {
-    for ( VHashtag *hashtag in [self followingTagSet] )
-    {
-        if ( [hashtag.tag isEqualToString:tag] )
-        {
-            return YES;
-        }
-    }
-    return NO;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hashtag.tag == %@", tag];
+    VFollowedHashtag *followedHashtag = [[VCurrentUser user].followedHashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
+    return followedHashtag != nil;
 }
 
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {
+    // TODO: Don't use these responder chain methods anymore, just queue operations directly from here
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
     [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
@@ -262,12 +192,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
                 failureBlock:^(NSError *error)
      {
          [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-         [self showFailureHUD];
      }];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
+    // TODO: Don't use these responder chain methods anymore, just queue operations directly from here
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
     [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
@@ -277,16 +207,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
                   failureBlock:^(NSError *error)
      {
          [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-         [self showFailureHUD];
      }];
-}
-
-- (void)showFailureHUD
-{
-    self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    self.failureHud.mode = MBProgressHUDModeText;
-    self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-    [self.failureHud hide:YES afterDelay:3.0f];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
