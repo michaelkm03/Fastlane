@@ -9,22 +9,17 @@
 import XCTest
 @testable import victorious
 
-class FollowUserOperationTest: XCTestCase {
+class FollowUserOperationTest: BaseRequestOperationTests {
     let expectationThreshold: Double = 10
     var operation: FollowUserOperation!
-    var testStore: TestPersistentStore!
-    var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor!
     let userToFollowID = Int64(1)
     let currentUserID = Int64(2)
     let screenName = "screenName"
 
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
+
         operation = FollowUserOperation(userToFollowID: userToFollowID, currentUserID: currentUserID, screenName: screenName)
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation.persistentStore = testStore
         operation.trackingManager = testTrackingManager
         operation.requestExecutor = testRequestExecutor
@@ -67,17 +62,6 @@ class FollowUserOperationTest: XCTestCase {
             }
             XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
-        }
-    }
-
-    override func tearDown() {
-        do {
-            try testStore.deletePersistentStore()
-        } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
-            XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error)." +
-                "Failing this test since it can cause test pollution.")
-        } catch {
-            XCTFail("Something went wrong while clearing persitent store")
         }
     }
 

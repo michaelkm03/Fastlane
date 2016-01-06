@@ -503,6 +503,8 @@
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */; };
+		79CBAC111C3CD20100D1387E /* FriendFindByEmailOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */; };
+		79CBAC131C3CD3EE00D1387E /* BaseRequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTests.swift */; };
 		79CFD3C91BF29D25004F70D9 /* MarkConversationReadRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */; };
 		79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */; };
 		79CFD3CD1BF2A105004F70D9 /* FlagConversationRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */; };
@@ -2565,6 +2567,8 @@
 		79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Aspect.swift"; sourceTree = "<group>"; };
 		79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+AspectTests.swift"; sourceTree = "<group>"; };
 		79C624961BFE43090086AF9E /* VUser+FetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+FetcherTests.m"; sourceTree = "<group>"; };
+		79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FriendFindByEmailOperationTests.swift; path = Operations/FriendFindByEmailOperationTests.swift; sourceTree = "<group>"; };
+		79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseRequestOperationTests.swift; path = Operations/BaseRequestOperationTests.swift; sourceTree = "<group>"; };
 		79CFD3C81BF29D25004F70D9 /* MarkConversationReadRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkConversationReadRequestTests.swift; sourceTree = "<group>"; };
 		79CFD3CA1BF29DAB004F70D9 /* MarkConversationReadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkConversationReadRequest.swift; sourceTree = "<group>"; };
 		79CFD3CC1BF2A105004F70D9 /* FlagConversationRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagConversationRequestTests.swift; sourceTree = "<group>"; };
@@ -7204,7 +7208,9 @@
 			isa = PBXGroup;
 			children = (
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
+				79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUserOperationTest.swift */,
+				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* RequestOperationTests.swift */,
 				6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */,
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
@@ -7847,7 +7853,6 @@
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				0392694D1B5C720400FCD0AA /* downloadtemplate */,
 				03C1856219B42C9100E27D05 /* Fonts */,
-				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D781868BE64004E5202 /* Frameworks */,
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
@@ -7857,6 +7862,7 @@
 				0370FBC31B71B261009047B6 /* VictoriousCommonTests */,
 				03314F1D1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
 				03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
+				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
 				EBEA19B71BC4A76C00878B18 /* victoriousUITests */,
 			);
@@ -10734,6 +10740,8 @@
 				6236F87A1C36037200746476 /* SuggestedUsersOperationTests.swift in Sources */,
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
+				79CBAC131C3CD3EE00D1387E /* BaseRequestOperationTests.swift in Sources */,
+				79CBAC111C3CD20100D1387E /* FriendFindByEmailOperationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
