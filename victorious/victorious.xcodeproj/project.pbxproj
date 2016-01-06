@@ -432,6 +432,8 @@
 		679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */; };
 		679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */; };
 		67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */; };
+		67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */; };
+		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
 		67C210101BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */; };
 		67C2101E1BFA797E0074E40E /* FollowHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */; };
 		67C210231BFA7A210074E40E /* FollowingHashtagsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */; };
@@ -2486,6 +2488,8 @@
 		6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuggestedUsersResponse.json; sourceTree = "<group>"; };
 		679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+AccessoryButtonResponder.swift"; sourceTree = "<group>"; };
 		67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowersResponse.json; sourceTree = "<group>"; };
+		67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequest.swift; sourceTree = "<group>"; };
+		67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequestTests.swift; sourceTree = "<group>"; };
 		67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDictionary+URLEncodedStringTests.swift"; sourceTree = "<group>"; };
 		67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowHashtagResponse.json; sourceTree = "<group>"; };
 		67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowingHashtagsResponse.json; sourceTree = "<group>"; };
@@ -5238,6 +5242,7 @@
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
 				A702C84C1C121762001EE1D5 /* Paginator.swift */,
 				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
+				67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
@@ -5318,6 +5323,7 @@
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				03314F491BE40F0100EE74FD /* OneWayRequestTests.swift */,
 				A702C8521C124110001EE1D5 /* PageableTests.swift */,
+				67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */,
 				A7D69C691C0E575B00B462C3 /* PollResultSummaryRequestTests.swift */,
 				678D94451BF41BF8009A1F93 /* PollVoteRequestTests.swift */,
 				795B75931BFA7EB300227647 /* PrivacyPolicyRequestTests.swift */,
@@ -10537,6 +10543,7 @@
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
+				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
@@ -10646,6 +10653,7 @@
 				03314F521BE40F0100EE74FD /* UserTests.swift in Sources */,
 				678D944E1BF4399D009A1F93 /* PollResultTests.swift in Sources */,
 				67FD54BD1BF68F7100CF52F7 /* FlagCommentRequestTests.swift in Sources */,
+				67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */,
 				C323C3B31BF55CFD00681059 /* UpdateCommentRequestTests.swift in Sources */,
 				0300AA5D1BF17C76000A121D /* VMultipartFormDataWriterTests.m in Sources */,
 				795B758C1BFA628100227647 /* TermsOfServiceRequestTests.swift in Sources */,
