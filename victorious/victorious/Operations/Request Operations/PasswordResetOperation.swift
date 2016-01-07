@@ -7,3 +7,17 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
+
+final class PasswordResetOpoeration: RequestOperation {
+    
+    let request: PasswordResetRequest
+    
+    init(newPassword: String, userToken: String, deviceToken: String) {
+        self.request = PasswordResetRequest(newPassword: newPassword, userToken: userToken, deviceToken: deviceToken)
+    }
+    
+    override func main() {
+        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
+    }
+}

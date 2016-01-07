@@ -221,38 +221,42 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.userToken = resetToken;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
-                                                   deviceToken:self.deviceToken
-                                                   newPassword:nil
-                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             [hud hide:YES];
-             completion(YES, nil);
-         });
-     }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             [hud hide:YES];
-
-             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
-                                                                                      message:NSLocalizedString(@"IncorrectCode", nil)
-                                                                               preferredStyle:UIAlertControllerStyleAlert];
-             UIAlertAction *alertAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                   style:UIAlertActionStyleCancel
-                                                                 handler:^(UIAlertAction *action)
-                                           {
-                                               completion(NO, error);
-                                           }];
-             [alertController addAction:alertAction];
-             [self.viewControllerToPresentOn presentViewController:alertController
-                                                          animated:YES
-                                                        completion:nil];
-         });
-     }];
+    
+    PasswordResetOpoeration *operation = [[PasswordResetOpoeration alloc] initWithNewPassword:@""
+                                                                                    userToken:resetToken
+                                                                                  deviceToken:self.deviceToken];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [hud hide:YES];
+                completion(YES, nil);
+            });
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [hud hide:YES];
+                
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
+                                                                                         message:NSLocalizedString(@"IncorrectCode", nil)
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                      style:UIAlertActionStyleCancel
+                                                                    handler:^(UIAlertAction *action)
+                                              {
+                                                  completion(NO, error);
+                                              }];
+                [alertController addAction:alertAction];
+                [self.viewControllerToPresentOn presentViewController:alertController
+                                                             animated:YES
+                                                           completion:nil];
+            });
+        }
+    }];
 }
 
 - (void)updatePassword:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion
@@ -263,29 +267,32 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     __weak typeof(self) weakSelf = self;
     
-    [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
-                                                   deviceToken:self.deviceToken
-                                                   newPassword:password
-                                                  successBlock:^(NSOperation *restKitOperation, id result, NSArray *resultObjects)
-     {
-         [hud hide:YES];
-         
-         [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSError *_Nullable error) {
-              if ( error == nil )
-              {
-                  completion(YES, nil);
-              }
-              else
-              {
-                  completion(NO, error);
-              }
-          }];
-     }
-                                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-         completion(NO, error);
-     }];
+    PasswordResetOpoeration *operation = [[PasswordResetOpoeration alloc] initWithNewPassword:password
+                                                                                    userToken:self.userToken
+                                                                                  deviceToken:self.deviceToken];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            [hud hide:YES];
+            
+            [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSError *_Nullable error) {
+                if ( error == nil )
+                {
+                    completion(YES, nil);
+                }
+                else
+                {
+                    completion(NO, error);
+                }
+            }];
+        }
+        else
+        {
+            [hud hide:YES];
+            completion(NO, error);
+        }
+    }];
 }
 
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath

@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class RequestPasswordResetOperation: RequestOperation {
     
-    var request: RequestPasswordResetRequest
+    let request: RequestPasswordResetRequest
     private(set) var deviceToken: String = ""
     
     init(email: String) {
