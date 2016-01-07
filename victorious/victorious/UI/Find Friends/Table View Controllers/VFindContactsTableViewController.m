@@ -90,12 +90,13 @@
             }
             if (userInteraction)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:NSLocalizedString(@"AccessContactsDenied", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-                [alert show];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                         message:NSLocalizedString(@"AccessContactsDenied", @"")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:nil]];
+                [self presentViewController:alertController animated:YES completion:nil];
             }
             break;
         }
@@ -107,12 +108,13 @@
             }
             if (userInteraction)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:NSLocalizedString(@"AccessContactsRestricted", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-                [alert show];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                         message:NSLocalizedString(@"AccessContactsRestricted", @"")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:nil]];
+                [self presentViewController:alertController animated:YES completion:nil];
             }
             break;
         }

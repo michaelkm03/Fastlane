@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.
 private extension NSIndexPath {
@@ -29,6 +30,9 @@ private extension NSIndexPath {
 class GIFSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
+    private var mostRecentSearchOperation: GIFSearchOperation?
+    private var mostRecentTrendingOperation: GIFSearchDefaultResultsOperation?
+    
     enum State: Int {
         case None, Loading, Content, Error, NoResults
     }
@@ -41,11 +45,11 @@ class GIFSearchDataSource: NSObject {
         /// search result and the colleciton view bounds
         static let MinCollectionContainerMargin: CGFloat = 50.0
         
-        let results: [GIFSearchResult]
+        let results: [GIFSearchResultObject]
         
         let isFullSize: Bool
         
-        subscript( index: Int ) -> GIFSearchResult {
+        subscript( index: Int ) -> GIFSearchResultObject {
             return self.results[ index ]
         }
         
@@ -75,80 +79,111 @@ class GIFSearchDataSource: NSObject {
     private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
     
-    func loadDefaultContent( pageType: VPageType, completion: ((ChangeResult?)->())? ) {
+    ///
+    func performDefaultSearch( pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
         if self.state == .Loading {
             completion?( nil )
             return
         }
-        
         self.state = .Loading
-        VObjectManager.sharedManager().loadTrendingGIFs( pageType,
-            success: { (results, isLastPage) in
-                self.state = .Content
-                self.isLastPage = isLastPage
-                let result = self.updateDataSource( results, pageType: pageType )
-                completion?( result )
-            },
-            failure: { (error, isLastPage) in
+        
+        let nextOperation: GIFSearchDefaultResultsOperation?
+        switch pageType {
+        case .First:
+            nextOperation = GIFSearchDefaultResultsOperation()
+        case .Next:
+            nextOperation = self.mostRecentTrendingOperation?.next()
+        case .Previous:
+            nextOperation = self.mostRecentTrendingOperation?.prev()
+        }
+        
+        if let operation = nextOperation {
+            self.mostRecentTrendingOperation = operation
+            operation.queue() { operationError in
+                self.mostRecentTrendingOperation = operation
+                self.isLastPage = self.mostRecentTrendingOperation?.next() == nil
+                
+                // What we shall return to the view controller in order to 
+                // indicate precisely what has changed
                 var result = ChangeResult()
-                if isLastPage {
-                    self.isLastPage = isLastPage
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
+                
+                // Operation encountered an error
+                if let error = operationError {
+                    if self.isLastPage {
+                        self.state = .Content
+                    } else {
+                        if pageType == .First {
+                            self.clear()
+                        }
+                        self.state = .Error
+                        result.error = error
                     }
-                    self.state = .Error
-                    result.error = error
+                    
+                // Operation successfully returned results
+                } else if let results = operation.results as? [GIFSearchResultObject] {
+                    self.state = .Content
+                    result = self.updateDataSource( results, pageType: pageType )
                 }
+                
                 completion?( result )
             }
-        )
+        }
     }
     
     /// Fetches data from the server and repopulates its backing model collection
-    ///
-    /// - parameter searchTerm: A string to be used for the GIF search on the server
-    /// - parameter completion: A closure to be call when the operation is complete
-    func performSearch( searchText:String, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
+    func performSearchWithText( searchText: String, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
         if self.state == .Loading {
             completion?( nil )
             return
         }
-        
         self.state = .Loading
-        VObjectManager.sharedManager().searchForGIF( searchText,
-            pageType: pageType,
-            success: { (results, isLastPage) in
-                self.state = .Content
-                self.isLastPage = isLastPage
-                self.mostRecentSearchText = searchText
-                let result = self.updateDataSource( results, pageType: pageType )
-                completion?( result )
-            },
-            failure: { (error, isLastPage) in
+        
+        let nextOperation: GIFSearchOperation?
+        switch pageType {
+        case .First:
+            nextOperation = GIFSearchOperation(searchTerm: searchText)
+        case .Next:
+            nextOperation = self.mostRecentSearchOperation?.next()
+        case .Previous:
+            nextOperation = self.mostRecentSearchOperation?.prev()
+        }
+        
+        if let operation = nextOperation {
+            self.mostRecentSearchOperation = operation
+            
+            operation.queue() { operationError in
+                self.mostRecentSearchOperation = operation
+                self.isLastPage = self.mostRecentSearchOperation?.next() == nil
+                
                 var result = ChangeResult()
-                if isLastPage {
-                    self.isLastPage = isLastPage
-                    self.state = .Content
-                }
-                else {
-                    if pageType == .First {
-                        self.clear()
+                if let error = operationError {
+                    // Operation failed
+                    if self.isLastPage {
+                        self.state = .Content
                     }
-                    self.state = .Error
-                    result.error = error
+                    else {
+                        if pageType == .First {
+                            self.clear()
+                        }
+                        self.state = .Error
+                        result.error = error
+                    }
+                    
+                // Operation successfully returned results
+                } else if let results = operation.results as? [GIFSearchResultObject] {
+                    self.state = .Content
+                    self.mostRecentSearchText = searchText
+                    result = self.updateDataSource( results, pageType: pageType )
                 }
-                completion?( result )
+                completion?(result)
             }
-        )
+        }
     }
-    
+
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() -> ChangeResult {
         var result = ChangeResult()
@@ -207,7 +242,7 @@ class GIFSearchDataSource: NSObject {
     
     // MARK: - Private
     
-    private func updateDataSource( results: [GIFSearchResult], pageType: VPageType ) -> ChangeResult {
+    private func updateDataSource( results: [GIFSearchResultObject], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
             if self.sections.count == 0 && results.count > 0 {
@@ -221,7 +256,7 @@ class GIFSearchDataSource: NSObject {
         }
         let prevSectionCount = self.sections.count
         for var i = 0; i < results.count; i+=2 {
-            let resultsForSection: [GIFSearchResult] = {
+            let resultsForSection: [GIFSearchResultObject] = {
                 if i + 1 < results.count {
                     return [results[i], results[i+1]]
                 }

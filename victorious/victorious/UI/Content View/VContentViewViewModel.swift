@@ -19,7 +19,7 @@ public extension VContentViewViewModel {
             }
         }
         
-        if let deepLinkCommentId = self.deepLinkCommentId {
+        if let _ = self.deepLinkCommentId {
             /*self.loadComments( atPageForCommentID: deepLinkCommentId,
                 completion: { (pageNumber, error) in
                     guard let pageNumber = pageNumber else {

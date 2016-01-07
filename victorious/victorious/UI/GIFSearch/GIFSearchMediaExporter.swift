@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Helper that handles loading preview image and streaming GIF asset
 /// to a file using asynchronous operations.
@@ -26,12 +27,12 @@ struct GIFSearchMediaExporter {
     ///
     /// - parameter gifSearchResult: The GIFSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
+    func loadMedia( gifSearchResult: GIFSearchResultObject, completion: GIFSearchMediaExporterCompletion ) {
         
-        if let searchResultURL = NSURL(string: gifSearchResult.mp4Url) {
+        if let searchResultURL = NSURL(string: gifSearchResult.sourceResult.mp4URL) {
             let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
-            if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
-                let videoURL = NSURL(string: gifSearchResult.mp4Url ),
+            if let previewImageURL = NSURL(string: gifSearchResult.sourceResult.thumbnailStillURL),
+                let videoURL = NSURL(string: gifSearchResult.sourceResult.mp4URL),
                 let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
                     
                     let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
