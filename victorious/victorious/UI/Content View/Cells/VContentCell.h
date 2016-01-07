@@ -7,7 +7,6 @@
 //
 
 #import "VBaseCollectionViewCell.h"
-#import "VEndCardViewController.h"
 #import "VBackgroundContainer.h"
 #import "VContentLikeButton.h"
 #import "VMonetizationPartner.h"
@@ -36,13 +35,6 @@
  */
 @property (nonatomic, assign) NSInteger repeatCount;
 
-/**
- Designed to be implemented by the view controller of the collection view
- that contains this VContentCell.  The delegate will handle actions and state
- changes performed in the VEndCardViewController.
- */
-@property (nonatomic, weak) id<VEndCardViewControllerDelegate> endCardDelegate;
-
 @property (nonatomic, weak) id<VContentCellDelegate> delegate;
 
 /**
@@ -57,31 +49,9 @@
  */
 @property (nonatomic, assign, readwrite) CGSize minSize;
 
-/**
- Returns @YES if a VEndCardViewController instance has been created and
- added as a subview.
- */
-@property (nonatomic, assign, readonly) BOOL isEndCardShowing;
-
 @property (nonatomic, assign, readonly) BOOL isPlayingAd;
 
 @property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
-
-/**
- Stops the endcard's countdown timer, if the end card is showing
- */
-- (void)disableEndcardAutoplay;
-
-/**
- Creates a new VEndCardViewController instances and adds it as a child
- above the video content, then plays the transition in animations.
- */
-- (void)showEndCardWithViewModel:(VEndCardModel *)model;
-
-/**
- Hides the end card by removing it from the view hiearchy.
- */
-- (void)hideEndCard;
 
 /**
  Properly rotates itself and subcomponents based on the rotation of the collection view.

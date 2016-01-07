@@ -84,7 +84,6 @@
 #import "VDiscoverContainerViewController.h"
 #import "VEditCommentViewController.h"
 #import "VElapsedTimeFormatter.h"
-#import "VEndCard.h"
 #import "VEnvironment.h"
 #import "VEnvironmentManager.h"
 #import "VExploreMarqueeCollectionViewFlowLayout.h"

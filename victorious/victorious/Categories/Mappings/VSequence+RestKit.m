@@ -15,7 +15,6 @@
 #import "VUser+RestKit.h"
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
-#import "VEndCard+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VImageAsset+RestKit.h"
 #import "VEditorializationItem.h"
@@ -146,22 +145,14 @@
                                                                                 toKeyPath:@"parentUser"
                                                                               withMapping:[VUser entityMapping]]];
         
-        RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
-                                                                                               toKeyPath:VSelectorName(voteResults)
-                                                                                             withMapping:[VVoteResult entityMapping]];
         RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
                                                                                              toKeyPath:VSelectorName(adBreaks)
                                                                                            withMapping:[VAdBreak entityMapping]];
         RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                              toKeyPath:VSelectorName(tracking)
                                                                                            withMapping:[VTracking entityMapping]];
-        RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"endcard"
-                                                                                            toKeyPath:VSelectorName(endCard)
-                                                                                          withMapping:[VEndCard entityMapping]];
-        [mapping addPropertyMapping:voteResultMapping];
         [mapping addPropertyMapping:adBreaksMapping];
         [mapping addPropertyMapping:trackingMapping];
-        [mapping addPropertyMapping:endCardMapping];
         
         [VObjectManager sharedManager].mappingCache[entityMappingKey] = mapping;
     }
