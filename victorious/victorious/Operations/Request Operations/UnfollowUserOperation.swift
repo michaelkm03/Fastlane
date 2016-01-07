@@ -30,8 +30,8 @@ class UnfollowUserOperation: RequestOperation {
             }
             
             objectUser.isFollowedByMainUser = false
-            objectUser.numberOfFollowers = (objectUser.numberOfFollowers?.integerValue ?? 1) - 1
-            subjectUser.numberOfFollowing = (subjectUser.numberOfFollowing?.integerValue ?? 1) - 1
+            objectUser.numberOfFollowers = objectUser.numberOfFollowers - 1
+            subjectUser.numberOfFollowing = subjectUser.numberOfFollowing - 1
             
             // Find the following relationship and delete it
             let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]

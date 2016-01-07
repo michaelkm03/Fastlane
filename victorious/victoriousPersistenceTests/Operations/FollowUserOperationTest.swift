@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 
 class FollowUserOperationTest: XCTestCase {
-    let expectationThreshold: Double = 10
+    let expectationThreshold: Double = 2
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
@@ -37,7 +37,7 @@ class FollowUserOperationTest: XCTestCase {
         
         let createdUserToFollow = operationHelper.createUser(remoteId: userID, persistentStore: testStore)
         operation.main()
-
+        
         guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
             XCTFail("No user to follow found after following a user")
             return
@@ -46,21 +46,21 @@ class FollowUserOperationTest: XCTestCase {
             XCTFail("No current user found after following a user")
             return
         }
-
+        
         XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
         XCTAssertEqual(1, updatedUserToFollow.followers.count)
         if updatedUserToFollow.followers.count == 1, let user = Array(updatedUserToFollow.followers)[0] as? VUser {
             XCTAssertEqual( user, updatedUserToFollow )
         }
-
+        
         XCTAssertEqual(1, currentUser.numberOfFollowing)
         XCTAssertEqual(1, currentUser.following.count)
         if currentUser.following.count == 1, let user = Array(currentUser.following)[0] as? VUser {
             XCTAssertEqual(user, updatedUserToFollow)
         }
-
-        XCTAssertEqual(true, updatedUserToFollow.isFollowedByMainUser)
-
+        
+        XCTAssert( updatedUserToFollow.isFollowedByMainUser.boolValue )
+        
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)

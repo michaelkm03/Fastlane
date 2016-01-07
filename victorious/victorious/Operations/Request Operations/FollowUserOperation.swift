@@ -39,14 +39,13 @@ class FollowUserOperation: RequestOperation {
             let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
             followedUser.objectUser = objectUser
             followedUser.subjectUser = subjectUser
-
+            
             // By setting display order to -1, the user will appear at the top
             // of each list of fetched results until a refresh of the followers list
             // comes back from the server with updated display order
             followedUser.displayOrder = -1
             
             context.v_save()
-
         }
 
         self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )

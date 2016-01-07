@@ -148,10 +148,11 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         guard let shelf = shelf as? HashtagShelf else {
             return
         }
-        var controlState: VFollowControlState = .Unfollowed
-        if let currentUser = VCurrentUser.user()
-            where currentUser.isFollowingHashtagString(shelf.hashtagTitle) {
-                controlState = .Followed
+        var controlState: VFollowControlState
+        if VCurrentUser.user()?.isFollowingHashtagString(shelf.hashtagTitle) == true {
+            controlState = .Followed
+        } else {
+            controlState = .Unfollowed
         }
         followControl?.setControlState(controlState, animated: true)
     }
