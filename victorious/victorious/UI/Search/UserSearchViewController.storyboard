@@ -24,10 +24,10 @@
             </objects>
             <point key="canvasLocation" x="1279" y="857"/>
         </scene>
-        <!--User List View Controller-->
+        <!--Search Results View Controller-->
         <scene sceneID="xkF-La-Ig2">
             <objects>
-                <viewController id="rwn-5j-tyr" customClass="UserListViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchResultsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rwn-5j-tyr" customClass="SearchResultsViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K6t-5C-F9z"/>
                         <viewControllerLayoutGuide type="bottom" id="u0Z-1q-6V3"/>

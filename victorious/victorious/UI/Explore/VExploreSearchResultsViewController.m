@@ -5,9 +5,11 @@
 //  Created by Tian Lan on 9/4/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
+
 #import "VExploreSearchResultsViewController.h"
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
+#import "victorious-Swift.h"
 
 @interface VExploreSearchResultsViewController ()
 
@@ -38,7 +40,8 @@
 {
     [super viewDidLoad];
     
-    self.userSearchResultsVC.navigationDelegate = self.navigationDelegate;
+    // FIXME
+    //self.userSearchResultsVC.navigationDelegate = self.navigationDelegate;
     self.tagsSearchResultsVC.navigationDelegate = self.navigationDelegate;
 }
 
@@ -51,7 +54,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self searchForCurrentStateWithText:searchBar.text];
+    [self searchWithSearchTerm:searchBar.text];
 }
 
 @end

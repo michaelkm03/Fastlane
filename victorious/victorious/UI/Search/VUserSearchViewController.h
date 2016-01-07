@@ -10,7 +10,7 @@
 
 @class VDependencyManager, VUser, VUserSearchViewController;
 
-@protocol VUserSearchViewControllerDelegate <NSObject>
+@protocol VSearchResultsViewControllerDelegate <NSObject>
 
 @required
 
@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, VUserSearchPresenter)
  Defaults to: VObjectManagerSearchContextDiscover
  */
 @property (nonatomic, strong) NSString *searchContext;
-@property (nonatomic, weak) id <VUserSearchViewControllerDelegate> messageSearchDelegate;
+@property (nonatomic, weak) id <VSearchResultsViewControllerDelegate> messageSearchDelegate;
 @property (nonatomic, assign) VUserSearchPresenter userSearchPresenter;
 
 @end

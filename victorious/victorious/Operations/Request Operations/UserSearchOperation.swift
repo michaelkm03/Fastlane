@@ -48,6 +48,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     private func onComplete(result: UserSearchRequest.ResultType, completion: () -> () ) {
         
         self.results = result.map{ UserSearchResultObject( user: $0) }
+        
         // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
         completion()
         
@@ -65,4 +66,3 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         }
     }
 }
-

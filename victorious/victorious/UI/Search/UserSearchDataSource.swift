@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class UserSearchDataSource: PaginatedDataSource, UITableViewDataSource {
+final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UITableViewDataSource {
     
     enum Section: Int {
         case Results

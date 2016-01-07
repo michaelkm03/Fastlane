@@ -95,7 +95,6 @@ import Foundation
             if clearsVisibleItemsBeforeLoadingFirstPage && pageType == .First {
                 unload()
             }
-            
             operation.queue() { error in
                 self.isLoading = false
                 self.onOperationComplete( typedOperation, pageType: pageType, error: error)

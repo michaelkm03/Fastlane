@@ -6,17 +6,19 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-@class VDependencyManager, VUsersAndTagsSearchViewController,
-VUserSearchResultsViewController, VTagsSearchResultsViewController;
+@class VDependencyManager, VUsersAndTagsSearchViewController, VUserSearchResultsViewController, VTagsSearchResultsViewController;
 
+#warning REMOVE THIS SHIT:
 extern NSString * const kVUserSearchResultsChangedNotification;
 extern NSString * const kVHashtagsSearchResultsChangedNotification;
 
+@class SearchResultsViewController;
+
 @interface VUsersAndTagsSearchViewController : UIViewController
 
-@property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
+@property (nonatomic, strong) SearchResultsViewController *userSearchResultsVC;
 @property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
@@ -35,11 +37,8 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
  */
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)userSearch:(NSString *)userName;
-- (void)hashtagSearch:(NSString *)tagName;
 - (BOOL)textFieldShouldClear:(UITextField *)textField;
 - (void)updateTableView;
-- (void)searchForCurrentStateWithText:(NSString *)searchText;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;

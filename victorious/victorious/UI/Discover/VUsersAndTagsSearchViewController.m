@@ -9,31 +9,19 @@
 #import "VUsersAndTagsSearchViewController.h"
 #import "VNavigationController.h"
 #import "VDiscoverContainerViewController.h"
-
-// VObjectManager
 #import "VObjectManager.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Discover.h"
 #import "VHashtag+RestKit.h"
-
-// Dependency Manager
 #import "VDependencyManager.h"
-
-// Search Results
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
-
-// No Content View
 #import "VNoContentView.h"
-
-// Constants
 #import "VConstants.h"
-
-// Transtion
 #import "VSimpleModalTransition.h"
-
 #import "UIVIew+AutoLayout.h"
 #import "MBProgressHUD.h"
+#import "victorious-Swift.h"
 
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
@@ -41,7 +29,7 @@ NSString *const kTagKey = @"tag";
 
 static NSInteger const kVMaxSearchResults = 1000;
 
-@interface VUsersAndTagsSearchViewController () <UITextFieldDelegate, VUserSearchResultsViewControllerDelegate, VTagsSearchResultsViewControllerDelegate>
+@interface VUsersAndTagsSearchViewController () <UITextFieldDelegate, VUserSearchResultsViewControllerDelegate, VTagsSearchResultsViewControllerDelegate, SearchResultsViewControllerDelegate>
 
 @property (nonatomic, strong) NSString *currentUserSearchQueryText;
 @property (nonatomic, strong) NSString *currentHashtagSearchQueryText;
@@ -94,8 +82,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     [super viewDidLoad];
     
     // Setup Search Results View Controllers
-    self.userSearchResultsVC = [VUserSearchResultsViewController newWithDependencyManager:self.dependencyManager];
-    self.userSearchResultsVC.delegate = self;
+    [self setupSearchViewControllers];
+    
     self.tagsSearchResultsVC = [VTagsSearchResultsViewController newWithDependencyManager:self.dependencyManager];
     self.tagsSearchResultsVC.delegate = self;
     
@@ -105,14 +93,9 @@ static NSInteger const kVMaxSearchResults = 1000;
     [self.tagsSearchResultsVC didMoveToParentViewController:self];
     [self.view v_addFitToParentConstraintsToSubview:self.tagsSearchResultsVC.view];
     
-    [self addChildViewController:self.userSearchResultsVC];
-    [self.searchResultsContainerView addSubview:self.userSearchResultsVC.view];
-    [self.userSearchResultsVC didMoveToParentViewController:self];
-    [self.view v_addFitToParentConstraintsToSubview:self.userSearchResultsVC.view];
-    
     // Format the segmented control
-    self.segmentControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.segmentControl.selectedSegmentIndex = 0;
+    self.segmentedControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.segmentedControl.selectedSegmentIndex = 0;
     
     // Setup Search Field
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
@@ -127,6 +110,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeButtonAction:)];
     self.tapGestureRecognizer.numberOfTapsRequired = 1;
     self.tapGestureRecognizer.numberOfTouchesRequired = 1;
+    
+    [self segmentedControlAction:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -176,7 +161,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (void)updateTableView
 {
-    [self.userSearchResultsVC.tableView reloadData];
     [self.tagsSearchResultsVC.tableView reloadData];
 }
 
@@ -199,13 +183,13 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 #pragma mark - UISegmentControl Action
 
-- (IBAction)segmentControlAction:(id)sender
+- (IBAction)segmentedControlAction:(id)sender
 {
     CGFloat bottomInsetHeight = self.keyboardHeight;
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     // Update UI
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    if ( self.segmentedControl.selectedSegmentIndex == 0 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
         [self cancelUserSearch:NO andHashtagSearch:YES];
@@ -215,10 +199,10 @@ static NSInteger const kVMaxSearchResults = 1000;
         
         if (self.isKeyboardShowing)
         {
-            [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
+            [((UITableView *)self.userSearchResultsVC.view) setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
         }
     }
-    else if ( self.segmentControl.selectedSegmentIndex == 1 )
+    else if ( self.segmentedControl.selectedSegmentIndex == 1 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
         [self cancelUserSearch:YES andHashtagSearch:NO];
@@ -231,9 +215,6 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
         }
     }
-    
-    // Perform search
-    [self searchForCurrentStateWithText:self.searchField.text];
 }
 
 #pragma mark - Search Actions
@@ -336,94 +317,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     self.tagsSearchResultsVC.searchResults = @[];
 }
 
-- (void)userSearch:(NSString *)userName
-{
-    if ([self.currentUserSearchQueryText isEqualToString:userName])
-    {
-        return;
-    }
-    self.currentUserSearchQueryText = userName;
-    NSString *userSearchSentinel = [self.currentUserSearchQueryText copy];
-    
-    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
-    if (userName.length == 0)
-    {
-        [hud hide:YES];
-        return;
-    }
-    
-    if (hud == nil)
-    {
-        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    }
-    else
-    {
-        [hud show:YES];
-    }
-    hud.userInteractionEnabled = NO;
-    
-    __weak typeof(self) welf = self;
-    VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Jump back to main thread for comparison
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            // This is an outdated search result ignore.
-            if (![welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
-            {
-                return;
-            }
-            dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
-                           {
-                               NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-                               NSArray *results = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-                               
-                               dispatch_async(dispatch_get_main_queue(), ^
-                                              {
-                                                  if (results.count > 0)
-                                                  {
-                                                      [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
-                                                  }
-                                                  else
-                                                  {
-                                                      self.userSearchResultsVC.searchResults = nil;
-                                                      [self showNoResultsReturnedForSearch];
-                                                  }
-                                                  [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
-                                                  [hud hide:YES];
-                                              });
-                           });
-        });
-    };
-    
-    VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            if ([welf.currentUserSearchQueryText isEqualToString:userSearchSentinel])
-            {
-                [hud hide:YES];
-            }
-        });
-    };
-    
-    if ( [userName length] > 0 )
-    {
-        [self cancelUserSearch:YES andHashtagSearch:NO];
-        dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
-        {
-            self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:userName
-                                                                                  sequenceID:nil
-                                                                                       limit:kVMaxSearchResults
-                                                                                     context:VObjectManagerSearchContextDiscover
-                                                                            withSuccessBlock:searchSuccess
-                                                                                   failBlock:searchFail];
-        });
-    }
-    
-    self.userSearchResultsVC.searchResults = @[];
-}
-
 - (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
 {
     if (userFlag && self.userSearchRequest != nil)
@@ -440,18 +333,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         {
             [self.tagSearchRequest cancel];
         }
-    }
-}
-
-- (void)searchForCurrentStateWithText:(NSString *)searchText
-{
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
-    {
-        [self userSearch:searchText];
-    }
-    else if (self.segmentControl.selectedSegmentIndex == 1)
-    {
-        [self hashtagSearch:searchText];
     }
 }
 
@@ -478,8 +359,7 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
-    self.userSearchResultsVC.searchResults = nil;
-    self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.userSearchResultsVC clear];
         
     self.tagsSearchResultsVC.searchResults = nil;
     self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -490,7 +370,7 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.searchField resignFirstResponder];
-    [self searchForCurrentStateWithText:textField.text];
+    [self searchWithSearchTerm:textField.text];
     return YES;
 }
 
@@ -506,15 +386,17 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         noResultsFoundView.dependencyManager = self.dependencyManager;
     }
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    if ( self.segmentedControl.selectedSegmentIndex == 0 )
     {
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
         messageText = NSLocalizedString(@"No people found in search", @"");
         messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
-        self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        UITableView *tableView = (UITableView *)self.userSearchResultsVC.view;
+        tableView.backgroundView = noResultsFoundView;
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
-    else if ( self.segmentControl.selectedSegmentIndex == 1 )
+    else if ( self.segmentedControl.selectedSegmentIndex == 1 )
     {
         messageTitle = NSLocalizedString(@"No Hashtags Found In Search Title", @"");
         messageText = NSLocalizedString(@"No hashtags found in search", @"");
