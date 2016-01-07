@@ -1,5 +1,5 @@
 //
-//  FollowUserOperationTest.swift
+//  FollowUserOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/21/15.
@@ -9,8 +9,7 @@
 import XCTest
 @testable import victorious
 
-class FollowUserOperationTest: XCTestCase {
-    let expectationThreshold: Double = 2
+class FollowUserOperationTests: XCTestCase {
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
