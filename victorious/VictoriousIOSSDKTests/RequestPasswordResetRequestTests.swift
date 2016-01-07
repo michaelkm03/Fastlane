@@ -8,11 +8,13 @@
 
 import XCTest
 import VictoriousIOSSDK
+import SwiftyJSON
 
 class RequestPasswordResetRequestTests: XCTestCase {
     
+    let mockEmail: String = "mock@gmail.com"
+    
     func testRequest() {
-        let mockEmail: String = "mock@gmail.com"
         let request = RequestPasswordResetRequest(email: mockEmail)
         let urlRequest = request.urlRequest
         
@@ -25,5 +27,19 @@ class RequestPasswordResetRequestTests: XCTestCase {
         let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
         
         XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+    }
+    
+    func testParseResponse() {
+        let mockDeviceToken = "MockDeviceToken"
+        let mockJSON = JSON( [ "payload": ["device_token": mockDeviceToken] ] )
+        
+        do {
+            let request = RequestPasswordResetRequest(email: mockEmail)
+            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: NSData(), responseJSON: mockJSON)
+            
+            XCTAssertEqual(results, "MockDeviceToken")
+        } catch {
+            XCTFail("Sorry, parseResponse should not throw here")
+        }
     }
 }

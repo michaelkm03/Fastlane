@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public struct RequestPasswordResetRequest: RequestType {
     
@@ -22,5 +23,14 @@ public struct RequestPasswordResetRequest: RequestType {
         urlRequest.vsdk_addURLEncodedFormPost(accountInfo)
         
         return urlRequest
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String{
+        let payload = responseJSON["payload"]
+        guard let deviceToken = payload["device_token"].string else {
+            throw ResponseParsingError()
+        }
+        
+        return deviceToken
     }
 }
