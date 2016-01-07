@@ -47,9 +47,9 @@ class FollowUserOperation: RequestOperation {
             
             context.v_save()
 
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         }
-            
+
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
     }
 }

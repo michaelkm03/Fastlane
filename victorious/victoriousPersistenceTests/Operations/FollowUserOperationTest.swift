@@ -80,6 +80,7 @@ class FollowUserOperationTest: XCTestCase {
             XCTFail("following a non existent user created new users \(createdUsers) which it shouldn't do")
         }
 
+        XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
         XCTAssertEqual(1, self.testTrackingManager.trackEventCalls.count)
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
