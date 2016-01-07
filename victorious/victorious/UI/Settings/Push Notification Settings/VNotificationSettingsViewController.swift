@@ -38,9 +38,9 @@ extension VNotificationSettingsViewController {
                 let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "" )
                 let message = NSLocalizedString("ErrorPushNotificationsNotSavedMessage", comment: "" )
 
-                let alertController = VAlertController.alertWithTitle(title, message: message)
-                alertController.addAction(VAlertAction.cancelButtonWithTitle(NSLocalizedString("OK", comment: ""), handler: nil))
-                alertController.presentInViewController(navigationController, animated: true, completion: nil)
+                let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+                navigationController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }

@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
 #import "VCreationFlowController.h"
-#import "VAlertController.h"
 #import "VCreateSheetViewController.h"
 #import "VTrackingManager.h"
 #import "victorious-Swift.h"

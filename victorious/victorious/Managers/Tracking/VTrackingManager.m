@@ -187,8 +187,11 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                            [[[UIAlertView alloc] initWithTitle:eventName message:[self stringFromDictionary:completeParams]
                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                        });
     }
     
@@ -269,7 +272,10 @@
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                            [[[UIAlertView alloc] initWithTitle:@"Event Started" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                        });
         NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
     }
@@ -295,7 +301,10 @@
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                            {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                                [[[UIAlertView alloc] initWithTitle:@"Event Ended" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
                            });
             NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
         }
