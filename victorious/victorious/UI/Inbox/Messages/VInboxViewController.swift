@@ -23,9 +23,13 @@ extension VInboxViewController: SearchResultsViewControllerDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func searchResultsViewControllerDidSelectResult(result: UserSearchResultObject) {
+    func searchResultsViewControllerDidSelectResult(result: AnyObject) {
+        guard let userResult = result as? UserSearchResultObject else {
+            return
+        }
+        
         let loadedUser: VUser? = PersistentStoreSelector.mainPersistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueInfo = [ "remoteId" : result.sourceResult.userID ]
+            let uniqueInfo = [ "remoteId" : userResult.sourceResult.userID ]
             return context.v_findObjects( uniqueInfo ).first as? VUser
         }
         

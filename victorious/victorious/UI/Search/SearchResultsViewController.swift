@@ -21,27 +21,18 @@ protocol PaginatedDataSourceType: class {
 }
 
 protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSource {
+    func registerCells( forTableView tableView: UITableView )
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )
     var searchTerm: String? { get }
     var error: NSError? { get }
 }
 
-protocol SearchResultsViewControllerType {
-    func clear()
-    func search(searchTerm searchTerm: String)
-    
-    var searchController: UISearchController { set get }
-    var dataSource: SearchDataSourceType { set get }
-    var noContentView: VNoContentView? { get set }
-    var searchResultsDelegate: SearchResultsViewControllerDelegate? { set get }
-}
-
 @objc protocol SearchResultsViewControllerDelegate: class {
     func searchResultsViewControllerDidSelectCancel()
-    func searchResultsViewControllerDidSelectResult(result: UserSearchResultObject)
+    func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }
 
-class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate, SearchResultsViewControllerType {
+class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISearchControllerDelegate, UITableViewDelegate, VScrollPaginatorDelegate, PaginatedDataSourceDelegate {
     
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     var dependencyManager: VDependencyManager?
@@ -66,10 +57,9 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         }
     }
     
-    var dataSource: SearchDataSourceType = UserSearchDataSource() {
+    var dataSource: SearchDataSourceType! {
         didSet {
-            dataSource.delegate = self
-            tableView.reloadData()
+            onDidSetDataSource()
         }
     }
     
@@ -94,6 +84,11 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         state = .Cleared
     }
     
+    func cancel() {
+        dataSource.cancelCurrentOperation()
+        updateSearchState()
+    }
+    
     func search( searchTerm searchTerm: String ) {
         dataSource.search(searchTerm: searchTerm, pageType: .First) { error in
             self.updateSearchState()
@@ -112,10 +107,9 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         
         searchController.searchBar.delegate = self
         dataSource.delegate = self
-
-        tableView.dataSource = dataSource
-        tableView.delegate = self
+        tableView.separatorStyle = .None
         
+        onDidSetDataSource()
         onSearchStateUpdated()
         setupNoContentView()
     }
@@ -132,9 +126,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     // MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let searchResult = dataSource.visibleItems[ indexPath.row ] as? UserSearchResultObject else {
-            return
-        }
+        let searchResult = dataSource.visibleItems[ indexPath.row ]
         searchResultsDelegate?.searchResultsViewControllerDidSelectResult(searchResult)
     }
     
@@ -189,6 +181,17 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     // MARK: - Private
     
+    private func onDidSetDataSource() {
+        guard isViewLoaded() else {
+            return
+        }
+        dataSource.delegate = self
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+        
+        dataSource.registerCells( forTableView: tableView )
+    }
+    
     private func setupNoContentView() {
         if let noContentView = noContentView where isViewLoaded() && noContentView.superview == nil {
             view.insertSubview(noContentView, belowSubview: tableView)
@@ -216,22 +219,18 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
                 noContentView?.resetInitialAnimationState()
             }
             noContentView?.animateTransitionIn()
-            tableView.separatorStyle = .None
             
         case .Error:
             noContentView?.hidden = true
             tableView.hidden = true
-            tableView.separatorStyle = .None
             
         case .Cleared, .Loading where dataSource.visibleItems.count == 0:
             noContentView?.hidden = true
             tableView.hidden = false
-            tableView.separatorStyle = .None
             
         default:
             noContentView?.hidden = true
             tableView.hidden = false
-            tableView.separatorStyle = .SingleLine
         }
         
         tableView.reloadData()

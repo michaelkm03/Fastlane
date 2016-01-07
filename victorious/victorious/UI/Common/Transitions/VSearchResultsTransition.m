@@ -7,7 +7,7 @@
 //
 
 #import "VSearchResultsTransition.h"
-#import "VUsersAndTagsSearchViewController.h"
+#import "DiscoverSearchViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 // The position of the search bar in the from view controller on transition in adjusted for the status bar
@@ -18,17 +18,17 @@ const static CGFloat kStartTopOffset = 36.0f;
 - (BOOL)canPerformCustomTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController
 {
     BOOL isValidForward = [fromViewController isKindOfClass:[VDiscoverContainerViewController class]] &&
-                          [toViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+                          [toViewController isKindOfClass:[DiscoverSearchViewController class]];
     
     BOOL isValidBackward = [toViewController isKindOfClass:[VDiscoverContainerViewController class]] &&
-                           [fromViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+                           [fromViewController isKindOfClass:[DiscoverSearchViewController class]];
     
     return isValidForward || isValidBackward;
 }
 
 - (void)prepareForTransitionIn:(VTransitionModel *)model
 {
-    VUsersAndTagsSearchViewController *toViewController = (VUsersAndTagsSearchViewController *)model.toViewController;
+    DiscoverSearchViewController *toViewController = (DiscoverSearchViewController *)model.toViewController;
     
     toViewController.searchResultsContainerView.alpha = 0.0f;
     toViewController.opaqueBackgroundView.alpha = 0.0f;
@@ -44,7 +44,7 @@ const static CGFloat kStartTopOffset = 36.0f;
 
 - (void)performTransitionIn:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    VUsersAndTagsSearchViewController *toViewController = (VUsersAndTagsSearchViewController *)model.toViewController;
+    DiscoverSearchViewController *toViewController = (DiscoverSearchViewController *)model.toViewController;
     
     [UIView animateWithDuration:model.animationDuration
                           delay:0.0f
@@ -73,7 +73,7 @@ const static CGFloat kStartTopOffset = 36.0f;
 
 - (void)prepareForTransitionOut:(VTransitionModel *)model
 {
-    VUsersAndTagsSearchViewController *fromViewController = (VUsersAndTagsSearchViewController *)model.fromViewController;
+    DiscoverSearchViewController *fromViewController = (DiscoverSearchViewController *)model.fromViewController;
     
     fromViewController.searchResultsContainerView.alpha = 1.0f;
     fromViewController.opaqueBackgroundView.alpha = 1.0f;
@@ -87,7 +87,7 @@ const static CGFloat kStartTopOffset = 36.0f;
 
 - (void)performTransitionOut:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    VUsersAndTagsSearchViewController *fromViewController = (VUsersAndTagsSearchViewController *)model.fromViewController;
+    DiscoverSearchViewController *fromViewController = (DiscoverSearchViewController *)model.fromViewController;
     
     [UIView animateWithDuration:model.animationDuration
                           delay:0.0f

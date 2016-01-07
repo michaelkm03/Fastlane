@@ -1,0 +1,201 @@
+//
+//  DiscoverSearchViewController.m
+//  victorious
+//
+//  Created by Lawrence Leach on 1/27/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+#import "MBProgressHUD.h"
+#import "UIVIew+AutoLayout.h"
+#import "VConstants.h"
+#import "VDependencyManager.h"
+#import "VDiscoverContainerViewController.h"
+#import "VNavigationController.h"
+#import "VNoContentView.h"
+#import "VSimpleModalTransition.h"
+#import "DiscoverSearchViewController.h"
+#import "victorious-Swift.h"
+
+@interface DiscoverSearchViewController () <UITextFieldDelegate>
+
+@property (nonatomic, strong) NSString *currentUserSearchQueryText;
+@property (nonatomic, strong) NSString *currentHashtagSearchQueryText;
+
+@property (nonatomic, weak) IBOutlet UITextField *searchField;
+@property (nonatomic, weak) IBOutlet UIView *searchBarView;
+@property (nonatomic, weak) IBOutlet UIView *headerView;
+
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, assign) BOOL isKeyboardShowing;
+@property (nonatomic, assign) CGFloat keyboardHeight;
+
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+
+@end
+
+@implementation DiscoverSearchViewController
+
+#pragma mark - Factory Methods
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Discover" bundle:nil];
+    DiscoverSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"search"];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
+}
+
+#pragma mark - dealloc
+
+- (void)dealloc
+{
+    _searchField.delegate = nil;
+}
+
+#pragma mark - View Lifecycle Methods
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Setup Search Results View Controllers
+    [self setupSearchViewControllers];
+    
+    // Initialize their views to alpha of 0.0 to ensure first segment selection works
+    self.userSearchViewController.view.alpha = 0.0f;
+    self.hashtagsSearchViewController.view.alpha = 0.0f;
+    
+    // Setup Search Field
+    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
+    [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
+    [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    self.searchField.delegate = self;
+
+    // Set highlighted state for close button
+    [self.closeButton setImage:[UIImage imageNamed:@"CloseHighlighted"] forState:UIControlStateHighlighted];
+    
+    // Set tap gesture
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeButtonAction:)];
+    self.tapGestureRecognizer.numberOfTapsRequired = 1;
+    self.tapGestureRecognizer.numberOfTouchesRequired = 1;
+    
+    // Format the segmented control
+    self.segmentedControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.segmentedControl.selectedSegmentIndex = 0;
+    [self segmentedControlAction:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.searchField becomeFirstResponder];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
+    }
+}
+
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return YES;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+- (UIColor *)statusBarBackgroundColor
+{
+    return [UIColor whiteColor];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)closeButtonAction:(id)sender
+{
+    [self.currentSearchVC cancel];
+    
+    if ( self.presentingViewController != nil )
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if ( self.navigationController != nil )
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark - UISegmentControl Action
+
+- (IBAction)segmentedControlAction:(id)sender
+{
+    [self.currentSearchVC cancel];
+    
+    SearchResultsViewController *previousSearchVC = self.currentSearchVC;
+    
+    switch ( self.segmentedControl.selectedSegmentIndex )
+    {
+        case 0:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
+            self.currentSearchVC = self.userSearchViewController;
+            break;
+            
+        case 1:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+            self.currentSearchVC = self.hashtagsSearchViewController;
+            break;
+            
+        default:
+            return;
+    }
+    
+    NSTimeInterval duration = previousSearchVC == nil ? 0.0f : 0.15f;
+    [UIView animateWithDuration:duration animations:^
+     {
+         self.currentSearchVC.view.alpha = 1.0;
+         previousSearchVC.view.alpha = 0.0;
+     }];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    [self.currentSearchVC clear];
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.searchField resignFirstResponder];
+    if ( textField.text != nil && textField.text.length > 0 )
+    {
+        [self.currentSearchVC searchWithSearchTerm:textField.text];
+    }
+    return YES;
+}
+
+@end

@@ -28,8 +28,9 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         super.viewDidLoad()
         
         if let viewController = viewControllers.first,
-            var searchResultsViewControler = viewController as? SearchResultsViewControllerType {
+            var searchResultsViewControler = viewController as? SearchResultsViewController {
                 
+                searchResultsViewControler.dataSource = UserSearchDataSource()
                 searchResultsViewControler.searchResultsDelegate = self
                 
                 let searchController = UISearchController(searchResultsController: nil)
@@ -68,8 +69,8 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
     }
     
-    func searchResultsViewControllerDidSelectResult(result: UserSearchResultObject) {
-        searchResultsDelegate?.searchResultsViewControllerDidSelectResult( result )
+    func searchResultsViewControllerDidSelectResult(result: AnyObject) {
+        searchResultsDelegate?.searchResultsViewControllerDidSelectResult(result)
     }
 }
 

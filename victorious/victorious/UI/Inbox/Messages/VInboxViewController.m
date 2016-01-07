@@ -10,7 +10,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VInboxViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VUserSearchViewController.h"
 #import "VConversation+RestKit.h"
 #import "VMessageViewController.h"
 #import "VMessageContainerViewController.h"
@@ -38,7 +37,7 @@
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController () <VSearchResultsViewControllerDelegate, VProvidesNavigationMenuItemBadge>
+@interface VInboxViewController () <VProvidesNavigationMenuItemBadge>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -450,24 +449,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     return YES;
-}
-
-#pragma mark - Search
-
-- (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController
-{
-    if ( user != nil )
-    {
-        [self displayConversationForUser:user animated:NO];
-    }
-    
-    /*
-     Call this to update the top bar before dismissing since UINavigationDelegate methods will not fire
-     from a navigation controller that is not in the foreground and thus not update the top bar appearance
-     */
-    [[self v_navigationController] updateSupplementaryHeaderViewForViewController:self];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

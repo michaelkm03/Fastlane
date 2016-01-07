@@ -1,15 +1,15 @@
 //
-//  UserSearchDataSource.swift
+//  HashtagSearchDataSource.swift
 //  victorious
 //
-//  Created by Michael Sena on 1/5/16.
+//  Created by Patrick Lynch on 1/6/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 import VictoriousIOSSDK
 
-final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UITableViewDataSource {
+final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, UITableViewDataSource {
     
     enum Section: Int {
         case Results
@@ -21,15 +21,19 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     private(set) var searchTerm: String?
     private(set) var error: NSError?
     
-    override init() {
+    let dependencyManager: VDependencyManager
+    
+    required init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        
         super.init()
         
         clearsVisibleItemsBeforeLoadingFirstPage = true
     }
     
     func registerCells( forTableView tableView: UITableView ) {
-        let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
-        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: UserSearchResultTableViewCell.self) )
+        let identifier = VTrendingTagCell.suggestedReuseIdentifier()
+        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VTrendingTagCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
     }
     
@@ -38,7 +42,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? = nil ) {
         
         self.searchTerm = searchTerm
-        guard let operation = UserSearchOperation(queryString: searchTerm) else {
+        guard let operation = HashtagSearchOperation(queryString: searchTerm) else {
             return
         }
         
@@ -78,15 +82,12 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         switch Section(rawValue: indexPath.section)! {
             
         case .Results:
-            let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
-            if let searchResultCell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? UserSearchResultTableViewCell,
-                let visibleItem = visibleItems[indexPath.row] as? UserSearchResultObject {
-                    let userNetworkStruct = visibleItem.sourceResult
-                    let username = userNetworkStruct.name ?? ""
-                    let profileURLString = userNetworkStruct.profileImageURL ?? ""
-                    let profileURL = NSURL(string: profileURLString) ?? NSURL()
-                    searchResultCell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:profileURL)
-                    return searchResultCell
+            let identifier = VTrendingTagCell.suggestedReuseIdentifier()
+            if let searchResultCell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? VTrendingTagCell,
+                let visibleItem = visibleItems[indexPath.row] as? HashtagSearchResultObject {
+                    searchResultCell.dependencyManager = self.dependencyManager
+                    searchResultCell.hashtagText = visibleItem.sourceResult.tag;
+                    return searchResultCell;
             }
             
         case .ActivityIndicator:

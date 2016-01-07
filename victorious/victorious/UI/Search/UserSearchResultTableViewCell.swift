@@ -38,6 +38,6 @@ class UserSearchResultTableViewCell: UITableViewCell {
     @IBOutlet private var usernameLabel: UILabel!
     
     class func suggestedReuseIdentifier() -> String {
-        return "UserSearchResultTableViewCell"
+        return StringFromClass(UserSearchResultTableViewCell.self)
     }
 }

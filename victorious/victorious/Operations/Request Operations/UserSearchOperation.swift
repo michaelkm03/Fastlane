@@ -45,20 +45,20 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         completion()
     }
     
-    private func onComplete(result: UserSearchRequest.ResultType, completion: () -> () ) {
+    private func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
         
-        self.results = result.map{ UserSearchResultObject( user: $0) }
+        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
         
         // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
         completion()
         
         // Populate our local users cache based off the new data
         persistentStore.backgroundContext.v_performBlock { context in
-            guard !result.isEmpty else {
+            guard !networkResult.isEmpty else {
                 return
             }
             
-            for networkUser in result {
+            for networkUser in networkResult {
                 let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber(integer: networkUser.userID)])
                 localUser.populate(fromSourceModel: networkUser)
             }

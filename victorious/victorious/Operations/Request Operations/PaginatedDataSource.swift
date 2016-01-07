@@ -30,6 +30,10 @@ import Foundation
     
     private(set) var currentOperation: RequestOperation?
     private(set) var isLoading: Bool = false
+    
+    /// Tells the data source to unload all items from its `visibleItems` backing store
+    /// whenever a page is loaded with a VPageType.First value specified.  This is useful for
+    /// search-style data sources that should clear when a new search has begun.
     var clearsVisibleItemsBeforeLoadingFirstPage: Bool = false
     
     private(set) dynamic var visibleItems = NSOrderedSet() {

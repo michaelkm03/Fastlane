@@ -162,10 +162,10 @@
             </objects>
             <point key="canvasLocation" x="-3287" y="-2356"/>
         </scene>
-        <!--Users And Tags Search View Controller-->
+        <!--Discover Search View Controller-->
         <scene sceneID="s5y-QJ-vNI">
             <objects>
-                <viewController storyboardIdentifier="search" extendedLayoutIncludesOpaqueBars="YES" id="yFr-Wo-U07" customClass="VUsersAndTagsSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="search" extendedLayoutIncludesOpaqueBars="YES" id="yFr-Wo-U07" customClass="DiscoverSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RWd-Yq-4gI"/>
                         <viewControllerLayoutGuide type="bottom" id="azt-9F-nzR"/>

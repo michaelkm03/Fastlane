@@ -11,13 +11,8 @@ import SwiftyJSON
 
 public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    enum SearchContext: String {
-        case Message = "message"
-        case Discover = "discover"
-        case UserTag = "tag_user"
-    }
-    
     public let queryString: String
+    
     var context = SearchContext.Message
     
     public let paginator: StandardPaginator
@@ -48,4 +43,3 @@ public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
         return usersJSON.flatMap { User(json: $0) }
     }
 }
-

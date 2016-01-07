@@ -357,7 +357,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-            [customCell setHashtag:hashtag];
+            [customCell setHashtagText:hashtag.tag];
             
             __weak VTrendingTagCell *weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)
@@ -501,7 +501,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         if ( [cell isKindOfClass:[VTrendingTagCell class]] )
         {
             VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
-            if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
+            if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
             {
                 VFollowControlState controlState = VFollowControlStateLoading;
                 if ( respond )

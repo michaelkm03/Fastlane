@@ -7,8 +7,6 @@
 //
 
 #import "VExploreSearchResultsViewController.h"
-#import "VUserSearchResultsViewController.h"
-#import "VTagsSearchResultsViewController.h"
 #import "victorious-Swift.h"
 
 @interface VExploreSearchResultsViewController ()
@@ -21,17 +19,12 @@
 
 #pragma mark - Factory Methods
 
-+ (instancetype)usersAndTagsSearchViewController
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Explore" bundle:nil];
-    return [storyboard instantiateViewControllerWithIdentifier:@"search"];
-}
-
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VExploreSearchResultsViewController *usersAndTagsVC = [self usersAndTagsSearchViewController];
-    usersAndTagsVC.dependencyManager = dependencyManager;
-    return usersAndTagsVC;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Explore" bundle:nil];
+    VExploreSearchResultsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"search"];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 #pragma mark - View Lifecycle Methods
@@ -40,21 +33,23 @@
 {
     [super viewDidLoad];
     
-    // FIXME
+#warning FIXME:
     //self.userSearchResultsVC.navigationDelegate = self.navigationDelegate;
-    self.tagsSearchResultsVC.navigationDelegate = self.navigationDelegate;
+    //self.hashtagsSearchResultsVC.navigationDelegate = self.navigationDelegate;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self textFieldShouldClear:nil];
+#warning FIXME:
+    //[self textFieldShouldClear:nil];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self searchWithSearchTerm:searchBar.text];
+#warning FIXME:
+    //[self searchWithSearchTerm:searchBar.text];
 }
 
 @end
