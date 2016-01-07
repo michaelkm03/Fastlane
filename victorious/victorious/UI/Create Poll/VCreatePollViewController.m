@@ -254,12 +254,14 @@ static char KVOContext;
         NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMessage ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidFailValidation parameters:params];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                        message:errorMessage
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                                                 message:errorMessage
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
         return NO;
     }
 

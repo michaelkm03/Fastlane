@@ -23,7 +23,6 @@
 #import "VNoContentView.h"
 #import "VFacebookActivity.h"
 #import "NSString+VParseHelp.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
@@ -295,16 +294,20 @@
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
-                                  {
-                                      [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
-                                  }, nil];
-    [actionSheet showInView:viewController.view];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Report/Flag", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [self flagActionForSequence:sequence fromViewController:viewController completion:completion];
+                                }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    
+    [viewController presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController completion:(void (^)(UIAlertAction *))completion

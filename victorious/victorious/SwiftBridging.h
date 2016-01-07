@@ -32,7 +32,7 @@
 #import "VAbstractMarqueeController.h"
 #import "VAbstractStreamCollectionViewController.h"
 #import "VActionItem.h"
-#import "VAlertController.h"
+#import "VAbstractStreamCollectionViewController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
 #import "VAppTimingEventType.h"

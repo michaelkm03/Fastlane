@@ -23,15 +23,16 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
 {
     NSParameterAssert( viewController != nil ); //< This is here for future use of UIAlertController
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                                    message:error.localizedDescription
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                             message:error.localizedDescription
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [viewController presentViewController:alertController animated:YES completion:nil];
 }
 
-- (BOOL)validateString:(NSString *)string 
+- (BOOL)validateString:(NSString *)string
               andError:(NSError **)error
 {
     NSAssert(false, @"Implement in subclasses!");
