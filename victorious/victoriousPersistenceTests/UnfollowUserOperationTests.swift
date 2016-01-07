@@ -25,7 +25,6 @@ class UnfollowUserOperationTests: XCTestCase {
         testStore = TestPersistentStore()
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
-        VCurrentUser.persistentStore = testStore
         operation = UnfollowUserOperation(userID: userID, screenName: screenName)
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager

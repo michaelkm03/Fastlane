@@ -27,10 +27,8 @@ class FollowUserOperationTest: XCTestCase {
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
         operation = FollowUserOperation(userID: userID, screenName: screenName)
-        operation.persistentStore = testStore
         operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
-        VCurrentUser.persistentStore = testStore
     }
 
     func testFollowingAnExistentUser() {
