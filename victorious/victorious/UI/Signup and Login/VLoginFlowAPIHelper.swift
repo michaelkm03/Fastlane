@@ -38,11 +38,4 @@ extension VLoginFlowAPIHelper {
         
         return nil
     }
-    
-    func queueRequestPasswordResetOperation(email: String, completion:(NSError?)->Void) -> NSOperation {
-        let operation = RequestPasswordResetOperation(email: email)
-        operation.queue(completion)
-        
-        return operation
-    }
 }
