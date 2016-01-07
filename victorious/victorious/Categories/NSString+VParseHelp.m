@@ -7,6 +7,7 @@
 //
 
 #import "NSString+VParseHelp.h"
+@import VictoriousIOSSDK;
 
 @implementation NSString (VParseHelp)
 
@@ -68,7 +69,7 @@
 - (NSString *)v_pathComponent
 {
     // We must percent encode the macros in our path otherwise NSURLComponents will return nil
-    NSString *percentEncoded = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *percentEncoded = [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]];
     NSURLComponents *components = [[NSURLComponents alloc] initWithString:percentEncoded];
     return components.path;
 }

@@ -331,12 +331,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         message = NSLocalizedString(@"User already exists but the password is incorrect", @"");
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - VBackgroundContainer

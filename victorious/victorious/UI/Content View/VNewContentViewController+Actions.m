@@ -7,8 +7,6 @@
 //
 
 #import "VNewContentViewController+Actions.h"
-#import "UIActionSheet+VBlocks.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
@@ -194,20 +192,30 @@
             [self dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 UIActionSheet *confirmDeleteActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
-                                                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                                                                 onCancelButton:nil
-                                                                         destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
-                                                                            onDestructiveButton:^
-                                                            {
-                                                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^
-                                                                 {
-                                                                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self.viewModel deleteSequenceWithCompletion:nil];
-                                                                }];
-                                                            }
-                                                                     otherButtonTitlesAndBlocks:nil, nil];
-                 [confirmDeleteActionSheet showInView:self.view];
+                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"AreYouSureYouWantToDelete", @"")
+                                                                                          message:nil
+                                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+                 
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil]];
+                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                                     style:UIAlertActionStyleDestructive
+                                                                   handler:^(UIAlertAction *action)
+                                             {
+                                                 [self.presentingViewController dismissViewControllerAnimated:YES
+                                                                                                   completion:^
+                                                  {
+                                                      [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
+                                                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                       {
+                                                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
+                                                       }
+                                                                                           failBlock:nil];
+                                                  }];
+                                             }]];
+                 
+                 [self presentViewController:alertController animated:YES completion:nil];
              }];
         };
         [actionItems addObject:deleteItem];
