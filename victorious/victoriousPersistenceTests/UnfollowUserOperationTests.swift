@@ -58,7 +58,7 @@ class UnfollowUserOperationTests: XCTestCase {
         }
 
         XCTAssertEqual(0, updatedUser.numberOfFollowers)
-        XCTAssertEqual(0, currentUser.numberOfFollowing)
+        XCTAssertEqual(0, updatedCurrentUser.numberOfFollowing)
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
         XCTAssertEqual(VTrackingEventUserDidUnfollowUser, testTrackingManager.trackEventCalls[0].eventName!)
     }
