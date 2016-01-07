@@ -9,7 +9,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
-#import "UIActionSheet+VBlocks.h"
 #import "NSNumber+VBitmask.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"

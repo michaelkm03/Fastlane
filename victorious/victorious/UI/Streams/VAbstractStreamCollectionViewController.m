@@ -10,7 +10,6 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VCardDirectoryCell.h"
 #import "MBProgressHUD.h"
-#import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
 
 //View Controllers

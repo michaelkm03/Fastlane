@@ -276,12 +276,13 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                        message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                                                 message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:nil]];
+        [[VRootViewController rootViewController] presentViewController:alertController animated:YES completion:nil];
     }
 }
 

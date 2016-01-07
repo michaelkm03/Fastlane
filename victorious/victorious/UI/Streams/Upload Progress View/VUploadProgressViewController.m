@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIActionSheet+VBlocks.h"
 #import "VUploadManager.h"
 #import "VUploadProgressView.h"
 #import "VUploadProgressViewController.h"
@@ -176,28 +175,31 @@ static const NSTimeInterval kAnimationDuration = 0.2;
         case VUploadProgressViewStateFailed:
         case VUploadProgressViewStateInProgress:
         {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"UploadCancelAreYouSure", @"")
-                                                            cancelButtonTitle:NSLocalizedString(@"NoKeepUploading", @"")
-                                                               onCancelButton:nil
-                                                       destructiveButtonTitle:NSLocalizedString(@"YesCancelUpload", @"")
-                                                          onDestructiveButton:^(void)
-            {
-                if (uploadProgressView.state == VUploadProgressViewStateInProgress)
-                {
-                    uploadProgressView.state = VUploadProgressViewStateCanceling;
-                }
-                else
-                {
-                    [self removeUpload:uploadProgressView animated:YES];
-                }
-                
-                NSString *eventName = isFailed ? VTrackingEventUserDidCancelFailedUpload : VTrackingEventUserDidCancelPendingUpload;
-                [[VTrackingManager sharedInstance] trackEvent:eventName];
-                
-                [self.uploadManager cancelUploadTask:uploadProgressView.uploadTask];
-            }
-                                                   otherButtonTitlesAndBlocks:nil];
-            [actionSheet showInView:self.parentViewController.view];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"UploadCancelAreYouSure", @"")
+                                                                                     message:nil
+                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NoKeepUploading", @"")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil]];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YesCancelUpload", @"")
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction *action)
+                                        {
+                                            if (uploadProgressView.state == VUploadProgressViewStateInProgress)
+                                            {
+                                                uploadProgressView.state = VUploadProgressViewStateCanceling;
+                                            }
+                                            else
+                                            {
+                                                [self removeUpload:uploadProgressView animated:YES];
+                                            }
+                                            
+                                            NSString *eventName = isFailed ? VTrackingEventUserDidCancelFailedUpload : VTrackingEventUserDidCancelPendingUpload;
+                                            [[VTrackingManager sharedInstance] trackEvent:eventName];
+                                            
+                                            [self.uploadManager cancelUploadTask:uploadProgressView.uploadTask];
+                                        }]];
+            [self.parentViewController presentViewController:alertController animated:YES completion:nil];
         }
             break;
         case VUploadProgressViewStateFinalizing:

@@ -14,7 +14,6 @@
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
-#import "UIAlertView+VBlocks.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NSURL+MediaType.h"
 #import "VPublishSaveCollectionViewCell.h"
@@ -316,16 +315,17 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
         [hud hide:YES];
         
         if (error != nil)
-        {
-            UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
-                                                                     message:error.localizedDescription
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                              onCancelButton:^
-                                           {
-                                               [strongSelf closeOnComplete:NO];
-                                           }
-                                                  otherButtonTitlesAndBlocks:nil, nil];
-            [publishFailure show];
+        {           
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upload failure", @"")
+                                                                                     message:error.localizedDescription
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:^(UIAlertAction *action)
+                                        {
+                                            [strongSelf closeOnComplete:NO];
+                                        }]];
+            [strongSelf presentViewController:alertController animated:YES completion:nil];
         }
         else
         {
