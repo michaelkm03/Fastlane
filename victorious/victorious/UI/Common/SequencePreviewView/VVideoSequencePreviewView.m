@@ -359,11 +359,6 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     {
         [self.videoPlayer playFromStart];
     }
-    else if ( !self.willShowEndCard )
-    {
-        self.state = VVideoStateEnded;
-        [super videoPlayerDidReachEnd:videoPlayer];
-    }
     else
     {
         self.state = VVideoStateEnded;
