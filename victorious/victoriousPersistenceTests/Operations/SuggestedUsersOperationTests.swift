@@ -15,7 +15,7 @@ class SuggestedUsersOperationTests: XCTestCase {
     let expectationThreshold: Double = 10
     var operation: SuggestedUsersOperation!
     var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor!
+    var testRequestExecutor: TestRequestExecutor<SuggestedUsersRequest>!
     let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {

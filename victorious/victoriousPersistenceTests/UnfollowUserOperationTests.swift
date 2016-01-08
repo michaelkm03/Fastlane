@@ -8,11 +8,12 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
 class UnfollowUserOperationTests: XCTestCase {
     var operation: UnfollowUserOperation!
     var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor!
+    var testRequestExecutor: TestRequestExecutor<UnfollowUserRequest>!
     var testTrackingManager: TestTrackingManager!
     let userID = 1
     let currentUserID = 2

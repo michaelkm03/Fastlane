@@ -8,12 +8,13 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
 class FollowUserOperationTests: XCTestCase {
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor!
+    var testRequestExecutor: TestRequestExecutor<FollowUserRequest>!
     let userID: Int = 1
     let currentUserID: Int = 2
     let screenName = "screenName"
