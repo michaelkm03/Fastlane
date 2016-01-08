@@ -31,6 +31,7 @@ class BaseRequestOperationTestCase: XCTestCase {
         } catch {
             XCTFail("Something went wrong while clearing persitent store")
         }
+        super.tearDown()
     }
 
     // Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
