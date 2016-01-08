@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Adds a new parameter that will be passed to all tracking calls until cleared.
  */
-- (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key;
+- (void)setValue:(id _Nullable)value forSessionParameterWithKey:(NSString *)key;
 
 /**
  Clears a session parameter if it existied, otherwise does nothing.

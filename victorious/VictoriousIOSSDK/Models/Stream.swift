@@ -39,7 +39,7 @@ extension Stream {
         }
         self.streamID               = streamID
         
-        releasedAt                  = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["posted_at"].stringValue)
+        releasedAt                  = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue)
         type                        = StreamContentType(rawValue: json["type"].stringValue)
         subtype                     = StreamContentType(rawValue: json["subtype"].stringValue)
         streamContentType           = StreamContentType(rawValue: json["stream_content_type"].stringValue)

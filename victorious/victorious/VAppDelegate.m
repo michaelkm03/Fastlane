@@ -101,17 +101,20 @@
     }
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
     if ( [VFacebookHelper canOpenURL:url] )
     {
-        return [[FBSDKApplicationDelegate sharedInstance] application:application
+        return [[FBSDKApplicationDelegate sharedInstance] application:app
                                                               openURL:url
-                                                    sourceApplication:sourceApplication
-                                                           annotation:annotation];
+                                                    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                           annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     }
     
-    [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+    [[VRootViewController rootViewController] applicationOpenURL:url
+                                               sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                      annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    
     return YES;
 }
 

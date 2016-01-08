@@ -9,7 +9,6 @@
 #import "VSequence.h"
 #import "VAdBreak.h"
 #import "VComment.h"
-#import "VEndCard.h"
 #import "VImageAsset.h"
 #import "VNode.h"
 #import "VPollResult.h"
@@ -44,10 +43,8 @@
 @dynamic adBreaks;
 // TODO: Coments (and any other paginated to-many relationship) can be an unordered set now since we will always be ordering through fretch requests and pagination
 @dynamic comments;
-@dynamic endCard;
 @dynamic likers;
 @dynamic nodes;
-@dynamic parentEndCard;
 @dynamic parentUser;
 @dynamic pollResults;
 @dynamic recentUser;

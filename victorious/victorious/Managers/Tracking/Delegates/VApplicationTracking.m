@@ -102,7 +102,7 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
         _requestCounter = NSUIntegerMax;
-        _dateFormatter = [[DefaultDateFormatter alloc] init];
+        _dateFormatter = [NSDateFormatter vsdk_defaultDateFormatter];
     }
     return self;
 }
@@ -212,9 +212,8 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
         return;
     }
     
-    NSURLResponse *response = nil;
-    NSError *connectionError = nil;
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithRequest:request];
+    [dataTask resume];
     
 #if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )

@@ -9,9 +9,23 @@
 import XCTest
 import victorious
 
-class AcknowledgeAlertOperationTests: XCTestCase {
+class AcknowledgeAlertOperationTests: BaseRequestOperationTests {
+
+    var testRequestExecutor: TestRequestExecutor!
+    var operation: AcknowledgeAlertOperation!
+    let alertID = 99
+    
+    override func setUp() {
+        super.setUp()
+        operation = AcknowledgeAlertOperation(queryString: "test")
+        operation.requestExecutor = testRequestExecutor
+    }
     
     func testExample() {
+        queueExpectedOperation(operation: operation)
         
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+        }
     }
 }

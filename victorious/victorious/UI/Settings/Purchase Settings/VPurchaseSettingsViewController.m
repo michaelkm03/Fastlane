@@ -11,7 +11,6 @@
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
 #import "VVoteType.h"
-#import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
 #import "VThemeManager.h"
@@ -117,9 +116,13 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
 {
-    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
-    [alertConroller presentInViewController:self animated:YES completion:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource

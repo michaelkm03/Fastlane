@@ -45,7 +45,7 @@ extension Message {
         
         // Use our standard dateformat for postedAt
         if let postedAtString = json["posted_at"].string {
-            let date = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(postedAtString)
+            let date = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(postedAtString)
             self.postedAt = date
         } else {
             self.postedAt = nil

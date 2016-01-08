@@ -225,12 +225,13 @@
 
 - (void)showBadDeeplinkError
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                    message:NSLocalizedString(@"Missing Content Message", nil)
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                                             message:NSLocalizedString(@"Missing Content Message", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self.scaffold presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

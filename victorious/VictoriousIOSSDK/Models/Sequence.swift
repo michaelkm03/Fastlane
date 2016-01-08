@@ -33,7 +33,6 @@ public struct Sequence: StreamItemType {
     public let sequenceDescription: String?
     public let adBreaks: [AdBreak]?
     public let comments: [Comment]?
-    public let endCard: EndCard?
     public let nodes: [Node]?
     public let parentUser: User?
     public let tracking: Tracking?
@@ -70,7 +69,7 @@ extension Sequence {
     
         // MARK: - Optional data
         
-        releasedAt              = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["released_at"].stringValue)
+        releasedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["released_at"].stringValue)
         type                    = StreamContentType(rawValue: json["type"].stringValue)
         subtype                 = StreamContentType(rawValue: json["subtype"].stringValue)
         headline                = json["entry_label"].string
@@ -95,7 +94,6 @@ extension Sequence {
         parentUserID            = json["parent_user"].int
         adBreaks                = json["ad_breaks"].array?.flatMap { AdBreak(json: $0) }
         comments                = json["comments"].array?.flatMap { Comment(json: $0) }
-        endCard                 = EndCard(json: json["endcard"])
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
         tracking                = Tracking(json: json["tracking"])

@@ -18,7 +18,7 @@ private let _sharedDefaultDateFormatter = NSDateFormatter(vsdk_format: .Standard
 
 public extension NSDateFormatter {
     
-    public static var vsdk_defaultDateFormatter: NSDateFormatter {
+    public class func vsdk_defaultDateFormatter() -> NSDateFormatter {
         return _sharedDefaultDateFormatter
     }
     
@@ -28,13 +28,5 @@ public extension NSDateFormatter {
         dateFormat = format.rawValue
         locale = NSLocale(localeIdentifier: "en_US_POSIX")
         timeZone = NSTimeZone(forSecondsFromGMT: 0)
-    }
-}
-
-
-@objc class VDefaultDateFormatter: NSObject {
-    
-    class func defaultDateFormatter() -> NSDateFormatter {
-        return _sharedDefaultDateFormatter
     }
 }

@@ -28,13 +28,10 @@
 #import "VAsset+VAssetCache.h"
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
-#import "VEndCard.h"
 #import "VStream.h"
-#import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
 #import "UIColor+VHex.h"
-#import "VEndCardModelBuilder.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
@@ -180,13 +177,6 @@
     int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
     self.monetizationDetails = self.adChain;
-}
-
-- (void)updateEndcard
-{
-    // Sets up end card
-    VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
-    self.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
 - (CGSize)contentSizeWithinContainerSize:(CGSize)containerSize

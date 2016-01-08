@@ -37,7 +37,6 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.name, "Patrick's Fantastic Sequence" )
         XCTAssertEqual( sequence.previewData as? String, "http://media-dev-public.s3-website-us-west-1.amazonaws.com/6e063eaca658538013574646353759e8/thumbnail-00001.jpg" )
         XCTAssertNotNil( sequence.tracking )
-        XCTAssertNotNil( sequence.endCard )
         XCTAssertEqual( sequence.headline, "Headline!!!" )
         XCTAssertEqual( sequence.sequenceDescription, "Describe me a sequence, yo" )
         XCTAssertEqual( sequence.hasReposted, true)
