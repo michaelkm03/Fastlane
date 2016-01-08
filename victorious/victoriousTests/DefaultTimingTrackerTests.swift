@@ -61,7 +61,7 @@ class DefaultTimingTrackerTests: XCTestCase {
         XCTAssertNil( mockTracker.lastEvent )
         XCTAssertNil( mockTracker.lastParams )
         
-        NSThread.sleepForTimeInterval(0.2)
+        NSThread.sleepForTimeInterval(1.0)
         
         trackerWithDefaultURL.endEvent(type: eventType, subtype: eventSubtype)
         
@@ -74,7 +74,7 @@ class DefaultTimingTrackerTests: XCTestCase {
         }
         
         let duration = mockTracker.lastParams?[VTrackingKeyDuration] as? Float ?? 0.0
-        XCTAssertEqualWithAccuracy( duration, 200.0, accuracy: 5.0)
+        XCTAssertEqualWithAccuracy( duration, 1000.0, accuracy: 50.0)
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeySubtype] as? String, eventSubtype )
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeyType] as? String, eventType )
     }
