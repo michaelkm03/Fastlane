@@ -191,10 +191,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                     style:UIAlertActionStyleCancel
                                                                   handler:^(UIAlertAction *action)
                                             {
-                                                dispatch_async(dispatch_get_main_queue(), ^
-                                                               {
-                                                                   completion(NO, error);
-                                                               });
+                                                completion(NO, error);
                                             }];
              UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", nil)
                                                                    style:UIAlertActionStyleDefault
@@ -228,32 +225,27 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     {
         if (error == nil)
         {
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                [hud hide:YES];
-                completion(YES, nil);
-            });
+            [hud hide:YES];
+            completion(YES, nil);
         }
         else
         {
-            dispatch_async(dispatch_get_main_queue(), ^
-            {
-                [hud hide:YES];
-                
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
-                                                                                         message:NSLocalizedString(@"IncorrectCode", nil)
-                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                                      style:UIAlertActionStyleCancel
-                                                                    handler:^(UIAlertAction *action)
-                                              {
-                                                  completion(NO, error);
-                                              }];
-                [alertController addAction:alertAction];
-                [self.viewControllerToPresentOn presentViewController:alertController
-                                                             animated:YES
-                                                           completion:nil];
-            });
+            
+            [hud hide:YES];
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
+                                                                                     message:NSLocalizedString(@"IncorrectCode", nil)
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *alertAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                  style:UIAlertActionStyleCancel
+                                                                handler:^(UIAlertAction *action)
+                                          {
+                                              completion(NO, error);
+                                          }];
+            [alertController addAction:alertAction];
+            [self.viewControllerToPresentOn presentViewController:alertController
+                                                         animated:YES
+                                                       completion:nil];
         }
     }];
 }
