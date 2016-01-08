@@ -28,9 +28,11 @@ struct MockErrorRequest: RequestType {
 class RequestOperationTests: XCTestCase {
     
     var requestOperation: RequestOperation!
+    var requestOperationRequestExecutor: RequestExecutorType!
 
     override func setUp() {
         requestOperation = RequestOperation()
+        requestOperationRequestExecutor = MainRequestExecutor(persistentStore: MainPersistentStore())
     }
     
     func testBasic() {
@@ -38,7 +40,7 @@ class RequestOperationTests: XCTestCase {
         
         let request = MockRequest()
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperationrequestExecutor.executeRequest( request,
+            self.requestOperationRequestExecutor?.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in
                     completion()
                     expectation.fulfill()
@@ -56,7 +58,7 @@ class RequestOperationTests: XCTestCase {
         
         let request = MockErrorRequest()
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperationrequestExecutor.executeRequest( request,
+            self.requestOperationRequestExecutor?.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in
                     XCTFail( "Should not be called" )
                 },
