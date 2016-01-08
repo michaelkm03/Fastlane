@@ -16,13 +16,12 @@
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
-@interface VContentCell () <VEndCardViewControllerDelegate, VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
+@interface VContentCell () <VAdVideoPlayerViewControllerDelegate, VContentPreviewViewReceiver>
 
 @property (nonatomic, assign) BOOL isPreparedForDismissal;
 @property (nonatomic, assign) BOOL shrinkingDisabled;
 @property (nonatomic, strong) UIView *adContainer;
 @property (nonatomic, strong) UIView *shrinkingContentView;
-@property (nonatomic, strong) VEndCardViewController *endCardViewController;
 @property (nonatomic, strong) VTimerManager *adTimeoutTimer;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
 @property (nonatomic, weak) UIImageView *animationImageView;
@@ -142,7 +141,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    [self.endCardViewController handleRotationToInterfaceOrientation:toInterfaceOrientation];
     self.shrinkingDisabled = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
     [self.shrinkingContentView layoutIfNeeded];
 }
@@ -177,56 +175,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     self.isPreparedForDismissal = YES;
     [self resumeContentPlaybackAnimated:NO];
-    [self hideEndCard:YES];
-}
-
-#pragma mark - End Card
-
-- (BOOL)isEndCardShowing
-{
-    return self.endCardViewController != nil && [self.contentView.subviews containsObject:self.endCardViewController.view];
-}
-
-- (void)disableEndcardAutoplay
-{
-    [self.endCardViewController disableAutoplay];
-}
-
-- (void)showEndCardWithViewModel:(VEndCardModel *)model
-{
-    if ( self.endCardViewController == nil )
-    {
-        self.endCardViewController = [VEndCardViewController newWithDependencyManager:model.dependencyManager
-                                                                                model:model
-                                                                        minViewHeight:self.minSize.height
-                                                                        maxViewHeight:self.maxSize.height];
-        self.endCardViewController.delegate = self;
-    }
-    
-    [self.contentView addSubview:self.endCardViewController.view];
-    self.endCardViewController.view.frame = self.contentView.bounds;
-    [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
-    
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    [self.endCardViewController handleRotationToInterfaceOrientation:currentOrientation];
-    [self.endCardViewController transitionIn];
-}
-
-- (void)hideEndCard
-{
-    [self hideEndCard:NO];
-}
-
-- (void)hideEndCard:(BOOL)cleanup
-{
-    if ( self.endCardViewController != nil )
-    {
-        [self.endCardViewController.view removeFromSuperview];
-        if ( cleanup )
-        {
-            self.endCardViewController = nil;
-        }
-    }
 }
 
 - (void)resumeContentPlaybackAnimated:(BOOL)animated
@@ -279,23 +227,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (BOOL)isPlayingAd
 {
     return self.adVideoPlayerViewController != nil;
-}
-
-#pragma mark - VEndCardViewControllerDelegate
-
-- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
-{
-    [self.endCardDelegate replaySelectedFromEndCard:endCardViewController];
-}
-
-- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
-{
-    [self.endCardDelegate nextSelectedFromEndCard:endCardViewController];
-}
-
-- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
-{
-    [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
 }
 
 #pragma mark  Ad Video Player

@@ -39,12 +39,9 @@ extension VSequence: PersistenceParsable {
             tracking?.populate(fromSourceModel: trackingModel)
         }
         
-        if let endCardModel = sequence.endCard {
-            endCard = v_managedObjectContext.v_createObject() as VEndCard
-            endCard?.populate(fromSourceModel: endCardModel)
-        }
         
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
+
         self.user.populate(fromSourceModel: sequence.user)
         
         if let previewImageAssets = sequence.previewImageAssets {

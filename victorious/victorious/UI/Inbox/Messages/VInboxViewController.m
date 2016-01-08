@@ -34,6 +34,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "UIViewController+VRootNavigationController.h"
 #import "VNavigationController.h"
+#import "victorious-swift.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -439,7 +440,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
-        [self showUserSearch];
+        [self showSearch];
         return NO;
     }
     
@@ -452,23 +453,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - Search
-
-- (void)showUserSearch
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
-    
-    VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
-    userSearch.searchContext = VObjectManagerSearchContextMessage;
-    userSearch.messageSearchDelegate = self;
-    userSearch.userSearchPresenter = VUserSearchPresenterMessages;
-    
-    //Create a navigation controller that will hold the user search view controller
-    VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-    navigationController.innerNavigationController.viewControllers = @[userSearch];
-    navigationController.innerNavigationController.navigationBarHidden = YES;
-    
-    [self presentViewController:navigationController animated:YES completion:nil];
-}
 
 - (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController
 {
