@@ -34,7 +34,7 @@ class BaseRequestOperationTestCase: XCTestCase {
         super.tearDown()
     }
 
-    // Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
+    /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
     func queueExpectedOperation(operation operation: RequestOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
         operation.queue() { error in
