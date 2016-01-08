@@ -13,7 +13,7 @@ import XCTest
 class UnfollowUserOperationTests: XCTestCase {
     var operation: UnfollowUserOperation!
     var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor<UnfollowUserRequest>!
+    var testRequestExecutor: TestRequestExecutor!
     var testTrackingManager: TestTrackingManager!
     let userID = 1
     let currentUserID = 2

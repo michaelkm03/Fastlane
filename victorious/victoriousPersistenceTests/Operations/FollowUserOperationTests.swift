@@ -14,7 +14,7 @@ class FollowUserOperationTests: XCTestCase {
     var operation: FollowUserOperation!
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor<FollowUserRequest>!
+    var testRequestExecutor: TestRequestExecutor!
     let userID: Int = 1
     let currentUserID: Int = 2
     let screenName = "screenName"
