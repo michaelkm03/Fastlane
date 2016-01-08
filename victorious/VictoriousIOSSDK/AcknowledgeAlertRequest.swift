@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Marks an alert as seen by the user, which will remove it from any firther response payloads.
 public struct AcknowledgeAlertRequest: RequestType {
 
     public let alertID: Int

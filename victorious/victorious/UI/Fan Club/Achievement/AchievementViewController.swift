@@ -45,22 +45,24 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     // MARK: - Public Properties
     
-    var alert: Alert! {
+    var alert: Alert? {
         didSet {
-            if let alert = alert {
-                descriptionLabel.text = alert.parameters.description
-                titleLabel.text = alert.parameters.title
-                animatedBadge?.levelNumberString = String(alert.parameters.userFanLoyalty.level)
-                
-                guard let iconURL = alert.parameters.icons.first where iconURL.absoluteString.characters.count > 0 else {
-                    // In order to add space between the description label and the dismiss button
-                    iconImageViewHeightConstraint.constant = 23
-                    return
-                }
-                
-                iconImageView.setImageWithURL(iconURL)
-                iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
+            guard let alert = alert else {
+                return
             }
+            
+            descriptionLabel.text = alert.parameters.description
+            titleLabel.text = alert.parameters.title
+            animatedBadge?.levelNumberString = String(alert.parameters.userFanLoyalty.level)
+            
+            guard let iconURL = alert.parameters.icons.first where iconURL.absoluteString.characters.count > 0 else {
+                // In order to add space between the description label and the dismiss button
+                iconImageViewHeightConstraint.constant = 23
+                return
+            }
+            
+            iconImageView.setImageWithURL(iconURL)
+            iconImageViewHeightConstraint.constant = iconImageViewHeightConstant
         }
     }
     
@@ -90,6 +92,11 @@ class AchievementViewController: UIViewController, InterstitialViewController, V
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        guard let alert = alert else {
+            return
+        }
+        
         let duration = AnimationConstants.badgeAnimationTotalDuration * (Double(alert.parameters.userFanLoyalty.progress) / 100.0)
         self.animatedBadge?.animateProgress(duration,
             endPercentage: Int(alert.parameters.userFanLoyalty.progress),

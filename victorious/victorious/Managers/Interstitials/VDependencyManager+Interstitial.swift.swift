@@ -1,5 +1,5 @@
 //
-//  LevelUpInterstitial.swift
+//  VDependencyManager+Interstitial.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 9/9/15.
@@ -9,22 +9,26 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension Alert {
+extension VDependencyManager {
     
-    func viewController(dependencyManager dependencyManager: VDependencyManager) -> InterstitialViewController? {
-        switch self.alertType {
+    func something() {
+        
+    }
+    
+    func interstitialViewController(alert alert: Alert) -> InterstitialViewController? {
+        switch alert.alertType {
             
         case .LevelUp:
-            let tempalteValue = dependencyManager.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
+            let tempalteValue = self.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
             if let viewController = tempalteValue as? LevelUpViewController {
-                viewController.alert = self
+                viewController.alert = alert
                 return viewController
             }
             
         case .Achievement:
-            let templateValue = dependencyManager.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen")
+            let templateValue = self.templateValueOfType(AchievementViewController.self, forKey: "achievementScreen")
             if let achievementVC = templateValue as? AchievementViewController {
-                achievementVC.alert = self
+                achievementVC.alert = alert
                 return achievementVC
             }
         }

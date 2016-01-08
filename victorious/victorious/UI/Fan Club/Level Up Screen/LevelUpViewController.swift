@@ -96,15 +96,17 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     // MARK: - Public Properties
     
-    var alert: Alert! {
+    var alert: Alert? {
         didSet {
-            if let alert = alert {
-                let currentLevel = alert.parameters.userFanLoyalty.level
-                badgeView?.levelNumberString = String(currentLevel - 1)
-                titleLabel.text = alert.parameters.title
-                descriptionLabel.text = alert.parameters.description
-                icons = alert.parameters.icons
+            guard let alert = alert else {
+                return
             }
+            
+            let currentLevel = alert.parameters.userFanLoyalty.level
+            badgeView?.levelNumberString = String(currentLevel - 1)
+            titleLabel.text = alert.parameters.title
+            descriptionLabel.text = alert.parameters.description
+            icons = alert.parameters.icons
         }
     }
     
@@ -164,26 +166,29 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if !hasAppeared {
-            animateIn()
-            
-            if let videoURL = alert.parameters.backgroundVideoURL {
-                let videoPlayerItem = VVideoPlayerItem(URL: videoURL)
-                videoPlayerItem.loop = false
-                videoPlayerItem.muted = true
-                self.videoBackground.setItem( videoPlayerItem )
-            }
-            
-            // Assuming this level up alert contains the most up-to-date fanloyalty info,
-            // we update the user's level and level progress when the interstitial appears
-            if let currentUser = VCurrentUser.user() {
-                currentUser.level = alert.parameters.userFanLoyalty.level
-                currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
-            }
+        
+        guard let alert = alert where !hasAppeared else {
+            return
+        }
+        
+        animateIn()
+        
+        if let videoURL = alert.parameters.backgroundVideoURL {
+            let videoPlayerItem = VVideoPlayerItem(URL: videoURL)
+            videoPlayerItem.loop = false
+            videoPlayerItem.muted = true
+            self.videoBackground.setItem( videoPlayerItem )
+        }
+        
+        // Assuming this level up alert contains the most up-to-date fanloyalty info,
+        // we update the user's level and level progress when the interstitial appears
+        if let currentUser = VCurrentUser.user() {
+            currentUser.level = alert.parameters.userFanLoyalty.level
+            currentUser.levelProgressPercentage = alert.parameters.userFanLoyalty.progress
         }
     }
     
-    private func upgradeBadgeNumber() {        
+    private func upgradeBadgeNumber() {
         UIView.animateWithDuration(0.1,
             delay: 0,
             usingSpringWithDamping: 0.8,

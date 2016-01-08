@@ -9,15 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// A class that conforms to this protocol can be updated when interstitials are registered.
 @objc protocol InterstitialListener {
-    
-    /// Called when a new interstitial is registered by the interstitial manager
     func newInterstitialHasBeenRegistered()
 }
 
-/// A singleton object for managing interstitial objects and presenting their
-/// associated view controllers
+/// A singleton object for managing alerts received from the Victorious API and presenting appripriate
+/// intestitial view controllers to the user upon receipt.
 class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialViewControllerDelegate {
     
     /// Whether or not the object manager checks each response for alerts
@@ -34,14 +31,10 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         return manager
     }()
     
-    /// The interstitial manager's dependency manager which it feeds to
-    /// the interstitials in order to build their view controllers
     var dependencyManager: VDependencyManager?
     
-    /// A listener that can be notified of interstitial events
     var interstitialListener: InterstitialListener?
     
-    /// Whether or not the interstitial window is currently on screen
     private(set) var isShowingInterstital = false
     
     private var registeredAlerts = [Alert]()
@@ -50,7 +43,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     private var presentedInterstitial: InterstitialViewController?
     
-    /// Register an array of alerts to show as interstitials.
     func registerAlerts( notification: NSNotification ) {
         guard let alertObjects = notification.userInfo?[ AlertObject.alertsKey ] as? [AlertObject] else {
             return
@@ -67,11 +59,13 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
     }
     
-    /// Presents the next interstitial on the provided view controller modally.
-    func displayNextInterstitialIfPossible(viewController: UIViewController) {
+    /// Presents modally any available interstitials on the provided presentingg view controller
+    func showNextInterstitial( onViewController presentingViewController: UIViewController) -> Bool {
         if !registeredAlerts.isEmpty {
-            showInterstitial( alert: registeredAlerts.removeAtIndex(0), presentingViewController: viewController)
+            showInterstitial( alert: registeredAlerts.removeAtIndex(0), presentingViewController: presentingViewController)
+            return true
         }
+        return false
     }
     
     /// Removes all registered interstitials
@@ -80,23 +74,26 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
     
     private func showInterstitial( alert alert: Alert, presentingViewController: UIViewController) {
+        guard !isShowingInterstital,
+            let interstitial = dependencyManager?.interstitialViewController(alert: alert) else {
+                return
+        }
         
-        if isShowingInterstital {
+        presentedInterstitial = interstitial
+        interstitial.interstitialDelegate = self
+        
+        guard let viewController = interstitial as? UIViewController else {
             return
         }
         
-        if let dependencyManager = dependencyManager,
-            let viewController = alert.viewController(dependencyManager: dependencyManager) as? UIViewController,
-            let conformingViewController = viewController as? InterstitialViewController {
-                
-                presentedInterstitial = conformingViewController
-                conformingViewController.interstitialDelegate = self
-                viewController.transitioningDelegate = self
-                viewController.modalPresentationStyle = conformingViewController.preferredModalPresentationStyle()
-                presentingViewController.presentViewController(viewController, animated: true, completion: nil)
-                shownAlerts.append( alert )
-                isShowingInterstital = true
-        }
+        
+        viewController.transitioningDelegate = self
+        viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
+        presentingViewController.presentViewController(viewController, animated: true, completion: nil)
+        
+        AcknowledgeAlertOperation(alertID: alert.alertID).queue()
+        shownAlerts.append( alert )
+        isShowingInterstital = true
     }
     
     /// MARK: InterstitialViewController
@@ -119,36 +116,5 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
         return presentedInterstitial?.presentationController(presented, presentingViewController: presenting)
-    }
-    
-    /// Registers a test "level" alert for testing interstitials
-    func registerTestLevelUpAlert() {
-        #if V_SHOW_TEST_ALERT_SETTINGS
-            self.shouldRegisterAlerts = false
-            let params = ["type" : "levelUp", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "You won some new stuff", "icons" : ["http://i.imgur.com/ietHgk6.png"], "backgroundVideo" : "http://media-dev-public.s3-website-us-west-1.amazonaws.com/b918ccb92d5040f754e70187baf5a765/playlist.m3u8"]]
-            
-            if let addtionalParameters = params["params"] as? [String : AnyObject],
-                let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { error in
-                        self.shouldRegisterAlerts = true
-                    }
-            }
-        #endif
-    }
-    
-    /// Registers a test "achievement" alert for testing interstitials
-    func registerTestAchievementAlert() {
-        #if V_SHOW_TEST_ALERT_SETTINGS
-            self.shouldRegisterAlerts = false
-            let params = ["type" : "achievement", "params" : ["user" : ["fanloyalty" : ["level" : 5, "tier" : "Bronze", "name" : "Level 5", "progress" : 70]], "title" : "Congrats", "description" : "Thanks for creating your first text post!", "icons" : ["http://i.imgur.com/ietHgk6.png"]]]
-            
-            if let addtionalParameters = params["params"] as? [String : AnyObject],
-                let type = params["type"] as? String {
-                    CreateAlertOperation(type: type, addtionalParameters: addtionalParameters).queue() { error in
-                        self.shouldRegisterAlerts = true
-                    }
-            }
-            
-        #endif
     }
 }

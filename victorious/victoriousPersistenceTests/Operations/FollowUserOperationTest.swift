@@ -12,8 +12,8 @@ import XCTest
 class FollowUserOperationTest: BaseRequestOperationTests {
     let expectationThreshold: Double = 10
     var operation: FollowUserOperation!
-    let userToFollowID = Int64(1)
-    let currentUserID = Int64(2)
+    let userToFollowID = 1
+    let currentUserID = 2
     let screenName = "screenName"
 
     override func setUp() {

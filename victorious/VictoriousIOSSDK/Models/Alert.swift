@@ -27,17 +27,17 @@ public struct Alert {
         public let userFanLoyalty: FanLoyalty
         public let icons: [NSURL]
     }
-    
-    public let alertID: Int64
+    public let alertID: Int
     public let alertType: AlertType
     public let parameters: Alert.Parameters
+    
     public let dateAcknowledged: NSDate?
 }
 
 extension Alert {
     
     public init?(json: JSON) {
-        guard let alertID = Int64(json["id"].stringValue),
+        guard let alertID = Int(json["id"].stringValue) ?? json["id"].int,
             let alertType = AlertType(rawValue: json["type"].string ?? ""),
             let parameters = Alert.Parameters(json: json["params"]) else {
                 return nil

@@ -92,35 +92,40 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     if ( self.mediaUrl == nil )
     {
         NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-        [self fetchSequenceWithSequenceId:sequenceId completion:^(VSequence *_Nullable sequence, NSError *_Nullable error)
+        SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError * _Nullable error)
          {
-             if ( error == nil )
+             if ( error != nil )
              {
-                 VNode *node = (VNode *)[sequence firstNode];
-                 VAsset *asset = [node httpLiveStreamingAsset];
-                 if (asset.dataURL != nil)
-                 {
-                     self.sequence = sequence;
-                     self.mediaUrl = asset.dataURL;
-                     [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
-                     [self showVideo];
-                 }
-                 else
-                 {
-                     if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
-                     {
-                         [self.delegate failedToLoadSequenceInLightweightContentView:self];
-                     }
-                 }
+                 [self didFailToLoadSequence];
+                 return;
              }
-             else if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+             
+             VSequence *sequence = (VSequence *)operation.result;
+             VNode *node = (VNode *)[sequence firstNode];
+             VAsset *asset = [node httpLiveStreamingAsset];
+             if ( asset.dataURL == nil )
              {
-                 [self.delegate failedToLoadSequenceInLightweightContentView:self];
+                 [self didFailToLoadSequence];
+                 return;
              }
+             
+             self.sequence = sequence;
+             self.mediaUrl = asset.dataURL;
+             [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
+             [self showVideo];
          }];
         
         // Check orientation and update button state
         [self updateGetStartedButtonForCurrentOrientation];
+    }
+}
+
+- (void)didFailToLoadSequence
+{
+    if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+    {
+        [self.delegate failedToLoadSequenceInLightweightContentView:self];
     }
 }
 
