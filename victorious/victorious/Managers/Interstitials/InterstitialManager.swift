@@ -15,21 +15,12 @@ import VictoriousIOSSDK
 
 /// A singleton object for managing alerts received from the Victorious API and presenting appripriate
 /// intestitial view controllers to the user upon receipt.
-class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialViewControllerDelegate {
+class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, InterstitialViewControllerDelegate, AlertReceiver {
     
-    /// Whether or not the object manager checks each response for alerts
-    var shouldRegisterAlerts: Bool = true
+    var disabled: Bool = false
     
     /// Returns the interstitial manager singelton
-    static let sharedInstance: InterstitialManager = {
-        let manager = InterstitialManager()
-        NSNotificationCenter.defaultCenter().addObserver(manager,
-            selector: "registerAlerts:",
-            name: AlertObject.didReceiveAlertsNotification,
-            object: nil
-        )
-        return manager
-    }()
+    static let sharedInstance = InterstitialManager()
     
     var dependencyManager: VDependencyManager?
     
@@ -42,22 +33,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     private var shownAlerts = [Alert]()
     
     private var presentedInterstitial: InterstitialViewController?
-    
-    func registerAlerts( notification: NSNotification ) {
-        guard let alertObjects = notification.userInfo?[ AlertObject.alertsKey ] as? [AlertObject] else {
-            return
-        }
-        
-        let newAlerts = alertObjects.map { $0.sourceAlert }.filter { alert in
-            !registeredAlerts.contains { $0 == alert } && !shownAlerts.contains { $0 == alert }
-        }
-        for alert in newAlerts {
-            registeredAlerts.append(alert)
-            if let interstitialListener = interstitialListener {
-                interstitialListener.newInterstitialHasBeenRegistered()
-            }
-        }
-    }
     
     /// Presents modally any available interstitials on the provided presentingg view controller
     func showNextInterstitial( onViewController presentingViewController: UIViewController) -> Bool {
@@ -94,6 +69,20 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         AcknowledgeAlertOperation(alertID: alert.alertID).queue()
         shownAlerts.append( alert )
         isShowingInterstital = true
+    }
+    
+    // MARK: - AlertReceiver
+    
+    func onAlertsReceived( alerts: [Alert] ) {
+        let newAlerts = alerts.filter { alert in
+            !registeredAlerts.contains { $0 == alert } && !shownAlerts.contains { $0 == alert }
+        }
+        for alert in newAlerts {
+            registeredAlerts.append(alert)
+            if let interstitialListener = interstitialListener {
+                interstitialListener.newInterstitialHasBeenRegistered()
+            }
+        }
     }
     
     /// MARK: InterstitialViewController

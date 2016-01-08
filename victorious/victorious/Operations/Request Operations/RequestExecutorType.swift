@@ -8,8 +8,14 @@
 
 import VictoriousIOSSDK
 
+protocol RequestExecutorDelegate: class {
+    func didReceiveAlerts( alerts: [Alert] )
+}
+
 /// Defines an interface for sending network requests
 protocol RequestExecutorType {
+    
+    var delegate: RequestExecutorDelegate? { set get }
     
     /// Executes the provided request and calls the `onComplete` or `onError` block when
     /// when the request finishes successfully executing or fails, respectively.  These closures

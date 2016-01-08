@@ -9,42 +9,27 @@
 import Foundation
 import VictoriousIOSSDK
 
-/// A class wrapper for an array of `Alert` structs so that they can be passed through
-/// Objective-C runtime infrastructure such as `NSNotificationCenter`.
-class AlertObject: NSObject {
+class MainRequestExecutor: RequestExecutorType {
     
-    static let didReceiveAlertsNotification = "com.getvictorious.MainRequestExecutor.didReceiveAlertsNotification"
-    static let alertsKey = "com.getvictorious.MainRequestExecutor.alertsKey"
-    
-    let sourceAlert: Alert
-    
-    init(sourceAlert: Alert) {
-        self.sourceAlert = sourceAlert
-    }
-}
-
-struct MainRequestExecutor: RequestExecutorType {
-    
-    private let persistentStore: PersistentStoreType
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    
+    weak var delegate: RequestExecutorDelegate? = nil
     
     private var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
     }
     
-    init(persistentStore: PersistentStoreType) {
-        self.persistentStore = persistentStore
+    let baseURL: NSURL
+    let requestContext: RequestContext
+    let authenticationContext: AuthenticationContext?
+    
+    init(baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext? ) {
+        self.baseURL = baseURL
+        self.requestContext = requestContext
+        self.authenticationContext = authenticationContext
     }
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        let baseURL = currentEnvironment.baseURL
-        
-        let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VCurrentUser.user())
-        }
         
         if !hasNetworkConnection {
             let error = NSError(
@@ -63,15 +48,8 @@ struct MainRequestExecutor: RequestExecutorType {
                 authenticationContext: authenticationContext,
                 callback: { (result, error, alerts) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
-                        
                         if !alerts.isEmpty {
-                            let alertObjects = alerts.map { AlertObject(sourceAlert: $0) }
-                            let userInfo = [ AlertObject.alertsKey : alertObjects ];
-                            NSNotificationCenter.defaultCenter().postNotificationName(
-                                AlertObject.didReceiveAlertsNotification,
-                                object: nil,
-                                userInfo: userInfo
-                            )
+                            self.delegate?.didReceiveAlerts( alerts )
                         }
                         
                         if let error = error as? RequestErrorType {

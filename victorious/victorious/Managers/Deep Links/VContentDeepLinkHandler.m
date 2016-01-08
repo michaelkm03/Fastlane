@@ -94,7 +94,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
          {
              [hud hide:YES];
              
-             id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+             id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
              [persistentStore.mainContext performBlockAndWait:^
               {
                   NSArray *objects = [persistentStore.mainContext v_findObjectsWithEntityName:[VSequence entityName]

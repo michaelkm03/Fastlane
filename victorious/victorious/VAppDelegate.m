@@ -44,11 +44,6 @@
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
-    /// Initialize the InterstitialManager singleton as soon as possible so that it
-    /// is registered to receive notifications when an endpoint returns alerts on all
-    /// forthcoming network requests.
-    [InterstitialManager sharedInstance].shouldRegisterAlerts = YES;
-    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
     
@@ -158,7 +153,7 @@
 - (void)savePersistentChanges
 {
     // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
 
