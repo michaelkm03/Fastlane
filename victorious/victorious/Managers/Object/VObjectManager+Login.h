@@ -31,14 +31,4 @@ extern NSString * const kLoggedInChangedNotification;
 - (RKManagedObjectRequestOperation *)templateWithSuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
-                                                    deviceToken:(NSString *)deviceToken
-                                                    newPassword:(NSString *)newPassword
-                                                   successBlock:(VSuccessBlock)success
-                                                      failBlock:(VFailBlock)fail;
-
 @end
