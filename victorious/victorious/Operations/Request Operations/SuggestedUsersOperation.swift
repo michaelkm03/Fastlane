@@ -12,9 +12,6 @@ import VictoriousIOSSDK
 class SuggestedUsersOperation: RequestOperation, ResultsOperation {
     
     let request = SuggestedUsersRequest()
-    
-    private(set) var suggestedUsers: [VSuggestedUser] = []
-    
     var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
