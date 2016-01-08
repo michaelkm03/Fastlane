@@ -175,10 +175,10 @@
     {
         [async signal];
     }] resume];
-
+    
     [self.uploadManager enqueueUploadTask:self.uploadTask onComplete:nil];
     [async waitForSignal:5.0];
-
+    
     id observer = [[NSNotificationCenter defaultCenter] addObserverForName:VUploadManagerTaskProgressNotification
                                                                     object:self.uploadTask
                                                                      queue:nil
