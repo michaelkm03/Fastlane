@@ -19,7 +19,7 @@ class FollowCountOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         
-        operation = FollowCountOperation( userID: userID)
+        operation = FollowCountOperation( userID: userID )
         operation.requestExecutor = testRequestExecutor
     }
     
