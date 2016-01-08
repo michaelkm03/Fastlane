@@ -1,5 +1,5 @@
 //
-//  BaseRequestOperationTests.swift
+//  BaseRequestOperationTestCase.swift
 //  victorious
 //
 //  Created by Michael Sena on 1/5/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class BaseRequestOperationTests: XCTestCase {
+class BaseRequestOperationTestCase: XCTestCase {
 
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
@@ -41,5 +41,4 @@ class BaseRequestOperationTests: XCTestCase {
         }
         return expectation
     }
-    
 }

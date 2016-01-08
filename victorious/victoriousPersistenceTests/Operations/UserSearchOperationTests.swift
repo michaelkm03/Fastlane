@@ -10,19 +10,13 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UserSearchOperationTests: XCTestCase {
-    let expectationThreshold: Double = 10
+class UserSearchOperationTests: BaseRequestOperationTestCase {
+    let expectationThreshold: Double = 1
     let testUserID: Int = 1
-    var testStore: TestPersistentStore!
-    var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor!
     var operation: UserSearchOperation!
     
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation = UserSearchOperation(queryString: "test")
         operation.requestExecutor = testRequestExecutor
     }
@@ -54,13 +48,4 @@ class UserSearchOperationTests: XCTestCase {
             XCTFail("should have at least one results object")
         }
     }
-
-    private func queueExpectedOperation(operation operation: UserSearchOperation) -> XCTestExpectation {
-        let expectation = expectationWithDescription("operation completed")
-        operation.queue() { error in
-            expectation.fulfill()
-        }
-        return expectation
-    }
-
 }

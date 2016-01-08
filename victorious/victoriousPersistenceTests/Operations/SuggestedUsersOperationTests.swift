@@ -12,7 +12,7 @@ import SwiftyJSON
 @testable import victorious
 
 class SuggestedUsersOperationTests: XCTestCase {
-    let expectationThreshold: Double = 10
+    let expectationThreshold: Double = 1
     var operation: SuggestedUsersOperation!
     var testStore: TestPersistentStore!
     var testRequestExecutor: TestRequestExecutor!
