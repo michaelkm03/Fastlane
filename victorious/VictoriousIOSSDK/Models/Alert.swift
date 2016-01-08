@@ -45,7 +45,7 @@ extension Alert {
         self.alertType = alertType
         self.parameters = parameters
         self.alertID = alertID
-        self.dateAcknowledged = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["acknowledged_at"].stringValue)
+        self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["acknowledged_at"].stringValue)
     }
 }
 

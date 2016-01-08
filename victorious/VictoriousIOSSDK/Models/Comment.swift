@@ -50,7 +50,7 @@ extension Comment {
             let sequenceID = json["sequence_id"].string,
             let userID = Int(json["user_id"].stringValue),
             let user = User(json: json["user"]),
-            let postedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["posted_at"].stringValue) else {
+            let postedAt = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["posted_at"].stringValue) else {
                 return nil
         }
         

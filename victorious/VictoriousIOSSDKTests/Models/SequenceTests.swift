@@ -23,7 +23,7 @@ class SequenceTests: XCTestCase {
             return
         }
         
-        let dateFormatter = NSDateFormatter( v_format: DateFormat.Standard )
+        let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
         
         XCTAssertEqual( sequence.sequenceID, "17143" )
@@ -66,7 +66,7 @@ class SequenceTests: XCTestCase {
                 return
         }
         
-        let dateFormatter = NSDateFormatter( v_format: DateFormat.Standard )
+        let dateFormatter = NSDateFormatter( vsdk_format: DateFormat.Standard )
         let releasedAtDate = dateFormatter.dateFromString( "2015-11-18 00:23:29" )
         
         XCTAssertEqual( sequence.sequenceID, "17143" )

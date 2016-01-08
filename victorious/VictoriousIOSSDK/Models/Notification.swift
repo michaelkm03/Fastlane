@@ -27,7 +27,7 @@ public struct Notification {
     public init?(json: JSON) {
         
         guard let createdAtDateString = json["created_at"].string,
-            let createdAtDate = NSDateFormatter.v_defaultDateFormatter.dateFromString(createdAtDateString),
+            let createdAtDate = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(createdAtDateString),
             let notificationID = json["id"].int,
             let subjectString = json["subject"].string,
             let sender = User(json: json["created_by"]) else {
@@ -43,7 +43,7 @@ public struct Notification {
         imageURL = json["creator_profile_image_url"].string
         isRead = Bool(json["is_read"].stringValue)
         type = json["type"].string
-        updatedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["updated_at"].stringValue)
+        updatedAt = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["updated_at"].stringValue)
         displayOrder = json["display_order"].int
     }
 }

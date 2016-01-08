@@ -11,14 +11,15 @@ import VictoriousIOSSDK
 
 /// A class wrapper for an array of `Alert` structs so that they can be passed through
 /// Objective-C runtime infrastructure such as `NSNotificationCenter`.
-class RequestAlerts: NSObject {
-    static let didReceiveAlertsNotification = "com.getvictorious.RequestOperation.AlertResult.didReceiveAlertsNotification"
-    static let alertsKey = "com.getvictorious.RequestOperation.AlertResult.alertsKey"
+class AlertObject: NSObject {
     
-    let alerts: [Alert]
+    static let didReceiveAlertsNotification = "com.getvictorious.MainRequestExecutor.didReceiveAlertsNotification"
+    static let alertsKey = "com.getvictorious.MainRequestExecutor.alertsKey"
     
-    init(alerts: [Alert]) {
-        self.alerts = alerts
+    let sourceAlert: Alert
+    
+    init(sourceAlert: Alert) {
+        self.sourceAlert = sourceAlert
     }
 }
 
@@ -64,10 +65,10 @@ struct MainRequestExecutor: RequestExecutorType {
                     dispatch_async( dispatch_get_main_queue() ) {
                         
                         if !alerts.isEmpty {
-                            let wrappedAlerts = RequestAlerts(alerts: alerts)
-                            let userInfo = [ RequestAlerts.alertsKey : wrappedAlerts ];
+                            let alertObjects = alerts.map { AlertObject(sourceAlert: $0) }
+                            let userInfo = [ AlertObject.alertsKey : alertObjects ];
                             NSNotificationCenter.defaultCenter().postNotificationName(
-                                RequestAlerts.didReceiveAlertsNotification,
+                                AlertObject.didReceiveAlertsNotification,
                                 object: nil,
                                 userInfo: userInfo
                             )
@@ -98,28 +99,5 @@ struct MainRequestExecutor: RequestExecutorType {
             dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
             networkActivityIndicator.stop()
         }
-    }
-}
-
-private extension RequestContext {
-    init( environment: VEnvironment ) {
-        let deviceID = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
-        let buildNumber: String
-        
-        if let buildNumberFromBundle = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
-            buildNumber = buildNumberFromBundle
-        } else {
-            buildNumber = ""
-        }
-        self.init(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
-    }
-}
-
-private extension AuthenticationContext {
-    init?( currentUser: VUser? ) {
-        guard let currentUser = currentUser else {
-            return nil
-        }
-        self.init( userID: currentUser.remoteId.integerValue, token: currentUser.token)
     }
 }

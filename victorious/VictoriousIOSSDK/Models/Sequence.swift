@@ -70,7 +70,7 @@ extension Sequence {
     
         // MARK: - Optional data
         
-        releasedAt              = NSDateFormatter.v_defaultDateFormatter.dateFromString(json["released_at"].stringValue)
+        releasedAt              = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(json["released_at"].stringValue)
         type                    = StreamContentType(rawValue: json["type"].stringValue)
         subtype                 = StreamContentType(rawValue: json["subtype"].stringValue)
         headline                = json["entry_label"].string

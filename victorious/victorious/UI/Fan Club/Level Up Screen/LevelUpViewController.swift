@@ -183,13 +183,7 @@ class LevelUpViewController: UIViewController, InterstitialViewController, VVide
         }
     }
     
-    private func upgradeBadgeNumber() {
-        
-        if let alert = self.alert {
-            // FIXME:
-            // badgeView?.levelUp( String(alert.parameters.userFanLoyalty.level) )
-        }
-        
+    private func upgradeBadgeNumber() {        
         UIView.animateWithDuration(0.1,
             delay: 0,
             usingSpringWithDamping: 0.8,

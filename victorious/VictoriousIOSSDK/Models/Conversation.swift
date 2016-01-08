@@ -31,7 +31,7 @@ extension Conversation {
                 self.conversationID = conversationID
                 self.previewMessageID = messageIDNumber
                 self.recipient = recipientUser
-                self.postedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(postedAtString)
+                self.postedAt = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(postedAtString)
         }
         else {
             return nil

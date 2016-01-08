@@ -63,7 +63,7 @@ extension User {
         maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
         
         if let dateString = json["token_updated_at"].string {
-            self.tokenUpdatedAt = NSDateFormatter.v_defaultDateFormatter.dateFromString(dateString)
+            self.tokenUpdatedAt = NSDateFormatter.vsdk_defaultDateFormatter.dateFromString(dateString)
         } else {
             self.tokenUpdatedAt = nil
         }

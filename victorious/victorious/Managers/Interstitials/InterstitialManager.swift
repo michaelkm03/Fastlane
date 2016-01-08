@@ -28,7 +28,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         let manager = InterstitialManager()
         NSNotificationCenter.defaultCenter().addObserver(manager,
             selector: "registerAlerts:",
-            name: RequestAlerts.didReceiveAlertsNotification,
+            name: AlertObject.didReceiveAlertsNotification,
             object: nil
         )
         return manager
@@ -52,11 +52,11 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     /// Register an array of alerts to show as interstitials.
     func registerAlerts( notification: NSNotification ) {
-        guard let alertsContainer = notification.userInfo?[ RequestAlerts.alertsKey ] as? RequestAlerts else {
+        guard let alertObjects = notification.userInfo?[ AlertObject.alertsKey ] as? [AlertObject] else {
             return
         }
         
-        let newAlerts = alertsContainer.alerts.filter { alert in
+        let newAlerts = alertObjects.map { $0.sourceAlert }.filter { alert in
             !registeredAlerts.contains { $0 == alert } && !shownAlerts.contains { $0 == alert }
         }
         for alert in newAlerts {
