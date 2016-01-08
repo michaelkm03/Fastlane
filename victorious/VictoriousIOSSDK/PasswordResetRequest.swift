@@ -14,7 +14,9 @@ public struct PasswordResetRequest: RequestType {
     public let userToken: String
     public let deviceToken: String
     
-    public init(newPassword: String, userToken: String, deviceToken: String) {
+    /// Optional parameter `newPassword`: Pass nil to validate the tokens.
+    /// Pass a valid String value to reset password.
+    public init(newPassword: String = "", userToken: String, deviceToken: String) {
         self.newPassword = newPassword
         self.userToken = userToken
         self.deviceToken = deviceToken
