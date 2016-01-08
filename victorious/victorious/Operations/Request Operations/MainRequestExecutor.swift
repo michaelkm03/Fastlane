@@ -13,6 +13,8 @@ class MainRequestExecutor: RequestExecutorType {
     
     private let persistentStore: PersistentStoreType
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private(set) var error: NSError?
+
     
     private var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
@@ -49,9 +51,9 @@ class MainRequestExecutor: RequestExecutorType {
                 authenticationContext: authenticationContext,
                 callback: { (result, error) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
-
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
+                            self.error = nsError
                             if let onError = onError {
                                 onError( nsError ) {
                                     dispatch_semaphore_signal( executeSemphore )

@@ -33,8 +33,6 @@ class RequestOperation: NSOperation, Queuable {
     lazy var requestExecutor: RequestExecutorType = {
         return MainRequestExecutor(persistentStore: self.persistentStore)
     }()
-
-    private(set) var error: NSError?
     
     // MARK: - Queuable
     
@@ -44,7 +42,7 @@ class RequestOperation: NSOperation, Queuable {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self.error )
+                self.mainQueueCompletionBlock?( self.requestExecutor.error )
             }
         }
         queue.addOperation( self )
