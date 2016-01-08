@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PasswordResetOpoeration: RequestOperation {
+final class PasswordResetOperation: RequestOperation {
     
     let request: PasswordResetRequest
     
