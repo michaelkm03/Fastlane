@@ -211,3 +211,5 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+#import "NSString+VCrypto.h"
+#import "VFindContactsTableViewController.h"
