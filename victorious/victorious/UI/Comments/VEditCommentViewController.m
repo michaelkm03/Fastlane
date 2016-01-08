@@ -9,7 +9,6 @@
 #import "VEditCommentViewController.h"
 #import "VComment.h"
 #import "VThemeManager.h"
-#import "VAlertController.h"
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
 #import "UIView+AutoLayout.h"

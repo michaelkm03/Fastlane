@@ -18,7 +18,7 @@ public struct TrendingGIFsRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public init( paginator: StandardPaginator = StandardPaginator() ) {
+    public init( paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
         self.paginator = paginator
     }
     

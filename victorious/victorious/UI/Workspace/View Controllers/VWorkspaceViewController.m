@@ -14,8 +14,6 @@
 #import "CIImage+VImage.h"
 #import "NSURL+MediaType.h"
 #import "UIImageView+Blurring.h"
-#import "UIAlertView+VBlocks.h"
-#import "UIActionSheet+VBlocks.h"
 
 #import "VVideoToolController.h"
 #import "VImageToolController.h"
@@ -116,12 +114,13 @@
          [hudForView hide:YES];
          if (error != nil)
          {
-             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
-                                                                  message:error.localizedDescription
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                           onCancelButton:nil
-                                               otherButtonTitlesAndBlocks:nil, nil];
-             [errorAlert show];
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Render failure", @"")
+                                                                                      message:error.localizedDescription
+                                                                               preferredStyle:UIAlertControllerStyleAlert];
+             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                 style:UIAlertActionStyleCancel
+                                                               handler:nil]];
+             [self presentViewController:alertController animated:YES completion:nil];
          }
          else
          {

@@ -312,7 +312,6 @@ extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from d
 extern NSString * const VTrackingValueTrendingHashtags; //< Listed in Discover section
 extern NSString * const VTrackingValueUserSearch; //< "Indicates subsequent actions ocurred from a user search, such as following, viewing profile, etc."
 extern NSString * const VTrackingValueHashtagSearch; //< "Indicates subsequent actions ocurred from a hashtag search search, such as following, viewing stream, etc."
-extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view
 extern NSString * const VTrackingValueStream; //< "Any stream, as opposed to content view"

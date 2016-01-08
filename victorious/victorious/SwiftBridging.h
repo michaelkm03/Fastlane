@@ -33,7 +33,7 @@
 #import "VAbstractMarqueeController.h"
 #import "VAbstractStreamCollectionViewController.h"
 #import "VActionItem.h"
-#import "VAlertController.h"
+#import "VAbstractStreamCollectionViewController.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
 #import "VAppTimingEventType.h"
@@ -84,7 +84,6 @@
 #import "VDiscoverContainerViewController.h"
 #import "VEditCommentViewController.h"
 #import "VElapsedTimeFormatter.h"
-#import "VEndCard.h"
 #import "VEnvironment.h"
 #import "VEnvironmentManager.h"
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
@@ -212,5 +211,10 @@
 #import "VVideoView.h"
 #import "VWebContentViewController.h"
 #import "VWorkspaceShimDestination.h"
+<<<<<<< HEAD
 #import "VInboxViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+=======
+#import "NSString+VCrypto.h"
+#import "VFindContactsTableViewController.h"
+>>>>>>> victorious-sdk-clean

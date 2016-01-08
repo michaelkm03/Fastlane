@@ -16,7 +16,6 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
 #import "VUser.h"
-#import "UIActionSheet+VBlocks.h"
 #import "VUserTaggingTextStorage.h"
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"
@@ -115,40 +114,43 @@ static const NSUInteger kCharacterLimit = 1024;
 {
     NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:reportTitle
-                                                  onDestructiveButton:^(void)
-                                  {
-                                      VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
-                                      
-                                      [[VObjectManager sharedManager] flagConversation:messageViewController.tableDataSource.conversation
-                                                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-                                       {
-                                           UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                           
-                                       }
-                                                                         failBlock:^(NSOperation *operation, NSError *error)
-                                       {
-                                           VLog(@"Failed to flag conversation %@", messageViewController.tableDataSource.conversation);
-                                           
-                                           UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                                                  message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                       }];
-                                  }
-                                           otherButtonTitlesAndBlocks:nil];
-    
-    [actionSheet showInView:self.view];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:reportTitle
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+                                    
+                                    [[VObjectManager sharedManager] flagConversation:messageViewController.tableDataSource.conversation
+                                                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                                     {
+                                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
+                                                                                                           preferredStyle:UIAlertControllerStyleAlert];
+                                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                             style:UIAlertActionStyleCancel
+                                                                                           handler:nil]];
+                                         [self presentViewController:alertController animated:YES completion:nil];
+                                     }
+                                                                           failBlock:^(NSOperation *operation, NSError *error)
+                                     {
+                                         VLog(@"Failed to flag conversation %@", messageViewController.tableDataSource.conversation);
+                                         
+                                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                                                                  message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                                                           preferredStyle:UIAlertControllerStyleAlert];
+                                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                                                             style:UIAlertActionStyleCancel
+                                                                                           handler:nil]];
+                                         [self presentViewController:alertController animated:YES completion:nil];
+                                     }];
+                                }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)setOtherUser:(VUser *)otherUser
