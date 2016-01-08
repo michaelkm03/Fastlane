@@ -55,12 +55,7 @@ class MainRequestExecutorTests: XCTestCase {
         
         requestOperation.queueOn(requestOperation.defaultQueue) { error in
             expectation.fulfill()
-
-            if (error == nil) {
-                //expectation stuff
-            } else {
-                XCTFail("There should be no error when testing onComplete()")
-            }
+            XCTAssertNil(error)
         }
         
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -72,12 +67,7 @@ class MainRequestExecutorTests: XCTestCase {
         
         errorOperation.queueOn(errorOperation.defaultQueue) { error in
             expectation.fulfill()
-
-            if (error == nil) {
-                XCTFail("Error should not be nil when the response throws")
-            } else {
-                //expectation stuff maybe?
-            }
+            XCTAssertNotNil(error)
         }
 
         waitForExpectationsWithTimeout(2, handler: nil)
