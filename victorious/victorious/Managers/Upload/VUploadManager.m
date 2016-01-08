@@ -393,7 +393,7 @@ static inline BOOL isSessionQueue()
         return cachedInformation;
     }
     NSUUID *identifier = [[NSUUID alloc] initWithUUIDString:task.taskDescription];
-
+    
     if ( identifier == nil )
     {
         return nil;
