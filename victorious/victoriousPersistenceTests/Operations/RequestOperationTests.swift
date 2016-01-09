@@ -38,7 +38,7 @@ class RequestOperationTests: XCTestCase {
         
         let request = MockRequest()
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperationrequestExecutor.executeRequest( request,
+            self.requestOperation.requestExecutor.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in
                     completion()
                     expectation.fulfill()
@@ -56,7 +56,7 @@ class RequestOperationTests: XCTestCase {
         
         let request = MockErrorRequest()
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperationrequestExecutor.executeRequest( request,
+            self.requestOperation.requestExecutor.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in
                     XCTFail( "Should not be called" )
                 },

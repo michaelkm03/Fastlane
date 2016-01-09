@@ -11,16 +11,16 @@ import SwiftyJSON
 
 public struct FollowHashtagRequest: RequestType {
     
-    public let hashtagToFollow: String
+    public let hashtag: String
     
-    public init(hashtagToFollow: String) {
-        self.hashtagToFollow = hashtagToFollow
+    public init(hashtag: String) {
+        self.hashtag = hashtag
     }
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/hashtag/follow")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "hashtag": hashtagToFollow ]
+        let params = [ "hashtag" : hashtag ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }

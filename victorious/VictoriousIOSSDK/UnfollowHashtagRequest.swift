@@ -13,16 +13,16 @@ import SwiftyJSON
 public struct UnfollowHashtagRequest: RequestType {
     
     /// The hashtag you'd like to unfollow
-    public let hashtagToUnfollow: String
+    public let hashtag: String
     
-    public init(hashtagToUnfollow: String) {
-        self.hashtagToUnfollow = hashtagToUnfollow
+    public init(hashtag: String) {
+        self.hashtag = hashtag
     }
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/hashtag/unfollow")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "hashtag": hashtagToUnfollow ]
+        let params = [ "hashtag": hashtag ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }

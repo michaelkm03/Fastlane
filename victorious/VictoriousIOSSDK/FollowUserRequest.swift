@@ -13,20 +13,20 @@ import SwiftyJSON
 public struct FollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to follow
-    public let userToFollowID: Int
-    
+    public let userID: Int
+
     // The name of the screen from which you're following this user
     public let screenName: String
     
-    public init(userToFollowID: Int, screenName: String) {
-        self.userToFollowID = userToFollowID
+    public init(userID: Int, screenName: String) {
+        self.userID = userID
         self.screenName = screenName
     }
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/follow/add")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "source": screenName, "target_user_id": String(userToFollowID) ]
+        let params = [ "source": screenName, "target_user_id": String(userID) ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }
