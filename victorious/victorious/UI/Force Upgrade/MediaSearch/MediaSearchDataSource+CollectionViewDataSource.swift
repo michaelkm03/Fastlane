@@ -1,5 +1,5 @@
 //
-//  GIFSearchDataSource+Collection.swift
+//  MediaSearchDataSource+Collection.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/14/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension GIFSearchDataSource : UICollectionViewDataSource {
+extension GIFSearchDataSource: UICollectionViewDataSource {
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.sections.count == 0 ? 1 : self.sections[ section ].count
@@ -20,7 +20,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if self.sections.count == 0,
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
                 self.configureNoContentCell( cell, forState: self.state )
                 return cell
         }
@@ -28,13 +28,13 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         let section = self.sections[ indexPath.section ]
         let resultObject = section.results[ indexPath.row ]
         if section.isFullSize,
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
-                cell.previewAssetUrl = NSURL(string: resultObject.sourceResult.thumbnailStillURL)
-                cell.assetUrl = NSURL(string: resultObject.sourceResult.mp4URL)
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
+                cell.previewAssetUrl = resultObject.thumbnailImageURL
+                cell.assetUrl = resultObject.thumbnailImageURL
                 return cell
        
-        } else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
-            cell.assetUrl = NSURL(string: resultObject.sourceResult.thumbnailStillURL)
+        } else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
+            cell.assetUrl = resultObject.thumbnailImageURL
             
             if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
                 cell.selected = indexPathsForSelectedItems.contains( indexPath )
@@ -48,14 +48,14 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
         if indexPath.section == 0 {
-            return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.AttributionHeader, forIndexPath: indexPath )
+            return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: MediaSearch.ReuseIdentifier.AttributionHeader, forIndexPath: indexPath )
         }
-        return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.ActivityFooter, forIndexPath: indexPath )
+        return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: MediaSearch.ReuseIdentifier.ActivityFooter, forIndexPath: indexPath )
     }
     
     // MARK: - Helpers
     
-    private func configureNoContentCell( cell: GIFSearchNoContentCell, forState state: GIFSearchDataSource.State ) {
+    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: MediaSearch.State ) {
         switch state {
         case .Loading:
             cell.text = ""

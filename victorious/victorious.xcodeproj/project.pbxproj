@@ -365,6 +365,17 @@
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		5A6F11B51C386D87000BF7F3 /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */; };
 		5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */; };
+		5A6F11CB1C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */; };
+		5A6F11CC1C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */; };
+		5A6F11CD1C40FBB0000BF7F3 /* MediaSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */; };
+		5A6F11CE1C40FBB0000BF7F3 /* MediaSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */; };
+		5A6F11CF1C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */; };
+		5A6F11D01C40FBB0000BF7F3 /* MediaSearchDataSource+CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C51C40FBB0000BF7F3 /* MediaSearchDataSource+CollectionViewDataSource.swift */; };
+		5A6F11D11C40FBB0000BF7F3 /* MediaSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C61C40FBB0000BF7F3 /* MediaSearchDataSource.swift */; };
+		5A6F11D21C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */; };
+		5A6F11D31C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */; };
+		5A6F11D41C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */; };
+		5A6F11D51C40FBB0000BF7F3 /* MediaSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
@@ -664,8 +675,6 @@
 		A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */; };
 		A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A720054B1A030D9300285A9C /* VTrackingConstants.m */; };
 		A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A72005591A030E4700285A9C /* VApplicationTracking.m */; };
-		A721E7521B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */; };
-		A721E7541B56059A000B7901 /* GIFSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */; };
 		A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8621B572452000B7901 /* AVAsset+Orientation.m */; };
 		A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8641B572452000B7901 /* CIImage+VImage.m */; };
 		A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8681B572452000B7901 /* VAnswer+Fetcher.m */; };
@@ -740,10 +749,6 @@
 		A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */; };
 		A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */; };
 		A721E96B1B57617B000B7901 /* VEditorializationItem+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E96A1B57617B000B7901 /* VEditorializationItem+RestKit.m */; };
-		A721E9701B581F78000B7901 /* GIFSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E96D1B581F78000B7901 /* GIFSearchNoContentCell.swift */; };
-		A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */; };
-		A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */; };
-		A721E9751B5822FD000B7901 /* GIFSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */; };
 		A722B9461C3C53010014BA42 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722B9451C3C53010014BA42 /* SequenceCommentsDataSource.swift */; };
 		A7245F051C04101F00187825 /* FlagCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF921C03F6A2003D6177 /* FlagCommentRequest.swift */; };
 		A7245F071C04105400187825 /* SequenceRepostersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7245F061C04105400187825 /* SequenceRepostersOperation.swift */; };
@@ -769,7 +774,6 @@
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
-		A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */; };
 		A7427B201C2F462B009D857E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */; };
 		A7427B241C2F4653009D857E /* FlagSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */; };
@@ -896,8 +900,6 @@
 		A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62A1C347A01008B875C /* SampleCoreDataModels.swift */; };
 		A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62B1C347A01008B875C /* SampleMigrationPolicies.swift */; };
 		A77723E01C348240002351B5 /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A6431C347C20008B875C /* PersistenceTests.xcdatamodeld */; };
-		A778B4481B544370004F9F54 /* GIFSearchMediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4471B544370004F9F54 /* GIFSearchMediaExporter.swift */; };
-		A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */; };
 		A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */; };
 		A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */; };
 		A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */; };
@@ -937,8 +939,6 @@
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
-		A7A0617D1B4DB39900E8FFCF /* GIFSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */; };
-		A7A0617F1B4DB5B500E8FFCF /* GIFSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
@@ -2415,6 +2415,17 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Pagination.swift"; sourceTree = "<group>"; };
 		5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Operators.swift"; sourceTree = "<group>"; };
+		5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchNoContentCell.swift; sourceTree = "<group>"; };
+		5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchPreviewCell.swift; sourceTree = "<group>"; };
+		5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultCell.swift; sourceTree = "<group>"; };
+		5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediaSearch.storyboard; sourceTree = "<group>"; };
+		5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchActivityFooter.swift; sourceTree = "<group>"; };
+		5A6F11C51C40FBB0000BF7F3 /* MediaSearchDataSource+CollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchDataSource+CollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		5A6F11C61C40FBB0000BF7F3 /* MediaSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSource.swift; sourceTree = "<group>"; };
+		5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporter.swift; sourceTree = "<group>"; };
+		5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
+		5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Layout.swift"; sourceTree = "<group>"; };
+		5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchViewController.swift; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FollowUserOperationTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6236F8731C3602EE00746476 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
@@ -2809,8 +2820,6 @@
 		A72005581A030E4700285A9C /* VApplicationTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VApplicationTracking.h; sourceTree = "<group>"; };
 		A72005591A030E4700285A9C /* VApplicationTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTracking.m; sourceTree = "<group>"; };
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
-		A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchDataSource+CollectionViewDataSource.swift"; sourceTree = "<group>"; };
-		A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Layout.swift"; sourceTree = "<group>"; };
 		A721E8611B572452000B7901 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A721E8621B572452000B7901 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A721E8631B572452000B7901 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
@@ -2959,10 +2968,6 @@
 		A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+OrderedSet.m"; sourceTree = "<group>"; };
 		A721E9691B57617B000B7901 /* VEditorializationItem+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEditorializationItem+RestKit.h"; sourceTree = "<group>"; };
 		A721E96A1B57617B000B7901 /* VEditorializationItem+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEditorializationItem+RestKit.m"; sourceTree = "<group>"; };
-		A721E96D1B581F78000B7901 /* GIFSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchNoContentCell.swift; sourceTree = "<group>"; };
-		A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchPreviewCell.swift; sourceTree = "<group>"; };
-		A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultCell.swift; sourceTree = "<group>"; };
-		A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
 		A722B9451C3C53010014BA42 /* SequenceCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsDataSource.swift; sourceTree = "<group>"; };
 		A7245F061C04105400187825 /* SequenceRepostersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceRepostersOperation.swift; sourceTree = "<group>"; };
 		A7245F081C04E66E00187825 /* FlagSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequest.swift; sourceTree = "<group>"; };
@@ -2994,7 +2999,6 @@
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
 		A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAddServerEnvironmentViewController.h; sourceTree = "<group>"; };
 		A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAddServerEnvironmentViewController.m; sourceTree = "<group>"; };
-		A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDataSource.swift; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
 		A743E7E21A0816D500339CB3 /* VPasswordValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPasswordValidator.h; sourceTree = "<group>"; };
 		A743E7E31A0816D500339CB3 /* VPasswordValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidator.m; sourceTree = "<group>"; };
@@ -3206,8 +3210,6 @@
 		A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerViewController.m; sourceTree = "<group>"; };
 		A776EF1D1ACC9C460093992F /* VMultipleToolPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMultipleToolPicker.h; sourceTree = "<group>"; };
 		A77723E31C3482C6002351B5 /* 2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.xcdatamodel; sourceTree = "<group>"; };
-		A778B4471B544370004F9F54 /* GIFSearchMediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchMediaExporter.swift; sourceTree = "<group>"; };
-		A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchActivityFooter.swift; sourceTree = "<group>"; };
 		A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDecorator.h; sourceTree = "<group>"; };
 		A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecorator.m; sourceTree = "<group>"; };
 		A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecoratorTests.m; sourceTree = "<group>"; };
@@ -3277,8 +3279,6 @@
 		A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E91AD7124D00F2564A /* VProfileDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeepLinkHandler.m; sourceTree = "<group>"; };
-		A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchViewController.swift; sourceTree = "<group>"; };
-		A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GIFSearch.storyboard; sourceTree = "<group>"; };
 		A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPollResultReceiver.h; sourceTree = "<group>"; };
 		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
 		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
@@ -4681,7 +4681,6 @@
 				C3623E561B9A779A002B121D /* Fan Club */,
 				D85B70371B0EAF3F0038CA5B /* Find Friends */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
-				A7A0617B1B4DB36A00E8FFCF /* GIFSearch */,
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
@@ -4690,6 +4689,7 @@
 				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
+				5A6F11BE1C40FBB0000BF7F3 /* MediaSearch */,
 				DBAD775B19F711D900B6A939 /* Monetization */,
 				C30AA4D51B0439360010CEFE /* Permission Alert */,
 				0314D3BC19B46B5E00FA363C /* Profile */,
@@ -6294,6 +6294,33 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		5A6F11BE1C40FBB0000BF7F3 /* MediaSearch */ = {
+			isa = PBXGroup;
+			children = (
+				5A6F11BF1C40FBB0000BF7F3 /* Cells */,
+				5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */,
+				5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */,
+				5A6F11C51C40FBB0000BF7F3 /* MediaSearchDataSource+CollectionViewDataSource.swift */,
+				5A6F11C61C40FBB0000BF7F3 /* MediaSearchDataSource.swift */,
+				5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */,
+				5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */,
+				5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */,
+				5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */,
+			);
+			name = MediaSearch;
+			path = "Force Upgrade/MediaSearch";
+			sourceTree = "<group>";
+		};
+		5A6F11BF1C40FBB0000BF7F3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */,
+				5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */,
+				5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		6236F8721C3602E300746476 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -6783,16 +6810,6 @@
 				A721E8AE1B572453000B7901 /* VVoteResult+RestKit.m */,
 			);
 			path = Mappings;
-			sourceTree = "<group>";
-		};
-		A721E96C1B581F53000B7901 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				A721E96D1B581F78000B7901 /* GIFSearchNoContentCell.swift */,
-				A721E96E1B581F78000B7901 /* GIFSearchPreviewCell.swift */,
-				A721E96F1B581F78000B7901 /* GIFSearchResultCell.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		A7299E6E1AA1099800B6BC1F /* DirectoryCells */ = {
@@ -7392,22 +7409,6 @@
 				A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */,
 			);
 			path = "Deep Links";
-			sourceTree = "<group>";
-		};
-		A7A0617B1B4DB36A00E8FFCF /* GIFSearch */ = {
-			isa = PBXGroup;
-			children = (
-				A721E96C1B581F53000B7901 /* Cells */,
-				A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */,
-				A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */,
-				A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */,
-				A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */,
-				A778B4471B544370004F9F54 /* GIFSearchMediaExporter.swift */,
-				A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */,
-				A721E9741B5822FD000B7901 /* GIFSearchViewController+Delegates.swift */,
-				A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */,
-			);
-			path = GIFSearch;
 			sourceTree = "<group>";
 		};
 		A7A2E0021A38E41800F8C705 /* Purchases */ = {
@@ -9820,7 +9821,6 @@
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
-				A7A0617F1B4DB5B500E8FFCF /* GIFSearch.storyboard in Resources */,
 				672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */,
 				F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */,
 				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
@@ -9828,6 +9828,7 @@
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */,
+				5A6F11CE1C40FBB0000BF7F3 /* MediaSearch.storyboard in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
 				C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */,
@@ -10745,13 +10746,11 @@
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
 				6794E6071C0CE1A900791CA0 /* GIFSearchOperation.swift in Sources */,
 				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
-				A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */,
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
 				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
-				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
@@ -10770,6 +10769,7 @@
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
+				5A6F11D21C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
@@ -10792,7 +10792,6 @@
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
 				A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */,
 				A721E9211B572454000B7901 /* VAnswer+RestKit.m in Sources */,
-				A721E9701B581F78000B7901 /* GIFSearchNoContentCell.swift in Sources */,
 				A721E92B1B572454000B7901 /* VMessage+RestKit.m in Sources */,
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */,
@@ -10862,12 +10861,12 @@
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
-				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A7039CF91C24CA9B0023DE6F /* ConversationListOperation.swift in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
 				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
+				5A6F11D11C40FBB0000BF7F3 /* MediaSearchDataSource.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
 				B0E1584E1B715269004F0A60 /* VUtilityButtonFlowLayout.m in Sources */,
@@ -10889,10 +10888,10 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
+				5A6F11CC1C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
 				797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
-				A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */,
 				678AC1711C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift in Sources */,
 				A76AEA321BFEAD9300E8A26F /* Queueable.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
@@ -11220,6 +11219,7 @@
 				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
 				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
+				5A6F11D51C40FBB0000BF7F3 /* MediaSearchViewController.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
@@ -11232,7 +11232,6 @@
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */,
-				A778B4481B544370004F9F54 /* GIFSearchMediaExporter.swift in Sources */,
 				A767121B1C209F37006568DF /* CommentEditOperation.swift in Sources */,
 				A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
@@ -11252,6 +11251,7 @@
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
+				5A6F11D31C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift in Sources */,
 				A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
@@ -11292,6 +11292,7 @@
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
+				5A6F11CF1C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift in Sources */,
 				A702C8571C1247C9001EE1D5 /* StreamOperation.swift in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
@@ -11331,7 +11332,6 @@
 				A74679721BF6CC9B0026FD2E /* VStoredLogin.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				A767120D1C1F7BCF006568DF /* PollVoteOperation.swift in Sources */,
-				A7A0617D1B4DB39900E8FFCF /* GIFSearchViewController.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
 				C3186DF61BACE7D300F4BCFF /* AchievementInterstitial.swift in Sources */,
 				F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */,
@@ -11375,6 +11375,8 @@
 				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
+				5A6F11D41C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift in Sources */,
+				5A6F11CD1C40FBB0000BF7F3 /* MediaSearchResultCell.swift in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
@@ -11421,7 +11423,6 @@
 				F089E35D1AC4863F0076DC4D /* VBlurredMarqueeController.m in Sources */,
 				A7F711F81AE1D5A00086F729 /* VAbstractProfileEditViewController.m in Sources */,
 				7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */,
-				A721E7521B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
@@ -11544,7 +11545,6 @@
 				C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */,
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				C3A4C5B21BCC6455000B745B /* StatusBarUtils.swift in Sources */,
-				A721E9751B5822FD000B7901 /* GIFSearchViewController+Delegates.swift in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */,
 				F0E0F1AF1AE8BFA900143CBF /* VInsetMarqueeCollectionViewCell.m in Sources */,
@@ -11573,6 +11573,7 @@
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,
+				5A6F11D01C40FBB0000BF7F3 /* MediaSearchDataSource+CollectionViewDataSource.swift in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
@@ -11658,6 +11659,7 @@
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
+				5A6F11CB1C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
@@ -11668,7 +11670,6 @@
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,
 				F0FC97F21B5C4F6F0098AFCB /* VCommentMediaTypeHelper.m in Sources */,
 				F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */,
-				A721E7541B56059A000B7901 /* GIFSearchViewController+Layout.swift in Sources */,
 				A7A343DB1A8A8452000F0BCF /* VCommentAlertHelper.m in Sources */,
 				A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */,
 			);

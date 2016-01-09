@@ -1,5 +1,5 @@
 //
-//  GIFSearchViewController+Delegates.swift
+//  MediaSearchViewController+Delegates.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/16/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension GIFSearchViewController : UISearchBarDelegate {
+extension MediaSearchViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if let searchBarText = searchBar.text where searchBarText.characters.count > 0 {
@@ -19,7 +19,7 @@ extension GIFSearchViewController : UISearchBarDelegate {
     }
 }
 
-extension GIFSearchViewController : UIScrollViewDelegate {
+extension MediaSearchViewController : UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
@@ -41,7 +41,7 @@ extension GIFSearchViewController : UIScrollViewDelegate {
     }
 }
 
-extension GIFSearchViewController : VScrollPaginatorDelegate {
+extension MediaSearchViewController : VScrollPaginatorDelegate {
     
     func shouldLoadNextPage() {
         if let searchText = self.searchDataSource.mostRecentSearchText {
@@ -53,10 +53,10 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
     }
 }
 
-extension GIFSearchViewController : UICollectionViewDelegate {
+extension MediaSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
+        if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchResultCell {
             if self.selectedIndexPath == indexPath {
                 self.hidePreviewForResult( indexPath )
                 collectionView.deselectItemAtIndexPath(indexPath, animated: true)
@@ -65,7 +65,7 @@ extension GIFSearchViewController : UICollectionViewDelegate {
                 self.showPreviewForResult( indexPath )
             }
         }
-        else if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
+        else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
             self.exportSelectedItem( nil )
             self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
             dispatch_after(0.0) {
@@ -76,7 +76,7 @@ extension GIFSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         let cell = collectionView.cellForItemAtIndexPath( indexPath )
-        return cell is GIFSearchResultCell || cell is GIFSearchPreviewCell
+        return cell is MediaSearchResultCell || cell is MediaSearchPreviewCell
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

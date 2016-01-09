@@ -1,15 +1,15 @@
 //
-//  GIFSearchViewController+Layout.swift
+//  MediaSearchViewController+Layout.swift
 //  victorious
 //
-//  Created by PatricGIFSearchLayout. Lynch on 7/14/15.
+//  Created by Patrick Lynch on 7/14/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 import UIKit
 
 // A type that provides static constants used for metrics in layout calculations
-struct GIFSearchLayout {
+struct MediaSearchLayout {
     static let HeaderViewHeight: CGFloat      = 50.0
     static let FooterViewHeight: CGFloat      = 50.0
     static let DefaultSectionMargin: CGFloat  = 10.0
@@ -17,18 +17,18 @@ struct GIFSearchLayout {
     static let ItemSpacing: CGFloat           = 2.0
 }
 
-extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
+extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         let insets = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
         let numRowsInSection = collectionView.numberOfItemsInSection(indexPath.section)
-        let totalWidth = collectionView.bounds.width - insets.left - insets.right - GIFSearchLayout.ItemSpacing * CGFloat(numRowsInSection - 1)
+        let totalWidth = collectionView.bounds.width - insets.left - insets.right - MediaSearchLayout.ItemSpacing * CGFloat(numRowsInSection - 1)
         let totalHeight = collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight)
         
         if self.searchDataSource.sections.count == 0 {
-            return CGSize(width: totalSize.width, height: GIFSearchLayout.NoContentCellHeight)
+            return CGSize(width: totalSize.width, height: MediaSearchLayout.NoContentCellHeight)
         }
         else {
             let section = self.searchDataSource.sections[ indexPath.section ]
@@ -43,24 +43,24 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let headerHeight = self.shouldShowHeader(section) ? GIFSearchLayout.HeaderViewHeight : 0.0
+        let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.HeaderViewHeight : 0.0
         return CGSize(width: collectionView.bounds.width, height: headerHeight )
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         if let previewSection = self.previewSection where previewSection == section {
             return UIEdgeInsets(
-                top: GIFSearchLayout.DefaultSectionMargin,
-                left: GIFSearchLayout.DefaultSectionMargin,
-                bottom: GIFSearchLayout.DefaultSectionMargin,
-                right: GIFSearchLayout.DefaultSectionMargin)
+                top: MediaSearchLayout.DefaultSectionMargin,
+                left: MediaSearchLayout.DefaultSectionMargin,
+                bottom: MediaSearchLayout.DefaultSectionMargin,
+                right: MediaSearchLayout.DefaultSectionMargin)
         }
         else {
             return UIEdgeInsets(
-                top: GIFSearchLayout.ItemSpacing,
-                left: GIFSearchLayout.DefaultSectionMargin,
-                bottom: self.shouldShowFooter(section) ? 0.0 : self.isLastSection(section) ? GIFSearchLayout.DefaultSectionMargin : 0.0,
-                right: GIFSearchLayout.DefaultSectionMargin)
+                top: MediaSearchLayout.ItemSpacing,
+                left: MediaSearchLayout.DefaultSectionMargin,
+                bottom: self.shouldShowFooter(section) ? 0.0 : self.isLastSection(section) ? MediaSearchLayout.DefaultSectionMargin : 0.0,
+                right: MediaSearchLayout.DefaultSectionMargin)
         }
     }
     
@@ -69,7 +69,7 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let footerHeight = self.shouldShowFooter(section) ? GIFSearchLayout.FooterViewHeight : 0.0
+        let footerHeight = self.shouldShowFooter(section) ? MediaSearchLayout.FooterViewHeight : 0.0
         return CGSize(width: collectionView.bounds.width, height: footerHeight )
     }
     
@@ -91,11 +91,11 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
 }
 
 // Provides some size calculation methods to be used when determine sizes for cells in a collection view
-private extension GIFSearchDataSource.Section {
+private extension MediaSearchDataSource.Section {
     
     func previewSectionCellSize( withinSize totalSize: CGSize ) -> CGSize {
         let gif = self.results[0]
-        let maxHeight = totalSize.height - GIFSearchDataSource.Section.MinCollectionContainerMargin * 2.0
+        let maxHeight = totalSize.height - MediaSearchDataSource.Section.MinCollectionContainerMargin * 2.0
         return CGSize(width: totalSize.width, height: min(totalSize.width / gif.aspectRatio, maxHeight) )
     }
     

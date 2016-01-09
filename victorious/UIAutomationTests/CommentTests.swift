@@ -1,5 +1,5 @@
 //
-//  GifCommentTest.swift
+//  CommentTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 8/14/15.
@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//
+
 class CommentTests : VictoriousTestCase {
     
     override var testDescription: String {
@@ -35,9 +35,9 @@ class CommentTests : VictoriousTestCase {
         // Tap first index path
         self.addStep( "Selects the first GIF from the trending GIFs search results." )
         let testIndexPath = NSIndexPath(forItem: 0, inSection: 0)
-        let gifCollectionViewIdentifier = AutomationId.GIFSearchCollection.rawValue
-        self.tester().waitForCellAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
-        self.tester().tapItemAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
+        let mediaCollectionViewIdentifier = AutomationId.MediaSearchCollection.rawValue
+        self.tester().waitForCellAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: mediaCollectionViewIdentifier)
+        self.tester().tapItemAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: mediaCollectionViewIdentifier)
         
         // Tap next button
         self.tester().tapViewWithAccessibilityLabel( "Next" )

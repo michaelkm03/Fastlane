@@ -1,5 +1,5 @@
 //
-//  GIFSearchActivityFooter.swift
+//  MediaSearchActivityFooter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/14/15.
@@ -10,7 +10,7 @@ import UIKit
 
 /// Collection view footer that shows activity indicator or a message, intended
 /// for letting the user know when there are no more results to load.
-class GIFSearchActivityFooter: UICollectionReusableView {
+class MediaSearchActivityFooter: UICollectionReusableView {
     
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!

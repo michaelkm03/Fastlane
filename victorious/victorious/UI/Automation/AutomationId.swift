@@ -13,7 +13,7 @@ import Foundation
 /// for use in Objective-C called "VAutomation.h" that defines static constant strings.
 public enum AutomationId: String {
     case None = ""
-    case GIFSearchNext = "GIF Search Next"
-    case GIFSearchSearchbar = "GIF Search Searchbar"
-    case GIFSearchCollection = "GIF Search Collection"
+    case MediaSearchNext = "GIF Search Next"
+    case MediaSearchSearchbar = "GIF Search Searchbar"
+    case MediaSearchCollection = "GIF Search Collection"
 }

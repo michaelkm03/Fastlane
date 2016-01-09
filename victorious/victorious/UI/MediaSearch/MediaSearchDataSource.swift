@@ -1,5 +1,5 @@
 //
-//  GIFSearchDataSource.swift
+//  MediaSearchDataSource.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/8/15.
@@ -9,25 +9,7 @@
 import UIKit
 import VictoriousIOSSDK
 
-/// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.
-private extension NSIndexPath {
-    
-    func nextSection() -> Int { return self.section + 1 }
-    
-    func nextSectionIndexPath() -> NSIndexPath {
-        return NSIndexPath(forRow: self.row, inSection: self.nextSection() )
-    }
-    
-    func previousSection() -> Int { return self.section - 1 }
-    
-    func previousSectionIndexPath() -> NSIndexPath {
-        return NSIndexPath(forRow: self.row, inSection: self.previousSection() )
-    }
-}
-
-/// Collection view data source that lods GIF search results from backend and creates
-/// and populated data on cells to show in results collection view.
-class GIFSearchDataSource: NSObject {
+class MediaSearchDataSource: NSObject {
     
     private(set) var isLastPage: Bool = false
     private var mostRecentSearchOperation: GIFSearchOperation?
@@ -45,11 +27,11 @@ class GIFSearchDataSource: NSObject {
         /// search result and the colleciton view bounds
         static let MinCollectionContainerMargin: CGFloat = 50.0
         
-        let results: [GIFSearchResultObject]
+        let results: [MediaSearchResult]
         
         let isFullSize: Bool
         
-        subscript( index: Int ) -> GIFSearchResultObject {
+        subscript( index: Int ) -> MediaSearchResult {
             return self.results[ index ]
         }
         
@@ -71,15 +53,14 @@ class GIFSearchDataSource: NSObject {
     }
     
     struct ReuseIdentifier {
-        static let AttributionHeader = "GIFSearchAttributionView" ///< Set in storyboard
-        static let ActivityFooter = "GIFSearchActivityFooter" ///< Set in storyboard
+        static let AttributionHeader = "MediaSearchAttributionView" ///< Set in storyboard
+        static let ActivityFooter = "MediaSearchActivityFooter" ///< Set in storyboard
     }
     
     private(set) var sections = [Section]()
     private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
-    
-    ///
+	
     func performDefaultSearch( pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
@@ -122,7 +103,7 @@ class GIFSearchDataSource: NSObject {
                     }
                     
                 // Operation successfully returned results
-                } else if let results = operation.results as? [GIFSearchResultObject] {
+                } else if let results = operation.results as? [MediaSearchResult] {
                     self.state = .Content
                     result = self.updateDataSource( results, pageType: pageType )
                 }
@@ -174,7 +155,7 @@ class GIFSearchDataSource: NSObject {
                     }
                     
                 // Operation successfully returned results
-                } else if let results = operation.results as? [GIFSearchResultObject] {
+                } else if let results = operation.results as? [MediaSearchResult] {
                     self.state = .Content
                     self.mostRecentSearchText = searchText
                     result = self.updateDataSource( results, pageType: pageType )
@@ -203,8 +184,6 @@ class GIFSearchDataSource: NSObject {
     }
     
     /// Removes the current full size asset section, wherever it may be.
-    ///
-    /// - returns: `ChangeResult` indicating whether or not the total section count was changed
     func removeHighlightSection() -> ChangeResult {
         var result = ChangeResult()
         if let highlightedSection = self.highlightedSection {
@@ -217,10 +196,8 @@ class GIFSearchDataSource: NSObject {
         return result
     }
     
-    /// For the provided index path, adds a section beneath that shows the fullsize
+    /// Adds a section beneath that shows the fullsize
     /// asset for the item at the index path.
-    ///
-    /// - returns: whether or not the total section count was changed
     func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
         var result = self.removeHighlightSection()
         
@@ -242,7 +219,7 @@ class GIFSearchDataSource: NSObject {
     
     // MARK: - Private
     
-    private func updateDataSource( results: [GIFSearchResultObject], pageType: VPageType ) -> ChangeResult {
+    private func updateDataSource( results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
             if self.sections.count == 0 && results.count > 0 {
@@ -256,7 +233,7 @@ class GIFSearchDataSource: NSObject {
         }
         let prevSectionCount = self.sections.count
         for var i = 0; i < results.count; i+=2 {
-            let resultsForSection: [GIFSearchResultObject] = {
+            let resultsForSection: [MediaSearchResult] = {
                 if i + 1 < results.count {
                     return [results[i], results[i+1]]
                 }
@@ -272,4 +249,20 @@ class GIFSearchDataSource: NSObject {
         result.insertedSections = NSIndexSet(indexesInRange: range)
         return result
     }
+}
+
+/// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.
+private extension NSIndexPath {
+	
+	func nextSection() -> Int { return self.section + 1 }
+	
+	func nextSectionIndexPath() -> NSIndexPath {
+		return NSIndexPath(forRow: self.row, inSection: self.nextSection() )
+	}
+	
+	func previousSection() -> Int { return self.section - 1 }
+	
+	func previousSectionIndexPath() -> NSIndexPath {
+		return NSIndexPath(forRow: self.row, inSection: self.previousSection() )
+	}
 }

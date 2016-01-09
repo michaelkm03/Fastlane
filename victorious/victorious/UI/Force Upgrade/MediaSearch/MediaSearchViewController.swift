@@ -1,5 +1,5 @@
 //
-//  GIFSearchViewController.swift
+//  MediaSearchViewController.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/8/15.
@@ -9,18 +9,18 @@
 import MBProgressHUD
 import UIKit
 
-/// Delegate that handles events that originate from within a `GIFSearchViewController`
-@objc protocol GIFSearchViewControllerDelegate {
+/// Delegate that handles events that originate from within a `MediaSearchViewController`
+@objc protocol MediaSearchViewControllerDelegate {
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// - parameter `selectedGIFSearchResult`: The selected GIF search result object
-    func GIFSearchResultSelected( selectedGIFSearchResult: GIFSearchResultObject)
+    /// - parameter `selectedMediaSearchResult`: The selected GIF search result object
+    func MediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult)
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API
 /// as part of a content creation flow.
-class GIFSearchViewController: UIViewController {
+class MediaSearchViewController: UIViewController {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
@@ -36,29 +36,29 @@ class GIFSearchViewController: UIViewController {
     private(set) var dependencyManager: VDependencyManager?
     
     let scrollPaginator = VScrollPaginator()
-    let searchDataSource = GIFSearchDataSource()
-    private lazy var mediaExporter = GIFSearchMediaExporter()
+	let searchDataSource: MediaSearchDataSource = GIFSearchDataSource()
+    private lazy var mediaExporter = MediaSearchExporter()
     
-    weak var delegate: GIFSearchViewControllerDelegate?
+    weak var delegate: MediaSearchViewControllerDelegate?
     
-    static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
-        let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
-        if let viewController = bundle.instantiateInitialViewController() as? GIFSearchViewController {
+    static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> MediaSearchViewController {
+        let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
+        if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
             viewController.dependencyManager = depndencyManager
             return viewController
         }
-        fatalError( "Could not load GIFSearchViewController from storyboard." )
+        fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView.accessibilityIdentifier = AutomationId.GIFSearchCollection.rawValue
+        self.collectionView.accessibilityIdentifier = AutomationId.MediaSearchCollection.rawValue
         
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self
-        self.searchBar.accessibilityIdentifier = AutomationId.GIFSearchSearchbar.rawValue
+        self.searchBar.accessibilityIdentifier = AutomationId.MediaSearchSearchbar.rawValue
         if let searchTextField = self.searchBar.v_textField {
             searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
@@ -97,7 +97,7 @@ class GIFSearchViewController: UIViewController {
                 if let previewImage = previewImage, let mediaURL = mediaURL {
                     gifSearchResulObject.exportPreviewImage = previewImage
                     gifSearchResulObject.exportMediaURL = mediaURL
-                    self.delegate?.GIFSearchResultSelected( gifSearchResulObject )
+                    self.delegate?.MediaSearchResultSelected( gifSearchResulObject )
                
                 } else {
                     let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
@@ -133,7 +133,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func updateViewWithResult( result: GIFSearchDataSource.ChangeResult? ) {
+    func updateViewWithResult( result: MediaSearch.ChangeResult? ) {
         if let result = result where result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
@@ -167,7 +167,7 @@ class GIFSearchViewController: UIViewController {
     
     private func updateNavigationItemState() {
         self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
-        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.GIFSearchNext.rawValue
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.MediaSearchNext.rawValue
     }
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
@@ -232,8 +232,8 @@ private extension UICollectionView {
     
     /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
     ///
-    /// - parameter result: A `GIFSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
-    func applyDataSourceChanges( result: GIFSearchDataSource.ChangeResult ) {
+    /// - parameter result: A `MediaSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
+    func applyDataSourceChanges( result: MediaSearch.ChangeResult ) {
         
         if let insertedSections = result.insertedSections {
             self.insertSections( insertedSections )
