@@ -11,14 +11,14 @@ import VictoriousIOSSDK
 import SwiftyJSON
 
 struct MockRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
+    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockrequest.com" )! )
     func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
         return true
     }
 }
 
 struct MockErrorRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
+    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! )
     func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
         throw APIError( localizedDescription: "MockError", code: 999)
     }
