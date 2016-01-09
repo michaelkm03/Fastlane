@@ -7,45 +7,7 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
-import SwiftyJSON
 @testable import victorious
-
-struct MockRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        return true
-    }
-}
-
-struct MockErrorRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        throw APIError( localizedDescription: "MockError", code: 999)
-    }
-}
-
-class MockRequestOperation: RequestOperation {
-    var validRequest: MockRequest
-    init(request: MockRequest) {
-        validRequest = request
-    }
-    
-    override func main() {
-        requestExecutor.executeRequest( validRequest, onComplete: nil, onError: nil )
-    }
-}
-
-class MockErrorRequestOperation: RequestOperation {
-    var errorRequest: MockErrorRequest
-    init(request: MockErrorRequest) {
-        errorRequest = request
-    }
-    
-    override func main() {
-        requestExecutor.executeRequest( errorRequest, onComplete: nil, onError: nil )
-    }
-}
 
 class MainRequestExecutorTests: XCTestCase {
     
