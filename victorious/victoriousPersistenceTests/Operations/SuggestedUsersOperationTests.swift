@@ -50,7 +50,7 @@ class SuggestedUsersOperationTests: XCTestCase {
         }
 
         let suggestedUser = SuggestedUser(user: user, recentSequences: [sequence])
-        testRequestExecutor.onCompleteResult = [suggestedUser]
+        testRequestExecutor.mockResult = [suggestedUser]
 
         operation.main()
 
