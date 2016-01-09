@@ -7,9 +7,8 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
-import SwiftyJSON
 @testable import victorious
+import Nocilla
 
 class RequestOperationTests: XCTestCase {
     
@@ -17,14 +16,25 @@ class RequestOperationTests: XCTestCase {
     var requestOperationRequestExecutor: RequestExecutorType!
 
     override func setUp() {
+        super.setUp()
         requestOperation = RequestOperation()
         requestOperationRequestExecutor = MainRequestExecutor(persistentStore: MainPersistentStore())
+        LSNocilla.sharedInstance().start()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        LSNocilla.sharedInstance().clearStubs()
+        LSNocilla.sharedInstance().stop()
     }
     
     func testBasic() {
         let expectation = self.expectationWithDescription("testBasic")
-        
         let request = MockRequest()
+        let url = request.urlRequest.URL?.absoluteString
+
+        stubRequest("GET", url)
+
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestOperation.requestExecutor.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in
@@ -41,8 +51,11 @@ class RequestOperationTests: XCTestCase {
     
     func testError() {
         let expectation = self.expectationWithDescription("testError")
-        
         let request = MockErrorRequest()
+        let url = request.urlRequest.URL?.absoluteString
+        
+        stubRequest("GET", url)
+        
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
             self.requestOperation.requestExecutor.executeRequest( request,
                 onComplete: { (result, completion:()->() ) in

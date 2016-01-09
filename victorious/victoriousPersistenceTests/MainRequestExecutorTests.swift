@@ -12,19 +12,15 @@ import Nocilla
 
 class MainRequestExecutorTests: XCTestCase {
     
-    override class func setUp() {
+    override func setUp() {
         super.setUp()
         LSNocilla.sharedInstance().start()
     }
 
     override func tearDown() {
+        super.tearDown()
         LSNocilla.sharedInstance().clearStubs()
-        super.tearDown()
-    }
-    
-    override class func tearDown() {
         LSNocilla.sharedInstance().stop()
-        super.tearDown()
     }
     
     func testValidRequestExecution() {
