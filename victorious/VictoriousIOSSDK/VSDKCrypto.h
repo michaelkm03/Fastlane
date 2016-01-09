@@ -15,4 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString *vsdk_sha1(NSString *plaintext);
 
+/**
+ Returns a SHA256 hash of the given string
+ */
+extern NSString *vsdk_sha256(NSString *plaintext);
+
 NS_ASSUME_NONNULL_END

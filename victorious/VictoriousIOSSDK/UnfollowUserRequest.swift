@@ -13,20 +13,20 @@ import SwiftyJSON
 public struct UnfollowUserRequest: RequestType {
     
     /// The ID of the user you'd like to unfollow
-    public let userToUnfollowID: Int
-    
+    public let userID: Int
+
     // The name of the screen from which you're unfollowing this user
     public let screenName: String
     
-    public init(userToUnfollowID: Int, screenName: String) {
-        self.userToUnfollowID = userToUnfollowID
+    public init(userID: Int, screenName: String) {
+        self.userID = userID
         self.screenName = screenName
     }
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/follow/remove")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "source": screenName, "target_user_id": String(userToUnfollowID) ]
+        let params = [ "source": screenName, "target_user_id": String(userID) ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }

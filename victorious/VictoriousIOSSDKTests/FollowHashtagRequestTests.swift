@@ -20,7 +20,7 @@ class FollowHashtagRequestTests: XCTestCase {
         }
         
         do {
-            let followHashtag = FollowHashtagRequest(hashtagToFollow: "surfer")
+            let followHashtag = FollowHashtagRequest(hashtag: "surfer")
             try followHashtag.parseResponse(NSURLResponse(), toRequest: followHashtag.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
@@ -31,7 +31,7 @@ class FollowHashtagRequestTests: XCTestCase {
         
         let targetHashtag = "surfer"
         
-        let followHashtag = FollowHashtagRequest(hashtagToFollow: targetHashtag)
+        let followHashtag = FollowHashtagRequest(hashtag: targetHashtag)
         let request = followHashtag.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/hashtag/follow")

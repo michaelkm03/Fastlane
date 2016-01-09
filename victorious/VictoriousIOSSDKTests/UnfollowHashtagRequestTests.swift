@@ -16,7 +16,7 @@ class UnfollowHashtagRequestTests: XCTestCase {
         
         let targetHashtag = "surfer"
         
-        let unfollowHashtag = UnfollowHashtagRequest(hashtagToUnfollow: targetHashtag)
+        let unfollowHashtag = UnfollowHashtagRequest(hashtag: targetHashtag)
         let request = unfollowHashtag.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/hashtag/unfollow")

@@ -11,25 +11,25 @@ import SwiftyJSON
 
 public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    public let queryString: String
+    public let searchTerm: String
     
     var context = SearchContext.Message
     
     public let paginator: StandardPaginator
     
     public init(request: HashtagSearchRequest, paginator: StandardPaginator ) {
-        self.queryString = request.queryString
+        self.searchTerm = request.searchTerm
         self.paginator = paginator
     }
     
-    // param: - query must be a urlPathPart percent encoded string
-    public init(query: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
-        self.queryString = query
+    // param: - searchTerm must be a urlPathPart percent encoded string
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+        self.searchTerm = searchTerm
         self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/hashtag/search/\(queryString)")! )
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/hashtag/search/\(searchTerm)")! )
         paginator.addPaginationArgumentsToRequest(request)
         let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
         return NSURLRequest(URL: contextualURL)

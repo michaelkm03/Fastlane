@@ -27,11 +27,11 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.queryString
+        self.escapedQueryString = request.searchTerm
     }
     
-    convenience init?( queryString: String ) {
-        guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+    convenience init?( searchTerm: String ) {
+        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
             return nil
         }
         self.init(request: UserSearchRequest(query: escapedString))
@@ -45,13 +45,19 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         completion()
     }
     
-    private func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
+    func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
+        
+        defer { completion() }
         
         self.results = networkResult.map{ UserSearchResultObject( user: $0) }
         
-        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
-        completion()
+        guard !networkResult.isEmpty else {
+            results = []
+            return
+        }
         
+        results = networkResult.map{ UserSearchResultObject( user: $0) }
+
         // Populate our local users cache based off the new data
         persistentStore.backgroundContext.v_performBlock { context in
             guard !networkResult.isEmpty else {
@@ -59,7 +65,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
             }
             
             for networkUser in networkResult {
-                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : NSNumber(integer: networkUser.userID)])
+                let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID])
                 localUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()

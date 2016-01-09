@@ -12,9 +12,6 @@ import VictoriousIOSSDK
 class SuggestedUsersOperation: RequestOperation, ResultsOperation {
     
     let request = SuggestedUsersRequest()
-    
-    private(set) var suggestedUsers: [VSuggestedUser] = []
-    
     var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
@@ -24,7 +21,7 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
     
     func onComplete( users: [SuggestedUser], completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in

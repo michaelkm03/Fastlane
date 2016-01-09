@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
-@class VAdBreak, VComment, VEndCard, VImageAsset, VNode, VPollResult, VTracking, VUser, VVoteResult;
+@class VAdBreak, VComment, VImageAsset, VNode, VPollResult, VTracking, VUser, VVoteResult;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,10 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) NSString * sequenceDescription;
 @property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
 @property (nonatomic, retain) NSOrderedSet * comments;
-@property (nonatomic, retain, nullable) VEndCard * endCard;
 @property (nonatomic, retain, nullable) NSSet * likers;
 @property (nonatomic, retain, nullable) NSOrderedSet * nodes;
-@property (nonatomic, retain, nullable) VEndCard * parentEndCard;
 @property (nonatomic, retain, nullable) VUser * parentUser;
 @property (nonatomic, retain, nullable) NSSet * pollResults;
 @property (nonatomic, retain, nullable) VUser * recentUser;

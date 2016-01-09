@@ -95,16 +95,6 @@
         <attribute name="streamItemId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="streamItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="editorializations" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
-    <entity name="EndCard" representedClassName="VEndCard" syncable="YES">
-        <attribute name="canRemix" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="canRepost" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="canShare" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="countdownDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="permissionsMask" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="streamName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="nextSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentEndCard" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
-    </entity>
     <entity name="Experiment" representedClassName="victorious.Experiment" syncable="YES">
         <attribute name="bucketCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="bucketType" optional="YES" attributeType="String" syncable="YES"/>
@@ -270,10 +260,8 @@
         <attribute name="trendingTopicName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
         <relationship name="comments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
-        <relationship name="endCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="parentSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="likers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="sequence" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
-        <relationship name="parentEndCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="nextSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="recentComments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="inStreamSequence" inverseEntity="Comment" syncable="YES"/>
@@ -393,7 +381,6 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="FollowedHashtag" positionX="225" positionY="-621" width="128" height="90"/>
         <element name="FollowedUser" positionX="216" positionY="-630" width="128" height="90"/>
@@ -412,7 +399,7 @@
         <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="570"/>
         <element name="SequenceLiker" positionX="198" positionY="-648" width="128" height="90"/>
         <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>

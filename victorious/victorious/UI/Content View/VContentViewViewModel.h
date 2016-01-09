@@ -12,7 +12,6 @@
 #import "VExperienceEnhancerController.h"
 #import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
-#import "VEndCardModel.h"
 #import "VMonetizationPartner.h"
 
 /**
@@ -54,8 +53,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @interface VContentViewViewModel : NSObject
 
 - (instancetype)initWithContext:(ContentViewContext *)context NS_DESIGNATED_INITIALIZER;
-
-- (void)updateEndcard;
 
 - (void)setupAdChain;
 
@@ -117,7 +114,6 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
 @property (nonatomic, strong, readonly) VLargeNumberFormatter *largeNumberFormatter;
 @property (nonatomic, assign, readonly) VMonetizationPartner monetizationPartner;
 @property (nonatomic, assign, readonly) NSArray *monetizationDetails;
-@property (nonatomic, strong, readwrite) VEndCardModel *endCardViewModel;
 @property (nonatomic, readonly) float speed;
 @property (nonatomic, readonly) BOOL loop;
 @property (nonatomic, readonly) BOOL playerControlsDisabled; //< Determines whether the video player will show its toolbar with play controls.

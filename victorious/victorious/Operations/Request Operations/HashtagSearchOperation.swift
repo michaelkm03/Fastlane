@@ -27,14 +27,14 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     
     required init( request: HashtagSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.queryString
+        self.escapedQueryString = request.searchTerm
     }
     
-    convenience init?( queryString: String ) {
-        guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+    convenience init?( searchTerm: String ) {
+        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
             return nil
         }
-        self.init(request: HashtagSearchRequest(query: escapedString))
+        self.init(request: HashtagSearchRequest(searchTerm: escapedString))
     }
     
     override func main() {

@@ -11,25 +11,25 @@ import SwiftyJSON
 
 public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    public let queryString: String
+    public let searchTerm: String
     
     var context = SearchContext.Message
     
     public let paginator: StandardPaginator
     
     public init(request: UserSearchRequest, paginator: StandardPaginator ) {
-        self.queryString = request.queryString
+        self.searchTerm = request.searchTerm
         self.paginator = paginator
     }
 
     // param: - query must be a urlPathPart percent encoded string
     public init(query: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
-        self.queryString = query
+        self.searchTerm = query
         self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/userinfo/search_paginate/\(queryString)")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/userinfo/search_paginate/\(searchTerm)")!)
         paginator.addPaginationArgumentsToRequest(request)
         let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
         return NSURLRequest(URL: contextualURL)
