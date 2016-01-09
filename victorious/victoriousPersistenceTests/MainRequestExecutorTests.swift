@@ -12,16 +12,19 @@ import Nocilla
 
 class MainRequestExecutorTests: XCTestCase {
     
-    override func setUp() {
+    override class func setUp() {
         super.setUp()
         LSNocilla.sharedInstance().start()
     }
 
     override func tearDown() {
-        super.tearDown()
-        
         LSNocilla.sharedInstance().clearStubs()
+        super.tearDown()
+    }
+    
+    override class func tearDown() {
         LSNocilla.sharedInstance().stop()
+        super.tearDown()
     }
     
     func testValidRequestExecution() {
@@ -32,8 +35,8 @@ class MainRequestExecutorTests: XCTestCase {
         stubRequest("GET", url)
         
         requestOperation.queueOn(requestOperation.defaultQueue) { error in
-            expectation.fulfill()
             XCTAssertNil(error)
+            expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -47,8 +50,8 @@ class MainRequestExecutorTests: XCTestCase {
         stubRequest("GET", url)
 
         errorOperation.queueOn(errorOperation.defaultQueue) { error in
-            expectation.fulfill()
             XCTAssertNotNil(error)
+            expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(2, handler: nil)
