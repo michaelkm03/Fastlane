@@ -11,13 +11,12 @@
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
 #import "VDependencyManager.h"
-#import "VFollowResponder.h"
-#import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
+#import "victorious-Swift.h"
 
 @interface VDiscoverSuggestedPersonCell()
 
-@property (nonatomic, weak) IBOutlet VFollowControl *followButton;
+@property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
@@ -43,13 +42,13 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.followButton.dependencyManager = dependencyManager;
+    self.followControl.dependencyManager = dependencyManager;
     if ( _dependencyManager != nil )
     {
         self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.followControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileButton.dependencyManager = dependencyManager;
         self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
@@ -76,7 +75,7 @@
          [welf updateFollowingAnimated:YES];
      }];
     
-    self.followButton.enabled = YES;
+    self.followControl.enabled = YES;
     
     [self populateData];
     [self updateFollowingAnimated:NO];
@@ -111,54 +110,27 @@
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    // If this is the currently logged in user, then hide the follow button
-    VUser *me = [VCurrentUser user];
-    self.followButton.hidden = (self.user == me);
-    [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
-    [self populateData];
+    self.followControl.hidden = [self.user isCurrentUser];
+    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
+    [self.followControl setControlState:controlState animated:animated];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    if ( sender.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
+    long long userId = self.user.remoteId.longLongValue;
+    NSString *screenName = @"";
     
-    void (^authorizedBlock)() = ^
+    RequestOperation *operation;
+    if ( self.user.isFollowedByMainUser.boolValue )
     {
-        [sender setControlState:VFollowControlStateLoading animated:YES];
-    };
-    
-    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
-    {
-        [self updateFollowingAnimated:YES];
-    };
-    
-    if ( sender.controlState == VFollowControlStateFollowed )
-    {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-
-        [followResponder unfollowUser:self.user
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock
-                   fromViewController:nil
-                       withScreenName:nil];
+        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));        
-        
-        [followResponder followUser:self.user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock
-                 fromViewController:nil
-                     withScreenName:nil];
+        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
+    
+    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
 }
 
 @end

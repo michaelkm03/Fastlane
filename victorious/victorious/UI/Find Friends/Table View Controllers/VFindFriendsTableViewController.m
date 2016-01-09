@@ -18,11 +18,11 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-#import "VFollowResponder.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
+#import "VFollowSource.h"
 
-@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate, VFollowResponder>
+@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;
 @property (nonatomic, strong) NSArray *users;
@@ -449,40 +449,7 @@
     return cell;
 }
 
-#pragma mark - VFollowResponder
-
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder followUser:user
-            withAuthorizedBlock:authorizedBlock
-                  andCompletion:completion
-             fromViewController:self
-                 withScreenName:sourceScreen];
-}
-
-- (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
-{
-    NSString *sourceScreen = screenName?:self.sourceScreenName;
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
-    
-    [followResponder unfollowUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion
-               fromViewController:self
-                   withScreenName:sourceScreen];
-}
-
+#warning Use this for follow/unfollow
 - (NSString *)sourceScreenName
 {
     UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];

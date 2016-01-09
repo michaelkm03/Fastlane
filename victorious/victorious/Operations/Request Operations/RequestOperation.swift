@@ -49,8 +49,6 @@ class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
         executor.delegate = self
         return executor
     }()
-
-    private(set) var error: NSError?
     
     // MARK: - Queuable
     
@@ -60,7 +58,7 @@ class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
                 self.mainQueueCompletionBlock = completionBlock
             }
             dispatch_async( dispatch_get_main_queue()) {
-                self.mainQueueCompletionBlock?( self.error )
+                self.mainQueueCompletionBlock?( self.requestExecutor.error )
             }
         }
         queue.addOperation( self )

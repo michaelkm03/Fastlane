@@ -32,4 +32,9 @@ public struct FollowCountRequest: RequestType {
 public struct FollowCount {
     public let followingCount: Int
     public let followersCount: Int
+
+    public init(followingCount: Int, followersCount: Int) {
+        self.followingCount = followingCount
+        self.followersCount = followersCount
+    }
 }

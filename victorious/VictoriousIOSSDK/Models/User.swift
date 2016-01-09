@@ -54,7 +54,7 @@ extension User {
         location                    = json["profile_location"].string
         tagline                     = json["profile_tagline"].string
         fanLoyalty                  = FanLoyalty(json: json["fanloyalty"])
-        isCreator                   = json["isCreator"].bool ?? false
+        isCreator                   = json["isCreator"].bool
         isDirectMessagingDisabled   = json["is_direct_message_disabled"].bool
         isFollowedByMainUser        = json["am_following"].bool ?? false
         numberOfFollowers           = Int(json["number_of_followers"].stringValue)

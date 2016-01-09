@@ -12,6 +12,8 @@ import VictoriousIOSSDK
 class MainRequestExecutor: RequestExecutorType {
     
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private(set) var error: NSError?
+
     
     weak var delegate: RequestExecutorDelegate? = nil
     
@@ -48,12 +50,14 @@ class MainRequestExecutor: RequestExecutorType {
                 authenticationContext: authenticationContext,
                 callback: { (result, error, alerts) -> () in
                     dispatch_async( dispatch_get_main_queue() ) {
+                        
                         if !alerts.isEmpty {
                             self.delegate?.didReceiveAlerts( alerts )
                         }
                         
                         if let error = error as? RequestErrorType {
                             let nsError = NSError( error )
+                            self.error = nsError
                             if let onError = onError {
                                 onError( nsError ) {
                                     dispatch_semaphore_signal( executeSemphore )

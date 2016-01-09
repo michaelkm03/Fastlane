@@ -45,13 +45,4 @@ class MainPersistentStore: NSObject, PersistentStoreType {
     var backgroundContext: NSManagedObjectContext {
         return MainPersistentStore.sharedCoreDataManager.backgroundContext
     }
-    
-    func deletePersistentStore() throws {
-        let url = MainPersistentStore.sharedCoreDataManager.persistentStoreURL
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL( url )
-        } catch {
-            throw PersistentStoreError.DeleteFailed(storeURL: url, error: error)
-        }
-    }
 }

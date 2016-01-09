@@ -27,13 +27,17 @@ class FollowCountOperation: RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
+    func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
         persistentStore.backgroundContext.v_performBlock() { context in
-            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : Int(self.userID) ])
+            defer { completion() }
+            
+            guard let user: VUser = context.v_findObjects( [ "remoteId" : Int(self.userID) ]).first else {
+                return
+            }
+            
             user.numberOfFollowers = response.followersCount
             user.numberOfFollowing = response.followingCount
             context.v_save()
-            completion()
         }
     }
 }
