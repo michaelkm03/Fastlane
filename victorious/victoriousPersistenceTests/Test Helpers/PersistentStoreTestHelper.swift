@@ -1,5 +1,5 @@
 //
-//  OperationHelper.swift
+//  PersistentStoreTestHelper.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/2/16.
@@ -9,17 +9,20 @@ import XCTest
 @testable import victorious
 
 /// Helper class for testing a RequestOperation or it's subclass.
-class RequestOperationTestHelper {
-    func createUser(remoteId remoteId: Int, persistentStore: TestPersistentStore) -> VUser {
+struct PersistentStoreTestHelper {
+
+    let persistentStore: TestPersistentStore
+
+    func createUser(remoteId remoteId: Int) -> VUser {
         return persistentStore.mainContext.v_createObjectAndSave { user in
             user.remoteId = NSNumber(integer: remoteId)
             user.status = "stored"
-            } as VUser
+        } as VUser
     }
 
-    func tearDownPersistentStore(store store: TestPersistentStore) {
+    func tearDownPersistentStore() {
         do {
-            try store.deletePersistentStore()
+            try persistentStore.deletePersistentStore()
         } catch PersistentStoreError.DeleteFailed(let storeURL, let error) {
             XCTFail("Failed to clear the test persistent store at \(storeURL) because of \(error)." +
                 "Failing this test since it can cause test pollution.")

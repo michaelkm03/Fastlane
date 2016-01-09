@@ -10,19 +10,13 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UserSearchOperationTests: XCTestCase {
-    let expectationThreshold: Double = 10
+class UserSearchOperationTests: BaseRequestOperationTestCase {
+    
     let testUserID: Int = 1
-    var testStore: TestPersistentStore!
-    var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor!
     var operation: UserSearchOperation!
     
     override func setUp() {
         super.setUp()
-        testStore = TestPersistentStore()
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation = UserSearchOperation(queryString: "test")
         operation.requestExecutor = testRequestExecutor
     }

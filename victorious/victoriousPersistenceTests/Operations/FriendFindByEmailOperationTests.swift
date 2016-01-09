@@ -10,8 +10,8 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class FriendFindByEmailOperationTests: BaseRequestOperationTests {
-    let expectationThreshold: Double = 10
+class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
+
     let testUserID: Int = 1
     var operation: FriendFindByEmailOperation!
     let emails = ["h@h.hh", "mike@msena.com"]

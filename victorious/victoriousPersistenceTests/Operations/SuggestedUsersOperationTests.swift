@@ -11,19 +11,15 @@ import VictoriousIOSSDK
 import SwiftyJSON
 @testable import victorious
 
-class SuggestedUsersOperationTests: XCTestCase {
-    let expectationThreshold: Double = 10
+class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
+
     var operation: SuggestedUsersOperation!
-    var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor!
-    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = true
-        testStore = TestPersistentStore()
+        
         operation = SuggestedUsersOperation()
-        testRequestExecutor = TestRequestExecutor()
         operation.persistentStore = testStore
         operation.requestExecutor = testRequestExecutor
     }
@@ -50,9 +46,14 @@ class SuggestedUsersOperationTests: XCTestCase {
         }
 
         let suggestedUser = SuggestedUser(user: user, recentSequences: [sequence])
-        testRequestExecutor.mockResult = [suggestedUser]
-
         operation.main()
+        XCTAssertEqual( testRequestExecutor.executeRequestCallCount, 1)
+        
+        let expectation = expectationWithDescription("operation completed")
+        operation.onComplete([suggestedUser]) {
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
 
         XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
         if let fetchedUsers = operation.results as? [VSuggestedUser] {
