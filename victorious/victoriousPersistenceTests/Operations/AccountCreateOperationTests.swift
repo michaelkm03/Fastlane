@@ -13,7 +13,7 @@ import VictoriousIOSSDK
 
 class AccountCreateOperationTests: XCTestCase {
 
-    let persistentStore: PersistentStoreType = TestPersistentStore()
+    let persistentStore = TestPersistentStore()
     
     let token = "ads98j0yd08as7hd9s8a76dghsa87das"
     let twitterToken = "dsaliuho87ao2e"

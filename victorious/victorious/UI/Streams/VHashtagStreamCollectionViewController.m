@@ -17,7 +17,6 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
-#import "VHashtagResponder.h"
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -195,71 +194,24 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     if ( self.isFollowingSelectedHashtag )
     {
-        [self unfollowHashtag];
+        RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
+        [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    {
+            self.followingEnabled = YES;
+            self.followingSelectedHashtag = NO;
+            [self updateFollowStatusAnimated:YES];
+        }];
     }
     else
     {
-        [self followHashtag];
+        RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
+        [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    {
+            self.followingEnabled = YES;
+            self.followingSelectedHashtag = YES;
+            [self updateFollowStatusAnimated:YES];
+        }];
     }
-}
-
-- (void)followHashtag
-{
-    if ( self.followControl.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
-    [self.followControl setControlState:VFollowControlStateLoading
-                               animated:YES];
-    self.followingEnabled = NO;
-    
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:self.selectedHashtag successBlock:^(NSArray *success)
-    {
-        self.followingSelectedHashtag = YES;
-        self.followingEnabled = YES;
-        [self updateFollowStatusAnimated:YES];
-    }
-    failureBlock:^(NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        
-        self.followingEnabled = YES;
-        [self updateFollowStatusAnimated:YES];
-    }];
-}
-
-- (void)unfollowHashtag
-{
-    if ( self.followControl.controlState == VFollowControlStateLoading )
-    {
-        return;
-    }
-    [self.followControl setControlState:VFollowControlStateLoading
-                               animated:YES];
-    self.followingEnabled = NO;
-    
-    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
-    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:self.selectedHashtag successBlock:^(NSArray *success)
-    {
-        self.followingSelectedHashtag = NO;
-        self.followingEnabled = YES;
-        [self updateFollowStatusAnimated:YES];
-    }
-    failureBlock:^(NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        self.followingEnabled = YES;
-        [self updateFollowStatusAnimated:YES];
-    }];
 }
 
 #pragma mark - UIBarButtonItem state management

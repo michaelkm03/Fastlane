@@ -24,7 +24,7 @@
 #import "victorious-Swift.h"
 
 @import CoreLocation;
-@import AddressBookUI;
+@import Contacts;
 
 @interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VLocationManagerDelegate>
 
@@ -230,18 +230,18 @@
     
     if (placemark.locality)
     {
-        [locationDictionary setObject:placemark.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+        [locationDictionary setObject:placemark.locality forKey:CNPostalAddressCityKey];
     }
     
     if (placemark.administrativeArea)
     {
-        [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+        [locationDictionary setObject:placemark.administrativeArea forKey:CNPostalAddressStateKey];
     }
 
     NSString *countryCode = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
     if (countryCode != nil)
     {
-        [locationDictionary setObject:countryCode forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        [locationDictionary setObject:countryCode forKey:CNPostalAddressISOCountryCodeKey];
     }
     
     return [locationDictionary copy];

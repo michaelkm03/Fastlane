@@ -13,54 +13,55 @@ import Foundation
 /// as delete any or all of its contents.
 class TestPersistentStore: NSObject, PersistentStoreType {
 
-    private let persistentStorePath = "victoriOS-test.sqlite"
-    private let managedObjectModelName = "victoriOS"
-    private let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
-    private let sharedCoreDataManager: CoreDataManager
-    private let persistentStoreURL:    NSURL
-
+    static let persistentStorePath = "victoriOS-test.sqlite"
+    static let managedObjectModelName = "victoriOS"
+    static let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
+        
+    private static var coreDataManageInstancer: CoreDataManager?
+    
+    var sharedCoreDataManager: CoreDataManager {
+        if let coreDataManageInstancer = TestPersistentStore.coreDataManageInstancer {
+            return coreDataManageInstancer
+        }
+        
+        let docsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        let persistentStoreURL = docsDirectory.URLByAppendingPathComponent( TestPersistentStore.persistentStorePath )
+        
+        let momPath = ("\(TestPersistentStore.managedObjectModelName).momd" as NSString).stringByAppendingPathComponent( TestPersistentStore.managedObjectModelVersion )
+        guard let momURLInBundle = NSBundle.mainBundle().URLForResource( momPath, withExtension: "mom" ) else {
+            fatalError( "Cannot find managed object model (.mom) for URL in bundle: \(momPath)" )
+        }
+        
+        let newCoreDataManageInstancer = CoreDataManager(
+            persistentStoreURL: persistentStoreURL,
+            currentModelVersion: CoreDataManager.ModelVersion(
+                identifier: TestPersistentStore.managedObjectModelVersion,
+                managedObjectModelURL: momURLInBundle
+            ),
+            previousModelVersion: nil
+        )
+        TestPersistentStore.coreDataManageInstancer = newCoreDataManageInstancer
+        return newCoreDataManageInstancer
+    }
+    
     var mainContext: NSManagedObjectContext {
         return sharedCoreDataManager.mainContext
     }
-
+    
     var backgroundContext: NSManagedObjectContext {
         return sharedCoreDataManager.backgroundContext
     }
-
-    override init() {
-        do {
-            let docsDirectoryURL = try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-            persistentStoreURL = docsDirectoryURL.URLByAppendingPathComponent(persistentStorePath)
-            let momFileName    = "\(managedObjectModelName).momd" as NSString
-            let momFilePath    = momFileName.stringByAppendingPathComponent(managedObjectModelVersion)
-
-            guard let momURLInBundle = NSBundle(forClass: self.dynamicType).URLForResource(momFilePath, withExtension: "mom") else {
-                fatalError("Cannot find managed object model (.mom) for URL in bundle: \(momFilePath)")
-            }
-
-            sharedCoreDataManager = CoreDataManager(
-                persistentStoreURL:  persistentStoreURL,
-                currentModelVersion: CoreDataManager.ModelVersion(
-                    identifier: managedObjectModelVersion,
-                    managedObjectModelURL: momURLInBundle
-                ),
-                previousModelVersion: nil
-            )
-        } catch {
-            fatalError("Can't locate the documents directory for testing")
-        }
-
-        super.init()
-    }
-
+    
     func deletePersistentStore() throws {
-        let fileManager = NSFileManager.defaultManager()
-        if let path = persistentStoreURL.path where fileManager.fileExistsAtPath(path) {
-            do {
-                try NSFileManager.defaultManager().removeItemAtURL(persistentStoreURL)
-            } catch {
-                throw PersistentStoreError.DeleteFailed(storeURL: persistentStoreURL, error: error)
-            }
+        guard let coreDataMgr = TestPersistentStore.coreDataManageInstancer else {
+            return
+        }
+        let url = coreDataMgr.persistentStoreURL
+        do {
+            try NSFileManager.defaultManager().removeItemAtURL( url )
+             TestPersistentStore.coreDataManageInstancer = nil
+        } catch {
+            throw PersistentStoreError.DeleteFailed(storeURL: url, error: error)
         }
     }
 }

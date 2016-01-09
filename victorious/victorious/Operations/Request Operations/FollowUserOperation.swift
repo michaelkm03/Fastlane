@@ -6,6 +6,7 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+import Foundation
 import VictoriousIOSSDK
 
 class FollowUserOperation: RequestOperation {
@@ -13,21 +14,18 @@ class FollowUserOperation: RequestOperation {
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
     private let request: FollowUserRequest
-    private let userToFollowID: Int
-    private let currentUserID: Int
     private let screenName: String
-
-    init(userToFollowID: Int, currentUserID: Int, screenName: String) {
-        self.userToFollowID = userToFollowID
-        self.currentUserID = currentUserID
+    private let userID: Int
+    
+    required init(userID: Int, screenName: String) {
+        self.userID = userID
         self.screenName = screenName
-        self.request = FollowUserRequest(userToFollowID: userToFollowID, screenName: screenName)
+        self.request = FollowUserRequest(userID: userID, screenName: screenName)
     }
 
     override func main() {
         persistentStore.backgroundContext.v_performBlockAndWait { context in
-
-            guard let objectUser: VUser = context.v_findObject( ["remoteId" : self.userToFollowID] ),
+            guard let objectUser: VUser = context.v_findObjects( ["remoteId" : self.userID] ).first,
                 let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
             }
@@ -48,10 +46,9 @@ class FollowUserOperation: RequestOperation {
             followedUser.displayOrder = -1
             
             context.v_save()
-
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         }
-            
+
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
     }
 }

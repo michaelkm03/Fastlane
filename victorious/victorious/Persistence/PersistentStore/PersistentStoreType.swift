@@ -26,10 +26,6 @@ enum PersistentStoreError: ErrorType {
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
     var backgroundContext: NSManagedObjectContext { get }
-    
-    /// Deletes the file on disk at the persistent store URL
-    /// DANGER: This will irrevocably delete all local data!
-    @objc(deletePersistentStoreAndReturnError:) func deletePersistentStore() throws
 }
 
 /// An object that provides functions for finding an appropriate concrete implementation

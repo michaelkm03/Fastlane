@@ -14,7 +14,8 @@ extension VSuggestedUsersDataSource {
     func loadSuggestedUsers(completion completion: ([VSuggestedUser]) -> Void) {
         let operation = SuggestedUsersOperation()
         operation.queue() { _ in
-            completion(operation.suggestedUsers)
+            let suggestedUsers = operation.results as? [VSuggestedUser] ?? []
+            completion(suggestedUsers)
         }
     }
 }

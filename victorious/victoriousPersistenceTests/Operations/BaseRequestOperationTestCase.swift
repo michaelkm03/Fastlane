@@ -1,5 +1,5 @@
 //
-//  BaseRequestOperationTests.swift
+//  BaseRequestOperationTestCase.swift
 //  victorious
 //
 //  Created by Michael Sena on 1/5/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class BaseRequestOperationTests: XCTestCase {
+class BaseRequestOperationTestCase: XCTestCase {
 
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
@@ -31,9 +31,10 @@ class BaseRequestOperationTests: XCTestCase {
         } catch {
             XCTFail("Something went wrong while clearing persitent store")
         }
+        super.tearDown()
     }
 
-    // Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
+    /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
     func queueExpectedOperation(operation operation: RequestOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
         operation.queue() { error in
@@ -41,5 +42,4 @@ class BaseRequestOperationTests: XCTestCase {
         }
         return expectation
     }
-    
 }
