@@ -142,6 +142,7 @@
 		03314F671BE40F3200EE74FD /* OneWayRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */; };
 		03314F681BE40F3200EE74FD /* VSDKCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03314F691BE40F3200EE74FD /* VSDKCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03314F601BE40F3200EE74FD /* VSDKCrypto.m */; };
+		0332E97C1C404B4000B99BE5 /* VUploadManagerURLSessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674FF19E335060072E87A /* VUploadManagerURLSessionTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
 		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
@@ -1972,6 +1973,7 @@
 		03314F5E1BE40F3200EE74FD /* OneWayRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneWayRequest.swift; sourceTree = "<group>"; };
 		03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSDKCrypto.h; sourceTree = "<group>"; };
 		03314F601BE40F3200EE74FD /* VSDKCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSDKCrypto.m; sourceTree = "<group>"; };
+		0332E97E1C407A3900B99BE5 /* OCMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMFunctions.h; sourceTree = "<group>"; };
 		0340337A1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VModernEnterNameViewController.strings"; sourceTree = "<group>"; };
 		0340337B1BD0859F000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		0340337C1BD085A0000A8137 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/VNoContentView.strings"; sourceTree = "<group>"; };
@@ -8198,6 +8200,7 @@
 				BEA78BDC19BFAE8C006A1ABC /* NSNotificationCenter+OCMAdditions.h */,
 				BEA78BDD19BFAE8C006A1ABC /* OCMArg.h */,
 				BEA78BDE19BFAE8C006A1ABC /* OCMConstraint.h */,
+				0332E97E1C407A3900B99BE5 /* OCMFunctions.h */,
 				BEA78BDF19BFAE8C006A1ABC /* OCMLocation.h */,
 				BEA78BE019BFAE8C006A1ABC /* OCMMacroState.h */,
 				BEA78BE119BFAE8C006A1ABC /* OCMock.h */,
@@ -11714,6 +11717,7 @@
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
 				A7DCA4EC1C128A78004E35B4 /* VFollowersTextFormatterTests.m in Sources */,
 				A76711F51C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift in Sources */,
+				0332E97C1C404B4000B99BE5 /* VUploadManagerURLSessionTests.m in Sources */,
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7D0ADBC1C0D45470018C63E /* VUserTaggingTextStorageTests.m in Sources */,
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
