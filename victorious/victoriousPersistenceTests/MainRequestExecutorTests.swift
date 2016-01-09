@@ -15,7 +15,6 @@ class MainRequestExecutorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         LSNocilla.sharedInstance().start()
-        stubRequest("GET", "http://www.example.com")
     }
 
     override func tearDown() {
