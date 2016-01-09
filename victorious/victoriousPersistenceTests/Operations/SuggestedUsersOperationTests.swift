@@ -46,7 +46,7 @@ class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
 
         let suggestedUser = SuggestedUser(user: user, recentSequences: [sequence])
         operation.main()
-        XCTAssertEqual( testRequestExecutor.executeRequestCallCount, 1)
+        XCTAssertEqual( testRequestExecutor.executeRequestCallCount, 1 )
         
         let expectation = expectationWithDescription("operation completed")
         operation.onComplete([suggestedUser]) {
