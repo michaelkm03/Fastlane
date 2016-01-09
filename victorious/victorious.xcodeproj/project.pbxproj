@@ -1478,8 +1478,8 @@
 		0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
 		0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActivityIndicatorView.h; sourceTree = "<group>"; };
 		0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActivityIndicatorView.m; sourceTree = "<group>"; };
-		0314D35019B46B5E00FA363C /* VTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTextAndMediaView.h; path = ../Common/VTextAndMediaView.h; sourceTree = "<group>"; };
-		0314D35119B46B5E00FA363C /* VTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTextAndMediaView.m; path = ../Common/VTextAndMediaView.m; sourceTree = "<group>"; };
+		0314D35019B46B5E00FA363C /* VTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextAndMediaView.h; sourceTree = "<group>"; };
+		0314D35119B46B5E00FA363C /* VTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextAndMediaView.m; sourceTree = "<group>"; };
 		0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentInputAccessoryView.h; sourceTree = "<group>"; };
 		0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInputAccessoryView.m; sourceTree = "<group>"; };
 		0314D35419B46B5E00FA363C /* VNoContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentView.h; sourceTree = "<group>"; };
@@ -2045,7 +2045,7 @@
 		6755C8A41BAB5F6E005C5EF9 /* VSuggestedUsersViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VSuggestedUsersViewController.storyboard; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallDeviceIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManager.swift; sourceTree = "<group>"; };
 		675A9AFE1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallDeviceIDManagerTests.swift; sourceTree = "<group>"; };
-		675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AgeGateViewController.swift; path = "Age Gate View/AgeGateViewController.swift"; sourceTree = "<group>"; };
+		675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateViewController.swift; sourceTree = "<group>"; };
 		676292021BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamCollectionViewController+TrendingShelfResponder.swift"; sourceTree = "<group>"; };
 		676372DD1B8CD79D00A59705 /* ExploreMarqueeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreMarqueeController.swift; sourceTree = "<group>"; };
 		676372E41B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExploreMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
@@ -2921,7 +2921,7 @@
 		B07BFD5F1B26761D00784FC8 /* VHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagHelper.h; sourceTree = "<group>"; };
 		B07BFD601B26761D00784FC8 /* VHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagHelper.m; sourceTree = "<group>"; };
 		B07BFD621B26780900784FC8 /* VHashtagResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagResponder.h; sourceTree = "<group>"; };
-		B0D3D24D1B60527100871E55 /* VBadgeResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBadgeResponder.h; path = VMultipleContainerViewController/VBadgeResponder.h; sourceTree = "<group>"; };
+		B0D3D24D1B60527100871E55 /* VBadgeResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeResponder.h; sourceTree = "<group>"; };
 		B0D8BAAB1B545A3600087057 /* VListicleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VListicleView.h; sourceTree = "<group>"; };
 		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
 		B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionsTrackingHelper.h; sourceTree = "<group>"; };
@@ -3611,8 +3611,8 @@
 		F0A34A801B9FC0A8000D70EF /* TrackableShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableShelf.swift; sourceTree = "<group>"; };
 		F0A34A891BA24274000D70EF /* CHTCollectionViewWaterfallLayout+ColumnAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"; sourceTree = "<group>"; };
 		F0A34A8C1BA24290000D70EF /* RecentPostsExploreHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentPostsExploreHeaderView.swift; sourceTree = "<group>"; };
-		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AvatarLevelBadgeView.swift; path = "Avatar Badging/AvatarLevelBadgeView.swift"; sourceTree = "<group>"; };
-		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VBadgeImageType.h; path = "Avatar Badging/VBadgeImageType.h"; sourceTree = "<group>"; };
+		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarLevelBadgeView.swift; sourceTree = "<group>"; };
+		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeImageType.h; sourceTree = "<group>"; };
 		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
@@ -5322,10 +5322,10 @@
 		675EAF091C10E4F200019087 /* Age Gate View */ = {
 			isa = PBXGroup;
 			children = (
-				675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */,
 				6775E75A1C17C318007765B9 /* AgeGate.swift */,
+				675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */,
 			);
-			name = "Age Gate View";
+			path = "Age Gate View";
 			sourceTree = "<group>";
 		};
 		676372DF1B8CD83000A59705 /* Explore */ = {
@@ -5349,11 +5349,11 @@
 				A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */,
 				A7D047931B97AE140091F366 /* ContentViewPresenter.swift */,
 				A7D047951B97C5760091F366 /* ContentViewStreamTransition.swift */,
-				F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */,
 				A7BA22091BA78A3000F2CD37 /* VContentPreviewViewProvider.swift */,
 				A72E03CF1BB6336700927D70 /* VContentPreviewViewReceiver.swift */,
+				F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */,
 			);
-			name = Presenters;
+			path = Presenters;
 			sourceTree = "<group>";
 		};
 		794246431B7D39A200F5F879 /* Operations */ = {
@@ -7344,21 +7344,19 @@
 		D85E427B1AFA982000A13BD3 /* SequencePreviewView */ = {
 			isa = PBXGroup;
 			children = (
-				C3D6CCB11B7D175B008644DD /* VideoTrackingEvent.swift */,
 				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
 				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
 				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
 				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
 				D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */,
+				C3D6CCB11B7D175B008644DD /* VideoTrackingEvent.swift */,
 				F059A0061B86B98F00037BC8 /* VImagePreviewView.h */,
 				D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */,
 				D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */,
 				A7A10D6E1BA38258006035A4 /* VPollResultReceiver.h */,
 				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
-				A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */,
-				A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */,
 				A7D043211BA266E400FDBBCC /* VRenderablePreviewView.h */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
@@ -7368,6 +7366,8 @@
 				A728AC1D1BBD9FDF00386641 /* VVideoPreviewView.h */,
 				C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */,
 				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
+				A7B0E0771BC4423500593B21 /* YouTubeVideoPlayer.swift */,
+				A7B0E0781BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";
@@ -7410,8 +7410,6 @@
 				D876E1FA1A9DA685002CAA29 /* VBackground.h */,
 				D876E1FB1A9DA685002CAA29 /* VBackground.m */,
 				D876E2001A9DA6DD002CAA29 /* VBlurredImageBackground.h */,
-				D85B709C1B0FA6340038CA5B /* VVideoBackground.h */,
-				D85B709D1B0FA6340038CA5B /* VVideoBackground.m */,
 				D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */,
 				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
 				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
@@ -7421,6 +7419,8 @@
 				D8F8B1EB1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m */,
 				D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */,
 				D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */,
+				D85B709C1B0FA6340038CA5B /* VVideoBackground.h */,
+				D85B709D1B0FA6340038CA5B /* VVideoBackground.m */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -7544,10 +7544,10 @@
 				0390085619F38BC600FD7EDF /* ActionSheet.storyboard */,
 				D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */,
 				D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */,
-				D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */,
-				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
 				D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */,
 				D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */,
+				D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */,
+				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
 				C3E772181B45EAF7005809A5 /* VActionSheetTextView.h */,
 				C3E772191B45EAF7005809A5 /* VActionSheetTextView.m */,
 				D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */,
@@ -7923,7 +7923,7 @@
 				F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */,
 				F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */,
 			);
-			name = "Avatar Badging";
+			path = "Avatar Badging";
 			sourceTree = "<group>";
 		};
 		F0A82AFB1AE1D12700EB2257 /* Card Directory Cell Factory */ = {
@@ -7953,9 +7953,9 @@
 		F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				F0D2E94F1BB86393001FD97F /* VContentFittingPreviewView.h */,
 				F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */,
 				F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */,
-				F0D2E94F1BB86393001FD97F /* VContentFittingPreviewView.h */,
 				F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */,
 				F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */,
 			);
@@ -7974,8 +7974,7 @@
 				F0D2E94C1BB6442F001FD97F /* VTextStreamPreviewView.h */,
 				F0D2E94D1BB6442F001FD97F /* VTextStreamPreviewView.m */,
 			);
-			name = StreamPreviewView;
-			path = SequencePreviewView;
+			path = StreamPreviewView;
 			sourceTree = "<group>";
 		};
 		F0E0F1B01AE8BFAE00143CBF /* Inset */ = {
