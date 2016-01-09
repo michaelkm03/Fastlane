@@ -16,7 +16,6 @@ import VictoriousIOSSDK
 class BaseRequestOperationTestCase: XCTestCase {
 
     let expectationThreshold: Double = 1
-
     var testStore: TestPersistentStore!
     var testTrackingManager: TestTrackingManager!
     var testRequestExecutor: TestRequestExecutor!
@@ -34,7 +33,7 @@ class BaseRequestOperationTestCase: XCTestCase {
         self.persistentStoreHelper.tearDownPersistentStore()
     }
 
-    // Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
+    /// Provides an XCTestExpectation that will be fulfilled in the operation's `completionBlock`.
     func queueExpectedOperation(operation operation: RequestOperation) -> XCTestExpectation {
         let expectation = expectationWithDescription("operation completed")
         operation.queue() { error in

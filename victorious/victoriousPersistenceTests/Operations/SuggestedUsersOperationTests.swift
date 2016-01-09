@@ -12,7 +12,6 @@ import SwiftyJSON
 @testable import victorious
 
 class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
-
     var operation: SuggestedUsersOperation!
 
     override func setUp() {

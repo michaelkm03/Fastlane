@@ -10,6 +10,9 @@
 @testable import VictoriousIOSSDK
 
 class TestRequestExecutor: RequestExecutorType {
+
+    private(set) var error: NSError?
+
     var executeRequestCallCount = 0
     var hasNetworkConnection: Bool = true
 

@@ -11,7 +11,6 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UserSearchOperationTests: BaseRequestOperationTestCase {
-    
     let testUserID: Int = 1
     var operation: UserSearchOperation!
     
@@ -48,13 +47,4 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
             XCTFail("should have at least one results object")
         }
     }
-
-    private func queueExpectedOperation(operation operation: UserSearchOperation) -> XCTestExpectation {
-        let expectation = expectationWithDescription("operation completed")
-        operation.queue() { error in
-            expectation.fulfill()
-        }
-        return expectation
-    }
-
 }
