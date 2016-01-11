@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSString+VStringWithData.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Private.h"
 #import "VNotificationSettings+RestKit.h"
@@ -19,6 +20,19 @@
 @end
 
 @implementation VObjectManager (DeviceRegistration)
+
+- (RKManagedObjectRequestOperation *)registerAPNSToken:(NSData *)apnsToken
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)failed
+{
+    NSString *apnsString = [NSString v_stringWithData:apnsToken];
+    VLog(@"Push Notification Token: %@", apnsString);
+    return [self POST:@"/api/device/register_push_id"
+               object:nil
+           parameters:@{ @"push_id": apnsString }
+         successBlock:success
+            failBlock:failed];
+}
 
 - (RKManagedObjectRequestOperation *)getDeviceSettingsSuccessBlock:(VSuccessBlock)success
                                                          failBlock:(VFailBlock)failed

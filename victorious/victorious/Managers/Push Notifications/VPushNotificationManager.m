@@ -8,11 +8,8 @@
 
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Login.h"
-#import "NSString+VStringWithData.h"
 #import "VPushNotificationManager.h"
 #import "VConstants.h"
-
-#import "victorious-Swift.h"
 
 NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
 
@@ -99,20 +96,22 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
         }
         return;
     }
-    
-    NSString *pushNotificationID = [NSString v_stringWithData:storedToken];
-    RegisterPushNotificationOperation *operation = [[RegisterPushNotificationOperation alloc]initWithPushNotificationID:pushNotificationID];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
-    {
-        if (error == nil && success != nil)
-        {
-            success();
-        }
-        else if (failure != nil)
-        {
-            failure(error);
-        }
-    }];
+
+    [[VObjectManager sharedManager] registerAPNSToken:storedToken
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         if ( success != nil )
+         {
+             success();
+         }
+     }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( failure != nil )
+         {
+             failure( error );
+         }
+     }];
 }
 
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
