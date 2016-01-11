@@ -24,7 +24,7 @@ class RequestOperationTests: XCTestCase {
     }
     
     func testOnCompletion() {
-        let expectation = self.expectationWithDescription("testValid")
+        let expectation = self.expectationWithDescription("testOnCompletion")
         let requestOperation = MockRequestOperation(request: MockRequest())
         let url = requestOperation.validRequest.urlRequest.URL?.absoluteString
         
@@ -39,7 +39,7 @@ class RequestOperationTests: XCTestCase {
     }
     
     func testOnError() {
-        let expectation = self.expectationWithDescription("testError")
+        let expectation = self.expectationWithDescription("testOnError")
         let errorOperation = MockErrorRequestOperation(request: MockErrorRequest())
         let url = errorOperation.errorRequest.urlRequest.URL?.absoluteString
         

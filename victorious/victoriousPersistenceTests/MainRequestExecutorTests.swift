@@ -25,8 +25,8 @@ class MainRequestExecutorTests: XCTestCase {
         LSNocilla.sharedInstance().stop()
     }
     
-    func testBasic() {
-        let expectation = self.expectationWithDescription("testBasic")
+    func testCopmletion() {
+        let expectation = self.expectationWithDescription("testCopmletion")
         let request = MockRequest()
         let url = request.urlRequest.URL?.absoluteString
 
