@@ -11,14 +11,9 @@ import XCTest
 import Nocilla
 
 class RequestOperationTests: XCTestCase {
-    
-    var requestOperation: RequestOperation!
-    var requestOperationRequestExecutor: RequestExecutorType!
 
     override func setUp() {
         super.setUp()
-        requestOperation = RequestOperation()
-        requestOperationRequestExecutor = MainRequestExecutor(persistentStore: MainPersistentStore())
         LSNocilla.sharedInstance().start()
     }
     
@@ -28,45 +23,33 @@ class RequestOperationTests: XCTestCase {
         LSNocilla.sharedInstance().stop()
     }
     
-    func testBasic() {
-        let expectation = self.expectationWithDescription("testBasic")
-        let request = MockRequest()
-        let url = request.urlRequest.URL?.absoluteString
-
+    func testOnCompletion() {
+        let expectation = self.expectationWithDescription("testValid")
+        let requestOperation = MockRequestOperation(request: MockRequest())
+        let url = requestOperation.validRequest.urlRequest.URL?.absoluteString
+        
         stubRequest("GET", url)
-
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperation.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
-                    completion()
-                    expectation.fulfill()
-                },
-                onError: { (error, completion:()->() ) in
-                    XCTFail( "Should not be called" )
-                }
-            )
+        
+        requestOperation.queueOn(requestOperation.defaultQueue) { error in
+            XCTAssertNil(error)
+            expectation.fulfill()
         }
+        
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testError() {
+    func testOnError() {
         let expectation = self.expectationWithDescription("testError")
-        let request = MockErrorRequest()
-        let url = request.urlRequest.URL?.absoluteString
+        let errorOperation = MockErrorRequestOperation(request: MockErrorRequest())
+        let url = errorOperation.errorRequest.urlRequest.URL?.absoluteString
         
         stubRequest("GET", url)
         
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperation.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
-                    XCTFail( "Should not be called" )
-                },
-                onError: { (error, completion:()->() ) in
-                    completion()
-                    expectation.fulfill()
-                }
-            )
+        errorOperation.queueOn(errorOperation.defaultQueue) { error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
         }
+        
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 }
