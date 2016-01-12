@@ -18,6 +18,7 @@
 #import "VImageToolController.h"
 #import "VPublishParameters.h"
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
@@ -39,8 +40,11 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     {
         [self setContext:VCameraContextImageContentCreation];
 		_dependencyManager = dependencyManager;
+        
+        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:dependencyManager];
+        NSString *ownerName = appInfo.ownerName;
 		
-		id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:@"monkeys"];
+        id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:ownerName ?: @""];
 		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
 																					   depndencyManager:dependencyManager];
 		_mediaSearchViewController.delegate = self;
