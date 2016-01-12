@@ -12,10 +12,6 @@
 
 @interface VObjectManager (DeviceRegistration)
 
-- (RKManagedObjectRequestOperation *)registerAPNSToken:(NSData *)apnsToken
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)failed;
-
 - (RKManagedObjectRequestOperation *)getDeviceSettingsSuccessBlock:(VSuccessBlock)success
                                                          failBlock:(VFailBlock)failed;
 
