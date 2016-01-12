@@ -18,22 +18,11 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
-    }
-    
-    func onError( error: NSError, completion:(()->()) ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-            
-        } else {
-            self.results = []
-        }
-        completion()
+        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( results: NotificationsRequest.ResultType, completion:()->() ) {
         guard !results.isEmpty else {
-            self.results = []
             completion()
             return
         }

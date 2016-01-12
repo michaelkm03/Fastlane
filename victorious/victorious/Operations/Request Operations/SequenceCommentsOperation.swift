@@ -25,17 +25,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
-    }
-    
-    func onError( error: NSError, completion:(()->()) ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-            
-        } else {
-            self.results = []
-        }
-        completion()
+        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
@@ -65,9 +55,6 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             }
             sequence.v_addObjects( newComments, to: "comments" )
             context.v_save()
-            
-            self.results = self.fetchResults()
-            completion()
         }
     }
     

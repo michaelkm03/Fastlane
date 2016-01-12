@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class SuggestedUsersOperation: RequestOperation {
     
     let request = SuggestedUsersRequest()
-    var results: [VSuggestedUser]?
+    var suggestedUsers: [VSuggestedUser]?
     
     override func main() {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )

@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceRepostersRequest
-    private(set) var results: [AnyObject]?
     
     private var sequenceID: String
     

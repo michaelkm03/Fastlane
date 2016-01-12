@@ -56,6 +56,7 @@ class PaginatedRequestExecutor: PaginatedRequestExecutorType {
                         // Otherwise, return no results
                         self.delegate?.results = []
                     }
+                    
                     completion()
                 }
             }
