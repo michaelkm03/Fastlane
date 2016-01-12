@@ -204,7 +204,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		if section.isFullSize,
 			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
 				cell.previewAssetUrl = resultObject.thumbnailImageURL
-				cell.assetUrl = resultObject.thumbnailImageURL
+				cell.assetUrl = resultObject.sourceMediaURL
 				return cell
 				
 		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
