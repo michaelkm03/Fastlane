@@ -703,7 +703,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             shareItemCell.state = VShareItemCellStateLoading;
             
             FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-            loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
             [loginManager logInWithPublishPermissions:@[kFBPermissionPublishActionsKey]
                                    fromViewController:self
                                               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

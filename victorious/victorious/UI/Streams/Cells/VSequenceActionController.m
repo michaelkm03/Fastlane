@@ -247,7 +247,6 @@
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
-    fbActivity.shareMode = [self.dependencyManager shouldForceNativeFacebookLogin] ? FBSDKShareDialogModeNative : FBSDKShareDialogModeAutomatic;
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]

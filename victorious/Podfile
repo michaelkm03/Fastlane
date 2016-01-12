@@ -6,7 +6,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 target :victorious do
-    pod 'RestKit'
+    pod 'RestKit', '0.25.0'
     pod 'SwiftyJSON'
     pod 'TTTAttributedLabel'
     pod 'MBProgressHUD'
@@ -14,9 +14,9 @@ target :victorious do
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
     pod 'OAStackView'
-    pod 'FBSDKCoreKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
-    pod 'FBSDKLoginKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
-    pod 'FBSDKShareKit', :git => 'https://github.com/TouchFrame/facebook-ios-sdk.git'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
+    pod 'FBSDKShareKit'
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'youtube-ios-player-helper'
     link_with 'victorious'
