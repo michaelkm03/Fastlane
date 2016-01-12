@@ -66,30 +66,6 @@
             skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
-               BuildableName = "UIAutomationTests.xctest"
-               BlueprintName = "UIAutomationTests"
-               ReferencedContainer = "container:victorious.xcodeproj">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "CommentTests">
-               </Test>
-               <Test
-                  Identifier = "ContentCreationTests">
-               </Test>
-               <Test
-                  Identifier = "RegistrationTests">
-               </Test>
-               <Test
-                  Identifier = "StatusBarStyleTests">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "EBEA19B51BC4A76C00878B18"
                BuildableName = "victoriousUITests.xctest"
                BlueprintName = "victoriousUITests"

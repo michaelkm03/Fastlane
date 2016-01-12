@@ -27,10 +27,6 @@ target :victorious do
     end
 end
 
-target 'UIAutomationTests', :exclusive => true do
-  pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
-end
-
 target :VictoriousIOSSDK do
 	pod 'SwiftyJSON'
 	link_with 'VictoriousIOSSDK'
