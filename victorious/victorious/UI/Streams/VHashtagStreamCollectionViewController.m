@@ -107,6 +107,10 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(hashtagsUpdated)];
+    
+    self.noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
+    self.noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
+    self.noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,10 +144,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
 }
 
-// This is an override of a superclass method
-- (void)didFinishLoadingWithPageType:(VPageType)pageType
+- (void)paginatedDataSource
 {
-    [self dataSourceDidRefresh];
     [self updateNavigationItems];
     [self updateUserFollowingStatus];
 }
@@ -160,31 +162,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingSelectedHashtag = followingHashtag;
         [self updateFollowStatusAnimated:YES];
-    }
-}
-
-- (void)dataSourceDidRefresh
-{
-    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( self.noContentView == nil )
-        {
-            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
-            {
-                noContentView.dependencyManager = self.dependencyManager;
-            }
-            noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
-            noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
-            noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
-            self.noContentView = noContentView;
-        }
-        
-        self.collectionView.backgroundView = self.noContentView;
-    }
-    else
-    {
-        self.collectionView.backgroundView = nil;
     }
 }
 

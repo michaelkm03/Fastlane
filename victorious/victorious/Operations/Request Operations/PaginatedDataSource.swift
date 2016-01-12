@@ -15,6 +15,16 @@ import Foundation
     /// The `oldValue` and `newValue` parameters are designed to allow calling code to
     /// precisely reload only what has changed instead of useing `reloadData()`.
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet)
+    
+    optional func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState)
+}
+
+@objc enum DataSourceState: Int {
+    case Loading
+    case Cleared
+    case NoResults
+    case Results
+    case Error
 }
 
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
@@ -26,7 +36,18 @@ import Foundation
     private var filters = [Filter]()
     
     private(set) var currentOperation: RequestOperation?
-    private(set) var isLoading: Bool = false
+    
+    private(set) var state: DataSourceState = .Cleared {
+        didSet {
+            if oldValue != state {
+                self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
+            }
+        }
+    }
+    
+    func isLoading() -> Bool {
+        return state == .Loading
+    }
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
@@ -63,7 +84,7 @@ import Foundation
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading else {
+        guard state != .Loading else {
             return
         }
         
@@ -81,10 +102,14 @@ import Foundation
         }
         
         if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
-            self.isLoading = true
+            self.state = .Loading
             operation.queue() { error in
-                self.isLoading = false
                 self.onOperationComplete( typedOperation, pageType: pageType, error: error)
+                if error != nil {
+                    self.state = .Error
+                } else {
+                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                }
                 completion?( operation: typedOperation, error: error )
             }
         }
@@ -99,12 +124,8 @@ import Foundation
             return
         }
         
-        if operation.didResetResults {
-            self.unfilteredItems = NSOrderedSet().v_orderedSet( byAddingObjects: results, forPageType: pageType)
-        }
-        
         if !results.isEmpty {
-            self.unfilteredItems = self.unfilteredItems.v_orderedSet( byAddingObjects: results, forPageType: pageType)
+            self.unfilteredItems = self.unfilteredItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
         }
     }
     

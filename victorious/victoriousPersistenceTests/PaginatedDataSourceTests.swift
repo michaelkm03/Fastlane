@@ -34,7 +34,6 @@ final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
     
     let request: MockPaginatedRequest
     private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     required init( request: MockPaginatedRequest = MockPaginatedRequest() ) {
         self.request = request
@@ -45,7 +44,7 @@ final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
     }
     
     func fetchResults() -> [MockPaginatedObject] {
-        var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+        var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
         var results = [MockPaginatedObject]()
         if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
             for _ in 0..<self.request.paginator.itemsPerPage {

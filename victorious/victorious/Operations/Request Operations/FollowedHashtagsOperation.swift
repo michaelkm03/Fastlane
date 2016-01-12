@@ -13,9 +13,6 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     
     let request: HashtagSubscribedToListRequest
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
-    
     required init( request: HashtagSubscribedToListRequest ) {
         self.request = request
     }
@@ -51,7 +48,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 return
             }
             
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
@@ -69,8 +66,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [VHashtag] {
-        
+    override func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return []

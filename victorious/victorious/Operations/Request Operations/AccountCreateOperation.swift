@@ -15,8 +15,6 @@ class AccountCreateOperation: RequestOperation {
     private let accountIdentifier: String?
     
     let request: AccountCreateRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     var isNewUser = false
     

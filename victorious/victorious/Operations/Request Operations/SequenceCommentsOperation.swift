@@ -12,8 +12,6 @@ import VictoriousIOSSDK
 final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     
     var request: SequenceCommentsRequest
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     private let sequenceID: String
     
@@ -27,7 +25,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
     }
     
     func onError( error: NSError, completion:(()->()) ) {
@@ -54,18 +52,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         // Make changes on background queue
         persistentStore.backgroundContext.v_performBlock() { context in
             
-            // If refreshing with a network connection, delete everything we have
-            // TODO: revising how this fits into 4.0 architecture.
-            if self.hasNetworkConnection && self.request.paginator.pageNumber == 1 {
-                let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
-                for comment in existingComments {
-                    context.deleteObject( comment )
-                }
-                context.v_save()
-            }
-            
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             
             var newComments = [VComment]()
             for comment in unflaggedComments {
@@ -83,7 +71,19 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [VComment] {
+    // MARK: - PaginatedRequestExecutorDelegate
+    
+    override func clearResults() {
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
+            for comment in existingComments {
+                context.deleteObject( comment )
+            }
+            context.v_save()
+        }
+    }
+    
+    override func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
@@ -95,9 +95,5 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
         }
-    }
-    
-    private var hasNetworkConnection: Bool {
-        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
     }
 }

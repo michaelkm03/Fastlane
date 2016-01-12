@@ -12,42 +12,37 @@ import SwiftyJSON
 /// A struct representing a notification
 public struct Notification {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
-    public let body: String?
+    public let notificationID: String
+    public let subject: String
+    public let user: User
     public let createdAt: NSDate
+    public let body: String?
     public let deeplink: String?
     public let imageURL: String?
     public let isRead: Bool?
     public let type: String?
     public let updatedAt: NSDate?
-    public let remoteID: Int
-    public let subject: String
-    public let displayOrder: Int?
-    public let user: User
     
     public init?(json: JSON) {
         
-        guard let createdAtDateString = json["created_at"].string,
-            let createdAtDate = dateFormatter.dateFromString(createdAtDateString),
-            let notificationID = json["id"].int,
-            let subjectString = json["subject"].string,
-            let sender = User(json: json["created_by"]) else {
+        let dateFormatter = NSDateFormatter(format: .Standard)
+        
+        guard let createdAt     = dateFormatter.dateFromString(json["created_at"].stringValue),
+            let notificationID  = String(json["id"].intValue) ?? json["id"].string,
+            let subject         = json["subject"].string,
+            let user            = User(json: json["created_by"]) else {
                 return nil
         }
+        self.createdAt          = createdAt
+        self.notificationID     = notificationID
+        self.subject            = subject
+        self.user               = user
         
-        createdAt = createdAtDate
-        remoteID = notificationID
-        subject = subjectString
-        user = sender
-        body = json["body"].string
-        deeplink = json["deeplink"].string
-        imageURL = json["creator_profile_image_url"].string
-        isRead = Bool(json["is_read"].stringValue)
-        type = json["type"].string
-        updatedAt = dateFormatter.dateFromString(json["updated_at"].stringValue)
-        displayOrder = json["display_order"].int
+        body                    = json["body"].string
+        deeplink                = json["deeplink"].string
+        imageURL                = json["creator_profile_image_url"].string
+        isRead                  = Bool(json["is_read"].stringValue)
+        type                    = json["type"].string
+        updatedAt               = dateFormatter.dateFromString(json["updated_at"].stringValue)
     }
 }

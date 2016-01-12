@@ -15,9 +15,6 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     
     private var userID: Int
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
-    
     required init( request: SubscribedToListRequest ) {
         self.userID = request.userID
         self.request = request
@@ -44,7 +41,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             
             let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
             

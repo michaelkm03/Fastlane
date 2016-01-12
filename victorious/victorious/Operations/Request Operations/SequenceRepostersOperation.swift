@@ -13,7 +13,6 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     let request: SequenceRepostersRequest
     private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
     
     private var sequenceID: String
     

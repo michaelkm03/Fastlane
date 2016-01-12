@@ -285,7 +285,7 @@
 
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
-    if ( self.streamDataSource.paginatedDataSource.isLoading )
+    if ( [self.streamDataSource.paginatedDataSource isLoading] )
     {
         [self.refreshControl endRefreshing];
         return;
@@ -310,24 +310,22 @@
              completion();
          }
          
-         [self didFinishLoadingWithPageType:pageType];
-         
          [self.refreshControl endRefreshing];
          [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
      }];
 }
 
-- (void)didFinishLoadingWithPageType:(VPageType)pageType
-{
-    // For subclasses
-}
-
 - (void)positionRefreshControl
 {
+    if ( self.refreshControl.subviews.count == 0 )
+    {
+        return;
+    }
+    // Since we're using the collection flow delegate method for the insets
+    // we need to manually position the frame of the refresh control.
     UIView *subView = self.refreshControl.subviews[0];
-    
-    // Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
-    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds), CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
+    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds),
+                                 CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer

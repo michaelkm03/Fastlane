@@ -11,13 +11,17 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VAuthorizationContextProvider.h"
 #import "VAccessoryNavigationSource.h"
+#import "VNoContentView.h"
 
-@class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
+@class VUnreadMessageCountCoordinator, VUser, VDependencyManager, NotificationsDataSource;
 
-@interface VNotificationsViewController : VFetchedResultsTableViewController <VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VAccessoryNavigationSource>
+@interface VNotificationsViewController : UITableViewController <VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VAccessoryNavigationSource>
 
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+@property (strong, nonatomic) VNoContentView *noContentView;
+@property (strong, nonatomic) NotificationsDataSource *dataSource;
 
 @end

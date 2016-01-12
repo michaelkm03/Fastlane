@@ -15,9 +15,6 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     
     private var sequenceID: String
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
-    
     required init( request: SequenceLikersRequest ) {
         self.sequenceID = request.sequenceID
         self.request = request
@@ -42,7 +39,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     
     private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
         persistentStore.backgroundContext.v_performBlock() { context in
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
 
             let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])
             for user in users {

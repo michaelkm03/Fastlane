@@ -12,9 +12,6 @@ import VictoriousIOSSDK
 final class GIFSearchOperation: RequestOperation, PaginatedOperation {
     
     let request: GIFSearchRequest
-    private(set) var didResetResults: Bool = false
-
-    private(set) var results: [AnyObject]?
     
     private let searchTerm: String
     

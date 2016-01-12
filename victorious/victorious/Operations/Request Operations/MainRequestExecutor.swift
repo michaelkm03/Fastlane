@@ -14,7 +14,6 @@ class MainRequestExecutor: RequestExecutorType {
     private let persistentStore: PersistentStoreType
     private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
     private(set) var error: NSError?
-
     
     private var hasNetworkConnection: Bool {
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable

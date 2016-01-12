@@ -12,9 +12,6 @@ import VictoriousIOSSDK
 final class GIFSearchDefaultResultsOperation: RequestOperation, PaginatedOperation {
     
     let request: TrendingGIFsRequest
-    private(set) var didResetResults: Bool = false
-    
-    private(set) var results: [AnyObject]?
     
     required init( request: TrendingGIFsRequest = TrendingGIFsRequest() ) {
         self.request = request

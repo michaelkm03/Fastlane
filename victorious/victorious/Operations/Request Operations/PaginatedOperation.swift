@@ -9,14 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol ResultsOperation : class {
-    var results: [AnyObject]? { get }
-    var didResetResults: Bool { get }
-}
-
 /// Defines an object that can return copies of itself configured for loading next
 /// and previous pages of a Pageable request
-protocol PaginatedOperation : ResultsOperation {
+protocol PaginatedOperation {
 
     /// The type of Pageable request used by this operation
     typealias PaginatedRequestType: Pageable
@@ -33,10 +28,12 @@ protocol PaginatedOperation : ResultsOperation {
     
     /// Returns a copy of this operation configured for loading previous page worth of data
     func prev() -> Self?
+    
+    var results: [AnyObject]? { get }
 }
 
 extension PaginatedOperation {
-    
+
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
             return self.dynamicType.init(request: request)

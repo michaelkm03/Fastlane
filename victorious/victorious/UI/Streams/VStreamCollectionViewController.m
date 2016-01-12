@@ -82,7 +82,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, PaginatedDataSourceDelegate, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -250,6 +250,14 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     }
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    // Create no content view populated with generic message
+    // Subclasses should if possible repopulate with text and image specific to their content
+    self.noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+    self.noContentView.dependencyManager = self.dependencyManager;
+    self.noContentView.title = NSLocalizedString( @"NO RESULTS", @"" );
+    self.noContentView.message = NSLocalizedString( @"Try again, chump.  We got nothin'", @"" );
+    self.noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -630,15 +638,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self updateCellVisibilityTracking];
 }
 
-#pragma mark - PaginatedDataSourceDelegate
-
-- (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue
-{
-    // TODO: Create a halper with this stuff?  See VNewContentView & VUsersViewController
-    NSInteger contentSection = self.streamDataSource.sectionIndexForContent;
-    [self.collectionView v_applyChangeInSection:contentSection from:oldValue to:newValue];
-}
-
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
@@ -986,54 +985,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     self.navigationBarShouldAutoHide = hidden;
 }
 
-#pragma mark - Notifications
-
-- (void)updateNoContentViewAnimated:(BOOL)animated
-{
-    if (!self.noContentView)
-    {
-        return;
-    }
-    
-    void (^noContentUpdates)(void);
-    
-    if ( self.streamDataSource.paginatedDataSource.visibleItems.count == 0 && !self.streamDataSource.hasHeaderCell )
-    {
-        if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
-        {
-            self.collectionView.backgroundView = self.noContentView;
-        }
-        
-        self.refreshControl.layer.zPosition = self.collectionView.backgroundView.layer.zPosition + 1;
-        
-        noContentUpdates = ^void(void)
-        {
-            self.collectionView.backgroundView.alpha = (self.hasRefreshed && self.noContentView) ? 1.0f : 0.0f;
-        };
-    }
-    else
-    {
-        noContentUpdates = ^void(void)
-        {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-            self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
-        };
-    }
-    
-    if (animated)
-    {
-        [UIView animateWithDuration:0.2f
-                              delay:0.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:noContentUpdates
-                         completion:nil];
-    }
-    else
-    {
-        noContentUpdates();
-    }
-}
-
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -1229,15 +1180,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     memeStream.navigationItem.title = memeStream.currentStream.name;
     
-    VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
-    if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        noMemeView.dependencyManager = self;
-    }
-    noMemeView.title = NSLocalizedString(@"NoMemersTitle", @"");
-    noMemeView.message = NSLocalizedString(@"NoMemersMessage", @"");
-    noMemeView.icon = [UIImage imageNamed:@"noMemeIcon"];
-    memeStream.noContentView = noMemeView;
+    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    noContentView.dependencyManager = self;
+    noContentView.title = NSLocalizedString(@"NoMemersTitle", @"");
+    noContentView.message = NSLocalizedString(@"NoMemersMessage", @"");
+    noContentView.icon = [UIImage imageNamed:@"noMemeIcon"];
+    memeStream.noContentView = noContentView;
     
     return memeStream;
 }
@@ -1251,15 +1199,12 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     gifStream.navigationItem.title = gifStream.currentStream.name;
     
-    VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
-    if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        noGifView.dependencyManager = self;
-    }
-    noGifView.title = NSLocalizedString(@"NoGiffersTitle", @"");
-    noGifView.message = NSLocalizedString(@"NoGiffersMessage", @"");
-    noGifView.icon = [UIImage imageNamed:@"noGifIcon"];
-    gifStream.noContentView = noGifView;
+    VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    noContentView.dependencyManager = self;
+    noContentView.title = NSLocalizedString(@"NoGiffersTitle", @"");
+    noContentView.message = NSLocalizedString(@"NoGiffersMessage", @"");
+    noContentView.icon = [UIImage imageNamed:@"noGifIcon"];
+    gifStream.noContentView = noContentView;
     
     return gifStream;
 }

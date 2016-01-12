@@ -13,9 +13,6 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     
     let request: StreamRequest
     
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults: Bool = false
-    
     private let apiPath: String
     
     required init( request: StreamRequest ) {
@@ -28,7 +25,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:self.onError )
+        paginatedRequestExecutor.executeRequest( request, onComplete: self.onComplete, onError:self.onError )
     }
     
     func onError( error: NSError, completion: ()->() ) {
@@ -48,7 +45,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             persistentStream.populate(fromSourceModel: stream)
             
             // Parse stream items
-            var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
+            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
             for streamItem in streamItems {
                 streamItem.displayOrder = displayOrder++
@@ -63,7 +60,21 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    func fetchResults() -> [VStreamItem] {
+    // MARK: - PaginatedRequestExecutorDelegate
+    
+    override func clearResults() {
+        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
+                return
+            }
+            for streamItem in persistentStream.streamItems.array as? [VStreamItem] ?? [] {
+                context.deleteObject( streamItem )
+            }
+            context.v_save()
+        }
+    }
+    
+    override func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]

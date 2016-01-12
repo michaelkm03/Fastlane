@@ -18,9 +18,7 @@ import VictoriousIOSSDK
 }
 
 final class UserSearchOperation: RequestOperation, PaginatedOperation {
-    
-    private(set) var results: [AnyObject]?
-    private(set) var didResetResults = false
+    internal(set) var didClearResults = false
     
     let request: UserSearchRequest
     private let escapedQueryString: String

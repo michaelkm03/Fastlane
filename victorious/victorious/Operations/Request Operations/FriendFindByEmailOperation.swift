@@ -9,10 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
+class FriendFindByEmailOperation: RequestOperation {
 
-    private(set) var results: [AnyObject]?
-    var didResetResults = false
+    private(set) var results: [VUser]?
     
     private var resultObjectIDs = [NSManagedObjectID]()
     private var request: FriendFindByEmailRequest
