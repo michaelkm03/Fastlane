@@ -121,12 +121,6 @@ typedef NS_ENUM(NSUInteger, FBSDKLoginBehavior)
 @property (assign, nonatomic) FBSDKLoginBehavior loginBehavior;
 
 /*!
- @discussion if YES, native login will be used even if the powers that be try to disable it. If NO,
-             native login will follow the whims of the Facebook overlords.
- */
-@property (assign, nonatomic) BOOL forceNative;
-
-/*!
  @deprecated use logInWithReadPermissions:fromViewController:handler: instead
  */
 - (void)logInWithReadPermissions:(NSArray *)permissions handler:(FBSDKLoginManagerRequestTokenHandler)handler

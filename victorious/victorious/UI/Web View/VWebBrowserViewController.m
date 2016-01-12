@@ -86,7 +86,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.headerViewController.layoutManager.exitButtonVisible = (self.presentingViewController != nil);
     
     self.actions = [[VWebBrowserActions alloc] init];
-    self.actions.shareMode = [self.dependencyManager shouldForceNativeFacebookLogin] ? FBSDKShareDialogModeNative : FBSDKShareDialogModeAutomatic;
     
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
