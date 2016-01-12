@@ -51,10 +51,29 @@ class BatchFollowUsersOperationTests: XCTestCase {
 
         XCTAssertEqual(2, updatedCurrentUser.numberOfFollowing)
         XCTAssertEqual(2, updatedCurrentUser.following.count)
-        XCTAssertEqual(true, updatedUserOne.isFollowedByMainUser)
-        XCTAssertEqual(true, updatedUserTwo.isFollowedByMainUser)
+        if let followedUsers = Array(updatedCurrentUser.following) as? [VFollowedUser] {
+            let objectUsersObjectIDs = followedUsers.map { $0.objectUser.objectID }
+            XCTAssert(objectUsersObjectIDs.contains(updatedUserOne.objectID))
+            XCTAssert(objectUsersObjectIDs.contains(updatedUserTwo.objectID))
+        } else {
+            XCTFail("Couldn't find a followed user after following multiple users")
+        }
+
         XCTAssertEqual(1, updatedUserOne.numberOfFollowers)
+        XCTAssertEqual(true, updatedUserOne.isFollowedByMainUser)
+        if let followedUser = Array(updatedUserOne.followers)[0] as? VFollowedUser {
+            XCTAssertEqual(followedUser.objectUser, updatedUserOne)
+        } else {
+            XCTFail("Couldn't find a followed user after following multiple users")
+        }
+
+        XCTAssertEqual(true, updatedUserTwo.isFollowedByMainUser)
         XCTAssertEqual(1, updatedUserTwo.numberOfFollowers)
+        if let followedUser = Array(updatedUserTwo.followers)[0] as? VFollowedUser {
+            XCTAssertEqual(followedUser.objectUser, updatedUserTwo)
+        } else {
+            XCTFail("Couldn't find a followed user after following multiple users")
+        }
     }
 
     override func tearDown() {
