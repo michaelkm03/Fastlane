@@ -15,14 +15,6 @@ NSString * const VButtonSuccessMessageKey            = @"buttonSuccessMessage";
 NSString * const VShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
 NSString * const VDisplayWithSocialRegistration      = @"displayWithSocialRegistration";
 
-static NSString * const kForceNativeFacebookLoginKey = @"forceNativeFacebookLoginIOS";
-
 @implementation VDependencyManager (VLoginAndRegistration)
-
-- (BOOL)shouldForceNativeFacebookLogin
-{
-    NSNumber *shouldForce = [self numberForKey:kForceNativeFacebookLoginKey] ?: @(YES);
-    return [shouldForce boolValue];
-}
 
 @end
