@@ -27,11 +27,11 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
         let totalHeight = collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight)
         
-        if self.dataSourceController.sections.count == 0 {
+        if self.dataSourceAdapter.sections.count == 0 {
             return CGSize(width: totalSize.width, height: MediaSearchLayout.NoContentCellHeight)
         }
         else {
-            let section = self.dataSourceController.sections[ indexPath.section ]
+            let section = self.dataSourceAdapter.sections[ indexPath.section ]
             if section.count == 1 {
                 return section.previewSectionCellSize(withinSize: totalSize)
             }
@@ -43,8 +43,14 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.HeaderViewHeight : 0.0
-        return CGSize(width: collectionView.bounds.width, height: headerHeight )
+       
+        if options.showAttribution {
+            let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.HeaderViewHeight : 0.0
+            return CGSize(width: collectionView.bounds.width, height: headerHeight )
+        
+        } else {
+            return CGSize.zero
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -82,7 +88,7 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
     
     private func shouldShowFooter( section: Int ) -> Bool {
         let numSections = collectionView.numberOfSections()
-        return numSections > 1 && self.isLastSection(section) && !self.dataSourceController.isLastPage
+        return numSections > 1 && self.isLastSection(section) && !self.dataSourceAdapter.isLastPage
     }
     
     private func shouldShowHeader( section: Int ) -> Bool {
@@ -91,11 +97,11 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
 }
 
 // Provides some size calculation methods to be used when determine sizes for cells in a collection view
-private extension MediaSearchDataSourceController.Section {
+private extension MediaSearchDataSourceAdapter.Section {
     
     func previewSectionCellSize( withinSize totalSize: CGSize ) -> CGSize {
         let gif = self.results[0]
-        let maxHeight = totalSize.height - MediaSearchDataSourceController.Section.MinCollectionContainerMargin * 2.0
+        let maxHeight = totalSize.height - MediaSearchDataSourceAdapter.Section.MinCollectionContainerMargin * 2.0
         return CGSize(width: totalSize.width, height: min(totalSize.width / gif.aspectRatio, maxHeight) )
     }
     

@@ -378,7 +378,7 @@
 		5A6F11E11C4107E4000BF7F3 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */; };
 		5A6F11E21C4107E4000BF7F3 /* ImageSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */; };
 		5A6F11E31C4107E4000BF7F3 /* MediaSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */; };
-		5A6F11E41C4107E4000BF7F3 /* MediaSearchhDataSourceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11E01C4107E4000BF7F3 /* MediaSearchhDataSourceController.swift */; };
+		5A6F11E41C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
@@ -2429,7 +2429,7 @@
 		5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDataSource.swift; sourceTree = "<group>"; };
 		5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchDataSource.swift; sourceTree = "<group>"; };
 		5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSource.swift; sourceTree = "<group>"; };
-		5A6F11E01C4107E4000BF7F3 /* MediaSearchhDataSourceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchhDataSourceController.swift; sourceTree = "<group>"; };
+		5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSourceAdapter.swift; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FollowUserOperationTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6236F8731C3602EE00746476 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
@@ -6327,7 +6327,7 @@
 				5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */,
 				5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */,
 				5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */,
-				5A6F11E01C4107E4000BF7F3 /* MediaSearchhDataSourceController.swift */,
+				5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -11176,7 +11176,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
-				5A6F11E41C4107E4000BF7F3 /* MediaSearchhDataSourceController.swift in Sources */,
+				5A6F11E41C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,

@@ -9,6 +9,13 @@
 import Foundation
 
 class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
+    
+    private(set) var options = MediaSearchOptions()
+    
+    override init() {
+        options.showAttribution = true
+        options.showPreview = true
+    }
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? ) {
 		
@@ -20,5 +27,9 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 				completion?( error )
 			}
 		)
-	}
+    }
+    
+    var title: String {
+        return NSLocalizedString( "GIF Search", comment: "" )
+    }
 }

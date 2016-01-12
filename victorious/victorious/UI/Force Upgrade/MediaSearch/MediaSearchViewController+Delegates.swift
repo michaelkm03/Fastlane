@@ -33,20 +33,18 @@ extension MediaSearchViewController : UIScrollViewDelegate {
 extension MediaSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
         if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchResultCell {
-            if self.selectedIndexPath == indexPath {
-                self.hidePreviewForResult( indexPath )
-                collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+            if self.options.showPreview {
+                showPreview(forItemAtIndexPath: indexPath)
+           
             } else {
-                self.showPreviewForResult( indexPath )
+                self.selectedIndexPath = indexPath
+                selectAndExport(itemAtIndexPath: indexPath)
             }
-			
-		} else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
-            self.exportSelectedItem( nil )
-            self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
-            dispatch_after(0.0) {
-                self.selectCellAtSelectedIndexPath() //< Ensures it remains selected
-            }
+            
+        } else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
+            selectAndExport(itemAtIndexPath: indexPath)
         }
     }
     
@@ -57,5 +55,24 @@ extension MediaSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.tintColor = self.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey )
+    }
+    
+    // MARK: - Private
+    
+    func showPreview( forItemAtIndexPath indexPath: NSIndexPath ) {
+        if self.selectedIndexPath == indexPath {
+            self.hidePreviewForResult( indexPath )
+            collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        } else {
+            self.showPreviewForResult( indexPath )
+        }
+    }
+    
+    func selectAndExport( itemAtIndexPath indexPath: NSIndexPath ) {
+        self.exportSelectedItem( nil )
+        self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
+        dispatch_after(0.0) {
+            self.selectCellAtSelectedIndexPath() //< Ensures it remains selected
+        }
     }
 }

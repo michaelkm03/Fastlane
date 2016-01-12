@@ -16,6 +16,15 @@ import UIKit
     func mediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult )
 }
 
+class MediaSearchOptions: NSObject {
+    var showPreview: Bool = false
+    var showAttribution: Bool = false
+    
+    static var defaultOptions: MediaSearchOptions {
+        return MediaSearchOptions()
+    }
+}
+
 /// View controller that allows users to search for GIF files using the Giphy API
 /// as part of a content creation flow.
 class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate {
@@ -28,13 +37,17 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    var options: MediaSearchOptions {
+        return self.dataSourceAdapter.dataSource?.options ?? MediaSearchOptions()
+    }
+    
     var selectedIndexPath: NSIndexPath?
     var previewSection: Int?
     var isScrollViewDecelerating = false
     private(set) var dependencyManager: VDependencyManager?
     
     let scrollPaginator = VScrollPaginator()
-	let dataSourceController = MediaSearchDataSourceController()
+	let dataSourceAdapter = MediaSearchDataSourceAdapter()
     private lazy var mediaExporter = MediaSearchExporter()
     
 	weak var delegate: MediaSearchViewControllerDelegate?
@@ -43,7 +56,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
             viewController.dependencyManager = depndencyManager
-			viewController.dataSourceController.dataSource = dataSource
+			viewController.dataSourceAdapter.dataSource = dataSource
             return viewController
         }
         fatalError( "Could not load MediaSearchViewController from storyboard." )
@@ -65,11 +78,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         }
         
-        self.collectionView.dataSource = self.dataSourceController
+        self.collectionView.dataSource = self.dataSourceAdapter
         self.collectionView.delegate = self
         self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
-        self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF Search", comment:"" ) )
+        self.navigationItem.titleView = self.titleViewWithTitle( self.dataSourceAdapter.dataSource?.title ?? "" )
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Next", comment: ""),
@@ -88,7 +101,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 			return
 		}
 		
-		let gifSearchResulObject = self.dataSourceController.sections[ indexPath.section ][ indexPath.row ]
+		let gifSearchResulObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
 		
 		let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
 		progressHUD.mode = .Indeterminate
@@ -120,27 +133,27 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     }
     
     func performSearch( searchTerm searchTerm: String?, pageType: VPageType = .First ) {
-        if self.dataSourceController.state != .Loading {
-			self.dataSourceController.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
+        if self.dataSourceAdapter.state != .Loading {
+			self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
             }
         }
     }
     
-    func updateViewWithResult( result: MediaSearchDataSourceController.ChangeResult? ) {
+    func updateViewWithResult( result: MediaSearchDataSourceAdapter.ChangeResult? ) {
         if let result = result where result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
             }, completion: nil)
         }
-        if result?.error != nil || (result?.hasChanges == false && self.dataSourceController.sections.count == 0) {
+        if result?.error != nil || (result?.hasChanges == false && self.dataSourceAdapter.sections.count == 0) {
             self.collectionView.reloadData()
         }
     }
     
     func clearSearch() {
         self.collectionView.performBatchUpdates({
-            let result = self.dataSourceController.clear()
+            let result = self.dataSourceAdapter.clear()
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil)
         
@@ -169,7 +182,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         var sectionInserted: Int?
         
         self.collectionView.performBatchUpdates({
-            let result = self.dataSourceController.addHighlightSection(forIndexPath: indexPath)
+            let result = self.dataSourceAdapter.addHighlightSection(forIndexPath: indexPath)
             sectionInserted = result.insertedSections?.indexGreaterThanIndex(0)
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil)
@@ -202,7 +215,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     /// Removes the section showing a GIF search result preview at the specified index path
     func hidePreviewForResult( indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
-            let result = self.dataSourceController.removeHighlightSection()
+            let result = self.dataSourceAdapter.removeHighlightSection()
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil )
         
@@ -239,8 +252,8 @@ private extension UICollectionView {
     
     /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
     ///
-    /// - parameter result: A `MediaSearchDataSourceController.ChangeResult` that contains info about which sections to insert or delete
-    func applyDataSourceChanges( result: MediaSearchDataSourceController.ChangeResult ) {
+    /// - parameter result: A `MediaSearchDataSourceAdapter.ChangeResult` that contains info about which sections to insert or delete
+    func applyDataSourceChanges( result: MediaSearchDataSourceAdapter.ChangeResult ) {
         
         if let insertedSections = result.insertedSections {
             self.insertSections( insertedSections )

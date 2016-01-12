@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// This object adapts the use of a `PaginatedDataSource` to the whackier
 /// multiple-section layout in of MediaSearchViewController.
-class MediaSearchDataSourceController: NSObject, UICollectionViewDataSource {
+class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	struct ReuseIdentifier {
 		static let AttributionHeader = "MediaSearchAttributionView" ///< Set in storyboard

@@ -10,8 +10,10 @@ import Foundation
 
 class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 	
-	let defaultSearchTerm: String
-	
+    let defaultSearchTerm: String
+    
+    let options = MediaSearchOptions()
+    
 	required init(defaultSearchTerm: String) {
 		self.defaultSearchTerm = defaultSearchTerm
 	}
@@ -36,4 +38,8 @@ class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 			}
 		)
 	}
+    
+    var title: String {
+        return NSLocalizedString( "Image Search", comment: "" )
+    }
 }

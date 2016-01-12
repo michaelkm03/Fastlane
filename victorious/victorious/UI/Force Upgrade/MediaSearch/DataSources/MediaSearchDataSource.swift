@@ -9,8 +9,12 @@
 import UIKit
 
 @objc protocol MediaSearchDataSource {
+    
+    var options: MediaSearchOptions { get }
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? )
 	
+    var title: String { get }
+    
 	var visibleItems: NSOrderedSet { get }
 }
