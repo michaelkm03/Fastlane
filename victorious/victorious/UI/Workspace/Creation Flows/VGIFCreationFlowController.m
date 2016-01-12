@@ -7,23 +7,14 @@
 //
 
 #import "victorious-Swift.h"
-
 #import "VGIFCreationFlowController.h"
-
-// Capture
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VVideoCameraViewController.h"
-
-// Edit
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
-
-// Publish
 #import "VPublishParameters.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 
 @import Photos;
@@ -35,7 +26,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 @interface VGIFCreationFlowController () <MediaSearchViewControllerDelegate, VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) MediaSearchViewController *MediaSearchViewController;
+@property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 
 @end
@@ -52,16 +43,18 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
-        
-        _MediaSearchViewController = [MediaSearchViewController gifSearchWithDependencyManager:dependencyManager];
-        _MediaSearchViewController.delegate = self;
+		
+		id<MediaSearchDataSource> dataSource = [[GIFSearchDataSource alloc] init];
+		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
+																					   depndencyManager:dependencyManager];
+        _mediaSearchViewController.delegate = self;
     }
     return self;
 }
 
 - (UIViewController *)initialViewController
 {
-    return self.MediaSearchViewController;
+    return self.mediaSearchViewController;
 }
 
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -128,7 +121,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - MediaSearchViewControllerDelegate
 
-- (void)GIFSearchResultSelected:(id<MediaSearchResult>)result
+- (void)mediaSearchResultSelected:(id<MediaSearchResult>)result
 {
     self.source = VCreationFlowSourceSearch;
     self.publishParameters.width = result.assetSize.width;

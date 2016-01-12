@@ -27,11 +27,11 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
         let totalHeight = collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight)
         
-        if self.searchDataSource.sections.count == 0 {
+        if self.dataSourceController.sections.count == 0 {
             return CGSize(width: totalSize.width, height: MediaSearchLayout.NoContentCellHeight)
         }
         else {
-            let section = self.searchDataSource.sections[ indexPath.section ]
+            let section = self.dataSourceController.sections[ indexPath.section ]
             if section.count == 1 {
                 return section.previewSectionCellSize(withinSize: totalSize)
             }
@@ -82,7 +82,7 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
     
     private func shouldShowFooter( section: Int ) -> Bool {
         let numSections = collectionView.numberOfSections()
-        return numSections > 1 && self.isLastSection(section) && !self.searchDataSource.isLastPage
+        return numSections > 1 && self.isLastSection(section) && !self.dataSourceController.isLastPage
     }
     
     private func shouldShowHeader( section: Int ) -> Bool {
@@ -91,11 +91,11 @@ extension MediaSearchViewController : UICollectionViewDelegateFlowLayout {
 }
 
 // Provides some size calculation methods to be used when determine sizes for cells in a collection view
-private extension MediaSearch.Section {
+private extension MediaSearchDataSourceController.Section {
     
     func previewSectionCellSize( withinSize totalSize: CGSize ) -> CGSize {
         let gif = self.results[0]
-        let maxHeight = totalSize.height - MediaSearch.Section.MinCollectionContainerMargin * 2.0
+        let maxHeight = totalSize.height - MediaSearchDataSourceController.Section.MinCollectionContainerMargin * 2.0
         return CGSize(width: totalSize.width, height: min(totalSize.width / gif.aspectRatio, maxHeight) )
     }
     

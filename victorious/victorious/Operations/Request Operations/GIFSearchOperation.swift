@@ -16,14 +16,14 @@ final class GIFSearchOperation: RequestOperation, PaginatedOperation {
 
     private(set) var results: [AnyObject]?
     
-    private let searchTerm: String
+    private let searchTerm: String?
     
     required init( request: GIFSearchRequest ) {
         self.searchTerm = request.searchTerm
         self.request = request
     }
     
-    convenience init( searchTerm: String) {
+    convenience init( searchTerm: String? ) {
         self.init( request: GIFSearchRequest(searchTerm: searchTerm) )
     }
     

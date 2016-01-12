@@ -8,17 +8,6 @@
 
 import UIKit
 
-extension MediaSearchViewController : UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if let searchBarText = searchBar.text where searchBarText.characters.count > 0 {
-            self.performSearchWithText( searchBarText )
-            self.clearSearch()
-            searchBar.resignFirstResponder()
-        }
-    }
-}
-
 extension MediaSearchViewController : UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -41,18 +30,6 @@ extension MediaSearchViewController : UIScrollViewDelegate {
     }
 }
 
-extension MediaSearchViewController : VScrollPaginatorDelegate {
-    
-    func shouldLoadNextPage() {
-        if let searchText = self.searchDataSource.mostRecentSearchText {
-            self.performSearchWithText( searchText, pageType: .Next)
-        }
-        else {
-            self.loadDefaultContent(pageType: .Next)
-        }
-    }
-}
-
 extension MediaSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -60,12 +37,11 @@ extension MediaSearchViewController : UICollectionViewDelegate {
             if self.selectedIndexPath == indexPath {
                 self.hidePreviewForResult( indexPath )
                 collectionView.deselectItemAtIndexPath(indexPath, animated: true)
-            }
-            else {
+            } else {
                 self.showPreviewForResult( indexPath )
             }
-        }
-        else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
+			
+		} else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
             self.exportSelectedItem( nil )
             self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
             dispatch_after(0.0) {

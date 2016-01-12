@@ -16,7 +16,7 @@ import VictoriousIOSSDK
 	var thumbnailImageURL: NSURL? { get }
 	var aspectRatio: CGFloat { get }
 	var assetSize: CGSize { get }
-	var remoteID: String { get }
+	var remoteID: String? { get }
 }
 
 @objc class GIFSearchResultObject: NSObject, MediaSearchResult {
@@ -49,7 +49,7 @@ import VictoriousIOSSDK
 		return CGSize(width: CGFloat(sourceResult.width), height: CGFloat(sourceResult.height))
 	}
 	
-	var remoteID: String {
+	var remoteID: String? {
 		return sourceResult.remoteID
 	}
 }
