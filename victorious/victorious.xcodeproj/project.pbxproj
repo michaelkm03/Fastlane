@@ -365,20 +365,7 @@
 		4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		5A6F11B51C386D87000BF7F3 /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */; };
 		5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */; };
-		5A6F11CB1C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */; };
-		5A6F11CC1C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */; };
-		5A6F11CD1C40FBB0000BF7F3 /* MediaSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */; };
-		5A6F11CE1C40FBB0000BF7F3 /* MediaSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */; };
-		5A6F11CF1C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */; };
-		5A6F11D21C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */; };
-		5A6F11D31C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */; };
-		5A6F11D41C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */; };
-		5A6F11D51C40FBB0000BF7F3 /* MediaSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */; };
 		5A6F11D71C410000000BF7F3 /* ImageSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11D61C410000000BF7F3 /* ImageSearchOperation.swift */; };
-		5A6F11E11C4107E4000BF7F3 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */; };
-		5A6F11E21C4107E4000BF7F3 /* ImageSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */; };
-		5A6F11E31C4107E4000BF7F3 /* MediaSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */; };
-		5A6F11E41C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */; };
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
@@ -399,7 +386,6 @@
 		6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
-		67204CFA1C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */; };
 		67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */; };
 		6727B1381BFBBD310093AA0A /* AdditionalAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6727B1371BFBBD310093AA0A /* AdditionalAssertions.swift */; };
 		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
@@ -775,6 +761,19 @@
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
+		A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */; };
+		A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */; };
+		A73C3EB61C45890E00A8452C /* MediaSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */; };
+		A73C3EB71C45890E00A8452C /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EA91C45890E00A8452C /* GIFSearchDataSource.swift */; };
+		A73C3EB81C45890E00A8452C /* ImageSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAA1C45890E00A8452C /* ImageSearchDataSource.swift */; };
+		A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAB1C45890E00A8452C /* MediaSearchDataSource.swift */; };
+		A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAC1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift */; };
+		A73C3EBB1C45890E00A8452C /* MediaSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */; };
+		A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */; };
+		A73C3EBE1C45890E00A8452C /* MediaSearchMediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */; };
+		A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */; };
+		A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */; };
+		A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
 		A7427B201C2F462B009D857E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A7427B221C2F4638009D857E /* SequenceFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEA3F1BFEBA0500E8A26F /* SequenceFetchOperation.swift */; };
@@ -1364,7 +1363,6 @@
 		C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */; };
 		C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA79A1BF172FA003446CC /* GIFSearchResponse.json */; };
 		C3FEA79D1BF17307003446CC /* TrendingGIFsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3FEA79C1BF17307003446CC /* TrendingGIFsResponse.json */; };
-		C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA79E1BF173DE003446CC /* TrendingGIFsRequestTests.swift */; };
 		C3FEA7A11BF17405003446CC /* GIFSearchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */; };
 		C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
@@ -2416,20 +2414,7 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		5A6F11B41C386D87000BF7F3 /* NSPredicate+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Pagination.swift"; sourceTree = "<group>"; };
 		5A6F11B61C386E8A000BF7F3 /* NSNumber+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Operators.swift"; sourceTree = "<group>"; };
-		5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchNoContentCell.swift; sourceTree = "<group>"; };
-		5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchPreviewCell.swift; sourceTree = "<group>"; };
-		5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultCell.swift; sourceTree = "<group>"; };
-		5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediaSearch.storyboard; sourceTree = "<group>"; };
-		5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchActivityFooter.swift; sourceTree = "<group>"; };
-		5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporter.swift; sourceTree = "<group>"; };
-		5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
-		5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Layout.swift"; sourceTree = "<group>"; };
-		5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchViewController.swift; sourceTree = "<group>"; };
 		5A6F11D61C410000000BF7F3 /* ImageSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchOperation.swift; sourceTree = "<group>"; };
-		5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDataSource.swift; sourceTree = "<group>"; };
-		5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchDataSource.swift; sourceTree = "<group>"; };
-		5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSource.swift; sourceTree = "<group>"; };
-		5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSourceAdapter.swift; sourceTree = "<group>"; };
 		6205AAB71C334D9300859145 /* MainRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRequestExecutor.swift; sourceTree = "<group>"; };
 		6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FollowUserOperationTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6236F8731C3602EE00746476 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
@@ -2456,7 +2441,6 @@
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
-		67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDefaultResultsOperationTests.swift; sourceTree = "<group>"; };
 		67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperationTests.swift; sourceTree = "<group>"; };
 		6727B1371BFBBD310093AA0A /* AdditionalAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalAssertions.swift; sourceTree = "<group>"; };
 		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
@@ -3000,6 +2984,19 @@
 		A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamWebViewController.h; sourceTree = "<group>"; };
 		A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamWebViewController.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
+		A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchNoContentCell.swift; sourceTree = "<group>"; };
+		A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchPreviewCell.swift; sourceTree = "<group>"; };
+		A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultCell.swift; sourceTree = "<group>"; };
+		A73C3EA91C45890E00A8452C /* GIFSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDataSource.swift; sourceTree = "<group>"; };
+		A73C3EAA1C45890E00A8452C /* ImageSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchDataSource.swift; sourceTree = "<group>"; };
+		A73C3EAB1C45890E00A8452C /* MediaSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSource.swift; sourceTree = "<group>"; };
+		A73C3EAC1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchDataSourceAdapter.swift; sourceTree = "<group>"; };
+		A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediaSearch.storyboard; sourceTree = "<group>"; };
+		A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchActivityFooter.swift; sourceTree = "<group>"; };
+		A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporter.swift; sourceTree = "<group>"; };
+		A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Delegates.swift"; sourceTree = "<group>"; };
+		A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaSearchViewController+Layout.swift"; sourceTree = "<group>"; };
+		A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchViewController.swift; sourceTree = "<group>"; };
 		A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAddServerEnvironmentViewController.h; sourceTree = "<group>"; };
 		A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAddServerEnvironmentViewController.m; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
@@ -3823,7 +3820,6 @@
 		C3FEA7981BF16F4C003446CC /* GIFSearchResult.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GIFSearchResult.json; sourceTree = "<group>"; };
 		C3FEA79A1BF172FA003446CC /* GIFSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GIFSearchResponse.json; sourceTree = "<group>"; };
 		C3FEA79C1BF17307003446CC /* TrendingGIFsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingGIFsResponse.json; sourceTree = "<group>"; };
-		C3FEA79E1BF173DE003446CC /* TrendingGIFsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingGIFsRequestTests.swift; sourceTree = "<group>"; };
 		C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequestTests.swift; sourceTree = "<group>"; };
 		C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchRequest.swift; sourceTree = "<group>"; };
 		CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4691,7 +4687,7 @@
 				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
-				5A6F11BE1C40FBB0000BF7F3 /* MediaSearch */,
+				A73C3EA31C45890E00A8452C /* MediaSearch */,
 				DBAD775B19F711D900B6A939 /* Monetization */,
 				C30AA4D51B0439360010CEFE /* Permission Alert */,
 				0314D3BC19B46B5E00FA363C /* Profile */,
@@ -5335,7 +5331,6 @@
 				6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */,
 				795B758B1BFA628100227647 /* TermsOfServiceRequestTests.swift */,
 				03314F4A1BE40F0100EE74FD /* Test Data */,
-				C3FEA79E1BF173DE003446CC /* TrendingGIFsRequestTests.swift */,
 				C3209CA31BF148DD00EA229D /* TrendingHashtagRequestTests.swift */,
 				C32D8BD91BF2D51E00AB5085 /* UnfollowHashtagRequestTests.swift */,
 				C32D8BCF1BF2D08E00AB5085 /* UnfollowUserRequestTests.swift */,
@@ -6295,43 +6290,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		5A6F11BE1C40FBB0000BF7F3 /* MediaSearch */ = {
-			isa = PBXGroup;
-			children = (
-				5A6F11BF1C40FBB0000BF7F3 /* Cells */,
-				5A6F11DC1C4107E4000BF7F3 /* DataSources */,
-				5A6F11C31C40FBB0000BF7F3 /* MediaSearch.storyboard */,
-				5A6F11C41C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift */,
-				5A6F11C71C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift */,
-				5A6F11CA1C40FBB0000BF7F3 /* MediaSearchViewController.swift */,
-				5A6F11C81C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift */,
-				5A6F11C91C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift */,
-			);
-			name = MediaSearch;
-			path = "Force Upgrade/MediaSearch";
-			sourceTree = "<group>";
-		};
-		5A6F11BF1C40FBB0000BF7F3 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				5A6F11C01C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift */,
-				5A6F11C11C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift */,
-				5A6F11C21C40FBB0000BF7F3 /* MediaSearchResultCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		5A6F11DC1C4107E4000BF7F3 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				5A6F11DD1C4107E4000BF7F3 /* GIFSearchDataSource.swift */,
-				5A6F11DE1C4107E4000BF7F3 /* ImageSearchDataSource.swift */,
-				5A6F11DF1C4107E4000BF7F3 /* MediaSearchDataSource.swift */,
-				5A6F11E01C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		6236F8721C3602E300746476 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -6837,6 +6795,42 @@
 			path = DirectoryCells;
 			sourceTree = "<group>";
 		};
+		A73C3EA31C45890E00A8452C /* MediaSearch */ = {
+			isa = PBXGroup;
+			children = (
+				A73C3EA41C45890E00A8452C /* Cells */,
+				A73C3EA81C45890E00A8452C /* DataSources */,
+				A73C3EAD1C45890E00A8452C /* MediaSearch.storyboard */,
+				A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */,
+				A73C3EB01C45890E00A8452C /* MediaSearchMediaExporter.swift */,
+				A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */,
+				A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */,
+				A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */,
+			);
+			path = MediaSearch;
+			sourceTree = "<group>";
+		};
+		A73C3EA41C45890E00A8452C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */,
+				A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */,
+				A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A73C3EA81C45890E00A8452C /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				A73C3EA91C45890E00A8452C /* GIFSearchDataSource.swift */,
+				A73C3EAA1C45890E00A8452C /* ImageSearchDataSource.swift */,
+				A73C3EAB1C45890E00A8452C /* MediaSearchDataSource.swift */,
+				A73C3EAC1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
 		A743E7E11A0816D500339CB3 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
@@ -7238,7 +7232,6 @@
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
-				67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */,
 				67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */,
 				674B66EF1C3F0A1C00938EB5 /* PasswordResetOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* RequestOperationTests.swift */,
@@ -9839,7 +9832,7 @@
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */,
-				5A6F11CE1C40FBB0000BF7F3 /* MediaSearch.storyboard in Resources */,
+				A73C3EBB1C45890E00A8452C /* MediaSearch.storyboard in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
 				C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */,
@@ -10528,7 +10521,6 @@
 				A7D69C6A1C0E575B00B462C3 /* PollResultSummaryRequestTests.swift in Sources */,
 				678D94461BF41BF8009A1F93 /* PollVoteRequestTests.swift in Sources */,
 				67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */,
-				C3FEA79F1BF173DE003446CC /* TrendingGIFsRequestTests.swift in Sources */,
 				6782EA871BF2D40E000C7C0D /* RepostSequenceRequestTests.swift in Sources */,
 				C32D8BD61BF2D36200AB5085 /* FollowHashtagRequestTests.swift in Sources */,
 				A7DCA51C1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift in Sources */,
@@ -10713,7 +10705,6 @@
 				6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */,
 				A70E84701C3F069A00689EFA /* RequestOperationTests.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
-				67204CFA1C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
 				79CBAC131C3CD3EE00D1387E /* BaseRequestOperationTestCase.swift in Sources */,
@@ -10743,6 +10734,7 @@
 				C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */,
 				A721E9281B572454000B7901 /* VImageAsset+RestKit.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
+				A73C3EBE1C45890E00A8452C /* MediaSearchMediaExporter.swift in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A721E91C1B572454000B7901 /* VStreamItem+Fetcher.m in Sources */,
 				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
@@ -10779,7 +10771,6 @@
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
-				5A6F11D21C40FBB0000BF7F3 /* MediaSearchMediaExporter.swift in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
@@ -10843,6 +10834,7 @@
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7DD35F01BB07D6A00C4DBC5 /* VContentAlertHelper.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
+				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
 				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
@@ -10876,6 +10868,7 @@
 				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
+				A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
 				B0E1584E1B715269004F0A60 /* VUtilityButtonFlowLayout.m in Sources */,
 				F0E0F1B61AE8BFE200143CBF /* VInsetMarqueeController.m in Sources */,
@@ -10896,8 +10889,8 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
-				5A6F11CC1C40FBB0000BF7F3 /* MediaSearchPreviewCell.swift in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
+				A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */,
 				797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				678AC1711C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift in Sources */,
@@ -10929,6 +10922,7 @@
 				A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
+				A73C3EB71C45890E00A8452C /* GIFSearchDataSource.swift in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
@@ -10937,7 +10931,6 @@
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
-				5A6F11E21C4107E4000BF7F3 /* ImageSearchDataSource.swift in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
@@ -10964,6 +10957,7 @@
 				C3186DFD1BACF17100F4BCFF /* AchievementAnimator.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
+				A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
 				C3623F271BA3AE54002B121D /* LevelUpInterstitial.swift in Sources */,
@@ -10991,6 +10985,7 @@
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
 				B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */,
+				A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
@@ -11034,7 +11029,6 @@
 				A702C85B1C126038001EE1D5 /* PaginatedOperation.swift in Sources */,
 				F06B41C51B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift in Sources */,
 				D8B44CD11ADCB3A4006340E8 /* VSleekStreamCellFactory.m in Sources */,
-				5A6F11E31C4107E4000BF7F3 /* MediaSearchDataSource.swift in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */,
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
@@ -11176,7 +11170,6 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
-				5A6F11E41C4107E4000BF7F3 /* MediaSearchDataSourceAdapter.swift in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
@@ -11231,7 +11224,6 @@
 				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
 				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
-				5A6F11D51C40FBB0000BF7F3 /* MediaSearchViewController.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
@@ -11263,7 +11255,6 @@
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
-				5A6F11D31C40FBB0000BF7F3 /* MediaSearchViewController+Delegates.swift in Sources */,
 				A706FE201C225A9E00C2CBFF /* VStreamCollectionViewController.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */,
@@ -11304,7 +11295,7 @@
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
-				5A6F11CF1C40FBB0000BF7F3 /* MediaSearchActivityFooter.swift in Sources */,
+				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
 				A702C8571C1247C9001EE1D5 /* StreamOperation.swift in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
@@ -11387,8 +11378,7 @@
 				A7078CF01BFAD769008FB7FF /* VStreamCollectionViewDataSource.swift in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
-				5A6F11D41C40FBB0000BF7F3 /* MediaSearchViewController+Layout.swift in Sources */,
-				5A6F11CD1C40FBB0000BF7F3 /* MediaSearchResultCell.swift in Sources */,
+				A73C3EB61C45890E00A8452C /* MediaSearchResultCell.swift in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
@@ -11413,6 +11403,7 @@
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
+				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
 				A7EBF5691C2F3BF40080C7CF /* VUser+FollowedHashtags.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
@@ -11487,7 +11478,6 @@
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
 				795270F01C3488AD00BD41F1 /* VInboxViewController.swift in Sources */,
 				79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */,
-				5A6F11E11C4107E4000BF7F3 /* GIFSearchDataSource.swift in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
@@ -11655,6 +11645,7 @@
 				F06B41841B7ADA4B008709E8 /* VShelfContentCollectionViewCell.swift in Sources */,
 				A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
+				A73C3EB81C45890E00A8452C /* ImageSearchDataSource.swift in Sources */,
 				6775E75B1C17C318007765B9 /* AgeGate.swift in Sources */,
 				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,
 				D85B707F1B0EAF3F0038CA5B /* VRegistrationModel.m in Sources */,
@@ -11671,7 +11662,7 @@
 				C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
-				5A6F11CB1C40FBB0000BF7F3 /* MediaSearchNoContentCell.swift in Sources */,
+				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
