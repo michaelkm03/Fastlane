@@ -11,7 +11,6 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
-    let expectationThreshold: Double = 1
     let testUserID: Int = 1
     var operation: FriendFindByEmailOperation!
     let emails = ["h@h.hh", "mike@msena.com"]
@@ -41,5 +40,4 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
             XCTAssertEqual(firstResult.remoteId.integerValue, self.testUserID)
         }
     }
-
 }
