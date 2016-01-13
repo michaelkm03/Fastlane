@@ -86,15 +86,11 @@ static const NSUInteger kCharacterLimit = 1024;
 {
     [super viewDidAppear:animated];
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
-    [self updateTitle];
 }
 
 - (void)updateTitle
 {
-    if ( !self.presentingFromProfile )
-    {
-        self.navigationItem.title = self.conversation.user.name;
-    }
+    self.navigationItem.title = self.conversation.user.name;
 }
 
 - (void)showMoreOptions
@@ -179,6 +175,7 @@ static const NSUInteger kCharacterLimit = 1024;
         [self addBackgroundImage];
         [self hideKeyboardBarIfNeeded];
     }
+    [self updateTitle];
 }
 
 - (void)hideKeyboardBarIfNeeded

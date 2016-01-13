@@ -8,7 +8,9 @@
 
 import UIKit
 
-extension VStreamCollectionViewController: PaginatedDataSourceDelegate {
+extension VStreamCollectionViewController {
+    
+    // MARK: - PaginatedDataSourceDelegate
 
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         guard let contentSection = self.streamDataSource?.sectionIndexForContent() else {

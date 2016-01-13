@@ -10,7 +10,12 @@ import UIKit
 
 class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
     
-    let paginatedDataSource = PaginatedDataSource()
+    private lazy var paginatedDataSource: PaginatedDataSource = {
+        let dataSource = PaginatedDataSource()
+        dataSource.delegate = self
+        return dataSource
+    }()
+    
     let dependencyManager: VDependencyManager
     
     var delegate: PaginatedDataSourceDelegate?
@@ -20,6 +25,10 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     }
     
     private(set) var visibleItems = NSOrderedSet()
+    
+    var state: DataSourceState {
+        return self.paginatedDataSource.state
+    }
     
     func loadConversations( pageType: VPageType, completion:((NSError?)->())? = nil ) {
         self.paginatedDataSource.loadPage( pageType,
@@ -35,10 +44,11 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        // TODO: Trigger this sorting to occur with KVO somehow for local shit?
+        
         let sortedArray = (newValue.array as? [VConversation] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
-        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: newValue)
+        
+        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

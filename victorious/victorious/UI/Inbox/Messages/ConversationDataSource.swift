@@ -10,7 +10,12 @@ import UIKit
 
 class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
     
-    let paginatedDataSource = PaginatedDataSource()    
+    private lazy var paginatedDataSource: PaginatedDataSource = {
+        let dataSource = PaginatedDataSource()
+        dataSource.delegate = self
+        return dataSource
+    }()
+    
     let dependencyManager: VDependencyManager
     
     var delegate: PaginatedDataSourceDelegate?
@@ -20,6 +25,10 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     private(set) var visibleItems = NSOrderedSet()
+    
+    var state: DataSourceState {
+        return self.paginatedDataSource.state
+    }
     
     func loadConversation( conversation: VConversation, pageType: VPageType, completion:((NSError?)->())? = nil ) {
         self.paginatedDataSource.loadPage( pageType,
@@ -50,7 +59,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedAscending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
-        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: newValue)
+        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
@@ -66,13 +75,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return paginatedDataSource.visibleItems.count
+        return visibleItems.count
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
         let identifier = VMessageCell.suggestedReuseIdentifier()
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
-        let message = paginatedDataSource.visibleItems[ indexPath.row ] as! VMessage
+        let message = visibleItems[ indexPath.row ] as! VMessage
         decorateCell( cell, withMessage: message )
         return cell
     }

@@ -12,7 +12,7 @@ import Foundation
 // TODO: Finish tests for
 
 /// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
-@objc protocol PaginatedDataSourceDelegate {
+@objc protocol PaginatedDataSourceDelegate: NSObjectProtocol {
     
     /// Called from a `PaginateddataSource` instance when new objects have been fetched and added to its backing store.
     /// The `oldValue` and `newValue` parameters are designed to allow calling code to
@@ -33,11 +33,7 @@ import Foundation
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc class PaginatedDataSource: NSObject {
-    
-    private typealias Filter = AnyObject -> Bool
-    private var filters = [Filter]()
-    
+@objc public class PaginatedDataSource: NSObject {
     private(set) var currentOperation: RequestOperation?
     
     private(set) var state: DataSourceState = .Cleared {
@@ -65,28 +61,12 @@ import Foundation
         }
     }
     
-    private(set) var unfilteredItems = NSOrderedSet() {
-        didSet {
-            applyFilters()
-        }
-    }
-    
     // MARK: - Public API
     
     var delegate: PaginatedDataSourceDelegate?
     
-    func addFilter( filter: AnyObject -> Bool  ) {
-        filters.append( filter )
-        applyFilters()
-    }
-    
-    func resetFilters() {
-        filters = []
-        applyFilters()
-    }
-    
     func unload() {
-        unfilteredItems = NSOrderedSet()
+        cancelCurrentOperation()
         visibleItems = NSOrderedSet()
     }
     
@@ -133,21 +113,11 @@ import Foundation
     // MARK: - Private helpers
     
     private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
-        guard let results = operation.results else {
+        guard let results = operation.results where !results.isEmpty else {
             return
         }
         
-        if !results.isEmpty {
-            self.unfilteredItems = self.unfilteredItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-        }
-    }
-    
-    private func applyFilters() {
-        var items = unfilteredItems.array
-        for filter in filters {
-            items = items.filter { filter($0) }
-        }
-        visibleItems = NSOrderedSet(array: items)
+        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
     }
 }
 

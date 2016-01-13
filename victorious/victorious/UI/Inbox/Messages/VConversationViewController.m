@@ -138,7 +138,7 @@
 
 - (void)updateTableView
 {
-    switch ( self.dataSource.paginatedDataSource.state )
+    switch ( self.dataSource.state )
     {
         case DataSourceStateError:
         case DataSourceStateNoResults: {

@@ -17,7 +17,6 @@
 @property (nonatomic, strong) VConversation *conversation;
 @property (nonatomic, strong) ConversationDataSource *dataSource;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (nonatomic, assign) BOOL presentingFromProfile;
 
 + (instancetype)messageViewControllerForConversation:(VConversation *)conversation dependencyManager:(VDependencyManager *)dependencyManager;
 

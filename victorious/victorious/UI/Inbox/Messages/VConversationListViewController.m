@@ -364,7 +364,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? UITableViewCellSeparatorStyleSingleLine : UITableViewCellSeparatorStyleNone;
     
-    switch ( [self.dataSource state] )
+    switch ( self.dataSource.state )
     {
         case DataSourceStateError:
         case DataSourceStateNoResults: {

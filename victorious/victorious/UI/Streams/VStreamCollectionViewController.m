@@ -229,7 +229,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
-    self.streamDataSource.paginatedDataSource.delegate = self;
     self.collectionView.dataSource = self.streamDataSource;
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
@@ -388,7 +387,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
     BOOL hasMarqueeShelfAtTop = NO;
-    NSOrderedSet *streamItems = self.streamDataSource.paginatedDataSource.visibleItems;
+    NSOrderedSet *streamItems = self.streamDataSource.visibleItems;
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
@@ -646,7 +645,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                             atIndexPath:indexPath];
     }
     
-    VSequence *sequence = (VSequence *)[self.streamDataSource.paginatedDataSource.visibleItems objectAtIndex:indexPath.row];
+    VSequence *sequence = (VSequence *)[self.streamDataSource.visibleItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell;
     if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
     {

@@ -9,7 +9,7 @@
 import UIKit
 import VictoriousIOSSDK
 
-public extension VStreamCollectionViewDataSource {
+extension VStreamCollectionViewDataSource {
     
     /// The primary way to load a stream.
     ///
@@ -33,8 +33,24 @@ public extension VStreamCollectionViewDataSource {
             }
         )
     }
-    
-    public func removeStreamItem(streamItem: VStreamItem) {
+    func removeStreamItem(streamItem: VStreamItem) {
         RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queueOn( RequestOperation.sharedQueue )
+    }
+}
+
+extension VStreamCollectionViewDataSource: PaginatedDataSourceDelegate {
+    
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        if suppressShelves {
+            let filteredArray = (newValue.array as? [VStreamItem] ?? []).filter { $0.itemType == VStreamItemTypeShelf }
+            self.visibleItems = NSOrderedSet(array: filteredArray)
+        } else {
+            self.visibleItems = newValue
+        }
+        self.delegate?.paginatedDataSource(paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
+    }
+    
+    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
+        self.delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
 }
