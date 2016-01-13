@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
 class FollowUserOperationTests: BaseRequestOperationTestCase {
     
@@ -15,7 +16,6 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     let userID: Int = 1
     let currentUserID: Int = 2
     let screenName = "screenName"
-    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
@@ -26,10 +26,10 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     }
 
     func testFollowingAnExistentUser() {
-        let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let createdCurrentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         createdCurrentUser.setAsCurrentUser()
         
-        let createdUserToFollow = operationHelper.createUser(remoteId: userID, persistentStore: testStore)
+        let createdUserToFollow = persistentStoreHelper.createUser(remoteId: userID)
         operation.main()
         
         guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -81,6 +81,6 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
 
     override func tearDown() {
         super.tearDown()
-        operationHelper.tearDownPersistentStore(store: testStore)
+        persistentStoreHelper.tearDownPersistentStore()
     }
 }
