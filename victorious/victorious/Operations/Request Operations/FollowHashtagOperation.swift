@@ -20,7 +20,7 @@ class FollowHashtagOperation: RequestOperation {
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }

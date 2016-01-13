@@ -19,26 +19,42 @@ class LogoutOperation: RequestOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
-    
-    private func onComplete( result: LogoutRequest.ResultType, completion:()->() ) {
-        
-        guard let currentUserObjectID = VCurrentUser.user()?.objectID else {
-            completion()
+        guard VCurrentUser.user() != nil else {
+            // Cannot logout with a current (logged-in) user
             return
         }
         
-        VCurrentUser.clear()
+        // Execute the network request and don't wait for response
+        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        dispatch_sync( dispatch_get_main_queue() ) {
             
-            guard let loggedOutUser: VUser = context.v_objectWithID( currentUserObjectID ) else {
+            InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
+            
+            NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
+            NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )
+            
+            VStoredLogin().clearLoggedInUserFromDisk()
+            VStoredPassword().clearSavedPassword()
+            
+            VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
+            VTrackingManager.sharedInstance().setValue(false, forSessionParameterWithKey:VTrackingKeyUserLoggedIn)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
+        }
+        
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            guard let loggedOutUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 fatalError()
             }
             
             let conversations: [VConversation] = context.v_findObjects( [ "user" : loggedOutUser ])
             for object in conversations {
+                context.deleteObject( object )
+            }
+            
+            let notifications: [VNotification] = context.v_findObjects( [ "user" : loggedOutUser ])
+            for object in notifications {
                 context.deleteObject( object )
             }
             
@@ -48,7 +64,10 @@ class LogoutOperation: RequestOperation {
             }
             
             context.v_save()
-            completion()
         }
+        
+        // And finally, clear the user.  Don't do this early because
+        // some of the stuff above requires knowing the current user
+        VCurrentUser.clear()
     }
 }

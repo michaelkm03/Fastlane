@@ -52,7 +52,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         let unflaggedComments = comments.filter { flaggedCommentIDs.contains($0.commentID) == false }
         
         // Make changes on background queue
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // If refreshing with a network connection, delete everything we have
             // TODO: revising how this fits into 4.0 architecture.

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LogoutLocally: Operation {
+/*class LogoutLocally: Operation {
     
     let fromViewController: UIViewController
     let dependencyManager: VDependencyManager
@@ -31,13 +31,13 @@ class LogoutLocally: Operation {
         
         // Show the login again once we're logged out
         let loginOperation = ShowLoginOperation(originViewController: fromViewController, dependencyManager: dependencyManager)
-        loginOperation.queueAfter( self, queue: Operation.defaultQueue )
+        loginOperation.addDependency( self )
+        loginOperation.queue()
         
         // Perform a fire-and-forget remote log out with the server
         let remoteLogoutOperation = LogoutOperation()
-        remoteLogoutOperation.queueAfter( self, queue: remoteLogoutOperation.defaultQueue )
-        
-        VCurrentUser.clear()
+        remoteLogoutOperation.addDependency( self )
+        remoteLogoutOperation.queue()
 
         InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
         
@@ -54,4 +54,4 @@ class LogoutLocally: Operation {
         
         self.finishedExecuting()
     }
-}
+}*/

@@ -10,11 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-private let _defaultQueue: NSOperationQueue = {
-    var queue = NSOperationQueue()
-    queue.maxConcurrentOperationCount = 1
-    return queue
-}()
+private let _defaultQueue: NSOperationQueue = NSOperationQueue()
 
 class RequestOperation: NSOperation, Queuable {
     
@@ -29,6 +25,9 @@ class RequestOperation: NSOperation, Queuable {
     var mainQueueCompletionBlock: ((NSError?)->())?
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    
+    /// A place to store a background context so that it is retained for as long as expected during the operation
+    var storedBackgroundContext: NSManagedObjectContext?
     
     lazy var requestExecutor: RequestExecutorType = {
         return MainRequestExecutor(persistentStore: self.persistentStore)

@@ -29,10 +29,7 @@ class MainRequestExecutor: RequestExecutorType {
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = currentEnvironment.baseURL
-
-        let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { context in
-            return AuthenticationContext(currentUser: VCurrentUser.user())
-        }
+        let authenticationContext = AuthenticationContext(currentUser: VCurrentUser.user())
 
         if !hasNetworkConnection {
             let error = NSError(

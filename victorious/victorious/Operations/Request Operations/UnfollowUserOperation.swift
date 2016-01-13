@@ -21,7 +21,7 @@ class UnfollowUserOperation: RequestOperation {
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistedUserID = NSNumber(integer: self.userID)
             
             guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,

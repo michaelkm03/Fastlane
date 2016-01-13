@@ -23,16 +23,23 @@ public class VCurrentUser: NSObject {
     /// the user from the proper context depending on which thread it is invoked.
     static func user( inManagedObjectContext managedObjectContext: NSManagedObjectContext ) -> VUser? {
         
-        guard let user = persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] as? VUser else {
+        let user: VUser? = persistentStore.mainContext.v_performBlockAndWait() { context in
+            context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] as? VUser
+        }
+        guard let userFromMainContext = user else {
             return nil
         }
         
         if managedObjectContext == persistentStore.mainContext {
-            return user
+            print( "CurrentUser :: remoteID \(userFromMainContext.remoteId) :: token \(userFromMainContext.token)" )
+            return userFromMainContext
             
         } else {
-            let objectID = user.objectID
+            let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
+                if let currentUser = context.objectWithID( objectID ) as? VUser {
+                    print( "CurrentUser (BG) :: remoteID \(currentUser.remoteId) :: token \(currentUser.token)" )
+                }
                 return context.objectWithID( objectID ) as? VUser
             }
         }
@@ -45,7 +52,9 @@ public class VCurrentUser: NSObject {
     /// Strips the current user of its "current" status.  `currentUser()` method will
     /// now return nil until a new user has been set as current using method `setAsCurrent()`.
     static func clear() {
-        persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = nil
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = nil
+        }
     }
 }
 
@@ -54,7 +63,9 @@ public extension VUser {
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as their can be only one.
     func setAsCurrentUser() {
-        VCurrentUser.persistentStore.mainContext.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
+        VCurrentUser.persistentStore.mainContext.v_performBlockAndWait() { context in
+            context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
+        }
     }
     
     func isCurrentUser() -> Bool {

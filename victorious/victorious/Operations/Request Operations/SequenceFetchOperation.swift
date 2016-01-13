@@ -27,7 +27,7 @@ class SequenceFetchOperation: RequestOperation {
     
     private func onComplete( sequence: SequenceFetchRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             let persistentSequence: VSequence = context.v_findOrCreateObject([ "remoteId" : String(sequence.sequenceID) ])
             persistentSequence.populate(fromSourceModel: sequence)
             context.v_save()
