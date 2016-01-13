@@ -7,11 +7,14 @@
 //
 
 import XCTest
+import CoreData
 @testable import victorious
 
 class MainPersistentStoreTests: XCTestCase {
     
     let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+
+    var storedBackgroundContext: NSManagedObjectContext?
     
     func testSyncBasic() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
@@ -52,7 +55,7 @@ class MainPersistentStoreTests: XCTestCase {
     func testSyncFromBackground() {
         let expectation = self.expectationWithDescription("")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            self.persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
                 XCTAssertEqual( context, self.persistentStore.backgroundContext )
                 XCTAssertFalse( NSThread.currentThread().isMainThread )
                 expectation.fulfill()
@@ -63,7 +66,7 @@ class MainPersistentStoreTests: XCTestCase {
     
     func testAsyncFromBackground() {
         let expectation = self.expectationWithDescription("")
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             XCTAssertFalse( NSThread.currentThread().isMainThread )
             XCTAssertEqual( context, self.persistentStore.backgroundContext )
             dispatch_async( dispatch_get_main_queue() ) {

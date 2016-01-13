@@ -7,65 +7,49 @@
 //
 
 import XCTest
-import VictoriousIOSSDK
-import SwiftyJSON
 @testable import victorious
-
-struct MockRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        return true
-    }
-}
-
-struct MockErrorRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.google.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        throw APIError( localizedDescription: "MockError", code: 999)
-    }
-}
+import Nocilla
 
 class RequestOperationTests: XCTestCase {
-    
-    var requestOperation: RequestOperation!
 
     override func setUp() {
-        requestOperation = RequestOperation()
+        super.setUp()
+        LSNocilla.sharedInstance().start()
     }
     
-    func testBasic() {
-        let expectation = self.expectationWithDescription("testBasic")
+    override func tearDown() {
+        super.tearDown()
+        LSNocilla.sharedInstance().clearStubs()
+        LSNocilla.sharedInstance().stop()
+    }
+    
+    func testOnCompletion() {
+        let expectation = self.expectationWithDescription("testOnCompletion")
+        let requestOperation = MockRequestOperation(request: MockRequest())
+        let url = requestOperation.validRequest.urlRequest.URL?.absoluteString
         
-        let request = MockRequest()
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperation.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
-                    completion()
-                    expectation.fulfill()
-                },
-                onError: { (error, completion:()->() ) in
-                    XCTFail( "Should not be called" )
-                }
-            )
+        stubRequest("GET", url)
+        
+        requestOperation.queueOn(requestOperation.defaultQueue) { error in
+            XCTAssertNil(error)
+            expectation.fulfill()
         }
+        
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testError() {
-        let expectation = self.expectationWithDescription("testError")
+    func testOnError() {
+        let expectation = self.expectationWithDescription("testOnError")
+        let errorOperation = MockErrorRequestOperation(request: MockErrorRequest())
+        let url = errorOperation.errorRequest.urlRequest.URL?.absoluteString
         
-        let request = MockErrorRequest()
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.requestOperation.requestExecutor.executeRequest( request,
-                onComplete: { (result, completion:()->() ) in
-                    XCTFail( "Should not be called" )
-                },
-                onError: { (error, completion:()->() ) in
-                    completion()
-                    expectation.fulfill()
-                }
-            )
+        stubRequest("GET", url)
+        
+        errorOperation.queueOn(errorOperation.defaultQueue) { error in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
         }
+        
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 }

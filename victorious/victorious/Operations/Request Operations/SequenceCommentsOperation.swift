@@ -40,7 +40,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         let unflaggedComments = comments.filter { flaggedCommentIDs.contains($0.commentID) == false }
         
         // Make changes on background queue
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
@@ -61,7 +61,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     // MARK: - PaginatedRequestExecutorDelegate
     
     override func clearResults() {
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
             for comment in existingComments {
                 context.deleteObject( comment )

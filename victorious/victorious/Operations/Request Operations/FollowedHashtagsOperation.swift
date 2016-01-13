@@ -42,7 +42,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     
     func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 completion()
                 return

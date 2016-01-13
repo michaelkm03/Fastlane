@@ -35,7 +35,7 @@ final class PollResultSummaryBySequenceOperation: RequestOperation, PaginatedOpe
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : self.sequenceID] )
             for pollResult in pollResults where pollResult.sequenceID != nil {

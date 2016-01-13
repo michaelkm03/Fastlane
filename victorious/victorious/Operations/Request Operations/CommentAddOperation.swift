@@ -38,7 +38,7 @@ class CommentAddOperation: RequestOperation {
         }
         
         // Optimistically create a comment before sending request
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let comment: VComment = context.v_createObject()
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
@@ -76,7 +76,7 @@ class CommentAddOperation: RequestOperation {
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             defer {
                 completion()
             }

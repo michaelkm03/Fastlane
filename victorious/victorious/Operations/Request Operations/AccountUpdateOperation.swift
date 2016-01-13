@@ -39,7 +39,7 @@ class AccountUpdateOperation: RequestOperation {
         
         // For profile updates, optimistically update everything right away
         if let profileUpdate = self.request.profileUpdate {
-            persistentStore.backgroundContext.v_performBlockAndWait() { context in
+            persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
 
                 guard let user = VCurrentUser.user() else {
                     fatalError( "Expecting a current user to be set before now." )

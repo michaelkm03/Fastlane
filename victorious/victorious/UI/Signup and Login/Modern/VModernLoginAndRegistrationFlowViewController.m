@@ -371,7 +371,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        loginManager.forceNative = [self.dependencyManager shouldForceNativeFacebookLogin];
         [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
                             fromViewController:self
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)

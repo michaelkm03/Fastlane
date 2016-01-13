@@ -38,7 +38,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
         
         // Make changes on background queue
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // Parse stream
             let persistentStream: VStream = context.v_findOrCreateObject( [ "apiPath" : self.apiPath ] )
@@ -63,7 +63,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     // MARK: - PaginatedRequestExecutorDelegate
     
     override func clearResults() {
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
                 return
             }

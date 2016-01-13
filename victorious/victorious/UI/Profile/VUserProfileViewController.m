@@ -510,13 +510,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
     
+    if ( _user != nil )
+    {
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
+    }
+    
     if ( user == _user )
     {
         return;
     }
-    
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     
     _user = user;
     
@@ -536,7 +539,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                               {
                                   [welf shrinkHeaderAnimated:YES];
                               }
-                              [welf.currentStream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems))];
+                              [self.KVOController unobserve:self keyPath:NSStringFromSelector(@selector(streamItems))];
                           }];
     
     NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];

@@ -35,7 +35,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
     
     private func onComplete( pollResults: PollResultSummaryRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             defer {
                 completion()
             }

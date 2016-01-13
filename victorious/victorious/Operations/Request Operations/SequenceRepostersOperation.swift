@@ -35,7 +35,7 @@ final class SequenceRepostersOperation: RequestOperation, PaginatedOperation {
     
     private func onComplete( users: SequenceRepostersRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             for user in users {

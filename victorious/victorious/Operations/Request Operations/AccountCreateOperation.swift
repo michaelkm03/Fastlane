@@ -33,16 +33,21 @@ class AccountCreateOperation: RequestOperation {
     func onComplete( response: AccountCreateResponse, completion:()->() ) {
         self.isNewUser = response.newUser
         
-        // First, find or create the new user who just logged in
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            
+            // First, find or create the new user who just logged in
             let user: VUser = context.v_findOrCreateObject( [ "remoteId" : response.user.userID ])
-            user.setAsCurrentUser()
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
+            
+            // Save, merging the changes into the main context
             context.v_save()
             
-            dispatch_async( dispatch_get_main_queue() ) {
+            // Current user must be set AFTER context has been saved above
+            user.setAsCurrentUser()
+            
+            dispatch_sync( dispatch_get_main_queue() ) {
                 if let currentUser = VCurrentUser.user() {
                     self.updateStoredCredentials( currentUser )
                     self.notifyLoginChange( currentUser, isNewUser: response.newUser )

@@ -28,7 +28,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         }
         
         // Make changes on background queue
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             for result in results {
                 let uniqueElements = [ "remoteId" : result.notificationID ]
@@ -44,7 +44,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
     // MARK: - PaginatedRequestExecutorDelegate
     
     override func clearResults() {
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let existing: [VNotification] = context.v_findAllObjects()
             for object in existing {
                 context.deleteObject( object )

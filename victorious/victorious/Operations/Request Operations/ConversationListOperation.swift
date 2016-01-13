@@ -23,7 +23,8 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             var persistentConversations = [VConversation]()

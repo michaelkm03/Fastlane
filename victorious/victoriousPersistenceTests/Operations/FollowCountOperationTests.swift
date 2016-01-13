@@ -11,9 +11,7 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class FollowCountOperationTests: BaseRequestOperationTestCase {
-    
     let userID = 6578
-    let operationHelper = RequestOperationTestHelper()
     var operation: FollowCountOperation!
     
     override func setUp() {
@@ -24,7 +22,7 @@ class FollowCountOperationTests: BaseRequestOperationTestCase {
     }
     
     func testLoadCounts() {
-        operationHelper.createUser(remoteId: userID, persistentStore: testStore)
+        persistentStoreHelper.createUser(remoteId: userID)
         
         guard let user: VUser = testStore.mainContext.v_findObjects(["remoteId" : userID]).first else {
             XCTFail("No user to follow found after following a user")
