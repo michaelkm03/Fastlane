@@ -21,6 +21,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VAuthorizationContextProvider.h"
+#import "victorious-Swift.h"
 
 @import MessageUI;
 
@@ -261,10 +262,10 @@
     NSMutableSet *newFriends = [[NSMutableSet alloc] init];
     [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
     [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
-    [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
-                               withSuccessBlock:nil
-                                      failBlock:nil];
-    
+
+    RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: [newFriends allObjects]];
+    [operation queueOn:[RequestOperation sharedQueue] completionBlock: nil];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
