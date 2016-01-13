@@ -15,7 +15,7 @@ class TestRequestExecutor: RequestExecutorType {
 
     var executeRequestCallCount = 0
     var hasNetworkConnection: Bool = true
-    
+
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
         executeRequestCallCount += 1
     }

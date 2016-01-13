@@ -41,7 +41,6 @@ class MainRequestExecutor: RequestExecutorType {
                 userInfo: nil
             )
             onError?( error, {} )
-
         } else {
             networkActivityIndicator.start()
             let executeSemphore = dispatch_semaphore_create(0)

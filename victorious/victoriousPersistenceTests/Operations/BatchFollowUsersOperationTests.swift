@@ -17,7 +17,6 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
         return [self.userIDOne, self.userIDTwo]
     }()
     let currentUserID = 1
-    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
@@ -27,9 +26,9 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowingUsers() {
-        let userOne = operationHelper.createUser(remoteId: userIDOne, persistentStore: testStore)
-        let userTwo = operationHelper.createUser(remoteId: userIDTwo, persistentStore: testStore)
-        let currentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
+        let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
+        let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         currentUser.setAsCurrentUser()
 
         operation.main()
