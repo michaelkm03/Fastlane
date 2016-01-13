@@ -314,7 +314,11 @@
 
 - (void)selectAllRows:(id)sender
 {
-    RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs:self.usersNotFollowing];
+    NSMutableArray *userIDs = [[NSMutableArray alloc]init];
+    [self.usersNotFollowing enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop) {
+        [userIDs addObject:[user remoteId]];
+    }];
+    RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: userIDs];
     [operation queueOn:[RequestOperation sharedQueue] completionBlock: ^(NSError *_Nullable error) {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
