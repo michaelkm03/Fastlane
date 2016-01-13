@@ -9,19 +9,15 @@
 import Foundation
 import SwiftyJSON
 
-/// Text post background should either be a background color or a media URL
-public enum TextPostBackground {
-    case BackgoundColor(UIColor)
-    case BackgroundImage(NSURL)
-}
-
 public struct TextPostParameters {
     let content: String
-    let background: TextPostBackground
+    let backgroundColor: UIColor?
+    let backgroundImageURL: NSURL?
     
-    public init(content: String, background: TextPostBackground) {
+    public init(content: String, backgroundImageURL: NSURL?, backgroundColor: UIColor?) {
         self.content = content
-        self.background = background
+        self.backgroundColor = backgroundColor
+        self.backgroundImageURL = backgroundImageURL
     }
 }
 
@@ -70,16 +66,20 @@ private extension CreateTextPostRequest {
         }
         
         func write(parameters parameters: TextPostParameters) throws -> RequestBodyWriterOutput {
+            
             let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
             
             try writer.appendPlaintext(parameters.content, withFieldName: "content")
             
-            switch parameters.background {
-                
-            case .BackgoundColor(let color):
+            if (parameters.backgroundColor == nil && parameters.backgroundImageURL == nil) {
+                throw NSError(domain: "com.createtextpost.parameters", code: -1, userInfo: nil)
+            }
+            
+            if let color = parameters.backgroundColor {
                 try writer.appendPlaintext(color.v_hexString(), withFieldName: "background_color")
-                
-            case .BackgroundImage(let url):
+            }
+            
+            if let url = parameters.backgroundImageURL {
                 if let pathExtension = url.pathExtension,
                     let mimeType = url.vsdk_mimeType {
                         try writer.appendFileWithName("media_data.\(pathExtension)",

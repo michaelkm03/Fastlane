@@ -39,9 +39,17 @@ extension VTextToolController {
         return image
     }
     
-    func publishTextPost(renderedAssetURL: NSURL, completion: (finished: Bool, renderedMediaURL: NSURL, previewImage: UIImage, error: NSError) -> Void) {
-        let background =
-        let parameters = TextPostParameters(content: currentText, background: <#T##TextPostBackground#>)
-        let operation = CreateTextPostOperation(parameters: <#T##TextPostParameters#>)
+    func publishTextPost(renderedAssetURL: NSURL, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
+        
+        let parameters = TextPostParameters(content: currentText, backgroundImageURL: renderedAssetURL, backgroundColor: currentColorSelection)
+        let operation = CreateTextPostOperation(parameters: parameters)
+        
+        operation?.queue() { error in
+            if error == nil {
+                completion(finished: true, renderedMediaURL: nil, previewImage: nil, error: nil)
+            } else {
+                completion(finished: false, renderedMediaURL: nil, previewImage: nil, error: nil)
+            }
+        }
     }
 }

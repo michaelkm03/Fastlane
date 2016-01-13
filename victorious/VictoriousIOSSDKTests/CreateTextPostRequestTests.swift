@@ -12,8 +12,8 @@ import SwiftyJSON
 
 class CreateTextPostRequestTests: XCTestCase {
     
-    func testRequest() {
-        let mockParameters = TextPostParameters(content: "mockTextPostContent", background: .BackgoundColor(UIColor.blueColor()))
+    func testRequestWithValidBackgroundColor() {
+        let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
         guard let request = CreateTextPostRequest(parameters: mockParameters) else {
             XCTFail("Request Creation should not fail here")
             return
@@ -23,8 +23,25 @@ class CreateTextPostRequestTests: XCTestCase {
         XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/text/create")
     }
     
+    func testRequestWithValidBackgroundImageURL() {
+        let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: NSURL(string: "file://someurl/to/image.png")!, backgroundColor: nil)
+        guard let request = CreateTextPostRequest(parameters: mockParameters) else {
+            XCTFail("Request Creation should not fail here")
+            return
+        }
+        let urlRequest = request.urlRequest
+        
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/text/create")
+    }
+    
+    func testREquestWithInvalidParameters() {
+        let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: nil)
+        let request = CreateTextPostRequest(parameters: mockParameters)
+        XCTAssertNil(request)
+    }
+    
     func testParseResponse() {
-        let mockParameters = TextPostParameters(content: "mockTextPostContent", background: .BackgoundColor(UIColor.blueColor()))
+        let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
         guard let request = CreateTextPostRequest(parameters: mockParameters) else {
             XCTFail("Request Creation should not fail here")
             return

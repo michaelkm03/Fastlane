@@ -13,7 +13,7 @@ import VictoriousIOSSDK
 class CreateTextPostOperationTests: XCTestCase {
     
     func testMain() {
-        let mockParameters = TextPostParameters(content: "mockContent", background: .BackgoundColor(UIColor.blueColor()))
+        let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
         let testExecutor = TestRequestExecutor()
         guard let operation = CreateTextPostOperation(parameters: mockParameters) else {
             XCTFail("Operation Construction should not fail")

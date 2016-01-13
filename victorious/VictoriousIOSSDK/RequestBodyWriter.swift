@@ -25,7 +25,7 @@ protocol RequestBodyWriter {
 extension RequestBodyWriter {
     func createBodyTempFile() -> NSURL {
         let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
+        return tempDirectory.URLByAppendingPathComponent("requestBody.tmp")
     }
     
     func removeBodyTempFile() {
