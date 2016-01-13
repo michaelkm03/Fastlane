@@ -44,6 +44,9 @@ public struct CreateTextPostRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+        // When the response come back, it is safe to remove the temp file created by the request body writer
+        requestBodyWriter.removeBodyTempFile()
+        
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let textPostSequenceID = sequenceID.string else {
@@ -59,10 +62,6 @@ private extension CreateTextPostRequest {
         
         var bodyTempFile: NSURL {
             return createBodyTempFile()
-        }
-        
-        deinit {
-            removeBodyTempFile()
         }
         
         func write(parameters parameters: TextPostParameters) throws -> RequestBodyWriterOutput {
