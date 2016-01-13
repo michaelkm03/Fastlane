@@ -118,7 +118,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         super.viewWillAppear(animated)
         
         v_navigationController().view.setNeedsLayout()
-        searchResultsViewController?.updateTableView()
+        
+        // FIXME:
+        // searchResultsViewController?.updateTableView()
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource, cellForIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

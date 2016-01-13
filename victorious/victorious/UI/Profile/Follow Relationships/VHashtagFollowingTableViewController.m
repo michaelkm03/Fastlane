@@ -120,7 +120,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     
     VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
-    [customCell setHashtag:hashtag];
+    [customCell setHashtagText:hashtag.tag];
     customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
@@ -188,7 +188,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         if ( [cell isKindOfClass:[VTrendingTagCell class]] )
         {
             VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
-            if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
+            if ( [trendingCell.hashtagText isEqualToString:hashtag.tag] )
             {
                 [trendingCell updateSubscribeStatusAnimated:YES showLoading:!respond];
                 return;

@@ -8,6 +8,9 @@
 
 import Foundation
 
+// TODO: Anbstract into protocol!
+// TODO: Finish tests for
+
 /// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
 @objc protocol PaginatedDataSourceDelegate {
     
@@ -49,6 +52,11 @@ import Foundation
         return state == .Loading
     }
     
+    /// Tells the data source to unload all items from its `visibleItems` backing store
+    /// whenever a page is loaded with a VPageType.First value specified.  This is useful for
+    /// search-style data sources that should clear when a new search has begun.
+    var clearsVisibleItemsBeforeLoadingFirstPage: Bool = false
+    
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
             if oldValue != visibleItems {
@@ -80,6 +88,11 @@ import Foundation
     func unload() {
         unfilteredItems = NSOrderedSet()
         visibleItems = NSOrderedSet()
+    }
+    
+    func cancelCurrentOperation() {
+        currentOperation?.cancel()
+        currentOperation = nil
     }
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {

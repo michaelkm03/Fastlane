@@ -16,7 +16,7 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        operation = UserSearchOperation(queryString: "test")
+        operation = UserSearchOperation(searchTerm: "test")
         operation.requestExecutor = testRequestExecutor
     }
 
@@ -32,8 +32,7 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
 
     func testReturnsResultsObjects() {    
         let user = User(userID: testUserID)
-        operation.onComplete([user]) { () -> () in
-        }
+        operation.onComplete([user]) { }
         
         guard let results = operation.results else {
             XCTFail("results should be set by now")

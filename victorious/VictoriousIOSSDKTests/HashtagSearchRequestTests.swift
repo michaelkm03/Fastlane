@@ -1,5 +1,5 @@
 //
-//  HashtagSearchResponseTests.swift
+//  HashtagSearchRequestTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/9/15.
@@ -10,7 +10,7 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class HashtagSearchResponseTests: XCTestCase {
+class HashtagSearchRequestTests: XCTestCase {
     
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("HashtagSearchResponse", withExtension: "json"),

@@ -24,7 +24,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
-#import "VUsersAndTagsSearchViewController.h"
+#import "DiscoverSearchViewController.h"
 
 // Transition
 #import "VSearchResultsTransition.h"
@@ -42,7 +42,7 @@
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
-@property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
+@property (nonatomic, strong) DiscoverSearchViewController *discoverSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @property (nonatomic, strong) NSLayoutConstraint *searchTopConstraint;
@@ -205,7 +205,7 @@
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSearchBar];
 
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController newWithDependencyManager:self.dependencyManager];
+    DiscoverSearchViewController *searchViewController = [DiscoverSearchViewController newWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
@@ -229,7 +229,7 @@
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
     {
-        self.usersAndTagsSearchViewController = segue.destinationViewController;
+        self.discoverSearchViewController = segue.destinationViewController;
     }
 }
 

@@ -55,8 +55,9 @@ class MainPersistentStoreTests: XCTestCase {
     func testSyncFromBackground() {
         let expectation = self.expectationWithDescription("")
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
-            self.persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-                XCTAssertEqual( context, self.persistentStore.backgroundContext )
+            let backgroundContext = self.persistentStore.createBackgroundContext()
+            backgroundContext.v_performBlockAndWait() { context in
+                XCTAssertEqual( context, backgroundContext )
                 XCTAssertFalse( NSThread.currentThread().isMainThread )
                 expectation.fulfill()
             }
@@ -66,9 +67,10 @@ class MainPersistentStoreTests: XCTestCase {
     
     func testAsyncFromBackground() {
         let expectation = self.expectationWithDescription("")
-        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+        let backgroundContext = self.persistentStore.createBackgroundContext()
+        backgroundContext.v_performBlock() { context in
             XCTAssertFalse( NSThread.currentThread().isMainThread )
-            XCTAssertEqual( context, self.persistentStore.backgroundContext )
+            XCTAssertEqual( context, backgroundContext )
             dispatch_async( dispatch_get_main_queue() ) {
                 expectation.fulfill()
             }

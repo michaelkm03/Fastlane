@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class VUserIsFollowingDataSource: PaginatedDataSource, VUsersDataSource {
+@objc final class VUserIsFollowingDataSource: PaginatedDataSource, VUsersDataSource {
     
     let user: VUser
     
