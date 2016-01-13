@@ -6,11 +6,15 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 class BatchFollowUsersOperation: RequestOperation {
     let userIDs: [Int]
+    let request: BatchFollowUsersRequest
 
     init(userIDs: [Int]) {
         self.userIDs = userIDs
+        self.request = BatchFollowUsersRequest(usersToFollow: self.userIDs)
         super.init()
     }
 
@@ -32,6 +36,7 @@ class BatchFollowUsersOperation: RequestOperation {
             }
 
             context.v_save()
+            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
         }
     }
 }

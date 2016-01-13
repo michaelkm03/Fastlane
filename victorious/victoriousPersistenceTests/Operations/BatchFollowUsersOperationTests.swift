@@ -9,10 +9,8 @@
 import XCTest
 @testable import victorious
 
-class BatchFollowUsersOperationTests: XCTestCase {
+class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     var operation: BatchFollowUsersOperation!
-    var testStore: TestPersistentStore!
-    var testRequestExecutor: RequestExecutorType!
     let userIDOne = 1
     let userIDTwo = 2
     lazy var userIDs: [Int] = {
@@ -24,8 +22,6 @@ class BatchFollowUsersOperationTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        testStore = TestPersistentStore()
-        testRequestExecutor = TestRequestExecutor()
         operation = BatchFollowUsersOperation(userIDs: userIDs)
         operation.requestExecutor = testRequestExecutor
     }
@@ -84,10 +80,7 @@ class BatchFollowUsersOperationTests: XCTestCase {
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
-    }
 
-    override func tearDown() {
-        super.tearDown()
-        operationHelper.tearDownPersistentStore(store: testStore)
+        XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
     }
 }
