@@ -997,7 +997,7 @@
 		A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */; };
 		A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */; };
 		A7C565DE1C405A4800E4DF6A /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
-		A7C565E21C40665600E4DF6A /* AlertReceiver.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565E11C40665600E4DF6A /* AlertReceiver.swift.swift */; };
+		A7C565E21C40665600E4DF6A /* AlertReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C565E11C40665600E4DF6A /* AlertReceiver.swift */; };
 		A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C713B11B74450A00089B5E /* GCDUtils.swift */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
 		A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */; };
@@ -1300,7 +1300,7 @@
 		C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */; };
 		C3623E761BA10381002B121D /* VObjectManager+Interstitials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */; };
 		C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F231BA3AE54002B121D /* InterstitialManager.swift */; };
-		C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift.swift */; };
+		C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift */; };
 		C3623F2B1BA3AF3A002B121D /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */; };
 		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
 		C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */; };
@@ -3393,7 +3393,7 @@
 		A7C15E771BAA50B2007B969C /* VMonetizationPartner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMonetizationPartner.h; sourceTree = "<group>"; };
 		A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperationTests.swift; sourceTree = "<group>"; };
 		A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "InterstitialManager+Debug.swift"; sourceTree = "<group>"; };
-		A7C565E11C40665600E4DF6A /* AlertReceiver.swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift.swift; sourceTree = "<group>"; };
+		A7C565E11C40665600E4DF6A /* AlertReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift; sourceTree = "<group>"; };
 		A7C713B11B74450A00089B5E /* GCDUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDUtils.swift; sourceTree = "<group>"; };
 		A7CD87501B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VAccessoryScreens.m"; sourceTree = "<group>"; };
@@ -3746,7 +3746,7 @@
 		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LevelUpViewController.storyboard; sourceTree = "<group>"; };
 		C3623E751BA10381002B121D /* VObjectManager+Interstitials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Interstitials.swift"; sourceTree = "<group>"; };
 		C3623F231BA3AE54002B121D /* InterstitialManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialManager.swift; sourceTree = "<group>"; };
-		C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Interstitial.swift.swift"; sourceTree = "<group>"; };
+		C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Interstitial.swift"; sourceTree = "<group>"; };
 		C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
 		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
 		C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAlertsViewController.swift; sourceTree = "<group>"; };
@@ -7095,7 +7095,7 @@
 				A76AEAD01C038E0000E8A26F /* AccountCreateOperation.swift */,
 				A76AEAD11C038E0000E8A26F /* AccountUpdateOperation.swift */,
 				A7039CDE1C23D27E0023DE6F /* AcknowledgeAlertOperation.swift */,
-				A7C565E11C40665600E4DF6A /* AlertReceiver.swift.swift */,
+				A7C565E11C40665600E4DF6A /* AlertReceiver.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
@@ -8345,7 +8345,7 @@
 				C3623F231BA3AE54002B121D /* InterstitialManager.swift */,
 				A7C565DC1C4051E300E4DF6A /* InterstitialManager+Debug.swift */,
 				C3623F2A1BA3AF3A002B121D /* InterstitialViewController.swift */,
-				C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift.swift */,
+				C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift */,
 			);
 			path = Interstitials;
 			sourceTree = "<group>";
@@ -10986,7 +10986,7 @@
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
-				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift.swift in Sources */,
+				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				A7E2918D1C3B452B00B84127 /* FollowHashtagOperation.swift in Sources */,
@@ -11495,7 +11495,7 @@
 				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */,
-				A7C565E21C40665600E4DF6A /* AlertReceiver.swift.swift in Sources */,
+				A7C565E21C40665600E4DF6A /* AlertReceiver.swift in Sources */,
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
