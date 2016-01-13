@@ -7,7 +7,6 @@
 //
 
 #import "VFirstInstallManager.h"
-#import "VObjectManager+Analytics.h"
 #import "VTracking.h"
 
 NSString * const VAppInstalledOldTrackingDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";

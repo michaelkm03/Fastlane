@@ -7,11 +7,11 @@
 //
 
 #import "VUserCell.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VFollowControl.h"
 #import "VDefaultProfileButton.h"
+#import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
 

@@ -48,7 +48,7 @@ extension RequestType {
     ///
     /// - parameter result: The results of this request, if available.
     /// - parameter error: If an error occurred while executing this request, this parameter will have details.
-    public typealias ResultCallback = ( result: ResultType?, error: ErrorType? ) -> ()
+    public typealias ResultCallback = ( result: ResultType?, error: ErrorType?, alerts: [Alert] ) -> ()
     
     /// Executes this request
     ///
@@ -70,6 +70,7 @@ extension RequestType {
             
             let result: ResultType?
             let error: ErrorType?
+            let alerts: [Alert]
             if let response = response,
                let data = data {
                 do {
@@ -77,21 +78,28 @@ extension RequestType {
                     try self.parseError(responseJSON)
                     result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: responseJSON)
                     error = requestError
+                    alerts = self.parseAlerts(responseJSON)
                 }
                 catch let e {
                     result = nil
                     error = e
+                    alerts = []
                 }
             }
             else {
                 result = nil
                 error = requestError
+                alerts = []
             }
             
-            callback?(result: result, error: error)
+            callback?(result: result, error: error, alerts: alerts)
         }
         dataTask.resume()
         return dataTask
+    }
+    
+    private func parseAlerts( responseJSON: JSON ) -> [Alert] {
+        return responseJSON["alerts"].arrayValue.flatMap({ Alert(json: $0) })
     }
     
     private func parseError( responseJSON: JSON ) throws {

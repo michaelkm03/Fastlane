@@ -7,14 +7,17 @@
 //
 
 import XCTest
+import VictoriousIOSSDK
+import SwiftyJSON
+
 @testable import victorious
 
 class FanLoyaltyTests: XCTestCase {
 
     func testInitByDictionary() {
-        let fanLoyalty = FanLoyalty(dictionary: ["level": 5, "progress": 70])
+        let fanLoyalty = FanLoyalty(json: JSON(["level": 5, "progress": 70]) )
         XCTAssertEqual(fanLoyalty?.level, 5)
-        XCTAssertEqual(fanLoyalty?.progressPercentage, 70)
+        XCTAssertEqual(fanLoyalty?.progress, 70)
     }
 
 }
