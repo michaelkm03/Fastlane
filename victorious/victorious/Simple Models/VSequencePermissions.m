@@ -49,7 +49,7 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
 
 - (instancetype)initWithNumber:(NSNumber *)numberValue
 {
-    NSParameterAssert(numberValue != nil );
+    NSParameterAssert(numberValue != nil);
     
     self = [super init];
     if ( self != nil )

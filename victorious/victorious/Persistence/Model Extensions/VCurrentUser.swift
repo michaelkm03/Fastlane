@@ -31,14 +31,12 @@ public class VCurrentUser: NSObject {
         }
         
         if managedObjectContext == persistentStore.mainContext {
-            print( "CurrentUser :: remoteID \(userFromMainContext.remoteId) :: token \(userFromMainContext.token)" )
             return userFromMainContext
             
         } else {
             let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
                 if let currentUser = context.objectWithID( objectID ) as? VUser {
-                    print( "CurrentUser (BG) :: remoteID \(currentUser.remoteId) :: token \(currentUser.token)" )
                 }
                 return context.objectWithID( objectID ) as? VUser
             }
