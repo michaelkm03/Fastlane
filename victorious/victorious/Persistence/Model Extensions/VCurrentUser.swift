@@ -16,7 +16,7 @@ let kManagedObjectContextUserInfoCurrentUserKey = "com.victorious.Persstence.Cur
 
 public class VCurrentUser: NSObject {
     
-    static var persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    static var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     /// Returns a `VUser` object from the provided managed object context's user info dictionary
     /// (for performance and conveninece reasons).  This method is thread safe, and will handle loading

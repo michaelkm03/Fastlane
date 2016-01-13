@@ -8,7 +8,6 @@
 
 #import "VDeeplinkReceiver.h"
 #import "VMultipleContainer.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"

@@ -47,40 +47,40 @@ class PersistentStoreContextTests: XCTestCase {
     
     func testCreateConfiguration() {
         
-        let mainPersistentStoreContext = self.coreDataManager.mainContext
+        let defaultPersistentStoreContext = self.coreDataManager.mainContext
         
-        mainPersistentStoreContext.v_createObjectAndSave() { (model: PersistentEntity) in
+        defaultPersistentStoreContext.v_createObjectAndSave() { (model: PersistentEntity) in
             model.newStringAttribute = self.text
         }
         
-        let knownEntity: PersistentEntity = mainPersistentStoreContext.v_findObjects( ["newStringAttribute" : text] ).first!
+        let knownEntity: PersistentEntity = defaultPersistentStoreContext.v_findObjects( ["newStringAttribute" : text] ).first!
         XCTAssertNotNil( knownEntity )
         XCTAssertEqual( knownEntity.newStringAttribute, text )
         
-        let knownEntity2: PersistentEntity = mainPersistentStoreContext.v_findObjects( ["newStringAttribute" : text] ).first!
+        let knownEntity2: PersistentEntity = defaultPersistentStoreContext.v_findObjects( ["newStringAttribute" : text] ).first!
         XCTAssertNotNil( knownEntity2 )
         XCTAssertEqual( knownEntity2.newStringAttribute, text )
         
-        let unknownEntity: PersistentEntity? = mainPersistentStoreContext.v_findObjects( ["newStringAttribute" : "Some other text"] ).first
+        let unknownEntity: PersistentEntity? = defaultPersistentStoreContext.v_findObjects( ["newStringAttribute" : "Some other text"] ).first
         XCTAssertNil( unknownEntity )
     }
     
     func testFindAll() {
         
-        let mainPersistentStoreContext = self.coreDataManager.mainContext
+        let defaultPersistentStoreContext = self.coreDataManager.mainContext
         
         let count = 10
         for i in 0..<count {
-            mainPersistentStoreContext.v_createObjectAndSave() { (model: PersistentEntity) in
+            defaultPersistentStoreContext.v_createObjectAndSave() { (model: PersistentEntity) in
                 model.newStringAttribute = "value \(i)"
             }
         }
         
-        let allEntities: [PersistentEntity] = mainPersistentStoreContext.v_findObjects( limit: 0 )
+        let allEntities: [PersistentEntity] = defaultPersistentStoreContext.v_findObjects( limit: 0 )
         XCTAssertEqual( allEntities.count, count )
         
         let limit = 5
-        let someEntities: [PersistentEntity] = mainPersistentStoreContext.v_findObjects( limit: limit )
+        let someEntities: [PersistentEntity] = defaultPersistentStoreContext.v_findObjects( limit: limit )
         XCTAssertEqual( someEntities.count, limit )
     }
 }

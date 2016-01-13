@@ -8,8 +8,6 @@
 
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
-#import "VObjectManager.h"
-#import "VObjectManager+Login.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VDependencyManager.h"
@@ -81,7 +79,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
-    NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    NSInteger mainUserID = [VCurrentUser user].remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
     [self updateFollowStatusAnimated:NO];

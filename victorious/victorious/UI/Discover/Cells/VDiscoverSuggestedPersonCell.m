@@ -10,7 +10,6 @@
 #import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
-#import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
@@ -114,7 +113,6 @@
     self.followControl.hidden = [self.user isCurrentUser];
     VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
     [self.followControl setControlState:controlState animated:animated];
-    [self populateData];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender

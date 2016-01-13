@@ -10,7 +10,7 @@ import Foundation
 
 class AnonymousLoginOperation: Operation {
     
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     override func start() {
         super.start()
