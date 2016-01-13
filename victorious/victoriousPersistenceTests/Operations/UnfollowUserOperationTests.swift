@@ -9,11 +9,8 @@
 import XCTest
 @testable import victorious
 
-class UnfollowUserOperationTests: XCTestCase {
+class UnfollowUserOperationTests: BaseRequestOperationTestCase {
     var operation: UnfollowUserOperation!
-    var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor!
-    var testTrackingManager: TestTrackingManager!
     let userID = 1
     let currentUserID = 2
     let screenName = "screenName"
@@ -22,9 +19,6 @@ class UnfollowUserOperationTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        testStore = TestPersistentStore()
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation = UnfollowUserOperation(userID: userID, screenName: screenName)
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
@@ -63,10 +57,5 @@ class UnfollowUserOperationTests: XCTestCase {
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
         XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
         XCTAssertEqual(VTrackingEventUserDidUnfollowUser, testTrackingManager.trackEventCalls[0].eventName!)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        operationHelper.tearDownPersistentStore(store: testStore)
     }
 }
