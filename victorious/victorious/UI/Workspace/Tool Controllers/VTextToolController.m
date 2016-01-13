@@ -21,11 +21,9 @@
 
 @interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
-@property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
-@property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
 @property (nonatomic, strong) VTextPostImageHelper *imageHelper;
-
+@property (nonatomic, readwrite, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, strong) UIImage *previewImage;
 
 @end

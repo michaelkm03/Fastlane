@@ -9,7 +9,8 @@
 #import "VToolController.h"
 #import "VTextListener.h"
 
-@class VDependencyManager, VTextToolController;
+@class VDependencyManager, VTextToolController, VEditableTextPostViewController, VTextColorTool;
+@protocol VWorkspaceTool;
 
 /**
  A VToolController that handles creating text posts within the workspace.
@@ -37,6 +38,10 @@
  An object that can receive updates when the text post is edited.
  */
 @property (nonatomic, weak) id<VTextListener> textListener;
+
+@property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
+
+@property (nonatomic, readonly, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 
 - (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage;
 
