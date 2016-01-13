@@ -36,7 +36,7 @@ class PersistentStoreSelector: NSObject {
     /// environment.
     class var mainPersistentStore: PersistentStoreType {
         
-        if NSBundle.v_testBundle() != nil {
+        if NSBundle.isTestBundle {
             return TestPersistentStore()
         } else {
             return MainPersistentStore()

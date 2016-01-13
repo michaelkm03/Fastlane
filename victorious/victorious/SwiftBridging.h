@@ -14,7 +14,6 @@
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
-#import "NSBundle+TestBundle.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
 #import "NSURL+VDataCacheID.h"
