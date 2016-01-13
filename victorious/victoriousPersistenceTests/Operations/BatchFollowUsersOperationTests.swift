@@ -23,6 +23,7 @@ class BatchFollowUsersOperationTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        continueAfterFailure = false
         testStore = TestPersistentStore()
         testRequestExecutor = TestRequestExecutor()
         operation = BatchFollowUsersOperation(userIDs: userIDs)
@@ -32,7 +33,8 @@ class BatchFollowUsersOperationTests: XCTestCase {
     func testBatchFollowingUsers() {
         let userOne = operationHelper.createUser(remoteId: userIDOne, persistentStore: testStore)
         let userTwo = operationHelper.createUser(remoteId: userIDTwo, persistentStore: testStore)
-        operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let currentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        currentUser.setAsCurrentUser()
 
         operation.main()
 
@@ -53,16 +55,23 @@ class BatchFollowUsersOperationTests: XCTestCase {
         XCTAssertEqual(2, updatedCurrentUser.following.count)
         if let followedUsers = Array(updatedCurrentUser.following) as? [VFollowedUser] {
             let objectUsersObjectIDs = followedUsers.map { $0.objectUser.objectID }
+            let subjectUserIDs = followedUsers.map { $0.subjectUser.objectID }
             XCTAssert(objectUsersObjectIDs.contains(updatedUserOne.objectID))
             XCTAssert(objectUsersObjectIDs.contains(updatedUserTwo.objectID))
+            XCTAssertEqual(2, subjectUserIDs.count)
+            for id in subjectUserIDs {
+                XCTAssertEqual(updatedCurrentUser.objectID, id)
+            }
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
 
         XCTAssertEqual(1, updatedUserOne.numberOfFollowers)
         XCTAssertEqual(true, updatedUserOne.isFollowedByMainUser)
+        XCTAssertEqual(1, updatedUserOne.followers.count)
         if let followedUser = Array(updatedUserOne.followers)[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, updatedUserOne)
+            XCTAssertEqual(followedUser.subjectUser, updatedCurrentUser)
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
@@ -71,6 +80,7 @@ class BatchFollowUsersOperationTests: XCTestCase {
         XCTAssertEqual(1, updatedUserTwo.numberOfFollowers)
         if let followedUser = Array(updatedUserTwo.followers)[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, updatedUserTwo)
+            XCTAssertEqual(followedUser.subjectUser, updatedCurrentUser)
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
