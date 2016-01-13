@@ -15,16 +15,20 @@ extension VMessage: PersistenceParsable {
         mediaPath                   = message.mediaURL?.absoluteString ?? ""
         postedAt                    = message.postedAt
         remoteId                    = message.messageID
-        //senderUserId                = message.senderUserId
         text                        = message.text
-        //thumbnailPath               = message.thumbnailPath
         isRead                      = message.isRead
-        //conversation                = message.conversation
-        //notification                = message.notification
-        //sender                      = message.sender
-        //mediaAttachments            = message.mediaAttachments
         shouldAutoplay              = message.shouldAutoplay
         //mediaWidth                  = message.mediaWidth
         //mediaHeight                 = message.mediaHeight
+        //sender                      = message.sender
+        //mediaAttachments            = message.mediaAttachments
+        //senderUserId                = message.senderUserId
+        //thumbnailPath               = message.thumbnailPath
+        //notification                = message.notification
+        
+        if self.sender == nil {
+            self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : message.sender.userID ] ) as VUser
+        }
+        self.sender.populate(fromSourceModel: message.sender)
     }
 }

@@ -11,9 +11,9 @@ import SwiftyJSON
 
 public struct Message {
     public let messageID: Int
-    public let sender: User?
-    public let text: String?
+    public let sender: User
     public let isRead: Bool?
+    public let text: String?
     public let postedAt: NSDate?
     public let thumbnailURL: NSURL?
     public let mediaURL: NSURL?
@@ -26,46 +26,20 @@ extension Message {
     static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
     
     public init?(json: JSON) {
-
-        // Parse Required Fields
-        if let messageIDString = json["message_id"].string,
-           let messageIDNumber = Int(messageIDString) {
-            self.messageID = messageIDNumber
-        } else {
+        guard let messageID = Int(json["message_id"].stringValue),
+            let sender = User(json: json["sender_user"]) else {
             return nil
         }
+        self.messageID      = messageID
+        self.sender         = sender
         
-        // Parse Optionsl Fields independently
-        self.sender = User(json: json["sender_user"])
-        self.text = json["text"].string
-        if let isReadNumber = json["is_read"].int {
-            self.isRead = Bool(isReadNumber)
-        } else {
-            self.isRead = nil
-        }
-        
-        // Use our standard dateformat for postedAt
-        if let postedAtString = json["posted_at"].string {
-            let date = Message.dateFormatter.dateFromString(postedAtString)
-            self.postedAt = date
-        } else {
-            self.postedAt = nil
-        }
-        
-        if let thumbnailString = json["thumbnail_url"].string {
-            self.thumbnailURL = NSURL(string: thumbnailString)
-        } else {
-            self.thumbnailURL = nil
-        }
-        
-        if let mediaString = json["media_url"].string {
-            self.mediaURL = NSURL(string: mediaString)
-        } else {
-            self.mediaURL = nil
-        }
-
-        self.isGIFStyle = json["is_gif_style"].bool
+        self.isRead         = json["is_read"].bool
+        self.postedAt       = Message.dateFormatter.dateFromString(json["posted_at"].stringValue)
+        self.text           = json["text"].string
+        self.isGIFStyle     = json["is_gif_style"].bool
         self.shouldAutoplay = json["should_autoplay"].bool
-        self.mediaType = json["media_type"].string
+        self.mediaType      = json["media_type"].string
+        self.thumbnailURL   = NSURL(vsdk_string: json["media_url"].string)
+        self.mediaURL       = NSURL(vsdk_string: json["thumbnail_url"].string)
     }
 }

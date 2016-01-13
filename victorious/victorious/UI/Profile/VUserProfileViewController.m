@@ -9,9 +9,9 @@
 #import "VUserProfileViewController.h"
 #import "VUser.h"
 #import "VProfileEditViewController.h"
-#import "VMessageContainerViewController.h"
+#import "VConversationContainerViewController.h"
 #import "VStream+Fetcher.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
@@ -762,7 +762,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)navigationHistoryContainsInbox
 {
-    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
+    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VConversationListViewController class]];
 }
 
 #pragma mark - VAbstractStreamCollectionViewController
@@ -796,7 +796,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     const BOOL isCurrentUserLoggedIn = [VCurrentUser user] != nil;
     const BOOL isCurrentUser = self.user != nil && self.user == [VCurrentUser user];
     
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         if ( didNavigateFromInbox )
         {
@@ -830,7 +830,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         if ( self.user.isCurrentUser )
         {
@@ -839,9 +839,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         else
         {
             // Make a new container with destination's dependencyManager, and push it to the navigation controller stack
-            VDependencyManager *destinationDependencyManager = ((VMessageContainerViewController *)menuItem.destination).dependencyManager;
-            VMessageContainerViewController *destinationMessageContainerVC = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager: destinationDependencyManager];
-            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];
+#warning FIXME:
+            /*VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
+            VConversationContainerViewController *destinationMessageContainerVC = [VConversationContainerViewController messageViewControllerFoConversation:self.user dependencyManager: destinationDependencyManager];
+            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];*/
             
             return NO;
         }

@@ -1,5 +1,5 @@
 //
-//  VInboxViewController.m
+//  VConversationListViewController.m
 //  victorious
 //
 //  Created by Gary Philipp on 12/23/13.
@@ -8,21 +8,16 @@
 
 #import "MBProgressHUD.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConversation+RestKit.h"
-#import "VMessageViewController.h"
-#import "VMessageContainerViewController.h"
+#import "VConversationViewController.h"
+#import "VConversationContainerViewController.h"
 #import "VConversationCell.h"
-#import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+Users.h"
 #import "VRootViewController.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
-#import "VObjectManager+Login.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VInboxDeeplinkHandler.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
@@ -37,21 +32,21 @@
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController () <VProvidesNavigationMenuItemBadge>
+@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 @property (nonatomic, strong) VUser *userWithQueuedConversation;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
 static char kKVOContext;
 
-NSString * const VInboxViewControllerDeeplinkHostComponent = @"inbox";
-NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
+NSString * const VConversationListViewControllerDeeplinkHostComponent = @"inbox";
+NSString * const VConversationListViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
-@implementation VInboxViewController
+@implementation VConversationListViewController
 
 @synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
@@ -63,7 +58,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VInboxViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
+    VConversationListViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
@@ -71,7 +66,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VConversationListViewControllerInboxPushReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
     }
     return viewController;
@@ -95,26 +90,38 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
+    
+    self.dataSource = [[ConversationListDataSource alloc] initWithDependencyManager:self.dependencyManager];
+    [self.dataSource registerCells:self.tableView];
+    self.dataSource.delegate = self;
+    self.tableView.dataSource = self.dataSource;
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    [self refresh:nil];
+    
+    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+    self.noContentView.dependencyManager = self.dependencyManager;
+    self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
+    self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
+    self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
+    
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self updateNavigationItem];
-    
     [self.dependencyManager trackViewWillAppear:self];
-    
-    [self.refreshControl beginRefreshing];
+    [self updateNavigationItem];
+    [self.tableView setContentOffset:CGPointZero];
 
-    [self refresh:nil];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
 }
@@ -130,7 +137,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( self.userWithQueuedConversation != nil )
     {
-        [self displayConversationForUser:self.userWithQueuedConversation animated:YES];
+#warning FIXME
+        //[self displayConversationForUser:self.userWithQueuedConversation animated:YES];
         self.userWithQueuedConversation = nil;
     }
 }
@@ -142,10 +150,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.dependencyManager trackViewWillDisappear:self];
     
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
-    if (self.refreshRequest.isExecuting)
-    {
-        self.refreshRequest = nil;
-    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -226,14 +230,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
                                                           cacheName:fetchRequest.entityName];
 }
 
-- (void)registerCells
-{
-    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
-}
-
 #pragma mark - Message View Controller Cache
 
-- (VMessageContainerViewController *)messageViewControllerForUser:(VUser *)otherUser
+- (VConversationContainerViewController *)messageViewControllerFoConversation:(VConversation *)conversation
 {
     NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
     
@@ -241,7 +240,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.messageViewControllers = [[NSMutableDictionary alloc] init];
     }
-    VMessageContainerViewController *messageViewController = self.messageViewControllers[otherUser.remoteId];
+    VConversationContainerViewController *messageViewController = self.messageViewControllers[ conversation.user.remoteId];
     
     if ( messageViewController == nil )
     {
@@ -254,10 +253,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
                                         VDependencyManagerPositionKey: VDependencyManagerPositionRight };
         NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
         VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:childDependencyManager];
-        self.messageViewControllers[otherUser.remoteId] = messageViewController;
+        messageViewController = [VConversationContainerViewController messageViewControllerForConversation:conversation dependencyManager:childDependencyManager];
+        self.messageViewControllers[ conversation.user.remoteId ] = messageViewController;
     }
-    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
     
     return messageViewController;
 }
@@ -271,53 +269,21 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
-#pragma mark - UITableViewDataSource
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
-
-    [super controllerDidChangeContent:controller];
-}
-
-- (void)setHasMessages:(BOOL)hasMessages
-{
-    if (!hasMessages)
-    {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        if ( [noMessageView respondsToSelector:@selector(setDependencyManager:)] )
-        {
-            noMessageView.dependencyManager = self.dependencyManager;
-        }
-        noMessageView.title = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.message = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessageView.icon = [UIImage imageNamed:@"noMessagesIcon"];
-        self.tableView.backgroundView = noMessageView;
-    }
-    else
-    {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        self.tableView.backgroundView = nil;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VConversation *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    VConversationCell *theCell = (VConversationCell *)[tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-    [theCell setConversation:info];
-    theCell.parentTableViewController = self;
-    theCell.dependencyManager = self.dependencyManager;
-    
-    return theCell;
-}
-
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [cell isKindOfClass:[VConversationCell class]] )
+    {
+        VConversationCell *conversationCell = (VConversationCell *)cell;
+        conversationCell.delegate = self;
+    }
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+    return conversation.remoteId.integerValue > 0;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -329,51 +295,42 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [[VObjectManager sharedManager] deleteConversation:conversation
-                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        VConversation *conversation = (VConversation *)self.dataSource.visibleItems[ indexPath.row ];
+        DeleteConversationOperation *operation = [[DeleteConversationOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
         {
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            [self removeCachedViewControllerForUser:conversation.user];
-            NSManagedObjectContext *context =   conversation.managedObjectContext;
-            [context deleteObject:conversation];
-            [context saveToPersistentStore:nil];
-        }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
-        {
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"ConversationDelError", @"");
-            [hud hide:YES afterDelay:3.0];
-            [tableView setEditing:NO animated:YES];
-            VLog(@"Failed to delete conversation: %@", [error localizedDescription]);
+            if ( error != nil )
+            {
+                [self removeCachedViewControllerForUser:conversation.user];
+            }
+            else
+            {
+                [tableView setEditing:NO animated:YES];
+            }
         }];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VConversation *conversation = self.dataSource.visibleItems[ indexPath.row ];
     if (conversation.user)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
-        
-        [self displayConversationForUser:conversation.user animated:YES];
+        [self displayConversation:conversation animated:YES];
     }
 }
 
 #pragma mark - Actions
 
-- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated
+- (void)displayConversation:(VConversation *)conversation animated:(BOOL)animated
 {
-    VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    VConversationContainerViewController *detailVC = [self messageViewControllerFoConversation:conversation];
     UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
     
     if ( self.navigationController == nil )
     {
-        self.userWithQueuedConversation = user;
+        self.userWithQueuedConversation = conversation.user;
     }
     else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
     {
@@ -389,55 +346,51 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     }
 }
 
-- (IBAction)refresh:(UIRefreshControl *)sender
+- (void)refresh
 {
-    if (self.refreshRequest != nil)
-    {
-        return;
-    }
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        [self.refreshControl endRefreshing];
-        if (self.refreshRequest == nil)
-        {
-            return;
-        }
-        self.refreshRequest = nil;
-        // TODO: Show error in non-disruptive way
-    };
-    
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (self.refreshRequest == nil)
-        {
-            [self.refreshControl endRefreshing];
-            return;
-        }
-        self.refreshRequest = nil;
-        [self.refreshControl endRefreshing];
-        [self.tableView reloadData];
-        [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
-        [self.messageCountCoordinator updateUnreadMessageCount];
-        [self updateBadges];
-    };
-
-    self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                                              successBlock:success
-                                                                                 failBlock:fail];
+    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
+     {
+         [self.refreshControl endRefreshing];
+         [self updateTableView];
+     }];
 }
 
-- (void)loadNextPageAction
+- (IBAction)refresh:(UIRefreshControl *)refreshControl
 {
-    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
-                                                        successBlock:nil
-                                                           failBlock:nil];
+    [self refresh];
+}
+
+- (void)updateTableView
+{
+    self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? UITableViewCellSeparatorStyleSingleLine : UITableViewCellSeparatorStyleNone;
+    
+    switch ( [self.dataSource state] )
+    {
+        case DataSourceStateError:
+        case DataSourceStateNoResults: {
+            if ( self.tableView.backgroundView != self.noContentView )
+            {
+                self.tableView.backgroundView = self.noContentView;
+                [self.noContentView resetInitialAnimationState];
+                [self.noContentView animateTransitionIn];
+            }
+            break;
+        }
+            
+        default:
+            [UIView animateWithDuration:0.5f animations:^void
+             {
+                 self.tableView.backgroundView = nil;
+             }];
+            break;
+    }
 }
 
 #pragma mark - VAccessoryNavigationSource
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
     {
         [self showSearch];
         return NO;
@@ -451,22 +404,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return YES;
 }
 
-#pragma mark - UIScrollViewDelegate
+#pragma mark - Pagination
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+- (void)shouldLoadNextPage
 {
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    [self.dataSource loadConversations:VPageTypeNext completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:context];
-    
-    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
-    {
-        [self loadNextPageAction];
-    }
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - NSNotification handlers
@@ -547,6 +494,21 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     return YES;
+}
+
+#pragma mark - VCellWithProfileDelegate
+
+- (void)cellDidSelectProfile:(UITableViewCell *)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if ( indexPath == nil )
+    {
+        return;
+    }
+    
+    VConversation *conversation = [self.dataSource.visibleItems objectAtIndex:indexPath.row];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:conversation.user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 @end

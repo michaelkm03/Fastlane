@@ -7,14 +7,9 @@
 //
 
 #import "VTableViewCell.h"
+#import "VCellWithProfileDelegate.h"
 
 @class VNotificationCell;
-
-@protocol VNotificationCellDelegate <NSObject>
-
-- (void)notificationsCellDidSelectProfile:(VNotificationCell *)notificationsCell;
-
-@end
 
 @class VNotification, VDefaultProfileImageView, VDependencyManager;
 
@@ -22,7 +17,6 @@
 
 @property (nonatomic, strong) VNotification *notification;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, strong) id<VNotificationCellDelegate> delegate;
+@property (nonatomic, strong) id<VCellWithProfileDelegate> delegate;
 
 @end

@@ -13,30 +13,46 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     
     let request: ConversationListRequest
     
-    required init( request: ConversationListRequest = ConversationListRequest()) {
+    required init( request: ConversationListRequest = ConversationListRequest() ) {
         self.request = request
-        super.init()
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
+        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( conversations: ConversationListRequest.ResultType, completion:()->() ) {
+    func onComplete( results: ConversationListRequest.ResultType, completion:()->() ) {
+        guard !results.isEmpty else {
+            completion()
+            return
+        }
+        
+        // Filter flagged comments here so that they never even make it into the persistent store
+        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Conversation).flatMap { Int($0) }
+        let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
-            var persistentConversations = [VConversation]()
-            for conversation in conversations {
-                let uniqueElements = [ "remoteId" : conversation.conversationID ]
-                let persistentConversation: VConversation = context.v_findOrCreateObject( uniqueElements )
-                persistentConversation.populate( fromSourceModel: conversation )
-                persistentConversation.displayOrder = displayOrder++
-                persistentConversations.append( persistentConversation )
+            for result in unflaggedResults {
+                let uniqueElements = [ "remoteId" : result.conversationID ]
+                let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
+                conversation.populate( fromSourceModel: result )
+                conversation.displayOrder = displayOrder++
             }
             context.v_save()
             completion()
+        }
+    }
+    
+    // MARK: - PaginatedRequestExecutorDelegate
+    
+    override func clearResults() {
+        persistentStore.mainContext.v_performBlockAndWait() { context in
+            let existing: [VConversation] = context.v_findAllObjects()
+            for object in existing {
+                context.deleteObject( object )
+            }
+            context.v_save()
         }
     }
     
@@ -44,17 +60,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            return context.v_executeFetchRequest( fetchRequest )
-        }
-    }
-    
-    override func clearResults() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            let existingComments: [VConversation] = context.v_findAllObjects()
-            for comment in existingComments {
-                context.deleteObject( comment )
-            }
-            context.v_save()
+            return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }
 }

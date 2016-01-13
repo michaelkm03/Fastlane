@@ -67,10 +67,8 @@ extension Comment {
         if let mediaWidth = json["media_width"].float,
             let mediaHeight = json["media_height"].float,
             let mediaType = MediaAttachmentType(rawValue: json["media_type"].stringValue),
-            let mediaURLString = json["media_url"].string,
-            let mediaURL = NSURL(string:mediaURLString),
-            let thumbnailURLString = json["thumbnail_url"].string,
-            let thumbnailURL = NSURL(string: thumbnailURLString) {
+            let mediaURL = NSURL(vsdk_string: json["media_url"].string),
+            let thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string) {
                 media = Comment.Media(
                     type: mediaType,
                     url: mediaURL,

@@ -72,12 +72,7 @@ extension User {
         numberOfFollowing           = Int(json["number_of_following"].stringValue)
         profileImageURL             = json["profile_image"].string
         maxVideoUploadDuration      = Int(json["max_video_duration"].stringValue)
-        
-        if let dateString = json["token_updated_at"].string {
-            self.tokenUpdatedAt = dateFormatter.dateFromString(dateString)
-        } else {
-            self.tokenUpdatedAt = nil
-        }
+        tokenUpdatedAt              = dateFormatter.dateFromString(json["token_updated_at"].stringValue)
     
         if let previewImageAssets = json["preview"]["assets"].array {
             self.previewImageAssets = previewImageAssets.flatMap { ImageAsset(json: $0) }

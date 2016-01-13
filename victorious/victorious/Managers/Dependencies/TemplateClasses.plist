@@ -109,9 +109,9 @@
 	<key>rounded.multiScreenSelector</key>
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
-	<string>VInboxViewController</string>
+	<string>VConversationListViewController</string>
 	<key>message.screen</key>
-	<string>VMessageContainerViewController</string>
+	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
 	<key>findFriends.screen</key>

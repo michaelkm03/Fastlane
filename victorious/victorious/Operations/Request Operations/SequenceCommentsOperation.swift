@@ -36,8 +36,8 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         }
         
         // Filter flagged comments here so that they never even make it into the persistent store
-        let flaggedCommentIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
-        let unflaggedComments = comments.filter { flaggedCommentIDs.contains($0.commentID) == false }
+        let flaggedIDs: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
+        let unflaggedResults = comments.filter { flaggedIDs.contains($0.commentID) == false }
         
         // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
@@ -46,7 +46,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             
             var newComments = [VComment]()
-            for comment in unflaggedComments {
+            for comment in unflaggedResults {
                 let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )
                 persistentComment.populate( fromSourceModel: comment )
                 persistentComment.sequenceId = self.sequenceID

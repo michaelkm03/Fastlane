@@ -14,12 +14,10 @@ public struct ImageSearchResult {
 }
 
 extension ImageSearchResult {
+    
     public init?(json: JSON) {
-        
-        guard let imageURLString = json["url"].string,
-            let thumbnailURLString = json["thumbnail"].string,
-            let imageURL = NSURL(string: imageURLString),
-            let thumbnailURL = NSURL(string: thumbnailURLString) else {
+        guard let imageURL = NSURL(vsdk_string: json["url"].string),
+            let thumbnailURL = NSURL(vsdk_string: json["thumbnail"].string) else {
                 return nil
         }
         

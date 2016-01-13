@@ -13,50 +13,35 @@ public struct Conversation {
     public let conversationID: Int
     public let previewMessageID: Int
     public var isRead: Bool?
-    public let recipient: User
+    public let otherUser: User
     public let previewMessageText: String?
     public let postedAt: NSDate?
     public let thumbnailURL: NSURL?
     public let mediaURL: NSURL?
-    public let mediaType: String?
+    public let mediaType: MediaAttachmentType?
 }
 
 extension Conversation {
     static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
     
     public init?(json: JSON) {
-        if let conversationID = json["conversation_id"].int,
-            let messageIDNumber = Int(json["message_id"].stringValue),
-            let recipientUser = User(json:json["other_interlocutor_user"]),
-            let postedAtString = json["posted_at"].string {
-                self.conversationID = conversationID
-                self.previewMessageID = messageIDNumber
-                self.recipient = recipientUser
-                self.postedAt = Conversation.dateFormatter.dateFromString(postedAtString)
-        }
-        else {
+        guard let conversationID    = json["conversation_id"].int,
+            let previewMessageID    = Int(json["message_id"].stringValue),
+            let otherUser           = User(json:json["other_interlocutor_user"]),
+            let postedAt            = Conversation.dateFormatter.dateFromString(json["posted_at"].stringValue) else {
             return nil
         }
         
-        self.previewMessageText = json["text"].string
-        if let mediaURLString = json["media_url"].string {
-            self.mediaURL = NSURL(string: mediaURLString)
-        } else {
-            self.mediaURL = nil
-        }
+        self.conversationID         = conversationID
+        self.previewMessageID       = previewMessageID
+        self.otherUser              = otherUser
+        self.postedAt               = postedAt
+                
+        self.previewMessageText     = json["text"].string
+        self.isRead                 = json["is_read"].bool
+        self.mediaURL               = NSURL(vsdk_string: json["media_url"].string)
+        self.thumbnailURL           = NSURL(vsdk_string: json["thumbnail_url"].string)
         
-        if let isReadNumber = json["is_read"].int {
-            self.isRead = Bool(isReadNumber)
-        } else {
-            self.isRead = true
-        }
-        
-        if let thumbnailURLString = json["thumbnail_url"].string {
-            self.thumbnailURL = NSURL(string: thumbnailURLString)
-        } else {
-            self.thumbnailURL = nil
-        }
-        
-        self.mediaType = json["media_type"].string
+        self.mediaType = MediaAttachmentType(rawValue: json["media_type"].stringValue)
     }
 }

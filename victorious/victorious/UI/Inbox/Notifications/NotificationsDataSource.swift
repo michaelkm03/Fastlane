@@ -27,6 +27,8 @@ class NotificationsDataSource : PaginatedDataSource, UITableViewDataSource {
         )
     }
     
+    // MARK: - UITableViewDataSource
+    
     func registerCells( tableView: UITableView ) {
         let identifier = "VNotificationCell"
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass:self.dynamicType) )

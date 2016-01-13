@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * mediaPath;
 @property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain) NSNumber * senderUserId;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailPath;

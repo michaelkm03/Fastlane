@@ -22,4 +22,9 @@
 @dynamic user;
 @dynamic displayOrder;
 
+- (NSString *)text
+{
+    return @"FUCK";
+}
+
 @end

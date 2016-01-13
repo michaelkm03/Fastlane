@@ -7,10 +7,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Inbox View Controller-->
+        <!--Conversation List View Controller-->
         <scene sceneID="ou3-rr-Ug5">
             <objects>
-                <tableViewController storyboardIdentifier="inbox" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VInboxViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="inbox" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VConversationListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="92" sectionHeaderHeight="22" sectionFooterHeight="22" id="YYr-UO-Tcc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -57,7 +57,7 @@
         <!--Messages-->
         <scene sceneID="WQQ-cx-Z9d">
             <objects>
-                <viewController storyboardIdentifier="messagecontainer" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="acE-Yl-HFc" customClass="VMessageContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="messagecontainer" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="acE-Yl-HFc" customClass="VConversationContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="apj-Bv-lmT"/>
                         <viewControllerLayoutGuide type="bottom" id="RWl-oO-2Nk"/>
@@ -70,36 +70,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
                             </imageView>
-                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-6n-Wb8" userLabel="Busy View">
-                                <rect key="frame" x="128" y="252" width="64" height="64"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="TSK-pW-by3">
-                                        <rect key="frame" x="14" y="14" width="37" height="37"/>
-                                        <animations/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="TSK-pW-by3" secondAttribute="centerX" id="9HS-f7-lpJ"/>
-                                    <constraint firstAttribute="height" constant="64" id="W2Q-iP-Swt"/>
-                                    <constraint firstAttribute="width" constant="64" id="hU9-d1-Qhk"/>
-                                    <constraint firstAttribute="centerY" secondItem="TSK-pW-by3" secondAttribute="centerY" id="uLd-jA-VRM"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="T2h-6n-Wb8" secondAttribute="centerY" id="90U-Ma-fpC"/>
                             <constraint firstAttribute="trailing" secondItem="HgY-Pa-0TC" secondAttribute="trailing" id="HiL-Dp-FJl"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="top" secondItem="apj-Bv-lmT" secondAttribute="bottom" id="IQo-YO-1oL"/>
-                            <constraint firstAttribute="centerX" secondItem="T2h-6n-Wb8" secondAttribute="centerX" id="eQt-tg-swK"/>
                             <constraint firstItem="RWl-oO-2Nk" firstAttribute="top" secondItem="HgY-Pa-0TC" secondAttribute="bottom" id="fds-rE-EeU"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="leading" secondItem="wK6-zv-ecc" secondAttribute="leading" id="vqz-2K-0w8"/>
                         </constraints>
@@ -108,7 +84,6 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="HgY-Pa-0TC" id="gD4-x5-SZk"/>
-                        <outlet property="busyView" destination="T2h-6n-Wb8" id="UyM-4F-CUb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVI-SC-OXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -118,12 +93,12 @@
         <!--Messages-->
         <scene sceneID="IH3-Pz-KdZ">
             <objects>
-                <tableViewController storyboardIdentifier="messages" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="messages" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VConversationViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pW3-fm-LgN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="quD-aE-BAL" id="2EW-ph-6zQ"/>

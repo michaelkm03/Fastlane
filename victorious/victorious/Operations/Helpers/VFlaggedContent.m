@@ -45,6 +45,7 @@ const NSTimeInterval VDefaultRefreshTimeInterval = 2592000.0f; //30 days (60 * 6
 
 - (void)refreshFlaggedContents
 {
+    [self removeOutdatedItemsForFlaggedContentsWithType:VFlaggedContentTypeConversation];
     [self removeOutdatedItemsForFlaggedContentsWithType:VFlaggedContentTypeStreamItem];
     [self removeOutdatedItemsForFlaggedContentsWithType:VFlaggedContentTypeComment];
 }
@@ -109,6 +110,8 @@ const NSTimeInterval VDefaultRefreshTimeInterval = 2592000.0f; //30 days (60 * 6
             return @"flaggedComments";
         case VFlaggedContentTypeStreamItem:
             return @"flaggedStreamItems";
+        case VFlaggedContentTypeConversation:
+            return @"flaggedConversation";
     }
 }
 

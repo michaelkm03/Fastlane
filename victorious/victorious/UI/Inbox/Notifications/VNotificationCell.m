@@ -96,7 +96,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     if ( self.delegate != nil )
     {
-        [self.delegate notificationsCellDidSelectProfile:self];
+        [self.delegate cellDidSelectProfile:self];
     }
 }
 

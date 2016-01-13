@@ -7,6 +7,7 @@
 //
 
 #import "VTableViewCell.h"
+#import "VCellWithProfileDelegate.h"
 
 extern const CGFloat VConversationCellHeight;
 
@@ -21,5 +22,9 @@ extern const CGFloat VConversationCellHeight;
 @property (strong, nonatomic) VConversation *conversation;
 @property (weak, nonatomic) UITableViewController *parentTableViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
++ (NSString *)suggestedReuseIdentifier;
+
+@property (nonatomic, strong) id<VCellWithProfileDelegate> delegate;
 
 @end

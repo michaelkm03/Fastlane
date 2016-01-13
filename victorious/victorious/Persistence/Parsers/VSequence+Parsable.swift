@@ -41,7 +41,6 @@ extension VSequence: PersistenceParsable {
         
         
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
-
         self.user.populate(fromSourceModel: sequence.user)
         
         if let previewImageAssets = sequence.previewImageAssets {

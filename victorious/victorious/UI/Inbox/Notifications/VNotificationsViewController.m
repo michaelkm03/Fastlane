@@ -18,13 +18,13 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
-#import "VInboxViewController.h"
+#import "VConversationListViewController.h"
 #import "victorious-Swift.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
 
-@interface VNotificationsViewController () <VNavigationDestination, VNotificationCellDelegate, VScrollPaginatorDelegate>
+@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
@@ -47,7 +47,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VConversationListViewControllerInboxPushReceivedNotification object:nil];
 
         [viewController loggedInChanged:nil];
     }
@@ -104,6 +104,8 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     self.noContentView.title = NSLocalizedString(@"NoNotificationsTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
+    
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,9 +114,6 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
-    [self.tableView setContentOffset:CGPointZero];
-    
-    [self refresh];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -199,7 +198,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     }
 }
 
-- (void)markAllNotificationsRead
+- (void)markAllItemsAsRead
 {
     MarkAllNotificationsAsReadOperation *operation = [[MarkAllNotificationsAsReadOperation alloc] init];
     [operation queueOn:operation.defaultQueue completionBlock:nil];
@@ -211,7 +210,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];
-         [self markAllNotificationsRead];
+         [self markAllItemsAsRead];
      }];
 }
 
@@ -317,11 +316,11 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     return YES;
 }
 
-#pragma mark - VNotificationCellDelegate
+#pragma mark - VCellWithProfileDelegate
 
-- (void)notificationsCellDidSelectProfile:(VNotificationCell *)notificationCell
+- (void)cellDidSelectProfile:(UITableViewCell *)cell
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:notificationCell];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     if ( indexPath == nil )
     {
         return;

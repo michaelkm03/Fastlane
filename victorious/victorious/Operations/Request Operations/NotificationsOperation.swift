@@ -27,7 +27,6 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
             return
         }
         
-        // Make changes on background queue
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
             for result in results {
@@ -55,8 +54,9 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
     
     override func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
-            return context.v_findAllObjects() as [VNotification
-            ]
+            let fetchRequest = NSFetchRequest(entityName: VNotification.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            return context.v_executeFetchRequest( fetchRequest ) as [VNotification]
         }
     }
 }
