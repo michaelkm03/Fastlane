@@ -20,12 +20,12 @@ extension VTextToolController {
         return textPostVC.textOutput
     }
     
-    var currentColorSelection: UIColor {
+    var currentColorSelection: UIColor? {
         let colorPicker = textColorTool?.toolPicker
         if let selectedTool = colorPicker?.selectedTool as? VColorType {
             return selectedTool.color
         } else {
-            return textPostVC.dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
+            return nil
         }
     }
     
