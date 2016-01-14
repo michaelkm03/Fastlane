@@ -25,4 +25,10 @@ class CreateTextPostOperationTests: XCTestCase {
 
         XCTAssertEqual(1, testExecutor.executeRequestCallCount)
     }
+
+    func testInvalidParameters() {
+        let invalidParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: nil)
+        let operation = CreateTextPostOperation(parameters: invalidParameters)
+        XCTAssertNil(operation)
+    }
 }

@@ -11,20 +11,16 @@ import VictoriousIOSSDK
 
 class CreateTextPostOperation: RequestOperation {
     
-    var request: CreateTextPostRequest
-    
-    private init(request: CreateTextPostRequest) {
-        self.request = request
-    }
-    
-    convenience init?( parameters: TextPostParameters ) {
-        if let request = CreateTextPostRequest(parameters: parameters) {
-            self.init(request: request)
-        } else {
+    var request: CreateTextPostRequest!
+
+    init?(parameters: TextPostParameters) {
+        self.request = CreateTextPostRequest(parameters: parameters)
+        super.init()
+        if request == nil {
             return nil
         }
     }
-    
+
     override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }

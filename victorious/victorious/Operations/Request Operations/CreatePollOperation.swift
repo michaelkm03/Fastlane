@@ -9,14 +9,16 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class CreatePollOperation: RequestOperation {
+class CreatePollOperation: RequestOperation {
     
     let request: PollCreateRequest!
     
     init?(parameters: PollParameters) {
         self.request = PollCreateRequest(parameters: parameters)
         super.init()
-        if request == nil { return nil }
+        if request == nil {
+            return nil
+        }
     }
     
     override func main() {
