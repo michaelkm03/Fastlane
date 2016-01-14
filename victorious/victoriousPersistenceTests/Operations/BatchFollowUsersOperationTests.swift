@@ -13,8 +13,9 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     var operation: BatchFollowUsersOperation!
     let userIDOne = 1
     let userIDTwo = 2
+    let nonExistentUserID = 3
     lazy var userIDs: [Int] = {
-        return [self.userIDOne, self.userIDTwo]
+        return [self.nonExistentUserID, self.userIDOne, self.userIDTwo]
     }()
     let currentUserID = 1
 

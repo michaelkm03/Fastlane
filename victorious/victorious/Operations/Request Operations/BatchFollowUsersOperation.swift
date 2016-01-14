@@ -26,7 +26,7 @@ class BatchFollowUsersOperation: RequestOperation {
 
             for userID in self.userIDs {
                 guard let objectUser: VUser = context.v_findObjects(["remoteId" : userID]).first else {
-                    return
+                    continue
                 }
 
                 objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
