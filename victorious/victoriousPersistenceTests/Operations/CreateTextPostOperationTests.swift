@@ -10,20 +10,20 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class CreateTextPostOperationTests: XCTestCase {
+class CreateTextPostOperationTests: BaseRequestOperationTestCase {
     
-    func testMain() {
+    func testOperationExecution() {
         let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
-        let testExecutor = TestRequestExecutor()
         guard let operation = CreateTextPostOperation(parameters: mockParameters) else {
             XCTFail("Operation Construction should not fail")
             return
         }
+        operation.requestExecutor = self.testRequestExecutor
         
-        operation.requestExecutor = testExecutor
-        operation.main()
-
-        XCTAssertEqual(1, testExecutor.executeRequestCallCount)
+        queueExpectedOperation(operation: operation)
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+        }
     }
 
     func testInvalidParameters() {

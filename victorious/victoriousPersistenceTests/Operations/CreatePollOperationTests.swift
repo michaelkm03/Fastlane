@@ -10,25 +10,25 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class CreatePollOperationTests: XCTestCase {
+class CreatePollOperationTests: BaseRequestOperationTestCase {
     
-    func testMain() {
+    func testOperationExecution() {
         let mockAnswers = [
             PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
             PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!)
         ]
         let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
-        let testExecutor = TestRequestExecutor()
         
         guard let operation = CreatePollOperation(parameters: mockParameters) else {
             XCTFail("Operation Construction should not fail")
             return
         }
+        operation.requestExecutor = testRequestExecutor
         
-        operation.requestExecutor = testExecutor
-        operation.main()
-        
-        XCTAssertEqual(1, testExecutor.executeRequestCallCount)
+        queueExpectedOperation(operation: operation)
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
+        }
     }
     
     func testInvalidParameters() {
