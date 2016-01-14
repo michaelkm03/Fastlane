@@ -153,7 +153,7 @@
 - (void)savePersistentChanges
 {
     // Save any changes in the main context to ensure it saves to disk and is available upon next app launch
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [[persistentStore mainContext] save:nil];
 }
 

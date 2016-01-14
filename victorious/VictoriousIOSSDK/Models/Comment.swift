@@ -24,10 +24,6 @@ public struct Comment {
         public let size: CGSize
         public let thumbnailURL: NSURL
     }
-    
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
 
     public let commentID: Int
     public let displayOrder: Int?
@@ -54,7 +50,7 @@ extension Comment {
             let sequenceID = json["sequence_id"].string,
             let userID = Int(json["user_id"].stringValue),
             let user = User(json: json["user"]),
-            let postedAt = dateFormatter.dateFromString(json["posted_at"].stringValue) else {
+            let postedAt = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue) else {
                 return nil
         }
         

@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 class SequenceFetchOperation: RequestOperation {
     
     let request: SequenceFetchRequest
-    
     var result: VSequence?
     
     init( sequenceID: String ) {
@@ -33,7 +32,6 @@ class SequenceFetchOperation: RequestOperation {
             context.v_save()
             
             let persistentSequenceID = persistentSequence.objectID
-            
             self.persistentStore.mainContext.v_performBlockAndWait { context in
                 if let sequence = context.objectWithID(persistentSequenceID) as? VSequence {
                     self.result = sequence

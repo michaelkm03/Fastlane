@@ -42,7 +42,7 @@ class ConversationListRequestTests: XCTestCase {
                 XCTAssertEqual(firstConversation.mediaType, "image")
 
                 // Test Date parsing
-                let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
+                let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)
                 let testDate = dateFormatter.dateFromString("2015-08-28 23:25:31")
                 XCTAssertEqual(firstConversation.postedAt, testDate)
             }

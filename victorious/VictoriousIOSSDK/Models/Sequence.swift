@@ -56,8 +56,6 @@ public struct Sequence: StreamItemType {
 extension Sequence {
     public init?(json: JSON) {
         
-        let dateFormatter = NSDateFormatter( format: DateFormat.Standard )
-        
         // MARK: - Required data
         
         guard let category      = Category(rawValue: json["category"].stringValue),
@@ -71,7 +69,7 @@ extension Sequence {
     
         // MARK: - Optional data
         
-        releasedAt              = dateFormatter.dateFromString(json["released_at"].stringValue)
+        releasedAt              = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["released_at"].stringValue)
         type                    = StreamContentType(rawValue: json["type"].stringValue)
         subtype                 = StreamContentType(rawValue: json["subtype"].stringValue)
         headline                = json["entry_label"].string

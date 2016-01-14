@@ -68,7 +68,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "ANY self.streams.apiPath = %@",
+                vsdk_format: "ANY self.streams.apiPath = %@",
                 v_argumentArray: [ self.apiPath ],
                 v_paginator: self.request.paginator
             )

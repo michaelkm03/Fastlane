@@ -70,7 +70,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, error) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, error, alerts) in
             XCTAssertNil(error)
             XCTAssertEqual(actualResult, expectedResult)
             callbackExpectation.fulfill()
@@ -89,7 +89,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError, alerts) in
             XCTAssertEqual(actualError as? NSError, expectedError)
             XCTAssertNil(result)
             callbackExpectation.fulfill()
@@ -111,7 +111,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, actualError) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, actualError, alerts) in
             XCTAssertNil(actualResult)
             XCTAssertEqual(actualError as? NSError, expectedError)
             callbackExpectation.fulfill()
@@ -212,7 +212,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, error) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (actualResult, error, alerts) in
             callbackExpectation.fulfill()
         }
         
@@ -231,7 +231,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError, alerts) in
             guard let apiError = actualError as? APIError else {
                 XCTFail( "Expecting a valid error" )
                 return
@@ -257,7 +257,7 @@ class RequestTypeTests: XCTestCase {
         }
         
         let callbackExpectation = expectationWithDescription("callback")
-        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError) in
+        mockRequest.execute(baseURL: NSURL(string: "http://this.doesnt.matter/")!, requestContext: mockRequestContext, authenticationContext: nil) { (result, actualError, alerts) in
             XCTAssertNil( actualError )
             callbackExpectation.fulfill()
         }

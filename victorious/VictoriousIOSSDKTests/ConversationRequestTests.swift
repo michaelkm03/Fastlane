@@ -41,7 +41,7 @@ class ConversationRequestTests: XCTestCase {
             XCTAssertEqual(firstMessage.shouldAutoplay, false)
             // Test Date parsing
             if let parsedDate = firstMessage.postedAt {
-                let dateFormatter = NSDateFormatter(format: DateFormat.Standard)
+                let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)
                 let testDate = dateFormatter.dateFromString("2015-11-10 03:09:52")
                 XCTAssertEqual(parsedDate, testDate)
             } else {

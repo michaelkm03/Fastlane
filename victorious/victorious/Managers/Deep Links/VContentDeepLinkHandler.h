@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VDeeplinkHandler.h"
 
-@class VScaffoldViewController;
+@class VScaffoldViewController, VDependencyManager;
 
 /**
  Displays a content view for deep link URLs that point to content views.

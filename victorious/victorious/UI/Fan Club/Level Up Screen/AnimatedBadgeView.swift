@@ -101,7 +101,7 @@ class AnimatedBadgeView: UIView, VHasManagedDependencies {
     }
     
     /// How percentage representing how far the progress bar extends towards the end
-    var progressPercentage: Int {
+    var progress: Int {
         get {
             return Int(animatingHexagonView.strokeEnd * 100)
         }

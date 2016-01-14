@@ -88,7 +88,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "sequenceId == %@",
+                vsdk_format: "sequenceId == %@",
                 v_argumentArray: [self.sequenceID],
                 v_paginator: self.request.paginator
             )

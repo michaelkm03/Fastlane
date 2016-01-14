@@ -59,6 +59,7 @@ final class PollResultSummaryByUserOperation: RequestOperation, PaginatedOperati
                 guard !uniqueElements.isEmpty else {
                     continue
                 }
+                
                 let persistentResult: VPollResult = context.v_findOrCreateObject( uniqueElements )
                 persistentResult.populate(fromSourceModel: pollResult)
                 persistentResult.user = user

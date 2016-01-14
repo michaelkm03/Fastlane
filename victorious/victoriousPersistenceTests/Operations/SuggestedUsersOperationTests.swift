@@ -12,6 +12,7 @@ import SwiftyJSON
 @testable import victorious
 
 class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
+    
     var operation: SuggestedUsersOperation!
 
     override func setUp() {
@@ -53,7 +54,7 @@ class SuggestedUsersOperationTests: BaseRequestOperationTestCase {
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler:nil)
-
+        
         XCTAssertEqual(1, testRequestExecutor.executeRequestCallCount)
         if let fetchedUsers = operation.results as? [VSuggestedUser] {
             XCTAssertEqual(1, fetchedUsers.count)
