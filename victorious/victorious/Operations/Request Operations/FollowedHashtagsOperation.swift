@@ -23,17 +23,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
-    }
-    
-    func onError( error: NSError, completion:(()->()) ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-            
-        } else {
-            self.results = []
-        }
-        completion()
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( hashtags: HashtagSubscribedToListRequest.ResultType, completion:()->() ) {
@@ -44,7 +34,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 return
             }
             
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
@@ -56,13 +46,15 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 followedHashtag.displayOrder = displayOrder++
             }
             context.v_save()
-            
-            self.results = self.fetchResults()
             completion()
         }
     }
     
-    override func fetchResults() -> [AnyObject] {
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return []
@@ -78,5 +70,9 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
             let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )
             return results.flatMap { $0.hashtag }
         }
+    }
+    
+    func clearResults() {
+        fatalError("Implement me!")
     }
 }

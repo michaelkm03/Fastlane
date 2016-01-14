@@ -24,7 +24,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( results: ConversationRequest.ResultType, completion:()->() ) {
@@ -34,7 +34,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : self.conversationID ])
             var messagesLoaded = [VMessage]()
@@ -51,9 +51,11 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    // MARK: - PaginatedRequestExecutorDelegate
+    // MARK: - PaginatedOperation
     
-    override func clearResults() {
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let uniqueElements = [ "remoteId" : self.conversationID ]
             guard let persistentConversation: VConversation = context.v_findObjects(uniqueElements).first else {
@@ -66,7 +68,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    override func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]

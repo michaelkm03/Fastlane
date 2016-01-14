@@ -36,9 +36,18 @@ final class ImageSearchOperation: RequestOperation, PaginatedOperation {
 	func onComplete( results: ImageSearchRequest.ResultType, completion:()->() ) {
 		self.results = results.map { ImageSearchResultObject( $0 ) }
 		completion()
-	}
+    }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }
-
 
 @objc class ImageSearchResultObject: NSObject, MediaSearchResult {
 	

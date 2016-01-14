@@ -36,15 +36,11 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: onComplete, onError: onError)
-    }
-    
-    func onError( error: NSError, completion: ()->() ) {
-        self.results = []
-        completion()
+        requestExecutor.executeRequest(self.request, onComplete: onComplete, onError: nil)
     }
     
     func onComplete( networkResult: HashtagSearchRequest.ResultType, completion: () -> () ) {
+        
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
         // Call the completion block before the Core Data context saves because consumers only care about the networkHashtags
@@ -63,4 +59,14 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
             context.v_save()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

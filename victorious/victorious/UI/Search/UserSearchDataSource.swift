@@ -21,12 +21,6 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
     private(set) var searchTerm: String?
     private(set) var error: NSError?
     
-    override init() {
-        super.init()
-        
-        clearsVisibleItemsBeforeLoadingFirstPage = true
-    }
-    
     func registerCells( forTableView tableView: UITableView ) {
         let identifier = UserSearchResultTableViewCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: UserSearchResultTableViewCell.self) )

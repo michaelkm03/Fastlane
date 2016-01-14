@@ -28,8 +28,27 @@ protocol PaginatedOperation {
     
     /// Returns a copy of this operation configured for loading previous page worth of data
     func prev() -> Self?
+
+    /// For the particular paginator involved, returns the starting display order for the current page
+    /// with the intention that concrete implementations will use this to create a persistent display order
+    /// based on the order in which results are received from the network.
+    var startingDisplayOrder: Int { get }
     
-    var results: [AnyObject]? { get }
+    /// A place to store the results so that they are available to calling code that is
+    /// consuming this delegate (most likely an NSOperation).  This is why the protocol
+    /// is required to be implemented by a class.
+    var results: [AnyObject]? { set get }
+    
+    /// Once a network request's response has been parsed and dumped in the persistent store,
+    /// this method re-retrives from the main context any of the loaded results that should
+    /// be sent back the view controller ready for display on the main thread
+    func fetchResults() -> [AnyObject]
+    
+    /// In some situations is it necessary to clear existing data in the persistent store
+    /// to make room for some updated data from the network that supercedes it.  The nature
+    /// of this supercession is critial in that if operations were not to clear results
+    /// when asked, the ordering and accuracy of results may be unexpected.
+    func clearResults()
 }
 
 extension PaginatedOperation {
@@ -52,5 +71,12 @@ extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
             return self.dynamicType.init(request: request)
         }
         return nil
+    }
+}
+
+extension PaginatedOperation where PaginatedRequestType.PaginatorType : NumericPaginator {
+
+    var startingDisplayOrder: Int {
+        return (request.paginator.pageNumber - 1) * request.paginator.itemsPerPage
     }
 }

@@ -12,7 +12,7 @@ import VictoriousCommon
 
 private let _defaultQueue = NSOperationQueue()
 
-class RequestOperation: NSOperation, Queuable, PaginatedRequestExecutorDelegate {
+class RequestOperation: NSOperation, Queuable {
     
     static let errorDomain: String = "com.getvictorious.RequestOperation"
     static let errorCodeNoNetworkConnection: Int    = 9001
@@ -33,12 +33,6 @@ class RequestOperation: NSOperation, Queuable, PaginatedRequestExecutorDelegate 
         return MainRequestExecutor(persistentStore: self.persistentStore)
     }()
     
-    lazy var paginatedRequestExecutor: PaginatedRequestExecutorType = {
-        var executor = PaginatedRequestExecutor(requestExecutor: self.requestExecutor)
-        executor.delegate = self
-        return executor
-    }()
-    
     // MARK: - Queuable
     
     func queueOn( queue: NSOperationQueue, completionBlock:((NSError?)->())?) {
@@ -52,12 +46,4 @@ class RequestOperation: NSOperation, Queuable, PaginatedRequestExecutorDelegate 
         }
         queue.addOperation( self )
     }
-    
-    // MARK: - PaginatedRequestExecutorDelegate
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] { abort() }
-    
-    func clearResults() { abort() }
 }

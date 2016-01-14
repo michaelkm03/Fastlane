@@ -25,28 +25,17 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
-    }
-    
-    func onError( error: NSError, completion:(()->()) ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-            
-        } else {
-            self.results = []
-        }
-        completion()
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( users: SubscribedToListRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             
             let subjectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID] )
             
             for user in users {
-                
                 // Load the user who is following self.userID
                 let objectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
                 objectUser.populate(fromSourceModel: user)
@@ -59,13 +48,15 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
                 subjectUser.v_addObject( followedUser, to: "followers" )
             }
             context.v_save()
-            
-            self.results = self.fetchResults()
             completion()
         }
     }
     
-    private func fetchResults() -> [VUser] {
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
@@ -78,5 +69,9 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )
             return results.flatMap { $0.objectUser }
         }
+    }
+    
+    func clearResults() {
+        fatalError("Implement me!")
     }
 }

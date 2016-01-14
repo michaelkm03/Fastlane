@@ -8,20 +8,6 @@
 
 import Foundation
 
-// TODO: Anbstract into protocol!
-// TODO: Finish tests for
-
-/// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
-@objc protocol PaginatedDataSourceDelegate: NSObjectProtocol {
-    
-    /// Called from a `PaginateddataSource` instance when new objects have been fetched and added to its backing store.
-    /// The `oldValue` and `newValue` parameters are designed to allow calling code to
-    /// precisely reload only what has changed instead of useing `reloadData()`.
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet)
-    
-    optional func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState)
-}
-
 @objc enum DataSourceState: Int {
     case Loading
     case Cleared
@@ -36,7 +22,7 @@ import Foundation
 @objc public class PaginatedDataSource: NSObject {
     
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentOperation: RequestOperation?
+    private(set) weak var currentOperation: NSOperation?
     
     private(set) var state: DataSourceState = .Cleared {
         didSet {
@@ -49,11 +35,6 @@ import Foundation
     func isLoading() -> Bool {
         return state == .Loading
     }
-    
-    /// Tells the data source to unload all items from its `visibleItems` backing store
-    /// whenever a page is loaded with a VPageType.Refresh value specified.  This is useful for
-    /// search-style data sources that should clear when a new search has begun.
-    var clearsVisibleItemsBeforeLoadingFirstPage: Bool = false
     
     private(set) dynamic var visibleItems = NSOrderedSet() {
         didSet {
@@ -83,55 +64,55 @@ import Foundation
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard state != .Loading else {
-            return
-        }
+        guard state != .Loading else { return }
         
-        let operationToQueue: RequestOperation?
+        let operationToQueue: T?
         switch pageType {
-            
         case .Refresh, .CheckNew:
-            operationToQueue = createOperation() as? RequestOperation
-            
+            operationToQueue = createOperation()
         case .Next:
-            operationToQueue = (currentOperation as? T)?.next() as? RequestOperation
-            
+            operationToQueue = (currentOperation as? T)?.next()
         case .Previous:
-            operationToQueue = (currentOperation as? T)?.prev() as? RequestOperation
+            operationToQueue = (currentOperation as? T)?.prev()
         }
         
-        if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
-            self.state = .Loading
+        guard let requestOperation = operationToQueue as? RequestOperation,
+            var operation = operationToQueue else {
+                return
+        }
+        
+        self.state = .Loading
+        
+        if pageType == .Refresh && hasNetworkConnection {
+            // TODO: This would be ideal after the request succeeeds but before parsing begins
+            operation.clearResults()
+        }
+        
+        requestOperation.queue() { error in
             
-            if pageType == .Refresh && hasNetworkConnection {
-                operation.clearResults()
-            }
-            
-            operation.queue() {  error in
+            if let error = error {
                 
-                if let error = error {
+                // Fetch local results if we failed because of no network
+                if error.code == RequestOperation.errorCodeNoNetworkConnection {
+                   operation.results = operation.fetchResults()
                     
-                    // Fetch local results if we failed because of no network
-                    if error.code == RequestOperation.errorCodeNoNetworkConnection {
-                       operation.results = operation.fetchResults()
-                        
-                    } else {
-                        // Otherwise, return no results
-                        operation.results = []
-                    }
-                    self.onOperationComplete(typedOperation, pageType: pageType)
-                    self.state = .Error
-              
                 } else {
-                    self.onOperationComplete(typedOperation, pageType: pageType)
-                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                    // Otherwise, return no results
+                    operation.results = []
                 }
-                
-                completion?( operation: typedOperation, error: error )
+                self.onOperationComplete(operation, pageType: pageType)
+                self.state = .Error
+          
+            } else {
+                operation.results = operation.fetchResults()
+                self.onOperationComplete(operation, pageType: pageType)
+                self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
+            
+            completion?( operation: operation, error: error )
         }
         
-        self.currentOperation = operationToQueue
+        self.currentOperation = requestOperation
     }
     
     // MARK: - Private helpers

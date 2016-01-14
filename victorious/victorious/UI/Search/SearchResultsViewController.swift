@@ -9,17 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol PaginatedDataSourceType: class {
-    var currentOperation: RequestOperation? { get }
-    var state: DataSourceState { get }
-    var visibleItems: NSOrderedSet { get }
-    var delegate: PaginatedDataSourceDelegate? { set get }
-    
-    func cancelCurrentOperation()
-    func unload()
-    func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? )
-}
-
 protocol SearchDataSourceType: class, PaginatedDataSourceType, UITableViewDataSource {
     func registerCells( forTableView tableView: UITableView )
     func search(searchTerm searchTerm: String, pageType: VPageType, completion:((NSError?)->())? )

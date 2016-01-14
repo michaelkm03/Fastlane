@@ -25,10 +25,6 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        
-        super.init()
-        
-        clearsVisibleItemsBeforeLoadingFirstPage = true
     }
     
     func registerCells( forTableView tableView: UITableView ) {

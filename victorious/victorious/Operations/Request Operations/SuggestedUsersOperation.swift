@@ -35,12 +35,12 @@ class SuggestedUsersOperation: RequestOperation {
             }
             context.v_save()
             
-            self.results = self.fetchResults( suggestedUsers )
+            self.results = self.reloadFromMainContext( suggestedUsers )
             completion()
         }
     }
     
-    func fetchResults( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
+    private func reloadFromMainContext( suggestedUsers: [VSuggestedUser] ) -> [VSuggestedUser] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             var output = [VSuggestedUser]()
             for suggestedUser in suggestedUsers {
@@ -55,4 +55,14 @@ class SuggestedUsersOperation: RequestOperation {
             return output
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

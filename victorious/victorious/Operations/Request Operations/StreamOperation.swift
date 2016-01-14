@@ -25,14 +25,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: self.onComplete, onError:self.onError )
-    }
-    
-    func onError( error: NSError, completion: ()->() ) {
-        if error.code == RequestOperation.errorCodeNoNetworkConnection {
-            self.results = fetchResults()
-        }
-        completion()
+        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError:nil )
     }
     
     func onComplete( stream: StreamRequest.ResultType, completion:()->() ) {
@@ -45,7 +38,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             persistentStream.populate(fromSourceModel: stream)
             
             // Parse stream items
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
             for streamItem in streamItems {
                 streamItem.displayOrder = displayOrder++
@@ -53,29 +46,15 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             }
             persistentStream.v_addObjects(streamItems, to: "streamItems")
             context.v_save()
-            
-            // Reload results from main queue
-            self.results = self.fetchResults()
             completion()
         }
     }
     
-    // MARK: - PaginatedRequestExecutorDelegate
+    // MARK: - PaginatedOperation
     
-    override func clearResults() {
-        // TODO: Don't wait if called form paginated data source
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
-                return
-            }
-            for streamItem in persistentStream.streamItems.array as? [VStreamItem] ?? [] {
-                context.deleteObject( streamItem )
-            }
-            context.v_save()
-        }
-    }
+    internal(set) var results: [AnyObject]?
     
-    override func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
@@ -86,6 +65,18 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
+        }
+    }
+    
+    func clearResults() {
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
+                return
+            }
+            for streamItem in persistentStream.streamItems.array as? [VStreamItem] ?? [] {
+                context.deleteObject( streamItem )
+            }
+            context.v_save()
         }
     }
 }

@@ -18,7 +18,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( results: NotificationsRequest.ResultType, completion:()->() ) {
@@ -28,7 +28,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             for result in results {
                 let uniqueElements = [ "remoteId" : result.notificationID ]
                 let notification: VNotification = context.v_findOrCreateObject(uniqueElements)
@@ -40,9 +40,11 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    // MARK: - PaginatedRequestExecutorDelegate
+    // MARK: - PaginatedOperation
     
-    override func clearResults() {
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let existing: [VNotification] = context.v_findAllObjects()
             for object in existing {
@@ -52,7 +54,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    override func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VNotification.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]

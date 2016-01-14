@@ -25,7 +25,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( comments: SequenceCommentsRequest.ResultType, completion:()->() ) {
@@ -43,7 +43,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             
             var newComments = [VComment]()
             for comment in unflaggedResults {
@@ -55,12 +55,15 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             }
             sequence.v_addObjects( newComments, to: "comments" )
             context.v_save()
+            completion()
         }
     }
     
-    // MARK: - PaginatedRequestExecutorDelegate
+    // MARK: - PaginatedOperation
     
-    override func clearResults() {
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let existingComments: [VComment] = context.v_findObjects(["sequenceId" : self.sequenceID])
             for comment in existingComments {
@@ -70,7 +73,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    override func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]

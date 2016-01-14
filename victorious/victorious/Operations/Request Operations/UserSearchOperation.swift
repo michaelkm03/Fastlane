@@ -36,25 +36,18 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: self.onError)
-    }
-    
-    private func onError( error: NSError, completion: ()->() ) {
-        completion()
+        requestExecutor.executeRequest(self.request, onComplete: self.onComplete, onError: nil)
     }
     
     func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
-        
-        defer { completion() }
-        
-        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
         
         guard !networkResult.isEmpty else {
             results = []
             return
         }
         
-        results = networkResult.map{ UserSearchResultObject( user: $0) }
+        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
+        completion()
 
         // Populate our local users cache based off the new data
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
@@ -69,4 +62,14 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
             context.v_save()
         }
     }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
 }

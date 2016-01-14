@@ -18,7 +18,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-        paginatedRequestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
     func onComplete( results: ConversationListRequest.ResultType, completion:()->() ) {
@@ -32,7 +32,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         let unflaggedResults = results.filter { flaggedIDs.contains($0.conversationID) == false }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+            var displayOrder = self.startingDisplayOrder
             for result in unflaggedResults {
                 let uniqueElements = [ "remoteId" : result.conversationID ]
                 let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
@@ -44,9 +44,11 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    // MARK: - PaginatedRequestExecutorDelegate
+    // MARK: - PaginatedOperation
     
-    override func clearResults() {
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let existing: [VConversation] = context.v_findAllObjects()
             for object in existing {
@@ -56,7 +58,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         }
     }
     
-    override func fetchResults() -> [AnyObject] {
+    func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
