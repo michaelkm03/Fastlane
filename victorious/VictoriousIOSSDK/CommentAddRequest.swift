@@ -20,7 +20,7 @@ public struct CommentAddRequest: RequestType {
         request.HTTPMethod = "POST"
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
-        return request.copy() as! NSURLRequest
+        return request
     }
     
     public init?( parameters: CommentParameters ) {
