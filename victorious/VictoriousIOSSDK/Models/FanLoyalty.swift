@@ -6,23 +6,29 @@
 //  Copyright © 2015 Victorious. All rights reserved.
 //
 
+import Foundation
 import SwiftyJSON
 
 public struct FanLoyalty {
-    public let points: Int
+    public let points: Int?
     public let level: Int
     public let progress: Int
+    public let tier: String?
+    public let name: String?
 }
 
 extension FanLoyalty {
     public init?(json: JSON) {
-        guard let points = json["points"].int,
-            let level = json["level"].int,
+
+        guard let level = json["level"].int,
             let progress = json["progress"].int else {
                 return nil
         }
-        self.points = points
         self.level = level
         self.progress = progress
+        
+        self.points = json["points"].int
+        self.name = json["name"].string
+        self.tier = json["tier"].string
     }
 }

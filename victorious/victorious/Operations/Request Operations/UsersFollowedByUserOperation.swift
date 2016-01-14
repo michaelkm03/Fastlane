@@ -73,7 +73,7 @@ final class UsersFollowedByUser: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "subjectUser.remoteId = %@",
+                vsdk_format: "subjectUser.remoteId = %@",
                 v_argumentArray: [ self.userID ],
                 v_paginator: self.request.paginator
             )

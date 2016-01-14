@@ -34,7 +34,7 @@ class PersistentStoreSelector: NSObject {
     
     /// Returns the primary persistent store used by this application and appropriate for its
     /// environment.
-    class var mainPersistentStore: PersistentStoreType {
+    class var defaultPersistentStore: PersistentStoreType {
         
         if NSBundle.isTestBundle {
             return TestPersistentStore()

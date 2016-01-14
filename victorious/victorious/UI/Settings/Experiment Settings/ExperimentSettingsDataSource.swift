@@ -19,7 +19,7 @@ protocol ExperimentSettingsDataSourceDelegate: class {
 
 class ExperimentSettingsDataSource: NSObject {
     
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     weak var delegate:ExperimentSettingsDataSourceDelegate?
     

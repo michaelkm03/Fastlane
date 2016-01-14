@@ -7,8 +7,6 @@
 //
 
 #import "VInlineUserTableViewCell.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
