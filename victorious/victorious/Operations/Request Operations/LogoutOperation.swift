@@ -19,7 +19,10 @@ class LogoutOperation: RequestOperation {
     }
     
     override func main() {
-        guard VCurrentUser.user() != nil else {
+        let currentUser: VUser? = dispatch_sync( dispatch_get_main_queue() ) {
+            return VCurrentUser.user()
+        }
+        guard currentUser != nil else {
             // Cannot logout without a current (logged-in) user
             return
         }
