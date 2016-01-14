@@ -21,18 +21,20 @@ class LikeSequenceOperation: RequestOperation {
     }
 
     override func main() {
-        
         // Make data change optimistically before executing the request
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
+            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
+                let sequence: VSequence = context.v_findObjects(  [ "remoteId" : self.sequenceID ] ).first else {
+                    return
             }
-            let uniqueElements = [ "remoteId" : self.sequenceID ]
-            let sequences: [VSequence] = context.v_findObjects( uniqueElements )
-            for sequence in sequences {
-                sequence.isLikedByMainUser = true
-                currentUser.v_addObject( sequence, to: "likedSequences" )
-            }
+            
+            sequence.isLikedByMainUser = true
+            
+            let uniqueElements = [ "sequence"  : sequence, "user" : currentUser ]
+            let sequenceLiker: VSequenceLiker = context.v_findOrCreateObject(uniqueElements)
+            sequenceLiker.sequence = sequence
+            sequenceLiker.user = currentUser
+            sequenceLiker.displayOrder = 0
             context.v_save()
         }
         

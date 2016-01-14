@@ -31,21 +31,20 @@ public class VCurrentUser: NSObject {
         }
         
         if managedObjectContext == persistentStore.mainContext {
-            print( "CurrentUser :: remoteID \(userFromMainContext.remoteId) :: token \(userFromMainContext.token)" )
             return userFromMainContext
             
         } else {
             let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
-                if let currentUser = context.objectWithID( objectID ) as? VUser {
-                    print( "CurrentUser (BG) :: remoteID \(currentUser.remoteId) :: token \(currentUser.token)" )
-                }
                 return context.objectWithID( objectID ) as? VUser
             }
         }
     }
 
     static func user() -> VUser? {
+        guard NSThread.currentThread().isMainThread else {
+            fatalError( "Attempt to read current user from the persistent store's main context from a thread other than the main thread.  Use method `user(inManagedObjectcontext:)` and provide the context in which you are working." )
+        }
         return VCurrentUser.user( inManagedObjectContext: persistentStore.mainContext )
     }
     

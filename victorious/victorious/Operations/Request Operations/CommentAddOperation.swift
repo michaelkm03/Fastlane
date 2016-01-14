@@ -43,7 +43,7 @@ class CommentAddOperation: RequestOperation {
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
-            comment.user = VCurrentUser.user()
+            comment.user = VCurrentUser.user(inManagedObjectContext: context)
             if let realtime = self.commentParameters.realtimeComment {
                 comment.realtime = NSNumber(float: Float(realtime.time))
             }
