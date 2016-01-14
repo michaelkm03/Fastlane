@@ -22,8 +22,8 @@ class UserInfoOperation: RequestOperation {
     }
     
     private func onComplete( user: UserInfoRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
-            let persistentUser: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ])
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.userID ])
             persistentUser.populate(fromSourceModel: user)
             context.v_save()
             completion()

@@ -33,17 +33,19 @@ class CommentAddOperation: RequestOperation {
     }
     
     override func main() {
-        guard let currentUserId = VCurrentUser.user()?.remoteId else {
-            return
-        }
         
         // Optimistically create a comment before sending request
-        persistentStore.backgroundContext.v_performBlock() { context in
+        let commentCreationDidSucceed: Bool = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            let currentUser = VCurrentUser.user(inManagedObjectContext: context)!
+            guard let currentUserId = currentUser.remoteId else {
+                return false
+            }
+            
             let comment: VComment = context.v_createObject()
             comment.remoteId = 0
             comment.sequenceId = String(self.commentParameters.sequenceID)
             comment.userId = currentUserId
-            comment.user = VCurrentUser.user()
+            comment.user = VCurrentUser.user(inManagedObjectContext: context)
             if let realtime = self.commentParameters.realtimeComment {
                 comment.realtime = NSNumber(float: Float(realtime.time))
             }
@@ -63,7 +65,13 @@ class CommentAddOperation: RequestOperation {
             dispatch_sync( dispatch_get_main_queue() ) {
                 self.optimisticCommentObjectID = comment.objectID
             }
+            return true
         }
+        
+        guard commentCreationDidSucceed else {
+            return
+        }
+        
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
@@ -76,7 +84,7 @@ class CommentAddOperation: RequestOperation {
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             defer {
                 completion()
             }

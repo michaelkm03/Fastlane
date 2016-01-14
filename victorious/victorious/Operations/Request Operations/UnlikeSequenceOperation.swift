@@ -21,7 +21,7 @@ class UnlikeSequenceOperation: RequestOperation {
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
                 return
             }

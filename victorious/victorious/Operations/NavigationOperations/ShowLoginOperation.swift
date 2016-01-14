@@ -38,22 +38,16 @@ class ShowLoginOperation: Operation {
             
             self.beganExecuting()
             
-            if VCurrentUser.user() != nil {
-                // User is already logged in, proceed onward
-                self.finishedExecuting()
-            }
-            else {
-                // User is not logged in, show login view
-                let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
-                    forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
-                viewController.onCompletionBlock = { (finished) -> Void in
-                    self.originViewController.dismissViewControllerAnimated(true) {
-                        self.finishedExecuting()
-                    }
+            // User is not logged in, show login view
+            let viewController = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
+                forKey: "loginAndRegistrationView") as! VLoginRegistrationFlow
+            viewController.onCompletionBlock = { (finished) -> Void in
+                self.originViewController.dismissViewControllerAnimated(true) {
+                    self.finishedExecuting()
                 }
-                viewController.setAuthorizationContext?( self.context )
-                self.originViewController.presentViewController( viewController as! UIViewController, animated: true, completion: nil)
             }
+            viewController.setAuthorizationContext?( self.context )
+            self.originViewController.presentViewController( viewController as! UIViewController, animated: true, completion: nil)
         }
     }
 }

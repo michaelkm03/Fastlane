@@ -25,7 +25,7 @@ enum PersistentStoreError: ErrorType {
     /// A context used primarily for asynchronous writes that should only ever be accessed from
     /// the propery queue by calling `performBlock(_:)` or `performBlockAndWait(_:)` when interacting
     /// with this context.
-    var backgroundContext: NSManagedObjectContext { get }
+    func createBackgroundContext() -> NSManagedObjectContext
 }
 
 /// An object that provides functions for finding an appropriate concrete implementation

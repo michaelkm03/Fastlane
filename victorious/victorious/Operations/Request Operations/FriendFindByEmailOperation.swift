@@ -36,7 +36,7 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
     // Move this back to being private once we are able to test main/completion handling
     internal func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             for foundFriend in results {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
                 persistentUser.populate(fromSourceModel: foundFriend)

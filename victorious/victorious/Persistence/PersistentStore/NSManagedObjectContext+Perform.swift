@@ -12,11 +12,14 @@ import CoreData
 extension NSManagedObjectContext {
     
     /// An extension of `performBlock(_:)` that includes the receiver as the first argument in the block.
-    /// Executes asynchronously on the receiver's appropriate queue.
-    func v_performBlock(block: NSManagedObjectContext -> Void) {
+    /// Executes asynchronously on the receiver's appropriate queue and provides the context as the single
+    /// parameter of the block as well as the return type.  This adapters the vanilla `performBlock`
+    /// for more functional-style proramming where things are chained, nested, etc.
+    func v_performBlock(block: NSManagedObjectContext -> Void) -> NSManagedObjectContext {
         performBlock() {
             block(self)
         }
+        return self
     }
     
     /// An extension of `v_performBlockAndWait(_:)` that includes the receiver as the first argument in the block.

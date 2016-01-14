@@ -28,7 +28,7 @@ class FollowCountOperation: RequestOperation {
     }
     
     func onComplete( response: FollowCountRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             defer { completion() }
             
             guard let user: VUser = context.v_findObjects( [ "remoteId" : Int(self.userID) ]).first else {
