@@ -314,9 +314,8 @@
 
 - (void)selectAllRows:(id)sender
 {
-    NSMutableArray *userIDs = [[NSMutableArray alloc]init];
-    [self.usersNotFollowing enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop) {
-        [userIDs addObject:[user remoteId]];
+    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user) {
+        return user.remoteId;
     }];
     RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: userIDs];
     [operation queueOn:[RequestOperation sharedQueue] completionBlock: ^(NSError *_Nullable error) {
