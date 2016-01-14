@@ -11,23 +11,20 @@ import VictoriousIOSSDK
 
 class CommentAddOperation: RequestOperation {
     
-    var request: CommentAddRequest
+    let request: CommentAddRequest!
     
     private let publishParameters: VPublishParameters?
     private let commentParameters: CommentParameters
     
     private var optimisticObjectID: NSManagedObjectID?
     
-    private init( request: CommentAddRequest, commentParameters: CommentParameters, publishParameters: VPublishParameters?) {
-        self.request = request
+    init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
+        self.request = CommentAddRequest(parameters: commentParameters)
         self.commentParameters = commentParameters
         self.publishParameters = publishParameters
-    }
-    
-    convenience init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
-        if let request = CommentAddRequest(parameters: commentParameters) {
-            self.init(request: request, commentParameters: commentParameters, publishParameters: publishParameters)
-        } else {
+        
+        super.init()
+        if self.request == nil {
             return nil
         }
     }
