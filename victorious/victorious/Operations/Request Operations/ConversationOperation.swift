@@ -55,7 +55,8 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     override func clearResults() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let persistentConversation: VConversation = context.v_findObjects([ "remoteId" : self.conversationID ]).first else {
+            let uniqueElements = [ "remoteId" : self.conversationID ]
+            guard let persistentConversation: VConversation = context.v_findObjects(uniqueElements).first else {
                 return
             }
             for message in persistentConversation.messages.array as? [VMessage] ?? [] {

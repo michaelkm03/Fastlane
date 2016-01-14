@@ -16,14 +16,14 @@ public enum MediaAttachmentType: String {
     case Ballistic  = "voteType"
 }
 
+public struct MediaAttachment {
+    public let type: MediaAttachmentType
+    public let url: NSURL
+    public let size: CGSize
+    public let thumbnailURL: NSURL
+}
+
 public struct Comment {
-    
-    public struct Media {
-        public let type: MediaAttachmentType
-        public let url: NSURL
-        public let size: CGSize
-        public let thumbnailURL: NSURL
-    }
     
     private let dateFormatter: NSDateFormatter = {
         return NSDateFormatter(format: .Standard)
@@ -36,7 +36,7 @@ public struct Comment {
     public let shouldAutoplay: Bool?
     public let user: User
     public let text: String?
-    public let media: Media?
+    public let media: MediaAttachment?
     
     public let flags: Int?
     public let postedAt: NSDate
@@ -69,7 +69,7 @@ extension Comment {
             let mediaType = MediaAttachmentType(rawValue: json["media_type"].stringValue),
             let mediaURL = NSURL(vsdk_string: json["media_url"].string),
             let thumbnailURL = NSURL(vsdk_string: json["thumbnail_url"].string) {
-                media = Comment.Media(
+                media = MediaAttachment(
                     type: mediaType,
                     url: mediaURL,
                     size: CGSize(width: CGFloat(mediaWidth), height: CGFloat(mediaHeight)),

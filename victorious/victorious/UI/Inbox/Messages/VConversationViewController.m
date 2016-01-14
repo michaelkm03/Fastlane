@@ -55,7 +55,8 @@
     
     self.reuseIdentifiers = [NSMutableArray new];
     
-    self.dataSource = [[ConversationDataSource alloc] initWithDependencyManager:self.dependencyManager];
+    self.dataSource = [[ConversationDataSource alloc] initWithConversation:self.conversation
+                                                        dependencyManager:self.dependencyManager];
     [self.dataSource registerCells:self.tableView];
     self.dataSource.delegate = self;
     self.tableView.dataSource  = self.dataSource;
@@ -90,7 +91,7 @@
 
 - (void)refresh
 {
-    [self.dataSource loadConversation:self.conversation pageType:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.dataSource loadConversation:self.conversation pageType:VPageTypeRefresh completion:^(NSError *_Nullable error)
      {
          if ( error != nil )
          {

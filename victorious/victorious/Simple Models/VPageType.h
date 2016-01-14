@@ -16,12 +16,6 @@
 typedef NS_ENUM( NSUInteger, VPageType )
 {
     /**
-     Previously called `isRefresh` or `shouldRefresh`, this indicates a method
-     should clear any previously loaded results and begin loading from page 1.
-     */
-    VPageTypeFirst,
-    
-    /**
      Indicates that a method should load the next page (+1) based on the `VAbstractFilter`
      instance that is currently encapsulating its state.  Any loaded results should be
      appended to existing results.
@@ -33,5 +27,17 @@ typedef NS_ENUM( NSUInteger, VPageType )
      instance that is currently encapsulating its state.  Any loaded results should be
      prepended to existing results.
      */
-    VPageTypePrevious
+    VPageTypePrevious,
+    
+    /**
+     Indicates that an endpoint should reload its first page and clear out and previously
+     stored results in favor of the updated incoming data that will supercede it.
+     */
+    VPageTypeRefresh,
+    
+    /**
+     Indicates that an endpoint should reload its first page but NOT clear out and previously
+     stored results.
+     */
+    VPageTypeCheckNew
 };

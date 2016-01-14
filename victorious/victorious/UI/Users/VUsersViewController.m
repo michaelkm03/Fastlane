@@ -126,7 +126,7 @@
 
 - (void)refershControlAction:(UIRefreshControl *)refreshControl
 {
-    [self.usersDataSource loadUsersWithPageType:VPageTypeFirst completion:^(NSError *error)
+    [self.usersDataSource loadUsersWithPageType:VPageTypeRefresh completion:^(NSError *error)
      {
          [refreshControl endRefreshing];
      }];

@@ -117,7 +117,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func loadDefaultContent( pageType pageType: VPageType = .First ) {
+    func loadDefaultContent( pageType pageType: VPageType = .Refresh ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.performDefaultSearch( pageType ) { result in
                 self.updateViewWithResult( result )
@@ -125,7 +125,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func performSearchWithText( searchText: String, pageType: VPageType = .First ) {
+    func performSearchWithText( searchText: String, pageType: VPageType = .Refresh ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.performSearchWithText( searchText, pageType: pageType ) { result in
                 self.updateViewWithResult( result )

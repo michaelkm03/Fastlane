@@ -131,7 +131,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func onRefresh() {
         self.refreshControl?.beginRefreshing()
-        dataSource?.loadComments( .First ) { error in
+        dataSource?.loadComments( .Refresh ) { error in
             self.refreshControl?.endRefreshing()
         }
     }

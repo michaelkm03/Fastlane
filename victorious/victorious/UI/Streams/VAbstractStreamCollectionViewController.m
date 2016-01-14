@@ -120,7 +120,7 @@
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 && [VCurrentUser user] != nil;
     if ( shouldRefresh )
     {
-        [self loadPage:VPageTypeFirst completion:nil];
+        [self loadPage:VPageTypeRefresh completion:nil];
     }
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
@@ -269,7 +269,7 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self loadPage:VPageTypeFirst completion:^
+    [self loadPage:VPageTypeRefresh completion:^
      {
          [self updateRowCount];
      }];
@@ -294,7 +294,7 @@
         [self.refreshControl beginRefreshing];
     }
     
-    [self.streamDataSource loadPage:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.streamDataSource loadPage:VPageTypeRefresh completion:^(NSError *_Nullable error)
      {
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
@@ -309,7 +309,7 @@
          }
          
          [self.refreshControl endRefreshing];
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeFirst];
+         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeRefresh];
      }];
 }
 

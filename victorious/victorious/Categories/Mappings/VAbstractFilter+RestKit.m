@@ -22,7 +22,7 @@
 
 - (BOOL)canLoadPageType:(VPageType)pageType
 {
-    if ( pageType == VPageTypeFirst )
+    if ( pageType == VPageTypeRefresh )
     {
         return YES; // it should always be possible to load the first page!
     }
@@ -42,7 +42,7 @@
         case VPageTypePrevious:
             return MAX( self.currentPageNumber.integerValue, 1 ) - 1;
             
-        case VPageTypeFirst:
+        case VPageTypeRefresh:
         default:
             return 1;
     }

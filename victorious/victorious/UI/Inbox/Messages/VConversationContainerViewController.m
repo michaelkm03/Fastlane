@@ -24,7 +24,7 @@
 
 static const NSUInteger kCharacterLimit = 1024;
 
-@interface VConversationContainerViewController () <VAccessoryNavigationSource, VKeyboardBarDelegate>
+@interface VConversationContainerViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, readonly) BOOL canFlagConversation;
@@ -240,25 +240,24 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
-    keyboardBar.sendButtonEnabled = NO;
+    VUser *currentUser = [VCurrentUser user];
+    if ( currentUser == nil )
+    {
+        return;
+    }
     
-    /*VConversation *conversation = (VConversation *)self.conversationTableViewController.visibleItems[ indexPath.row ];
-    SendMessageOperation *operation = [[SendMessageOperation alloc] init];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    [self sendMessageWithText:text
+               inConversation:self.conversation
+                   completion:^(NSError *_Nullable error)
      {
-        keyboardBar.sendButtonEnabled = YES;
-        if ( error != nil )
-        {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
-            [hud hide:YES afterDelay:3.0];
-        }
-        else
-        {
-            [keyboardBar clearKeyboardBar];
-        }
-    }];*/
+         if ( error != nil )
+         {
+             // TODO: Hmmm, what to do!?
+         }
+    }];
+    
+    [keyboardBar.textView resignFirstResponder];
+    [keyboardBar clearKeyboardBar];
 }
 
 #pragma mark - Keyboard Delegate

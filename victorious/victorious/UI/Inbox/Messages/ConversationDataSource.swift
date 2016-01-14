@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KVOController
 
 class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
     
@@ -17,11 +18,20 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }()
     
     let dependencyManager: VDependencyManager
+    let conversation: VConversation
     
     var delegate: PaginatedDataSourceDelegate?
     
-    init( dependencyManager: VDependencyManager ) {
+    init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
+        self.conversation = conversation
+        
+        super.init()
+        
+        self.KVOController.observe( self.conversation,
+            keyPath: "messages",
+            options: [ .New, .Old ],
+            action: Selector("onMessagesChanged:") )
     }
     
     private(set) var visibleItems = NSOrderedSet()
@@ -30,15 +40,21 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return self.paginatedDataSource.state
     }
     
-    func loadConversation( conversation: VConversation, pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func loadConversation( pageType: VPageType, completion:((NSError?)->())? = nil ) {
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
-                return ConversationOperation(conversationID: conversation.remoteId.integerValue)
+                return ConversationOperation(conversationID: self.conversation.remoteId.integerValue)
             },
             completion: { (operation, error) in
                 completion?(error)
             }
         )
+    }
+    
+    func onMessagesChanged( changeInfo: [NSObject : AnyObject]? ) {
+        if !paginatedDataSource.isLoading() {
+            loadConversation( .Refresh )
+        }
     }
     
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {

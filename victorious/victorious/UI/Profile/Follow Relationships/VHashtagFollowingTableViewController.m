@@ -51,7 +51,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     
-    [self loadHashtagsWithPageType:VPageTypeFirst completion:nil];
+    [self loadHashtagsWithPageType:VPageTypeRefresh completion:nil];
 }
 
 - (void)updateBackground

@@ -178,7 +178,7 @@
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaWidth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 32" minValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="Integer 32" indexed="YES" syncable="YES"/>
         <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>

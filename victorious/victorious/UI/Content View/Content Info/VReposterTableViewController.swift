@@ -14,7 +14,7 @@ extension VReposterTableViewController {
         
         let operation: SequenceRepostersOperation?
         switch pageType {
-        case .First:
+        case .Refresh:
             operation = SequenceRepostersOperation(sequenceID: sequence.remoteId )
         case .Next:
             operation = self.repostersOperation?.next()

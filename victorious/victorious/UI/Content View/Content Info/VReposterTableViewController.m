@@ -55,7 +55,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self loadRepostersWithPageType:VPageTypeFirst sequence:self.sequence];
+    [self loadRepostersWithPageType:VPageTypeRefresh sequence:self.sequence];
 }
 
 - (void)viewDidAppear:(BOOL)animated

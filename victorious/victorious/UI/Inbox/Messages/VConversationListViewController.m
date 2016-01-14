@@ -348,7 +348,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)refresh
 {
-    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.dataSource loadConversations:VPageTypeRefresh completion:^(NSError *_Nullable error)
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];
@@ -442,14 +442,14 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
-        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeFirst
+        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeRefresh
                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              [self.messageCountCoordinator updateUnreadMessageCount];
              [self updateBadges];
          } failBlock:nil];
         
-        [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeFirst
+        [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeRefresh
                                                                    successBlock:^(NSOperation *__nullable operation, id  __nullable result, NSArray *__nonnull resultObjects)
          {
              [self updateBadges];

@@ -206,7 +206,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)refresh
 {
-    [self.dataSource loadNotifications:VPageTypeFirst completion:^(NSError *_Nullable error)
+    [self.dataSource loadNotifications:VPageTypeRefresh completion:^(NSError *_Nullable error)
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];

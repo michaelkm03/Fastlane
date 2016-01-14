@@ -49,7 +49,7 @@ import Foundation
     }
     
     /// Tells the data source to unload all items from its `visibleItems` backing store
-    /// whenever a page is loaded with a VPageType.First value specified.  This is useful for
+    /// whenever a page is loaded with a VPageType.Refresh value specified.  This is useful for
     /// search-style data sources that should clear when a new search has begun.
     var clearsVisibleItemsBeforeLoadingFirstPage: Bool = false
     
@@ -84,7 +84,7 @@ import Foundation
         let operationToQueue: RequestOperation?
         switch pageType {
             
-        case .First:
+        case .Refresh:
             operationToQueue = createOperation() as? RequestOperation
             
         case .Next:
@@ -126,7 +126,7 @@ private extension NSOrderedSet {
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
         switch pageType {
             
-        case .First: //< reset
+        case .Refresh: //< reset
             return NSOrderedSet(array: objects)
             
         case .Next: //< apend

@@ -1166,7 +1166,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)reloadComments
 {
-    [self.viewModel loadComments:VPageTypeFirst completion:nil];
+    [self.viewModel loadComments:VPageTypeRefresh completion:nil];
 }
 
 - (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
