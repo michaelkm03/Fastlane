@@ -471,6 +471,7 @@
 		67CEBCC81C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */; };
 		67CEBCCA1C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */; };
 		67CEBCCC1C472BA700A3C4A0 /* String+ThumbnailPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */; };
+		67CEBCCE1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
 		67E435DE1C232F7300CBA922 /* AnonymousLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E435DD1C232F7300CBA922 /* AnonymousLoginOperation.swift */; };
 		67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */; };
@@ -2535,6 +2536,7 @@
 		67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+ThumbnailPath.swift"; path = "victorious/Operations/String+ThumbnailPath.swift"; sourceTree = SOURCE_ROOT; };
+		67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
 		67E435DD1C232F7300CBA922 /* AnonymousLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousLoginOperation.swift; sourceTree = "<group>"; };
@@ -5211,13 +5213,15 @@
 				C352CF3B1BF2957000790921 /* BatchFollowUsersRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */,
+				67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */,
 				C323C3B61BF55F6600681059 /* CommentEditRequest.swift */,
 				A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */,
 				79D081A71BF15CD200E8A0C5 /* ConversationListRequest.swift */,
 				79D081B51BF19AD100E8A0C5 /* ConversationRequest.swift */,
 				79CFD3D21BF2A784004F70D9 /* ConversationWithUserRequest.swift */,
-				677AF6421C44A80E00B178EE /* CreateTextPostRequest.swift */,
 				A7039CE01C24867C0023DE6F /* CreateAlertRequest.swift */,
+				677AF6421C44A80E00B178EE /* CreateTextPostRequest.swift */,
+				67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */,
 				79004DB71BF53A050027E344 /* DateFormat.swift */,
 				67FD54C21BF6939400CF52F7 /* DeleteCommentRequest.swift */,
 				67FD54C41BF693A800CF52F7 /* DeleteConversationRequest.swift */,
@@ -5256,9 +5260,10 @@
 				A702C84C1C121762001EE1D5 /* Paginator.swift */,
 				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
 				67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */,
+				A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */,
+				67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
-				A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				67A952411C443526001234B4 /* RegisterPushNotificationRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
@@ -5295,8 +5300,6 @@
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
 				A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */,
 				A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */,
-				67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */,
-				67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */,
 			);
 			path = VictoriousIOSSDK;
 			sourceTree = "<group>";
@@ -10385,6 +10388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */,
+				67CEBCCE1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift in Sources */,
 				A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				795271021C348C8900BD41F1 /* UserSearchRequest.swift in Sources */,

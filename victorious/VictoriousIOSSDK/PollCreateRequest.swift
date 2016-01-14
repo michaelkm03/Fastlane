@@ -33,11 +33,10 @@ public struct PollParameters {
     }
 }
 
-/// Adds a comment to a particular sequence
 public struct PollCreateRequest: RequestType {
     
-    let requestBody: RequestBodyWriter.Output
-    let requestBodyWriter = RequestBodyWriter()
+    let requestBody: RequestBodyWriterOutput
+    let requestBodyWriter = PollCreateRequestBodyWriter()
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/poll/create")!)
@@ -62,55 +61,5 @@ public struct PollCreateRequest: RequestType {
             throw ResponseParsingError()
         }
         return pollSequenceRemoteID
-    }
-}
-
-extension PollCreateRequest {
-    
-    /// An object that handles writing multipart form input for POST methods for /api/poll/create endpoint
-    class RequestBodyWriter: NSObject {
-        
-        struct Output {
-            let fileURL: NSURL
-            let contentType: String
-        }
-        
-        private var bodyTempFile: NSURL = {
-            let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-            return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-        }()
-        
-        deinit {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
-        }
-        
-        /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-        func write( parameters parameters: PollParameters ) throws -> Output {
-            let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
-            
-            try writer.appendPlaintext( parameters.name, withFieldName: "name")
-            try writer.appendPlaintext( parameters.description, withFieldName: "description")
-            try writer.appendPlaintext( parameters.question, withFieldName: "question")
-            
-            var i = 1
-            for answer in parameters.answers {
-                try writer.appendPlaintext( parameters.question, withFieldName: "answer\(i)_label")
-                
-                if let pathExtension = answer.mediaURL.pathExtension,
-                    let mimeType = answer.mediaURL.vsdk_mimeType {
-                        try writer.appendFileWithName("media_data.\(pathExtension)",
-                            contentType: mimeType,
-                            fileURL: answer.mediaURL,
-                            fieldName: "answer\(i)_media"
-                        )
-                }
-                
-                i++
-            }
-            
-            try writer.finishWriting()
-            
-            return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
-        }
     }
 }
