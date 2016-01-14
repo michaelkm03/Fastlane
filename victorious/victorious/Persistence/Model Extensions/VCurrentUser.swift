@@ -62,7 +62,13 @@ public extension VUser {
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as their can be only one.
     func setAsCurrentUser() {
-        VCurrentUser.persistentStore.mainContext.v_performBlockAndWait() { context in
+        let persistentStore = VCurrentUser.persistentStore
+        
+        guard self.managedObjectContext == persistentStore.mainContext else {
+            fatalError( "Attempt to set a user from a persistent store's main context as the current user.  Make sure the receiver (a `VUser`) was loaded from the main context." )
+        }
+        
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
         }
     }
