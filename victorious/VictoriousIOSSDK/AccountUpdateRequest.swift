@@ -9,13 +9,18 @@
 import Foundation
 import SwiftyJSON
 
+struct AccountUpdateParameters {
+    let profileUpdate: ProfileUpdate?
+    let passwordUpdate: PasswordUpdate?
+}
+
 /// Updates the user's profile and/or password information
 public struct AccountUpdateRequest: RequestType {
     
     public let profileUpdate: ProfileUpdate?
     public let passwordUpdate: PasswordUpdate?
-    private let requestBody: AccountUpdateRequestBody.Output
-    private let requestBodyWriter = AccountUpdateRequestBody()
+    private let requestBody: RequestBodyWriterOutput
+    private let requestBodyWriter = AccountUpdateRequestBodyWriter()
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/account/update")!)
@@ -37,7 +42,10 @@ public struct AccountUpdateRequest: RequestType {
         self.profileUpdate = profileUpdate
         self.passwordUpdate = nil
         do {
-            self.requestBody = try requestBodyWriter.write(profileUpdate, passwordUpdate: passwordUpdate)
+            self.requestBody = try requestBodyWriter.write(parameters: AccountUpdateParameters(
+                profileUpdate: profileUpdate,
+                passwordUpdate: passwordUpdate)
+            )
         } catch {
             return nil
         }
