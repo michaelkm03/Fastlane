@@ -15,6 +15,10 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
     var didResetResults = false
     
     private var resultObjectIDs = [NSManagedObjectID]()
+    
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
     private var request: FriendFindByEmailRequest!
     
     init?(emails: [String]) {

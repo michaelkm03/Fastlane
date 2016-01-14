@@ -11,6 +11,9 @@ import VictoriousIOSSDK
 
 class CommentAddOperation: RequestOperation {
     
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
     let request: CommentAddRequest!
     
     private let publishParameters: VPublishParameters?
