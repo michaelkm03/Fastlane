@@ -405,16 +405,6 @@ static char KVOContext;
     
     [self createPoll];
     
-    [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
-                                           description:@"<none>"
-                                          previewImage:self.leftPreviewImageView.image
-                                              question:self.questionTextView.text
-                                           answer1Text:self.leftAnswerTextView.text
-                                           answer2Text:self.rightAnswerTextView.text
-                                             media1Url:self.firstMediaURL
-                                             media2Url:self.secondMediaURL
-                                            completion:nil];
-    
     NSDictionary *params = @{ VTrackingKeyContentType : VTrackingValuePoll };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent parameters:params];
     

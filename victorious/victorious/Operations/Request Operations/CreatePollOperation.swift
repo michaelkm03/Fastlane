@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 class CreatePollOperation: RequestOperation {
     
-    var request: PollCreateRequest
+    let request: PollCreateRequest
     
     private let parameters: PollParameters
     
