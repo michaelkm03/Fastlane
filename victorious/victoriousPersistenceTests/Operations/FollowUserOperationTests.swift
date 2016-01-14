@@ -8,33 +8,28 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
-class FollowUserOperationTests: XCTestCase {
+class FollowUserOperationTests: BaseRequestOperationTestCase {
+    
     var operation: FollowUserOperation!
-    var testStore: TestPersistentStore!
-    var testTrackingManager: TestTrackingManager!
-    var testRequestExecutor: TestRequestExecutor!
     let userID: Int = 1
     let currentUserID: Int = 2
     let screenName = "screenName"
-    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
         self.continueAfterFailure = false
-        testStore = TestPersistentStore()
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation = FollowUserOperation(userID: userID, screenName: screenName)
         operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
     }
 
     func testFollowingAnExistentUser() {
-        let createdCurrentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let createdCurrentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         createdCurrentUser.setAsCurrentUser()
         
-        let createdUserToFollow = operationHelper.createUser(remoteId: userID, persistentStore: testStore)
+        let createdUserToFollow = persistentStoreHelper.createUser(remoteId: userID)
         operation.main()
         
         guard let updatedUserToFollow = self.testStore.mainContext.objectWithID(createdUserToFollow.objectID) as? VUser else {
@@ -86,6 +81,6 @@ class FollowUserOperationTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        operationHelper.tearDownPersistentStore(store: testStore)
+        persistentStoreHelper.tearDownPersistentStore()
     }
 }

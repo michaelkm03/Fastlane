@@ -31,9 +31,6 @@
 #import "VPublishViewController.h"
 #import "VPublishParameters.h"
 
-// API driven behavior
-#import "VObjectManager.h"
-
 // Dependencies
 #import "VDependencyManager.h"
 

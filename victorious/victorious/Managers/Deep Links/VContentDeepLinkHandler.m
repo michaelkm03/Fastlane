@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+Sequence.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -96,7 +94,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
          {
              [hud hide:YES];
              
-             id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+             id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
              [persistentStore.mainContext performBlockAndWait:^
               {
                   NSArray *objects = [persistentStore.mainContext v_findObjectsWithEntityName:[VSequence entityName]

@@ -8,31 +8,26 @@
 
 import XCTest
 @testable import victorious
+@testable import VictoriousIOSSDK
 
-class UnfollowUserOperationTests: XCTestCase {
+class UnfollowUserOperationTests: BaseRequestOperationTestCase {
+    
     var operation: UnfollowUserOperation!
-    var testStore: TestPersistentStore!
-    var testRequestExecutor: TestRequestExecutor!
-    var testTrackingManager: TestTrackingManager!
     let userID = 1
     let currentUserID = 2
     let screenName = "screenName"
-    let operationHelper = RequestOperationTestHelper()
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        testStore = TestPersistentStore()
-        testTrackingManager = TestTrackingManager()
-        testRequestExecutor = TestRequestExecutor()
         operation = UnfollowUserOperation(userID: userID, screenName: screenName)
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }
 
     func testUnfollowingAnExistingUser() {
-        let objectUser = operationHelper.createUser(remoteId: userID, persistentStore: testStore)
-        let currentUser = operationHelper.createUser(remoteId: currentUserID, persistentStore: testStore)
+        let objectUser = persistentStoreHelper.createUser(remoteId: userID)
+        let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         currentUser.setAsCurrentUser()
 
         objectUser.isFollowedByMainUser = true
@@ -67,6 +62,6 @@ class UnfollowUserOperationTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        operationHelper.tearDownPersistentStore(store: testStore)
+        persistentStoreHelper.tearDownPersistentStore()
     }
 }

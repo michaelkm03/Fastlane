@@ -24,10 +24,10 @@ class TestAlertsViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.row == Indexes.LevelUp.rawValue {
-            InterstitialManager.sharedInstance.registerTestLevelUpAlert()
+            InterstitialManager.sharedInstance.debug_registerTestLevelUpAlert()
         }
         else if indexPath.row == Indexes.Achievement.rawValue {
-            InterstitialManager.sharedInstance.registerTestAchievementAlert()
+            InterstitialManager.sharedInstance.debug_registerTestAchievementAlert()
         }
     }
     

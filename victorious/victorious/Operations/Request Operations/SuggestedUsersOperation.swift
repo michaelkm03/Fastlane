@@ -19,7 +19,7 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    func onComplete( users: [SuggestedUser], completion:()->() ) {
+    func onComplete( users: SuggestedUsersRequest.ResultType, completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlockAndWait() { context in
             

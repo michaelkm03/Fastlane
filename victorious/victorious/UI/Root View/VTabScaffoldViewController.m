@@ -139,7 +139,7 @@ static NSString * const kMenuKey = @"menu";
     
     if (self.presentedViewController == nil)
     {
-        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+        [[InterstitialManager sharedInstance] showNextInterstitialOnViewController:self];
     }
 }
 
@@ -520,7 +520,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 {
     if (self.presentedViewController == nil)
     {
-        [[InterstitialManager sharedInstance] displayNextInterstitialIfPossible:self];
+        [[InterstitialManager sharedInstance] showNextInterstitialOnViewController:self];
     }
 }
 
