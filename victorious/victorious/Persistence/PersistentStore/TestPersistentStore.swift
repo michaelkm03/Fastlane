@@ -48,8 +48,8 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         return sharedCoreDataManager.mainContext
     }
     
-    var backgroundContext: NSManagedObjectContext {
-        return sharedCoreDataManager.backgroundContext
+    func createBackgroundContext() -> NSManagedObjectContext {
+        return sharedCoreDataManager.createBackgroundContext()
     }
     
     func deletePersistentStore() throws {

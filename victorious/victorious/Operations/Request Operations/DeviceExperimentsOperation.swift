@@ -21,7 +21,7 @@ class DeviceExperimentsOperation: RequestOperation {
     
     private func onComplete( result: (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]), completion:() -> () ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             for experiment in result.experiments {
                 let uniqueElements = [ "id" : experiment.id, "layerId" : experiment.layerID ]
                 let persistentExperiment: Experiment = context.v_findOrCreateObject(uniqueElements)

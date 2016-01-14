@@ -326,18 +326,22 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     if ( [VCurrentUser user] != nil )
     {
-        // Logout
-        Operation *operation = [[LogoutLocally alloc] initFromViewController:self dependencyManager:self.dependencyManager];
-        [operation queueOn:[NSOperationQueue mainQueue] completionBlock:^void(Operation *op){
+        // Logout first if logged in
+        LogoutOperation *operation = [[LogoutOperation alloc] init];
+        [operation queueOn:operation.defaultQueue completionBlock:^void(NSError *_Nullable error)
+        {
             [self updateLogoutButtonState];
         }];
     }
-    else
-    {
-        // Show login prompt
-        [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queueOn:[Operation sharedQueue] completionBlock:nil];
-        [self updateLogoutButtonState];
-    }
+    
+    // Then show login prompt
+    [self showLogin];
+}
+
+- (void)showLogin
+{
+    [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queueOn:[Operation sharedQueue] completionBlock:nil];
+    [self updateLogoutButtonState];
 }
 
 #pragma mark - ForceLoginOperationDelegate
