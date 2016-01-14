@@ -20,7 +20,7 @@ class LogoutOperation: RequestOperation {
     
     override func main() {
         guard VCurrentUser.user() != nil else {
-            // Cannot logout with a current (logged-in) user
+            // Cannot logout without a current (logged-in) user
             return
         }
         

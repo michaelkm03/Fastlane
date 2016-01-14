@@ -630,7 +630,6 @@
 		A7078CB91BFA674C008FB7FF /* VUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */; };
 		A7078CD71BFA7D2B008FB7FF /* ForceLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */; };
 		A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */; };
-		A7078CD91BFA7D2B008FB7FF /* LogoutLocallyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC51BFA7D2B008FB7FF /* LogoutLocallyOperation.swift */; };
 		A7078CDA1BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */; };
 		A7078CDC1BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */; };
 		A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */; };
@@ -2760,7 +2759,6 @@
 		A7078CB81BFA674C008FB7FF /* VUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUserProfileViewController.swift; sourceTree = "<group>"; };
 		A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForceLoginOperation.swift; sourceTree = "<group>"; };
 		A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
-		A7078CC51BFA7D2B008FB7FF /* LogoutLocallyOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutLocallyOperation.swift; sourceTree = "<group>"; };
 		A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		A7078CC91BFA7D2B008FB7FF /* ShowCreateSheetOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCreateSheetOperation.swift; sourceTree = "<group>"; };
 		A7078CCA1BFA7D2B008FB7FF /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
@@ -6519,7 +6517,6 @@
 				67E435DD1C232F7300CBA922 /* AnonymousLoginOperation.swift */,
 				A7078CC31BFA7D2B008FB7FF /* ForceLoginOperation.swift */,
 				A7078CC41BFA7D2B008FB7FF /* FTUEVideoOperation.swift */,
-				A7078CC51BFA7D2B008FB7FF /* LogoutLocallyOperation.swift */,
 				A7078CC61BFA7D2B008FB7FF /* RequestPushNotificationPermissionOperation.swift */,
 			);
 			path = "Launch Operations";
@@ -10780,7 +10777,6 @@
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
-				A7078CD91BFA7D2B008FB7FF /* LogoutLocallyOperation.swift in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
