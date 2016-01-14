@@ -8,6 +8,7 @@
 
 #import "VVideoView.h"
 #import <KVOController/FBKVOController.h>
+#import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 #import "VVideoUtils.h"
 
 @import AVFoundation;
@@ -22,6 +23,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayer *player;
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
+@property (nonatomic, strong, nullable) IMAAVPlayerContentPlayhead *contentPlayhead;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
