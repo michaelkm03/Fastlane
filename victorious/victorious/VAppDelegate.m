@@ -32,7 +32,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ([NSBundle isTestBundle])
+    if ([NSBundle v_isTestBundle])
     {
         return YES;
     }

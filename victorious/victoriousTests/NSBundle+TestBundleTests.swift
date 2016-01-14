@@ -11,6 +11,6 @@ import XCTest
 
 class NSBundlePlusTestBundleTests: XCTestCase {
     func testRunningInTestMode() {
-        XCTAssertEqual(true, NSBundle.isTestBundle)
+        XCTAssertEqual(true, NSBundle.v_isTestBundle)
     }
 }
