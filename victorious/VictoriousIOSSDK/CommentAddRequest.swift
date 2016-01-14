@@ -32,6 +32,8 @@ public struct CommentAddRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
+        requestBodyWriter.removeBodyTempFile()
+        
         guard let comment = Comment(json: responseJSON["payload"]) else {
             throw ResponseParsingError()
         }

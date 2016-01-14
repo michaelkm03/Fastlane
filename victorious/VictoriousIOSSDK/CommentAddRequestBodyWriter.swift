@@ -15,10 +15,6 @@ class CommentAddRequestBodyWriter: RequestBodyWriter {
         return createBodyTempFile()
     }
     
-    deinit {
-        removeBodyTempFile()
-    }
-    
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
     func write( parameters parameters: CommentParameters ) throws -> RequestBodyWriterOutput {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)

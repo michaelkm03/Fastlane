@@ -55,6 +55,8 @@ public struct PollCreateRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+        requestBodyWriter.removeBodyTempFile()
+        
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let pollSequenceRemoteID = sequenceID.string else {
