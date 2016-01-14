@@ -28,20 +28,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
-               BuildableName = "UIAutomationTests.xctest"
-               BlueprintName = "UIAutomationTests"
-               ReferencedContainer = "container:victorious.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "EBEA19B51BC4A76C00878B18"
                BuildableName = "victoriousUITests.xctest"
                BlueprintName = "victoriousUITests"

@@ -23,7 +23,6 @@ public struct Message {
 }
 
 extension Message {
-    static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
     
     public init?(json: JSON) {
         guard let messageID = Int(json["message_id"].stringValue),
@@ -34,7 +33,7 @@ extension Message {
         self.sender         = sender
         
         self.isRead         = json["is_read"].bool
-        self.postedAt       = Message.dateFormatter.dateFromString(json["posted_at"].stringValue)
+        self.postedAt       = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue)
         self.text           = json["text"].string
         self.isGIFStyle     = json["is_gif_style"].bool
         self.shouldAutoplay = json["should_autoplay"].bool

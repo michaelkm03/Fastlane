@@ -43,7 +43,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = self.startingDisplayOrder
+            var displayOrder = self.request.paginator.start
             
             var newComments = [VComment]()
             for comment in unflaggedResults {
@@ -78,9 +78,9 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "sequenceId == %@",
-                v_argumentArray: [self.sequenceID],
-                v_paginator: self.request.paginator
+                vsdk_format: "sequenceId == %@",
+                vsdk_argumentArray: [self.sequenceID],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )

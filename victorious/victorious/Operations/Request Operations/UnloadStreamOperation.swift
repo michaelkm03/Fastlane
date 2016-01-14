@@ -14,7 +14,7 @@ class UnloadStreamItemOperation: Operation {
     
     private let streamID: String
     
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     init( streamID: String) {
         self.streamID = streamID

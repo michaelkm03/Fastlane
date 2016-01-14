@@ -16,8 +16,6 @@ class MainPersistentStoreTests: XCTestCase {
 
     var storedBackgroundContext: NSManagedObjectContext?
     
-    var storedBackgroundContext: NSManagedObjectContext?
-    
     func testSyncBasic() {
         persistentStore.mainContext.v_performBlockAndWait() { context in
             XCTAssert( NSThread.currentThread().isMainThread )

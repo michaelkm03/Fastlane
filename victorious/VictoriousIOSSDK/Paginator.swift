@@ -31,4 +31,17 @@ public protocol Paginator {
 public protocol NumericPaginator: Paginator {
     var pageNumber: Int { get }
     var itemsPerPage: Int { get }
+    var start: Int { get }
+    var end: Int { get }
+}
+
+extension NumericPaginator {
+    
+    public var start: Int {
+        return (pageNumber - 1) * itemsPerPage
+    }
+    
+    public var end: Int {
+        return start + itemsPerPage
+    }
 }

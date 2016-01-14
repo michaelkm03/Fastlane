@@ -29,7 +29,7 @@ class LogoutOperation: RequestOperation {
         
         dispatch_sync( dispatch_get_main_queue() ) {
             
-            InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
+            InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
             
             NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
             NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )

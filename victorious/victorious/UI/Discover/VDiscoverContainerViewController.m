@@ -11,8 +11,6 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VDiscoverViewControllerProtocol.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "UIViewController+VLayoutInsets.h"
 

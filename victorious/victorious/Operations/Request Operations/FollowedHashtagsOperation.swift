@@ -34,7 +34,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 return
             }
             
-            var displayOrder = self.startingDisplayOrder
+            var displayOrder = self.request.paginator.start
             
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )
@@ -62,9 +62,9 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedHashtag.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "user.remoteId = %@",
-                v_argumentArray: [ currentUser.remoteId ],
-                v_paginator: self.request.paginator
+                vsdk_format: "user.remoteId = %@",
+                vsdk_argumentArray: [ currentUser.remoteId ],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedHashtag] = context.v_executeFetchRequest( fetchRequest )

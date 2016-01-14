@@ -26,7 +26,7 @@ typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullab
 @property (nonatomic, readonly) VPaginationManager *paginationManager; ///< An object responsible for tracking paginated responses
 @property (nonatomic, readonly) VUploadManager *uploadManager; ///< An object responsible for uploading files
 @property (nonatomic, strong, nullable) NSSet *experimentIDs; //<A set that stores all of the users experimental IDs
-@property (nonatomic, assign) BOOL shouldRegisterAlerts; //< Whether or not the object manager checks each response for alerts
+
 @property (nonatomic, readonly) NSMutableDictionary<NSString*, RKEntityMapping*> *mappingCache; ///< A place to store mappings so they don't have to be constantly re-created
 
 + (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;

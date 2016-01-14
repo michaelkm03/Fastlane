@@ -15,8 +15,8 @@ public struct Notification {
     public let notificationID: String
     public let subject: String
     public let user: User
-    public let createdAt: NSDate
     public let body: String?
+    public let createdAt: NSDate
     public let deeplink: String?
     public let imageURL: String?
     public let isRead: Bool?
@@ -25,10 +25,8 @@ public struct Notification {
     
     public init?(json: JSON) {
         
-        let dateFormatter = NSDateFormatter(format: .Standard)
-        
-        guard let createdAt     = dateFormatter.dateFromString(json["created_at"].stringValue),
-            let notificationID  = String(json["id"].intValue) ?? json["id"].string,
+        guard let createdAt     = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["created_at"].stringValue),
+            let notificationID  = json["id"].string,
             let subject         = json["subject"].string,
             let user            = User(json: json["created_by"]) else {
                 return nil
@@ -43,6 +41,6 @@ public struct Notification {
         imageURL                = json["creator_profile_image_url"].string
         isRead                  = Bool(json["is_read"].stringValue)
         type                    = json["type"].string
-        updatedAt               = dateFormatter.dateFromString(json["updated_at"].stringValue)
+        updatedAt               = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["updated_at"].stringValue)
     }
 }

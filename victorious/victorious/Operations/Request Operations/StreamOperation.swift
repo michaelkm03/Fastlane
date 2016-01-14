@@ -38,7 +38,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             persistentStream.populate(fromSourceModel: stream)
             
             // Parse stream items
-            var displayOrder = self.startingDisplayOrder
+            var displayOrder = self.request.paginator.start
             let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
             for streamItem in streamItems {
                 streamItem.displayOrder = displayOrder++
@@ -59,9 +59,9 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "ANY self.streams.apiPath = %@",
-                v_argumentArray: [ self.apiPath ],
-                v_paginator: self.request.paginator
+                vsdk_format: "ANY self.streams.apiPath = %@",
+                vsdk_argumentArray: [ self.apiPath ],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )

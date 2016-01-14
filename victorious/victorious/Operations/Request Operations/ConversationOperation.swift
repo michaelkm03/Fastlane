@@ -34,7 +34,7 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.startingDisplayOrder
+            var displayOrder = self.request.paginator.start
             
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : self.conversationID ])
             var messagesLoaded = [VMessage]()
@@ -73,9 +73,9 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "conversation.remoteId = %@",
-                v_argumentArray: [ self.conversationID ],
-                v_paginator: self.request.paginator
+                vsdk_format: "conversation.remoteId = %@",
+                vsdk_argumentArray: [ self.conversationID ],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest ) as [VMessage]

@@ -13,7 +13,7 @@ import Foundation
     let fromViewController: UIViewController
     let dependencyManager: VDependencyManager
     
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     required init(fromViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.fromViewController = fromViewController
@@ -39,7 +39,7 @@ import Foundation
         remoteLogoutOperation.addDependency( self )
         remoteLogoutOperation.queue()
 
-        InterstitialManager.sharedInstance.clearAllRegisteredInterstitials()
+        InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
         NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )

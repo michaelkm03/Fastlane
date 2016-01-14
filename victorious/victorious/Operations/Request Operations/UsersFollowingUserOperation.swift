@@ -31,7 +31,7 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
     private func onComplete( results: SequenceLikersRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.startingDisplayOrder
+            var displayOrder = self.request.paginator.start
             
             let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
             for user in results {
@@ -62,9 +62,9 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VFollowedUser.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "objectUser.remoteId = %@",
-                v_argumentArray: [ self.userID ],
-                v_paginator: self.request.paginator
+                vsdk_format: "objectUser.remoteId = %@",
+                vsdk_argumentArray: [ self.userID ],
+                vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             let results: [VFollowedUser] = context.v_executeFetchRequest( fetchRequest )

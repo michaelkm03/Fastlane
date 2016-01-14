@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "VTrackingManager.h"
 #import "VFirstInstallManager.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager.h"
 #import "NSObject+VMethodSwizzling.h"
 
 @interface VFirstInstallTests : XCTestCase

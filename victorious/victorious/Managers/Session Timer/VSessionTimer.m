@@ -8,7 +8,7 @@
 
 #import "NSArray+VMap.h"
 #import "VDependencyManager+VTracking.h"
-#import "VObjectManager+Analytics.h"
+#import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "VTracking.h"

@@ -28,16 +28,12 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
             return
         }
         
-        let loadedUser: VUser? = PersistentStoreSelector.mainPersistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueInfo = [ "remoteId" : userResult.sourceResult.userID ]
-            return context.v_findObjects( uniqueInfo ).first as? VUser
+        LoadUserOperation(userID: userResult.sourceResult.userID).queue() { operation in
+            if let user = (operation as? LoadUserOperation)?.result {
+                // FIXME: self.displayConversationForUser(user, animated: true)
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
-        
-        if let user = loadedUser {
-            // FIXME
-            //self.displayConversationForUser(user, animated: true)
-        }
-        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

@@ -28,11 +28,6 @@ protocol PaginatedOperation {
     
     /// Returns a copy of this operation configured for loading previous page worth of data
     func prev() -> Self?
-
-    /// For the particular paginator involved, returns the starting display order for the current page
-    /// with the intention that concrete implementations will use this to create a persistent display order
-    /// based on the order in which results are received from the network.
-    var startingDisplayOrder: Int { get }
     
     /// A place to store the results so that they are available to calling code that is
     /// consuming this delegate (most likely an NSOperation).  This is why the protocol
@@ -71,12 +66,5 @@ extension PaginatedOperation where PaginatedRequestType : ResultBasedPageable {
             return self.dynamicType.init(request: request)
         }
         return nil
-    }
-}
-
-extension PaginatedOperation where PaginatedRequestType.PaginatorType : NumericPaginator {
-
-    var startingDisplayOrder: Int {
-        return (request.paginator.pageNumber - 1) * request.paginator.itemsPerPage
     }
 }
