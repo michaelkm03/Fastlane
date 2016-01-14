@@ -32,6 +32,9 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     
     convenience init?( queryString: String ) {
         guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+            /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
+            self.init(request: UserSearchRequest(query: ""))
+
             return nil
         }
         self.init(request: UserSearchRequest(query: escapedString))
