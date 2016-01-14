@@ -30,4 +30,17 @@ class CreatePollOperationTests: XCTestCase {
         
         XCTAssertEqual(1, testExecutor.executeRequestCallCount)
     }
+    
+    func testInvalidParameters() {
+        let mockAnswers = [
+            PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
+            PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!),
+            PollAnswer(label: "CCC", mediaURL: NSURL(string: "media_C")!)
+        ]
+        
+        let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
+        
+        let operation: CreatePollOperation? = CreatePollOperation(parameters: mockParameters)
+        XCTAssertNil(operation)
+    }
 }
