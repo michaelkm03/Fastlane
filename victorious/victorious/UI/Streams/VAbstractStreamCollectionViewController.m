@@ -19,7 +19,6 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 #import "VScrollPaginator.h"
-#import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
@@ -28,8 +27,6 @@
 
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
-
-@property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 @property (nonatomic, readwrite) CGFloat topInset;

@@ -12,7 +12,6 @@
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VImageCameraViewController.h"
-#import "VImageSearchViewController.h"
 #import "VCameraToWorkspaceAnimator.h"
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"

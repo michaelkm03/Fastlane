@@ -10,12 +10,10 @@
 #import "UIImage+ImageCreation.h"
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
-#import "VImageSearchViewController.h"
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
+#import "victorious-Swift.h"
 #import "VDependencyManager.h"
-// Media Creation
 #import "VMediaAttachmentPresenter.h"
 
 static const NSInteger kMinLength = 2;
