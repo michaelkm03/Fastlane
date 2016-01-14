@@ -27,7 +27,6 @@
 #import "DiscoverSearchViewController.h"
 
 // Transition
-#import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
@@ -80,9 +79,6 @@
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     self.searchField.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     self.searchField.delegate = self;
-
-    VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
-    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
 
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeAll;

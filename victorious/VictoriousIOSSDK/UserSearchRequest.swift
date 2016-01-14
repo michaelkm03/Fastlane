@@ -22,9 +22,9 @@ public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
 
-    // param: - query must be a urlPathPart percent encoded string
-    public init(query: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
-        self.searchTerm = query
+    // param: - searchTerm must be a urlPathPart percent encoded string
+    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+        self.searchTerm = searchTerm
         self.paginator = paginator
     }
     

@@ -34,7 +34,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
             return nil
         }
-        self.init(request: UserSearchRequest(query: escapedString))
+        self.init(request: UserSearchRequest(searchTerm: escapedString))
     }
     
     override func main() {
@@ -47,16 +47,16 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     
     func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
         
-        defer { completion() }
-        
-        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
-        
         guard !networkResult.isEmpty else {
             results = []
+            completion()
             return
         }
         
-        results = networkResult.map{ UserSearchResultObject( user: $0) }
+        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
+        
+        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
+        completion()
 
         // Populate our local users cache based off the new data
         persistentStore.backgroundContext.v_performBlock { context in

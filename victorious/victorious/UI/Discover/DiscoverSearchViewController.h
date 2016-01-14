@@ -20,18 +20,8 @@
 
 @property (nonatomic, strong) SearchResultsViewController *userSearchViewController;
 @property (nonatomic, strong) SearchResultsViewController *hashtagsSearchViewController;
-@property (nonatomic, strong) SearchResultsViewController *currentSearchVC;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchResultsTableBottomCosntraint;
 @property (nonatomic, weak) IBOutlet UIView *searchResultsContainerView;
-@property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
-@property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
-@property (nonatomic, weak) IBOutlet UIButton *closeButton;
-
-@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
