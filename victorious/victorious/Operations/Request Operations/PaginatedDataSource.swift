@@ -34,7 +34,9 @@ import Foundation
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
 @objc public class PaginatedDataSource: NSObject {
-    private(set) var currentOperation: RequestOperation?
+    
+    // Keeps a reference without retaining; avoids needing [weak self] when queueing
+    private(set) weak var currentOperation: RequestOperation?
     
     private(set) var state: DataSourceState = .Cleared {
         didSet {
@@ -75,6 +77,10 @@ import Foundation
         currentOperation = nil
     }
     
+    private var hasNetworkConnection: Bool {
+        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
+    }
+    
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
         guard state != .Loading else {
@@ -84,7 +90,7 @@ import Foundation
         let operationToQueue: RequestOperation?
         switch pageType {
             
-        case .Refresh:
+        case .Refresh, .CheckNew:
             operationToQueue = createOperation() as? RequestOperation
             
         case .Next:
@@ -96,13 +102,31 @@ import Foundation
         
         if let operation = operationToQueue, let typedOperation = operationToQueue as? T {
             self.state = .Loading
-            operation.queue() { error in
-                self.onOperationComplete( typedOperation, pageType: pageType, error: error)
-                if error != nil {
+            
+            if pageType == .Refresh && hasNetworkConnection {
+                operation.clearResults()
+            }
+            
+            operation.queue() {  error in
+                
+                if let error = error {
+                    
+                    // Fetch local results if we failed because of no network
+                    if error.code == RequestOperation.errorCodeNoNetworkConnection {
+                       operation.results = operation.fetchResults()
+                        
+                    } else {
+                        // Otherwise, return no results
+                        operation.results = []
+                    }
+                    self.onOperationComplete(typedOperation, pageType: pageType)
                     self.state = .Error
+              
                 } else {
+                    self.onOperationComplete(typedOperation, pageType: pageType)
                     self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 }
+                
                 completion?( operation: typedOperation, error: error )
             }
         }
@@ -112,11 +136,10 @@ import Foundation
     
     // MARK: - Private helpers
     
-    private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType, error: NSError? ) {
+    private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType) {
         guard let results = operation.results where !results.isEmpty else {
             return
         }
-        
         self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
     }
 }
@@ -132,7 +155,7 @@ private extension NSOrderedSet {
         case .Next: //< apend
             return NSOrderedSet(array: self.array + objects)
             
-        case .Previous: //< prepend
+        case .Previous, .CheckNew: //< prepend
             return NSOrderedSet(array: objects + self.array)
         }
     }

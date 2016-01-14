@@ -63,6 +63,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
     // MARK: - PaginatedRequestExecutorDelegate
     
     override func clearResults() {
+        // TODO: Don't wait if called form paginated data source
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let persistentStream: VStream = context.v_findObjects( [ "apiPath" : self.apiPath ] ).first else {
                 return

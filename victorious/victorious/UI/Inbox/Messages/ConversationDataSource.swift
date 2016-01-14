@@ -40,7 +40,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return self.paginatedDataSource.state
     }
     
-    func loadConversation( pageType: VPageType, completion:((NSError?)->())? = nil ) {
+    func loadMessages( pageType pageType: VPageType, completion:((NSError?)->())? = nil ) {
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return ConversationOperation(conversationID: self.conversation.remoteId.integerValue)
@@ -53,7 +53,7 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     
     func onMessagesChanged( changeInfo: [NSObject : AnyObject]? ) {
         if !paginatedDataSource.isLoading() {
-            loadConversation( .Refresh )
+            loadMessages( pageType: .CheckNew )
         }
     }
     

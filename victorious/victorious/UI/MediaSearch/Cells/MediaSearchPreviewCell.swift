@@ -1,5 +1,5 @@
 //
-//  GIFSearchPreviewCell.swift
+//  MediaSearchPreviewCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/13/15.
@@ -11,9 +11,9 @@ import UIKit
 
 /// The full size cell that plays the GIF video asset when an item is selected
 /// from the list of GIF search results
-class GIFSearchPreviewCell: UICollectionViewCell {
+class MediaSearchPreviewCell: UICollectionViewCell {
     
-    static let ReuseIdentifier = "GIFSearchPreviewCell"
+    static let ReuseIdentifier = "MediaSearchPreviewCell"
     
     var videoPlayer: VVideoPlayer?
     

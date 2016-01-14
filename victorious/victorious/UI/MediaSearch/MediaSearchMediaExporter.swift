@@ -1,5 +1,5 @@
 //
-//  GIFSearchMediaExporter.swift
+//  MediaSearchExporter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/13/15.
@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 /// Helper that handles loading preview image and streaming GIF asset
 /// to a file using asynchronous operations.
-struct GIFSearchMediaExporter {
+struct MediaSearchExporter {
     
     private let operationQueue = NSOperationQueue()
     
@@ -20,19 +20,19 @@ struct GIFSearchMediaExporter {
     /// - parameter previewImage: A UIImage loaded with a still thumbnail asset
     /// - parameter mediaUrl: The URL on disk of the downloaded media file
     /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
-    typealias GIFSearchMediaExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
+    typealias MediaSearchExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
-    /// For the provided GIFSearchResult, downlods its video asset to disk and loads a preview image
+    /// For the provided MediaSearchResult, downlods its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
-    /// - parameter gifSearchResult: The GIFSearchResult whose assets will be loaded/downloaded
+    /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded
     /// - parameter completion: A completion closure called wehn all opeartions are complete
-    func loadMedia( gifSearchResult: GIFSearchResultObject, completion: GIFSearchMediaExporterCompletion ) {
+    func loadMedia( mediaSearchResult: MediaSearchResult, completion: MediaSearchExporterCompletion ) {
         
-        if let searchResultURL = NSURL(string: gifSearchResult.sourceResult.mp4URL) {
+        if let searchResultURL = mediaSearchResult.sourceMediaURL {
             let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
-            if let previewImageURL = NSURL(string: gifSearchResult.sourceResult.thumbnailStillURL),
-                let videoURL = NSURL(string: gifSearchResult.sourceResult.mp4URL),
+            if let previewImageURL = mediaSearchResult.thumbnailImageURL,
+                let videoURL = mediaSearchResult.sourceMediaURL,
                 let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
                     
                     let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))

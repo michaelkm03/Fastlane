@@ -436,50 +436,6 @@ static char KVOContext;
     }
 }
 
-- (IBAction)searchImageAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-    
-    VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
-    
-    if (self.firstMediaURL)
-    {
-        imageSearch.searchTerm = self.rightAnswerTextView.text;
-    }
-    else
-    {
-        imageSearch.searchTerm = self.leftAnswerTextView.text;
-    }
-    
-    VImageSearchViewController __weak *weakImageSearch = imageSearch;
-    imageSearch.imageSelectionHandler = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            if (self.firstMediaURL)
-            {
-                if (!self.rightAnswerTextView.text || [self.rightAnswerTextView.text isEqualToString:@""])
-                {
-                    self.rightAnswerTextView.text = weakImageSearch.searchTerm;
-                    [self textViewDidChange:self.rightAnswerTextView];
-                }
-            }
-            else
-            {
-                if (!self.leftAnswerTextView.text || [self.leftAnswerTextView.text isEqualToString:@""])
-                {
-                    self.leftAnswerTextView.text = weakImageSearch.searchTerm;
-                    [self textViewDidChange:self.leftAnswerTextView];
-                }
-            }
-            [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
-        }
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    [self presentViewController:imageSearch animated:YES completion:nil];
-}
-
 - (VContentInputAccessoryView *)inputAccessoryViewForTextView:(UITextView *)textView
 {
     VContentInputAccessoryView *contentInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];

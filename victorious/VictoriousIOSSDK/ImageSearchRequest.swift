@@ -11,19 +11,17 @@ import SwiftyJSON
 
 /// Returns a list of images based on a search term
 public struct ImageSearchRequest: PaginatorPageable, ResultBasedPageable {
-    
-    // A term to use when searching for GIFs
-    public let searchTerm: String
-    
-    public let urlRequest: NSURLRequest
-    
-    public let paginator: StandardPaginator
-    
+	
+	public let urlRequest: NSURLRequest
+	public let searchTerm: String
+	
+	public let paginator: StandardPaginator
+	
     public init( request: ImageSearchRequest, paginator: StandardPaginator ) {
         self.init( searchTerm: request.searchTerm, paginator: request.paginator)
     }
-    
-    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator() ) {
+	
+	public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
         let url = NSURL(string: "/api/image/search")!.URLByAppendingPathComponent(searchTerm)
         let mutableURLRequest = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)

@@ -28,42 +28,53 @@ class PaginatedRequestExecutor: PaginatedRequestExecutorType {
         self.startingDisplayOrder = (request.paginator.pageNumber - 1) * request.paginator.itemsPerPage
         
         self.requestExecutor.executeRequest( request,
+            
+            // When the request finishes successully:
             onComplete: { (result, completion) in
                 
-                // When refreshing (first page) with a network connection, old local data needs to be cleared out
-                if self.hasNetworkConnection && request.paginator.pageNumber == 1 {
-                    self.delegate?.clearResults()
-                }
-                
                 // `onComplete` populates new data into the persistent store received by the network
-                onComplete?(result) {
-                    
-                    // Then we send that data back
-                    self.delegate?.results = self.delegate?.fetchResults()
+                if let onComplete = onComplete {
+                    onComplete(result) {
+                        self.handleSuccess()
+                        completion()
+                    }
+                } else {
+                    self.handleSuccess()
                     completion()
                 }
             },
+            
+            // When the request encounters an error
             onError: { (error, completion) in
                 
                 // Let the operation have first crack at handling the error in case any local changes need be made
-                onError?(error) {
-                    
-                    if error.code == RequestOperation.errorCodeNoNetworkConnection {
-                        // If the request failed because there's no network connection, fetch the local results
-                        self.delegate?.results = self.delegate?.fetchResults()
-                        
-                    } else {
-                        // Otherwise, return no results
-                        self.delegate?.results = []
+                if let onError = onError {
+                    onError(error) {
+                        self.handleError(error)
+                        completion()
                     }
-                    
+                } else {
+                    self.handleError(error)
                     completion()
                 }
             }
         )
     }
     
-    private var hasNetworkConnection: Bool {
-        return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
+    private func handleSuccess() {
+        // Populate the results with fetched data we send that data back
+        self.delegate?.results = self.delegate?.fetchResults()
+    }
+    
+    private func handleError( error: NSError ) {
+        
+        // If the request failed because there's no network connection, fetch the local results
+        if error.code == RequestOperation.errorCodeNoNetworkConnection {
+            self.delegate?.results = self.delegate?.fetchResults()
+            
+        } else {
+            // Otherwise, return no results
+            self.delegate?.results = []
+        }
     }
 }

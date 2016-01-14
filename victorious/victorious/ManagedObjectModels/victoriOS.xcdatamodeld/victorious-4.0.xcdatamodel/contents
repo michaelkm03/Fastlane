@@ -114,18 +114,6 @@
         <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
         <relationship name="subjectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
-        <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="gifUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="mp4Size" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="mp4Url" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="remoteId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="thumbnailStillUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-    </entity>
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
@@ -385,7 +373,6 @@
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="FollowedHashtag" positionX="225" positionY="-621" width="128" height="90"/>
         <element name="FollowedUser" positionX="216" positionY="-630" width="128" height="90"/>
-        <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="90"/>
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>

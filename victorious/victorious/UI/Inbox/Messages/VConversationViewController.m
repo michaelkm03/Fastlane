@@ -91,7 +91,7 @@
 
 - (void)refresh
 {
-    [self.dataSource loadConversation:self.conversation pageType:VPageTypeRefresh completion:^(NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeRefresh completion:^(NSError *_Nullable error)
      {
          if ( error != nil )
          {
@@ -165,7 +165,7 @@
 
 - (void)shouldLoadNextPage
 {
-    [self.dataSource loadConversation:self.conversation pageType:VPageTypeNext completion:nil];
+    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

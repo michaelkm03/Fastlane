@@ -1,5 +1,5 @@
 //
-//  GIFSearchNoContentCell.swift
+//  MediaSearchNoContentCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/13/15.
@@ -9,9 +9,9 @@
 import UIKit
 
 /// A cell used to show a loading, error or no results state in GIF search
-class GIFSearchNoContentCell: UICollectionViewCell {
+class MediaSearchNoContentCell: UICollectionViewCell {
     
-    static let ReuseIdentifier = "GIFSearchNoContentCell"
+    static let ReuseIdentifier = "MediaSearchNoContentCell"
     
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
