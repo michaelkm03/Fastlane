@@ -378,6 +378,7 @@
 		627D07E51C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627D07E41C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift */; };
 		627699C81C40429F00057DC4 /* UnfollowUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627699C71C40429F00057DC4 /* UnfollowUserOperationTests.swift */; };
 		627D07E61C3F6A8F004B8D27 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
+		6280E4911C485533009E42B6 /* VUser+AddRemoveFollower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6280E4901C485533009E42B6 /* VUser+AddRemoveFollower.swift */; };
 		628681F51C287C9B00DEF638 /* FollowUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628681F41C287C9B00DEF638 /* FollowUserOperation.swift */; };
 		62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
 		62E2407B1C332125001037C3 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2407A1C332125001037C3 /* RequestExecutorType.swift */; };
@@ -2430,6 +2431,7 @@
 		625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchFollowUsersOperationTests.swift; sourceTree = "<group>"; };
 		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
 		627D07E41C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchFollowUsersOperation.swift; sourceTree = "<group>"; };
+		6280E4901C485533009E42B6 /* VUser+AddRemoveFollower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AddRemoveFollower.swift"; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperation.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PersistentStoreTestHelper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -7662,6 +7664,7 @@
 			isa = PBXGroup;
 			children = (
 				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
+				6280E4901C485533009E42B6 /* VUser+AddRemoveFollower.swift */,
 				A7EBF5631C2F3BF40080C7CF /* VUser+FollowedHashtags.swift */,
 			);
 			path = "Model Extensions";
@@ -10791,6 +10794,7 @@
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
+				6280E4911C485533009E42B6 /* VUser+AddRemoveFollower.swift in Sources */,
 				F06B418F1B7C30BC008709E8 /* HashtagShelf.swift in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,

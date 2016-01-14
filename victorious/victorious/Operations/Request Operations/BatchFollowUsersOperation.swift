@@ -32,7 +32,7 @@ class BatchFollowUsersOperation: RequestOperation {
                 objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
                 subjectUser.numberOfFollowing = subjectUser.numberOfFollowing + 1
                 objectUser.isFollowedByMainUser = true
-                VFollowedUser.setupRelationshipBetween(objectUser: objectUser, subjectUser: subjectUser, context: context)
+                objectUser.addFollower(subjectUser)
             }
 
             context.v_save()
