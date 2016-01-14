@@ -13,16 +13,13 @@ class CreateTextPostOperation: RequestOperation {
     
     var request: CreateTextPostRequest
     
-    private let parameters: TextPostParameters
-    
-    private init(request: CreateTextPostRequest, parameters: TextPostParameters) {
+    private init(request: CreateTextPostRequest) {
         self.request = request
-        self.parameters = parameters
     }
     
     convenience init?( parameters: TextPostParameters ) {
         if let request = CreateTextPostRequest(parameters: parameters) {
-            self.init(request: request, parameters: parameters)
+            self.init(request: request)
         } else {
             return nil
         }

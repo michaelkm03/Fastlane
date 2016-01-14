@@ -17,15 +17,15 @@ class PollCreateRequestBodyWriter: RequestBodyWriter {
     
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
     func write( parameters parameters: PollParameters ) throws -> RequestBodyWriterOutput {
+        if (parameters.answers.count != 2) {
+            throw NSError(domain: "com.createpoll.parameters", code: -1, userInfo: nil)
+        }
+        
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext( parameters.name, withFieldName: "name")
         try writer.appendPlaintext( parameters.description, withFieldName: "description")
         try writer.appendPlaintext( parameters.question, withFieldName: "question")
-        
-        if (parameters.answers.count != 2) {
-            throw NSError(domain: "com.createpoll.parameters", code: -1, userInfo: nil)
-        }
         
         var i = 1
         for answer in parameters.answers {

@@ -15,14 +15,13 @@ class CreateTextPostRequestBodyWriter: RequestBodyWriter {
     }
     
     func write(parameters parameters: TextPostParameters) throws -> RequestBodyWriterOutput {
+        if (parameters.backgroundColor == nil && parameters.backgroundImageURL == nil) {
+            throw NSError(domain: "com.createtextpost.parameters", code: -1, userInfo: nil)
+        }
         
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(parameters.content, withFieldName: "content")
-        
-        if (parameters.backgroundColor == nil && parameters.backgroundImageURL == nil) {
-            throw NSError(domain: "com.createtextpost.parameters", code: -1, userInfo: nil)
-        }
         
         if let color = parameters.backgroundColor {
             try writer.appendPlaintext(color.v_hexString(), withFieldName: "background_color")

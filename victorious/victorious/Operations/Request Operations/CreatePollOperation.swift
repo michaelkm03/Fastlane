@@ -13,16 +13,13 @@ class CreatePollOperation: RequestOperation {
     
     let request: PollCreateRequest
     
-    private let parameters: PollParameters
-    
-    private init(request: PollCreateRequest, parameters: PollParameters) {
+    private init(request: PollCreateRequest) {
         self.request = request
-        self.parameters = parameters
     }
     
     convenience init?( parameters: PollParameters ) {
         if let request = PollCreateRequest(parameters: parameters) {
-            self.init(request: request, parameters: parameters)
+            self.init(request: request)
         } else {
             return nil
         }
