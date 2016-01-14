@@ -38,7 +38,6 @@ class CoreDataManager: NSObject {
     let storeType: String = NSSQLiteStoreType
     
     let mainContext: NSManagedObjectContext
-    let backgroundContext: NSManagedObjectContext
     private let managedObjectModel: NSManagedObjectModel
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     
@@ -69,20 +68,23 @@ class CoreDataManager: NSObject {
         
         self.mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         self.mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+    }
+    
+    func createBackgroundContext() -> NSManagedObjectContext {
         
-        self.backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        self.backgroundContext.parentContext = self.mainContext
-        self.backgroundContext.mergePolicy = NSOverwriteMergePolicy
-        
-        super.init()
+        let backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        backgroundContext.parentContext = self.mainContext
+        backgroundContext.mergePolicy = NSOverwriteMergePolicy
         
         // Set up merges into the main context when changes have been saved to the background context
         // For example, network requests will make changes to the background context, which is then
         // merged into the main context that can be accessed/observed by the UI thread
         NSNotificationCenter.defaultCenter().addObserverForName( NSManagedObjectContextDidSaveNotification,
-            object: self.backgroundContext,
+            object: backgroundContext,
             queue: NSOperationQueue.mainQueue()) { [weak self] notification in
                 self?.mainContext.mergeChangesFromContextDidSaveNotification( notification )
         }
+        
+        return backgroundContext
     }
 }

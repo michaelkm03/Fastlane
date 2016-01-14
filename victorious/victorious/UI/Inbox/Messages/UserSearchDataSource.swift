@@ -49,7 +49,7 @@ class UserSearchDataSource: NSObject, UITableViewDataSource {
                 }
             }
         )
-        paginatedDataSource.unload()
+        paginatedDataSource.clearVisibleItems()
         delegate?.dataSourceDidUpdate(self)
     }
     

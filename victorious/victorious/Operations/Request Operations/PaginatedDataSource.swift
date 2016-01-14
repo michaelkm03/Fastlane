@@ -56,7 +56,7 @@ import Foundation
         applyFilters()
     }
     
-    func unload() {
+    func clearVisibleItems() {
         unfilteredItems = NSOrderedSet()
         visibleItems = NSOrderedSet()
     }

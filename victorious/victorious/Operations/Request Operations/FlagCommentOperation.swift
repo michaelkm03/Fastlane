@@ -26,7 +26,7 @@ class FlagCommentOperation: RequestOperation {
         flaggedContent.addRemoteId( String(self.commentID), toFlaggedItemsWithType: .Comment)
         
         // Perform data changes optimistically
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let uniqueElements = [ "remoteId" : self.commentID ]
             if let comment: VComment = context.v_findObjects( uniqueElements ).first {
                 context.deleteObject( comment )
