@@ -7,29 +7,61 @@
 //
 
 import XCTest
+import VictoriousIOSSDK
+import SwiftyJSON
 
 class PollCreateRequestTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testRequestWithValidParameters() {
+        let mockAnswers = [
+            PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
+            PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!)
+        ]
+        let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
+        
+        guard let request = PollCreateRequest(parameters: mockParameters) else {
+            XCTFail("Request Creation should not fail here")
+            return
+        }
+        
+        let urlRequest = request.urlRequest
+        
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/poll/create")
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testRequestWithInvalidParameters() {
+        let mockAnswers = [
+            PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
+            PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!),
+            PollAnswer(label: "CCC", mediaURL: NSURL(string: "media_C")!)
+        ]
+        
+        let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
+        
+        XCTAssertNil(PollCreateRequest(parameters: mockParameters))
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    func testResponse() {
+        let mockAnswers = [
+            PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
+            PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!)
+        ]
+        let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
+        
+        guard let request = PollCreateRequest(parameters: mockParameters) else {
+            XCTFail("Request Creation should not fail here")
+            return
+        }
+        
+        let mockSequenceID = "mockSequenceID"
+        let mockJSON = JSON( [ "payload": ["sequence_id": mockSequenceID] ] )
+        
+        do {
+            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: NSData(), responseJSON: mockJSON)
+            
+            XCTAssertEqual(results, mockSequenceID)
+        } catch {
+            XCTFail("Sorry, parseResponse should not throw here")
         }
     }
-    
 }

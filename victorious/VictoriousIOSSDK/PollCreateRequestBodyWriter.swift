@@ -23,6 +23,10 @@ class PollCreateRequestBodyWriter: RequestBodyWriter {
         try writer.appendPlaintext( parameters.description, withFieldName: "description")
         try writer.appendPlaintext( parameters.question, withFieldName: "question")
         
+        if (parameters.answers.count != 2) {
+            throw NSError(domain: "com.createpoll.parameters", code: -1, userInfo: nil)
+        }
+        
         var i = 1
         for answer in parameters.answers {
             try writer.appendPlaintext( parameters.question, withFieldName: "answer\(i)_label")
