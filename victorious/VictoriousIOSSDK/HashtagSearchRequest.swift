@@ -13,26 +13,43 @@ public struct HashtagSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let searchTerm: String
     
-    var context = SearchContext.Message
+    let context: SearchContext?
     
     public let paginator: StandardPaginator
     
+    let url: NSURL
+    
     public init(request: HashtagSearchRequest, paginator: StandardPaginator ) {
         self.searchTerm = request.searchTerm
+        self.url = request.url
+        self.context = request.context
         self.paginator = paginator
     }
     
     // param: - searchTerm must be a urlPathPart percent encoded string
-    public init(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+    public init?(searchTerm: String, context: SearchContext? = nil, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+        
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet),
+            let url = NSURL(string: "/api/hashtag/search/\(escapedSearchTerm)") else {
+                return nil
+        }
+        
+        self.url = url
+        self.context = context
         self.searchTerm = searchTerm
         self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/hashtag/search/\(searchTerm)")! )
+        let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
-        let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
-        return NSURLRequest(URL: contextualURL)
+        if let context = context {
+            let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
+            return NSURLRequest(URL: contextualURL)
+        } else {
+            return request.copy() as! NSURLRequest
+        }
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {

@@ -31,10 +31,10 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init?( searchTerm: String ) {
-        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+        guard let request = UserSearchRequest(searchTerm: searchTerm) else {
             return nil
         }
-        self.init(request: UserSearchRequest(searchTerm: escapedString))
+        self.init(request: request)
     }
     
     override func main() {

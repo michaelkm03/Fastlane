@@ -31,10 +31,10 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init?( searchTerm: String ) {
-        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+        guard let request = HashtagSearchRequest(searchTerm: searchTerm) else {
             return nil
         }
-        self.init(request: HashtagSearchRequest(searchTerm: escapedString))
+        self.init(request: request)
     }
     
     override func main() {
