@@ -15,16 +15,12 @@ class FriendFindByEmailOperation: RequestOperation, ResultsOperation {
     var didResetResults = false
     
     private var resultObjectIDs = [NSManagedObjectID]()
-    private var request: FriendFindByEmailRequest
+    private var request: FriendFindByEmailRequest!
     
-    init(request: FriendFindByEmailRequest) {
-        self.request = request
-    }
-    
-    convenience init?(emails: [String]) {
-        if let request = FriendFindByEmailRequest(emails: emails) {
-            self.init(request: request)
-        } else {
+    init?(emails: [String]) {
+        self.request = FriendFindByEmailRequest(emails: emails)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }
