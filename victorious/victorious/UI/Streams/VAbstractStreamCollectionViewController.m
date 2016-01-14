@@ -11,9 +11,6 @@
 #import "VCardDirectoryCell.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+VLayoutInsets.h"
-
-//View Controllers
-#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
 #import "VStream+Fetcher.h"
 #import "VSequence.h"

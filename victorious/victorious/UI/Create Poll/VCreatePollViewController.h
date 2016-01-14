@@ -39,4 +39,14 @@ typedef void (^VCreatePollViewControllerCompletionHandler)(VCreatePollViewContro
  */
 @property (nonatomic, copy) VCreatePollViewControllerCompletionHandler completionHandler;
 
+@property (weak, nonatomic) IBOutlet UITextView *questionTextView;
+
+/**
+ These properties are strong because they are being KVO'd
+ */
+@property (strong, nonatomic) IBOutlet UITextView *leftAnswerTextView;
+@property (strong, nonatomic) IBOutlet UITextView *rightAnswerTextView;
+@property (strong, nonatomic) NSURL *firstMediaURL;
+@property (strong, nonatomic) NSURL *secondMediaURL;
+
 @end

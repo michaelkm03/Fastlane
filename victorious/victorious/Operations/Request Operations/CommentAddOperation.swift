@@ -16,7 +16,7 @@ class CommentAddOperation: RequestOperation {
     private let publishParameters: VPublishParameters?
     private let commentParameters: CommentParameters
     
-    private var optimisticCommentObjectID: NSManagedObjectID?
+    private var optimisticObjectID: NSManagedObjectID?
     
     private init( request: CommentAddRequest, commentParameters: CommentParameters, publishParameters: VPublishParameters?) {
         self.request = request
@@ -51,8 +51,10 @@ class CommentAddOperation: RequestOperation {
             comment.mediaHeight = self.publishParameters?.height
             comment.text = self.commentParameters.text ?? ""
             comment.postedAt = NSDate()
-            comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
-            comment.mediaUrl = self.commentParameters.mediaURL?.absoluteString
+            
+            let mediaPath = self.publishParameters?.mediaToUploadURL?.absoluteString ?? ""
+            comment.thumbnailUrl = mediaPath.v_thumbnailPathForVideoAtPath
+            comment.mediaUrl = mediaPath
             
             // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
             let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
@@ -61,10 +63,10 @@ class CommentAddOperation: RequestOperation {
             
             context.v_save()
             dispatch_sync( dispatch_get_main_queue() ) {
-                self.optimisticCommentObjectID = comment.objectID
+                self.optimisticObjectID = comment.objectID
             }
         }
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
             parameters: [
@@ -77,54 +79,16 @@ class CommentAddOperation: RequestOperation {
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
         persistentStore.backgroundContext.v_performBlock() { context in
-            defer {
-                completion()
-            }
+            defer { completion() }
             
-            guard let objectID = self.optimisticCommentObjectID,
-                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
+            guard let objectID = self.optimisticObjectID,
+                let optimisticObject = context.objectWithID( objectID ) as? VComment else {
                     return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
-            optimisticComment.populate( fromSourceModel: comment )
+            optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
-            completion()
         }
-    }
-    
-    private func localImageURLForVideoAtPath( localVideoPath: String ) -> String? {
-        
-        guard let url = NSURL(string:localVideoPath) else {
-            return nil
-        }
-        
-        guard !localVideoPath.v_hasImageExtension() else {
-            return localVideoPath
-        }
-        
-        let asset = AVAsset(URL: url)
-        let assetGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale)
-        let anImageRef: CGImageRef?
-        do {
-            anImageRef = try assetGenerator.copyCGImageAtTime(time, actualTime: nil)
-        } catch {
-            return nil
-        }
-        
-        guard let imageRef = anImageRef else {
-            return nil
-        }
-        let previewImage = UIImage(CGImage: imageRef)
-        
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
-        if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
-            imgData.writeToURL(tempFile, atomically: false )
-            return tempFile.absoluteString
-        }
-        
-        return nil
     }
 }

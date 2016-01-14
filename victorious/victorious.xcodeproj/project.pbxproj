@@ -936,11 +936,14 @@
 		A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */; };
 		A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */; };
 		A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */; };
+		A78DE8CE1C3CBACE009D4EF7 /* CreatePollOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */; };
+		A78DE8D01C3CBCDC009D4EF7 /* PollCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */; };
+		A78DE8D41C3CC4FF009D4EF7 /* String+ThumbnailPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8D31C3CC4FF009D4EF7 /* String+ThumbnailPath.swift */; };
+		A78DE8D61C3CC906009D4EF7 /* VCreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8D51C3CC906009D4EF7 /* VCreatePollViewController.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
-		A7956D241C18AA3A006A76EC /* CommentAddRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7956D231C18AA3A006A76EC /* CommentAddRequestBody.swift */; };
 		A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825971C0FADAD00C53A07 /* KVODebugger.swift */; };
 		A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */; };
 		A798259C1C0FB26500C53A07 /* CommentFindRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A798259B1C0FB26500C53A07 /* CommentFindRequestTests.swift */; };
@@ -3274,13 +3277,16 @@
 		A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Parsable.swift"; sourceTree = "<group>"; };
+		A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperation.swift; sourceTree = "<group>"; };
+		A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequest.swift; sourceTree = "<group>"; };
+		A78DE8D31C3CC4FF009D4EF7 /* String+ThumbnailPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+ThumbnailPath.swift"; sourceTree = "<group>"; };
+		A78DE8D51C3CC906009D4EF7 /* VCreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCreatePollViewController.swift; sourceTree = "<group>"; };
 		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
 		A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
-		A7956D231C18AA3A006A76EC /* CommentAddRequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestBody.swift; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
 		A79825971C0FADAD00C53A07 /* KVODebugger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVODebugger.swift; sourceTree = "<group>"; };
 		A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFindRequest.swift; sourceTree = "<group>"; };
@@ -4930,6 +4936,7 @@
 				0314D38419B46B5E00FA363C /* Image Search */,
 				0314D38D19B46B5E00FA363C /* VCreatePollViewController.h */,
 				0314D38E19B46B5E00FA363C /* VCreatePollViewController.m */,
+				A78DE8D51C3CC906009D4EF7 /* VCreatePollViewController.swift */,
 				039269B11B5F354700FCD0AA /* VCreatePollViewController.storyboard */,
 			);
 			path = "Create Poll";
@@ -5200,7 +5207,6 @@
 				C352CF3B1BF2957000790921 /* BatchFollowUsersRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				C3D6FA911BF58399006DEE19 /* CommentAddRequest.swift */,
-				A7956D231C18AA3A006A76EC /* CommentAddRequestBody.swift */,
 				C323C3B61BF55F6600681059 /* CommentEditRequest.swift */,
 				A79825991C0FAE1100C53A07 /* CommentFindRequest.swift */,
 				79D081A71BF15CD200E8A0C5 /* ConversationListRequest.swift */,
@@ -5248,6 +5254,7 @@
 				67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
+				A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
 				67A952411C443526001234B4 /* RegisterPushNotificationRequest.swift */,
 				6782EA821BF2D2A4000C7C0D /* RepostSequenceRequest.swift */,
@@ -6865,6 +6872,7 @@
 				A746796F1BF6CC9B0026FD2E /* VStoredLogin.m */,
 				A74679701BF6CC9B0026FD2E /* VStoredPassword.h */,
 				A74679711BF6CC9B0026FD2E /* VStoredPassword.m */,
+				A78DE8D31C3CC4FF009D4EF7 /* String+ThumbnailPath.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -7099,6 +7107,7 @@
 				A7C565E11C40665600E4DF6A /* AlertReceiver.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
+				A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
 				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
 				672828011C45EE2200B02909 /* CreateTextPostOperation.swift */,
@@ -10402,7 +10411,6 @@
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */,
 				79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */,
-				A7956D241C18AA3A006A76EC /* CommentAddRequestBody.swift in Sources */,
 				C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */,
 				C314E6BF1BF13D2300FB9591 /* Hashtag.swift in Sources */,
 				C323C3B11BF559DE00681059 /* SequenceCommentsRequest.swift in Sources */,
@@ -10423,6 +10431,7 @@
 				A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBody.swift in Sources */,
 				A702C84B1C12130C001EE1D5 /* StreamPaginator.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
+				A78DE8D01C3CBCDC009D4EF7 /* PollCreateRequest.swift in Sources */,
 				79D081B61BF19AD100E8A0C5 /* ConversationRequest.swift in Sources */,
 				A74679771BF6D01A0026FD2E /* UserInfoRequest.swift in Sources */,
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
@@ -10902,6 +10911,7 @@
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
+				A78DE8D61C3CC906009D4EF7 /* VCreatePollViewController.swift in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
 				F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
@@ -11043,6 +11053,7 @@
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				A78DE8D41C3CC4FF009D4EF7 /* String+ThumbnailPath.swift in Sources */,
 				D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */,
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
@@ -11102,6 +11113,7 @@
 				676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */,
 				DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
+				A78DE8CE1C3CBACE009D4EF7 /* CreatePollOperation.swift in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
 				F0F04AD61B1E271A00F6F401 /* VConversation.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,

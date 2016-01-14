@@ -11,11 +11,9 @@
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"
-#import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
+#import "victorious-Swift.h"
 #import "VDependencyManager.h"
-// Media Creation
 #import "VMediaAttachmentPresenter.h"
 
 static const NSInteger kMinLength = 2;
@@ -44,10 +42,6 @@ static char KVOContext;
 @property (weak, nonatomic) IBOutlet UILabel *leftAnswerPrompt;
 @property (weak, nonatomic) IBOutlet UILabel *rightAnswerPrompt;
 
-@property (weak, nonatomic) IBOutlet UITextView *questionTextView;
-@property (strong, nonatomic) IBOutlet UITextView *leftAnswerTextView; // these properties are strong because they are being KVO'd
-@property (strong, nonatomic) IBOutlet UITextView *rightAnswerTextView;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftAnswerTextViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightAnswerTextViewHeightConstraint;
 
@@ -55,8 +49,6 @@ static char KVOContext;
 
 @property (weak, nonatomic) IBOutlet UIView *addMediaView;
 
-@property (strong, nonatomic) NSURL *firstMediaURL;
-@property (strong, nonatomic) NSURL *secondMediaURL;
 @property (strong, nonatomic) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign) BOOL didPublish;
@@ -410,6 +402,8 @@ static char KVOContext;
     {
         return;
     }
+    
+    [self createPoll];
     
     [[VObjectManager sharedManager] createPollWithName:self.questionTextView.text
                                            description:@"<none>"

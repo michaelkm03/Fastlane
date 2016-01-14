@@ -68,6 +68,7 @@
 #import "VContentViewFactory.h"
 #import "VContentViewOriginViewController.h"
 #import "VConversation.h"
+#import "VCreatePollViewController.h"
 #import "VCreateSheetViewController.h"
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
