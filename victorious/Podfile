@@ -19,6 +19,7 @@ target :victorious do
     pod 'FBSDKShareKit'
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'youtube-ios-player-helper'
+    pod 'GoogleAds-IMA-iOS-SDK', '~> 3.1.0'
     link_with 'victorious'
 
     target :test do
@@ -28,13 +29,13 @@ target :victorious do
 end
 
 target :VictoriousIOSSDK do
-	pod 'SwiftyJSON'
-	link_with 'VictoriousIOSSDK'
+        pod 'SwiftyJSON'
+        link_with 'VictoriousIOSSDK'
 end
 
 target :VictoriousIOSSDKTests do
-	pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
-	link_with 'VictoriousIOSSDKTests'
+        pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+        link_with 'VictoriousIOSSDKTests'
 end
 
 target :victoriousPersistenceTests do
