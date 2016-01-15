@@ -34,20 +34,7 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
 
         operation.main()
 
-        guard let updatedUserOne = self.testStore.mainContext.objectWithID(userOne.objectID) as? VUser else {
-            XCTFail("No user to follow found after following a user")
-            return
-        }
-        guard let updatedUserTwo = self.testStore.mainContext.objectWithID(userTwo.objectID) as? VUser else {
-            XCTFail("No user to follow found after following a user")
-            return
-        }
-        guard let updatedCurrentUser = VCurrentUser.user() else {
-            XCTFail("No current user found after following a user")
-            return
-        }
-
-        assertCurrentUserFollowedUsers(currentUser: updatedCurrentUser, userOne: updatedUserOne, userTwo: updatedUserTwo)
+        assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
     }
 
     func testBatchFollowOnlyExistentUsers() {
@@ -60,20 +47,7 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
 
         operation.main()
 
-        guard let updatedUserOne = self.testStore.mainContext.objectWithID(userOne.objectID) as? VUser else {
-            XCTFail("No user to follow found after following a user")
-            return
-        }
-        guard let updatedUserTwo = self.testStore.mainContext.objectWithID(userTwo.objectID) as? VUser else {
-            XCTFail("No user to follow found after following a user")
-            return
-        }
-        guard let updatedCurrentUser = VCurrentUser.user() else {
-            XCTFail("No current user found after following a user")
-            return
-        }
-
-        assertCurrentUserFollowedUsers(currentUser: updatedCurrentUser, userOne: updatedUserOne, userTwo: updatedUserTwo)
+        assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
     }
 
     func testBatchFollowUsersWhosIDMatchesACurrentUser() {
@@ -87,23 +61,23 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
 
         operation.main()
 
-        guard let updatedUserOne = self.testStore.mainContext.objectWithID(userOne.objectID) as? VUser else {
+        assertCurrentUserFollowedUsers(userOneObjectID: userOne.objectID, userTwoObjectID: userTwo.objectID)
+    }
+
+    private func assertCurrentUserFollowedUsers(userOneObjectID userOneObjectID: NSManagedObjectID, userTwoObjectID: NSManagedObjectID) {
+        guard let userOne = self.testStore.mainContext.objectWithID(userOneObjectID) as? VUser else {
             XCTFail("No user to follow found after following a user")
             return
         }
-        guard let updatedUserTwo = self.testStore.mainContext.objectWithID(userTwo.objectID) as? VUser else {
+        guard let userTwo = self.testStore.mainContext.objectWithID(userTwoObjectID) as? VUser else {
             XCTFail("No user to follow found after following a user")
             return
         }
-        guard let updatedCurrentUser = VCurrentUser.user() else {
+        guard let currentUser = VCurrentUser.user() else {
             XCTFail("No current user found after following a user")
             return
         }
 
-        assertCurrentUserFollowedUsers(currentUser: updatedCurrentUser, userOne: updatedUserOne, userTwo: updatedUserTwo)
-    }
-
-    private func assertCurrentUserFollowedUsers(currentUser currentUser: VUser, userOne: VUser, userTwo: VUser) {
         XCTAssertEqual(2, currentUser.numberOfFollowing)
         XCTAssertEqual(2, currentUser.following.count)
         if let followedUsers = Array(currentUser.following) as? [VFollowedUser] {
