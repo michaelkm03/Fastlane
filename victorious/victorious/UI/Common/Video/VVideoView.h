@@ -9,6 +9,8 @@
 @import UIKit;
 
 #import "VVideoPlayerDelegate.h"
+@import AVFoundation;
+#import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
+//TODO: Remove it when this class is migrated to Swift
+/// Don't use me. It's exposed so we can use it in a Swift extension
+@property (nonatomic, assign, readonly) AVPlayer *player;
+/// Don't use me. It's exposed so we can use it in a Swift extension
+@property (nonatomic, assign, readwrite) IMAAVPlayerContentPlayhead *contentPlayhead;
+/// Don't use me. It's exposed so we can use it in a Swift extension
+@property (nonatomic, assign, readwrite) IMAAdsLoader *adsLoader;
 
 NS_ASSUME_NONNULL_END
 
