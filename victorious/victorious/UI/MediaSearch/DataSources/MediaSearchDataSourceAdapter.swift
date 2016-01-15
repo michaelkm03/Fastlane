@@ -60,7 +60,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
 	
-	var dataSource: MediaSearchDataSource?
+    var dataSource: MediaSearchDataSource?
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
 		
@@ -87,7 +87,6 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
                 
                 self.isLastPage = true
 				completion?(nil)
-                
 				
 			} else if let results = dataSource.visibleItems.array as? [MediaSearchResult] {
 				self.state = .Content
@@ -97,11 +96,21 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 				completion?(result)
 			}
 		}
-	}
-
-    /// Clears the backing model, highlighted section and cancels any in-progress search operation
-    func clear() {
+    }    /// Clears the backing model, highlighted section and cancels any in-progress search operation
+    func clear() -> ChangeResult {
+        var result = ChangeResult()
+        self.highlightedSection = nil
+        if self.sections.count > 0 {
+            let range = NSRange( location: 0, length: self.sections.count )
+            result.deletedSections = NSIndexSet(indexesInRange: range)
+            result.insertedSections = NSIndexSet(index:0)
+        } else {
+            result.deletedSections = NSIndexSet(index:0)
+            result.insertedSections = NSIndexSet(index:0)
+        }
+        self.sections = []
         self.dataSource?.clearVisibleItems()
+        return result
     }
 	
     /// Removes the current full size asset section, wherever it may be.
@@ -232,7 +241,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 			cell.text = ""
 			cell.loading = false
 		}
-	}
+    }
 }
 
 /// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.

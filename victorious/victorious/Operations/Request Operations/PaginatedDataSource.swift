@@ -58,7 +58,6 @@ import Foundation
     
     func clearVisibleItems() {
         unfilteredItems = NSOrderedSet()
-        visibleItems = NSOrderedSet()
     }
     
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {

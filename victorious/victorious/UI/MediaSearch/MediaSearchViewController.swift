@@ -152,7 +152,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     }
     
     func clearSearch() {
-        self.dataSourceAdapter.clear()
+        self.collectionView.performBatchUpdates({
+            let result = self.dataSourceAdapter.clear()
+            self.collectionView.applyDataSourceChanges( result )
+        }, completion: nil)
+        
         self.selectedIndexPath = nil
         self.previewSection = nil
         self.collectionView.setContentOffset( CGPoint.zero, animated: false )

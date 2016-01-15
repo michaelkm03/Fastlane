@@ -19,4 +19,6 @@ import UIKit
     var visibleItems: NSOrderedSet { get }
     
     func clearVisibleItems()
+    
+    var delegate: PaginatedDataSourceDelegate? { set get }
 }
