@@ -14,7 +14,6 @@
 #import "ColorSpaceConversion.h"
 #import "DiscoverSearchViewController.h"
 #import "INVector3.h"
-#import "NSBundle+TestBundle.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
