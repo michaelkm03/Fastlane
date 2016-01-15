@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CreatePollOperation: Operation {
+class CreatePollOperation: RequestOperation {
     
     /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
     /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
@@ -38,6 +38,7 @@ class CreatePollOperation: Operation {
         self.request = PollCreateRequest(parameters: parameters, baseURL: baseURL)
         self.previewImage = previewImage
         self.uploadManager = uploadManager
+        
         super.init()
         if request == nil {
             return nil

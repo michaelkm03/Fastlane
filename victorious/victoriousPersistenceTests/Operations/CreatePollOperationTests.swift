@@ -25,6 +25,7 @@ class CreatePollOperationTests: XCTestCase {
             XCTFail("Operation Construction should not fail")
             return
         }
+
         operation.start()
         XCTAssertEqual(1, uploadManager.enqueuedTasksCount)
     }

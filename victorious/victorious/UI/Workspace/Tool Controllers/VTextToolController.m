@@ -24,8 +24,8 @@
 
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, strong) VTextPostImageHelper *imageHelper;
-@property (nonatomic, readwrite, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
-@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, weak, readwrite) VTextColorTool<VWorkspaceTool> *textColorTool;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 
 @end
 

@@ -10,9 +10,9 @@ import Foundation
 import SwiftyJSON
 
 public struct TextPostParameters {
-    let content: String
-    let backgroundColor: UIColor?
-    let backgroundImageURL: NSURL?
+    public let content: String
+    public let backgroundColor: UIColor?
+    public let backgroundImageURL: NSURL?
     
     public init(content: String, backgroundImageURL: NSURL?, backgroundColor: UIColor?) {
         self.content = content
