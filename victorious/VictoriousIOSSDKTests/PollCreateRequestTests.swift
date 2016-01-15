@@ -12,6 +12,8 @@ import SwiftyJSON
 
 class PollCreateRequestTests: XCTestCase {
     
+    let mockBaseURLString = "http://www.google.com"
+    
     func testRequestWithValidParameters() {
         let mockAnswers = [
             PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
@@ -19,14 +21,15 @@ class PollCreateRequestTests: XCTestCase {
         ]
         let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
         
-        guard let request = PollCreateRequest(parameters: mockParameters) else {
+        
+        guard let request = PollCreateRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!) else {
             XCTFail("Request Creation should not fail here")
             return
         }
         
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/poll/create")
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "\(mockBaseURLString)/api/poll/create")
     }
     
     func testRequestWithInvalidParameters() {
@@ -38,7 +41,7 @@ class PollCreateRequestTests: XCTestCase {
         
         let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
         
-        XCTAssertNil(PollCreateRequest(parameters: mockParameters))
+        XCTAssertNil(PollCreateRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!))
     }
     
     func testResponse() {
@@ -48,7 +51,7 @@ class PollCreateRequestTests: XCTestCase {
         ]
         let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
         
-        guard let request = PollCreateRequest(parameters: mockParameters) else {
+        guard let request = PollCreateRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!) else {
             XCTFail("Request Creation should not fail here")
             return
         }

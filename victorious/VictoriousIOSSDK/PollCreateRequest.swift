@@ -10,8 +10,8 @@ import Foundation
 import SwiftyJSON
 
 public struct PollAnswer {
-    let label: String
-    let mediaURL: NSURL
+    public let label: String
+    public let mediaURL: NSURL
     
     public init(label: String, mediaURL: NSURL) {
         self.label = label
@@ -20,10 +20,10 @@ public struct PollAnswer {
 }
 
 public struct PollParameters {
-    let name: String
-    let question: String
-    let description: String
-    let answers: [PollAnswer]
+    public let name: String
+    public let question: String
+    public let description: String
+    public let answers: [PollAnswer]
     
     public init(let name: String, question: String, description: String, answers: [PollAnswer] ) {
         self.name = name
@@ -31,33 +31,36 @@ public struct PollParameters {
         self.description = description
         self.answers = answers
     }
+    
+    func isValid() -> Bool {
+        let invalidAnswersCount = answers.count != 2
+        let invalidMediaURL = (answers.first?.mediaURL == nil) || (answers.last?.mediaURL == nil)
+        
+        return (invalidAnswersCount || invalidMediaURL)
+    }
 }
 
 public struct PollCreateRequest: RequestType {
     
-    let requestBody: RequestBodyWriterOutput
-    let requestBodyWriter = PollCreateRequestBodyWriter()
+    public let parameters: PollParameters
+    public let baseURL: NSURL
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/poll/create")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/poll/create", relativeToURL: baseURL)!)
         request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
-        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         
         return request
     }
     
-    public init?( parameters: PollParameters ) {
-        do {
-            self.requestBody = try requestBodyWriter.write( parameters: parameters )
-        } catch {
+    public init?( parameters: PollParameters, baseURL: NSURL ) {
+        if parameters.isValid() {
             return nil
         }
+        self.parameters = parameters
+        self.baseURL = baseURL
     }
-    
+
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
-        requestBodyWriter.removeBodyTempFile()
-        
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let pollSequenceRemoteID = sequenceID.string else {
