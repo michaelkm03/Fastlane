@@ -14,11 +14,10 @@ protocol Queuable {
     /// on the main queue when the operation is finished.
     typealias CompletionBlockType
     
-    /// A queue to be shared by any object of the same type as the receiver.  If diferent types
-    /// conforming to this protocol wish to share a queue, use the variants of `queue` that accept
-    /// a queue as a parameter, or define a shared queue elsewhere that is merely returned from
-    /// this computed property.
-    static var sharedQueue: NSOperationQueue { get }
+    /// A queue selected by the receiver to be its perferred queue on which to execute.
+    /// If you are doing something complex, you might pick whatever queue you like, but if
+    /// you are unsure or have no reason not to, use this `defaultQueue` to execute the operation.
+    var defaultQueue: NSOperationQueue { get }
     
     /// Queues the opration on the provided queue shared queue, then executes the completion
     /// block provides when the operation finishes.
@@ -72,7 +71,7 @@ protocol Queuable {
 extension Queuable where Self : NSOperation {
     
     func queueAfter( operation: NSOperation ) {
-        queueAfter( operation, queue: Self.sharedQueue )
+        queueAfter( operation, queue: self.defaultQueue )
     }
     
     func queueAfter( operation: NSOperation, queue: NSOperationQueue ) {
@@ -84,7 +83,7 @@ extension Queuable where Self : NSOperation {
     }
     
     func queueBefore( operation: NSOperation ) {
-        self.queueBefore( operation, queue: Self.sharedQueue )
+        self.queueBefore( operation, queue: self.defaultQueue )
     }
     
     func queueBefore( operation: NSOperation, queue: NSOperationQueue ) {
@@ -97,7 +96,7 @@ extension Queuable where Self : NSOperation {
     }
     
     func dependentOperationsInQueue() -> [NSOperation] {
-        return dependentOperationsInQueue( Self.sharedQueue )
+        return dependentOperationsInQueue( self.defaultQueue )
     }
     
     func queueOn( queue: NSOperationQueue ) {
@@ -105,10 +104,10 @@ extension Queuable where Self : NSOperation {
     }
     
     func queue( completionBlock:CompletionBlockType? ) {
-        self.queueOn( Self.sharedQueue, completionBlock: completionBlock )
+        self.queueOn( self.defaultQueue, completionBlock: completionBlock )
     }
     
     func queue() {
-        self.queueOn( Self.sharedQueue, completionBlock: nil )
+        self.queueOn( self.defaultQueue, completionBlock: nil )
     }
 }

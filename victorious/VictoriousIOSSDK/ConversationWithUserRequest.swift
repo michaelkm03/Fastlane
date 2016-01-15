@@ -33,7 +33,7 @@ public struct ConversationWithUserRequest: RequestType {
               let conversationID = Int(conversationIDString) else {
             throw ResponseParsingError()
         }
-        let messages = messagesArrayJSON.flatMap{Message(json: $0)}
+        let messages = messagesArrayJSON.flatMap{ Message(json: $0) }
         
         return (conversationID, messages)
     }

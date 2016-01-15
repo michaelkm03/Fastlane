@@ -20,6 +20,7 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
 
         operation = FriendFindByEmailOperation(emails:emails)
         operation.persistentStore = testStore
+        operation.requestExecutor = testRequestExecutor
     }
     
     func testResults() {
@@ -32,6 +33,7 @@ class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
         }
         
         waitForExpectationsWithTimeout(expectationThreshold) { error in
+            
             guard let results = self.operation.results,
                 let firstResult = results.first as? VUser else {
                 XCTFail("We should have results here")

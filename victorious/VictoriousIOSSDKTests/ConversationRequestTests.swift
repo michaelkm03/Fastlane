@@ -11,6 +11,8 @@ import VictoriousIOSSDK
 import SwiftyJSON
 
 class ConversationRequestTests: XCTestCase {
+    
+    let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)
 
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 99)
@@ -33,12 +35,11 @@ class ConversationRequestTests: XCTestCase {
             XCTAssertEqual(firstMessage.text, "this is a test")
             XCTAssertEqual(firstMessage.isRead, true)
             XCTAssertEqual(firstMessage.messageID, 8749)
-            XCTAssertEqual(firstMessage.sender.userID, 97)
+            XCTAssertEqual(firstMessage.sender?.userID, 97)
             XCTAssertEqual(firstMessage.mediaAttachment?.thumbnailURL, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/thumbnail-00001.jpg"))
             XCTAssertEqual(firstMessage.mediaAttachment?.url, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/playlist.m3u8"))
             XCTAssertEqual(firstMessage.mediaAttachment?.type, .Video)
             // Test Date parsing
-            let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)
             let testDate = dateFormatter.dateFromString("2015-11-10 03:09:52")
             XCTAssertEqual(firstMessage.postedAt, testDate)
         }
@@ -57,11 +58,12 @@ class ConversationRequestTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
         if let firstMessage = results.first {
             XCTAssertEqual(firstMessage.messageID, 8749)
-            XCTAssertEqual(firstMessage.sender.userID, 97)
+            XCTAssertEqual(firstMessage.sender?.userID, 97)
             XCTAssertNil(firstMessage.text)
             XCTAssertNil(firstMessage.isRead)
             XCTAssertNil(firstMessage.mediaAttachment)
-            XCTAssertNil(firstMessage.postedAt)
+            let testDate = dateFormatter.dateFromString("2016-01-13 20:33:33")
+            XCTAssertEqual(firstMessage.postedAt, testDate)
         }
     }
     

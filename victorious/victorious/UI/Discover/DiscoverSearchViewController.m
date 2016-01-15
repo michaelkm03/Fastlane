@@ -34,6 +34,18 @@
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
+@property (nonatomic, strong) SearchResultsViewController *currentSearchVC;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchResultsTableBottomCosntraint;
+@property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
+@property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
+
+@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
+
 @end
 
 @implementation DiscoverSearchViewController
@@ -46,13 +58,6 @@
     DiscoverSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"search"];
     viewController.dependencyManager = dependencyManager;
     return viewController;
-}
-
-#pragma mark - dealloc
-
-- (void)dealloc
-{
-    _searchField.delegate = nil;
 }
 
 #pragma mark - View Lifecycle Methods

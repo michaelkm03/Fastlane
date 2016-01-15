@@ -144,12 +144,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
         {
             RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+            [operation queueOn:operation.defaultQueue completionBlock:nil];
         }
         else
         {
             RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-            [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+            [operation queueOn:operation.defaultQueue completionBlock:nil];
         }
     };
     customCell.dependencyManager = self.dependencyManager;

@@ -29,10 +29,10 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init?( searchTerm: String ) {
-        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+        guard let request = HashtagSearchRequest(searchTerm: searchTerm) else {
             return nil
         }
-        self.init(request: HashtagSearchRequest(searchTerm: escapedString))
+        self.init(request: request)
     }
     
     override func main() {
@@ -43,20 +43,57 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
-        // Call the completion block before the Core Data context saves because consumers only care about the networkHashtags
-        completion()
+        // Queue parsing of network results into persistent store to execute after this operation completes
+        // This allows calling code to receive the `resutls` above without having to wait
+        // until all the hashtags are parsed and saved to the persistent store
+        SaveHashtagsOperation(hashtags: networkResult).queueAfter(self)
         
-        guard !networkResult.isEmpty else {
+        completion()
+    }
+    
+    // MARK: - PaginatedOperation
+    
+    internal(set) var results: [AnyObject]?
+    
+    func fetchResults() -> [AnyObject] {
+        return self.results ?? []
+    }
+    
+    func clearResults() { }
+}
+
+class SaveHashtagsOperation: Operation {
+    
+    let hashtags: [Hashtag]
+    
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    
+    required init( hashtags: [Hashtag] ) {
+        self.hashtags = hashtags
+    }
+    
+    override func start() {
+        super.start()
+        
+        guard !hashtags.isEmpty else {
+            self.finishedExecuting()
+            return
+        }
+        
+        self.beganExecuting()
+        
+        guard !hashtags.isEmpty else {
             return
         }
         
         // Populate our local hashtags cache based off the new data
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            for networkHashtag in networkResult {
-                let localHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : networkHashtag.tag ])
-                localHashtag.populate(fromSourceModel: networkHashtag)
+            for hashtag in self.hashtags {
+                let persistentHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : hashtag.tag ])
+                persistentHashtag.populate(fromSourceModel: hashtag)
             }
             context.v_save()
+            self.finishedExecuting()
         }
     }
     

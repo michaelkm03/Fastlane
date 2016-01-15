@@ -33,12 +33,12 @@ class CommentAddOperation: RequestOperation {
         
         // Optimistically create a comment before sending request
         let commentCreationDidSucceed: Bool = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                    return false
+                return false
             }
             
             let comment: VComment = context.v_createObject()
-            comment.remoteId = 0
             comment.sequenceId = String(self.creationParameters.sequenceID)
             comment.userId = currentUser.remoteId.integerValue
             comment.user = VCurrentUser.user(inManagedObjectContext: context)
@@ -71,7 +71,6 @@ class CommentAddOperation: RequestOperation {
         guard commentCreationDidSucceed else {
             return
         }
-        
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,

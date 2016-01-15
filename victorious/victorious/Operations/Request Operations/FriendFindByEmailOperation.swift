@@ -10,12 +10,10 @@ import Foundation
 import VictoriousIOSSDK
 
 class FriendFindByEmailOperation: RequestOperation {
-
-    private(set) var users: [VUser]?
     
     private var request: FriendFindByEmailRequest
     
-    internal(set) var friendsFound: [AnyObject]?
+    private(set) var results: [AnyObject]?
     
     init(request: FriendFindByEmailRequest) {
         self.request = request
@@ -33,11 +31,9 @@ class FriendFindByEmailOperation: RequestOperation {
         requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
     }
     
-    // Move this back to being private once we are able to test main/completion handling
-    internal func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
+    func onComplete( results: FriendFindByEmailRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            
             var resultObjectIDs = [NSManagedObjectID]()
             for foundFriend in results {
                 let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": foundFriend.userID])
@@ -46,8 +42,10 @@ class FriendFindByEmailOperation: RequestOperation {
             }
             context.v_save()
             
-            self.friendsFound = self.reloadFromMainContext(resultObjectIDs)
-            completion()
+            dispatch_sync(dispatch_get_main_queue()) {
+                self.results = self.reloadFromMainContext(resultObjectIDs)
+                completion()
+            }
         }
     }
     
@@ -63,15 +61,4 @@ class FriendFindByEmailOperation: RequestOperation {
             return mainQueueUsers
         }
     }
-    
-    // MARK: - PaginatedOperation
-    
-    internal(set) var results: [AnyObject]?
-    
-    func fetchResults() -> [AnyObject] {
-        return self.results ?? []
-    }
-    
-    func clearResults() { }
 }
-

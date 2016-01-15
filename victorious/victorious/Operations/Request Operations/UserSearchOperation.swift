@@ -29,10 +29,10 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init?( searchTerm: String ) {
-        guard let escapedString = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+        guard let request = UserSearchRequest(searchTerm: searchTerm) else {
             return nil
         }
-        self.init(request: UserSearchRequest(query: escapedString))
+        self.init(request: request)
     }
     
     override func main() {
@@ -43,10 +43,13 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         
         guard !networkResult.isEmpty else {
             results = []
+            completion()
             return
         }
         
         self.results = networkResult.map{ UserSearchResultObject( user: $0) }
+        
+        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
         completion()
 
         // Populate our local users cache based off the new data

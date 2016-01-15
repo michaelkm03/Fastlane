@@ -25,9 +25,11 @@ extension VMessage: PersistenceParsable {
             mediaHeight             = mediaAttachment.size?.height ?? mediaHeight
         }
         
-        if self.sender == nil {
-            self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : message.sender.userID ] ) as VUser
+        if let messageSender = message.sender {
+            if self.sender == nil {
+                self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : messageSender.userID ] ) as VUser
+            }
+            self.sender.populate(fromSourceModel: messageSender)
         }
-        self.sender.populate(fromSourceModel: message.sender)
     }
 }

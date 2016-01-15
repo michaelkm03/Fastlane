@@ -17,7 +17,11 @@ extension VConversation: PersistenceParsable {
         remoteId            = sourceModel.conversationID ?? remoteId
         lastMessageText     = sourceModel.previewMessageText ?? lastMessageText
         
-        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.otherUser.userID ] ) as VUser
-        self.user.populate(fromSourceModel: sourceModel.otherUser)
+        if let otherUser = sourceModel.otherUser {
+            if self.user == nil {
+                self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : otherUser.userID ] ) as VUser
+            }
+            self.user.populate(fromSourceModel: otherUser)
+        }
     }
 }

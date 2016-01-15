@@ -33,8 +33,9 @@ extension VStreamCollectionViewDataSource {
             }
         )
     }
-    func removeStreamItem(streamItem: VStreamItem) {
-        RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queueOn( RequestOperation.sharedQueue )
+    
+    public func removeStreamItem(streamItem: VStreamItem) {
+        RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queue()
     }
 }
 

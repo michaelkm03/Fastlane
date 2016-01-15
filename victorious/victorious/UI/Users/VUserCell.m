@@ -111,7 +111,7 @@ static const CGFloat kUserCellHeight = 51.0f;
         operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
 
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated

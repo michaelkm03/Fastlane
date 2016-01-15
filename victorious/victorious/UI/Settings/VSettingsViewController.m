@@ -340,7 +340,10 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (void)showLogin
 {
-    [[[ShowLoginOperation alloc] initWithOriginViewController:self dependencyManager:self.dependencyManager context:VAuthorizationContextDefault] queueOn:[Operation sharedQueue] completionBlock:nil];
+    ShowLoginOperation *operation = [[ShowLoginOperation alloc] initWithOriginViewController:self
+                                                                           dependencyManager:self.dependencyManager
+                                                                                     context:VAuthorizationContextDefault];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
     [self updateLogoutButtonState];
 }
 

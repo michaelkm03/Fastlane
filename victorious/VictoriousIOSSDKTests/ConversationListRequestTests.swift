@@ -34,7 +34,7 @@ class ConversationListRequestTests: XCTestCase {
             if let firstConversation = results.first {
                 XCTAssertEqual(firstConversation.conversationID, 3075)
                 XCTAssertEqual(firstConversation.isRead, true)
-                XCTAssertEqual(firstConversation.otherUser.name, "Düüd")
+                XCTAssertEqual(firstConversation.otherUser?.name, "Düüd")
                 XCTAssertEqual(firstConversation.previewMessageID, 7793)
                 XCTAssertEqual(firstConversation.previewMessageText, "a")
 
@@ -63,7 +63,7 @@ class ConversationListRequestTests: XCTestCase {
             let conversationListRequest = ConversationListRequest(paginator: paginator)
             let results = try conversationListRequest.parseResponse(NSURLResponse(), toRequest: conversationListRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             let secondConversation = results[1]
-            XCTAssertEqual(secondConversation.isRead, true)
+            XCTAssertNil(secondConversation.isRead)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here.")
         }

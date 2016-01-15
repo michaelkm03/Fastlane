@@ -263,7 +263,7 @@
     <entity name="SequenceLiker" representedClassName=".VSequenceLiker" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="likers" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequenceContexts" inverseEntity="User" syncable="YES"/>
+        <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="likedSequences" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
         <attribute name="hasNewEditorializations" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -339,6 +339,7 @@
         <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedHashtag" inverseName="user" inverseEntity="FollowedHashtag" syncable="YES"/>
         <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
         <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedUser" inverseName="subjectUser" inverseEntity="FollowedUser" syncable="YES"/>
+        <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
         <relationship name="notificationSettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NotificationSettings" inverseName="owner" inverseEntity="NotificationSettings" syncable="YES"/>
@@ -346,7 +347,6 @@
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="sequenceContexts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserShelf" inverseName="user" inverseEntity="UserShelf" syncable="YES"/>
     </entity>
