@@ -264,7 +264,7 @@
     [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
 
     RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: [newFriends allObjects]];
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock: nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

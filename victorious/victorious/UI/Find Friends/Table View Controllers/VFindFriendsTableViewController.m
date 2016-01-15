@@ -318,7 +318,7 @@
         return user.remoteId;
     }];
     RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: userIDs];
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock: ^(NSError *_Nullable error) {
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
             // Update follow/unfollow icon
