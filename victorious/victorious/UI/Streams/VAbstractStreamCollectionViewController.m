@@ -357,10 +357,9 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = !self.streamDataSource.paginatedDataSource.isLoading;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
-    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
+    return isLastSection && hasOneOrMoreItems;
 }
 
 - (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
