@@ -22,11 +22,11 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        operation = BatchFollowUsersOperation(userIDs: userIDs)
-        operation.requestExecutor = testRequestExecutor
     }
 
     func testBatchFollowingExistentAndNonExistentUsers() {
+        operation = BatchFollowUsersOperation(userIDs: userIDs)
+        operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
         let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
@@ -51,9 +51,10 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowOnlyExistentUsers() {
+        operation = BatchFollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo])
+        operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
-        operation = BatchFollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo])
         let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         currentUser.setAsCurrentUser()
 
@@ -76,10 +77,11 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowUsersWhosIDMatchesACurrentUser() {
+        operation = BatchFollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
+        operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
         persistentStoreHelper.createUser(remoteId: currentUserID)
-        operation = BatchFollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
         let currentUser = persistentStoreHelper.createUser(remoteId: currentUserID)
         currentUser.setAsCurrentUser()
 
@@ -101,17 +103,17 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
         assertCurrentUserFollowedUsers(currentUser: updatedCurrentUser, userOne: updatedUserOne, userTwo: updatedUserTwo)
     }
 
-    func assertCurrentUserFollowedUsers(currentUser currentUser: VUser, userOne: VUser, userTwo: VUser) {
-        XCTAssertEqual(2, userTwo.numberOfFollowing)
-        XCTAssertEqual(2, userTwo.following.count)
-        if let followedUsers = Array(userTwo.following) as? [VFollowedUser] {
+    private func assertCurrentUserFollowedUsers(currentUser currentUser: VUser, userOne: VUser, userTwo: VUser) {
+        XCTAssertEqual(2, currentUser.numberOfFollowing)
+        XCTAssertEqual(2, currentUser.following.count)
+        if let followedUsers = Array(currentUser.following) as? [VFollowedUser] {
             let objectUsersObjectIDs = followedUsers.map { $0.objectUser.objectID }
             let subjectUserIDs = followedUsers.map { $0.subjectUser.objectID }
             XCTAssert(objectUsersObjectIDs.contains(userOne.objectID))
             XCTAssert(objectUsersObjectIDs.contains(userTwo.objectID))
             XCTAssertEqual(2, subjectUserIDs.count)
             for id in subjectUserIDs {
-                XCTAssertEqual(userTwo.objectID, id)
+                XCTAssertEqual(currentUser.objectID, id)
             }
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
@@ -122,7 +124,7 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(1, userOne.followers.count)
         if let followedUser = Array(userOne.followers)[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, userOne)
-            XCTAssertEqual(followedUser.subjectUser, userTwo)
+            XCTAssertEqual(followedUser.subjectUser, currentUser)
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }
@@ -131,7 +133,7 @@ class BatchFollowUsersOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(1, userTwo.numberOfFollowers)
         if let followedUser = Array(userTwo.followers)[0] as? VFollowedUser {
             XCTAssertEqual(followedUser.objectUser, userTwo)
-            XCTAssertEqual(followedUser.subjectUser, userTwo)
+            XCTAssertEqual(followedUser.subjectUser, currentUser)
         } else {
             XCTFail("Couldn't find a followed user after following multiple users")
         }

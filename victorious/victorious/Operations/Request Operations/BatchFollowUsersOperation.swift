@@ -24,7 +24,7 @@ class BatchFollowUsersOperation: RequestOperation {
                 return
             }
 
-            for userID in self.userIDs {
+            for userID in self.userIDs where userID != subjectUser.remoteId {
                 guard let objectUser: VUser = context.v_findObjects(["remoteId" : userID]).first else {
                     continue
                 }
