@@ -21,13 +21,12 @@ class CommentAddRequestBodyTests: XCTestCase {
     }
     
     func testTextOnly() {
-        let parameters = CommentParameters(
-            sequenceID: "17100",
+        let parameters = Comment.CreationParameters(
             text: "test",
+            sequenceID: "17100",
             replyToCommentID: 1564,
-            mediaURL: nil,
-            mediaType: nil,
-            realtimeComment: nil
+            mediaAttachment: nil,
+            realtimeAttachment: nil
         )
         
         let output = try! requestBodyWriter.write(parameters: parameters)
@@ -36,13 +35,12 @@ class CommentAddRequestBodyTests: XCTestCase {
     }
     
     func testRealtime() {
-        let parameters = CommentParameters(
-            sequenceID: "17100",
+        let parameters = Comment.CreationParameters(
             text: "test",
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: nil,
-            mediaType: nil,
-            realtimeComment: CommentParameters.RealtimeComment(time: 0.54, assetID: 999)
+            mediaAttachment: nil,
+            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
         )
         
         let output = try! requestBodyWriter.write(parameters: parameters)
@@ -56,13 +54,17 @@ class CommentAddRequestBodyTests: XCTestCase {
             return
         }
         
-        let parameters = CommentParameters(
-            sequenceID: "17100",
+        let parameters = Comment.CreationParameters(
             text: nil,
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: mockUserDataURL,
-            mediaType: .Image,
-            realtimeComment: nil
+            mediaAttachment: MediaAttachment(
+                url: mockUserDataURL,
+                type:.Image,
+                thumbnailURL: mockUserDataURL,
+                size: CGSize(width: 100.0, height: 100.0)
+            ),
+            realtimeAttachment: nil
         )
         
         let output = try! requestBodyWriter.write(parameters: parameters)

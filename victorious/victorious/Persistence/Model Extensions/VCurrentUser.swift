@@ -34,16 +34,16 @@ public class VCurrentUser: NSObject {
             return userFromMainContext
             
         } else {
-            let objectID = userFromMainContext.objectID
             return managedObjectContext.v_performBlockAndWait { context in
-                if let currentUser = context.objectWithID( objectID ) as? VUser {
-                }
-                return context.objectWithID( objectID ) as? VUser
+                return context.objectWithID( userFromMainContext.objectID ) as? VUser
             }
         }
     }
 
     static func user() -> VUser? {
+        guard NSThread.currentThread().isMainThread else {
+            fatalError( "Attempt to read current user from the persistent store's main context from a thread other than the main thread.  Use method `user(inManagedObjectcontext:)` and provide the context in which you are working." )
+        }
         return VCurrentUser.user( inManagedObjectContext: persistentStore.mainContext )
     }
     
@@ -61,7 +61,13 @@ public extension VUser {
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as their can be only one.
     func setAsCurrentUser() {
-        VCurrentUser.persistentStore.mainContext.v_performBlockAndWait() { context in
+        let persistentStore = VCurrentUser.persistentStore
+        
+        guard self.managedObjectContext == persistentStore.mainContext else {
+            fatalError( "Attempt to set a user from a persistent store's main context as the current user.  Make sure the receiver (a `VUser`) was loaded from the main context." )
+        }
+        
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
         }
     }

@@ -11,39 +11,32 @@ import VictoriousIOSSDK
 
 class SendMessageOperation: RequestOperation {
     
-    struct Parameters {
-        let text: String
-        let recipientID: Int
-        let conversationID: Int
-        let mediaAttachment: MediaAttachment?
-    }
-    
     let request: SendMessageRequest
-    let parameters: Parameters
+    let creationParameters: Message.CreationParameters
     
     private var newMessageObjectID: NSManagedObjectID?
     private var creationDate: NSDate!
     
-    required init( request: SendMessageRequest, parameters: Parameters) {
+    required init( request: SendMessageRequest, creationParameters: Message.CreationParameters) {
         self.request = request
-        self.parameters = parameters
+        self.creationParameters = creationParameters
     }
     
-    convenience init?( parameters: Parameters) {
+    convenience init?( creationParameters: Message.CreationParameters) {
         guard let request = SendMessageRequest(
-            recipientID: parameters.recipientID,
-            text: parameters.text,
-            mediaAttachment: parameters.mediaAttachment) else {
+            recipientID: creationParameters.recipientID,
+            text: creationParameters.text,
+            mediaAttachment: creationParameters.mediaAttachment) else {
                 return nil
         }
-        self.init(request: request, parameters: parameters)
+        self.init(request: request, creationParameters: creationParameters)
     }
     
     override func main() {
         self.creationDate = NSDate()
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = ["remoteId" : self.parameters.conversationID ]
+            let uniqueElements = ["remoteId" : self.creationParameters.conversationID ]
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
                 let conversation: VConversation = context.v_findObjects(uniqueElements).first else {
                     return
@@ -51,9 +44,17 @@ class SendMessageOperation: RequestOperation {
             let message: VMessage = context.v_createObject()
             message.conversation = conversation
             message.sender = currentUser
-            message.text = self.parameters.text
+            message.text = self.creationParameters.text
             message.postedAt = self.creationDate
             message.displayOrder = 0
+            
+            if let mediaAttachment = self.creationParameters.mediaAttachment {
+                // TODO: Add this, too: mediaType               = mediaAttachment.type.rawValue
+                message.mediaPath               = mediaAttachment.url.absoluteString
+                message.thumbnailPath           = mediaAttachment.thumbnailURL.absoluteString
+                message.mediaWidth              = mediaAttachment.size?.width
+                message.mediaHeight             = mediaAttachment.size?.height
+            }
             context.v_save()
             
             self.newMessageObjectID = message.objectID

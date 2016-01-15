@@ -377,26 +377,32 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         self.presentViewController(lightBox!, animated: true, completion: nil)
     }
     
+    func addComment( text text: String, publishParameters: VPublishParameters?) {
+        guard let sequence = self.sequence, let currentUser = VCurrentUser.user() else {
+            return
+        }
+        
+        let creationParameters = Comment.CreationParameters(
+            text: text,
+            sequenceID: sequence.remoteId,
+            replyToCommentID: nil,
+            mediaAttachment: nil,
+            //FIXME: mediaURL: self.publishParameters?.mediaToUploadURL,
+            //FIXME: mediaType: self.publishParameters?.commentMediaAttachmentType,
+            realtimeAttachment: nil
+        )
+        
+        CommentAddOperation(creationParameters: creationParameters)?.queue()
+        self.keyboardBar?.clearTextAndResign()
+        self.publishParameters?.mediaToUploadURL = nil
+    }
+    
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
-        if let sequence = self.sequence {
-            let commentParameters = CommentParameters(
-                sequenceID: sequence.remoteId,
-                text: inputAccessoryView.composedText,
-                replyToCommentID: nil,
-                mediaURL: self.publishParameters?.mediaToUploadURL,
-                mediaType: self.publishParameters?.commentMediaAttachmentType,
-                realtimeComment: nil
-            )
-            if let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters) {
-                operation.queue()
-                self.keyboardBar?.clearTextAndResign()
-                self.publishParameters?.mediaToUploadURL = nil
-            }
-        }
+        self.addComment(text: inputAccessoryView.composedText, publishParameters: nil)
     }
-    
+
     func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {
         inputAccessoryView.stopEditing()
         self.addMediaToCommentWithAttachmentType(attachmentType)

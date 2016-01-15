@@ -9,29 +9,26 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VComment : PersistenceParsable {
+extension VComment: PersistenceParsable {
     
     func populate( fromSourceModel comment: Comment ) {
         remoteId                = comment.commentID
-        shouldAutoplay          = comment.shouldAutoplay
-        text                    = comment.text
-        flags                   = comment.flags
-        dislikes                = comment.dislikes
-        flags                   = comment.flags
-        likes                   = comment.likes
-        parentId                = comment.parentID
-        postedAt                = comment.postedAt
-        shouldAutoplay          = comment.shouldAutoplay
-        text                    = comment.text
         sequenceId              = String(comment.sequenceID)
-        userId                  = comment.userID
+        postedAt                = comment.postedAt
         
-        if let media = comment.media {
-            mediaType           = media.type.rawValue
-            mediaUrl            = media.url.absoluteString
-            thumbnailUrl        = media.thumbnailURL.absoluteString
-            mediaWidth          = media.size.width
-            mediaHeight         = media.size.height
+        parentId                = comment.parentID ?? parentId
+        text                    = comment.text ?? text
+        flags                   = comment.flags ?? flags
+        likes                   = comment.likes ?? likes
+        text                    = comment.text ?? text
+        userId                  = comment.userID ?? parentId
+        
+        if let mediaAttachment = comment.mediaAttachment {
+            mediaType           = mediaAttachment.type.rawValue
+            mediaUrl            = mediaAttachment.url.absoluteString
+            thumbnailUrl        = mediaAttachment.thumbnailURL.absoluteString
+            mediaWidth          = mediaAttachment.size?.width ?? mediaWidth
+            mediaHeight         = mediaAttachment.size?.height ?? mediaHeight
         }
         
         // Set the sequence and inStreamSequence based on the comment's sequenceID if a Sequence object isn't set

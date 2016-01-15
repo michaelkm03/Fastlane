@@ -34,12 +34,9 @@ class ConversationListRequestTests: XCTestCase {
             if let firstConversation = results.first {
                 XCTAssertEqual(firstConversation.conversationID, 3075)
                 XCTAssertEqual(firstConversation.isRead, true)
-                XCTAssertEqual(firstConversation.recipient.name, "Düüd")
+                XCTAssertEqual(firstConversation.otherUser.name, "Düüd")
                 XCTAssertEqual(firstConversation.previewMessageID, 7793)
                 XCTAssertEqual(firstConversation.previewMessageText, "a")
-                XCTAssertEqual(firstConversation.thumbnailURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
-                XCTAssertEqual(firstConversation.mediaURL, NSURL(string:"http://media-dev-public.s3-website-us-west-1.amazonaws.com/24084340f4a29cf68d9e2f6edbe39953/80x80.jpg"))
-                XCTAssertEqual(firstConversation.mediaType, "image")
 
                 // Test Date parsing
                 let dateFormatter = NSDateFormatter(vsdk_format: DateFormat.Standard)

@@ -13,6 +13,7 @@
 #import "VInStreamMediaLink.h"
 #import "VTagStringFormatter.h"
 #import "VCommentMediaTypeHelper.h"
+#import "VMediaAttachment.h"
 
 @implementation VInStreamCommentCellContents
 
@@ -58,11 +59,12 @@
         UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         
         VInStreamMediaLink *mediaLink = nil;
-        NSString *mediaUrlString = comment.mediaUrl;
+        NSString *mediaUrlString = comment.mediaAttachment.url;
         if ( mediaUrlString.length > 0 )
         {
             NSURL *mediaUrl = [NSURL URLWithString:mediaUrlString];
-            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:mediaUrl andShouldAutoplay:[comment.shouldAutoplay boolValue]];
+            BOOL shouldAutoplay = comment.mediaAttachment.shouldAutoplay.boolValue;
+            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:mediaUrl andShouldAutoplay:shouldAutoplay];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                     linkType:linkType

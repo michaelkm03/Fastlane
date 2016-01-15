@@ -36,7 +36,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (nonatomic, strong) VUser *userWithQueuedConversation;
+@property (nonatomic, strong) VConversation *queuedConversation;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
@@ -135,11 +135,10 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
     
-    if ( self.userWithQueuedConversation != nil )
+    if ( self.queuedConversation != nil )
     {
-#warning FIXME
-        //[self displayConversationForUser:self.userWithQueuedConversation animated:YES];
-        self.userWithQueuedConversation = nil;
+        [self displayConversation:self.queuedConversation animated:YES];
+        self.queuedConversation = nil;
     }
 }
 
@@ -330,7 +329,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     
     if ( self.navigationController == nil )
     {
-        self.userWithQueuedConversation = conversation.user;
+        self.queuedConversation = conversation;
     }
     else if ( [rootInnerNavigationController.viewControllers containsObject:detailVC] )
     {

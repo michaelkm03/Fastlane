@@ -89,8 +89,7 @@
              completion( YES, self.inboxViewController );
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-#warning FIXME:
-                                //[self.inboxViewController displayConversationForUser:conversation.user animated:YES];
+                                [self.inboxViewController displayConversation:conversation animated:YES];
                             });
          }
      }

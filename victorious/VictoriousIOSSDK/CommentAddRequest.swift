@@ -23,7 +23,7 @@ public struct CommentAddRequest: RequestType {
         return request.copy() as! NSURLRequest
     }
     
-    public init?( parameters: CommentParameters ) {
+    public init?( parameters: Comment.CreationParameters ) {
         do {
             self.requestBody = try requestBodyWriter.write(parameters: parameters)
         } catch {

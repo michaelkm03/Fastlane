@@ -26,7 +26,7 @@ class CommentAddRequestBody: NSObject {
     }
     
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write( parameters parameters: CommentParameters ) throws -> Output {
+    func write( parameters parameters: Comment.CreationParameters ) throws -> Output {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(String(parameters.sequenceID), withFieldName: "sequence_id")
@@ -39,17 +39,17 @@ class CommentAddRequestBody: NSObject {
             try writer.appendPlaintext( String(commentID), withFieldName: "parent_id")
         }
         
-        if let realtime = parameters.realtimeComment {
-            try writer.appendPlaintext( String(realtime.assetID), withFieldName: "asset_id" )
-            try writer.appendPlaintext( String(realtime.time), withFieldName: "realtime" )
+        if let realtimeAttachment = parameters.realtimeAttachment {
+            try writer.appendPlaintext( String(realtimeAttachment.assetID), withFieldName: "asset_id" )
+            try writer.appendPlaintext( String(realtimeAttachment.time), withFieldName: "realtime" )
         }
         
-        if let mediaURL = parameters.mediaURL,
-            let pathExtension = mediaURL.pathExtension,
-            let mimeType = mediaURL.vsdk_mimeType {
+        if let mediaAttachment = parameters.mediaAttachment,
+            let pathExtension = mediaAttachment.url.pathExtension,
+            let mimeType = mediaAttachment.url.vsdk_mimeType {
                 try writer.appendFileWithName("media_data.\(pathExtension)",
                     contentType: mimeType,
-                    fileURL: mediaURL,
+                    fileURL: mediaAttachment.url,
                     fieldName: "media_data"
                 )
         }

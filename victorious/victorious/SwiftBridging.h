@@ -146,6 +146,7 @@
 #import "VNotification.h"
 #import "VNotificationSettings.h"
 #import "VNotificationSettingsStateManager.h"
+#import "VMediaAttachment.h"
 #import "VNotificationSettingsViewController.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VConversationCell.h"

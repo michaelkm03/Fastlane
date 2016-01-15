@@ -66,26 +66,29 @@ public extension VContentViewViewModel {
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
-        let realtimeComment: CommentParameters.RealtimeComment?
+        guard let sequence = self.sequence else {
+            return
+        }
+        
+        let realtimeAttachment: Comment.RealtimeAttachment?
         if let time = currentTime?.doubleValue where time > 0.0,
             let assetID = (self.sequence.firstNode().assets.firstObject as? VAsset)?.remoteId?.integerValue {
-                realtimeComment = CommentParameters.RealtimeComment( time: time, assetID: assetID )
+                realtimeAttachment = Comment.RealtimeAttachment( time: time, assetID: assetID )
         } else {
-            realtimeComment = nil
+            realtimeAttachment = nil
         }
         
-        let commentParameters = CommentParameters(
-            sequenceID: self.sequence.remoteId,
+        let mediaAttachment = MediaAttachment(publishParameters: publishParameters)
+        
+        let creationParameters = Comment.CreationParameters(
             text: text,
+            sequenceID: sequence.remoteId,
             replyToCommentID: nil,
-            mediaURL: publishParameters.mediaToUploadURL,
-            mediaType: publishParameters.commentMediaAttachmentType,
-            realtimeComment: realtimeComment
+            mediaAttachment: mediaAttachment,
+            realtimeAttachment: realtimeAttachment
         )
         
-        if let operation = CommentAddOperation(commentParameters: commentParameters, publishParameters: publishParameters) {
-            operation.queue()
-        }
+        CommentAddOperation(creationParameters: creationParameters)?.queue()
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {

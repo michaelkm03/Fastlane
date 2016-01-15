@@ -44,15 +44,19 @@ class AccountCreateOperation: RequestOperation {
             // Save, merging the changes into the main context
             context.v_save()
             
-            // Current user must be set AFTER context has been saved above
-            user.setAsCurrentUser()
+            // After saving, the objectID is available
+            let userObjectID = user.objectID
             
-            dispatch_sync( dispatch_get_main_queue() ) {
-                if let currentUser = VCurrentUser.user() {
-                    self.updateStoredCredentials( currentUser )
-                    self.notifyLoginChange( currentUser, isNewUser: response.newUser )
-                    self.queueNextOperations( currentUser )
+            self.persistentStore.mainContext.v_performBlock() { context in
+                
+                // Reload from main context to continue login process
+                guard let user = context.objectWithID(userObjectID) as? VUser else {
+                    fatalError( "Cannot retrieve user by objectID." )
                 }
+                user.setAsCurrentUser()
+                self.updateStoredCredentials( user )
+                self.notifyLoginChange( user, isNewUser: response.newUser )
+                self.queueNextOperations( user )
                 completion()
             }
         }

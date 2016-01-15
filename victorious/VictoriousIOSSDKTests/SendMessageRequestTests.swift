@@ -13,7 +13,7 @@ import XCTest
 class SendMessageRequestTests: XCTestCase {
     
     func testRequest() {
-        let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachmentType: nil, mediaURL: nil)
+        let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachment: nil)
         XCTAssertEqual(sendMessageRequest?.urlRequest.URL?.absoluteString, "/api/message/send")
     }
     
@@ -24,7 +24,7 @@ class SendMessageRequestTests: XCTestCase {
                 return
         }
         
-        guard let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachmentType: nil, mediaURL: nil) else {
+        guard let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachment: nil) else {
             XCTFail("Could not instantiate AccountUpdateRequest")
             return
         }

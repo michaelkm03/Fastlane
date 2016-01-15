@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 public extension VConversationContainerViewController {
     
@@ -15,13 +16,13 @@ public extension VConversationContainerViewController {
             return
         }
         
-        let parameters = SendMessageOperation.Parameters(
+        let parameters = Message.CreationParameters(
             text: text,
             recipientID: recipient.remoteId.integerValue,
             conversationID: conversation.remoteId.integerValue,
             mediaAttachment: nil
         )
-        SendMessageOperation(parameters: parameters)?.queue() { error in
+        SendMessageOperation(creationParameters: parameters)?.queue() { error in
             completion?(error)
         }
     }

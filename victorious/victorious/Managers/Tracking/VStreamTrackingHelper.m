@@ -90,7 +90,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
-    if ( ![event.streamItem isKindOfClass:[VSequence class]] )
+    if ( ![event.streamItem isKindOfClass:[VSequence class]] && event.streamItem.remoteId != nil )
     {
         return;
     }

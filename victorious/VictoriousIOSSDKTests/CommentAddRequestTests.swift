@@ -12,13 +12,12 @@ import XCTest
 
 class CommentAddRequestTests: XCTestCase {
     
-    let textOnlyParameters = CommentParameters(
-        sequenceID: "17100",
+    let textOnlyParameters = Comment.CreationParameters(
         text: "test",
+        sequenceID: "17100",
         replyToCommentID: 1564,
-        mediaURL: nil,
-        mediaType: nil,
-        realtimeComment: nil
+        mediaAttachment: nil,
+        realtimeAttachment: nil
     )
     
     func testTextOnlyRequest() {
@@ -29,13 +28,12 @@ class CommentAddRequestTests: XCTestCase {
     }
     
     func testRealtimeRequest() {
-        let params = CommentParameters(
-            sequenceID: "17100",
+        let params = Comment.CreationParameters(
             text: "test",
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: nil,
-            mediaType: nil,
-            realtimeComment: CommentParameters.RealtimeComment(time: 0.54, assetID: 999)
+            mediaAttachment: nil,
+            realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
         )
         
         let request = CommentAddRequest(parameters: params)!
@@ -45,18 +43,14 @@ class CommentAddRequestTests: XCTestCase {
     }
     
     func testMediaRequest() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("test_image", withExtension: "png") else {
-            XCTFail("Error reading mock image")
-            return
-        }
-        
-        let params = CommentParameters(
-            sequenceID: "17100",
+        let params = Comment.CreationParameters(
             text: nil,
+            sequenceID: "17100",
             replyToCommentID: nil,
-            mediaURL: mockUserDataURL,
-            mediaType: .Image,
-            realtimeComment: nil
+            mediaAttachment: nil,
+            // mediaURL: mockUserDataURL,
+            // mediaType: .Image,
+            realtimeAttachment: nil
         )
         let request = CommentAddRequest(parameters: params)!
         XCTAssertNotNil( request )

@@ -16,9 +16,6 @@ public struct Conversation {
     public let otherUser: User
     public let previewMessageText: String?
     public let postedAt: NSDate?
-    public let thumbnailURL: NSURL?
-    public let mediaURL: NSURL?
-    public let mediaType: MediaAttachmentType?
 }
 
 extension Conversation {
@@ -38,9 +35,5 @@ extension Conversation {
                 
         self.previewMessageText     = json["text"].string
         self.isRead                 = json["is_read"].bool
-        self.mediaURL               = NSURL(vsdk_string: json["media_url"].string)
-        self.thumbnailURL           = NSURL(vsdk_string: json["thumbnail_url"].string)
-        
-        self.mediaType = MediaAttachmentType(rawValue: json["media_type"].stringValue)
     }
 }

@@ -12,19 +12,20 @@ import VictoriousIOSSDK
 extension VMessage: PersistenceParsable {
     
     func populate( fromSourceModel message: Message ) {
-        mediaPath                   = message.mediaURL?.absoluteString ?? ""
-        postedAt                    = message.postedAt
         remoteId                    = message.messageID
-        text                        = message.text
-        isRead                      = message.isRead
-        shouldAutoplay              = message.shouldAutoplay
-        //mediaWidth                  = message.mediaWidth
-        //mediaHeight                 = message.mediaHeight
-        //sender                      = message.sender
-        //mediaAttachments            = message.mediaAttachments
-        //senderUserId                = message.senderUserId
-        //thumbnailPath               = message.thumbnailPath
-        //notification                = message.notification
+        postedAt                    = message.postedAt
+        text                        = message.text ?? text
+        isRead                      = message.isRead ?? isRead
+        
+        // TODO: Find-and-replace mediaPath and thumbnailMediaPath for URL versions like in VComment
+        
+        if let mediaAttachment = message.mediaAttachment {
+            // TODO: Add this, too: mediaType               = mediaAttachment.type.rawValue
+            mediaPath               = mediaAttachment.url.absoluteString
+            thumbnailPath           = mediaAttachment.thumbnailURL.absoluteString
+            mediaWidth              = mediaAttachment.size?.width ?? mediaWidth
+            mediaHeight             = mediaAttachment.size?.height ?? mediaHeight
+        }
         
         if self.sender == nil {
             self.sender = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : message.sender.userID ] ) as VUser
