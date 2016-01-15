@@ -25,7 +25,7 @@ class SequenceUserInterationsOperation: RequestOperation {
     }
     
     private func onComplete( result: SequenceUserInteractionsRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             let sequence: VSequence = context.v_findOrCreateObject([ "remoteId" : self.sequenceID ])
             sequence.hasBeenRepostedByMainUser = result
             context.v_save()

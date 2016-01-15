@@ -30,9 +30,9 @@
 
 - (void)testInvalidInitialization
 {
-    XCTAssertThrows( [[VSequencePermissions alloc] init] );
-    XCTAssertThrows( [[VSequencePermissions alloc] initWithNumber:nil] );
-    XCTAssertThrows( [VSequencePermissions permissionsWithNumber:nil] );
+    XCTAssertNil( [[VSequencePermissions alloc] init] );
+    XCTAssertNil( [[VSequencePermissions alloc] initWithNumber:nil] );
+    XCTAssertNil( [VSequencePermissions permissionsWithNumber:nil] );
 }
 
 - (void)testPermissionToProperty
