@@ -35,7 +35,7 @@ class CommentFindOperation: RequestOperation {
         
         let flaggedCommentIds: [Int] = VFlaggedContent().flaggedContentIdsWithType(.Comment).flatMap { Int($0) }
         if !response.comments.isEmpty {
-            persistentStore.backgroundContext.v_performBlock() { context in
+            storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
                 var comments = [VComment]()
                 for comment in response.comments.filter({ flaggedCommentIds.contains($0.commentID) == false }) {
                     let persistentComment: VComment = context.v_findOrCreateObject( [ "remoteId" : Int(comment.commentID) ] )

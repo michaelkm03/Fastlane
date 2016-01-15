@@ -252,7 +252,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
         operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:nil];
 }
 
 #pragma mark - Internal Methods

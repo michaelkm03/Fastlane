@@ -49,21 +49,45 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
-        // Call the completion block before the Core Data context saves because consumers only care about the networkHashtags
+        // Queue parsing of network results into persistent store to execute after this operation completes
+        // This allows calling code to receive the `resutls` above without having to wait
+        // until all the hashtags are parsed and saved to the persistent store
+        SaveHashtagsOperation(hashtags: networkResult).queueAfter(self)
+        
         completion()
+    }
+}
+
+class SaveHashtagsOperation: Operation {
+    
+    let hashtags: [Hashtag]
+    
+    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    
+    required init( hashtags: [Hashtag] ) {
+        self.hashtags = hashtags
+    }
+    
+    override func start() {
+        super.start()
+        
+        guard !hashtags.isEmpty else {
+            self.finishedExecuting()
+            return
+        }
+        
+        self.beganExecuting()
         
         // Populate our local hashtags cache based off the new data
-        persistentStore.backgroundContext.v_performBlock { context in
-            guard !networkResult.isEmpty else {
-                return
-            }
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             
-            for networkHashtag in networkResult {
-                let localHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : networkHashtag.tag ])
-                localHashtag.populate(fromSourceModel: networkHashtag)
+            for hashtag in self.hashtags {
+                let persistentHashtag: VHashtag = context.v_findOrCreateObject([ "tag" : hashtag.tag ])
+                persistentHashtag.populate(fromSourceModel: hashtag)
             }
             
             context.v_save()
+            self.finishedExecuting()
         }
     }
 }

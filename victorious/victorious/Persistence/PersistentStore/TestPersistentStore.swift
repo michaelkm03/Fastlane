@@ -17,11 +17,11 @@ class TestPersistentStore: NSObject, PersistentStoreType {
     static let managedObjectModelName = "victoriOS"
     static let managedObjectModelVersion = MainPersistentStore.managedObjectModelVersion
         
-    private static var coreDataManageInstancer: CoreDataManager?
+    private static var coreDataManageInstance: CoreDataManager?
     
     var sharedCoreDataManager: CoreDataManager {
-        if let coreDataManageInstancer = TestPersistentStore.coreDataManageInstancer {
-            return coreDataManageInstancer
+        if let coreDataManageInstance = TestPersistentStore.coreDataManageInstance {
+            return coreDataManageInstance
         }
         
         let docsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
@@ -32,7 +32,7 @@ class TestPersistentStore: NSObject, PersistentStoreType {
             fatalError( "Cannot find managed object model (.mom) for URL in bundle: \(momPath)" )
         }
         
-        let newCoreDataManageInstancer = CoreDataManager(
+        let newCoreDataManageInstance = CoreDataManager(
             persistentStoreURL: persistentStoreURL,
             currentModelVersion: CoreDataManager.ModelVersion(
                 identifier: TestPersistentStore.managedObjectModelVersion,
@@ -40,26 +40,26 @@ class TestPersistentStore: NSObject, PersistentStoreType {
             ),
             previousModelVersion: nil
         )
-        TestPersistentStore.coreDataManageInstancer = newCoreDataManageInstancer
-        return newCoreDataManageInstancer
+        TestPersistentStore.coreDataManageInstance = newCoreDataManageInstance
+        return newCoreDataManageInstance
     }
     
     var mainContext: NSManagedObjectContext {
         return sharedCoreDataManager.mainContext
     }
     
-    var backgroundContext: NSManagedObjectContext {
-        return sharedCoreDataManager.backgroundContext
+    func createBackgroundContext() -> NSManagedObjectContext {
+        return sharedCoreDataManager.createBackgroundContext()
     }
     
     func deletePersistentStore() throws {
-        guard let coreDataMgr = TestPersistentStore.coreDataManageInstancer else {
+        guard let coreDataMgr = TestPersistentStore.coreDataManageInstance else {
             return
         }
         let url = coreDataMgr.persistentStoreURL
         do {
             try NSFileManager.defaultManager().removeItemAtURL( url )
-             TestPersistentStore.coreDataManageInstancer = nil
+             TestPersistentStore.coreDataManageInstance = nil
         } catch {
             throw PersistentStoreError.DeleteFailed(storeURL: url, error: error)
         }

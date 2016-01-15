@@ -8,13 +8,18 @@
 
 import Foundation
 
+let _sharedQueue = NSOperationQueue()
+
 class Operation: NSOperation, Queuable {
     
     var mainQueueCompletionBlock: ((Operation)->())?
     
-    static let defaultQueue = NSOperationQueue()
     static var sharedQueue: NSOperationQueue {
-        return Operation.defaultQueue
+        return _sharedQueue
+    }
+    
+    var defaultQueue: NSOperationQueue {
+        return _sharedQueue
     }
     
     private var _executing = false

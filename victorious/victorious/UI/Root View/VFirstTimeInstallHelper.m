@@ -8,7 +8,6 @@
 
 #import "VFirstTimeInstallHelper.h"
 #import "VSequence+Fetcher.h"
-#import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VDependencyManager.h"

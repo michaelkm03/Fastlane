@@ -35,21 +35,30 @@ class AccountCreateOperation: RequestOperation {
     func onComplete( response: AccountCreateResponse, completion:()->() ) {
         self.isNewUser = response.newUser
         
-        // First, find or create the new user who just logged in
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
+            
+            // First, find or create the new user who just logged in
             let user: VUser = context.v_findOrCreateObject( [ "remoteId" : response.user.userID ])
-            user.setAsCurrentUser()
             user.populate(fromSourceModel: response.user)
             user.loginType = self.loginType.rawValue
             user.token = response.token
+            
+            // Save, merging the changes into the main context
             context.v_save()
             
-            dispatch_async( dispatch_get_main_queue() ) {
-                if let currentUser = VCurrentUser.user() {
-                    self.updateStoredCredentials( currentUser )
-                    self.notifyLoginChange( currentUser, isNewUser: response.newUser )
-                    self.queueNextOperations( currentUser )
+            // After saving, the objectID is available
+            let userObjectID = user.objectID
+            
+            self.persistentStore.mainContext.v_performBlock() { context in
+                
+                // Reload from main context to continue login process
+                guard let user = context.objectWithID(userObjectID) as? VUser else {
+                    fatalError( "Cannot retrieve user by objectID." )
                 }
+                user.setAsCurrentUser()
+                self.updateStoredCredentials( user )
+                self.notifyLoginChange( user, isNewUser: response.newUser )
+                self.queueNextOperations( user )
                 completion()
             }
         }
@@ -70,8 +79,8 @@ class AccountCreateOperation: RequestOperation {
     
     private func queueNextOperations( currentUser: VUser ) {
         // Load more data from the network about the user
-        PollResultSummaryByUserOperation( userID: currentUser.remoteId.integerValue ).queueAfter( self, queue: Operation.defaultQueue )
-        ConversationListOperation().queueAfter( self, queue: Operation.defaultQueue )
+        PollResultSummaryByUserOperation(userID: currentUser.remoteId.integerValue).queueAfter(self)
+        ConversationListOperation().queueAfter(self)
         
         // TODO: Think of some other things we can load here just to get the objects into the persistence store
         // so that they are avilable offline.  Perhaps current user's liked sequences, profile stream, settings, user info fetches

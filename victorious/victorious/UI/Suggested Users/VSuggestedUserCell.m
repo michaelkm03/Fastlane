@@ -125,7 +125,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         [self updateFollowingStateAnimated:YES];
     }];

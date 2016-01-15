@@ -41,7 +41,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
     }
     
     private func onComplete( users: SequenceLikersRequest.ResultType, completion:()->() ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = (self.request.paginator.pageNumber - 1) * self.request.paginator.itemsPerPage
 
             let sequence: VSequence = context.v_findOrCreateObject(["remoteId" : self.sequenceID ])
@@ -67,7 +67,7 @@ final class SequenceLikersOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VSequenceLiker.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                v_format: "sequence.remoteId = %@",
+                vsdk_format: "sequence.remoteId = %@",
                 v_argumentArray: [ self.sequenceID ],
                 v_paginator: self.request.paginator
             )

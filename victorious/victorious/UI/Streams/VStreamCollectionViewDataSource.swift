@@ -35,10 +35,10 @@ public extension VStreamCollectionViewDataSource {
     }
     
     public func removeStreamItem(streamItem: VStreamItem) {
-        RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queueOn( RequestOperation.sharedQueue )
+        RemoveStreamItemOperation(streamItemID: streamItem.remoteId).queue()
     }
     
     public func unloadStream() {
-        UnloadStreamItemOperation(streamID: self.stream.remoteId ).queueOn( RequestOperation.sharedQueue )
+        UnloadStreamItemOperation(streamID: self.stream.remoteId ).queue()
     }
 }

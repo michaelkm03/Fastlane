@@ -11,10 +11,6 @@ import SwiftyJSON
 
 public struct Stream: StreamItemType {
     
-    private let dateFormatter: NSDateFormatter = {
-        return NSDateFormatter(format: .Standard)
-    }()
-    
     public let streamID: String
     public let name: String?
     public let title: String?
@@ -43,7 +39,7 @@ extension Stream {
         }
         self.streamID               = streamID
         
-        releasedAt                  = dateFormatter.dateFromString(json["posted_at"].stringValue)
+        releasedAt                  = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue)
         type                        = StreamContentType(rawValue: json["type"].stringValue)
         subtype                     = StreamContentType(rawValue: json["subtype"].stringValue)
         streamContentType           = StreamContentType(rawValue: json["stream_content_type"].stringValue)

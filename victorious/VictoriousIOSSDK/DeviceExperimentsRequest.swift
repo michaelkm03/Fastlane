@@ -22,13 +22,13 @@ public struct DeviceExperimentsRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: [Int]) {
-            guard let experimentsJSON = responseJSON["payload"].array,
-                let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
-                    throw ResponseParsingError()
-            }
-            
-            let deviceExperiments = experimentsJSON.flatMap { DeviceExperiment(json: $0) }
-            let defaultExperiments = defaultExperimentsJSON.flatMap{Int($0.stringValue)}
-            return (deviceExperiments,defaultExperiments)
+        guard let experimentsJSON = responseJSON["payload"].array,
+            let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
+                throw ResponseParsingError()
+        }
+        
+        let deviceExperiments = experimentsJSON.flatMap { DeviceExperiment(json: $0) }
+        let defaultExperiments = defaultExperimentsJSON.flatMap{ Int($0.stringValue) }
+        return (deviceExperiments,defaultExperiments)
     }
 }

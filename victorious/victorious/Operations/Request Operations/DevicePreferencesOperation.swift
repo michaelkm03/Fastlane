@@ -31,7 +31,7 @@ class DevicePreferencesOperation: RequestOperation {
     }
     
     private func onComplete( result: DevicePreferencesRequest.ResultType, completion: () -> () ) {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // Grab the background current user's notificationSettings, creating if none already exist
             let currentUser = VCurrentUser.user()

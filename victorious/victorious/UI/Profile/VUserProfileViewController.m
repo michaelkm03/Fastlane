@@ -481,7 +481,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         self.profileHeaderViewController.loading = NO;
         [self reloadUserFollowingRelationship];
@@ -508,13 +508,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
     
+    if ( _user != nil )
+    {
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+        [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
+    }
+    
     if ( user == _user )
     {
         return;
     }
-    
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
-    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     
     _user = user;
     
@@ -534,7 +537,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                               {
                                   [welf shrinkHeaderAnimated:YES];
                               }
-                              [welf.currentStream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems))];
+                              [self.KVOController unobserve:self keyPath:NSStringFromSelector(@selector(streamItems))];
                           }];
     
     NSCharacterSet *charSet = [NSCharacterSet vsdk_pathPartCharacterSet];
@@ -543,7 +546,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
-    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector mainPersistentStore];
+    id<PersistentStoreType>  persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         self.currentStream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         [persistentStore.mainContext save:nil];

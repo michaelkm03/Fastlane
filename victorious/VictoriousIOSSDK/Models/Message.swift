@@ -23,7 +23,6 @@ public struct Message {
 }
 
 extension Message {
-    static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
     
     public init?(json: JSON) {
 
@@ -46,7 +45,7 @@ extension Message {
         
         // Use our standard dateformat for postedAt
         if let postedAtString = json["posted_at"].string {
-            let date = Message.dateFormatter.dateFromString(postedAtString)
+            let date = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(postedAtString)
             self.postedAt = date
         } else {
             self.postedAt = nil

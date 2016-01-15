@@ -61,7 +61,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     NSDictionary *query = @{ @"apiPath" : apiPath };
     
     __block VStream *stream = nil;
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector mainPersistentStore];
+    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
     [persistentStore.mainContext performBlockAndWait:^void {
         stream = (VStream *)[persistentStore.mainContext v_findOrCreateObjectWithEntityName:[VStream entityName] queryDictionary:query];
         stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -195,7 +195,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     if ( self.isFollowingSelectedHashtag )
     {
         RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
-        [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
             self.followingEnabled = YES;
             self.followingSelectedHashtag = NO;
@@ -205,7 +205,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     else
     {
         RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:self.selectedHashtag];
-        [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
             self.followingEnabled = YES;
             self.followingSelectedHashtag = YES;

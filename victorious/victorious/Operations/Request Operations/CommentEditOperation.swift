@@ -27,7 +27,7 @@ class CommentEditOperation: RequestOperation {
     override func main() {
         
         // Optimistically edit the comment before sending request
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             if let comment: VComment = context.v_findObjects( ["remoteId" : self.commentID] ).first {
                 comment.text = self.text
                 context.v_save()
@@ -47,7 +47,7 @@ class CommentEditOperation: RequestOperation {
     
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlock() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             defer {
                 completion()
             }

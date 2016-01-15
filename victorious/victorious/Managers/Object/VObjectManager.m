@@ -49,7 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
 @property (nonatomic, strong) NSString *sessionID;
 @property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
-//@property (nonatomic, strong) AlertParser *alertParser;
 @property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, RKEntityMapping*> *mappingCache;
 
 @end
@@ -76,9 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
     uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
     
-    //manager.alertParser = [[AlertParser alloc] init];
-    manager.shouldRegisterAlerts = YES;
-    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
@@ -101,16 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Create an initial session ID
     [manager resetSessionID];
-}
-
-+ (NSDateFormatter *)dateFormatter
-{
-    NSDateFormatter *dateFormatter;
-    dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-    dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    return dateFormatter;
 }
 
 - (void)victoriousSetup
@@ -200,7 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
-            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
+//            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
             
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                                userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
@@ -220,14 +206,6 @@ NS_ASSUME_NONNULL_BEGIN
             {
                 JSON[kVPayloadKey] = @{@"objects":payload};
             }
-            
-            // Parse alerts payload
-            id alerts = JSON[kAlertsKey];
-            if (alerts != nil && [alerts isKindOfClass:[NSArray class]] && self.shouldRegisterAlerts && self.mainUser != nil)
-            {
-                //[self.alertParser parseAlertsWithPayload:alerts];
-            }
-            
             successBlock(operation, JSON, mappedObjects);
         }
         else if (error.errorCode)
@@ -248,7 +226,7 @@ NS_ASSUME_NONNULL_BEGIN
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if ( rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError )
         {
-            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
+//            [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
         }
         else
         {
@@ -274,7 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     else if( errorCode == kVUserBannedError && self.mainUser )
     {
-        [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
+//        [[NSOperationQueue mainQueue] addOperation:[[LogoutLocally alloc] init]];
         
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                                                  message:NSLocalizedString(@"UserBannedMessage", @"")

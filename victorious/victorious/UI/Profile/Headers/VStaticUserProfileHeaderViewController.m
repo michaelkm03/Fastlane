@@ -99,8 +99,8 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     if (self.state == VUserProfileHeaderStateCurrentUser)
     {
-        NSInteger progressPercentage = self.user.levelProgressPercentage.integerValue;
-        [self.badgeView animateProgress:levelProgressAnimationTime * (progressPercentage / 100.0f) endPercentage:progressPercentage completion:nil];
+        NSInteger progress = self.user.levelProgressPercentage.integerValue;
+        [self.badgeView animateProgress:levelProgressAnimationTime * (progress / 100.0f) endPercentage:progress completion:nil];
     }
 }
 
@@ -140,7 +140,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 - (BOOL)badgeViewNeedsToBeUpdated
 {
     return ![self.badgeView.levelNumberString isEqualToString:self.user.level.stringValue] ||
-    self.badgeView.progressPercentage != self.user.levelProgressPercentage.integerValue ||
+    self.badgeView.progress != self.user.levelProgressPercentage.integerValue ||
     self.badgeView.superview == nil;
 }
 

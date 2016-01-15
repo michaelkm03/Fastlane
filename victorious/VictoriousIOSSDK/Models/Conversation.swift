@@ -22,7 +22,6 @@ public struct Conversation {
 }
 
 extension Conversation {
-    static var dateFormatter = NSDateFormatter(format: DateFormat.Standard)
     
     public init?(json: JSON) {
         if let conversationID = json["conversation_id"].int,
@@ -32,7 +31,7 @@ extension Conversation {
                 self.conversationID = conversationID
                 self.previewMessageID = messageIDNumber
                 self.recipient = recipientUser
-                self.postedAt = Conversation.dateFormatter.dateFromString(postedAtString)
+                self.postedAt = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(postedAtString)
         }
         else {
             return nil

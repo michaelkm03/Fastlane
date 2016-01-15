@@ -96,6 +96,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                         keyPath:NSStringFromSelector(@selector(followedHashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
+    
     [self.KVOController observe:currentUser
                         keyPath:NSStringFromSelector(@selector(following))
                         options:NSKeyValueObservingOptionNew
@@ -189,7 +190,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.trendingTags = hashtags;
     
     // If logged in, load any tags already being followed
-    if ([VObjectManager sharedManager].authorized)
+    if ( [VCurrentUser user] != nil )
     {
         [self updatedFollowedTags];
     }
@@ -241,7 +242,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isShowingNoData
 {
-    BOOL tagFollowStatesAreValid = [[VObjectManager sharedManager] mainUser] == nil || self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [VCurrentUser user] == nil || self.loadedUserFollowing;
     return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
@@ -379,12 +380,12 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 if ([[VCurrentUser user] isFollowingHashtagString:hashtag.tag] )
                 {
                     RequestOperation *operation = [[UnfollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-                    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+                    [operation queueOn:operation.defaultQueue completionBlock:nil];
                 }
                 else
                 {
                     RequestOperation *operation = [[FollowHashtagOperation alloc] initWithHashtag:hashtag.tag];
-                    [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];
+                    [operation queueOn:operation.defaultQueue completionBlock:nil];
                 }
             };
             customCell.dependencyManager = self.dependencyManager;

@@ -59,7 +59,7 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         completion()
 
         // Populate our local users cache based off the new data
-        persistentStore.backgroundContext.v_performBlock { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             guard !networkResult.isEmpty else {
                 return
             }

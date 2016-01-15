@@ -10,18 +10,19 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Remotes a stream item from the stream and deletes it
+// TODO: Do we still need this?
 class RemoveStreamItemOperation: Operation {
     
     private let streamItemID: String
     
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     init( streamItemID: String) {
         self.streamItemID = streamItemID
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlock() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let streamItem: VStreamItem = context.v_findObjects([ "remoteId" : self.streamItemID ]).first,
                 let streamID = streamItem.streamId,
                 let stream: VStream = context.v_findObjects([ "remoteId" : streamID ]).first else {
