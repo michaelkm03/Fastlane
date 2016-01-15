@@ -19,34 +19,34 @@ public struct TextPostParameters {
         self.backgroundColor = backgroundColor
         self.backgroundImageURL = backgroundImageURL
     }
+    
+    func isInvalid() -> Bool {
+        let noBackground = backgroundColor == nil && backgroundImageURL == nil
+        return noBackground
+    }
 }
 
 public struct CreateTextPostRequest: RequestType {
     
-    private let requestBody: RequestBodyWriterOutput
-    private let requestBodyWriter = CreateTextPostRequestBodyWriter()
+    public let parameters: TextPostParameters
+    public let baseURL: NSURL
     
-    public init?(parameters: TextPostParameters) {
-        do {
-            self.requestBody = try requestBodyWriter.write( parameters: parameters )
-        } catch {
+    public init?(parameters: TextPostParameters, baseURL: NSURL) {
+        if parameters.isInvalid() {
             return nil
         }
+        self.parameters = parameters
+        self.baseURL = baseURL
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/text/create")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "/api/text/create", relativeToURL: baseURL)!)
         request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
-        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
-        // When the response come back, it is safe to remove the temp file created by the request body writer
-        requestBodyWriter.removeBodyTempFile()
-        
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {        
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let textPostSequenceID = sequenceID.string else {

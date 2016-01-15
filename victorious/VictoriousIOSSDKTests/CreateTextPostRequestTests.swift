@@ -12,37 +12,39 @@ import SwiftyJSON
 
 class CreateTextPostRequestTests: XCTestCase {
     
+    let mockBaseURLString = "http://www.google.com"
+    
     func testRequestWithValidBackgroundColor() {
         let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
-        guard let request = CreateTextPostRequest(parameters: mockParameters) else {
+        guard let request = CreateTextPostRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!) else {
             XCTFail("Request Creation should not fail here")
             return
         }
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/text/create")
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "\(mockBaseURLString)/api/text/create")
     }
     
     func testRequestWithValidBackgroundImageURL() {
         let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: NSURL(string: "file://someurl/to/image.png")!, backgroundColor: nil)
-        guard let request = CreateTextPostRequest(parameters: mockParameters) else {
+        guard let request = CreateTextPostRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!) else {
             XCTFail("Request Creation should not fail here")
             return
         }
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/text/create")
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "\(mockBaseURLString)/api/text/create")
     }
     
     func testREquestWithInvalidParameters() {
         let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: nil)
-        let request = CreateTextPostRequest(parameters: mockParameters)
+        let request = CreateTextPostRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!)
         XCTAssertNil(request)
     }
     
     func testParseResponse() {
         let mockParameters = TextPostParameters(content: "mockTextPostContent", backgroundImageURL: nil, backgroundColor: UIColor.blueColor())
-        guard let request = CreateTextPostRequest(parameters: mockParameters) else {
+        guard let request = CreateTextPostRequest(parameters: mockParameters, baseURL: NSURL(string: mockBaseURLString)!) else {
             XCTFail("Request Creation should not fail here")
             return
         }

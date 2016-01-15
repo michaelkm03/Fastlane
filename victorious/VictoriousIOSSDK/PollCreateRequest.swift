@@ -32,7 +32,7 @@ public struct PollParameters {
         self.answers = answers
     }
     
-    func isValid() -> Bool {
+    func isInvalid() -> Bool {
         let invalidAnswersCount = answers.count != 2
         let invalidMediaURL = (answers.first?.mediaURL == nil) || (answers.last?.mediaURL == nil)
         
@@ -45,19 +45,19 @@ public struct PollCreateRequest: RequestType {
     public let parameters: PollParameters
     public let baseURL: NSURL
     
+    public init?( parameters: PollParameters, baseURL: NSURL ) {
+        if parameters.isInvalid() {
+            return nil
+        }
+        self.parameters = parameters
+        self.baseURL = baseURL
+    }
+    
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/poll/create", relativeToURL: baseURL)!)
         request.HTTPMethod = "POST"
         
         return request
-    }
-    
-    public init?( parameters: PollParameters, baseURL: NSURL ) {
-        if parameters.isValid() {
-            return nil
-        }
-        self.parameters = parameters
-        self.baseURL = baseURL
     }
 
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
