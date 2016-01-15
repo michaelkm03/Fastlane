@@ -34,7 +34,9 @@ public extension VCreatePollViewController {
             ]
         )
         
-        guard let operation = CreatePollOperation(parameters: parameters) else {
+        let previewImage = leftPreviewImageView?.image ?? UIImage()
+        let uploadManager = VUploadManager.sharedManager()
+        guard let operation = CreatePollOperation(parameters: parameters, previewImage: previewImage, uploadManager: uploadManager) else {
             return
         }
         

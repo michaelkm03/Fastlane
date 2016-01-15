@@ -467,11 +467,11 @@
 		67C5C53B1C0395ED00F99C8C /* UnlikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */; };
 		67C5C53D1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */; };
 		67C5C5411C03C1E700F99C8C /* VSuggestedUsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */; };
+		67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */; };
 		67CD14A91C1A685700C09DC7 /* AgeGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */; };
 		67CEBCC81C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */; };
 		67CEBCCA1C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */; };
 		67CEBCCC1C472BA700A3C4A0 /* String+ThumbnailPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */; };
-		67CEBCCE1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */; };
 		67CEBCD01C473DAA00A3C4A0 /* PollCreateRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCCF1C473DAA00A3C4A0 /* PollCreateRequestTests.swift */; };
 		67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
@@ -2534,11 +2534,11 @@
 		67C5C53A1C0395ED00F99C8C /* UnlikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequest.swift; sourceTree = "<group>"; };
 		67C5C53C1C03960A00F99C8C /* UnlikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlikeSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67C5C5401C03C1E700F99C8C /* VSuggestedUsersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSuggestedUsersDataSource.swift; sourceTree = "<group>"; };
+		67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUploadManager.swift; sourceTree = "<group>"; };
 		67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeGateTests.swift; sourceTree = "<group>"; };
 		67CEBCC71C472A1400A3C4A0 /* CreateTextPostRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67CEBCC91C472A9B00A3C4A0 /* CommentAddRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAddRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67CEBCCB1C472BA700A3C4A0 /* String+ThumbnailPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+ThumbnailPath.swift"; path = "victorious/Operations/String+ThumbnailPath.swift"; sourceTree = SOURCE_ROOT; };
-		67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequestBodyWriter.swift; sourceTree = "<group>"; };
 		67CEBCCF1C473DAA00A3C4A0 /* PollCreateRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequestTests.swift; sourceTree = "<group>"; };
 		67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperationTests.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
@@ -5265,7 +5265,6 @@
 				A75D3BEA1C176F39006CE331 /* PaginatorPageable.swift */,
 				67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */,
 				A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */,
-				67CEBCCD1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift */,
 				6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */,
 				678D94431BF41BE3009A1F93 /* PollVoteRequest.swift */,
 				795B75971BFA80E000227647 /* PrivacyPolicyRequest.swift */,
@@ -7559,6 +7558,7 @@
 		A7B0A62C1C347A01008B875C /* Test Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */,
 				A7B0A62D1C347A01008B875C /* CoreDataPathHelper.swift */,
 				67FAC0B91C4083370051D47E /* MockOperations.swift */,
 				62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */,
@@ -10394,7 +10394,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				79CFD3CF1BF2A19C004F70D9 /* FlagConversationRequest.swift in Sources */,
-				67CEBCCE1C47381400A3C4A0 /* PollCreateRequestBodyWriter.swift in Sources */,
 				A7D618EE1C2A7E5A007F46EA /* HashtagSubscribedToListRequest.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				795271021C348C8900BD41F1 /* UserSearchRequest.swift in Sources */,
@@ -10690,6 +10689,7 @@
 				6236F8811C36057000746476 /* MainPersistentStoreTests.swift in Sources */,
 				A7C565DB1C403FE600E4DF6A /* FollowCountOperationTests.swift in Sources */,
 				6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */,
+				67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */,
 				A7B0A63A1C347A01008B875C /* CoreDataPathHelper.swift in Sources */,
 				67AB78211C40823800BA00FE /* MockRequests.swift in Sources */,
 				674B66F01C3F0A1C00938EB5 /* PasswordResetOperationTests.swift in Sources */,

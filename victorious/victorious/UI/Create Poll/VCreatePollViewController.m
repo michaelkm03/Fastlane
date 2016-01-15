@@ -28,9 +28,6 @@ static char KVOContext;
 
 @property (weak, nonatomic) IBOutlet UIImageView *middleOrIconImageView;
 
-@property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
-
 @property (weak, nonatomic) IBOutlet UIButton *leftRemoveButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightRemoveButton;
 

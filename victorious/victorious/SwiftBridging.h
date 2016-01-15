@@ -205,6 +205,8 @@
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
 #import "VTwitterManager.h"
+#import "VUploadTaskCreator.h"
+#import "VUploadTaskInformation.h"
 #import "VUser+RestKit.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"

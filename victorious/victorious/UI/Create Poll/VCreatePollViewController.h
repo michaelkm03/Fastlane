@@ -48,5 +48,7 @@ typedef void (^VCreatePollViewControllerCompletionHandler)(VCreatePollViewContro
 @property (strong, nonatomic) IBOutlet UITextView *rightAnswerTextView;
 @property (strong, nonatomic) NSURL *firstMediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
+@property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
 
 @end

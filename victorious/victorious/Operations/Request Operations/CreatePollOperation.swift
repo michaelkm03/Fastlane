@@ -9,22 +9,57 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CreatePollOperation: RequestOperation {
+class CreatePollOperation: Operation {
     
     /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
     /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
     /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
     let request: PollCreateRequest!
+    let previewImage: UIImage
+    let uploadManager: VUploadManager
     
-    init?(parameters: PollParameters) {
-        self.request = PollCreateRequest(parameters: parameters)
+    private var formFields: [NSObject : AnyObject] {
+        let parameters = request.parameters
+        var dict: [NSObject : AnyObject] = [ : ]
+        
+        dict["name"] = parameters.name
+        dict["description"] = parameters.description
+        dict["question"] = parameters.question
+        dict["answer1_label"] = parameters.answers.first?.label
+        dict["answer2_label"] = parameters.answers.last?.label
+        dict["answer1_media"] = parameters.answers.first?.mediaURL
+        dict["answer2_media"] = parameters.answers.last?.mediaURL
+        
+        return dict
+    }
+    
+    init?(parameters: PollParameters, previewImage: UIImage, uploadManager: VUploadManager) {
+        let baseURL = VEnvironmentManager.sharedInstance().currentEnvironment.baseURL
+        self.request = PollCreateRequest(parameters: parameters, baseURL: baseURL)
+        self.previewImage = previewImage
+        self.uploadManager = uploadManager
         super.init()
         if request == nil {
             return nil
         }
     }
     
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+    override func start() {
+        super.start()
+        queueUploadTask(uploadManager)
+    }
+    
+    func queueUploadTask(uploadManager: VUploadManager) {
+        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
+        taskCreator.request = request.urlRequest
+        taskCreator.formFields = formFields
+        taskCreator.previewImage = previewImage
+        
+        do {
+            let task = try taskCreator.createUploadTask()
+            uploadManager.enqueueUploadTask(task, onComplete: nil)
+        } catch {
+            return
+        }
     }
 }

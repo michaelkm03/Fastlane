@@ -12,23 +12,21 @@ import VictoriousIOSSDK
 
 class CreatePollOperationTests: BaseRequestOperationTestCase {
     
-    func testOperationExecution() {
+    let uploadManager = TestUploadManager()
+    
+    func testUploadTaskQueueing() {
         let mockAnswers = [
             PollAnswer(label: "AAA", mediaURL: NSURL(string: "media_A")!),
             PollAnswer(label: "BBB", mediaURL: NSURL(string: "media_B")!)
         ]
         let mockParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: mockAnswers)
         
-        guard let operation = CreatePollOperation(parameters: mockParameters) else {
+        guard let operation = CreatePollOperation(parameters: mockParameters, previewImage: UIImage(), uploadManager: uploadManager) else {
             XCTFail("Operation Construction should not fail")
             return
         }
-        operation.requestExecutor = testRequestExecutor
-        
-        queueExpectedOperation(operation: operation)
-        waitForExpectationsWithTimeout(expectationThreshold) { error in
-            XCTAssertEqual(1, self.testRequestExecutor.executeRequestCallCount)
-        }
+        operation.queueUploadTask(uploadManager)
+        XCTAssertEqual(1, uploadManager.enqueuedTasksCount)
     }
     
     func testInvalidParameters() {
@@ -40,7 +38,7 @@ class CreatePollOperationTests: BaseRequestOperationTestCase {
         
         let invalidParameters = PollParameters(name: "mockName", question: "mockQuestion", description: "mockDescription", answers: invalidAnswers)
         
-        let operation: CreatePollOperation? = CreatePollOperation(parameters: invalidParameters)
+        let operation: CreatePollOperation? = CreatePollOperation(parameters: invalidParameters, previewImage: UIImage(), uploadManager: uploadManager)
         XCTAssertNil(operation)
     }
 }
