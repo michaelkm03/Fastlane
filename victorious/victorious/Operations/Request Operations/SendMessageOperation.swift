@@ -49,11 +49,11 @@ class SendMessageOperation: RequestOperation {
             message.displayOrder = 0
             
             if let mediaAttachment = self.creationParameters.mediaAttachment {
-                // TODO: Add this, too: mediaType               = mediaAttachment.type.rawValue
-                message.mediaPath               = mediaAttachment.url.absoluteString
-                message.thumbnailPath           = mediaAttachment.thumbnailURL.absoluteString
-                message.mediaWidth              = mediaAttachment.size?.width
-                message.mediaHeight             = mediaAttachment.size?.height
+                message.mediaType = mediaAttachment.type.rawValue
+                message.mediaUrl = mediaAttachment.url.absoluteString
+                message.thumbnailUrl = mediaAttachment.thumbnailURL.absoluteString
+                message.mediaWidth = mediaAttachment.size?.width
+                message.mediaHeight = mediaAttachment.size?.height
             }
             context.v_save()
             

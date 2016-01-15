@@ -12,7 +12,7 @@ import CoreData
 
 class MainPersistentStoreTests: XCTestCase {
     
-    let persistentStore: PersistentStoreType = PersistentStoreSelector.mainPersistentStore
+    let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
 
     var storedBackgroundContext: NSManagedObjectContext?
     

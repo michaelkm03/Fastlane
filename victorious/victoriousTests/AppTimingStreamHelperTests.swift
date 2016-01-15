@@ -24,18 +24,18 @@ class AppTimingStreamHelperTests: XCTestCase {
     }
     
     func testFirstPage() {
-        helper.startStreamLoadAppTimingEvents( pageType: .First )
+        helper.startStreamLoadAppTimingEvents( pageType: .Refresh )
         XCTAssertEqual( timingTracker.eventsStarted.count, 1 )
         XCTAssertEqual( timingTracker.eventsStarted[0], VAppTimingEventTypeStreamRefresh )
         
-        helper.endStreamLoadAppTimingEvents( pageType: .First )
+        helper.endStreamLoadAppTimingEvents( pageType: .Refresh )
         XCTAssertEqual( timingTracker.eventsEnded.count, 2 )
         XCTAssertEqual( timingTracker.eventsEnded[0], VAppTimingEventTypeStreamRefresh,
             "2 events should have ended on the first first time." )
         
         timingTracker.eventsEnded = []
         
-        helper.endStreamLoadAppTimingEvents( pageType: .First )
+        helper.endStreamLoadAppTimingEvents( pageType: .Refresh )
         XCTAssertEqual( timingTracker.eventsEnded.count, 1 )
         XCTAssertEqual( timingTracker.eventsEnded[0], VAppTimingEventTypeStreamRefresh,
             "Only 1 event should have ended after the first time." )

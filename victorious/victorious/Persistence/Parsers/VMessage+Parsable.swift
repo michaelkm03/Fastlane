@@ -17,12 +17,10 @@ extension VMessage: PersistenceParsable {
         text                        = message.text ?? text
         isRead                      = message.isRead ?? isRead
         
-        // TODO: Find-and-replace mediaPath and thumbnailMediaPath for URL versions like in VComment
-        
         if let mediaAttachment = message.mediaAttachment {
-            // TODO: Add this, too: mediaType               = mediaAttachment.type.rawValue
-            mediaPath               = mediaAttachment.url.absoluteString
-            thumbnailPath           = mediaAttachment.thumbnailURL.absoluteString
+            mediaType               = mediaAttachment.type.rawValue
+            mediaUrl                = mediaAttachment.url.absoluteString
+            thumbnailUrl            = mediaAttachment.thumbnailURL.absoluteString
             mediaWidth              = mediaAttachment.size?.width ?? mediaWidth
             mediaHeight             = mediaAttachment.size?.height ?? mediaHeight
         }

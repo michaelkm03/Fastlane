@@ -39,11 +39,17 @@ final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
-         self.results = self.fetchResults()
+         
     }
     
-    override func fetchResults() -> [AnyObject] {
-        var displayOrder = self.paginatedRequestExecutor.startingDisplayOrder
+    internal(set) var results: [AnyObject]?
+    
+    func clearResults() {
+
+    }
+    
+    func fetchResults() -> [AnyObject] {
+        var displayOrder = self.request.paginator.start
         var results = [MockPaginatedObject]()
         if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
             for _ in 0..<self.request.paginator.itemsPerPage {
@@ -80,7 +86,7 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
 
     func testUnload() {
         let expectation = expectationWithDescription("testUnload")
-        let pageType: VPageType = .First
+        let pageType: VPageType = .Refresh
         paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return MockPaginatedOperation()
@@ -115,7 +121,7 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
     func testLoadPagesInAscendingOrder() {
         for i in 0 ..< numberOfPagesBeforeReachingEnd {
             let expectation = expectationWithDescription("page \(i)")
-            let pageType: VPageType = i == 0 ? .First : .Next
+            let pageType: VPageType = i == 0 ? .Refresh : .Next
             paginatedDataSource.loadPage( pageType,
                 createOperation: {
                     return MockPaginatedOperation()

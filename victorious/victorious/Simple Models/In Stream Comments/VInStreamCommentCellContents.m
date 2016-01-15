@@ -59,12 +59,11 @@
         UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         
         VInStreamMediaLink *mediaLink = nil;
-        NSString *mediaUrlString = comment.mediaAttachment.url;
+        NSString *mediaUrlString = comment.mediaUrl;
         if ( mediaUrlString.length > 0 )
         {
             NSURL *mediaUrl = [NSURL URLWithString:mediaUrlString];
-            BOOL shouldAutoplay = comment.mediaAttachment.shouldAutoplay.boolValue;
-            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:mediaUrl andShouldAutoplay:shouldAutoplay];
+            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:mediaUrl andShouldAutoplay:[comment.shouldAutoplay boolValue]];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                     linkType:linkType

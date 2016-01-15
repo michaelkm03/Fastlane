@@ -49,11 +49,11 @@ class CommentAddOperation: RequestOperation {
             comment.postedAt = NSDate()
             
             if let mediaAttachment = self.creationParameters.mediaAttachment {
-                comment.mediaType           = mediaAttachment.type.rawValue
-                comment.mediaUrl            = mediaAttachment.url.absoluteString
-                comment.thumbnailUrl        = mediaAttachment.thumbnailURL.absoluteString
-                comment.mediaWidth          = mediaAttachment.size?.width
-                comment.mediaHeight         = mediaAttachment.size?.height
+                comment.mediaType = mediaAttachment.type.rawValue
+                comment.mediaUrl = mediaAttachment.url.absoluteString
+                comment.thumbnailUrl = mediaAttachment.thumbnailURL.absoluteString
+                comment.mediaWidth = mediaAttachment.size?.width
+                comment.mediaHeight = mediaAttachment.size?.height
             }
             
             // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
