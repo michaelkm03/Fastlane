@@ -11,7 +11,6 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class FollowUserOperationTests: BaseRequestOperationTestCase {
-    
     var operation: FollowUserOperation!
     let userID: Int = 1
     let currentUserID: Int = 2
@@ -43,14 +42,22 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
         
         XCTAssertEqual(1, updatedUserToFollow.numberOfFollowers)
         XCTAssertEqual(1, updatedUserToFollow.followers.count)
-        if updatedUserToFollow.followers.count == 1, let user = Array(updatedUserToFollow.followers)[0] as? VUser {
-            XCTAssertEqual( user, updatedUserToFollow )
+        if updatedUserToFollow.followers.count == 1, let followedUsers = Array(updatedUserToFollow.followers) as? [VFollowedUser] {
+            XCTAssertEqual(1, followedUsers.count)
+            XCTAssertEqual( updatedUserToFollow, followedUsers[0].objectUser )
+            XCTAssertEqual( currentUser, followedUsers[0].subjectUser )
+        } else {
+            XCTFail("Can't find a follow relationship after following a user")
         }
         
         XCTAssertEqual(1, currentUser.numberOfFollowing)
         XCTAssertEqual(1, currentUser.following.count)
-        if currentUser.following.count == 1, let user = Array(currentUser.following)[0] as? VUser {
-            XCTAssertEqual(user, updatedUserToFollow)
+        if currentUser.following.count == 1, let followedUsers = Array(currentUser.following) as? [VFollowedUser] {
+            XCTAssertEqual(1, followedUsers.count)
+            XCTAssertEqual(updatedUserToFollow, followedUsers[0].objectUser)
+            XCTAssertEqual(currentUser, followedUsers[0].subjectUser)
+        } else {
+            XCTFail("Can't find a follow relationship after following a user")
         }
         
         XCTAssert( updatedUserToFollow.isFollowedByMainUser.boolValue )
@@ -77,10 +84,5 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
         if self.testTrackingManager.trackEventCalls.count >= 1 {
             XCTAssertEqual(VTrackingEventUserDidFollowUser, self.testTrackingManager.trackEventCalls[0].eventName!)
         }
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        persistentStoreHelper.tearDownPersistentStore()
     }
 }
