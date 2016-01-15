@@ -49,7 +49,7 @@ class CreatePollOperation: Operation {
         queueUploadTask(uploadManager)
     }
     
-    func queueUploadTask(uploadManager: VUploadManager) {
+    private func queueUploadTask(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields

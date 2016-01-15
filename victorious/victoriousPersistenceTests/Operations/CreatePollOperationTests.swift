@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class CreatePollOperationTests: BaseRequestOperationTestCase {
+class CreatePollOperationTests: XCTestCase {
     
     let uploadManager = TestUploadManager()
     
@@ -25,7 +25,7 @@ class CreatePollOperationTests: BaseRequestOperationTestCase {
             XCTFail("Operation Construction should not fail")
             return
         }
-        operation.queueUploadTask(uploadManager)
+        operation.start()
         XCTAssertEqual(1, uploadManager.enqueuedTasksCount)
     }
     
