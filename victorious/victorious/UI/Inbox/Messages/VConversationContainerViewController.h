@@ -15,7 +15,6 @@
 @interface VConversationContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies, VAuthorizationContextProvider>
 
 @property (nonatomic, strong) VConversation *conversation;
-@property (nonatomic, strong) ConversationDataSource *dataSource;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 + (instancetype)messageViewControllerForConversation:(VConversation *)conversation dependencyManager:(VDependencyManager *)dependencyManager;

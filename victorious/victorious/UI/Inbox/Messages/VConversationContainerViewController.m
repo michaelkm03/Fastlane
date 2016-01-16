@@ -250,9 +250,10 @@ static const NSUInteger kCharacterLimit = 1024;
                inConversation:self.conversation
                    completion:^(NSError *_Nullable error)
      {
-         if ( error != nil )
+         if ( error == nil )
          {
-             // TODO: Hmmm, what to do!?
+             VConversationViewController* conversationVC = (VConversationViewController *)self.conversationTableViewController;
+             [conversationVC.dataSource loadMessagesWithPageType:VPageTypeCheckNew completion:nil];
          }
     }];
     

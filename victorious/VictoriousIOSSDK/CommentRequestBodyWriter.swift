@@ -1,5 +1,5 @@
 //
-//  CommentAddRequestBody.swift
+//  CommentRequestBodyWriter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/9/15.
@@ -8,10 +8,9 @@
 
 import Foundation
 
-/// An object that handles writing multipart form input for POST methods for /api/comment/add endpoint
-class CommentAddRequestBody: NSObject {
+class CommentRequestBodyWriter: NSObject, RequestBodyWriterType {
     
-    struct Output {
+    struct RequestBody: RequestBodyType {
         let fileURL: NSURL
         let contentType: String
     }
@@ -25,8 +24,7 @@ class CommentAddRequestBody: NSObject {
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
     }
     
-    /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write( parameters parameters: Comment.CreationParameters ) throws -> Output {
+    func write( parameters parameters: Comment.CreationParameters ) throws -> RequestBody {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
         try writer.appendPlaintext(String(parameters.sequenceID), withFieldName: "sequence_id")
@@ -55,7 +53,6 @@ class CommentAddRequestBody: NSObject {
         }
         
         try writer.finishWriting()
-        
-        return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        return RequestBody(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
     }
 }

@@ -34,18 +34,25 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.request.paginator.start
-            
             let conversation: VConversation = context.v_findOrCreateObject([ "remoteId" : self.conversationID ])
+            var displayOrder = self.request.paginator.start
             var messagesLoaded = [VMessage]()
             for result in results {
                 let uniqueElements = [ "remoteId" : result.messageID ]
-                let message: VMessage = context.v_findOrCreateObject( uniqueElements )
-                message.populate( fromSourceModel: result )
-                message.displayOrder = displayOrder++
-                messagesLoaded.append( message )
+                let newMessage: VMessage
+                if let message: VMessage = context.v_findObjects( uniqueElements ).first {
+                    newMessage = message
+                } else {
+                    newMessage = context.v_createObject()
+                    
+                    // Save some performance by only parse when it's a new message
+                    newMessage.populate( fromSourceModel: result )
+                }
+                newMessage.displayOrder = displayOrder++
+                messagesLoaded.append( newMessage )
             }
             conversation.v_addObjects( messagesLoaded, to: "messages" )
+            
             context.v_save()
             completion()
         }
@@ -56,16 +63,6 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     internal(set) var results: [AnyObject]?
     
     func clearResults() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            let uniqueElements = [ "remoteId" : self.conversationID ]
-            guard let persistentConversation: VConversation = context.v_findObjects(uniqueElements).first else {
-                return
-            }
-            for message in persistentConversation.messages.array as? [VMessage] ?? [] {
-                context.deleteObject( message )
-            }
-            context.v_save()
-        }
     }
     
     func fetchResults() -> [AnyObject] {
@@ -78,7 +75,8 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                 vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest ) as [VMessage]
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
+            return results
         }
     }
 }

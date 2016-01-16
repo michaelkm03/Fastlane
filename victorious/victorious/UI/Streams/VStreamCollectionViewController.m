@@ -254,7 +254,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     // Subclasses should if possible repopulate with text and image specific to their content
     self.noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
     self.noContentView.dependencyManager = self.dependencyManager;
-    self.noContentView.title = NSLocalizedString( @"NO RESULTS", @"" );
+    self.noContentView.title = NSLocalizedString( @"NO POSTS", @"" );
     self.noContentView.message = NSLocalizedString( @"Try again, chump.  We got nothin'", @"" );
     self.noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
 }

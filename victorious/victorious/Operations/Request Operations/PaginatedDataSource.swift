@@ -68,12 +68,18 @@ import Foundation
         
         let operationToQueue: T?
         switch pageType {
-        case .Refresh, .CheckNew:
+        case .Refresh:
             operationToQueue = createOperation()
         case .Next:
             operationToQueue = (currentOperation as? T)?.next()
         case .Previous:
             operationToQueue = (currentOperation as? T)?.prev()
+        case .CheckNew:
+            let operation = createOperation()
+            let results = operation.fetchResults() ?? []
+            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
+            operationToQueue = nil
+            return
         }
         
         guard let requestOperation = operationToQueue as? RequestOperation,
@@ -83,29 +89,31 @@ import Foundation
         
         self.state = .Loading
         
-        if pageType == .Refresh && hasNetworkConnection {
-            // TODO: This would be ideal after the request succeeeds but before parsing begins
-            operation.clearResults()
+        // Load any local results immeidately
+        if pageType == .Refresh {
+            let results = operation.fetchResults() ?? []
+            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
         }
         
         requestOperation.queue() { error in
             
             if let error = error {
-                
                 // Fetch local results if we failed because of no network
-                if error.code == RequestOperation.errorCodeNoNetworkConnection {
-                   operation.results = operation.fetchResults()
+                if error.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .Refresh {
+                    operation.results = operation.fetchResults()
+                    let results = operation.results ?? []
+                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                     
                 } else {
                     // Otherwise, return no results
                     operation.results = []
+                    self.state = .Error
                 }
-                self.onOperationComplete(operation, pageType: pageType)
-                self.state = .Error
           
             } else {
                 operation.results = operation.fetchResults()
-                self.onOperationComplete(operation, pageType: pageType)
+                let results = operation.results ?? []
+                self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
             }
             
@@ -114,20 +122,14 @@ import Foundation
         
         self.currentOperation = requestOperation
     }
-    
-    // MARK: - Private helpers
-    
-    private func onOperationComplete<T: PaginatedOperation>( operation: T, pageType: VPageType) {
-        guard let results = operation.results where !results.isEmpty else {
-            return
-        }
-        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-    }
 }
 
 private extension NSOrderedSet {
     
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
+        guard !objects.isEmpty else {
+            return self.copy() as! NSOrderedSet
+        }
         switch pageType {
             
         case .Refresh: //< reset

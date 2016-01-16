@@ -38,7 +38,11 @@ public protocol NumericPaginator: Paginator {
 extension NumericPaginator {
     
     public var start: Int {
-        return (pageNumber - 1) * itemsPerPage
+        let start = (pageNumber - 1) * itemsPerPage
+        if start > 0 {
+            return start
+        }
+        return Int.min
     }
     
     public var end: Int {

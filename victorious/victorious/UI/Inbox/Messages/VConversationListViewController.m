@@ -124,6 +124,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
+    
+    [self updateTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -13,8 +13,14 @@ public extension UICollectionView {
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
         
-        guard newValue.count == 0 || oldValue.count == 0 else {
-            self.reloadSections( NSIndexSet(index: section) )
+        // FIXME:
+        self.reloadData()
+        return
+        
+        guard !(newValue.count == 0 || oldValue.count == 0) else {
+            UIView.performWithoutAnimation() {
+                self.reloadSections( NSIndexSet(index: section) )
+            }
             return
         }
         
@@ -44,8 +50,14 @@ public extension UITableView {
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
     public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
         
-        guard newValue.count == 0 || oldValue.count == 0 else {
-            self.reloadSections( NSIndexSet(index: section), withRowAnimation: .Automatic)
+        // FIXME:
+        self.reloadData()
+        return
+        
+        guard newValue.count != 0 && oldValue.count != 0 else {
+            UIView.performWithoutAnimation() {
+                self.reloadSections( NSIndexSet(index: section), withRowAnimation: .None)
+            }
             return
         }
         
@@ -61,7 +73,7 @@ public extension UITableView {
             deletedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
-        self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Automatic)
-        self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Automatic)
+        self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
+        self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Bottom)
     }
 }

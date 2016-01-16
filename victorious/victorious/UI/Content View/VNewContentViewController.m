@@ -1516,27 +1516,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         return;
     }
-    
-    // [self.contentCollectionView v_applyChangeInSection:VContentViewSectionAllComments from:oldValue to:newValue];
-    
-    NSMutableArray *insertedIndexPaths = [[NSMutableArray alloc] init];
-    NSMutableArray *deletedIndexPaths = [[NSMutableArray alloc] init];
-    for ( id item in newValue )
-    {
-        if ( [oldValue containsObject:item] )
-        {
-            continue;
-        }
-        NSInteger index = [newValue indexOfObject:item];
-        if ( index == NSNotFound )
-        {
-            continue;
-        }
-        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:index inSection:VContentViewSectionAllComments]];
-    }
-    
-    [self.contentCollectionView insertItemsAtIndexPaths:insertedIndexPaths];
-    [self.contentCollectionView deleteItemsAtIndexPaths:deletedIndexPaths];
+    [self.contentCollectionView v_applyChangeInSection:VContentViewSectionAllComments from:oldValue to:newValue];
 }
 
 @end

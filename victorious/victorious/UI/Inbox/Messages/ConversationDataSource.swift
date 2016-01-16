@@ -25,16 +25,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        
-        super.init()
-        
-        self.KVOController.observe( self.conversation,
-            keyPath: "messages",
-            options: [ .New, .Old ],
-            action: Selector("onMessagesChanged:") )
     }
     
-    private(set) var visibleItems = NSOrderedSet()
+    private(set) var visibleItems = NSOrderedSet() {
+        didSet {
+            self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
+        }
+    }
     
     var state: DataSourceState {
         return self.paginatedDataSource.state
@@ -49,12 +46,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
                 completion?(error)
             }
         )
-    }
-    
-    func onMessagesChanged( changeInfo: [NSObject : AnyObject]? ) {
-        if !paginatedDataSource.isLoading() {
-            loadMessages( pageType: .CheckNew )
-        }
     }
     
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
@@ -73,9 +64,9 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
-        self.visibleItems = NSOrderedSet(array: sortedArray)
-        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
+        /*let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
+        self.visibleItems = NSOrderedSet(array: sortedArray)*/
+        self.visibleItems = newValue
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

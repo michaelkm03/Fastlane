@@ -9,66 +9,25 @@
 import Foundation
 import SwiftyJSON
 
-/// Sends a message to a recipient.
-public class SendMessageRequest: RequestType {
+public struct SendMessageRequest: RequestType {
     
-    public let recipientID: Int
-    public let text: String?
-    public let mediaAttachment: MediaAttachment?
+    private let requestBodyWriter = MessageRequestBodyWriter()
+    private let requestBody: MessageRequestBodyWriter.RequestBody
     
-    public private(set) var urlRequest = NSURLRequest()
-    
-    private var bodyTempFile: NSURL?
-    
-    public init?(recipientID: Int, text: String?, mediaAttachment: MediaAttachment?) {
-        
-        self.recipientID = recipientID
-        self.text = text
-        self.mediaAttachment = mediaAttachment
-        
-        do {
-            self.urlRequest = try makeRequest()
-        } catch {
-            return nil
-        }
-    }
-    
-    deinit {
-        if let bodyTempFile = bodyTempFile {
-            let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
-        }
-    }
-    
-    private func makeRequest() throws -> NSURLRequest {
-        let bodyTempFile = self.tempFile()
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
-        
-        try writer.appendPlaintext(text ?? "", withFieldName: "text")
-        try writer.appendPlaintext(String(recipientID), withFieldName: "to_user_id")
-        
-        if let mediaAttachment = self.mediaAttachment, let mimeType = mediaAttachment.url.vsdk_mimeType {
-            if mediaAttachment.type == .GIF {
-                try writer.appendPlaintext("true", withFieldName: "is_gif_style")
-            }
-            try writer.appendFileWithName("message_media.\(mediaAttachment.url.pathExtension)",
-                contentType: mimeType,
-                fileURL: mediaAttachment.url,
-                fieldName: "media_data"
-            )
-        }
-        
-        try writer.finishWriting()
-        self.bodyTempFile = bodyTempFile
-        
+    public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/message/send")!)
         request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: bodyTempFile)
+        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request
     }
     
-    private func tempFile() -> NSURL {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
+    public init?( creationParameters: Message.CreationParameters ) {
+        do {
+            self.requestBody = try requestBodyWriter.write(parameters: creationParameters)
+        } catch {
+            return nil
+        }
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int, messageID: Int) {

@@ -26,7 +26,7 @@ extension NSManagedObjectContext {
                     }
                 }
             }
-            fatalError( "Failed to save." )
+            fatalError( "Failed to save object: \(userInfo[ "NSValidationErrorKey" ])" )
         }
     }
     
