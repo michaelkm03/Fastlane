@@ -9,20 +9,20 @@
 import AVFoundation
 import GoogleInteractiveMediaAds
 
-@objc class AdManager: NSObject {
+@objc class AdManager: NSObject, IMAAdsLoaderDelegate {
     let player: AVPlayer
     let contentPlayhead: IMAAVPlayerContentPlayhead
     let adsLoader: IMAAdsLoader
     let videoView: UIView
 
-    init(player: AVPlayer, delegate: IMAAdsLoaderDelegate, videoView: UIView) {
+    init(player: AVPlayer, videoView: UIView) {
         self.player = player
         self.contentPlayhead = IMAAVPlayerContentPlayhead(AVPlayer: player)
         self.adsLoader = IMAAdsLoader()
-        self.adsLoader.delegate = delegate
         self.videoView = videoView
-
         super.init()
+
+        self.adsLoader.delegate = self
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: "contentDidFinishPlaying:",
@@ -40,5 +40,11 @@ import GoogleInteractiveMediaAds
         if let playerItem = notification.object as? AVPlayerItem where playerItem == player.currentItem {
             adsLoader.contentComplete()
         }
+    }
+
+    func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
+    }
+
+    func adsLoader(loader: IMAAdsLoader!, failedWithErrorData adErrorData: IMAAdLoadingErrorData!) {
     }
 }

@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  Conforms to `VVideoPlayer`, which provides the interface for controlling playback
  and responding to playback events.
  */
-@interface VVideoView : UIView <VVideoPlayer, IMAAdsLoaderDelegate>
+@interface VVideoView : UIView <VVideoPlayer>
 
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;

@@ -125,7 +125,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
         self.videoUtils = [[VVideoUtils alloc] init];
         self.adManager = [[AdManager alloc] initWithPlayer:self.player
-                                                  delegate:self
                                                  videoView:self];
     }
     
