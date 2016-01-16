@@ -21,17 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
  Conforms to `VVideoPlayer`, which provides the interface for controlling playback
  and responding to playback events.
  */
-@interface VVideoView : UIView <VVideoPlayer>
+@interface VVideoView : UIView <VVideoPlayer, IMAAdsLoaderDelegate>
 
 @property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
 @property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
-//TODO: Remove it when this class is migrated to Swift
-/// Don't use me. It's exposed so we can use it in a Swift extension
-@property (nonatomic, assign, readonly) AVPlayer *player;
-/// Don't use me. It's exposed so we can use it in a Swift extension
-@property (nonatomic, assign, readwrite) IMAAVPlayerContentPlayhead *contentPlayhead;
-/// Don't use me. It's exposed so we can use it in a Swift extension
-@property (nonatomic, assign, readwrite) IMAAdsLoader *adsLoader;
 
 NS_ASSUME_NONNULL_END
 

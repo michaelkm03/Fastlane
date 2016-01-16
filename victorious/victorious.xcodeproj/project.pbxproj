@@ -374,8 +374,8 @@
 		6236FF2E1C45DE5D006F4F23 /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */; };
 		6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */; };
 		624675361C3DC8DE002B92A5 /* FollowUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */; };
-		6249CEDA1C481C1200FBE648 /* VVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6249CED91C481C1200FBE648 /* VVideoView.swift */; };
 		625459DF1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */; };
+		626930481C49B84B00A1A664 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626930471C49B84B00A1A664 /* AdManager.swift */; };
 		627D07E51C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627D07E41C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift */; };
 		627D07E61C3F6A8F004B8D27 /* Sequence.json in Resources */ = {isa = PBXBuildFile; fileRef = A72EDF9E1C040172003D6177 /* Sequence.json */; };
 		6280E4911C485533009E42B6 /* VUser+AddRemoveFollower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6280E4901C485533009E42B6 /* VUser+AddRemoveFollower.swift */; };
@@ -2427,9 +2427,9 @@
 		6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
 		6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundleTests.swift"; sourceTree = "<group>"; };
 		623989831C3607F200D0E4D0 /* RequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperationTests.swift; sourceTree = "<group>"; };
-		6249CED91C481C1200FBE648 /* VVideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VVideoView.swift; sourceTree = "<group>"; };
 		625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchFollowUsersOperationTests.swift; sourceTree = "<group>"; };
 		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
+		626930471C49B84B00A1A664 /* AdManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdManager.swift; sourceTree = "<group>"; };
 		627D07E41C3F5EE6004B8D27 /* BatchFollowUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchFollowUsersOperation.swift; sourceTree = "<group>"; };
 		6280E4901C485533009E42B6 /* VUser+AddRemoveFollower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+AddRemoveFollower.swift"; sourceTree = "<group>"; };
 		628681F41C287C9B00DEF638 /* FollowUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowUserOperation.swift; sourceTree = "<group>"; };
@@ -6316,6 +6316,14 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		626930461C49B81300A1A664 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				626930471C49B84B00A1A664 /* AdManager.swift */,
+			);
+			name = Video;
+			sourceTree = "<group>";
+		};
 		669EBBDE1A30234A00DE317D /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
@@ -7500,7 +7508,6 @@
 				A7AEF9CD1A83F2F500A3D3A0 /* VVideoUtils.m */,
 				A7AEF9CE1A83F2F500A3D3A0 /* VVideoView.h */,
 				A7AEF9CF1A83F2F500A3D3A0 /* VVideoView.m */,
-				6249CED91C481C1200FBE648 /* VVideoView.swift */,
 				A74783D81B9FC792005654A6 /* VVideoPlayerDelegate.h */,
 				A7BA220B1BA796D100F2CD37 /* VVideoPlayer.h */,
 				A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */,
@@ -8053,6 +8060,7 @@
 				03CE66F319B47B590011BB9E /* Twitter */,
 				037CB73919CFE8550084BBED /* Upload */,
 				A743E7E11A0816D500339CB3 /* Validation */,
+				626930461C49B81300A1A664 /* Video */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -10821,7 +10829,6 @@
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
 				676292031BB373B200B99CDD /* VStreamCollectionViewController+TrendingShelfResponder.swift in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
-				6249CEDA1C481C1200FBE648 /* VVideoView.swift in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
@@ -11385,6 +11392,7 @@
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
+				626930481C49B84B00A1A664 /* AdManager.swift in Sources */,
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */,

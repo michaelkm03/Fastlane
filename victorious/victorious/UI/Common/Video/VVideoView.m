@@ -10,6 +10,7 @@
 #import <KVOController/FBKVOController.h>
 #import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 #import "VVideoUtils.h"
+#import "victorious-Swift.h"
 
 @import AVFoundation;
 
@@ -24,6 +25,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
+@property (nonatomic, strong) AdManager *adManager;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
 @property (nonatomic, assign) BOOL isReady;
@@ -120,8 +122,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                  }
              }
          }];
-        
+
         self.videoUtils = [[VVideoUtils alloc] init];
+        self.adManager = [[AdManager alloc] initWithPlayer:self.player
+                                                  delegate:self
+                                                 videoView:self];
     }
     
     self.player.actionAtItemEnd = self.loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
