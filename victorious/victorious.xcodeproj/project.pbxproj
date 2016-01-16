@@ -386,6 +386,8 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */; };
+		670334B31C49D58500E24967 /* CreatePollOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670334B11C49D58500E24967 /* CreatePollOperation.swift */; };
+		670334B41C49D58500E24967 /* CreateTextPostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670334B21C49D58500E24967 /* CreateTextPostOperation.swift */; };
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		67204CFA1C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */; };
@@ -393,7 +395,6 @@
 		6722CB8F1C45AF4700452280 /* RequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6722CB8E1C45AF4700452280 /* RequestBodyWriter.swift */; };
 		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
 		672828001C45ED6400B02909 /* AdditionalAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672827FF1C45ED6400B02909 /* AdditionalAssertions.swift */; };
-		672828021C45EE2200B02909 /* CreateTextPostOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672828011C45EE2200B02909 /* CreateTextPostOperation.swift */; };
 		672828041C45EE3A00B02909 /* CreateTextPostOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */; };
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
@@ -944,7 +945,6 @@
 		A789F7321BF11F4900F5C87B /* VSequence+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */; };
 		A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */; };
 		A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */; };
-		A78DE8CE1C3CBACE009D4EF7 /* CreatePollOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */; };
 		A78DE8D01C3CBCDC009D4EF7 /* PollCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */; };
 		A78DE8D61C3CC906009D4EF7 /* VCreatePollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78DE8D51C3CC906009D4EF7 /* VCreatePollViewController.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
@@ -2459,6 +2459,8 @@
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		6700848A1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPasswordResetOperationTests.swift; sourceTree = "<group>"; };
+		670334B11C49D58500E24967 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePollOperation.swift; path = "Upload Operations/CreatePollOperation.swift"; sourceTree = "<group>"; };
+		670334B21C49D58500E24967 /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateTextPostOperation.swift; path = "Upload Operations/CreateTextPostOperation.swift"; sourceTree = "<group>"; };
 		67113D181B9A6EBB00E89F63 /* VExploreSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreSearchResultsViewController.h; sourceTree = "<group>"; };
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
@@ -2467,7 +2469,6 @@
 		6722CB8E1C45AF4700452280 /* RequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBodyWriter.swift; sourceTree = "<group>"; };
 		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
 		672827FF1C45ED6400B02909 /* AdditionalAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalAssertions.swift; sourceTree = "<group>"; };
-		672828011C45EE2200B02909 /* CreateTextPostOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostOperation.swift; sourceTree = "<group>"; };
 		672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostOperationTests.swift; sourceTree = "<group>"; };
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
@@ -3290,7 +3291,6 @@
 		A789F7221BF11F4900F5C87B /* VSequence+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VSequence+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7231BF11F4900F5C87B /* VStream+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStream+Parsable.swift"; sourceTree = "<group>"; };
 		A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Parsable.swift"; sourceTree = "<group>"; };
-		A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePollOperation.swift; sourceTree = "<group>"; };
 		A78DE8CF1C3CBCDC009D4EF7 /* PollCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollCreateRequest.swift; sourceTree = "<group>"; };
 		A78DE8D51C3CC906009D4EF7 /* VCreatePollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCreatePollViewController.swift; sourceTree = "<group>"; };
 		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
@@ -6366,6 +6366,15 @@
 			path = Pickers;
 			sourceTree = "<group>";
 		};
+		670334B01C49D51A00E24967 /* UploadOperations */ = {
+			isa = PBXGroup;
+			children = (
+				670334B11C49D58500E24967 /* CreatePollOperation.swift */,
+				670334B21C49D58500E24967 /* CreateTextPostOperation.swift */,
+			);
+			name = UploadOperations;
+			sourceTree = "<group>";
+		};
 		6727B1361BFBBCE00093AA0A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -6445,6 +6454,7 @@
 				794246441B7D39B000F5F879 /* Operation.swift */,
 				A76AEA311BFEAD9300E8A26F /* Queueable.swift */,
 				A76AEA371BFEBA0500E8A26F /* Request Operations */,
+				670334B01C49D51A00E24967 /* UploadOperations */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -7117,10 +7127,8 @@
 				A7C565E11C40665600E4DF6A /* AlertReceiver.swift */,
 				A7D69C6D1C0E68BF00B462C3 /* CommentAddOperation.swift */,
 				A767121A1C209F37006568DF /* CommentEditOperation.swift */,
-				A78DE8CD1C3CBACE009D4EF7 /* CreatePollOperation.swift */,
 				A798259F1C0FB4D400C53A07 /* CommentFindOperation.swift */,
 				A76AEA391BFEBA0500E8A26F /* ConversationListOperation.swift */,
-				672828011C45EE2200B02909 /* CreateTextPostOperation.swift */,
 				A7039CE21C2486A20023DE6F /* CreateAlertOperation.swift */,
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
@@ -7251,7 +7259,6 @@
 			children = (
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
 				A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */,
-				79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTestCase.swift */,
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
@@ -10941,12 +10948,14 @@
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
+				670334B31C49D58500E24967 /* CreatePollOperation.swift in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
 				A7EBF5301C2B98550080C7CF /* PaginatedDataSource.swift in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VInboxViewController.m in Sources */,
 				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
+				670334B41C49D58500E24967 /* CreateTextPostOperation.swift in Sources */,
 				A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */,
 				A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */,
 				F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */,
@@ -11132,7 +11141,6 @@
 				676372E71B8D095C00A59705 /* ExploreMarqueeStreamItemCell.swift in Sources */,
 				DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
-				A78DE8CE1C3CBACE009D4EF7 /* CreatePollOperation.swift in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
 				F0F04AD61B1E271A00F6F401 /* VConversation.m in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
@@ -11630,7 +11638,6 @@
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
 				A76AEA361BFEB9EC00E8A26F /* VLoginType+Tracking.swift in Sources */,
 				F03C135D1B698F7000287F4C /* VComment.m in Sources */,
-				672828021C45EE2200B02909 /* CreateTextPostOperation.swift in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A71F41FB1C040D4D00131BE6 /* VReposterTableViewController.swift in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,

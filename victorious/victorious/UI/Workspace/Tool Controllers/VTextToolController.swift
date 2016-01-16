@@ -51,7 +51,6 @@ extension VTextToolController {
         operation.mainQueueCompletionBlock = { _ in
             completion(finished: true, renderedMediaURL: nil, previewImage: nil, error: nil)
         }
-        
         operation.queue()
     }
 }
