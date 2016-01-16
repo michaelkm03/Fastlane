@@ -20,7 +20,7 @@ final class PollVoteOperation: RequestOperation {
     override func main() {
         
         // Peform optimistic changes before the request is executed
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             guard let user = VCurrentUser.user(),
                 let sequence: VSequence = context.v_findObjects( [ "remoteId" : self.request.sequenceID ] ).first else {
                     return

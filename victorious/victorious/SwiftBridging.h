@@ -10,11 +10,9 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
 #import "INVector3.h"
-#import "NSBundle+TestBundle.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -142,6 +140,7 @@
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
 #import "VNode+Fetcher.h"
+#import "VNotification.h"
 #import "VNotificationSettings.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VNotificationSettingsViewController.h"

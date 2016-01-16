@@ -21,7 +21,7 @@ class SuggestedUsersOperation: RequestOperation, ResultsOperation {
     
     func onComplete( users: SuggestedUsersRequest.ResultType, completion:()->() ) {
         
-        persistentStore.backgroundContext.v_performBlockAndWait() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             // Parse users and their recent sequences in background context
             let suggestedUsers: [VSuggestedUser] = users.flatMap { sourceModel in

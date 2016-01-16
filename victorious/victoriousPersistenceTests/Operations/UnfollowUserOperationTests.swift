@@ -11,7 +11,6 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UnfollowUserOperationTests: BaseRequestOperationTestCase {
-    
     var operation: UnfollowUserOperation!
     let userID = 1
     let currentUserID = 2
@@ -58,10 +57,5 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
         XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
         XCTAssertEqual(VTrackingEventUserDidUnfollowUser, testTrackingManager.trackEventCalls[0].eventName!)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        persistentStoreHelper.tearDownPersistentStore()
     }
 }

@@ -21,7 +21,7 @@ class UnfollowUserOperation: RequestOperation {
     }
     
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             let persistedUserID = NSNumber(integer: self.userID)
             
             guard let objectUser: VUser = context.v_findObjects(["remoteId" : persistedUserID]).first,
@@ -32,13 +32,8 @@ class UnfollowUserOperation: RequestOperation {
             objectUser.isFollowedByMainUser = false
             objectUser.numberOfFollowers = objectUser.numberOfFollowers - 1
             subjectUser.numberOfFollowing = subjectUser.numberOfFollowing - 1
-            
-            // Find the following relationship and delete it
-            let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
-            if let followedUser: VFollowedUser = context.v_findObjects( uniqueElements ).first {
-                context.deleteObject( followedUser )
-            }
-            
+            objectUser.removeFollower(subjectUser)
+
             context.v_save()
             
             self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )

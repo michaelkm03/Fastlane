@@ -32,7 +32,14 @@ class MainRequestExecutor: RequestExecutorType {
     }
     
     func executeRequest<T: RequestType>(request: T, onComplete: ((T.ResultType, ()->())->())?, onError: ((NSError, ()->())->())?) {
-        
+
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        let requestContext = RequestContext(environment: currentEnvironment)
+        let baseURL = currentEnvironment.baseURL
+        let authenticationContext: AuthenticationContext? = dispatch_sync( dispatch_get_main_queue() ) {
+            return AuthenticationContext(currentUser: VCurrentUser.user())
+        }
+
         if !hasNetworkConnection {
             let error = NSError(
                 domain: RequestOperation.errorDomain,

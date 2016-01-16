@@ -24,7 +24,7 @@ class FollowUserOperation: RequestOperation {
     }
 
     override func main() {
-        persistentStore.backgroundContext.v_performBlockAndWait { context in
+        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let objectUser: VUser = context.v_findObjects( ["remoteId" : self.userID] ).first,
                 let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
                     return
@@ -33,18 +33,8 @@ class FollowUserOperation: RequestOperation {
             objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
             subjectUser.numberOfFollowing = subjectUser.numberOfFollowing + 1
             objectUser.isFollowedByMainUser = true
-            
-            // Find or create the following relationship
-            let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
-            let followedUser: VFollowedUser = context.v_findOrCreateObject( uniqueElements )
-            followedUser.objectUser = objectUser
-            followedUser.subjectUser = subjectUser
-            
-            // By setting display order to -1, the user will appear at the top
-            // of each list of fetched results until a refresh of the followers list
-            // comes back from the server with updated display order
-            followedUser.displayOrder = -1
-            
+            objectUser.addFollower(subjectUser)
+
             context.v_save()
         }
 

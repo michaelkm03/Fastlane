@@ -160,7 +160,10 @@
         return [(id <UICollectionViewDataSource>)self.delegate collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
-    return nil;
+    //In case none of the above cases executed, and to prevent crash
+    NSString *failureReusableIdentifier = @"failureReusableViewIdentifier";
+    [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier];
+    return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:failureReusableIdentifier forIndexPath:indexPath];
 }
 
 @end
