@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class CreateTextPostOperation: Operation {
+final class CreateTextPostOperation: Operation, UploadOperation {
     
     /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
     /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
@@ -18,7 +18,7 @@ class CreateTextPostOperation: Operation {
     let previewImage: UIImage
     let uploadManager: VUploadManager
     
-    private var formFields: [NSObject : AnyObject] {
+    var formFields: [NSObject : AnyObject] {
         let parameters = request.parameters
         var dict: [NSObject : AnyObject] = [ : ]
         
@@ -43,10 +43,10 @@ class CreateTextPostOperation: Operation {
 
     override func start() {
         super.start()
-        queueUploadTask(uploadManager)
+        upload(uploadManager)
     }
     
-    private func queueUploadTask(uploadManager: VUploadManager) {
+    func upload(uploadManager: VUploadManager) {
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
         taskCreator.request = request.urlRequest
         taskCreator.formFields = formFields
