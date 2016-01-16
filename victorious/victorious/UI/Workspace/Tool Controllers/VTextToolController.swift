@@ -33,6 +33,7 @@ extension VTextToolController {
         let viewToDraw = textPostVC.view
         
         UIGraphicsBeginImageContextWithOptions(viewToDraw.bounds.size, true, 0.0)
+        viewToDraw .drawViewHierarchyInRect(viewToDraw.bounds, afterScreenUpdates: false)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -42,7 +43,7 @@ extension VTextToolController {
     func publishTextPost(renderedAssetURL: NSURL, completion: (finished: Bool, renderedMediaURL: NSURL?, previewImage: UIImage?, error: NSError?) -> Void) {
         
         let parameters = TextPostParameters(content: currentText, backgroundImageURL: renderedAssetURL, backgroundColor: currentColorSelection)
-        let previewImage = self.previewImage ?? UIImage()
+        let previewImage = textPostPreviewImage
         let uploadManager = VUploadManager.sharedManager()
         guard let operation = CreateTextPostOperation(parameters: parameters, previewImage: previewImage, uploadManager: uploadManager) else {
             return
