@@ -1,5 +1,5 @@
 //
-//  FollowUserOperationTests.swift
+//  FollowUsersOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/21/15.
@@ -10,8 +10,8 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class FollowUserOperationTests: BaseRequestOperationTestCase {
-    var operation: FollowUserOperation!
+class FollowUsersOperationTests: BaseRequestOperationTestCase {
+    var operation: FollowUsersOperation!
     let screenName = "screenName"
 
     let currentUserID = 1
@@ -25,7 +25,7 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         self.continueAfterFailure = false
-        operation = FollowUserOperation(userID: userIDOne, screenName: screenName)
+        operation = FollowUsersOperation(userID: userIDOne, screenName: screenName)
         operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
     }
@@ -93,7 +93,7 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowingExistentAndNonExistentUsers() {
-        operation = FollowUserOperation(userIDs: userIDs)
+        operation = FollowUsersOperation(userIDs: userIDs)
         operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
@@ -106,7 +106,7 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowOnlyExistentUsers() {
-        operation = FollowUserOperation(userIDs: [self.userIDOne, self.userIDTwo])
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo])
         operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)
@@ -119,7 +119,7 @@ class FollowUserOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBatchFollowUsersWhosIDMatchesACurrentUser() {
-        operation = FollowUserOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
+        operation = FollowUsersOperation(userIDs: [self.userIDOne, self.userIDTwo, currentUserID])
         operation.requestExecutor = testRequestExecutor
         let userOne = persistentStoreHelper.createUser(remoteId: userIDOne)
         let userTwo = persistentStoreHelper.createUser(remoteId: userIDTwo)

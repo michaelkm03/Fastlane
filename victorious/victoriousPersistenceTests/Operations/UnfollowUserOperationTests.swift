@@ -1,5 +1,5 @@
 //
-//  UnfollowUserOperationTests.swift
+//  UnFollowUsersOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/2/16.
@@ -10,8 +10,8 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UnfollowUserOperationTests: BaseRequestOperationTestCase {
-    var operation: UnfollowUserOperation!
+class UnFollowUsersOperationTests: BaseRequestOperationTestCase {
+    var operation: UnFollowUsersOperation!
     let userID = 1
     let currentUserID = 2
     let screenName = "screenName"
@@ -19,7 +19,7 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        operation = UnfollowUserOperation(userID: userID, screenName: screenName)
+        operation = UnFollowUsersOperation(userID: userID, screenName: screenName)
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }

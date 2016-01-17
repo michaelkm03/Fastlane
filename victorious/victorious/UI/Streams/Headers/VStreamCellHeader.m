@@ -245,11 +245,11 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     RequestOperation *operation;
     if ( self.sequence.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId screenName:screenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId screenName:screenName];
     }
     
     [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];

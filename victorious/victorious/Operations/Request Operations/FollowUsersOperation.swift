@@ -1,5 +1,5 @@
 //
-//  FollowUserOperation.swift
+//  FollowUsersOperation.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 12/21/15.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class FollowUserOperation: RequestOperation {
+class FollowUsersOperation: RequestOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
