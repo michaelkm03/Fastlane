@@ -314,14 +314,16 @@
 
 - (void)selectAllRows:(id)sender
 {
-    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user) {
+    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user)
+    {
         return user.remoteId;
     }];
-    RequestOperation *operation = [[BatchFollowUsersOperation alloc] initWithUserIDs: userIDs];
-    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error) {
+    
+    RequestOperation *operation = [[FollowUserOperation alloc] initWithUserIDs: userIDs screenName:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
-            // Update follow/unfollow icon
             [inviteFriendCell updateFollowStatusAnimated:YES];
         }
     }];

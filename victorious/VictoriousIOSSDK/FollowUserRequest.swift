@@ -12,23 +12,35 @@ import SwiftyJSON
 /// Follow a user
 public struct FollowUserRequest: RequestType {
     
-    /// The ID of the user you'd like to follow
-    public let userID: Int
+    public let userIDs: [Int]
 
     // The name of the screen from which you're following this user
-    public let screenName: String
+    public let screenName: String?
     
-    public init(userID: Int, screenName: String) {
-        self.userID = userID
+    public init(userIDs: [Int], screenName: String?) {
+        self.userIDs = userIDs
         self.screenName = screenName
     }
     
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/follow/add")!
-        let request = NSMutableURLRequest(URL: url)
-        let params = [ "source": screenName, "target_user_id": String(userID) ]
-        request.vsdk_addURLEncodedFormPost(params)
-        return request
+        if userIDs.isEmpty {
+            fatalError( "At least one valid userID must be provided." )
+        
+        } else if userIDs.count == 1 {
+            let url = NSURL(string: "/api/follow/add")!
+            let request = NSMutableURLRequest(URL: url)
+            let params = [ "source": screenName ?? "", "target_user_id": String( userIDs[0] ) ]
+            request.vsdk_addURLEncodedFormPost(params)
+            return request
+        
+        } else {
+            let url = NSURL(string: "/api/follow/batchadd")!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            let converted = NSDictionary(dictionary: ["target_user_ids" : userIDs ] )
+            request.vsdk_addURLEncodedFormPost(converted)
+            return request
+        }
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {

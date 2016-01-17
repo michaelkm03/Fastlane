@@ -32,12 +32,16 @@ class UnfollowUserOperation: RequestOperation {
             objectUser.isFollowedByMainUser = false
             objectUser.numberOfFollowers = objectUser.numberOfFollowers - 1
             subjectUser.numberOfFollowing = subjectUser.numberOfFollowing - 1
-            objectUser.removeFollower(subjectUser)
+            
+            let uniqueElements = [ "subjectUser" : subjectUser, "objectUser" : objectUser ]
+            if let followedUser: VFollowedUser = context.v_findObjects( uniqueElements ).first {
+                context.deleteObject( followedUser )
+            }
 
             context.v_save()
-            
-            self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
-            self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
         }
+        
+        self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowUser)
+        self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }
