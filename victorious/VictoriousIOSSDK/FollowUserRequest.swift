@@ -9,8 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-/// Follow a user
-public struct FollowUserRequest: RequestType {
+public struct FollowUsersRequest: RequestType {
     
     public let userIDs: [Int]
 

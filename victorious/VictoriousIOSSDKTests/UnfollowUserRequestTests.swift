@@ -1,5 +1,5 @@
 //
-//  UnfollowUserRequestTests.swift
+//  UnFollowUsersRequestTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/10/15.
@@ -10,13 +10,13 @@ import SwiftyJSON
 import VictoriousIOSSDK
 import XCTest
 
-class UnfollowUserRequestTests: XCTestCase {
+class UnFollowUsersRequestTests: XCTestCase {
     
     func testRequest() {
         
         let targetUserID: Int = 5107
         
-        let unfollowUser = UnfollowUserRequest(userID: targetUserID, screenName: "profile")
+        let unfollowUser = UnFollowUsersRequest(userID: targetUserID, screenName: "profile")
         let request = unfollowUser.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/follow/remove")

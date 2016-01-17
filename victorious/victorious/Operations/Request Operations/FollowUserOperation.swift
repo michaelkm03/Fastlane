@@ -13,14 +13,14 @@ class FollowUserOperation: RequestOperation {
 
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
-    private let request: FollowUserRequest
+    private let request: FollowUsersRequest
     private let screenName: String?
     private let userIDs: [Int]
     
     required init(userIDs: [Int], screenName: String? = nil) {
         self.userIDs = userIDs
         self.screenName = screenName
-        self.request = FollowUserRequest(userIDs: userIDs, screenName: screenName)
+        self.request = FollowUsersRequest(userIDs: userIDs, screenName: screenName)
     }
     
     convenience init(userID: Int, screenName: String? = nil) {
@@ -29,11 +29,14 @@ class FollowUserOperation: RequestOperation {
 
     override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
+            guard let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
+                return
+            }
             
             for userID in self.userIDs {
-                guard let objectUser: VUser = context.v_findObjects( ["remoteId" : userID] ).first,
-                    let subjectUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                        return
+                guard let objectUser: VUser = context.v_findObjects(["remoteId" : userID]).first
+                    where objectUser.remoteId != subjectUser.remoteId else {
+                        continue
                 }
                 
                 objectUser.numberOfFollowers = objectUser.numberOfFollowers + 1
@@ -47,12 +50,11 @@ class FollowUserOperation: RequestOperation {
                 followedUser.subjectUser = subjectUser
                 followedUser.displayOrder = 0
                 
-                self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
             }
-
             context.v_save()
         }
 
+        self.eventTracker.trackEvent(VTrackingEventUserDidFollowUser)
         self.requestExecutor.executeRequest( self.request, onComplete: nil, onError: nil )
     }
 }
