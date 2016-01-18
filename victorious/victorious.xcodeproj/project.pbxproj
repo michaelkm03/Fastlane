@@ -124,6 +124,8 @@
 		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		034912711B7EA5E700EA8A07 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
+		034D74241C486BFC003EE48F /* NSURL+DefaultScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034D74231C486BFC003EE48F /* NSURL+DefaultScheme.swift */; };
+		034D74261C486E5A003EE48F /* NSURL+DefaultSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034D74251C486E5A003EE48F /* NSURL+DefaultSchemeTests.swift */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0352FC691B729B0300DB6EAB /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
@@ -1612,6 +1614,8 @@
 		034D1A641AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
+		034D74231C486BFC003EE48F /* NSURL+DefaultScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultScheme.swift"; sourceTree = "<group>"; };
+		034D74251C486E5A003EE48F /* NSURL+DefaultSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultSchemeTests.swift"; sourceTree = "<group>"; };
 		0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+VictoriousAPI.swift"; sourceTree = "<group>"; };
 		0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5585,6 +5589,7 @@
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
 				A721E8C91B572453000B7901 /* NSString+VStringWithData.m */,
+				034D74231C486BFC003EE48F /* NSURL+DefaultScheme.swift */,
 				A721E8CA1B572453000B7901 /* NSURL+MediaType.h */,
 				A721E8CB1B572453000B7901 /* NSURL+MediaType.m */,
 				A721E8CC1B572453000B7901 /* NSURL+VCustomScheme.h */,
@@ -6727,6 +6732,7 @@
 			isa = PBXGroup;
 			children = (
 				BEA78BD919BFAE82006A1ABC /* 3rd Party SDKs */,
+				67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */,
 				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
 				03D94C2719DE155400BFAA27 /* AsyncTestHelper */,
 				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
@@ -6743,6 +6749,7 @@
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
 				A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
+				034D74251C486E5A003EE48F /* NSURL+DefaultSchemeTests.swift */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -6820,7 +6827,6 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
-				67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9425,6 +9431,7 @@
 				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
 				A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
+				034D74241C486BFC003EE48F /* NSURL+DefaultScheme.swift in Sources */,
 				F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */,
 				A721E91F1B572454000B7901 /* VAdBreak+RestKit.m in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
@@ -9955,6 +9962,7 @@
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				F0FC97FD1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m in Sources */,
 				A766CFE91B66CF3E00419688 /* NSString+UnicodeTests.swift in Sources */,
+				034D74261C486E5A003EE48F /* NSURL+DefaultSchemeTests.swift in Sources */,
 				675A9AFF1BC37928009CE633 /* FirstInstallDeviceIDManagerTests.swift in Sources */,
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
 				D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */,
