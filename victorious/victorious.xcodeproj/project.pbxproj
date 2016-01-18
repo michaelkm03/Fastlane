@@ -7279,11 +7279,11 @@
 			children = (
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
 				A7FCFB9A1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift */,
+				79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTestCase.swift */,
+				625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */,
 				67CEBCD11C474AA100A3C4A0 /* CreatePollOperationTests.swift */,
 				672828031C45EE3A00B02909 /* CreateTextPostOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
-				625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */,
-				79CBAC121C3CD3EE00D1387E /* BaseRequestOperationTestCase.swift */,
 				6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
 				67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */,
@@ -7584,11 +7584,11 @@
 		A7B0A62C1C347A01008B875C /* Test Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */,
 				A7B0A62D1C347A01008B875C /* CoreDataPathHelper.swift */,
 				67FAC0B91C4083370051D47E /* MockOperations.swift */,
-				62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */,
 				67AB78201C40823800BA00FE /* MockRequests.swift */,
+				62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */,
+				67CC29DD1C49951800C31FC4 /* TestUploadManager.swift */,
 				79F8B4A01C3DD3EA00313976 /* User+Tests.swift */,
 			);
 			path = "Test Helpers";
