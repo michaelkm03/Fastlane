@@ -13,16 +13,13 @@ import XCTest
 class UserSearchOperationTests: BaseRequestOperationTestCase {
 
     let testUserID: Int = 1
-    var operation: UserSearchOperation!
-    
-    override func setUp() {
-        super.setUp()
-        operation = UserSearchOperation(queryString: "test")
-        operation.requestExecutor = testRequestExecutor
-    }
 
     func testBasicSearch() {
-        XCTAssertNotNil(operation)
+        guard let operation = UserSearchOperation(queryString: "test") else {
+            XCTFail("Operation initialization should not fail here")
+            return
+        }
+        operation.requestExecutor = testRequestExecutor
 
         queueExpectedOperation(operation: operation)
 
@@ -31,7 +28,20 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
         }
     }
 
-    func testReturnsResultsObjects() {    
+    func testInitializationFail() {
+        let str = String(bytes: [0xD8, 0x00] as [UInt8], encoding: NSUTF16BigEndianStringEncoding)!
+        
+        let operation = UserSearchOperation(queryString: str)
+        XCTAssertNil(operation)
+    }
+
+    func testReturnsResultsObjects() {
+        guard let operation = UserSearchOperation(queryString: "test") else {
+            XCTFail("Operation initialization should not fail here")
+            return
+        }
+        operation.requestExecutor = testRequestExecutor
+
         let user = User(userID: testUserID)
         operation.onComplete([user]) { () -> () in
         }
