@@ -68,8 +68,8 @@
     
     self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
-    self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
-    self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
+    self.noContentView.title = NSLocalizedString(@"SAY HELLO!", @"");
+    self.noContentView.message = NSLocalizedString(@"Send a message to start chatting with other members of the community.", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
 }
 
@@ -123,6 +123,15 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    // If the view controller is being popped to go back
+    if ( [self.navigationController.viewControllers indexOfObject:self] == NSNotFound )
+    {
+        // Delete the conversation if it is empty, i.e. a user opened a new conversation but did not send any messages.
+        NSInteger conversationID = self.conversation.remoteId.integerValue;
+        Operation *operation = [[DeleteUnusedLocalConversationOperation alloc] initWithConversationID:conversationID];
+        [operation queueOn:operation.defaultQueue completionBlock:nil];
+    }
+    
     [super viewWillDisappear:animated];
     
 #warning FIXME

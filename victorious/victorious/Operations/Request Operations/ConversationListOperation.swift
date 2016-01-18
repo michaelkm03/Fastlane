@@ -34,7 +34,7 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             var displayOrder = self.request.paginator.start
             for result in unflaggedResults {
-                let uniqueElements = [ "remoteId" : result.conversationID ]
+                let uniqueElements = [ "user.remoteId" : result.otherUser.userID ]
                 let conversation: VConversation = context.v_findOrCreateObject( uniqueElements )
                 conversation.populate( fromSourceModel: result )
                 conversation.displayOrder = displayOrder++
@@ -62,6 +62,12 @@ final class ConversationListOperation: RequestOperation, PaginatedOperation {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VConversation.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                vsdk_format: "",
+                vsdk_argumentArray: [],
+                vsdk_paginator: self.request.paginator
+            )
+            fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest ) as [VConversation]
         }
     }

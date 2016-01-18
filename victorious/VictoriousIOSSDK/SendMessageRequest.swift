@@ -32,8 +32,12 @@ public struct SendMessageRequest: RequestType {
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (conversationID: Int, messageID: Int) {
         let payload = responseJSON["payload"]
-        guard let conversationID = Int(payload["conversation_id"].string ?? ""),
-            let messageID = payload["message_id"].int else {
+        
+        let conversationIDJSON = payload["conversation_id"]
+        let messageIDJSON = payload["message_id"]
+        
+        guard let conversationID = Int(conversationIDJSON.stringValue) ?? conversationIDJSON.int,
+            let messageID = Int(messageIDJSON.stringValue) ?? messageIDJSON.int else {
                 throw ResponseParsingError()
         }
         return (conversationID, messageID)

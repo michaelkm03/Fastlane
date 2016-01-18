@@ -25,6 +25,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
+        super.init()
+        
+        self.KVOController.observe( conversation,
+            keyPath: "messages",
+            options: [.New, .Old],
+            action: Selector("onConversationChanged:")
+        )
     }
     
     private(set) var visibleItems = NSOrderedSet() {
@@ -48,6 +55,12 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         )
     }
     
+    func onConversationChanged( change: [NSObject : AnyObject]? ) {
+        self.paginatedDataSource.refreshLocal() {
+            return ConversationOperation(conversationID: self.conversation.remoteId.integerValue)
+        }
+    }
+    
     private func decorateCell( cell: VMessageCell, withMessage message: VMessage ) {
         cell.timeLabel?.text = message.postedAt?.timeSince() ?? ""
         cell.messageTextAndMediaView?.text = message.text
@@ -64,9 +77,8 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        /*let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
-        self.visibleItems = NSOrderedSet(array: sortedArray)*/
-        self.visibleItems = newValue
+        let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
+        self.visibleItems = NSOrderedSet(array: sortedArray)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

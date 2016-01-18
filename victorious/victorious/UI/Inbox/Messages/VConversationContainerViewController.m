@@ -42,14 +42,6 @@ static const NSUInteger kCharacterLimit = 1024;
     return messageViewController;
 }
 
-+ (instancetype)messageViewControllerForConversation:(VConversation *)conversation dependencyManager:(VDependencyManager *)dependencyManager
-{
-    VConversationContainerViewController *messageViewController = (VConversationContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kMessageContainerID];
-    messageViewController.dependencyManager = dependencyManager;
-    messageViewController.conversation = conversation;
-    return messageViewController;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -240,22 +232,12 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
-    VUser *currentUser = [VCurrentUser user];
-    if ( currentUser == nil )
+    if ( [VCurrentUser user] == nil )
     {
         return;
     }
     
-    [self sendMessageWithText:text
-               inConversation:self.conversation
-                   completion:^(NSError *_Nullable error)
-     {
-         if ( error == nil )
-         {
-             VConversationViewController* conversationVC = (VConversationViewController *)self.conversationTableViewController;
-             [conversationVC.dataSource loadMessagesWithPageType:VPageTypeCheckNew completion:nil];
-         }
-    }];
+    [self sendMessageWithText:text inConversation:self.conversation completion:nil];
     
     [keyboardBar.textView resignFirstResponder];
     [keyboardBar clearKeyboardBar];

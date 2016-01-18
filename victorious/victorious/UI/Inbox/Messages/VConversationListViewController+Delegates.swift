@@ -28,9 +28,10 @@ extension VConversationListViewController: SearchResultsViewControllerDelegate {
             return
         }
         
-        LoadUserOperation(userID: userResult.sourceResult.userID).queue() { operation in
-            if let user = (operation as? LoadUserOperation)?.result {
-                // FIXME: self.displayConversationForUser(user, animated: true)
+        let operation = LoadUserConversationOperation(user: userResult.sourceResult)
+        operation.queue() { op in
+            if let conversation = operation.loadedConversation {
+                self.displayConversation(conversation, animated: true)
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }

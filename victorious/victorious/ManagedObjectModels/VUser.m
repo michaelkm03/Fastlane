@@ -38,7 +38,7 @@
 @dynamic token;
 @dynamic tokenUpdatedAt;
 @dynamic childSequences;
-@dynamic conversation;
+@dynamic conversations;
 @dynamic comments;
 @dynamic followers;
 @dynamic following;

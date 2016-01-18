@@ -46,6 +46,6 @@ extension NumericPaginator {
     }
     
     public var end: Int {
-        return start + itemsPerPage
+        return max(start, 0) + itemsPerPage
     }
 }

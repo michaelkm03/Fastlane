@@ -9,6 +9,11 @@
 import Foundation
 import VictoriousIOSSDK
 
+// Because messages may exist without a remoteId, we need to check equality differently:
+func ==(lhs: VMessage, rhs: VMessage) -> Bool {
+    return lhs.postedAt == rhs.postedAt && lhs.text == rhs.text && lhs.conversation == rhs.conversation
+}
+
 final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     let conversationID: Int
@@ -24,6 +29,10 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     }
     
     override func main() {
+        guard self.conversationID > 0 else {
+            return
+        }
+        
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
@@ -44,8 +53,6 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
                     newMessage = message
                 } else {
                     newMessage = context.v_createObject()
-                    
-                    // Save some performance by only parse when it's a new message
                     newMessage.populate( fromSourceModel: result )
                 }
                 newMessage.displayOrder = displayOrder++
@@ -62,18 +69,30 @@ final class ConversationOperation: RequestOperation, PaginatedOperation {
     
     internal(set) var results: [AnyObject]?
     
-    func clearResults() {
-    }
+    func clearResults() {}
     
     func fetchResults() -> [AnyObject] {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
+            guard let conversation: VConversation = context.v_findObjects([ "remoteId" : self.conversationID ]).first else {
+                return []
+            }
+            
             let fetchRequest = NSFetchRequest(entityName: VMessage.v_entityName())
+            let predicate: NSPredicate
+            if let user = conversation.user {
+                predicate = NSPredicate(
+                    vsdk_format: "conversation.user = %@",
+                    vsdk_argumentArray: [ user ],
+                    vsdk_paginator: self.request.paginator )
+                
+            } else {
+                predicate = NSPredicate(
+                    vsdk_format: "conversation = %@",
+                    vsdk_argumentArray: [ conversation ],
+                    vsdk_paginator: self.request.paginator )
+            }
+            
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
-            let predicate = NSPredicate(
-                vsdk_format: "conversation.remoteId = %@",
-                vsdk_argumentArray: [ self.conversationID ],
-                vsdk_paginator: self.request.paginator
-            )
             fetchRequest.predicate = predicate
             let results = context.v_executeFetchRequest( fetchRequest ) as [VMessage]
             return results

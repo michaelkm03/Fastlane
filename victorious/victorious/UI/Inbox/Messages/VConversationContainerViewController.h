@@ -17,6 +17,4 @@
 @property (nonatomic, strong) VConversation *conversation;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
-+ (instancetype)messageViewControllerForConversation:(VConversation *)conversation dependencyManager:(VDependencyManager *)dependencyManager;
-
 @end

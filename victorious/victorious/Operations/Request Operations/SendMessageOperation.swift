@@ -33,7 +33,8 @@ class SendMessageOperation: RequestOperation {
         self.creationDate = NSDate()
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let uniqueElements = ["remoteId" : self.creationParameters.conversationID ]
+            
+            let uniqueElements = [ "user.remoteId" : self.creationParameters.recipientID ]
             guard let currentUser = VCurrentUser.user(inManagedObjectContext: context),
                 let conversation: VConversation = context.v_findObjects(uniqueElements).first else {
                     return nil
@@ -62,6 +63,8 @@ class SendMessageOperation: RequestOperation {
                 message.mediaHeight = mediaAttachment.size?.height
             }
             
+            conversation.lastMessageText = message.text
+            conversation.postedAt = conversation.postedAt ?? self.creationDate
             conversation.v_addObject(message, to: "messages")
             context.v_save()
             
@@ -69,52 +72,22 @@ class SendMessageOperation: RequestOperation {
             return context
         }
         
-        requestExecutor.executeRequest(request, onComplete: self.onComplete, onError: nil)
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
     func onComplete(result: SendMessageRequest.ResultType, completion: () -> () ) {
-        
-        if let objectID = self.newMessageObjectID {
-            let operation = PopulateRemoteMessageOperation(objectID:
-                objectID, remoteID:
-                result.messageID,
-                conversationID: result.conversationID)
-            operation.queueAfter(self)
+        guard let objectID = self.newMessageObjectID else {
+            completion()
+            return
         }
-        
-        completion()
-    }
-}
-
-class PopulateRemoteMessageOperation: Operation {
-    
-    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
-    
-    let objectID: NSManagedObjectID
-    let remoteID: Int
-    let conversationID: Int
-    
-    required init(objectID: NSManagedObjectID, remoteID: Int, conversationID: Int) {
-        self.objectID = objectID
-        self.remoteID = remoteID
-        self.conversationID = conversationID
-    }
-    
-    override func start() {
-        super.start()
-        
-        self.beganExecuting()
-        
-        // Use the same backgroudn context used to create the message
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let message = context.objectWithID(self.objectID) as? VMessage else {
-                self.finishedExecuting()
+        storedBackgroundContext?.v_performBlock() { context in
+            guard let message = context.objectWithID(objectID) as? VMessage else {
+                completion()
                 return
             }
-            message.remoteId = self.remoteID
+            message.remoteId = result.messageID
             context.v_save()
-            
-            self.finishedExecuting()
+            completion()
         }
     }
 }

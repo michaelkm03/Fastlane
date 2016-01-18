@@ -22,9 +22,20 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     
     init( dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
+        super.init()
+        
+        self.KVOController.observe( VCurrentUser.user()!,
+            keyPath: "conversations",
+            options: [.New, .Old],
+            action: Selector("onConversationsChanged:")
+        )
     }
     
-    private(set) var visibleItems = NSOrderedSet()
+    private(set) var visibleItems = NSOrderedSet() {
+        didSet {
+            self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: visibleItems)
+        }
+    }
     
     var state: DataSourceState {
         return self.paginatedDataSource.state
@@ -41,14 +52,18 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
         )
     }
     
+    func onConversationsChanged( change: [NSObject : AnyObject]? ) {
+        self.paginatedDataSource.refreshLocal() {
+            return ConversationListOperation()
+        }
+    }
+    
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         
         let sortedArray = (newValue.array as? [VConversation] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
-        
-        self.delegate?.paginatedDataSource( paginatedDataSource, didUpdateVisibleItemsFrom: oldValue, to: self.visibleItems)
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

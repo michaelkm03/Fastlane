@@ -62,6 +62,14 @@ import Foundation
         return VReachability.reachabilityForInternetConnection().currentReachabilityStatus() != .NotReachable
     }
     
+    func refreshLocal<T: PaginatedOperation>( @noescape createOperation: () -> T ) {
+        var operation: T = createOperation()
+        let results = operation.fetchResults() ?? []
+        operation.results = results
+        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: .Refresh)
+        self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+    }
+    
     func loadPage<T: PaginatedOperation>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
         guard state != .Loading else { return }
@@ -74,47 +82,35 @@ import Foundation
             operationToQueue = (currentOperation as? T)?.next()
         case .Previous:
             operationToQueue = (currentOperation as? T)?.prev()
-        case .CheckNew:
-            let operation = createOperation()
-            let results = operation.fetchResults() ?? []
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-            operationToQueue = nil
-            return
         }
         
+        // Return early if there is no operation to queue, i.e. no work to do
         guard let requestOperation = operationToQueue as? RequestOperation,
             var operation = operationToQueue else {
                 return
         }
         
-        self.state = .Loading
-        
         // Load any local results immeidately
         if pageType == .Refresh {
             let results = operation.fetchResults() ?? []
+            operation.results = results
             self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
         }
+        self.state = .Loading
         
         requestOperation.queue() { error in
             
-            if let error = error {
-                // Fetch local results if we failed because of no network
-                if error.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .Refresh {
-                    operation.results = operation.fetchResults()
-                    let results = operation.results ?? []
-                    self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-                    
-                } else {
-                    // Otherwise, return no results
-                    operation.results = []
-                    self.state = .Error
-                }
-          
-            } else {
-                operation.results = operation.fetchResults()
-                let results = operation.results ?? []
+            // Fetch local results if we failed because of no network
+            if error == nil || (error?.code == RequestOperation.errorCodeNoNetworkConnection && pageType != .Refresh) {
+                let results = operation.fetchResults() ?? []
+                operation.results = results
                 self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
+                
+            } else {
+                // Otherwise, return no results
+                operation.results = []
+                self.state = .Error
             }
             
             completion?( operation: operation, error: error )
@@ -138,7 +134,7 @@ private extension NSOrderedSet {
         case .Next: //< apend
             return NSOrderedSet(array: self.array + objects)
             
-        case .Previous, .CheckNew: //< prepend
+        case .Previous: //< prepend
             return NSOrderedSet(array: objects + self.array)
         }
     }

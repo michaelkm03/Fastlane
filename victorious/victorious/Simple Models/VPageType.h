@@ -33,11 +33,5 @@ typedef NS_ENUM( NSUInteger, VPageType )
      Indicates that an endpoint should reload its first page and clear out and previously
      stored results in favor of the updated incoming data that will supercede it.
      */
-    VPageTypeRefresh,
-    
-    /**
-     Indicates that an endpoint should reload its first page but NOT clear out and previously
-     stored results.
-     */
-    VPageTypeCheckNew
+    VPageTypeRefresh
 };

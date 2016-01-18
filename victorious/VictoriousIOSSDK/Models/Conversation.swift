@@ -13,7 +13,7 @@ public struct Conversation {
     public let conversationID: Int
     public let previewMessageID: Int
     public var isRead: Bool?
-    public let otherUser: User?
+    public let otherUser: User
     public let previewMessageText: String?
     public let postedAt: NSDate?
 }
@@ -23,17 +23,17 @@ extension Conversation {
     public init?(json: JSON) {
         guard let conversationID    = json["conversation_id"].int,
             let previewMessageID    = Int(json["message_id"].stringValue),
+            let otherUser           = User(json: json["other_interlocutor_user"]),
             let postedAt            = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["posted_at"].stringValue) else {
             return nil
         }
-        
+        self.otherUser              = otherUser
         self.conversationID         = conversationID
         self.previewMessageID       = previewMessageID
         self.postedAt               = postedAt
                 
         self.previewMessageText     = json["text"].string
         self.isRead                 = json["is_read"].v_boolFromAnyValue
-        self.otherUser              = User(json: json["other_interlocutor_user"])
     }
 }
 

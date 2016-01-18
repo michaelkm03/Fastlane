@@ -110,8 +110,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
-    
-    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -125,6 +123,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
+    [self refresh];
     [self updateTableView];
 }
 
@@ -233,7 +232,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 #pragma mark - Message View Controller Cache
 
-- (VConversationContainerViewController *)messageViewControllerFoConversation:(VConversation *)conversation
+- (VConversationContainerViewController *)messageViewControllerForUser:(VUser *)user
 {
     NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
     
@@ -241,7 +240,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         self.messageViewControllers = [[NSMutableDictionary alloc] init];
     }
-    VConversationContainerViewController *messageViewController = self.messageViewControllers[ conversation.user.remoteId];
+    VConversationContainerViewController *messageViewController = self.messageViewControllers[ user.remoteId];
     
     if ( messageViewController == nil )
     {
@@ -254,8 +253,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
                                         VDependencyManagerPositionKey: VDependencyManagerPositionRight };
         NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
         VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
-        messageViewController = [VConversationContainerViewController messageViewControllerForConversation:conversation dependencyManager:childDependencyManager];
-        self.messageViewControllers[ conversation.user.remoteId ] = messageViewController;
+        messageViewController = [VConversationContainerViewController newWithDependencyManager:childDependencyManager];
+        self.messageViewControllers[ user.remoteId ] = messageViewController;
     }
     
     return messageViewController;
@@ -326,7 +325,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)displayConversation:(VConversation *)conversation animated:(BOOL)animated
 {
-    VConversationContainerViewController *detailVC = [self messageViewControllerFoConversation:conversation];
+    VConversationContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
+    detailVC.conversation = conversation;
     UINavigationController *rootInnerNavigationController = [self rootNavigationController].innerNavigationController;
     
     if ( self.navigationController == nil )
