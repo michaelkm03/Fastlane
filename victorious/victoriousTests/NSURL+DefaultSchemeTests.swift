@@ -29,11 +29,4 @@ class NSURL_DefaultSchemeTests: XCTestCase {
         let actualUrl = NSURL.v_URLWithString(urlString, defaultScheme: "http")
         XCTAssertEqual(expectedUrl, actualUrl)
     }
-    
-    func testEmojiInScheme() {
-        let urlString = "ftp://example.com"
-        let expectedUrl = NSURL(string: urlString)
-        let actualUrl = NSURL.v_URLWithString(urlString, defaultScheme: "http")
-        XCTAssertEqual(expectedUrl, actualUrl)
-    }
 }
