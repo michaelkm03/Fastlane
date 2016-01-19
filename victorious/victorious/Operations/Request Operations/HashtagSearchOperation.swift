@@ -11,9 +11,11 @@ import VictoriousIOSSDK
 
 @objc class HashtagSearchResultObject: NSObject {
     let sourceResult: VictoriousIOSSDK.Hashtag
+    let tag: String
     
     init( hashtag: VictoriousIOSSDK.Hashtag ) {
         self.sourceResult = hashtag
+        self.tag = hashtag.tag
     }
 }
 
