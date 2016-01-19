@@ -32,6 +32,8 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     
     convenience init?( searchTerm: String ) {
         guard let request = UserSearchRequest(searchTerm: searchTerm) else {
+            /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
+            self.init(request: UserSearchRequest(searchTerm: "")!)
             return nil
         }
         self.init(request: request)

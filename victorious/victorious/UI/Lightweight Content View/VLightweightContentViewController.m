@@ -93,7 +93,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
         SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
-        [operation queueOn:operation.defaultQueue completionBlock:^(NSError * _Nullable error)
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
          {
              if ( error != nil )
              {

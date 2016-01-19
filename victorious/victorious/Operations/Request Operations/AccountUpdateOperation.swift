@@ -13,26 +13,25 @@ class AccountUpdateOperation: RequestOperation {
     
     private let storedPassword = VStoredPassword()
     
-    let request: AccountUpdateRequest
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
+    let request: AccountUpdateRequest!
     private(set) var results: [AnyObject]?
     private(set) var didResetResults: Bool = false
     
-    required init( request: AccountUpdateRequest ) {
-        self.request = request
-    }
-    
-    convenience init?( passwordUpdate: PasswordUpdate ) {
-        if let request = AccountUpdateRequest(passwordUpdate: passwordUpdate) {
-            self.init(request: request)
-        } else {
+    init? (passwordUpdate: PasswordUpdate) {
+        self.request = AccountUpdateRequest(passwordUpdate: passwordUpdate)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }
     
-    convenience init?( profileUpdate: ProfileUpdate ) {
-        if let request = AccountUpdateRequest(profileUpdate: profileUpdate) {
-            self.init(request: request)
-        } else {
+    init? (profileUpdate: ProfileUpdate) {
+        self.request = AccountUpdateRequest(profileUpdate: profileUpdate)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }

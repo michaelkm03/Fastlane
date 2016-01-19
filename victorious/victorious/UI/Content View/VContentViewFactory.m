@@ -122,7 +122,7 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     else if ( [url v_hasCustomScheme] )
     {
         [[UIApplication sharedApplication] openURL:url];
-        return nil;  return nil;
+        return nil;
     }
     else
     {

@@ -19,7 +19,6 @@
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import <Crashlytics/Crashlytics.h>
-#import "NSBundle+TestBundle.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"
@@ -33,12 +32,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSBundle *testBundle = [NSBundle v_testBundle];
-    if ( testBundle != nil && !testBundle.v_shouldCompleteLaunch )
+    if ([NSBundle v_isTestBundle])
     {
         return YES;
     }
-    
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
