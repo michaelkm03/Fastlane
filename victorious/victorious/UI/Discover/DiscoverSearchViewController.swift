@@ -22,6 +22,7 @@ public extension DiscoverSearchViewController {
         self.searchResultsContainerView?.addSubview( userSearchVC.view )
         self.view.v_addFitToParentConstraintsToSubview( userSearchVC.view )
         userSearchVC.didMoveToParentViewController(self)
+        userSearchVC.searchResultsDelegate = self
         
         let usersNoContentView: VNoContentView = VNoContentView.v_fromNib()
         usersNoContentView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +44,7 @@ public extension DiscoverSearchViewController {
         self.searchResultsContainerView?.addSubview( hashtagSearchVC.view )
         self.view.v_addFitToParentConstraintsToSubview( hashtagSearchVC.view )
         hashtagSearchVC.didMoveToParentViewController(self)
+        hashtagSearchVC.searchResultsDelegate = self
         
         let hashtagNoContentView: VNoContentView = VNoContentView.v_fromNib()
         hashtagNoContentView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +64,19 @@ extension DiscoverSearchViewController: SearchResultsViewControllerDelegate {
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {
         
         if let userResult = result as? UserSearchResultObject {
-            
+            let operation = FetchUserOperation(fromUser: userResult.sourceResult)
+            operation.queue() { op in
+                if let user = operation.result,
+                    let vc = VUserProfileViewController.userProfileWithUser(user, andDependencyManager: self.dependencyManager) {
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
             
         } else if let hashtagResult = result as? HashtagSearchResultObject {
-            
+            let hashtag = hashtagResult.sourceResult.tag
+            if let vc = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
 }

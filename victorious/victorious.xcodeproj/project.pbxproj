@@ -291,7 +291,6 @@
 		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
 		0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390085619F38BC600FD7EDF /* ActionSheet.storyboard */; };
 		0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */; };
-		0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
 		0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086B19F39F6A00FD7EDF /* VConversationCell.xib */; };
 		0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086D19F39F9900FD7EDF /* VMessageCell.xib */; };
 		0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */; };
@@ -961,6 +960,8 @@
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */; };
 		A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */; };
+		A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
+		A7A5E05C1C4DE35A0015B185 /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A5E05B1C4DE35A0015B185 /* FetchUserOperation.swift */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
@@ -1551,9 +1552,6 @@
 		DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */; };
 		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
 		DBF8B4AB1A78942900CFFD47 /* DiscoverSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* DiscoverSearchViewController.m */; };
-		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
-		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
-		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
 		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
@@ -3317,6 +3315,7 @@
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchRequest.swift; sourceTree = "<group>"; };
+		A7A5E05B1C4DE35A0015B185 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7A922681AC9DB5F00F4755E /* VMultiplePickerSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerSelection.h; sourceTree = "<group>"; };
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
@@ -7136,6 +7135,7 @@
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
 				678AC1701C403BE3002E3FEA /* ValidatePasswordResetTokenOperation.swift */,
+				A7A5E05B1C4DE35A0015B185 /* FetchUserOperation.swift */,
 			);
 			path = "Request Operations";
 			sourceTree = "<group>";
@@ -9740,6 +9740,7 @@
 				036F38921A0C4DEA0014DF66 /* Signika-Semibold.ttf in Resources */,
 				036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */,
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
+				A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */,
 				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
@@ -9916,7 +9917,6 @@
 				F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */,
 				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
-				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				F0E0F1BA1AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib in Resources */,
 				A6B9FD091B603FD300166BE8 /* VImageCameraViewController.storyboard in Resources */,
@@ -11553,6 +11553,7 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				D87AD2AB1AD4781300C481D0 /* VDownloadTaskInformation.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
+				A7A5E05C1C4DE35A0015B185 /* FetchUserOperation.swift in Sources */,
 				A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				A721E92F1B572454000B7901 /* VNotificationSettings+RestKit.m in Sources */,
