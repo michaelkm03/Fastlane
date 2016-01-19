@@ -437,6 +437,7 @@
 		67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
 		67803E1E1C24D5C5008CEC73 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		67803E1F1C24D5C5008CEC73 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
+		67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */; };
 		6782EA811BF2C885000C7C0D /* LikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA801BF2C885000C7C0D /* LikeSequenceRequestTests.swift */; };
@@ -990,7 +991,6 @@
 		A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */; };
 		A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */; };
 		A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390086419F38FD700FD7EDF /* Discover.storyboard */; };
-		A7A5E05C1C4DE35A0015B185 /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A5E05B1C4DE35A0015B185 /* FetchUserOperation.swift */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
@@ -2520,6 +2520,7 @@
 		6779A2141BF55EF00024BBD0 /* PollResultSummaryRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultSummaryRequest.swift; sourceTree = "<group>"; };
 		677AF6421C44A80E00B178EE /* CreateTextPostRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostRequest.swift; sourceTree = "<group>"; };
 		677AF6441C44A82A00B178EE /* CreateTextPostRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTextPostRequestTests.swift; sourceTree = "<group>"; };
+		67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
 		6782EA801BF2C885000C7C0D /* LikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequestTests.swift; sourceTree = "<group>"; };
@@ -3371,7 +3372,6 @@
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchRequest.swift; sourceTree = "<group>"; };
-		A7A5E05B1C4DE35A0015B185 /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7A922681AC9DB5F00F4755E /* VMultiplePickerSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerSelection.h; sourceTree = "<group>"; };
 		A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerSelection.m; sourceTree = "<group>"; };
@@ -7170,6 +7170,7 @@
 				A76712201C20F216006568DF /* DeleteSequenceOperation.swift */,
 				79EEC4A21C17BA6E0004E6FC /* DeviceExperimentsOperation.swift */,
 				7979A0311C18B2FA00455FF8 /* DevicePreferencesOperation.swift */,
+				67826A101C4EACA5001BABF5 /* FetchUserOperation.swift */,
 				A7245F0A1C04E69A00187825 /* FlagCommentOperation.swift */,
 				A76AEA3A1BFEBA0500E8A26F /* FlagSequenceOperation.swift */,
 				A76AEAD41C038E0000E8A26F /* FollowCountOperation.swift */,
@@ -11499,6 +11500,7 @@
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
+				67826A121C4EACA5001BABF5 /* FetchUserOperation.swift in Sources */,
 				C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
@@ -11666,7 +11668,6 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				D87AD2AB1AD4781300C481D0 /* VDownloadTaskInformation.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
-				A7A5E05C1C4DE35A0015B185 /* FetchUserOperation.swift in Sources */,
 				A73D16BF1C24FA0700497F83 /* TermsOfServiceOperation.swift in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				A721E92F1B572454000B7901 /* VNotificationSettings+RestKit.m in Sources */,
