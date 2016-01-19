@@ -15,7 +15,7 @@ public struct TrendingHashtagRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/discover/hashtags")!
-        let request = NSMutableURLRequest(URL: url)
+        let request = NSURLRequest(URL: url)
         return request
     }
     
