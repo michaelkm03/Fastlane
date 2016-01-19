@@ -30,11 +30,14 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     }
     
     convenience init?( searchTerm: String ) {
-        if let request = UserSearchRequest(searchTerm: searchTerm) {
-            self.init(request: request)
-        } else {
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
+            /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
+            self.init(request: UserSearchRequest(searchTerm: ""))
+            
             return nil
         }
+        self.init(request: UserSearchRequest(searchTerm: escapedSearchTerm))
     }
     
     override func main() {

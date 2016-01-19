@@ -35,6 +35,13 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
         }
     }
 
+    func testInitializationFail() {
+        let str = String(bytes: [0xD8, 0x00] as [UInt8], encoding: NSUTF16BigEndianStringEncoding)!
+        
+        let operation = UserSearchOperation(searchTerm: str)
+        XCTAssertNil(operation)
+    }
+
     func testReturnsResultsObjects() {
         guard let operation = UserSearchOperation(searchTerm: "test") else {
             XCTFail("Operation initialization should not fail here")

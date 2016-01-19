@@ -90,14 +90,7 @@ import Foundation
                 return
         }
         
-        // Load any local results immeidately
-        if pageType == .Refresh {
-            let results = operation.fetchResults() ?? []
-            operation.results = results
-            self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: results, forPageType: pageType)
-        }
         self.state = .Loading
-        
         requestOperation.queue() { error in
             
             // Fetch local results if we failed because of no network

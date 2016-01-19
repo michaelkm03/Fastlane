@@ -10,7 +10,6 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Remotes a stream item from the stream and deletes it
-// TODO: Do we still need this?
 class RemoveStreamItemOperation: Operation {
     
     private let streamItemID: String

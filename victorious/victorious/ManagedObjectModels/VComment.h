@@ -30,9 +30,6 @@
 @property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) VSequence *inStreamSequence;
 
-#warning I think this can be removed:
-@property (nonatomic, retain) NSSet *commentMedia;
-
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSNumber *mediaWidth;
