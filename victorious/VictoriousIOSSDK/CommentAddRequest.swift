@@ -12,15 +12,15 @@ import SwiftyJSON
 /// Adds a comment to a particular sequence
 public struct CommentAddRequest: RequestType {
     
-    private let requestBody: CommentAddRequestBody.Output
-    private let requestBodyWriter = CommentAddRequestBody()
+    private let requestBody: RequestBodyWriterOutput
+    private let requestBodyWriter = CommentAddRequestBodyWriter()
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
         request.HTTPMethod = "POST"
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
-        return request.copy() as! NSURLRequest
+        return request
     }
     
     public init?( parameters: CommentParameters ) {
@@ -32,6 +32,8 @@ public struct CommentAddRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
+        requestBodyWriter.removeBodyTempFile()
+        
         guard let comment = Comment(json: responseJSON["payload"]) else {
             throw ResponseParsingError()
         }

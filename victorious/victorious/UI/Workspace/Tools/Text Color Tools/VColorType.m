@@ -10,7 +10,7 @@
 
 @interface VColorType ()
 
-@property (nonatomic, readwrite) UIColor *color;
+@property (nonatomic, readwrite, nullable) UIColor *color;
 
 @end
 
