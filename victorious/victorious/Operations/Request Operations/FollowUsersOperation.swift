@@ -14,17 +14,17 @@ class FollowUsersOperation: RequestOperation {
     var eventTracker: VEventTracker = VTrackingManager.sharedInstance()
     
     private let request: FollowUsersRequest
-    private let screenName: String?
+    private let sourceScreenName: String?
     private let userIDs: [Int]
     
-    required init(userIDs: [Int], screenName: String? = nil) {
+    required init(userIDs: [Int], sourceScreenName: String? = nil) {
         self.userIDs = userIDs
-        self.screenName = screenName
-        self.request = FollowUsersRequest(userIDs: userIDs, screenName: screenName)
+        self.sourceScreenName = sourceScreenName
+        self.request = FollowUsersRequest(userIDs: userIDs, sourceScreenName: sourceScreenName)
     }
     
-    convenience init(userID: Int, screenName: String? = nil) {
-        self.init( userIDs: [userID], screenName: screenName )
+    convenience init(userID: Int, sourceScreenName: String? = nil) {
+        self.init( userIDs: [userID], sourceScreenName: sourceScreenName )
     }
 
     override func main() {

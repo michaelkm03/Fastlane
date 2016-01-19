@@ -12,8 +12,6 @@ import XCTest
 
 class FollowUsersOperationTests: BaseRequestOperationTestCase {
     var operation: FollowUsersOperation!
-    let screenName = "screenName"
-
     let currentUserID = 1
     let userIDOne = 2
     let userIDTwo = 3
@@ -25,7 +23,7 @@ class FollowUsersOperationTests: BaseRequestOperationTestCase {
     override func setUp() {
         super.setUp()
         self.continueAfterFailure = false
-        operation = FollowUsersOperation(userID: userIDOne, screenName: screenName)
+        operation = FollowUsersOperation(userID: userIDOne, sourceScreenName: "profile")
         operation.eventTracker = testTrackingManager
         operation.requestExecutor = testRequestExecutor
     }

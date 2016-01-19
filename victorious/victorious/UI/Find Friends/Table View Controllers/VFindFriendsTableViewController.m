@@ -319,7 +319,7 @@
         return user.remoteId;
     }];
     
-    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs: userIDs screenName:nil];
+    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs: userIDs sourceScreenName:nil];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
@@ -454,7 +454,8 @@
     return cell;
 }
 
-#warning Use this for follow/unfollow
+#pragma mark - source screen logic
+
 - (NSString *)sourceScreenName
 {
     UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];

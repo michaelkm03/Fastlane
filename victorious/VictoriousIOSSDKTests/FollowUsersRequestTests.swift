@@ -20,7 +20,7 @@ class FollowUsersRequestTests: XCTestCase {
         }
         
         do {
-            let followUser = FollowUsersRequest(userIDs: [5107], screenName: "profile")
+            let followUser = FollowUsersRequest(userIDs: [5107], sourceScreenName: "profile")
             try followUser.parseResponse(NSURLResponse(), toRequest: followUser.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
@@ -31,7 +31,7 @@ class FollowUsersRequestTests: XCTestCase {
         
         let targetUserID: Int = 5107
         
-        let followUser = FollowUsersRequest(userIDs: [targetUserID], screenName: "profile")
+        let followUser = FollowUsersRequest(userIDs: [targetUserID], sourceScreenName: "profile")
         let request = followUser.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/follow/add")
@@ -50,7 +50,7 @@ class FollowUsersRequestTests: XCTestCase {
     func testMultipleUsers() {
         
         let userIDsToFollow: [Int] = [266, 3787]
-        let followRequest = FollowUsersRequest(userIDs: userIDsToFollow, screenName: nil)
+        let followRequest = FollowUsersRequest(userIDs: userIDsToFollow, sourceScreenName: nil)
         
         let request = followRequest.urlRequest
         

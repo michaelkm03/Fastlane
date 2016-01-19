@@ -213,12 +213,12 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         
         switch followControl.controlState {
         case .Unfollowed:
-            let operation = UnFollowUsersOperation( userID: shelf.user.remoteId.integerValue, screenName: VFollowSourceScreenTrendingUserShelf )
+            let operation = UnFollowUsersOperation( userID: shelf.user.remoteId.integerValue, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
             operation.queue() { error in
                 self.updateFollowControlState()
             }
         case .Followed:
-            let operation = FollowUsersOperation( userID: shelf.user.remoteId.integerValue, screenName: VFollowSourceScreenTrendingUserShelf )
+            let operation = FollowUsersOperation( userID: shelf.user.remoteId.integerValue, sourceScreenName: VFollowSourceScreenTrendingUserShelf )
             operation.queue() { error in
                 self.updateFollowControlState()
             }

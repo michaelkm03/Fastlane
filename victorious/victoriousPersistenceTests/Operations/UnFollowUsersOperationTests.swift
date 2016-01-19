@@ -14,12 +14,11 @@ class UnFollowUsersOperationTests: BaseRequestOperationTestCase {
     var operation: UnFollowUsersOperation!
     let userID = 1
     let currentUserID = 2
-    let screenName = "screenName"
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        operation = UnFollowUsersOperation(userID: userID, screenName: screenName)
+        operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }

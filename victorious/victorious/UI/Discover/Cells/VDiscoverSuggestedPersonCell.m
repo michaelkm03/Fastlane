@@ -118,16 +118,16 @@
 - (IBAction)onFollow:(VFollowControl *)sender
 {
     long long userId = self.user.remoteId.longLongValue;
-    NSString *screenName = @"";
+    NSString *sourceScreenName = @"";
     
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUsersOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
     [operation queueOn:[RequestOperation sharedQueue] completionBlock:nil];

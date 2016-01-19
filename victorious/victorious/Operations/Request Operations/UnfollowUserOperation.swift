@@ -15,9 +15,9 @@ class UnFollowUsersOperation: RequestOperation {
     private let request: UnFollowUserRequest
     private let userID: Int
     
-    init( userID: Int, screenName: String ) {
+    init( userID: Int, sourceScreenName: String ) {
         self.userID = userID
-        self.request = UnFollowUserRequest(userID: userID, screenName: screenName)
+        self.request = UnFollowUserRequest(userID: userID, sourceScreenName: sourceScreenName)
     }
     
     override func main() {

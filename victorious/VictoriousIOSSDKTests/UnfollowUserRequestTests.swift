@@ -16,7 +16,7 @@ class UnFollowUserRequestTests: XCTestCase {
         
         let targetUserID: Int = 5107
         
-        let unfollowUser = UnFollowUserRequest(userID: targetUserID, screenName: "profile")
+        let unfollowUser = UnFollowUserRequest(userID: targetUserID, sourceScreenName: "profile")
         let request = unfollowUser.urlRequest
         
         XCTAssertEqual(request.URL?.absoluteString, "/api/follow/remove")
