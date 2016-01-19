@@ -869,6 +869,7 @@
 		A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m */; };
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
+		A761CBE51C4EBA2B00E07033 /* UnreadMessageCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761CBE41C4EBA2B00E07033 /* UnreadMessageCountOperation.swift */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
 		A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */; };
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
@@ -3174,6 +3175,7 @@
 		A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonsViewController.m; sourceTree = "<group>"; };
 		A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
+		A761CBE41C4EBA2B00E07033 /* UnreadMessageCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountOperation.swift; sourceTree = "<group>"; };
 		A76567121B3B1DAA002721F3 /* VSleekActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionButton.h; sourceTree = "<group>"; };
 		A76567131B3B1DAA002721F3 /* VSleekActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionButton.m; sourceTree = "<group>"; };
 		A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+UnicodeTests.swift"; sourceTree = "<group>"; };
@@ -7237,6 +7239,7 @@
 				A7E2918A1C3B403C00B84127 /* UnfollowUserOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
 				A7C565EE1C4486D000E4DF6A /* UnreadNotificationsCountOperation.swift */,
+				A761CBE41C4EBA2B00E07033 /* UnreadMessageCountOperation.swift */,
 				A76AEADE1C038E0000E8A26F /* UserInfoOperation.swift */,
 				A7EBF5371C2B99F40080C7CF /* UsersFollowedByUserOperation.swift */,
 				A7EBF5351C2B99CB0080C7CF /* UsersFollowingUserOperation.swift */,
@@ -11654,6 +11657,7 @@
 				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
 				A7AF87311C4607A500B49478 /* ConversationOperation.swift in Sources */,
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,
+				A761CBE51C4EBA2B00E07033 /* UnreadMessageCountOperation.swift in Sources */,
 				A73D16BD1C24F99700497F83 /* SuggestedUsersOperation.swift in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */,

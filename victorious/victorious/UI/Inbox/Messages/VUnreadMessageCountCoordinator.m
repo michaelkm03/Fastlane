@@ -7,7 +7,6 @@
 //
 
 #import "VUnreadMessageCountCoordinator.h"
-#import "VObjectManager+DirectMessaging.h"
 #import "victorious-Swift.h"
 
 @interface VUnreadMessageCountCoordinator ()
@@ -61,12 +60,13 @@
         
         self.loadingUnreadMessageCount = YES;
         
-        [self.objectManager unreadMessageCountWithCompletion:^(NSNumber *unreadMessages, NSError *error)
-        {
-            if ( unreadMessages != nil )
-            {
-                self.unreadMessageCount = [unreadMessages integerValue];
-            }
+        UnreadMessageCountOperation *operation = [[UnreadMessageCountOperation alloc] init];
+        [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+         {
+             if ( operation.unreadMessagesCount != nil )
+             {
+                 self.unreadMessageCount = operation.unreadMessagesCount.integerValue;
+             }
             dispatch_async(self.privateQueue, ^(void)
             {
                 self.loadingUnreadMessageCount = NO;
@@ -82,10 +82,15 @@
 
 - (void)markConversationRead:(VConversation *)conversation
 {
-    [self.objectManager markConversationAsRead:conversation
-                                withCompletion:^(NSNumber *unreadMessages, NSError *error)
+    if ( conversation.remoteId == nil )
     {
-        if ( unreadMessages != nil )
+        return;
+    }
+    
+    MarkConversationReadOperation *operation = [[MarkConversationReadOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if ( operation.unreadMessageCount != nil )
         {
             dispatch_async(self.privateQueue, ^(void)
             {
@@ -96,7 +101,7 @@
                 }
                 dispatch_sync(dispatch_get_main_queue(), ^(void)
                 {
-                    self.unreadMessageCount = [unreadMessages integerValue];
+                    self.unreadMessageCount = operation.unreadMessageCount.integerValue;
                 });
             });
         }

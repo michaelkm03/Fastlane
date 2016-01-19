@@ -14,6 +14,8 @@ class MarkConversationReadOperation: RequestOperation {
     let conversationID: Int
     private let request: MarkConversationReadRequest
     
+    var unreadMessageCount: NSNumber? //< TODO: I think this request returns a value that we want
+    
     init(conversationID: Int) {
         self.conversationID = conversationID
         self.request = MarkConversationReadRequest(conversationID: conversationID)

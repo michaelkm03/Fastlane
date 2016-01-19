@@ -11,11 +11,15 @@ import KVOController
 
 class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
     
+    static var liveUpdateFrequency: NSTimeInterval = 5.0
+    
     private lazy var paginatedDataSource: PaginatedDataSource = {
         let dataSource = PaginatedDataSource()
         dataSource.delegate = self
         return dataSource
     }()
+    
+    private var timer: VTimerManager?
     
     let dependencyManager: VDependencyManager
     let conversation: VConversation
@@ -56,8 +60,10 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func onConversationChanged( change: [NSObject : AnyObject]? ) {
-        self.paginatedDataSource.refreshLocal() {
-            return ConversationOperation(conversationID: self.conversation.remoteId.integerValue)
+        if let conversationID = self.conversation.remoteId?.integerValue {
+            self.paginatedDataSource.refreshLocal() {
+                return ConversationOperation(conversationID: conversationID)
+            }
         }
     }
     
@@ -72,6 +78,25 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         if let urlString = message.sender?.pictureUrl, let imageURL = NSURL(string: urlString) {
             cell.profileImageView?.setProfileImageURL(imageURL)
         }
+    }
+    
+    // MARK: - Live Update
+    
+    func beginLiveUpdates() {
+        self.timer = VTimerManager.scheduledTimerManagerWithTimeInterval( ConversationDataSource.liveUpdateFrequency,
+            target: self,
+            selector: Selector("onUpdate"),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    func endLiveUpdates() {
+        self.timer?.invalidate()
+    }
+    
+    func onUpdate() {
+        loadMessages(pageType: .Refresh)
     }
     
     // MARK: - PaginatedDataSourceDelegate

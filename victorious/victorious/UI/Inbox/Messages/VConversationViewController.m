@@ -114,8 +114,7 @@
 {
     [super viewDidAppear:animated];
     
-#warning FIXME
-    //[self.tableDataSource beginLiveUpdates];
+    [self.dataSource beginLiveUpdates];
     
     // Update cell focus
     [self.focusHelper updateFocus];
@@ -134,8 +133,7 @@
     
     [super viewWillDisappear:animated];
     
-#warning FIXME
-    //[self.tableDataSource endLiveUpdates];
+    [self.dataSource endLiveUpdates];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
