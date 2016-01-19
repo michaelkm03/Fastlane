@@ -12,9 +12,22 @@ import XCTest
 
 class SendMessageRequestTests: XCTestCase {
     
+    let creationParameters = Message.CreationParameters(
+        text: "Hello!",
+        recipientID: 1564,
+        conversationID: 153,
+        mediaAttachment: nil
+    )
+    
     func testRequest() {
-        let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachment: nil)
-        XCTAssertEqual(sendMessageRequest?.urlRequest.URL?.absoluteString, "/api/message/send")
+        guard let request = SendMessageRequest(creationParameters: creationParameters) else {
+            XCTFail("Unable to create request")
+            return
+        }
+        
+        let urlRequest = request.urlRequest
+        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/message/send")
     }
     
     func testResponseParsing() {
@@ -24,8 +37,8 @@ class SendMessageRequestTests: XCTestCase {
                 return
         }
         
-        guard let sendMessageRequest = SendMessageRequest(recipientID: 1908, text: "Hi", mediaAttachment: nil) else {
-            XCTFail("Could not instantiate AccountUpdateRequest")
+        guard let sendMessageRequest = SendMessageRequest(creationParameters: creationParameters) else {
+            XCTFail("Could not instantiate SendMessageRequest")
             return
         }
         

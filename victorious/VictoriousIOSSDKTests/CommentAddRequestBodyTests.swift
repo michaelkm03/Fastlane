@@ -12,12 +12,12 @@ import XCTest
 
 class CommentAddRequestBodyTests: XCTestCase {
     
-    var requestBodyWriter: CommentAddRequestBody!
+    var requestBodyWriter: CommentRequestBodyWriter!
     
     override func setUp() {
         super.setUp()
         
-        self.requestBodyWriter = CommentAddRequestBody()
+        self.requestBodyWriter = CommentRequestBodyWriter()
     }
     
     func testTextOnly() {

@@ -34,7 +34,7 @@ class ConversationListRequestTests: XCTestCase {
             if let firstConversation = results.first {
                 XCTAssertEqual(firstConversation.conversationID, 3075)
                 XCTAssertEqual(firstConversation.isRead, true)
-                XCTAssertEqual(firstConversation.otherUser?.name, "Düüd")
+                XCTAssertEqual(firstConversation.otherUser.name, "Düüd")
                 XCTAssertEqual(firstConversation.previewMessageID, 7793)
                 XCTAssertEqual(firstConversation.previewMessageText, "a")
 
