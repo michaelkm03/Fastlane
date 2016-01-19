@@ -16,7 +16,7 @@ class CommentEditOperation: RequestOperation {
     private let text: String
     private let commentID: Int
     
-    private var optimisticCommentObjectID: NSManagedObjectID?
+    private var optimisticObjectID: NSManagedObjectID?
     
     init( commentID: Int, text: String ) {
         self.commentID = commentID
@@ -31,7 +31,7 @@ class CommentEditOperation: RequestOperation {
             if let comment: VComment = context.v_findObjects( ["remoteId" : self.commentID] ).first {
                 comment.text = self.text
                 context.v_save()
-                self.optimisticCommentObjectID = comment.objectID
+                self.optimisticObjectID = comment.objectID
             }
         }
         
@@ -52,13 +52,13 @@ class CommentEditOperation: RequestOperation {
                 completion()
             }
             
-            guard let objectID = self.optimisticCommentObjectID,
-                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
+            guard let objectID = self.optimisticObjectID,
+                let optimisticObject = context.objectWithID( objectID ) as? VComment else {
                     return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
-            optimisticComment.populate( fromSourceModel: comment )
+            optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
             completion()
         }
