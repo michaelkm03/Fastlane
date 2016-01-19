@@ -16,9 +16,9 @@ public struct UnFollowUserRequest: RequestType {
     public let userID: Int
 
     /// The name of the screen from which you're unfollowing this user
-    public let sourceScreenName: String
+    public let sourceScreenName: String?
     
-    public init(userID: Int, sourceScreenName: String) {
+    public init(userID: Int, sourceScreenName: String?) {
         self.userID = userID
         self.sourceScreenName = sourceScreenName
     }
@@ -26,7 +26,7 @@ public struct UnFollowUserRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/follow/remove")!
         let request = NSMutableURLRequest(URL: url)
-        let params = [ "source": sourceScreenName, "target_user_id": String(userID) ]
+        let params = [ "source": sourceScreenName ?? "", "target_user_id": String(userID) ]
         request.vsdk_addURLEncodedFormPost(params)
         return request
     }
