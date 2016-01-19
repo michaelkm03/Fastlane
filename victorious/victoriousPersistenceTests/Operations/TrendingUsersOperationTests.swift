@@ -24,18 +24,25 @@ class TrendingUsersOperationTests: BaseRequestOperationTestCase {
     }
 
     func testResults() {
-        let operation = TrendingUsersOperation()
-        
         let userID = 20160118
         let user = User(userID: userID)
         
-        operation.onComplete([user]) {}
+        let operation = TrendingUsersOperation()
+        operation.persistentStore = testStore
+        
+        let expectation = expectationWithDescription("TrendingUsersOperationOnCopmlete")
 
-        guard let firstResult = operation.results?.first else {
-            XCTFail("first object in results should be an instance of HashtagSearchResultObject")
-            return
+        operation.onComplete([user]) {
+            expectation.fulfill()
         }
-        let sourceResult = firstResult.sourceResult
-        XCTAssertEqual(sourceResult.userID, userID)
+
+        waitForExpectationsWithTimeout(expectationThreshold) { error in
+            guard let firstResult = operation.results?.first else {
+                XCTFail("first object in results should be an instance of HashtagSearchResultObject")
+                return
+            }
+            
+            XCTAssertEqual(firstResult.remoteId.integerValue, userID)
+        }
     }
 }

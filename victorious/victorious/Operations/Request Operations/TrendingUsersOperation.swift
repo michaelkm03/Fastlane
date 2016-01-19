@@ -13,6 +13,7 @@ class TrendingUsersOperation: RequestOperation {
     
     let request = TrendingUsersRequest()
     private(set) var results: [VUser]?
+    private var resultObjectIDs = [NSManagedObjectID]()
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
@@ -21,20 +22,25 @@ class TrendingUsersOperation: RequestOperation {
     func onComplete( networkResult: TrendingUsersRequest.ResultType, completion: () -> () ) {
         self.results = []
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             for networkUser in networkResult {
-                let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID ])
+                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])
                 persistentUser.populate(fromSourceModel: networkUser)
-                context.v_save()
-                
-                let objectID = persistentUser.objectID
-                self.persistentStore.mainContext.v_performBlock() { context in
-                    if let user = context.objectWithID( objectID ) as? VUser {
-                        self.results?.append(user)
+                self.resultObjectIDs.append(persistentUser.objectID)
+            }
+            context.v_save()
+            
+            self.persistentStore.mainContext.v_performBlock() { context in
+                var mainQueueUsers = [VUser]()
+                for foundFriendObjectID in self.resultObjectIDs {
+                    let mainQueuePersistentUser: VUser? = context.objectWithID(foundFriendObjectID) as? VUser
+                    if let mainQueuePersistentUser = mainQueuePersistentUser {
+                        mainQueueUsers.append(mainQueuePersistentUser)
                     }
                 }
+                self.results = mainQueueUsers
+                completion()
             }
         }
-        completion()
     }
 }
