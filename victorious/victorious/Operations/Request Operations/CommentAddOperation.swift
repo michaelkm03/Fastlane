@@ -15,7 +15,7 @@ class CommentAddOperation: RequestOperation {
     
     private var creationParameters: Comment.CreationParameters
     
-    private var optimisticCommentObjectID: NSManagedObjectID?
+    private var optimisticObjectID: NSManagedObjectID?
     
     private init( request: CommentAddRequest, creationParameters: Comment.CreationParameters) {
         self.request = request
@@ -63,7 +63,7 @@ class CommentAddOperation: RequestOperation {
             
             context.v_save()
             dispatch_sync( dispatch_get_main_queue() ) {
-                self.optimisticCommentObjectID = comment.objectID
+                self.optimisticObjectID = comment.objectID
             }
             return true
         }
@@ -71,7 +71,7 @@ class CommentAddOperation: RequestOperation {
         guard commentCreationDidSucceed else {
             return
         }
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
             parameters: [
@@ -84,17 +84,15 @@ class CommentAddOperation: RequestOperation {
     private func onComplete( comment: CommentAddRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            defer {
-                completion()
-            }
             
-            guard let objectID = self.optimisticCommentObjectID,
-                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
+            guard let objectID = self.optimisticObjectID,
+                let optimisticObject = context.objectWithID( objectID ) as? VComment else {
+                    completion()
                     return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
-            optimisticComment.populate( fromSourceModel: comment )
+            optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
             completion()
         }

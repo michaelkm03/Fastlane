@@ -1,5 +1,5 @@
 //
-//  RequestBodyWriter.swift
+//  AccountUpdateRequestBodyWriter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/20/15.
@@ -8,50 +8,49 @@
 
 import Foundation
 
-/// Utility used for creating large HTTP request POST bodies in temporary files.
-/// This is particularly useful for large bodies, such as those that contain images or other media.
-class AccountUpdateRequestBody: NSObject {
+class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     struct Output {
         let fileURL: NSURL
         let contentType: String
     }
     
-    private var bodyTempFile: NSURL = {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }()
+    let parameters: AccountUpdateParameters
     
-    deinit {
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    init( parameters: AccountUpdateParameters ) {
+        self.parameters = parameters
     }
     
-    /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write( profileUpdate: ProfileUpdate?, passwordUpdate: PasswordUpdate?) throws -> Output {
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
+    deinit {
+        removeBodyTempFile()
+    }
+    
+    func write() throws -> Output {
+        
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         // Write params for a password update
-        if let passwordCurrent = passwordUpdate?.passwordCurrent,
-            let passwordNew = passwordUpdate?.passwordNew {
+        if let passwordCurrent = parameters.passwordUpdate?.passwordCurrent,
+            let passwordNew = parameters.passwordUpdate?.passwordNew {
                 try writer.appendPlaintext(passwordCurrent, withFieldName: "current_password")
                 try writer.appendPlaintext(passwordNew, withFieldName: "new_password")
         }
         
         // Write params for a profile update
-        if let email = profileUpdate?.email {
+        if let email = parameters.profileUpdate?.email {
             try writer.appendPlaintext(email, withFieldName: "email")
         }
-        if let name = profileUpdate?.name {
+        if let name = parameters.profileUpdate?.name {
             try writer.appendPlaintext(name, withFieldName: "name")
         }
-        if let location = profileUpdate?.location {
+        if let location = parameters.profileUpdate?.location {
             try writer.appendPlaintext(location, withFieldName: "profile_location")
         }
-        if let tagline = profileUpdate?.tagline {
+        if let tagline = parameters.profileUpdate?.tagline {
             try writer.appendPlaintext(tagline, withFieldName: "profile_tagline")
         }
         
-        if let profileImageURL = profileUpdate?.profileImageURL,
+        if let profileImageURL = parameters.profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,
             let mimeType = profileImageURL.vsdk_mimeType {
                 try writer.appendFileWithName("profile_image.\(pathExtension)",
@@ -63,6 +62,6 @@ class AccountUpdateRequestBody: NSObject {
         
         try writer.finishWriting()
         
-        return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
     }
 }

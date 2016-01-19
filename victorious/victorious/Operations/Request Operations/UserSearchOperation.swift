@@ -21,18 +21,20 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     internal(set) var didClearResults = false
     
     let request: UserSearchRequest
-    private let escapedQueryString: String
+    
+    private let searchTerm: String
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.searchTerm
+        self.searchTerm = request.searchTerm
     }
     
     convenience init?( searchTerm: String ) {
-        guard let request = UserSearchRequest(searchTerm: searchTerm) else {
+        if let request = UserSearchRequest(searchTerm: searchTerm) {
+            self.init(request: request)
+        } else {
             return nil
         }
-        self.init(request: request)
     }
     
     override func main() {

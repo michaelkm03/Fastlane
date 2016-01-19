@@ -10,22 +10,24 @@ import Foundation
 
 class MessageRequestBodyWriter: NSObject, RequestBodyWriterType {
     
-    struct RequestBody: RequestBodyType {
+    struct Output {
         let fileURL: NSURL
         let contentType: String
     }
     
-    private var bodyTempFile: NSURL = {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }()
+    let parameters:  Message.CreationParameters
     
-    deinit {
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    init( parameters: Message.CreationParameters ) {
+        self.parameters = parameters
     }
     
-    func write( parameters parameters: Message.CreationParameters ) throws -> RequestBody {
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
+    deinit {
+        removeBodyTempFile()
+    }
+    
+    func write() throws -> Output {
+        
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         try writer.appendPlaintext(parameters.text ?? "", withFieldName: "text")
         try writer.appendPlaintext(String(parameters.recipientID) ?? "", withFieldName: "to_user_id")
@@ -42,6 +44,7 @@ class MessageRequestBodyWriter: NSObject, RequestBodyWriterType {
         }
         
         try writer.finishWriting()
-        return RequestBody(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        
+        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
     }
 }

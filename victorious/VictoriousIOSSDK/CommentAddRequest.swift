@@ -11,26 +11,29 @@ import SwiftyJSON
 
 public struct CommentAddRequest: RequestType {
     
-    private let requestBodyWriter = CommentRequestBodyWriter()
-    private let requestBody: CommentRequestBodyWriter.RequestBody
+    private let requestBodyWriter: CommentRequestBodyWriter
+    private let requestBody: CommentRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/comment/add")!)
         request.HTTPMethod = "POST"
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
-        return request.copy() as! NSURLRequest
+        return request
     }
     
     public init?( parameters: Comment.CreationParameters ) {
         do {
-            self.requestBody = try requestBodyWriter.write(parameters: parameters)
+            requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
+            requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Comment {
+        requestBodyWriter.removeBodyTempFile()
+        
         guard let comment = Comment(json: responseJSON["payload"]) else {
             throw ResponseParsingError()
         }

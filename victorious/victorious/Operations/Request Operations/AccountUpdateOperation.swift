@@ -13,24 +13,20 @@ class AccountUpdateOperation: RequestOperation {
     
     private let storedPassword = VStoredPassword()
     
-    let request: AccountUpdateRequest
+    let request: AccountUpdateRequest!
     
-    required init( request: AccountUpdateRequest ) {
-        self.request = request
-    }
-    
-    convenience init?( passwordUpdate: PasswordUpdate ) {
-        if let request = AccountUpdateRequest(passwordUpdate: passwordUpdate) {
-            self.init(request: request)
-        } else {
+    init? (passwordUpdate: PasswordUpdate) {
+        self.request = AccountUpdateRequest(passwordUpdate: passwordUpdate)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }
     
-    convenience init?( profileUpdate: ProfileUpdate ) {
-        if let request = AccountUpdateRequest(profileUpdate: profileUpdate) {
-            self.init(request: request)
-        } else {
+    init? (profileUpdate: ProfileUpdate) {
+        self.request = AccountUpdateRequest(profileUpdate: profileUpdate)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }

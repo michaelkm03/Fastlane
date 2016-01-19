@@ -11,8 +11,8 @@ import SwiftyJSON
 
 public struct SendMessageRequest: RequestType {
     
-    private let requestBodyWriter = MessageRequestBodyWriter()
-    private let requestBody: MessageRequestBodyWriter.RequestBody
+    private let requestBodyWriter: MessageRequestBodyWriter
+    private let requestBody: MessageRequestBodyWriter.Output
     
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "/api/message/send")!)
@@ -24,7 +24,8 @@ public struct SendMessageRequest: RequestType {
     
     public init?( creationParameters: Message.CreationParameters ) {
         do {
-            self.requestBody = try requestBodyWriter.write(parameters: creationParameters)
+            requestBodyWriter = MessageRequestBodyWriter(parameters: creationParameters)
+            requestBody = try requestBodyWriter.write()
         } catch {
             return nil
         }

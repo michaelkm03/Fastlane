@@ -22,7 +22,11 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
     }
 
     func testBasicSearch() {
-        XCTAssertNotNil(operation)
+        guard let operation = UserSearchOperation(searchTerm: "test") else {
+            XCTFail("Operation initialization should not fail here")
+            return
+        }
+        operation.requestExecutor = testRequestExecutor
 
         queueExpectedOperation(operation: operation)
 
@@ -31,7 +35,13 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
         }
     }
 
-    func testReturnsResultsObjects() {    
+    func testReturnsResultsObjects() {
+        guard let operation = UserSearchOperation(searchTerm: "test") else {
+            XCTFail("Operation initialization should not fail here")
+            return
+        }
+        operation.requestExecutor = testRequestExecutor
+
         let user = User(userID: testUserID)
         operation.onComplete([user]) { }
         

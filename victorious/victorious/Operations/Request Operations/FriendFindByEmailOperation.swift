@@ -11,18 +11,15 @@ import VictoriousIOSSDK
 
 class FriendFindByEmailOperation: RequestOperation {
     
-    private var request: FriendFindByEmailRequest
-    
+    private var resultObjectIDs = [NSManagedObjectID]()
     private(set) var results: [AnyObject]?
     
-    init(request: FriendFindByEmailRequest) {
-        self.request = request
-    }
+    private var request: FriendFindByEmailRequest!
     
-    convenience init?(emails: [String]) {
-        if let request = FriendFindByEmailRequest(emails: emails) {
-            self.init(request: request)
-        } else {
+    init?(emails: [String]) {
+        self.request = FriendFindByEmailRequest(emails: emails)
+        super.init()
+        if self.request == nil {
             return nil
         }
     }

@@ -14,12 +14,6 @@ class CommentAddRequestBodyTests: XCTestCase {
     
     var requestBodyWriter: CommentRequestBodyWriter!
     
-    override func setUp() {
-        super.setUp()
-        
-        self.requestBodyWriter = CommentRequestBodyWriter()
-    }
-    
     func testTextOnly() {
         let parameters = Comment.CreationParameters(
             text: "test",
@@ -28,10 +22,15 @@ class CommentAddRequestBodyTests: XCTestCase {
             mediaAttachment: nil,
             realtimeAttachment: nil
         )
+        self.requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
         
-        let output = try! requestBodyWriter.write(parameters: parameters)
-        let data = String(data: NSData(contentsOfURL: output.fileURL )!, encoding: NSUTF8StringEncoding)!
-        XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"parent_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n1564\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
+        do {
+            let output = try requestBodyWriter.write()
+            let data = String(data: NSData(contentsOfURL: output.fileURL )!, encoding: NSUTF8StringEncoding)!
+            XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"parent_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n1564\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
+        } catch {
+            XCTFail( "Failed to write request body" )
+        }
     }
     
     func testRealtime() {
@@ -42,10 +41,15 @@ class CommentAddRequestBodyTests: XCTestCase {
             mediaAttachment: nil,
             realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
         )
+        self.requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
         
-        let output = try! requestBodyWriter.write(parameters: parameters)
-        let data = String(data: NSData(contentsOfURL: output.fileURL )!, encoding: NSUTF8StringEncoding)!
-        XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"asset_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n999\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"realtime\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n0.54\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
+        do {
+            let output = try requestBodyWriter.write()
+            let data = String(data: NSData(contentsOfURL: output.fileURL )!, encoding: NSUTF8StringEncoding)!
+            XCTAssertEqual( data, "\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"sequence_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n17100\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"text\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\ntest\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"asset_id\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n999\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF\r\nContent-Disposition: form-data; name=\"realtime\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n0.54\r\n--M9EzbDHvJfWcrApoq3eUJWs3UF--" )
+        } catch {
+            XCTFail( "Failed to write request body" )
+        }
     }
     
     func testMedia() {
@@ -66,10 +70,15 @@ class CommentAddRequestBodyTests: XCTestCase {
             ),
             realtimeAttachment: nil
         )
+        self.requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
         
-        let output = try! requestBodyWriter.write(parameters: parameters)
-        let data = NSData(contentsOfURL: output.fileURL )!
-        XCTAssertNotNil( data )
-        XCTAssertEqual( data.length, 83745 )
+        do {
+            let output = try requestBodyWriter.write()
+            let data = NSData(contentsOfURL: output.fileURL )!
+            XCTAssertNotNil( data )
+            XCTAssertEqual( data.length, 83745 )
+        } catch {
+            XCTFail( "Failed to write request body" )
+        }
     }
 }

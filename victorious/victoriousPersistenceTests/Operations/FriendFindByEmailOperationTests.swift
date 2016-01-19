@@ -11,35 +11,37 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class FriendFindByEmailOperationTests: BaseRequestOperationTestCase {
+    
     let testUserID: Int = 1
-    var operation: FriendFindByEmailOperation!
     let emails = ["h@h.hh", "mike@msena.com"]
-
-    override func setUp() {
-        super.setUp()
-
-        operation = FriendFindByEmailOperation(emails:emails)
-        operation.persistentStore = testStore
-        operation.requestExecutor = testRequestExecutor
-    }
     
     func testResults() {
+        guard let operation = FriendFindByEmailOperation(emails: emails) else {
+            XCTFail("Operation initialization should not fail here")
+            return
+        }
+        operation.persistentStore = testStore
+        operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
 
         let user = User(userID: self.testUserID)
-        self.operation.onComplete([user]) {
+        operation.onComplete([user]) {
             expectation.fulfill()
         }
         
         waitForExpectationsWithTimeout(expectationThreshold) { error in
-            
-            guard let results = self.operation.results,
+            guard let results = operation.results,
                 let firstResult = results.first as? VUser else {
                 XCTFail("We should have results here")
                 return
             }
             XCTAssertEqual(firstResult.remoteId.integerValue, self.testUserID)
         }
+    }
+
+    func testInitializationFail() {
+        let operation = FriendFindByEmailOperation(emails: [])
+        XCTAssertNil(operation)
     }
 }

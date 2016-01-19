@@ -10,22 +10,24 @@ import Foundation
 
 class CommentRequestBodyWriter: NSObject, RequestBodyWriterType {
     
-    struct RequestBody: RequestBodyType {
+    struct Output {
         let fileURL: NSURL
         let contentType: String
     }
     
-    private var bodyTempFile: NSURL = {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }()
+    let parameters:  Comment.CreationParameters
     
-    deinit {
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    init( parameters: Comment.CreationParameters ) {
+        self.parameters = parameters
     }
     
-    func write( parameters parameters: Comment.CreationParameters ) throws -> RequestBody {
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
+    deinit {
+        removeBodyTempFile()
+    }
+    
+    func write() throws -> Output {
+        
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         try writer.appendPlaintext(String(parameters.sequenceID), withFieldName: "sequence_id")
         
@@ -53,6 +55,7 @@ class CommentRequestBodyWriter: NSObject, RequestBodyWriterType {
         }
         
         try writer.finishWriting()
-        return RequestBody(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        
+        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
     }
 }
