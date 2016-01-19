@@ -393,6 +393,8 @@
 		67113D1A1B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
+		672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672033581C4DD8760015D91D /* TrendingUsersOperation.swift */; };
+		6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */; };
 		67204CFA1C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */; };
 		67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */; };
 		6722CB8F1C45AF4700452280 /* RequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6722CB8E1C45AF4700452280 /* RequestBodyWriter.swift */; };
@@ -2477,6 +2479,8 @@
 		67113D191B9A6EBB00E89F63 /* VExploreSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreSearchResultsViewController.m; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
+		672033581C4DD8760015D91D /* TrendingUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperation.swift; sourceTree = "<group>"; };
+		6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperationTests.swift; sourceTree = "<group>"; };
 		67204CF81C3EFC9300B30DFD /* GIFSearchDefaultResultsOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchDefaultResultsOperationTests.swift; sourceTree = "<group>"; };
 		67204CF91C3EFC9300B30DFD /* GIFSearchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperationTests.swift; sourceTree = "<group>"; };
 		6722CB8E1C45AF4700452280 /* RequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBodyWriter.swift; sourceTree = "<group>"; };
@@ -7198,6 +7202,7 @@
 				A73D16BC1C24F99700497F83 /* SuggestedUsersOperation.swift */,
 				A73D16BE1C24FA0700497F83 /* TermsOfServiceOperation.swift */,
 				67A3C9F01C4D99240068E4F5 /* TrendingHashtagOperation.swift */,
+				672033581C4DD8760015D91D /* TrendingUsersOperation.swift */,
 				A7E2918E1C3B462D00B84127 /* UnfollowHashtagOperation.swift */,
 				A7E2918A1C3B403C00B84127 /* UnfollowUserOperation.swift */,
 				A76AEADD1C038E0000E8A26F /* UnlikeSequenceOperation.swift */,
@@ -7306,6 +7311,7 @@
 				6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */,
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
 				67A3C9F21C4D99470068E4F5 /* TrendingHashtagOperationTests.swift */,
+				6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */,
 				625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */,
 				7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */,
 				678AC1721C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift */,
@@ -10736,6 +10742,7 @@
 				6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */,
 				67CC29DE1C49951800C31FC4 /* TestUploadManager.swift in Sources */,
 				A7B0A63A1C347A01008B875C /* CoreDataPathHelper.swift in Sources */,
+				6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */,
 				67AB78211C40823800BA00FE /* MockRequests.swift in Sources */,
 				674B66F01C3F0A1C00938EB5 /* PasswordResetOperationTests.swift in Sources */,
 				67A904A91C404D1A0016CC6B /* MainRequestExecutorTests.swift in Sources */,
@@ -11462,6 +11469,7 @@
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A7078CD81BFA7D2B008FB7FF /* FTUEVideoOperation.swift in Sources */,
 				A7EBF5691C2F3BF40080C7CF /* VUser+FollowedHashtags.swift in Sources */,
+				672033591C4DD8760015D91D /* TrendingUsersOperation.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				A76712191C209E11006568DF /* VEditCommentViewController.swift in Sources */,
