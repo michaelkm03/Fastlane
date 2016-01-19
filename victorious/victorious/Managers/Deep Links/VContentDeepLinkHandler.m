@@ -12,6 +12,8 @@
 #import "VTabScaffoldViewController.h"
 #import "victorious-Swift.h"
 
+#define DEEP_LINK_TO_COMMENT_ENABLED 0
+
 @import MBProgressHUD;
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
@@ -71,13 +73,15 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
     
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    
     NSNumber *commentId = nil;
+    
+#if DEEP_LINK_TO_COMMENT_ENABLED
     NSString *commentIDString = [url v_pathComponentAtIndex:2];
     if ( commentIDString != nil )
     {
         commentId = @([commentIDString integerValue]);
     }
+#endif
     
     NSString *streamId = [url v_pathComponentAtIndex:3];
     
