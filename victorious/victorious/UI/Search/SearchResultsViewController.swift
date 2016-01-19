@@ -13,7 +13,7 @@ protocol PaginatedDataSourceType: class {
     var currentOperation: RequestOperation? { get }
     var isLoading: Bool { get }
     var visibleItems: NSOrderedSet { get }
-    var delegate: PaginatedDataSourceDelegate? { set get }
+    weak var delegate: PaginatedDataSourceDelegate? { set get }
     
     func cancelCurrentOperation()
     func unload()
@@ -57,7 +57,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         }
     }
     
-    var dataSource: SearchDataSourceType! {
+    var dataSource: SearchDataSourceType? {
         didSet {
             onDidSetDataSource()
         }
@@ -80,17 +80,17 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     // MARK: - Public
     
     func clear() {
-        dataSource.unload()
+        dataSource?.unload()
         state = .Cleared
     }
     
     func cancel() {
-        dataSource.cancelCurrentOperation()
+        dataSource?.cancelCurrentOperation()
         updateSearchState()
     }
     
     func search( searchTerm searchTerm: String ) {
-        dataSource.search(searchTerm: searchTerm, pageType: .First) { error in
+        dataSource?.search(searchTerm: searchTerm, pageType: .First) { error in
             self.updateSearchState()
         }
         state = .Loading
@@ -106,7 +106,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         super.viewDidLoad()
         
         searchController.searchBar.delegate = self
-        dataSource.delegate = self
+        dataSource?.delegate = self
         tableView.separatorStyle = .None
         
         onDidSetDataSource()
@@ -126,8 +126,9 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     // MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let searchResult = dataSource.visibleItems[ indexPath.row ]
-        searchResultsDelegate?.searchResultsViewControllerDidSelectResult(searchResult)
+        if let searchResult = dataSource?.visibleItems[ indexPath.row ] {
+            searchResultsDelegate?.searchResultsViewControllerDidSelectResult(searchResult)
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -144,7 +145,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        dataSource.cancelCurrentOperation()
+        dataSource?.cancelCurrentOperation()
         searchResultsDelegate?.searchResultsViewControllerDidSelectCancel()
     }
     
@@ -163,8 +164,9 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
-        if let searchTerm = dataSource.searchTerm where !dataSource.isLoading {
-            self.dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
+        if let dataSource = dataSource,
+            let searchTerm = dataSource.searchTerm where dataSource.isLoading == false {
+                dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
         }
     }
     
@@ -185,11 +187,11 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         guard isViewLoaded() else {
             return
         }
-        dataSource.delegate = self
+        dataSource?.delegate = self
         tableView.dataSource = dataSource
         tableView.delegate = self
         
-        dataSource.registerCells( forTableView: tableView )
+        dataSource?.registerCells( forTableView: tableView )
     }
     
     private func setupNoContentView() {
@@ -200,6 +202,10 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     }
     
     private func updateSearchState() {
+        guard let dataSource = dataSource else {
+            return
+        }
+        
         if dataSource.error != nil {
             state = .Error
             
@@ -224,7 +230,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
             noContentView?.hidden = true
             tableView.hidden = true
             
-        case .Cleared, .Loading where dataSource.visibleItems.count == 0:
+        case .Cleared, .Loading where dataSource?.visibleItems.count == 0:
             noContentView?.hidden = true
             tableView.hidden = false
             
