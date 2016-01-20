@@ -108,16 +108,16 @@ static const CGFloat kInviteCellHeight = 50.0f;
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
     long long userId = self.profile.remoteId.longLongValue;
-    NSString *screenName = @"";
+    NSString *sourceScreenName = nil;
     
     RequestOperation *operation;
     if ( self.profile.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
     [operation queueOn:operation.defaultQueue completionBlock:nil];

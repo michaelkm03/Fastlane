@@ -177,6 +177,8 @@
     [self.usersDataSource loadUsersWithPageType:VPageTypeNext completion:nil];
 }
 
+#pragma mark - source screen logic
+
 - (NSString *)sourceScreenName
 {
     NSDictionary *dict = @{

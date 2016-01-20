@@ -26,16 +26,4 @@ class SequenceCommentsDataSource : PaginatedDataSource {
             }
         )
     }
-    
-    func loadComments( atPageForCommentID commentID: NSNumber, completion:((NSError?)->())? = nil ) {
-        // TODO:
-        /*self.loadPage( pageType,
-            createOperation: {
-                return CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.integerValue )
-            },
-            completion: { (operation, error) in
-                completion?(error)
-            }
-        )*/
-    }
 }
