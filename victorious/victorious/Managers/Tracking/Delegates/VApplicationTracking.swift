@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-public extension VApplicationTracking {
+extension VApplicationTracking {
     
-    public func request( url url: NSURL ) -> NSURLRequest? {
+    func request( url url: NSURL ) -> NSURLRequest? {
         let mutableRequest = NSMutableURLRequest(URL: url)
         mutableRequest.HTTPBody = nil
         mutableRequest.HTTPMethod = "GET"
