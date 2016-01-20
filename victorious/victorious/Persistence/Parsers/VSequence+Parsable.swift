@@ -40,11 +40,11 @@ extension VSequence: PersistenceParsable {
         }
 
         if let adBreaks = sequence.adBreaks {
-            for adBreak in adBreaks {
+            self.adBreaks = NSOrderedSet(array: adBreaks.flatMap {
                 let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
-                persistentAdBreak.populate(fromSourceModel: adBreak)
-                self.addAdBreaksObject(persistentAdBreak)
-            }
+                persistentAdBreak.populate(fromSourceModel: $0)
+                return persistentAdBreak
+            })
         }
         self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sequence.user.userID ] ) as VUser
 
