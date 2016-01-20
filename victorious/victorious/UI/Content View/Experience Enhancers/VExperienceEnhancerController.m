@@ -19,6 +19,8 @@
 
 @interface VExperienceEnhancerController ()
 
+@property (nonatomic, strong) dispatch_queue_t privateQueue;
+
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
@@ -29,6 +31,8 @@
 @end
 
 @implementation VExperienceEnhancerController
+
+@synthesize experienceEnhancers = _experienceEnhancers;
 
 #pragma mark - Initialization
 
@@ -69,32 +73,42 @@
 
 - (void)setup
 {
-    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    NSArray *voteTypes = [self.dependencyManager voteTypes];
+    self.privateQueue = dispatch_queue_create("com.victorious.VExperienceEnhancerController.privateQueue", DISPATCH_QUEUE_SERIAL);
     
-    NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
-    experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
-    self.experienceEnhancers = experienceEnhancers;
-    [self.enhancerBar reloadData];
-    [self.delegate experienceEnhancersDidUpdate];
-    
-    // Pre-load any purchaseable products that might not have already been cached
-    // This is also called from VSettingsManager during app initialization, so ideally
-    // most of the purchaseable products are already fetched from the App Store.
-    // If not, we'll cache them now.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(purchaseManagedDidUpdate:)
-                                                 name:VPurchaseManagerProductsDidUpdateNotification
-                                               object:nil];
-    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-    
-    self.purchaseManager = [VPurchaseManager sharedInstance];
-    if ( !self.purchaseManager.isPurchaseRequestActive )
+    dispatch_async(self.privateQueue, ^
     {
-        [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-    }
-    
-    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+        // Using ivars here since the getters for these block on privateQueue
+        _sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
+        NSArray *voteTypes = [self.dependencyManager voteTypes];
+        
+        NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes
+                                                                           sequence:_sequence];
+        _experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
+
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.enhancerBar reloadData];
+            [self.delegate experienceEnhancersDidUpdate];
+            
+            // Pre-load any purchaseable products that might not have already been cached
+            // This is also called from VSettingsManager during app initialization, so ideally
+            // most of the purchaseable products are already fetched from the App Store.
+            // If not, we'll cache them now.
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(purchaseManagedDidUpdate:)
+                                                         name:VPurchaseManagerProductsDidUpdateNotification
+                                                       object:nil];
+            NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+            
+            self.purchaseManager = [VPurchaseManager sharedInstance];
+            if ( !self.purchaseManager.isPurchaseRequestActive )
+            {
+                [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+            }
+
+            self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+        });
+    });
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
@@ -216,6 +230,38 @@
 }
 
 #pragma mark - Property Accessors
+
+- (VSequence *)sequence
+{
+    __block VSequence *sequence = nil;
+    
+    dispatch_sync(self.privateQueue, ^
+    {
+        sequence = _sequence;
+    });
+    
+    return sequence;
+}
+
+- (void)setExperienceEnhancers:(NSArray *)experienceEnhancers
+{
+    dispatch_sync(self.privateQueue, ^
+    {
+        _experienceEnhancers = experienceEnhancers;
+    });
+}
+
+- (NSArray *)experienceEnhancers
+{
+    __block NSArray *enhancers = nil;
+    
+    dispatch_sync(self.privateQueue, ^
+    {
+        enhancers = _experienceEnhancers;
+    });
+    
+    return enhancers;
+}
 
 - (void)setEnhancerBar:(VExperienceEnhancerBar *)enhancerBar
 {

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-public extension VContentViewViewModel {
+extension VContentViewViewModel {
     
     func loadNetworkData() {
         
@@ -19,36 +19,24 @@ public extension VContentViewViewModel {
             }
         }
         
-        if let _ = self.deepLinkCommentId {
-            /*self.loadComments( atPageForCommentID: deepLinkCommentId,
-                completion: { (pageNumber, error) in
-                    guard let pageNumber = pageNumber else {
-                        return
-                    }
-                    
-                    self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
-                    self.commentsDataSource.loadPage( .First, createOperation: {
-                        return SequenceCommentsOperation(sequenceID: self.sequence.remoteId, pageNumber: pageNumber)
-                    })
+        // TODO: Check if `self.deepLinkCommentId` is defined and if so,
+        // implement deep link to comment using endpoint /api/comment/find/{comment_id}.
+
+        let operation = SequenceFetchOperation( sequenceID: self.sequence.remoteId )
+        operation.queue() { error in
+            // Update the vote/EBs thrown counts
+            self.experienceEnhancerController.updateData()
+
+            // Sets up the monetization chain
+            if let fetchedSequence = operation.result {
+                if (fetchedSequence.adBreaks?.count ?? 0) > 0 {
+                    self.setupAdChain()
                 }
-            )*/
-            
-        } else {
-            let operation = SequenceFetchOperation( sequenceID: self.sequence.remoteId )
-            operation.queue() { error in
-                // Update the vote/EBs thrown counts
-                self.experienceEnhancerController.updateData()
-                
-                // Sets up the monetization chain
-                if let fetchedSequence = operation.result {
-                    if (fetchedSequence.adBreaks?.count ?? 0) > 0 {
-                        self.setupAdChain()
-                    }
-                }
-                self.delegate?.didUpdateSequence()
             }
-            self.loadComments(.First)
+            self.delegate?.didUpdateSequence()
         }
+
+        self.loadComments(.First)
         
         if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
             SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in

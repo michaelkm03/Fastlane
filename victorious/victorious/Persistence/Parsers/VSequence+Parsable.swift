@@ -40,9 +40,9 @@ extension VSequence: PersistenceParsable {
         }
 
         if let adBreaks = sequence.adBreaks {
-            self.adBreaks = NSOrderedSet(array: adBreaks.flatMap {
+            self.adBreaks = NSOrderedSet(array: adBreaks.flatMap {_ in
                 let persistentAdBreak = v_managedObjectContext.v_createObject() as VAdBreak
-                persistentAdBreak.populate(fromSourceModel: $0)
+//                persistentAdBreak.populate(fromSourceModel: $0)
                 return persistentAdBreak
             })
         }

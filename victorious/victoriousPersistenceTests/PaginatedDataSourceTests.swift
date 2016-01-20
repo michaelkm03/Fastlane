@@ -141,7 +141,7 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
                         self.paginatedDataSourceUpdateCount++
                         XCTAssertEqual( self.paginatedDataSource.visibleItems.count, 0 )
                     }
-                    self.paginatedDataSource.unload()
+                    self.paginatedDataSource.clearVisibleItems()
                     XCTAssertEqual( self.paginatedDataSourceUpdateCount, 1 )
                     
                 } else {

@@ -14,7 +14,7 @@ let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdent
 
 let kManagedObjectContextUserInfoCurrentUserKey = "com.victorious.Persstence.CurrentUser"
 
-public class VCurrentUser: NSObject {
+class VCurrentUser: NSObject {
     
     static var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -57,7 +57,7 @@ public class VCurrentUser: NSObject {
     }
 }
 
-public extension VUser {
+extension VUser {
     
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as their can be only one.

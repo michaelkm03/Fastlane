@@ -8,10 +8,10 @@
 
 import UIKit
 
-public extension UICollectionView {
+extension UICollectionView {
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
+    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
         
         guard newValue.count == 0 || oldValue.count == 0 else {
             self.reloadSections( NSIndexSet(index: section) )
@@ -39,10 +39,10 @@ public extension UICollectionView {
     }
 }
 
-public extension UITableView {
+extension UITableView {
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
+    func v_applyChangeInSection(section: NSInteger, from oldValue:NSOrderedSet, to newValue: NSOrderedSet ) {
         
         guard newValue.count == 0 || oldValue.count == 0 else {
             self.reloadSections( NSIndexSet(index: section), withRowAnimation: .Automatic)
