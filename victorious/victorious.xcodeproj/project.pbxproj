@@ -375,7 +375,6 @@
 		6236F8811C36057000746476 /* MainPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61D1C347A01008B875C /* MainPersistentStoreTests.swift */; };
 		6236FF2E1C45DE5D006F4F23 /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */; };
 		6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */; };
-		6238A59A1C501AAD002143CE /* VAdBreak+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6238A5991C501AAD002143CE /* VAdBreak+Parsable.swift */; };
 		624675361C3DC8DE002B92A5 /* FollowUserOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F86F1C36016D00746476 /* FollowUserOperationTests.swift */; };
 		625459DF1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */; };
 		626930481C49B84B00A1A664 /* AdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626930471C49B84B00A1A664 /* AdManager.swift */; };
@@ -2446,7 +2445,6 @@
 		6236F8781C36037200746476 /* SuggestedUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersOperationTests.swift; sourceTree = "<group>"; };
 		6236FF2D1C45DE5D006F4F23 /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
 		6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundleTests.swift"; sourceTree = "<group>"; };
-		6238A5991C501AAD002143CE /* VAdBreak+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VAdBreak+Parsable.swift"; sourceTree = "<group>"; };
 		623989831C3607F200D0E4D0 /* RequestOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperationTests.swift; sourceTree = "<group>"; };
 		625459DE1C457CB400F4AC41 /* BatchFollowUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchFollowUsersOperationTests.swift; sourceTree = "<group>"; };
 		625D6E721C385C4D00DB5F1F /* UnfollowUserOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowUserOperationTests.swift; sourceTree = "<group>"; };
@@ -7389,7 +7387,6 @@
 			children = (
 				A7F843651BFD44DB004C3D55 /* Conversation+Parsable.swift */,
 				A7F2D0BE1BF19E2B00490D7B /* PersistenceParsable.swift */,
-				6238A5991C501AAD002143CE /* VAdBreak+Parsable.swift */,
 				A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */,
 				A76712231C21E57E006568DF /* VAsset+Parsable.swift */,
 				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
@@ -11535,7 +11532,6 @@
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
-				6238A59A1C501AAD002143CE /* VAdBreak+Parsable.swift in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
