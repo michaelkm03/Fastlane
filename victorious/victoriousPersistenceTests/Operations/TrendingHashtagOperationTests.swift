@@ -30,6 +30,8 @@ class TrendingHashtagOperationTests: BaseRequestOperationTestCase {
         let hashtag = Hashtag(tag: tagString)
         
         operation.onComplete([hashtag]) { }
+        
+        XCTAssertEqual(operation.results?.count, 1)
 
         guard let firstResult = operation.results?.first else {
             XCTFail("first object in results should be an instance of HashtagSearchResultObject")

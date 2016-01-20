@@ -37,6 +37,8 @@ class TrendingUsersOperationTests: BaseRequestOperationTestCase {
         }
 
         waitForExpectationsWithTimeout(expectationThreshold) { error in
+            XCTAssertEqual(operation.results?.count, 1)
+            
             guard let firstResult = operation.results?.first else {
                 XCTFail("first object in results should be an instance of HashtagSearchResultObject")
                 return

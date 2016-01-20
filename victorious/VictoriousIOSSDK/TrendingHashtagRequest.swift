@@ -14,9 +14,7 @@ public struct TrendingHashtagRequest: RequestType {
     public init() {}
     
     public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/discover/hashtags")!
-        let request = NSURLRequest(URL: url)
-        return request
+        return NSURLRequest(URL:NSURL(string: "/api/discover/hashtags")!)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
