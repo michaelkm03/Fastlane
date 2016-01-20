@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AnonymousAccountUserID</key>
+	<string>-1</string>
+	<key>AnonymousAccountUserToken</key>
+	<string>n39iPtAaRNXrOMF7SGL62t51NQs2os5220LkGL7cWcBmjnah8M</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -34,6 +38,8 @@
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>Victorious-dev</string>
+	<key>IsAgeGateEnabled</key>
+	<string>no</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -155,11 +161,5 @@
 	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
-	<key>IsAgeGateEnabled</key>
-	<string>NO</string>
-	<key>AnonymousAccountUserID</key>
-	<string>-1</string>
-	<key>AnonymousAccountUserToken</key>
-	<string>n39iPtAaRNXrOMF7SGL62t51NQs2os5220LkGL7cWcBmjnah8M</string>
 </dict>
 </plist>
