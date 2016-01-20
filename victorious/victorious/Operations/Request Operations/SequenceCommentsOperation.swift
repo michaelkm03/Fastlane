@@ -43,7 +43,7 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
             
             let sequence: VSequence = context.v_findOrCreateObject( [ "remoteId" : self.sequenceID ] )
-            var displayOrder = self.request.paginator.start
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             
             var newComments = [VComment]()
             for comment in unflaggedResults {
@@ -78,12 +78,38 @@ final class SequenceCommentsOperation: RequestOperation, PaginatedOperation {
             let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
             let predicate = NSPredicate(
-                vsdk_format: "sequenceId == %@",
+                vsdk_format: "sequence.remoteId == %@",
                 vsdk_argumentArray: [self.sequenceID],
                 vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
             return context.v_executeFetchRequest( fetchRequest )
+        }
+    }
+}
+
+class FetchCommentsOperation: FetcherOperation {
+    
+    let sequenceID: String
+    let paginator: NumericPaginator
+    
+    init( sequenceID: String, paginator: NumericPaginator = StandardPaginator() ) {
+        self.sequenceID = sequenceID
+        self.paginator = paginator
+    }
+    
+    override func main() {
+        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VComment.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                vsdk_format: "sequence.remoteId == %@",
+                vsdk_argumentArray: [self.sequenceID],
+                vsdk_paginator: self.paginator
+            )
+            fetchRequest.predicate = predicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VComment]
+            return results
         }
     }
 }

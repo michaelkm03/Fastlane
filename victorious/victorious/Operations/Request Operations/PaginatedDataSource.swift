@@ -25,6 +25,8 @@ import VictoriousIOSSDK
     // Keeps a reference without retaining; avoids needing [weak self] when queueing
     private(set) weak var currentOperation: NSOperation?
     
+    private(set) var hasReachedLastPage: Bool = false
+    
     private(set) var state: DataSourceState = .Cleared {
         didSet {
             if oldValue != state {
@@ -33,6 +35,7 @@ import VictoriousIOSSDK
         }
     }
     
+    // Tracks page numbers already loaded to prevent re-loading pages unecessarily
     private var pagesLoaded = Set<Int>()
     
     func isLoading() -> Bool {
@@ -63,6 +66,8 @@ import VictoriousIOSSDK
         self.state = self.visibleItems.count == 0 ? .NoResults : .Results
     }
     
+    // Reloads the first page into `visibleItems` using a descendent of `FetcherOperation`, which
+    // operations locally on the persistent store only and does not send a network request.
     func refreshLocal( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]) -> Void)? = nil ) {
         let operation: FetcherOperation = createOperation()
         operation.queue() { results in
@@ -72,6 +77,9 @@ import VictoriousIOSSDK
         }
     }
     
+    
+    // Reloads the first page into `visibleItems` using a descendent of `PaginatedOperation`, which
+    // operates by sending a network request to retreive results, then parses them into the persistent store.
     func refreshRemote<T: PaginatedOperation>( @noescape createOperation createOperation: () -> T, completion: (([AnyObject], NSError?) -> Void)? = nil ) {
         
         guard self.currentOperation != nil else {
@@ -100,7 +108,7 @@ import VictoriousIOSSDK
     
     func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType, @noescape createOperation: () -> T, completion: ((operation: T?, error: NSError?) -> Void)? = nil ) {
         
-        guard !isLoading() else {
+        guard !isLoading() || (self.hasReachedLastPage && pageType == .Next) else {
             return
         }
         
@@ -121,14 +129,21 @@ import VictoriousIOSSDK
         
         // Return early if there is no operation to queue, i.e. no work to do
         guard let requestOperation = operationToQueue as? RequestOperation,
-            var operation = operationToQueue where !pagesLoaded.contains(operation.request.paginator.pageNumber) else {
+            var operation = operationToQueue else {
+                self.hasReachedLastPage = true
                 return
+        }
+        
+        // Return early if we've already loaded this page
+        guard !pagesLoaded.contains(operation.request.paginator.pageNumber) else {
+            return
         }
         
         // Add the page from `pagesLoaded` so it won't be loaded again
         pagesLoaded.insert(operation.request.paginator.pageNumber)
         
         self.state = .Loading
+        self.hasReachedLastPage = false
         requestOperation.queue() { error in
             
             // Fetch local results if we failed because of no network
@@ -160,6 +175,7 @@ private extension NSOrderedSet {
         guard !objects.isEmpty else {
             return self.copy() as! NSOrderedSet
         }
+        
         switch pageType {
             
         case .First: //< reset

@@ -31,7 +31,7 @@ final class UsersFollowingUserOperation: RequestOperation, PaginatedOperation {
     private func onComplete( results: SequenceLikersRequest.ResultType, completion:()->() ) {
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.request.paginator.start
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             
             let objectUser: VUser = context.v_findOrCreateObject([ "remoteId" : self.userID ])
             for user in results {

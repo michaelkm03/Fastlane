@@ -47,10 +47,6 @@ extension VConversationListViewController: PaginatedDataSourceDelegate {
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
         self.updateTableView()
-        
-        if let activityCell = self.tableView.visibleCells.flatMap({ $0 as? ActivityFooterTableCell }).first {
-            self.dataSource.decorateActivityCell( activityCell )
-        }
     }
     
     func updateTableView() {

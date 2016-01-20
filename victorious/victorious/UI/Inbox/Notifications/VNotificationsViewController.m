@@ -105,7 +105,10 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     self.noContentView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
     
-    [self refresh];
+    // This will remove extra separators from tableview
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
+    
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -114,6 +117,11 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
+    
+    // Reload first page from network (some network latency)
+    [self refresh];
+    
+    [self updateTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -38,6 +38,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, strong) VConversation *queuedConversation;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, assign) BOOL hasViewAppeared;
 
 @end
 
@@ -111,6 +112,9 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     
+    // This will remove extra separators from tableview
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
+    
     [self.refreshControl beginRefreshing];
 }
 
@@ -125,11 +129,15 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
+    if ( self.hasViewAppeared )
+    {
+        // Reload local results for any changes (virtually immediate)
+        [self.dataSource refreshLocal];
+    }
+    self.hasViewAppeared = YES;
+    
     // Reload first page from network (some network latency)
     [self refresh];
-    
-    // Reload local results for any changes (virtually immediate)
-    [self.tableView reloadData];
     
     [self updateTableView];
 }

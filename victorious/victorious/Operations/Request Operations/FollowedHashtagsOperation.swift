@@ -34,7 +34,7 @@ final class FollowedHashtagsOperation: RequestOperation, PaginatedOperation {
                 return
             }
             
-            var displayOrder = self.request.paginator.start
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             
             for hashtag in hashtags {
                 let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : hashtag.tag ] )

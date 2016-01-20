@@ -43,7 +43,7 @@ extension JSON {
     var v_boolFromAnyValue: Bool? {
         if let integer = self.int {
             return Bool(integer)
-        }else if let string = self.string {
+        } else if let string = self.string {
             return Bool(string)
         } else {
             return self.bool

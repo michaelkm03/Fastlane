@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15C50" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10118.6" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -57,7 +57,7 @@
     <entity name="Comment" representedClassName="VComment" syncable="YES">
         <attribute name="assetOrientation" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="displayOrder" attributeType="Integer 64" defaultValueString="-1" indexed="YES" syncable="YES"/>
+        <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -67,7 +67,7 @@
         <attribute name="parentId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <attribute name="sequenceId" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>

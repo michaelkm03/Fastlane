@@ -32,15 +32,29 @@ class MessageRequestBodyWriter: NSObject, RequestBodyWriterType {
         try writer.appendPlaintext(parameters.text ?? "", withFieldName: "text")
         try writer.appendPlaintext(String(parameters.recipientID) ?? "", withFieldName: "to_user_id")
         
-        if let mediaAttachment = parameters.mediaAttachment, let mimeType = mediaAttachment.url.vsdk_mimeType {
-            if mediaAttachment.type == .GIF {
-                try writer.appendPlaintext("true", withFieldName: "is_gif_style")
-            }
-            try writer.appendFileWithName("message_media.\(mediaAttachment.url.pathExtension)",
-                contentType: mimeType,
-                fileURL: mediaAttachment.url,
-                fieldName: "media_data"
-            )
+        if let mediaAttachment = parameters.mediaAttachment,
+            let pathExtension = mediaAttachment.url.pathExtension,
+            let mimeType = mediaAttachment.url.vsdk_mimeType {
+                
+                let isGIFStyleValue = mediaAttachment.type == .GIF ? "true" : "false"
+                try writer.appendPlaintext(isGIFStyleValue, withFieldName: "is_gif_style")
+                
+                let mediaTypeValue: String
+                switch mediaAttachment.type {
+                case .Video, .GIF:
+                    mediaTypeValue = MediaAttachmentType.Video.rawValue
+                case .Image:
+                    mediaTypeValue = MediaAttachmentType.Image.rawValue
+                default:
+                    mediaTypeValue = ""
+                }
+                try writer.appendPlaintext(mediaTypeValue, withFieldName: "media_type")
+                
+                try writer.appendFileWithName("media_data.\(pathExtension)",
+                    contentType: mimeType,
+                    fileURL: mediaAttachment.url,
+                    fieldName: "media_data"
+                )
         }
         
         try writer.finishWriting()

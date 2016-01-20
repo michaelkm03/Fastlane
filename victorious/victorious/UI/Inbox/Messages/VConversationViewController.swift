@@ -24,14 +24,6 @@ extension VConversationViewController {
     
     // MARK: - Public
     
-    func refreshLocal() {
-        self.dataSource.refreshLocal() { results in
-            if self.isShowingLastPage {
-                self.scrollToBottomAnimated( self.viewHasAppeared )
-            }
-        }
-    }
-    
     func updateTableView() {
 
         let isAlreadyShowingNoContent = tableView.backgroundView == self.noContentView
@@ -53,6 +45,10 @@ extension VConversationViewController {
         }
     }
     
+    func onConversationFlagged() {
+        self.endLiveUpdates()
+    }
+    
     // MARK: - Managing scroll position
     
     func maintainVisualScrollFromOffset(offset: CGPoint, contentSize: CGSize) {
@@ -69,18 +65,18 @@ extension VConversationViewController {
     }
     
     var isShowingLastPage: Bool {
-        let contentSize         = self.tableView.contentSize
-        let bounds              = self.tableView.bounds
+        let contentSize = self.tableView.contentSize
+        let bounds = self.tableView.bounds
         
         guard contentSize.height > bounds.height else {
             return false
         }
         
-        let contentOffset       = self.tableView.contentOffset
-        let approxPageCount     = floor( contentSize.height / bounds.height )
-        let lastPage            = approxPageCount - 1
-        let locationRatio       = contentOffset.y / contentSize.height
-        let approxCurrentPage   = floor( locationRatio * approxPageCount )
+        let contentOffset = self.tableView.contentOffset
+        let approxPageCount = floor( contentSize.height / bounds.height )
+        let lastPage = approxPageCount - 1
+        let locationRatio = contentOffset.y / contentSize.height
+        let approxCurrentPage = floor( locationRatio * approxPageCount )
         return approxCurrentPage >= lastPage
     }
     

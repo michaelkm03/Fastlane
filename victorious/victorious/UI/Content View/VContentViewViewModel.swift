@@ -33,7 +33,7 @@ public extension VContentViewViewModel {
             self.delegate?.didUpdateSequence()
         }
         
-        self.loadComments(.First)
+        self.commentsDataSource.loadComments(.First)
         
         if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {
             SequenceUserInterationsOperation(sequenceID: self.sequence.remoteId, userID: currentUserID ).queue() { error in
@@ -53,7 +53,7 @@ public extension VContentViewViewModel {
         }
     }
     
-    func addComment( text text: String, publishParameters: VPublishParameters, currentTime: NSNumber? ) {
+    func addComment( text text: String, publishParameters: VPublishParameters?, currentTime: NSNumber? ) {
         guard let sequence = self.sequence else {
             return
         }
@@ -66,7 +66,12 @@ public extension VContentViewViewModel {
             realtimeAttachment = nil
         }
         
-        let mediaAttachment = MediaAttachment(publishParameters: publishParameters)
+        let mediaAttachment: MediaAttachment?
+        if let publishParameters = publishParameters {
+            mediaAttachment = MediaAttachment(publishParameters: publishParameters)
+        } else {
+            mediaAttachment = nil
+        }
         
         let creationParameters = Comment.CreationParameters(
             text: text,
@@ -76,7 +81,7 @@ public extension VContentViewViewModel {
             realtimeAttachment: realtimeAttachment
         )
         
-        CommentAddOperation(creationParameters: creationParameters)?.queue()
+        CreateCommentOperation(creationParameters: creationParameters).queue()
     }
     
     func answerPoll( pollAnswer: VPollAnswer, completion:((NSError?)->())? ) {
@@ -86,42 +91,6 @@ public extension VContentViewViewModel {
                 let params = [ VTrackingKeyIndex : pollAnswer == .B ? 1 : 0 ]
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectPollAnswer, parameters: params)
             }
-        }
-    }
-    
-    // MARK: - CommentsDataSource
-    
-    func loadComments( pageType: VPageType, completion:(NSError?->())? = nil ) {
-        self.commentsDataSource.loadPage( pageType,
-            createOperation: {
-                return SequenceCommentsOperation(sequenceID: self.sequence.remoteId)
-            },
-            completion: { (operation, error) in
-                completion?(error)
-            }
-        )
-    }
-    
-    func loadComments( atPageForCommentID commentID: NSNumber, completion:((Int?, NSError?)->())?) {
-        let operation = CommentFindOperation(sequenceID: self.sequence.remoteId, commentID: commentID.integerValue )
-        operation.queue() { error in
-            if error == nil, let pageNumber = operation.pageNumber {
-                completion?(pageNumber, nil)
-            } else {
-                completion?(nil, error)
-            }
-        }
-    }
-    
-    func flagSequence( completion completion: ((NSError?)->())? = nil ) {
-        FlagSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
-            completion?( error )
-        }
-    }
-    
-    func deleteSequence( completion completion: ((NSError?)->())? = nil ) {
-        DeleteSequenceOperation(sequenceID: self.sequence.remoteId).queue() { error in
-            completion?( error )
         }
     }
 }

@@ -22,9 +22,9 @@ public struct CommentAddRequest: RequestType {
         return request
     }
     
-    public init?( parameters: Comment.CreationParameters ) {
+    public init?( creationParameters: Comment.CreationParameters ) {
         do {
-            requestBodyWriter = CommentRequestBodyWriter(parameters: parameters)
+            requestBodyWriter = CommentRequestBodyWriter(parameters: creationParameters)
             requestBody = try requestBodyWriter.write()
         } catch {
             return nil

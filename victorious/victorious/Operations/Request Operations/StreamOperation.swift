@@ -38,7 +38,7 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
             persistentStream.populate(fromSourceModel: stream)
             
             // Parse stream items
-            var displayOrder = self.request.paginator.start
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             let streamItems = VStreamItem.parseStreamItems(fromStream: stream, inManagedObjectContext: context)
             for streamItem in streamItems {
                 streamItem.displayOrder = displayOrder++

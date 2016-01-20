@@ -43,7 +43,7 @@ public struct MediaAttachment {
 extension MediaAttachment {
     
     public init?(json: JSON) {
-        guard let type            = MediaAttachmentType(rawValue: json["media_type"].stringValue),
+        guard let type          = MediaAttachmentType(rawValue: json["media_type"].stringValue),
             let url             = NSURL(vsdk_string: json["media_url"].string),
             let thumbnailURL    = NSURL(vsdk_string: json["thumbnail_url"].string) else {
                 return nil

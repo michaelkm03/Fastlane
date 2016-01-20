@@ -1166,7 +1166,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)reloadComments
 {
-    [self.viewModel loadComments:VPageTypeFirst completion:nil];
+    [self.viewModel.commentsDataSource loadComments:VPageTypeFirst completion:nil];
 }
 
 - (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
@@ -1340,12 +1340,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)shouldLoadNextPage
 {
-    [self.viewModel loadComments:VPageTypeNext completion:nil];
+    [self.viewModel.commentsDataSource loadComments:VPageTypeNext completion:nil];
 }
 
 - (void)shouldLoadPreviousPage
 {
-    [self.viewModel loadComments:VPageTypePrevious completion:nil];
 }
 
 #pragma mark - VSequenceActionsDelegate

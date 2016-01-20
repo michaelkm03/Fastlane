@@ -44,7 +44,6 @@ static const CGFloat kBaselineOffset = 0.5f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.backgroundColor = [self.notification.isRead boolValue] ? [UIColor whiteColor] : [UIColor colorWithWhite:0.75 alpha:1.0];
 }
 
 - (void)setNotification:(VNotification *)notification

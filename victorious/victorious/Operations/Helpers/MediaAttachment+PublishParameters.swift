@@ -12,17 +12,26 @@ import VictoriousIOSSDK
 extension MediaAttachment {
     
     init?(publishParameters: VPublishParameters) {
-        guard publishParameters.width > 0 && publishParameters.height > 0,
-            let url = publishParameters.mediaToUploadURL,
+        guard let url = publishParameters.mediaToUploadURL,
             let thumbnailURL = MediaAttachment.localImageURLForVideoAtURL( url ) else {
                 return nil
         }
         self.size = CGSize( width: CGFloat(publishParameters.width), height: CGFloat(publishParameters.height) )
         self.url = url
         self.thumbnailURL = thumbnailURL
-        self.type = .GIF
-        self.isGIFStyle = false // FIXME: Do we need this with `type` as GIF??
-        self.shouldAutoplay = false // FIXME
+        self.shouldAutoplay = false
+        
+        if publishParameters.isGIF {
+            self.type = .GIF
+            self.isGIFStyle = true
+       
+        } else if publishParameters.isVideo {
+            self.type = .Video
+            self.isGIFStyle = false
+        } else {
+            self.type = .Image
+            self.isGIFStyle = false
+        }
     }
     
     private static func localImageURLForVideoAtURL( url: NSURL ) -> NSURL? {

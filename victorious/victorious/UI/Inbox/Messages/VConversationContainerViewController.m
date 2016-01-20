@@ -57,6 +57,8 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if ( [self.navigationController.viewControllers containsObject:self] )
+    
     [super viewWillAppear:animated];
     
     [self.dependencyManager trackViewWillAppear:self];
@@ -126,6 +128,8 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
+    [self.innerViewController onConversationFlagged];
+    
     VMessage *mostRecentMessage = (VMessage *)self.conversation.messages.lastObject;
     NSInteger conversationID = self.conversation.remoteId.integerValue;
     NSInteger mostRecentMessageID = mostRecentMessage.remoteId.integerValue;
@@ -133,28 +137,16 @@ static const NSUInteger kCharacterLimit = 1024;
                                                                                  mostRecentMessageID:mostRecentMessageID];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
      {
-         if ( error != nil )
-         {
-             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                      message:NSLocalizedString(@"ReportUserMessage", @"")
-                                                                               preferredStyle:UIAlertControllerStyleAlert];
-             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                 style:UIAlertActionStyleCancel
-                                                               handler:nil]];
-             [self presentViewController:alertController animated:YES completion:nil];
-         }
-         else
-         {
-             VLog(@"Failed to flag conversation %@", self.conversation);
-             
-             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                                      message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                               preferredStyle:UIAlertControllerStyleAlert];
-             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
-                                                                 style:UIAlertActionStyleCancel
-                                                               handler:nil]];
-             [self presentViewController:alertController animated:YES completion:nil];
-         }
+         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction *_Nonnull action)
+                                     {
+                                         [self.navigationController popViewControllerAnimated:YES];
+                                     }]];
+         [self presentViewController:alertController animated:YES completion:nil];
      }];
 }
 
@@ -237,8 +229,8 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self sendMessageWithText:text inConversation:self.conversation completion:^{
-        [self.innerViewController refreshLocal];
+    [self sendMessageWithText:text publishParameters: publishParameters inConversation:self.conversation completion:^{
+        //[self.innerViewController refreshLocal];
     }];
     
     [keyboardBar.textView resignFirstResponder];

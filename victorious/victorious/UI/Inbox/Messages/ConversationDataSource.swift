@@ -47,19 +47,29 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
             },
             completion: { (operation, error) in
                 completion?(error)
+                
+                // Start observing after we've loaded once
+                self.KVOController.unobserve( self.conversation )
+                self.KVOController.observe( self.conversation,
+                    keyPath: "messages",
+                    options: [.Initial],
+                    action: Selector("onMessagesChanged:")
+                )
             }
         )
     }
     
-    func refreshLocal( completion:(([AnyObject])->())? = nil) {
-        guard let userID = self.conversation.user?.remoteId.integerValue else {
-            return
+    func onMessagesChanged( change: [NSObject : AnyObject]? ) {
+        guard let userID = self.conversation.user?.remoteId.integerValue,
+            let value = change?[ NSKeyValueChangeKindKey ] as? UInt,
+            let kind = NSKeyValueChange(rawValue:value) where kind == .Setting else {
+                return
         }
         self.paginatedDataSource.refreshLocal(
             createOperation: {
                 return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
             },
-            completion: completion
+            completion: nil
         )
     }
     
@@ -91,8 +101,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
-        
-        /*self.visibleItems = newValue.reversedOrderedSet*/
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
@@ -112,21 +120,10 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let identifier = VMessageCell.suggestedReuseIdentifier()
-            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
-            let message = visibleItems[ indexPath.row ] as! VMessage
-            decorateCell( cell, withMessage: message )
-            return cell
-            
-        case 1:
-            let identifier = ActivityFooterTableCell.suggestedReuseIdentifier()
-            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! ActivityFooterTableCell
-            return cell
-            
-        default:
-            abort()
-        }
+        let identifier = VMessageCell.suggestedReuseIdentifier()
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
+        let message = visibleItems[ indexPath.row ] as! VMessage
+        decorateCell( cell, withMessage: message )
+        return cell
     }
 }

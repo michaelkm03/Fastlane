@@ -47,6 +47,21 @@ class CommentRequestBodyWriter: NSObject, RequestBodyWriterType {
         if let mediaAttachment = parameters.mediaAttachment,
             let pathExtension = mediaAttachment.url.pathExtension,
             let mimeType = mediaAttachment.url.vsdk_mimeType {
+                
+                let isGIFStyleValue = mediaAttachment.type == .GIF ? "true" : "false"
+                try writer.appendPlaintext(isGIFStyleValue, withFieldName: "is_gif_style")
+                
+                let mediaTypeValue: String
+                switch mediaAttachment.type {
+                case .Video, .GIF:
+                    mediaTypeValue = MediaAttachmentType.Video.rawValue
+                case .Image:
+                    mediaTypeValue = MediaAttachmentType.Image.rawValue
+                default:
+                    mediaTypeValue = ""
+                }
+                try writer.appendPlaintext(mediaTypeValue, withFieldName: "media_type")
+                
                 try writer.appendFileWithName("media_data.\(pathExtension)",
                     contentType: mimeType,
                     fileURL: mediaAttachment.url,

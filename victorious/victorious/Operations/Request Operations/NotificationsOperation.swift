@@ -28,7 +28,7 @@ final class NotificationsOperation: RequestOperation, PaginatedOperation {
         }
         
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            var displayOrder = self.request.paginator.start
+            var displayOrder = self.request.paginator.displayOrderCounterStart
             for result in results {
                 let uniqueElements = [ "remoteId" : result.notificationID ]
                 let notification: VNotification = context.v_findOrCreateObject(uniqueElements)

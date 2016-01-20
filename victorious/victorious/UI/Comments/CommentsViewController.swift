@@ -43,7 +43,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     /// A `CommentsDataSource` conformant object. Consumers should call methods on this variable when determining the state of the comments.
-    var dataSource: SequenceCommentsDataSource? {
+    var dataSource: CommentsDataSource? {
         didSet {
             dataSource?.delegate = self
         }
@@ -52,7 +52,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     var sequence: VSequence? {
         didSet {
             if let sequence = sequence {
-                dataSource = SequenceCommentsDataSource(sequence: sequence)
+                dataSource = CommentsDataSource(sequence: sequence)
             } else {
                 dataSource = nil
             }
@@ -116,24 +116,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             
             imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
         }
-        
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-        refreshControl.addTarget( self, action: "onRefresh", forControlEvents: .ValueChanged)
-        self.collectionView.addSubview( refreshControl )
-        self.collectionView.alwaysBounceVertical = true
-        self.refreshControl = refreshControl
-        self.onRefresh()
+        self.refresh()
         
         self.edgesForExtendedLayout = .Bottom
         self.extendedLayoutIncludesOpaqueBars = true
     }
     
-    func onRefresh() {
-        self.refreshControl?.beginRefreshing()
-        dataSource?.loadComments( .First ) { error in
-            self.refreshControl?.endRefreshing()
-        }
+    func refresh() {
+        dataSource?.loadComments( .First )
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -382,17 +372,22 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             return
         }
         
+        let mediaAttachment: MediaAttachment?
+        if let publishParameters = publishParameters {
+            mediaAttachment = MediaAttachment(publishParameters: publishParameters)
+        } else {
+            mediaAttachment = nil
+        }
+        
         let creationParameters = Comment.CreationParameters(
             text: text,
             sequenceID: sequence.remoteId,
             replyToCommentID: nil,
-            mediaAttachment: nil,
-            //FIXME: mediaURL: self.publishParameters?.mediaToUploadURL,
-            //FIXME: mediaType: self.publishParameters?.commentMediaAttachmentType,
+            mediaAttachment: mediaAttachment,
             realtimeAttachment: nil
         )
         
-        CommentAddOperation(creationParameters: creationParameters)?.queue()
+        CreateCommentOperation(creationParameters: creationParameters).queue()
         self.keyboardBar?.clearTextAndResign()
         self.publishParameters?.mediaToUploadURL = nil
     }
@@ -400,7 +395,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
-        self.addComment(text: inputAccessoryView.composedText, publishParameters: nil)
+        self.addComment(text: inputAccessoryView.composedText, publishParameters: self.publishParameters)
     }
 
     func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {

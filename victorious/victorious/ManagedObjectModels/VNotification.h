@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSDate * createdAt;
 @property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain) NSString * subject;
-@property (nonatomic, retain) NSNumber * displayOrder;
+@property (nonatomic, retain, null_unspecified) NSNumber * displayOrder;
 @property (nonatomic, retain) VUser *user;
 
 @end
