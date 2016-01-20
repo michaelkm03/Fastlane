@@ -11,9 +11,6 @@
 #import "VCardDirectoryCell.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+VLayoutInsets.h"
-
-//View Controllers
-#import "VObjectManager+Login.h"
 #import "VNavigationController.h"
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
@@ -357,10 +354,9 @@
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    const BOOL canLoadNextPage = !self.streamDataSource.paginatedDataSource.isLoading;
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
-    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
+    return isLastSection && hasOneOrMoreItems;
 }
 
 - (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section

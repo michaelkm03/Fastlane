@@ -21,6 +21,7 @@
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFollowSource.h"
+#import "victorious-Swift.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -313,15 +314,19 @@
 
 - (void)selectAllRows:(id)sender
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    NSArray *userIDs = [self.usersNotFollowing v_map:^id(VUser *user)
+    {
+        return user.remoteId;
+    }];
+    
+    RequestOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:userIDs sourceScreenName:nil];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
-            // Update follow/unfollow icon
             [inviteFriendCell updateFollowStatusAnimated:YES];
         }
-    };
-    [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
+    }];
 }
 
 - (IBAction)makeButtonGray:(UIButton *)sender
@@ -449,7 +454,8 @@
     return cell;
 }
 
-#warning Use this for follow/unfollow
+#pragma mark - source screen logic
+
 - (NSString *)sourceScreenName
 {
     UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];

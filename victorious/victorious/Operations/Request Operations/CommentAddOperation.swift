@@ -11,23 +11,23 @@ import VictoriousIOSSDK
 
 class CommentAddOperation: RequestOperation {
     
-    var request: CommentAddRequest
+    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
+    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
+    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
+    let request: CommentAddRequest!
     
     private let publishParameters: VPublishParameters?
     private let commentParameters: CommentParameters
     
-    private var optimisticCommentObjectID: NSManagedObjectID?
+    private var optimisticObjectID: NSManagedObjectID?
     
-    private init( request: CommentAddRequest, commentParameters: CommentParameters, publishParameters: VPublishParameters?) {
-        self.request = request
+    init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
+        self.request = CommentAddRequest(parameters: commentParameters)
         self.commentParameters = commentParameters
         self.publishParameters = publishParameters
-    }
-    
-    convenience init?( commentParameters: CommentParameters, publishParameters: VPublishParameters? ) {
-        if let request = CommentAddRequest(parameters: commentParameters) {
-            self.init(request: request, commentParameters: commentParameters, publishParameters: publishParameters)
-        } else {
+        
+        super.init()
+        if self.request == nil {
             return nil
         }
     }
@@ -53,8 +53,10 @@ class CommentAddOperation: RequestOperation {
             comment.mediaHeight = self.publishParameters?.height
             comment.text = self.commentParameters.text ?? ""
             comment.postedAt = NSDate()
-            comment.thumbnailUrl = self.localImageURLForVideoAtPath( self.publishParameters?.mediaToUploadURL?.absoluteString ?? "" )
-            comment.mediaUrl = self.commentParameters.mediaURL?.absoluteString
+            
+            let mediaPath = self.publishParameters?.mediaToUploadURL?.absoluteString ?? ""
+            comment.thumbnailUrl = mediaPath.v_thumbnailPathForVideoAtPath
+            comment.mediaUrl = mediaPath
             
             // Prepend comment to beginning of comments ordered set so that it shows up at the top of comment feeds
             let sequence: VSequence = context.v_findOrCreateObject( ["remoteId" : String(self.commentParameters.sequenceID)] )
@@ -63,7 +65,7 @@ class CommentAddOperation: RequestOperation {
             
             context.v_save()
             dispatch_sync( dispatch_get_main_queue() ) {
-                self.optimisticCommentObjectID = comment.objectID
+                self.optimisticObjectID = comment.objectID
             }
             return true
         }
@@ -72,7 +74,7 @@ class CommentAddOperation: RequestOperation {
             return
         }
         
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
+        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
         
         VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidPostComment,
             parameters: [
@@ -89,50 +91,14 @@ class CommentAddOperation: RequestOperation {
                 completion()
             }
             
-            guard let objectID = self.optimisticCommentObjectID,
-                let optimisticComment = context.objectWithID( objectID ) as? VComment else {
+            guard let objectID = self.optimisticObjectID,
+                let optimisticObject = context.objectWithID( objectID ) as? VComment else {
                     return
             }
             
             // Repopulate the comment after created on server to provide remoteId and other properties
-            optimisticComment.populate( fromSourceModel: comment )
+            optimisticObject.populate( fromSourceModel: comment )
             context.v_save()
-            completion()
         }
-    }
-    
-    private func localImageURLForVideoAtPath( localVideoPath: String ) -> String? {
-        
-        guard let url = NSURL(string:localVideoPath) else {
-            return nil
-        }
-        
-        guard !localVideoPath.v_hasImageExtension() else {
-            return localVideoPath
-        }
-        
-        let asset = AVAsset(URL: url)
-        let assetGenerator = AVAssetImageGenerator(asset: asset)
-        let time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale)
-        let anImageRef: CGImageRef?
-        do {
-            anImageRef = try assetGenerator.copyCGImageAtTime(time, actualTime: nil)
-        } catch {
-            return nil
-        }
-        
-        guard let imageRef = anImageRef else {
-            return nil
-        }
-        let previewImage = UIImage(CGImage: imageRef)
-        
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let tempFile = tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString).URLByAppendingPathExtension(VConstantMediaExtensionJPG)
-        if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
-            imgData.writeToURL(tempFile, atomically: false )
-            return tempFile.absoluteString
-        }
-        
-        return nil
     }
 }

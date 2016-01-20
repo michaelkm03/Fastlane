@@ -1,5 +1,5 @@
 //
-//  UnfollowUserOperationTests.swift
+//  UnFollowUsersOperationTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 1/2/16.
@@ -10,17 +10,15 @@ import XCTest
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-class UnfollowUserOperationTests: BaseRequestOperationTestCase {
-    
-    var operation: UnfollowUserOperation!
+class UnFollowUsersOperationTests: BaseRequestOperationTestCase {
+    var operation: UnFollowUsersOperation!
     let userID = 1
     let currentUserID = 2
-    let screenName = "screenName"
 
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        operation = UnfollowUserOperation(userID: userID, screenName: screenName)
+        operation = UnFollowUsersOperation(userID: userID, sourceScreenName: "profile")
         operation.requestExecutor = testRequestExecutor
         operation.trackingManager = testTrackingManager
     }
@@ -58,10 +56,5 @@ class UnfollowUserOperationTests: BaseRequestOperationTestCase {
         XCTAssertEqual(1, testTrackingManager.trackEventCalls.count)
         XCTAssertEqual(false, updatedUser.isFollowedByMainUser)
         XCTAssertEqual(VTrackingEventUserDidUnfollowUser, testTrackingManager.trackEventCalls[0].eventName!)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        persistentStoreHelper.tearDownPersistentStore()
     }
 }

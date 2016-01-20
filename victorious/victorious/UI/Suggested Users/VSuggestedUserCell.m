@@ -113,16 +113,16 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 - (IBAction)followControlPressed:(VFollowControl *)sender
 {
     long long userId = self.user.remoteId.longLongValue;
-    NSString *screenName = VFollowSourceScreenRegistrationSuggestedUsers;
+    NSString *sourceScreenName = VFollowSourceScreenRegistrationSuggestedUsers;
     
     RequestOperation *operation;
     if ( self.user.isFollowedByMainUser.boolValue )
     {
-        operation = [[UnfollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[UnFollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     else
     {
-        operation = [[FollowUserOperation alloc] initWithUserID:userId screenName:screenName];
+        operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
     [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)

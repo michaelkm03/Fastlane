@@ -18,15 +18,14 @@
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextPostImageHelper.h"
+#import "victorious-Swift.h"
 
 @interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
-@property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
-@property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
 @property (nonatomic, strong) VTextPostImageHelper *imageHelper;
-
-@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, weak, readwrite) VTextColorTool<VWorkspaceTool> *textColorTool;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 
 @end
 
@@ -75,7 +74,7 @@
     // If there is no background image selector or there is no color, then skip ahead to publish
     if ( self.mediaURL == nil || [self currentColorSelection] == nil )
     {
-        [self publishWithRenderedAssetURL:self.mediaURL Completion:completion];
+        [self publishTextPost:self.mediaURL completion:completion];
         return;
     }
     
@@ -85,48 +84,13 @@
     {
         if ( renderedAssetURL != nil )
         {
-            [self publishWithRenderedAssetURL:renderedAssetURL Completion:completion];
+            [self publishTextPost:self.mediaURL completion:completion];
         }
         else
         {
             completion( NO, nil, nil, error );
         }
     }];
-}
-
-- (void)publishWithRenderedAssetURL:(NSURL *)renderedAssetURL Completion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
-{
-    [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
-                                           backgroundColor:[self currentColorSelection]
-                                                  mediaURL:renderedAssetURL
-                                              previewImage:[self textPostPreviewImage]
-                                                    forced:[self publishIsForced]
-                                                completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-     {
-         completion( YES, nil, nil, nil );
-     }];
-}
-
-- (UIColor *)currentColorSelection
-{
-    id<VToolPicker> colorPicker = (id<VToolPicker>)self.textColorTool.toolPicker;
-    VColorType *selectedTool = (VColorType *)colorPicker.selectedTool;
-    return selectedTool.color;
-}
-
-- (NSString *)currentText
-{
-    return self.textPostViewController.textOutput;
-}
-
-- (UIImage *)textPostPreviewImage
-{
-    UIView *viewToDraw = self.textPostViewController.view;
-    UIGraphicsBeginImageContextWithOptions( viewToDraw.bounds.size, YES, 0.0);
-    [viewToDraw drawViewHierarchyInRect:viewToDraw.bounds afterScreenUpdates:NO];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 - (VTextPostViewController *)textPostViewController

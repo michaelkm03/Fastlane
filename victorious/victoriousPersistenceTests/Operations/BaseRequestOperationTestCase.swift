@@ -25,6 +25,7 @@ class BaseRequestOperationTestCase: XCTestCase {
         super.setUp()
         testStore = TestPersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
+        persistentStoreHelper.tearDownPersistentStore()
         testTrackingManager = TestTrackingManager()
         testRequestExecutor = TestRequestExecutor()
     }

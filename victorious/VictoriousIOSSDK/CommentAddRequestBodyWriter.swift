@@ -1,35 +1,25 @@
 //
-//  CommentAddRequestBody.swift
+//  CommentAddRequestBodyWriter.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 12/9/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Tian Lan on 1/13/16.
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 
 /// An object that handles writing multipart form input for POST methods for /api/comment/add endpoint
-class CommentAddRequestBody: NSObject {
+class CommentAddRequestBodyWriter: RequestBodyWriter {
     
-    struct Output {
-        let fileURL: NSURL
-        let contentType: String
-    }
-    
-    private var bodyTempFile: NSURL = {
-        let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent(NSUUID().UUIDString)
-    }()
-    
-    deinit {
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFile)
+    var bodyTempFile: NSURL {
+        return createBodyTempFile()
     }
     
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
-    func write( parameters parameters: CommentParameters ) throws -> Output {
+    func write( parameters parameters: CommentParameters ) throws -> RequestBodyWriterOutput {
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFile)
         
-        try writer.appendPlaintext(String(parameters.sequenceID), withFieldName: "sequence_id")
+        try writer.appendPlaintext( parameters.sequenceID, withFieldName: "sequence_id")
         
         if let text = parameters.text {
             try writer.appendPlaintext(text, withFieldName: "text")
@@ -56,6 +46,6 @@ class CommentAddRequestBody: NSObject {
         
         try writer.finishWriting()
         
-        return Output(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
+        return RequestBodyWriterOutput(fileURL: bodyTempFile, contentType: writer.contentTypeHeader() )
     }
 }
