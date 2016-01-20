@@ -139,7 +139,6 @@ import VictoriousIOSSDK
                 self.state = self.visibleItems.count == 0 ? .NoResults : .Results
                 
             } else {
-                
                 // Remove the page from `pagesLoaded` so that it can be attempted again
                 self.pagesLoaded.remove( operation.request.paginator.pageNumber )
                 

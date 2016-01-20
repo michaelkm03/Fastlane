@@ -110,6 +110,8 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.noContentView.title = NSLocalizedString(@"NoMessagesTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
+    
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -327,6 +329,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self.dataSource tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
 #pragma mark - Actions
 
 - (void)displayConversation:(VConversation *)conversation animated:(BOOL)animated
@@ -365,32 +372,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (IBAction)refresh:(UIRefreshControl *)refreshControl
 {
     [self refresh];
-}
-
-- (void)updateTableView
-{
-    self.tableView.separatorStyle = self.dataSource.visibleItems.count > 0 ? UITableViewCellSeparatorStyleSingleLine : UITableViewCellSeparatorStyleNone;
-    
-    switch ( self.dataSource.state )
-    {
-        case DataSourceStateError:
-        case DataSourceStateNoResults: {
-            if ( self.tableView.backgroundView != self.noContentView )
-            {
-                self.tableView.backgroundView = self.noContentView;
-                [self.noContentView resetInitialAnimationState];
-                [self.noContentView animateTransitionIn];
-            }
-            break;
-        }
-            
-        default:
-            [UIView animateWithDuration:0.5f animations:^void
-             {
-                 self.tableView.backgroundView = nil;
-             }];
-            break;
-    }
 }
 
 #pragma mark - VAccessoryNavigationSource

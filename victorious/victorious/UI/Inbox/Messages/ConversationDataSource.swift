@@ -112,10 +112,21 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
-        let identifier = VMessageCell.suggestedReuseIdentifier()
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
-        let message = visibleItems[ indexPath.row ] as! VMessage
-        decorateCell( cell, withMessage: message )
-        return cell
+        switch indexPath.section {
+        case 0:
+            let identifier = VMessageCell.suggestedReuseIdentifier()
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VMessageCell
+            let message = visibleItems[ indexPath.row ] as! VMessage
+            decorateCell( cell, withMessage: message )
+            return cell
+            
+        case 1:
+            let identifier = ActivityFooterTableCell.suggestedReuseIdentifier()
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! ActivityFooterTableCell
+            return cell
+            
+        default:
+            abort()
+        }
     }
 }

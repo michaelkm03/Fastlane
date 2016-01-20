@@ -26,7 +26,7 @@ extension VConversationViewController {
     
     func refreshLocal() {
         self.dataSource.refreshLocal() { results in
-            if  self.isShowingLastPage {
+            if self.isShowingLastPage {
                 self.scrollToBottomAnimated( self.viewHasAppeared )
             }
         }
@@ -74,7 +74,7 @@ extension VConversationViewController {
         let contentOffset       = self.tableView.contentOffset
         let approxPageCount     = floor( contentSize.height / bounds.height )
         let lastPage            = approxPageCount - 1
-        let locationRatio       = (contentOffset.y + bounds.height * 0.5) / contentSize.height
+        let locationRatio       = contentOffset.y / contentSize.height
         let approxCurrentPage   = floor( locationRatio * approxPageCount )
         return approxCurrentPage >= lastPage
     }

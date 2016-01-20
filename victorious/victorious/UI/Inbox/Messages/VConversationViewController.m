@@ -146,7 +146,7 @@
 {
     CGPoint oldOffset = self.tableView.contentOffset;
     CGSize oldContentSize = self.tableView.contentSize;
-    [self.dataSource refreshRemote:^(NSArray<NSObject *> *_Nonnull results, NSError *_Nullable error) {
+    [self.dataSource loadMessagesWithPageType:VPageTypePrevious completion:^(NSError *_Nullable error) {
         [self maintainVisualScrollFromOffset:oldOffset contentSize:oldContentSize];
     }];
 }

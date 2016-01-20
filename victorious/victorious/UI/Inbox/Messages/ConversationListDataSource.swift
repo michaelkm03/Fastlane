@@ -74,26 +74,73 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
         self.delegate?.paginatedDataSource?( paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
     
+    func decorateActivityCell( activityCell: ActivityFooterTableCell ) {
+        
+        let shouldShowLoadingAnimation = self.paginatedDataSource.isLoading() && visibleItems.count > 0
+        activityCell.loading = shouldShowLoadingAnimation
+        
+        // Move separators way out of the way, effective hiding them for just this cell
+        activityCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 10000)
+    }
+    
     // MARK: - UITableViewDataSource
     
     func registerCells( tableView: UITableView ) {
         let identifier = VConversationCell.suggestedReuseIdentifier()
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: VConversationCell.self) )
         tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        
+        let footerIdentifier = ActivityFooterTableCell.suggestedReuseIdentifier()
+        let footerNib = UINib(nibName: footerIdentifier, bundle: NSBundle(forClass: ActivityFooterTableCell.self) )
+        tableView.registerNib(footerNib, forCellReuseIdentifier: footerIdentifier)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return visibleItems.count
+        switch section {
+        case 0:
+            return visibleItems.count
+        case 1:
+            return 1
+        default:
+            abort()
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            return 72.0
+        case 1:
+            return 45.0
+        default:
+            abort()
+        }
     }
     
     func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
-        let identifier = VConversationCell.suggestedReuseIdentifier()
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VConversationCell
-        let conversation = visibleItems[ indexPath.row ] as! VConversation
-        cell.conversation = conversation
-        cell.dependencyManager = self.dependencyManager
-        let isRead = conversation.isRead?.boolValue ?? true
-        cell.backgroundColor = isRead ? UIColor.clearColor() : UIColor.whiteColor()
-        return cell
+        switch indexPath.section {
+        case 0:
+            let identifier = VConversationCell.suggestedReuseIdentifier()
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! VConversationCell
+            let conversation = visibleItems[ indexPath.row ] as! VConversation
+            cell.conversation = conversation
+            cell.dependencyManager = self.dependencyManager
+            let isRead = conversation.isRead?.boolValue ?? true
+            cell.backgroundColor = isRead ? UIColor.clearColor() : UIColor.whiteColor()
+            return cell
+            
+        case 1:
+            let identifier = ActivityFooterTableCell.suggestedReuseIdentifier()
+            let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! ActivityFooterTableCell
+            decorateActivityCell(cell)
+            return cell
+            
+        default:
+            abort()
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
 }
