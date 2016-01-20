@@ -22,7 +22,7 @@ class AppTimingStreamHelper: NSObject {
     
     func startStreamLoadAppTimingEvents(pageType pageType:VPageType) {
         
-        if pageType == .Refresh {
+        if pageType == .First {
             timingTracker.startEvent( type:VAppTimingEventTypeStreamRefresh, subtype:streamId )
             
         } else {
@@ -32,7 +32,7 @@ class AppTimingStreamHelper: NSObject {
     
     func endStreamLoadAppTimingEvents(pageType pageType:VPageType) {
         
-        if pageType == .Refresh {
+        if pageType == .First {
             timingTracker.endEvent( type:VAppTimingEventTypeStreamRefresh, subtype:streamId)
             
             dispatch_once(&token) {

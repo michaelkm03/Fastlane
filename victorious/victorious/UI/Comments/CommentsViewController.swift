@@ -131,7 +131,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func onRefresh() {
         self.refreshControl?.beginRefreshing()
-        dataSource?.loadComments( .Refresh ) { error in
+        dataSource?.loadComments( .First ) { error in
             self.refreshControl?.endRefreshing()
         }
     }
@@ -378,7 +378,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func addComment( text text: String, publishParameters: VPublishParameters?) {
-        guard let sequence = self.sequence, let currentUser = VCurrentUser.user() else {
+        guard let sequence = self.sequence else {
             return
         }
         

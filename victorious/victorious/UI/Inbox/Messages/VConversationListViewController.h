@@ -7,7 +7,6 @@
 //
 
 #import "VDeeplinkHandler.h"
-#import "VFetchedResultsTableViewController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMultipleContainer.h"

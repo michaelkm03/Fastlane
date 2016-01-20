@@ -9,6 +9,7 @@
 #import "MBProgressHUD.h"
 #import "NSDate+timeSince.h"
 #import "NSURL+MediaType.h"
+#import "VConversation.h"
 #import "VMessageTextAndMediaView.h"
 #import "VConversationViewController.h"
 #import "VMessageCell.h"
@@ -28,10 +29,10 @@
 @interface VConversationViewController () <VCommentMediaTapDelegate, VCellWithProfileDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic) BOOL shouldScrollToBottom;
 @property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, assign, readwrite) BOOL viewHasAppeared;
 
 @end
 
@@ -73,51 +74,39 @@
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    if (self.shouldScrollToBottom)
-    {
-        self.shouldScrollToBottom = NO;
-        [self scrollToBottomAnimated:NO];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self refresh];
 }
 
 - (void)refresh
 {
-    [self.dataSource loadMessagesWithPageType:VPageTypeRefresh completion:^(NSError *_Nullable error)
+    [self.dataSource loadMessagesWithPageType:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
+         [self.messageCountCoordinator markConversationRead:self.conversation];
+         
          if ( error != nil )
          {
-             [self scrollToBottomAnimated:NO];
              [self.focusHelper updateFocus];
          }
          
+         [self scrollToBottomAnimated:self.viewHasAppeared];
          [self updateTableView];
          [self.focusHelper updateFocus];
      }];
-    self.shouldScrollToBottom = YES;
-}
-
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    [self.tableView setContentOffset:CGPointMake(0, MAX(self.tableView.contentSize.height + self.tableView.contentInset.top + self.tableView.contentInset.bottom - CGRectGetHeight(self.tableView.bounds), 0)) animated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.dataSource beginLiveUpdates];
+    [self beginLiveUpdates];
     
     // Update cell focus
     [self.focusHelper updateFocus];
+    
+    self.viewHasAppeared = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -133,7 +122,7 @@
     
     [super viewWillDisappear:animated];
     
-    [self.dataSource endLiveUpdates];
+    [self endLiveUpdates];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -142,37 +131,24 @@
     
     // End focus on cells
     [self.focusHelper endFocusOnAllCells];
-}
-
-- (void)updateTableView
-{
-    switch ( self.dataSource.state )
-    {
-        case DataSourceStateError:
-        case DataSourceStateNoResults: {
-            if ( self.tableView.backgroundView != self.noContentView )
-            {
-                self.tableView.backgroundView = self.noContentView;
-                [self.noContentView resetInitialAnimationState];
-                [self.noContentView animateTransitionIn];
-            }
-            break;
-        }
-            
-        default:
-            [UIView animateWithDuration:0.5f animations:^void
-             {
-                 self.tableView.backgroundView = nil;
-             }];
-            break;
-    }
+    
+    self.viewHasAppeared = NO;
 }
 
 #pragma mark - Pagination
 
-- (void)shouldLoadNextPage
+- (void)shouldLoadPreviousPage
 {
     [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:nil];
+}
+
+- (void)shouldLoadNextPage
+{
+    CGPoint oldOffset = self.tableView.contentOffset;
+    CGSize oldContentSize = self.tableView.contentSize;
+    [self.dataSource refreshRemote:^(NSArray<NSObject *> *_Nonnull results, NSError *_Nullable error) {
+        [self maintainVisualScrollFromOffset:oldOffset contentSize:oldContentSize];
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -86,7 +86,7 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
 
     func testUnload() {
         let expectation = expectationWithDescription("testUnload")
-        let pageType: VPageType = .Refresh
+        let pageType: VPageType = .First
         paginatedDataSource.loadPage( pageType,
             createOperation: {
                 return MockPaginatedOperation()
@@ -121,7 +121,7 @@ class PaginatedDataSourceTests: XCTestCase, PaginatedDataSourceDelegate {
     func testLoadPagesInAscendingOrder() {
         for i in 0 ..< numberOfPagesBeforeReachingEnd {
             let expectation = expectationWithDescription("page \(i)")
-            let pageType: VPageType = i == 0 ? .Refresh : .Next
+            let pageType: VPageType = i == 0 ? .First : .Next
             paginatedDataSource.loadPage( pageType,
                 createOperation: {
                     return MockPaginatedOperation()

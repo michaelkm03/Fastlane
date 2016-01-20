@@ -26,22 +26,15 @@
 
 @implementation VUnreadMessageCountCoordinator
 
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager
+- (instancetype)init
 {
     self = [super init];
     if (self)
     {
-        _objectManager = objectManager;
         _loadingUnreadMessageCount = 0;
         _privateQueue = dispatch_queue_create("VInboxCoordinator private queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
-}
-
-- (instancetype)init
-{
-    NSAssert(NO, @"Use the designated initializer");
-    return nil;
 }
 
 - (void)updateUnreadMessageCount
@@ -82,7 +75,7 @@
 
 - (void)markConversationRead:(VConversation *)conversation
 {
-    if ( conversation.remoteId == nil )
+    if ( conversation.remoteId == nil || conversation.remoteId.integerValue == 0 )
     {
         return;
     }
@@ -90,7 +83,7 @@
     MarkConversationReadOperation *operation = [[MarkConversationReadOperation alloc] initWithConversationID:conversation.remoteId.integerValue];
     [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
-        if ( operation.unreadMessageCount != nil )
+        if ( operation.unreadConversationsCount != nil )
         {
             dispatch_async(self.privateQueue, ^(void)
             {
@@ -101,7 +94,7 @@
                 }
                 dispatch_sync(dispatch_get_main_queue(), ^(void)
                 {
-                    self.unreadMessageCount = operation.unreadMessageCount.integerValue;
+                    self.unreadMessageCount = operation.unreadConversationsCount.integerValue;
                 });
             });
         }

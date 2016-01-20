@@ -143,7 +143,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [super viewDidLoad];
     
     [self updateProfileHeader];
-    [self loadPage:VPageTypeRefresh completion:nil];
+    [self loadPage:VPageTypeFirst completion:nil];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;

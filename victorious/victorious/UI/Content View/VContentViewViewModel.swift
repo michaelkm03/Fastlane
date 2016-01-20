@@ -27,7 +27,7 @@ public extension VContentViewViewModel {
                     }
                     
                     self.delegate?.didUpdateCommentsWithDeepLink( deepLinkCommentId )
-                    self.commentsDataSource.loadPage( .Refresh, createOperation: {
+                    self.commentsDataSource.loadPage( .First, createOperation: {
                         return SequenceCommentsOperation(sequenceID: self.sequence.remoteId, pageNumber: pageNumber)
                     })
                 }
@@ -44,7 +44,7 @@ public extension VContentViewViewModel {
                 }
                 self.delegate?.didUpdateSequence()
             }
-            self.loadComments(.Refresh)
+            self.loadComments(.First)
         }
         
         if let currentUserID = VCurrentUser.user()?.remoteId.integerValue {

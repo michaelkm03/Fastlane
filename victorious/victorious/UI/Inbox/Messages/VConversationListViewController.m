@@ -44,7 +44,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 static char kKVOContext;
 
 NSString * const VConversationListViewControllerDeeplinkHostComponent = @"inbox";
-NSString * const VConversationListViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
+NSString * const VConversationListViewControllerInboxPushReceivedNotification = @"VConversationListViewControllerInboxPushReceivedNotification";
 
 @implementation VConversationListViewController
 
@@ -62,7 +62,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
+        viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] init];
         [dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
@@ -123,7 +123,12 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
     
+    // Reload first page from network (some network latency)
     [self refresh];
+    
+    // Reload local results for any changes (virtually immediate)
+    [self.tableView reloadData];
+    
     [self updateTableView];
 }
 
@@ -176,9 +181,10 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     {
         [messageCountCoordinator addObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount)) options:NSKeyValueObservingOptionNew context:&kKVOContext];
         
-        if ( [self.dependencyManager.objectManager mainUserLoggedIn] )
+        if ( [VCurrentUser user] != nil )
         {
             [messageCountCoordinator updateUnreadMessageCount];
+            [self updateBadges];
         }
     }
 }
@@ -349,7 +355,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)refresh
 {
-    [self.dataSource loadConversations:VPageTypeRefresh completion:^(NSError *_Nullable error)
+    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];
@@ -421,7 +427,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    if ( [VCurrentUser user] != nil )
     {
         [self.messageCountCoordinator updateUnreadMessageCount];
     }
@@ -429,7 +435,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    if ( [VCurrentUser user] != nil )
     {
         [self.messageCountCoordinator updateUnreadMessageCount];
     }
@@ -441,22 +447,11 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    [self.dataSource loadConversations:VPageTypeFirst completion:^(NSError *_Nullable error)
     {
-        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeRefresh
-                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self.messageCountCoordinator updateUnreadMessageCount];
-             [self updateBadges];
-         } failBlock:nil];
-        
-        [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeRefresh
-                                                                   successBlock:^(NSOperation *__nullable operation, id  __nullable result, NSArray *__nonnull resultObjects)
-         {
-             [self updateBadges];
-         }
-                                                                      failBlock:nil];
-    }
+        [self.messageCountCoordinator updateUnreadMessageCount];
+        [self updateBadges];
+    }];
 }
 
 - (void)updateBadges

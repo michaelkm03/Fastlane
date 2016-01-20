@@ -63,7 +63,6 @@
 		0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D39C19B46B5E00FA363C /* VMessageCell.m */; };
 		0314D4AB19B46B5E00FA363C /* VConversationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D39F19B46B5E00FA363C /* VConversationContainerViewController.m */; };
 		0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3A619B46B5E00FA363C /* VNotificationCell.m */; };
-		0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3A919B46B5E00FA363C /* VFetchedResultsTableViewController.m */; };
 		0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B019B46B5E00FA363C /* VImageLightboxViewController.m */; };
 		0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B219B46B5E00FA363C /* VLightboxDismissAnimator.m */; };
 		0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3B419B46B5E00FA363C /* VLightboxDisplayAnimator.m */; };
@@ -870,6 +869,7 @@
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A761CBE51C4EBA2B00E07033 /* UnreadMessageCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761CBE41C4EBA2B00E07033 /* UnreadMessageCountOperation.swift */; };
+		A761CBE71C4EE1CC00E07033 /* UITableView+OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761CBE61C4EE1CC00E07033 /* UITableView+OrderedSet.swift */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
 		A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */; };
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
@@ -1181,7 +1181,7 @@
 		A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB574C1AF8402A006AA1CF /* VURLDetector.m */; };
 		A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB57511AF9378C006AA1CF /* VTextPostCalloutHelper.m */; };
 		A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
-		A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */; };
+		A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSet.swift */; };
 		A7EBF5191C2B775D0080C7CF /* RemoveStreamItemOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */; };
 		A7EBF5301C2B98550080C7CF /* PaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF52F1C2B98550080C7CF /* PaginatedDataSource.swift */; };
 		A7EBF5331C2B99A20080C7CF /* VFollowersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EBF5311C2B99A20080C7CF /* VFollowersDataSource.swift */; };
@@ -1936,8 +1936,6 @@
 		0314D3A319B46B5E00FA363C /* VConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationViewController.m; sourceTree = "<group>"; };
 		0314D3A519B46B5E00FA363C /* VNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationCell.h; sourceTree = "<group>"; };
 		0314D3A619B46B5E00FA363C /* VNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationCell.m; sourceTree = "<group>"; };
-		0314D3A819B46B5E00FA363C /* VFetchedResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFetchedResultsTableViewController.h; sourceTree = "<group>"; };
-		0314D3A919B46B5E00FA363C /* VFetchedResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFetchedResultsTableViewController.m; sourceTree = "<group>"; };
 		0314D3AF19B46B5E00FA363C /* VImageLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageLightboxViewController.h; sourceTree = "<group>"; };
 		0314D3B019B46B5E00FA363C /* VImageLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLightboxViewController.m; sourceTree = "<group>"; };
 		0314D3B119B46B5E00FA363C /* VLightboxDismissAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDismissAnimator.h; sourceTree = "<group>"; };
@@ -3176,6 +3174,7 @@
 		A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A761CBE41C4EBA2B00E07033 /* UnreadMessageCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountOperation.swift; sourceTree = "<group>"; };
+		A761CBE61C4EE1CC00E07033 /* UITableView+OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+OrderedSet.swift"; sourceTree = "<group>"; };
 		A76567121B3B1DAA002721F3 /* VSleekActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionButton.h; sourceTree = "<group>"; };
 		A76567131B3B1DAA002721F3 /* VSleekActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionButton.m; sourceTree = "<group>"; };
 		A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+UnicodeTests.swift"; sourceTree = "<group>"; };
@@ -3554,7 +3553,7 @@
 		A7EB57501AF9378C006AA1CF /* VTextPostCalloutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostCalloutHelper.h; sourceTree = "<group>"; };
 		A7EB57511AF9378C006AA1CF /* VTextPostCalloutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostCalloutHelper.m; sourceTree = "<group>"; };
 		A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VURLSelectionResponder.h; sourceTree = "<group>"; };
-		A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+OrderedSetChanges.swift"; sourceTree = "<group>"; };
+		A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+OrderedSet.swift"; sourceTree = "<group>"; };
 		A7EBF5181C2B775D0080C7CF /* RemoveStreamItemOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveStreamItemOperation.swift; sourceTree = "<group>"; };
 		A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousPersistenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7EBF5241C2B8CA20080C7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4825,7 +4824,8 @@
 				A7B5144A1A4517A80074282F /* SwipeCell */,
 				A7738AFE1A4A35DF008EA973 /* Transitions */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
-				A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift */,
+				A7EBF5121C2B35FB0080C7CF /* UICollectionView+OrderedSet.swift */,
+				A761CBE61C4EE1CC00E07033 /* UITableView+OrderedSet.swift */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
 				B0D3D24D1B60527100871E55 /* VBadgeResponder.h */,
@@ -5013,8 +5013,6 @@
 			children = (
 				0314D39719B46B5E00FA363C /* Messages */,
 				0314D3A419B46B5E00FA363C /* Notifications */,
-				0314D3A819B46B5E00FA363C /* VFetchedResultsTableViewController.h */,
-				0314D3A919B46B5E00FA363C /* VFetchedResultsTableViewController.m */,
 				A7AF87231C45FE3700B49478 /* VCellWithProfileDelegate.h */,
 			);
 			path = Inbox;
@@ -10981,7 +10979,7 @@
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */,
 				A7EBF56B1C2F3BF40080C7CF /* VFollowedUser.swift in Sources */,
-				A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSetChanges.swift in Sources */,
+				A7EBF5131C2B35FB0080C7CF /* UICollectionView+OrderedSet.swift in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
@@ -11562,12 +11560,12 @@
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
-				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
 				795270F01C3488AD00BD41F1 /* VConversationListViewController+Delegates.swift in Sources */,
 				79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				A7078CDD1BFA7D2B008FB7FF /* ShowLoginOperation.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
+				A761CBE71C4EE1CC00E07033 /* UITableView+OrderedSet.swift in Sources */,
 				A74FADB81C48A7B9003D64CE /* MediaAttachment+PublishParameters.swift in Sources */,
 				67E435DE1C232F7300CBA922 /* AnonymousLoginOperation.swift in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,

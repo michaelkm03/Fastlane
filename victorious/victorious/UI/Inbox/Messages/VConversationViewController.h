@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHasManagedDependencies.h"
-#import "VNoContentView.h"
 #import <UIKit/UIKit.h>
 
-@class VMessageTableDataSource, VUnreadMessageCountCoordinator, VUser, ConversationDataSource;
+#import "VHasManagedDependencies.h"
+#import "VNoContentView.h"
+#import "VTimerManager.h"
+
+@class VUnreadMessageCountCoordinator, VUser, VConversation, ConversationDataSource;
 
 @interface VConversationViewController : UITableViewController <VHasManagedDependencies>
 
@@ -19,6 +21,8 @@
 @property (nonatomic, assign) UIEdgeInsets focusAreaInset;
 @property (nonatomic, strong) ConversationDataSource *dataSource;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, assign, readonly) BOOL viewHasAppeared;
+@property (nonatomic, strong) VTimerManager *timer;
 
 /**
  Creates a new instance of VConversationViewController by passing in an instance of VDependencyManager

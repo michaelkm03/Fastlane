@@ -206,7 +206,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)refresh
 {
-    [self.dataSource loadNotifications:VPageTypeRefresh completion:^(NSError *_Nullable error)
+    [self.dataSource loadNotifications:VPageTypeFirst completion:^(NSError *_Nullable error)
      {
          [self.refreshControl endRefreshing];
          [self updateTableView];
@@ -248,7 +248,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    if ( [VCurrentUser user] != nil )
     {
         [self fetchNotificationCount];
     }
@@ -273,7 +273,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    if ( [VCurrentUser user] != nil )
     {
         [self fetchNotificationCount];
     }

@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class VConversation, VObjectManager;
+@class VConversation;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  This class coordinates updates to the global
@@ -17,17 +19,7 @@
  */
 @interface VUnreadMessageCountCoordinator : NSObject
 
-@property (nonatomic, readonly) VObjectManager *objectManager; ///< An instance of VObjectManager used to make API calls
 @property (nonatomic, readonly) NSInteger unreadMessageCount; ///< The total number of unread messages. KVO-compliant.
-
-/**
- Initializes an instance of VInboxCoordinator
- 
- @param objectManager an instance of VObjectManager for making API calls
- */
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Asynchronously retrieves the current unread message 
@@ -42,3 +34,5 @@
 - (void)markConversationRead:(VConversation *)conversation;
 
 @end
+
+NS_ASSUME_NONNULL_END

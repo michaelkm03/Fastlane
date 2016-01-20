@@ -79,7 +79,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     }
     
     func search( searchTerm searchTerm: String ) {
-        dataSource.search(searchTerm: searchTerm, pageType: .Refresh) { error in
+        dataSource.search(searchTerm: searchTerm, pageType: .First) { error in
             self.updateSearchState()
         }
         state = .Loading

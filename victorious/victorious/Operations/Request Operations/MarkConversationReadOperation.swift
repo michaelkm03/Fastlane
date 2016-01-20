@@ -14,7 +14,7 @@ class MarkConversationReadOperation: RequestOperation {
     let conversationID: Int
     private let request: MarkConversationReadRequest
     
-    var unreadMessageCount: NSNumber? //< TODO: I think this request returns a value that we want
+    var unreadConversationsCount: NSNumber?
     
     init(conversationID: Int) {
         self.conversationID = conversationID
@@ -23,11 +23,20 @@ class MarkConversationReadOperation: RequestOperation {
     
     override func main() {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            let conversation: VConversation = context.v_findOrCreateObject(["remoteId": self.conversationID])
-            conversation.isRead = NSNumber(bool: true)
+            guard let conversation: VConversation = context.v_findObjects( ["remoteId": self.conversationID] ).first else {
+                return
+            }
+            conversation.isRead = true
             context.v_save()
         }
         
-        requestExecutor.executeRequest(request, onComplete: nil, onError: nil)
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
+    }
+    
+    func onComplete(result: Int?, completion: () -> () ) {
+        if let unreadConversationsCount = result {
+            self.unreadConversationsCount = unreadConversationsCount
+        }
+        completion()
     }
 }

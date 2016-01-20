@@ -30,7 +30,7 @@
 {
     [super viewDidLoad];
     
-    [self loadPage:VPageTypeRefresh completion:nil];
+    [self loadPage:VPageTypeFirst completion:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStatusDidChange:)
                                                  name:kLoggedInChangedNotification
@@ -53,7 +53,7 @@
     [self.streamDataSource.paginatedDataSource unload];
     if ( [VCurrentUser user] != nil )
     {
-        [self loadPage:VPageTypeRefresh completion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
     }
 }
 

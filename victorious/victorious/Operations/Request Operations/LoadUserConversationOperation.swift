@@ -36,8 +36,6 @@ class LoadUserConversationOperation: Operation {
             let filteredConversations = user.conversations.filter { ($0 as? VConversation)?.user?.remoteId == self.user.userID }
             if let conversation = filteredConversations.first as? VConversation {
                 self.loadedConversation = conversation
-                
-                print( "\n\n------> Existing Conversation loaded for user: \(user.name)" )
             
             } else {
                 let newConversation: VConversation = context.v_createObject()
@@ -45,8 +43,6 @@ class LoadUserConversationOperation: Operation {
                 newConversation.isRead = true
                 newConversation.postedAt = NSDate()
                 self.loadedConversation = newConversation
-                
-                print( "\n\n------> New Conversation created for user: \(user.name)" )
             }
             
             self.loadedConversation?.user = self.loadedUser
@@ -81,12 +77,9 @@ class DeleteUnusedLocalConversationOperation: Operation {
             }
             
             guard conversation.messages.count == 0 else {
-                print( "\n\n------> Cannot delete Conversation for user: \(conversation.user.name).  There are messages already!" )
                 self.finishedExecuting()
                 return
             }
-            
-            print( "\n\n------> Empty Conversation deleted for user: \(conversation.user.name)" )
         
             context.deleteObject(conversation)
             context.v_save()

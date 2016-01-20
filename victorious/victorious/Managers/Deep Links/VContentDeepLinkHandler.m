@@ -34,7 +34,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         NSParameterAssert( _dependencyManager != nil );
-        NSParameterAssert( [_dependencyManager objectManager] != nil );
                               
         _scaffoldViewController = [dependencyManager scaffoldViewController];
         NSParameterAssert( _scaffoldViewController != nil );

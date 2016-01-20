@@ -132,7 +132,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         }
     }
     
-    func performSearch( searchTerm searchTerm: String?, pageType: VPageType = .Refresh ) {
+    func performSearch( searchTerm searchTerm: String?, pageType: VPageType = .First ) {
         if self.dataSourceAdapter.state != .Loading {
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )

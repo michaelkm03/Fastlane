@@ -53,15 +53,19 @@ class ConversationListDataSource: NSObject, UITableViewDataSource, PaginatedData
     }
     
     func onConversationsChanged( change: [NSObject : AnyObject]? ) {
-        self.paginatedDataSource.refreshLocal() {
-            return ConversationListOperation()
+        
+        // Populates the view with newly added conversations upon observing the change
+        guard let userID = VCurrentUser.user()?.remoteId.integerValue else {
+            return
         }
+        self.paginatedDataSource.refreshLocal( createOperation: {
+            return FetchConverationListOperation(userID: userID)
+        })
     }
     
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        
         let sortedArray = (newValue.array as? [VConversation] ?? []).sort { $0.postedAt.compare($1.postedAt) == .OrderedDescending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
     }

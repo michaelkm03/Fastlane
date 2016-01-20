@@ -73,7 +73,7 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
     if ( self.shouldRefreshOnView )
     {
         [self.refreshControl beginRefreshing];
-        [self loadPage:VPageTypeRefresh completion:nil];
+        [self loadPage:VPageTypeFirst completion:nil];
         self.shouldRefreshOnView = NO;
     }
 }

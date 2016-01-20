@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
 @objc protocol PaginatedDataSourceDelegate: NSObjectProtocol {
@@ -45,7 +46,7 @@ protocol PaginatedDataSourceType: class {
     /// (i.e. the one provided by calling the `createOperation` closure) to load a page of results
     /// from the network.  When finished, internal state changes and changes to the backing store
     /// may occur, which will in turn call the appropriate delegate methods.
-    func loadPage<T: PaginatedOperation>( pageType: VPageType,
+    func loadPage<T: PaginatedOperation where T.PaginatedRequestType.PaginatorType : NumericPaginator>( pageType: VPageType,
         @noescape createOperation: () -> T,
         completion: ((operation: T?, error: NSError?) -> Void)? )
 }

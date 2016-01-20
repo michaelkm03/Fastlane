@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFetchedResultsTableViewController.h"
 #import "VMultipleContainer.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VAuthorizationContextProvider.h"

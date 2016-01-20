@@ -607,7 +607,7 @@
         <!--Inbox-->
         <scene sceneID="2GS-53-SxR">
             <objects>
-                <viewController storyboardIdentifier="inboxcontainer" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Yw-Xf-WUE" customClass="VInboxContainerViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Yw-Xf-WUE" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ykg-g6-NwQ"/>
                         <viewControllerLayoutGuide type="bottom" id="ZXG-1i-7LC"/>

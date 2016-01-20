@@ -33,7 +33,7 @@ static const NSUInteger kCharacterLimit = 1024;
 
 @implementation VConversationContainerViewController
 
-@synthesize conversationTableViewController = _conversationTableViewController;
+@synthesize innerViewController = _innerViewController;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -161,7 +161,7 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)setConversation:(VConversation *)conversation
 {
     _conversation = conversation;
-    ((VConversationViewController *)self.conversationTableViewController).conversation = conversation;
+    ((VConversationViewController *)self.innerViewController).conversation = conversation;
     if ([self isViewLoaded])
     {
         [self addBackgroundImage];
@@ -202,9 +202,9 @@ static const NSUInteger kCharacterLimit = 1024;
 {
     _messageCountCoordinator = messageCountCoordinator;
     
-    if ( [self.conversationTableViewController isKindOfClass:[VConversationViewController class]] )
+    if ( [self.innerViewController isKindOfClass:[VConversationViewController class]] )
     {
-        [(VConversationViewController *)self.conversationTableViewController setMessageCountCoordinator:messageCountCoordinator];
+        [(VConversationViewController *)self.innerViewController setMessageCountCoordinator:messageCountCoordinator];
     }
 }
 
@@ -218,16 +218,16 @@ static const NSUInteger kCharacterLimit = 1024;
     return NO;
 }
 
-- (UITableViewController *)conversationTableViewController
+- (VConversationViewController *)innerViewController
 {
-    if (_conversationTableViewController == nil)
+    if (_innerViewController == nil)
     {
         VConversationViewController *messageViewController = [VConversationViewController newWithDependencyManager:self.dependencyManager];
         messageViewController.messageCountCoordinator = self.messageCountCoordinator;
-        _conversationTableViewController = messageViewController;
+        _innerViewController = messageViewController;
     }
     
-    return _conversationTableViewController;
+    return _innerViewController;
 }
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
@@ -237,7 +237,9 @@ static const NSUInteger kCharacterLimit = 1024;
         return;
     }
     
-    [self sendMessageWithText:text inConversation:self.conversation completion:nil];
+    [self sendMessageWithText:text inConversation:self.conversation completion:^{
+        [self.innerViewController refreshLocal];
+    }];
     
     [keyboardBar.textView resignFirstResponder];
     [keyboardBar clearKeyboardBar];
@@ -251,7 +253,7 @@ static const NSUInteger kCharacterLimit = 1024;
     
     // Inset our focus area because of the keyboard bar
     UIEdgeInsets focusAreaInsets = UIEdgeInsetsMake(0, 0, keyboardBarHeight, 0);
-    [(VConversationViewController *)self.conversationTableViewController setFocusAreaInset:focusAreaInsets];
+    [(VConversationViewController *)self.innerViewController setFocusAreaInset:focusAreaInsets];
 }
 
 #pragma mark - Authorization

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 import KVOController
 
 class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSourceDelegate {
@@ -19,8 +20,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         return dataSource
     }()
     
-    private var timer: VTimerManager?
-    
     let dependencyManager: VDependencyManager
     let conversation: VConversation
     
@@ -29,13 +28,6 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     init( conversation: VConversation, dependencyManager: VDependencyManager ) {
         self.dependencyManager = dependencyManager
         self.conversation = conversation
-        super.init()
-        
-        self.KVOController.observe( conversation,
-            keyPath: "messages",
-            options: [.New, .Old],
-            action: Selector("onConversationChanged:")
-        )
     }
     
     private(set) var visibleItems = NSOrderedSet() {
@@ -59,11 +51,25 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         )
     }
     
-    func onConversationChanged( change: [NSObject : AnyObject]? ) {
+    func refreshLocal( completion:(([AnyObject])->())? = nil) {
+        guard let userID = self.conversation.user?.remoteId.integerValue else {
+            return
+        }
+        self.paginatedDataSource.refreshLocal(
+            createOperation: {
+                return FetchConverationOperation(userID: userID, paginator: StandardPaginator() )
+            },
+            completion: completion
+        )
+    }
+    
+    func refreshRemote( completion:(([AnyObject], NSError?)->())? = nil) {
         if let conversationID = self.conversation.remoteId?.integerValue {
-            self.paginatedDataSource.refreshLocal() {
-                return ConversationOperation(conversationID: conversationID)
-            }
+            self.paginatedDataSource.refreshRemote(createOperation: {
+                    return ConversationOperation(conversationID: conversationID)
+                },
+                completion: completion
+            )
         }
     }
     
@@ -80,30 +86,13 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
         }
     }
     
-    // MARK: - Live Update
-    
-    func beginLiveUpdates() {
-        self.timer = VTimerManager.scheduledTimerManagerWithTimeInterval( ConversationDataSource.liveUpdateFrequency,
-            target: self,
-            selector: Selector("onUpdate"),
-            userInfo: nil,
-            repeats: true
-        )
-    }
-    
-    func endLiveUpdates() {
-        self.timer?.invalidate()
-    }
-    
-    func onUpdate() {
-        loadMessages(pageType: .Refresh)
-    }
-    
     // MARK: - PaginatedDataSourceDelegate
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         let sortedArray = (newValue.array as? [VMessage] ?? []).sort { $0.postedAt?.compare($1.postedAt) == .OrderedAscending }
         self.visibleItems = NSOrderedSet(array: sortedArray)
+        
+        /*self.visibleItems = newValue.reversedOrderedSet*/
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

@@ -85,7 +85,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext
                                                      objectWithID:sequence.objectID];
         
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
             [comments addObjectsFromArray:sequence.comments.array];
@@ -205,7 +205,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         NSArray *resultObjectsInReverseOrder = [[resultObjects reverseObjectEnumerator] allObjects];
         VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
         
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjectsInReverseOrder];
         }
@@ -283,7 +283,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
         
         //If this is a refresh, break the relationship to all the old objects.
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             [user removeFollowers:user.followers];
         }
@@ -316,7 +316,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         VUser *user = (VUser *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:userObjectID];
         
         //If this is a refresh, break the relationship to all the old objects.
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             [user removeFollowing:user.followers];
         }
@@ -346,7 +346,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             [sequence removeReposters:sequence.reposters];
         }
@@ -427,7 +427,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if ( pageType == VPageTypeRefresh )
+        if ( pageType == VPageTypeFirst )
         {
             [sequence removeLikers:sequence.likers];
         }

@@ -84,7 +84,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 				if self.isLastPage {
 					self.state = .Content
 				} else {
-					if pageType == .Refresh {
+					if pageType == .First {
 						self.clear()
 					}
 					self.state = .Error
@@ -153,7 +153,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     
     private func updateDataSource( results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
-        if pageType == .Refresh {
+        if pageType == .First {
             if self.sections.count == 0 && results.count > 0 {
                 result.deletedSections = NSIndexSet(index: 0) // No content cell
             }

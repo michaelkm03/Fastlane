@@ -9,11 +9,13 @@
 #import "VHasManagedDependencies.h"
 #include "VKeyboardBarViewController.h"
 
+@class VConversationViewController;
+
 @interface VKeyboardBarContainerViewController : UIViewController <VHasManagedDependencies, VKeyboardBarDelegate>
 
 @property (weak, nonatomic) VKeyboardBarViewController *keyboardBarViewController;
 @property (strong, nonatomic) IBOutlet UIView *topConstraintView;
-@property (strong, nonatomic) UITableViewController *conversationTableViewController;
+@property (strong, nonatomic) VConversationViewController *innerViewController;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (assign, nonatomic) CGFloat keyboardBarHeight;
 
