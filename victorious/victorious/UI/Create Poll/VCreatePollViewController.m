@@ -15,6 +15,7 @@
 #import "victorious-Swift.h"
 #import "VDependencyManager.h"
 #import "VMediaAttachmentPresenter.h"
+#import "VImageCreationFlowController.h"
 
 static const NSInteger kMinLength = 2;
 
@@ -315,17 +316,37 @@ static char KVOContext;
 
 - (IBAction)imageAction:(id)sender
 {
-    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage];
+    NSString *defaultSearchTerm = nil;
+    if (self.firstMediaURL == nil)
+    {
+        defaultSearchTerm = self.leftAnswerTextView.text;
+    }
+    else if (self.secondMediaURL == nil)
+    {
+        defaultSearchTerm = self.rightAnswerTextView.text;
+    }
+    
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage defaultSearchTerm:defaultSearchTerm];
 }
 
 - (IBAction)videoAction:(id)sender
 {
-    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo];
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo defaultSearchTerm:nil];
 }
 
 - (void)showAttachmentWithAttachmentOptions:(VMediaAttachmentOptions)attachmentOptions
+                          defaultSearchTerm:(NSString *)defaultSearchTerm
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    if (defaultSearchTerm != nil && attachmentOptions == VMediaAttachmentOptionsImage)
+    {
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager
+                                                                              addedDependencies:@{VImageCreationFlowControllerDefaultSearchTermKey: defaultSearchTerm}];
+    }
+    else
+    {
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    }
+
     __weak typeof(self) welf = self;
     self.attachmentPresenter.attachmentTypes = attachmentOptions;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
