@@ -40,12 +40,6 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
 @interface VUploadManager : NSObject
 
 /**
- The objectManager that will be monitored for changes in authorization and
- login state and update HTTP headers on outgoing requests.
- */
-@property (nonatomic, weak) VObjectManager *objectManager;
-
-/**
  If YES (default), uploads will happen via a background session.
  This is really only meant to be set to NO for unit testing.
  */
@@ -137,5 +131,10 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  Returns YES if the task is being uploaded.
  */
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;
+
+/**
+ Creates a new, fake VUser object and sets it as the current user. This is only here for testing purposes. Do not use in production.
+ */
+- (void)mockCurrentUser;
 
 @end
