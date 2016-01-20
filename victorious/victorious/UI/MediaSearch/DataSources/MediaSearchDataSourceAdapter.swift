@@ -96,7 +96,9 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 				completion?(result)
 			}
 		}
-    }    /// Clears the backing model, highlighted section and cancels any in-progress search operation
+    }
+
+    /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() -> ChangeResult {
         var result = ChangeResult()
         self.highlightedSection = nil

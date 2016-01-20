@@ -16,6 +16,7 @@ class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
 	required init(defaultSearchTerm: String) {
 		self.defaultSearchTerm = defaultSearchTerm
+        options.clearSelectionOnAppearance = true
 	}
 	
     // MARK: - MediaSearchDataSource

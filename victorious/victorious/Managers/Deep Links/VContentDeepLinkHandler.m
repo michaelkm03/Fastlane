@@ -71,12 +71,13 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
     
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    
     NSNumber *commentId = nil;
+    
     NSString *commentIDString = [url v_pathComponentAtIndex:2];
     if ( commentIDString != nil )
     {
-        commentId = @([commentIDString integerValue]);
+        // TODO: Deep link to comment is disabled until implemented with 4.0 architecture
+        // commentId = @([commentIDString integerValue]);
     }
     
     NSString *streamId = [url v_pathComponentAtIndex:3];

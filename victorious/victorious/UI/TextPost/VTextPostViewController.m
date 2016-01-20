@@ -10,7 +10,7 @@
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
-#import "victorious-Swift.h" // For VTextPostBackgroundLayout
+#import "victorious-Swift.h"
 #import "UIImageView+WebCache.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "VHashtagSelectionResponder.h"
@@ -316,7 +316,7 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
     if ( [target conformsToProtocol:@protocol(VURLSelectionResponder)] )
     {
         id<VURLSelectionResponder> responder = (id<VURLSelectionResponder>)target;
-        [responder URLSelected:[NSURL URLWithString:urlString]];
+        [responder URLSelected:[NSURL v_URLWithString:urlString defaultScheme:@"http"]];
     }
 }
 
