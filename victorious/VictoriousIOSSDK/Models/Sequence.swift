@@ -92,7 +92,7 @@ extension Sequence {
         isGifStyle              = json["is_gif_style"].bool
         trendingTopicName       = json["trending_topic_name"].string
         parentUserID            = json["parent_user"].int
-        adBreaks                = json["ad_breaks"].array?.flatMap { AdBreak(json: $0) }
+        adBreaks                = AdBreak(json: json["ad_break"]).map { [$0] }
         comments                = json["comments"].array?.flatMap { Comment(json: $0) }
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
