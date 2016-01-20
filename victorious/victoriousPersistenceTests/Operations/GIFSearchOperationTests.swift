@@ -39,13 +39,14 @@ class GIFSearchOperationTests: XCTestCase {
         let result: GIFSearchRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
         let operation = GIFSearchOperation(searchTerm: "fun")
         operation.onComplete(result){ }
-        if let searchResults = operation.results {
-            XCTAssertEqual( searchResults.count, 1)
-            XCTAssertEqual( searchResults[0].remoteID(), "1001" )
-            XCTAssertNotNil( operation.next() )
-            XCTAssertNil( operation.prev() )
+        if let searchResults = operation.results as? [GIFSearchResultObject]
+            where !searchResults.isEmpty {
+                XCTAssertEqual( searchResults.count, 1)
+                XCTAssertEqual( searchResults[0].remoteID, "1001" )
+                XCTAssertNotNil( operation.next() )
+                XCTAssertNil( operation.prev() )
         } else {
-            XCTFail("operation.reesults should not be nil")
+            XCTFail("operation.reesults should not be nil or empty.")
         }
     }
 

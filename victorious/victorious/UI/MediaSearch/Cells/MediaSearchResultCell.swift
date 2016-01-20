@@ -1,5 +1,5 @@
 //
-//  GIFSearchResultCell.swift
+//  MediaSearchResultCell.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/9/15.
@@ -9,9 +9,9 @@
 import UIKit
 
 /// Cell to represent GIF search result in a collectin of search results
-class GIFSearchResultCell: UICollectionViewCell {
+class MediaSearchResultCell: UICollectionViewCell {
     
-    static let ReuseIdentifier = "GIFSearchResultCell"
+    static let ReuseIdentifier = "MediaSearchResultCell"
     
     @IBOutlet private weak var emptyView: UIView!
     @IBOutlet private weak var imageView: UIImageView!
