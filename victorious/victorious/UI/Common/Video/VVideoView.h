@@ -10,7 +10,6 @@
 
 #import "VVideoPlayerDelegate.h"
 @import AVFoundation;
-#import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
