@@ -34,6 +34,8 @@
 
 @implementation VExperienceEnhancerController
 
+@synthesize experienceEnhancers = _experienceEnhancers;
+
 #pragma mark - Initialization
 
 + (NSCache *)imageMemoryCache
@@ -81,7 +83,8 @@
         _sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
         NSArray *voteTypes = [self.dependencyManager voteTypes];
         
-        NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:_sequence];
+        NSArray *experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes
+                                                                           sequence:_sequence];
         _experienceEnhancers = [self validExperienceEnhancers:experienceEnhancers];
 
         dispatch_async(dispatch_get_main_queue(), ^
@@ -240,6 +243,14 @@
     });
     
     return sequence;
+}
+
+- (void)setExperienceEnhancers:(NSArray *)experienceEnhancers
+{
+    dispatch_sync(self.privateQueue, ^
+    {
+        _experienceEnhancers = experienceEnhancers;
+    });
 }
 
 - (NSArray *)experienceEnhancers
