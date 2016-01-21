@@ -49,7 +49,7 @@ final class MockPaginatedOperation: RequestOperation, PaginatedOperation {
     }
     
     func fetchResults() -> [AnyObject] {
-        var displayOrder = self.request.paginator.start
+        var displayOrder = self.request.paginator.displayOrderCounterStart
         var results = [MockPaginatedObject]()
         if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
             for _ in 0..<self.request.paginator.itemsPerPage {

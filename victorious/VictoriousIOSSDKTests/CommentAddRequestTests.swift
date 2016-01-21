@@ -21,7 +21,7 @@ class CommentAddRequestTests: XCTestCase {
     )
     
     func testTextOnlyRequest() {
-        let request = CommentAddRequest(parameters: textOnlyParameters)!
+        let request = CommentAddRequest(creationParameters: textOnlyParameters)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
@@ -36,7 +36,7 @@ class CommentAddRequestTests: XCTestCase {
             realtimeAttachment: Comment.RealtimeAttachment(time: 0.54, assetID: 999)
         )
         
-        let request = CommentAddRequest(parameters: params)!
+        let request = CommentAddRequest(creationParameters: params)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
@@ -52,7 +52,7 @@ class CommentAddRequestTests: XCTestCase {
             // mediaType: .Image,
             realtimeAttachment: nil
         )
-        let request = CommentAddRequest(parameters: params)!
+        let request = CommentAddRequest(creationParameters: params)!
         XCTAssertNotNil( request )
         XCTAssertEqual( request.urlRequest.URL?.absoluteString, "/api/comment/add" )
         XCTAssertEqual( request.urlRequest.HTTPMethod, "POST" )
@@ -64,7 +64,7 @@ class CommentAddRequestTests: XCTestCase {
                 XCTFail("Error reading mock json data")
                 return
         }
-        let request = CommentAddRequest(parameters: textOnlyParameters)!
+        let request = CommentAddRequest(creationParameters: textOnlyParameters)!
         
         let comment: Comment?
         do {

@@ -58,16 +58,5 @@ extension VSequence: PersistenceParsable {
                 return node
             })
         }
-        
-        if let comments = sequence.comments {
-            let flaggedIds = VFlaggedContent().flaggedContentIdsWithType(.Comment)
-            let unflaggedComments = comments.filter { !flaggedIds.contains(String($0.commentID)) }
-            let persistentComments: [VComment] = unflaggedComments.map {
-                let comment: VComment = self.v_managedObjectContext.v_findOrCreateObject([ "remoteId" : $0.commentID ])
-                comment.populate(fromSourceModel: $0)
-                return comment
-            }
-            self.v_addObjects( persistentComments, to: "comments")
-        }
     }
 }
