@@ -56,7 +56,7 @@ class AccountCreateOperation: RequestOperation {
                 user.setAsCurrentUser()
                 self.updateStoredCredentials( user )
                 self.notifyLoginChange( user, isNewUser: response.newUser )
-                self.queueNextOperations( user )
+                PreloadUserInfoOperation().queueAfter(self)
                 completion()
             }
         }
@@ -73,15 +73,5 @@ class AccountCreateOperation: RequestOperation {
     private func notifyLoginChange( user: VUser, isNewUser: Bool ) {
         VLoginType(rawValue: user.loginType.integerValue )?.trackSuccess( isNewUser )
         NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
-    }
-    
-    private func queueNextOperations( currentUser: VUser ) {
-        // Load more data from the network about the user
-        PollResultSummaryByUserOperation(userID: currentUser.remoteId.integerValue).queueAfter(self)
-        ConversationListOperation().queueAfter(self)
-        
-        // TODO: Think of some other things we can load here just to get the objects into the persistence store
-        // so that they are avilable offline.  Perhaps current user's liked sequences, profile stream, settings, user info fetches
-        // for any others with whom a conversation is active.
     }
 }

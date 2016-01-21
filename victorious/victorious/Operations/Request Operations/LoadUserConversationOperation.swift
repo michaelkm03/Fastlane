@@ -13,13 +13,20 @@ class LoadUserConversationOperation: Operation {
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
-    let user: VictoriousIOSSDK.User
+    let sourceUser: VictoriousIOSSDK.User?
+    let userID: Int
     
     var loadedConversation: VConversation?
     var loadedUser: VUser?
     
-    required init(user: VictoriousIOSSDK.User) {
-        self.user = user
+    required init(sourceUser: VictoriousIOSSDK.User) {
+        self.userID = sourceUser.userID
+        self.sourceUser = sourceUser
+    }
+    
+    required init(userID: Int) {
+        self.userID = userID
+        self.sourceUser = nil
     }
     
     override func start() {
@@ -29,11 +36,13 @@ class LoadUserConversationOperation: Operation {
         
         persistentStore.mainContext.v_performBlockAndWait() { context in
             
-            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : self.user.userID ] )
-            user.populate(fromSourceModel: self.user)
+            let user: VUser = context.v_findOrCreateObject( [ "remoteId" : self.userID ] )
+            if let sourceUser = self.sourceUser {
+                user.populate(fromSourceModel: sourceUser)
+            }
             self.loadedUser = user
             
-            let filteredConversations = user.conversations.filter { ($0 as? VConversation)?.user?.remoteId == self.user.userID }
+            let filteredConversations = user.conversations.filter { ($0 as? VConversation)?.user?.remoteId == self.userID }
             if let conversation = filteredConversations.first as? VConversation {
                 self.loadedConversation = conversation
             

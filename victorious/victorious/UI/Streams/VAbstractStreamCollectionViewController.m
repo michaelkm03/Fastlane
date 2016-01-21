@@ -280,6 +280,20 @@
     self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
 }
 
+- (void)refreshLocal
+{
+    return;
+    
+    [self.streamDataSource.paginatedDataSource refreshLocalWithCreateOperation:^FetcherOperation * _Nonnull
+     {
+         return [[StreamFetcherOperation alloc] initWithApiPath:self.currentStream.apiPath];
+     }
+                                                                    completion:^(NSArray *_Nonnull error)
+     {
+         
+     }];
+}
+
 - (void)loadPage:(VPageType)pageType completion:(void(^)(void))completion
 {
     if ( self.streamDataSource.isLoading )

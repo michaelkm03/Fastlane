@@ -16,7 +16,8 @@ extension VStreamCollectionViewController {
         guard let contentSection = self.streamDataSource?.sectionIndexForContent() else {
             return
         }
-        self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue)
+        // FIXME: self.collectionView.v_applyChangeInSection(contentSection, from:oldValue, to:newValue)
+        self.collectionView.reloadSections( NSIndexSet(index: contentSection) )
     }
     
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {

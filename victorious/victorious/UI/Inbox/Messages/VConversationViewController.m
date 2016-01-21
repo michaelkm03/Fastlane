@@ -139,16 +139,16 @@
 
 - (void)shouldLoadPreviousPage
 {
-    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:nil];
+    CGPoint oldOffset = self.tableView.contentOffset;
+    CGSize oldContentSize = self.tableView.contentSize;
+    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSError *_Nullable error)
+     {
+         [self maintainVisualScrollFromOffset:oldOffset contentSize:oldContentSize];
+     }];
 }
 
 - (void)shouldLoadNextPage
 {
-    CGPoint oldOffset = self.tableView.contentOffset;
-    CGSize oldContentSize = self.tableView.contentSize;
-    [self.dataSource loadMessagesWithPageType:VPageTypePrevious completion:^(NSError *_Nullable error) {
-        [self maintainVisualScrollFromOffset:oldOffset contentSize:oldContentSize];
-    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

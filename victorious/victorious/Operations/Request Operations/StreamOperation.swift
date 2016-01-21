@@ -64,7 +64,8 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 vsdk_paginator: self.request.paginator
             )
             fetchRequest.predicate = predicate
-            return context.v_executeFetchRequest( fetchRequest )
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VStreamItem]
+            return results
         }
     }
     
@@ -77,6 +78,32 @@ final class StreamOperation: RequestOperation, PaginatedOperation {
                 context.deleteObject( streamItem )
             }
             context.v_save()
+        }
+    }
+}
+
+class StreamFetcherOperation: FetcherOperation {
+    
+    let apiPath: String
+    let paginator: NumericPaginator
+    
+    init( apiPath: String ) {
+        self.apiPath = apiPath
+        self.paginator = StreamPaginator(apiPath: apiPath)!
+    }
+    
+    override func main() {
+        self.results = persistentStore.mainContext.v_performBlockAndWait() { context in
+            let fetchRequest = NSFetchRequest(entityName: VStreamItem.v_entityName())
+            fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]
+            let predicate = NSPredicate(
+                vsdk_format: "ANY self.streams.apiPath = %@",
+                vsdk_argumentArray: [ self.apiPath ],
+                vsdk_paginator: self.paginator
+            )
+            fetchRequest.predicate = predicate
+            let results = context.v_executeFetchRequest( fetchRequest ) as [VConversation]
+            return results
         }
     }
 }
