@@ -141,6 +141,7 @@
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
 		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
+		0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349FD4C1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0350E0591B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
 		0352FC691B729B0300DB6EAB /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
@@ -365,7 +366,6 @@
 		6205AAB81C334D9300859145 /* MainRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6205AAB71C334D9300859145 /* MainRequestExecutor.swift */; };
 		6236F8741C3602EE00746476 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8731C3602EE00746476 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
-		6236F8791C36037200746476 /* AccountCreateOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8771C36037200746476 /* AccountCreateOperationTests.swift */; };
 		6236F87B1C3603E900746476 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		6236F87C1C36042D00746476 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
 		6236F8801C36056A00746476 /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */; };
@@ -2003,6 +2003,7 @@
 		0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeUtilities.swift; sourceTree = "<group>"; };
 		0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettings.swift; sourceTree = "<group>"; };
 		034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsTests.swift; sourceTree = "<group>"; };
+		0349FD4C1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableURLRequest+UploadManager.swift"; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -5864,6 +5865,7 @@
 		037CB73919CFE8550084BBED /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				0349FD4C1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift */,
 				037CB74019CFE8B20084BBED /* VUploadManager.h */,
 				037CB74119CFE8B20084BBED /* VUploadManager.m */,
 				0372587319D61B0800836B3F /* VUploadTaskCreator.h */,
@@ -10665,7 +10667,6 @@
 				624675361C3DC8DE002B92A5 /* FollowUsersOperationTests.swift in Sources */,
 				678AC1731C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift in Sources */,
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
-				6236F8791C36037200746476 /* AccountCreateOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,
 				67204CFB1C3EFC9300B30DFD /* GIFSearchOperationTests.swift in Sources */,
 				67CEBCD21C474AA100A3C4A0 /* CreatePollOperationTests.swift in Sources */,
@@ -11532,6 +11533,7 @@
 				A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */,
 				6756B5151C3DED910074B14F /* RequestPasswordResetOperation.swift in Sources */,
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
+				0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */,
 				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
 				795270FE1C348BA500BD41F1 /* ActivityIndicatorTableViewCell.swift in Sources */,
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,

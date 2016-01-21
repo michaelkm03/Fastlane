@@ -72,7 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
     manager.mappingCache = [[NSMutableDictionary alloc] init];
     
-    uploadManager.objectManager = manager;
     manager.uploadManager = uploadManager;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
