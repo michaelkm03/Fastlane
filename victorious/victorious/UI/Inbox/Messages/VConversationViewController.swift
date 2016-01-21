@@ -64,22 +64,6 @@ extension VConversationViewController {
         self.tableView.setContentOffset(offset, animated:animated)
     }
     
-    var isShowingLastPage: Bool {
-        let contentSize = self.tableView.contentSize
-        let bounds = self.tableView.bounds
-        
-        guard contentSize.height > bounds.height else {
-            return false
-        }
-        
-        let contentOffset = self.tableView.contentOffset
-        let approxPageCount = floor( contentSize.height / bounds.height )
-        let lastPage = approxPageCount - 1
-        let locationRatio = contentOffset.y / contentSize.height
-        let approxCurrentPage = floor( locationRatio * approxPageCount )
-        return approxCurrentPage >= lastPage
-    }
-    
     // MARK: - Live Update
     
     func beginLiveUpdates() {
@@ -97,7 +81,7 @@ extension VConversationViewController {
     
     func onUpdate() {
         self.dataSource.refreshRemote() { (results, error) in
-            if self.isShowingLastPage {
+            if !results.isEmpty {
                 self.scrollToBottomAnimated( self.viewHasAppeared )
             }
         }
