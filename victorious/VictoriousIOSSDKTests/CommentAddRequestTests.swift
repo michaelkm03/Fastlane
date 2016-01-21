@@ -48,8 +48,6 @@ class CommentAddRequestTests: XCTestCase {
             sequenceID: "17100",
             replyToCommentID: nil,
             mediaAttachment: nil,
-            // mediaURL: mockUserDataURL,
-            // mediaType: .Image,
             realtimeAttachment: nil
         )
         let request = CommentAddRequest(creationParameters: params)!

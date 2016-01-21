@@ -11,9 +11,11 @@ import VictoriousIOSSDK
 
 @objc class HashtagSearchResultObject: NSObject {
     let sourceResult: VictoriousIOSSDK.Hashtag
+    let tag: String
     
     init( hashtag: VictoriousIOSSDK.Hashtag ) {
         self.sourceResult = hashtag
+        self.tag = hashtag.tag
     }
 }
 
@@ -43,9 +45,7 @@ final class HashtagSearchOperation: RequestOperation, PaginatedOperation {
         
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
         
-        // Queue parsing of network results into persistent store to execute after this operation completes
-        // This allows calling code to receive the `resutls` above without having to wait
-        // until all the hashtags are parsed and saved to the persistent store
+        // Queue a follow-up operation that parses to persistent store
         SaveHashtagsOperation(hashtags: networkResult).queueAfter(self)
         
         completion()

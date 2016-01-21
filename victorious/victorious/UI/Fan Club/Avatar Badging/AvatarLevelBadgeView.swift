@@ -181,6 +181,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     private func sharedSetup() {
         badgeLabel.adjustsFontSizeToFitWidth = true
         badgeLabel.textAlignment = NSTextAlignment.Center
+        backgroundImageView.contentMode = .ScaleAspectFill
         
         addSubview(backgroundImageView)
         v_addFitToParentConstraintsToSubview(backgroundImageView)

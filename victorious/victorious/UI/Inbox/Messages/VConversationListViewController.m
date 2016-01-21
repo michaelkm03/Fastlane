@@ -111,7 +111,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     self.noContentView.message = NSLocalizedString(@"NoMessagesMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     
-    // This will remove extra separators from tableview
+    // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
     [self.dataSource refreshLocal];

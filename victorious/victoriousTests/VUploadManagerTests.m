@@ -22,7 +22,6 @@
 
 @interface VUploadManagerTests : XCTestCase
 
-@property (nonatomic, strong) id objectManagerMock;
 @property (nonatomic, strong) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSURL *bodyFileURL;
 @property (nonatomic, strong) NSURL *inProgressTaskSaveFileURL;
@@ -40,12 +39,9 @@
 {
     [super setUp];
     
-    self.objectManagerMock = [OCMockObject niceMockForClass:[VObjectManager class]];
-    [[[self.objectManagerMock stub] andReturnValue:@(YES)] authorized];
-    
     self.uploadManager = [[VUploadManager alloc] init];
-    self.uploadManager.objectManager = self.objectManagerMock;
     self.uploadManager.useBackgroundSession = NO;
+    [self.uploadManager mockCurrentUser];
     
     NSString *taskSaveFilename = [[NSUUID UUID] UUIDString];
     self.inProgressTaskSaveFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:taskSaveFilename]];

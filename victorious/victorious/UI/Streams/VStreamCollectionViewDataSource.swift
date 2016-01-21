@@ -54,4 +54,8 @@ extension VStreamCollectionViewDataSource: PaginatedDataSourceDelegate {
     func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: DataSourceState, to newState: DataSourceState) {
         self.delegate?.paginatedDataSource?(paginatedDataSource, didChangeStateFrom: oldState, to: newState)
     }
+    
+    func unloadStream() {
+        self.paginatedDataSource.unload()
+    }
 }

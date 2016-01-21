@@ -47,6 +47,14 @@ class VCurrentUser: NSObject {
         return VCurrentUser.user( inManagedObjectContext: persistentStore.mainContext )
     }
     
+    static func isLoggedIn() -> Bool {
+        var isLoggedIn = false
+        persistentStore.mainContext.performBlockAndWait() {
+            isLoggedIn = VCurrentUser.user() != nil
+        }
+        return isLoggedIn
+    }
+    
     /// Strips the current user of its "current" status.  `currentUser()` method will
     /// now return nil until a new user has been set as current using method `setAsCurrent()`.
     static func clear() {
@@ -59,7 +67,7 @@ class VCurrentUser: NSObject {
 extension VUser {
     
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
-    /// current user will lose its current status, as their can be only one.
+    /// current user will lose its current status, as there can be only one.
     func setAsCurrentUser() {
         let persistentStore = VCurrentUser.persistentStore
         

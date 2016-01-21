@@ -9,6 +9,14 @@
 import Foundation
 import VictoriousIOSSDK
 
+@objc enum DataSourceState: Int {
+    case Loading
+    case Cleared
+    case NoResults
+    case Results
+    case Error
+}
+
 /// Defines an object that responds to changes in the backing store of `PaginatedDataSource`.
 @objc protocol PaginatedDataSourceDelegate: NSObjectProtocol {
     

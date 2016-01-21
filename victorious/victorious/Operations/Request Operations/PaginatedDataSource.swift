@@ -9,14 +9,6 @@
 import Foundation
 import VictoriousIOSSDK
 
-@objc enum DataSourceState: Int {
-    case Loading
-    case Cleared
-    case NoResults
-    case Results
-    case Error
-}
-
 /// A utility that abstracts the interaction between UI code and paginated `RequestOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
@@ -58,6 +50,7 @@ import VictoriousIOSSDK
         cancelCurrentOperation()
         visibleItems = NSOrderedSet()
         pagesLoaded = Set<Int>()
+        state = .Cleared
     }
     
     func cancelCurrentOperation() {
@@ -171,10 +164,6 @@ import VictoriousIOSSDK
 private extension NSOrderedSet {
     
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
-        guard !objects.isEmpty else {
-            return self.copy() as! NSOrderedSet
-        }
-        
         switch pageType {
             
         case .First: //< reset

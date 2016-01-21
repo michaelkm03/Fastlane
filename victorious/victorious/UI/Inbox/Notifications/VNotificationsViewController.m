@@ -105,7 +105,7 @@ static CGFloat const kVNotificationCellHeight = 64.0f;
     self.noContentView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
     
-    // This will remove extra separators from tableview
+    // Removes the separaters for empty rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame: CGRectZero];
     
     [self.refreshControl beginRefreshing];

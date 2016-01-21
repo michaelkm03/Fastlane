@@ -28,7 +28,7 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         super.viewDidLoad()
         
         if let viewController = viewControllers.first,
-            var searchResultsViewControler = viewController as? SearchResultsViewController {
+            let searchResultsViewControler = viewController as? SearchResultsViewController {
                 
                 searchResultsViewControler.dataSource = UserSearchDataSource()
                 searchResultsViewControler.searchResultsDelegate = self

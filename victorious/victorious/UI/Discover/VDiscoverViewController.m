@@ -33,6 +33,7 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
+#import "NSArray+VMap.h"
 #import "victorious-Swift.h"
 
 @import MBProgressHUD;
@@ -45,7 +46,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 @property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
-@property (nonatomic, strong) NSArray *trendingTags;
+@property (nonatomic, strong) NSArray<HashtagSearchResultObject *> *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaderTitles;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL loadedUserFollowing;
@@ -215,14 +216,19 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)reload
 {
-    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self hashtagsDidLoad:resultObjects];
-     }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self hashtagsDidFailToLoadWithError:error];
-     }];
+    TrendingHashtagOperation *operation = [[TrendingHashtagOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            NSArray *hashtags = operation.results;
+            [self hashtagsDidLoad:hashtags];
+        }
+        else
+        {
+            [self hashtagsDidFailToLoadWithError:error];
+        }
+    }];
 }
 
 - (void)updatedFollowedTags
@@ -355,7 +361,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         {
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             
-            VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+            HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtagText:hashtag.tag];
             
             __weak VTrendingTagCell *weakCell = customCell;
@@ -430,8 +436,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-        
+        HashtagSearchResultObject *hashtag = self.trendingTags[ indexPath.row ];
         // Tracking
         NSDictionary *params = @{ VTrackingKeyHashtag : hashtag.tag ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectTrendingHashtag parameters:params];
@@ -443,7 +448,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 #pragma mark - Show Hashtag Stream
 
-- (void)showStreamWithHashtag:(VHashtag *)hashtag
+- (void)showStreamWithHashtag:(HashtagSearchResultObject *)hashtag
 {
     VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];

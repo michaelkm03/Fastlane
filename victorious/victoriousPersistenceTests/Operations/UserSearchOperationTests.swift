@@ -20,7 +20,7 @@ class UserSearchOperationTests: BaseRequestOperationTestCase {
         operation = UserSearchOperation(searchTerm: "test")
         operation.requestExecutor = testRequestExecutor
     }
-
+    
     func testBasicSearch() {
         guard let operation = UserSearchOperation(searchTerm: "test") else {
             XCTFail("Operation initialization should not fail here")
