@@ -145,13 +145,13 @@
                                                                                 toKeyPath:@"parentUser"
                                                                               withMapping:[VUser entityMapping]]];
         
-        RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
-                                                                                             toKeyPath:VSelectorName(adBreaks)
-                                                                                           withMapping:[VAdBreak entityMapping]];
+//        RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
+//                                                                                             toKeyPath:VSelectorName(adBreaks)
+//                                                                                           withMapping:[VAdBreak entityMapping]];
         RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                              toKeyPath:VSelectorName(tracking)
                                                                                            withMapping:[VTracking entityMapping]];
-        [mapping addPropertyMapping:adBreaksMapping];
+//        [mapping addPropertyMapping:adBreaksMapping];
         [mapping addPropertyMapping:trackingMapping];
         
         [VObjectManager sharedManager].mappingCache[entityMappingKey] = mapping;
