@@ -12,6 +12,7 @@
 
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "ColorSpaceConversion.h"
+#import "DiscoverSearchViewController.h"
 #import "INVector3.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
@@ -204,6 +205,7 @@
 #import "VTracking.h"
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
+#import "VTrendingTagCell.h"
 #import "VTwitterManager.h"
 #import "VUploadTaskCreator.h"
 #import "VUploadTaskInformation.h"
@@ -213,7 +215,6 @@
 #import "VUserTag.h"
 #import "VUserTaggingTextStorage.h"
 #import "VUserTaggingTextStorageDelegate.h"
-#import "VUsersAndTagsSearchViewController.h"
 #import "VUsersDataSource.h"
 #import "VUtilityButtonCell.h"
 #import "VVideoLightboxViewController.h"

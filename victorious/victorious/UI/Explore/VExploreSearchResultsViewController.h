@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VUsersAndTagsSearchViewController.h"
+#import "DiscoverSearchViewController.h"
 
 @class VDependencyManager, VExploreSearchResultsViewController;
 
@@ -15,7 +15,7 @@
 /// The view controller to manage the presentation of explore search results
 /// This view is shown when user starts to edit the search field
 /// This view is dismissed when user clears the search field
-@interface VExploreSearchResultsViewController : VUsersAndTagsSearchViewController <UISearchBarDelegate>
+@interface VExploreSearchResultsViewController : DiscoverSearchViewController <UISearchBarDelegate>
 
 @property (nonatomic, weak) id<ExploreSearchResultNavigationDelegate> navigationDelegate;
 

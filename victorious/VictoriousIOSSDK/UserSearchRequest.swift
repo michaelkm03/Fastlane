@@ -11,30 +11,36 @@ import SwiftyJSON
 
 public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    enum SearchContext: String {
-        case Message = "message"
-        case Discover = "discover"
-        case UserTag = "tag_user"
-    }
+    public let searchTerm: String
     
-    public let queryString: String
     var context = SearchContext.Message
     
     public let paginator: StandardPaginator
     
+    let url: NSURL
+    
     public init(request: UserSearchRequest, paginator: StandardPaginator ) {
-        self.queryString = request.queryString
+        self.searchTerm = request.searchTerm
+        self.url = request.url
         self.paginator = paginator
     }
 
-    // param: - query must be a urlPathPart percent encoded string
-    public init(query: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
-        self.queryString = query
+    // param: - searchTerm must be a urlPathPart percent encoded string
+    public init?(searchTerm: String, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 50)) {
+        
+        let charSet = NSCharacterSet.vsdk_pathPartCharacterSet()
+        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet),
+            let url = NSURL(string: "/api/userinfo/search_paginate/\(escapedSearchTerm)") else {
+                return nil
+        }
+        
+        self.url = url
+        self.searchTerm = searchTerm
         self.paginator = paginator
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/userinfo/search_paginate/\(queryString)")!)
+        let request = NSMutableURLRequest(URL: url)
         paginator.addPaginationArgumentsToRequest(request)
         let contextualURL = request.URL!.URLByAppendingPathComponent(context.rawValue)
         return NSURLRequest(URL: contextualURL)
@@ -48,4 +54,3 @@ public struct UserSearchRequest: PaginatorPageable, ResultBasedPageable {
         return usersJSON.flatMap { User(json: $0) }
     }
 }
-

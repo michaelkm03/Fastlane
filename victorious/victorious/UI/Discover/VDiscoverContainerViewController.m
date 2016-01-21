@@ -22,10 +22,9 @@
 #import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
-#import "VUsersAndTagsSearchViewController.h"
+#import "DiscoverSearchViewController.h"
 
 // Transition
-#import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
@@ -40,7 +39,7 @@
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
-@property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
+@property (nonatomic, strong) DiscoverSearchViewController *discoverSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @property (nonatomic, strong) NSLayoutConstraint *searchTopConstraint;
@@ -78,9 +77,6 @@
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     self.searchField.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     self.searchField.delegate = self;
-
-    VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
-    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
 
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -203,7 +199,7 @@
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSearchBar];
 
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController newWithDependencyManager:self.dependencyManager];
+    DiscoverSearchViewController *searchViewController = [DiscoverSearchViewController newWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
@@ -227,7 +223,7 @@
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
     {
-        self.usersAndTagsSearchViewController = segue.destinationViewController;
+        self.discoverSearchViewController = segue.destinationViewController;
     }
 }
 

@@ -116,6 +116,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:VDependencyManagerUserRemoteIdKey];
     if ( remoteId != nil )
     {
+#warning FIXME: Use operations here to load local and/or network user
         return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
     }
     
@@ -481,7 +482,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         operation = [[FollowUsersOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
     }
     
-    [operation queueOn:[RequestOperation sharedQueue] completionBlock:^(NSError *_Nullable error)
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
     {
         self.profileHeaderViewController.loading = NO;
         [self reloadUserFollowingRelationship];

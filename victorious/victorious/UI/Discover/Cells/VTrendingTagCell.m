@@ -52,6 +52,11 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @implementation VTrendingTagCell
 
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass( self.class );
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -67,12 +72,11 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return kTrendingTagCellRowHeight;
 }
 
-- (void)setHashtag:(VHashtag *)hashtag
+- (void)setHashtagText:(NSString *)hashtagText
 {
-    _hashtag = hashtag;
+    _hashtagText = hashtagText;
 
     // Make sure there's a # at the beginning of the text
-    NSString *hashtagText = hashtag.tag;
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
 
     [self.hashTagLabel setText:text];
@@ -82,7 +86,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (BOOL)isSubscribedToTag
 {
-    _isSubscribedToTag = [[VCurrentUser user] isFollowingHashtagString:self.hashtag.tag];
+    _isSubscribedToTag = [[VCurrentUser user] isFollowingHashtagString:self.hashtagText];
     return _isSubscribedToTag;
 }
 

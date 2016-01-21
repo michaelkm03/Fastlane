@@ -8,12 +8,8 @@
 
 #import "VDiscoverSuggestedPeopleViewController.h"
 #import "VDiscoverSuggestedPersonCell.h"
-#import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Pagination.h"
-#import "VObjectManager+Discover.h"
-#import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
+#import "victorious-Swift.h"
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VDiscoverSuggestedPersonCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
@@ -84,14 +80,18 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (void)reload
 {
-    [[VObjectManager sharedManager] getDiscoverUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self didLoadWithUsers:resultObjects];
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [self didFailToLoadWithError:error];
-     }];
+    TrendingUsersOperation *operation = [[TrendingUsersOperation alloc] init];
+    [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
+    {
+        if (error == nil)
+        {
+            [self didLoadWithUsers:operation.results];
+        }
+        else
+        {
+            [self didFailToLoadWithError:error];
+        }
+    }];
 }
 
 - (void)didLoadWithUsers:(NSArray *)users

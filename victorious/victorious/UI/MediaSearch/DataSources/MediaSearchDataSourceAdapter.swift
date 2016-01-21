@@ -111,7 +111,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
             result.insertedSections = NSIndexSet(index:0)
         }
         self.sections = []
-        self.dataSource?.clearVisibleItems()
+        self.dataSource?.unload()
         return result
     }
 	

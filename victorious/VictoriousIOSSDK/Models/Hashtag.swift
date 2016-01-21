@@ -12,6 +12,12 @@ public struct Hashtag {
     public let tag: String
     public let amFollowing: Bool?
     public let count: Int?
+    
+    public init( tag: String, amFollowing: Bool? = nil, count: Int? = nil ) {
+        self.tag = tag
+        self.amFollowing = amFollowing
+        self.count = count
+    }
 }
 
 extension Hashtag {

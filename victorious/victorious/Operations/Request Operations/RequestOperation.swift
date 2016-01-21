@@ -10,17 +10,15 @@ import Foundation
 import VictoriousIOSSDK
 import VictoriousCommon
 
-private let _defaultQueue: NSOperationQueue = NSOperationQueue()
-
 class RequestOperation: NSOperation, Queuable, RequestExecutorDelegate {
+    
+    private static let sharedQueue: NSOperationQueue = NSOperationQueue()
     
     static let errorDomain: String                  = "com.getvictorious.RequestOperation"
     static let errorCodeNoNetworkConnection: Int    = 9001
     static let errorCodeNoMoreResults: Int          = 9002
     
-    var defaultQueue: NSOperationQueue { return _defaultQueue }
-    
-    static var sharedQueue: NSOperationQueue { return _defaultQueue }
+    var defaultQueue: NSOperationQueue { return RequestOperation.sharedQueue }
     
     var mainQueueCompletionBlock: ((NSError?)->())?
     

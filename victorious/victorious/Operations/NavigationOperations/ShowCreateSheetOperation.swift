@@ -30,7 +30,7 @@ import UIKit
                 dependencyManager: dependencyManager,
                 context: .CreatePost
             )
-            loginOperation.queueBefore( self, queue: Operation.defaultQueue )
+            loginOperation.queueBefore(self)
         }
     }
     

@@ -27,17 +27,16 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
     
     required init( request: UserSearchRequest ) {
         self.request = request
-        self.escapedQueryString = request.queryString
+        self.escapedQueryString = request.searchTerm
     }
     
-    convenience init?( queryString: String ) {
-        guard let escapedString = queryString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_pathPartCharacterSet()) else {
+    convenience init?( searchTerm: String ) {
+        guard let request = UserSearchRequest(searchTerm: searchTerm) else {
             /// Call self.init(request:) here to prevent crash when this initializer fails and returns nil
-            self.init(request: UserSearchRequest(query: ""))
-
+            self.init(request: UserSearchRequest(searchTerm: "")!)
             return nil
         }
-        self.init(request: UserSearchRequest(query: escapedString))
+        self.init(request: request)
     }
     
     override func main() {
@@ -48,27 +47,26 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         completion()
     }
     
-    internal func onComplete(result: UserSearchRequest.ResultType, completion: () -> () ) {
+    func onComplete(networkResult: UserSearchRequest.ResultType, completion: () -> () ) {
         
-        defer {
-            // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
-            completion()
-        }
-        
-        guard !result.isEmpty else {
+        guard !networkResult.isEmpty else {
             results = []
+            completion()
             return
         }
         
-        results = result.map{ UserSearchResultObject( user: $0) }
+        self.results = networkResult.map{ UserSearchResultObject( user: $0) }
+        
+        // Call the completion block before the Core Data context saves because consumers only care about the networkUsers
+        completion()
 
         // Populate our local users cache based off the new data
         storedBackgroundContext = persistentStore.createBackgroundContext().v_performBlock() { context in
-            guard !result.isEmpty else {
+            guard !networkResult.isEmpty else {
                 return
             }
             
-            for networkUser in result {
+            for networkUser in networkResult {
                 let localUser: VUser = context.v_findOrCreateObject([ "remoteId" : networkUser.userID])
                 localUser.populate(fromSourceModel: networkUser)
             }
@@ -76,4 +74,3 @@ final class UserSearchOperation: RequestOperation, PaginatedOperation {
         }
     }
 }
-
