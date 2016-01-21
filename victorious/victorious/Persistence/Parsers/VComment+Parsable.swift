@@ -26,7 +26,7 @@ extension VComment: PersistenceParsable {
         if let mediaAttachment = comment.mediaAttachment {
             mediaType           = mediaAttachment.type.rawValue
             mediaUrl            = mediaAttachment.url.absoluteString
-            thumbnailUrl        = mediaAttachment.thumbnailURL.absoluteString
+            thumbnailUrl        = mediaAttachment.thumbnailURL?.absoluteString ?? thumbnailUrl
             mediaWidth          = mediaAttachment.size?.width ?? mediaWidth
             mediaHeight         = mediaAttachment.size?.height ?? mediaHeight
         }

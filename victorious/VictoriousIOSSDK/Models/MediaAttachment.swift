@@ -19,7 +19,7 @@ public enum MediaAttachmentType: String {
 public struct MediaAttachment {
     public let type: MediaAttachmentType
     public let url: NSURL
-    public let thumbnailURL: NSURL
+    public let thumbnailURL: NSURL?
     public let size: CGSize?
     public let isGIFStyle: Bool?
     public let shouldAutoplay: Bool?

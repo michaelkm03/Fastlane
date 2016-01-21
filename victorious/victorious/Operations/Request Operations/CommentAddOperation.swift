@@ -84,12 +84,13 @@ class CreateCommentOperation: FetcherOperation {
             comment.postedAt = creationDate
             comment.displayOrder = newDisplayOrder
             
-            if let mediaAttachment = self.creationParameters.mediaAttachment {
-                comment.mediaType = mediaAttachment.type.rawValue
-                comment.mediaUrl = mediaAttachment.url.absoluteString
-                comment.thumbnailUrl = mediaAttachment.thumbnailURL.absoluteString
-                comment.mediaWidth = mediaAttachment.size?.width
-                comment.mediaHeight = mediaAttachment.size?.height
+            if let mediaAttachment = self.creationParameters.mediaAttachment,
+                let thumbnailURL = mediaAttachment.createThumbnailImage() {
+                    comment.mediaType = mediaAttachment.type.rawValue
+                    comment.mediaUrl = mediaAttachment.url.absoluteString
+                    comment.thumbnailUrl = thumbnailURL.absoluteString
+                    comment.mediaWidth = mediaAttachment.size?.width
+                    comment.mediaHeight = mediaAttachment.size?.height
             }
             
             let allComments = [comment] + sequence.comments.array as? [VComment] ?? []

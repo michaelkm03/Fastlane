@@ -11,30 +11,38 @@ import VictoriousIOSSDK
 
 extension MediaAttachment {
     
+    /// Adapts the view controller specific VPublishParameters into a Victorious IOS SDK compliant
+    /// MediaAttachment to submit to a network request such as commenting or sending messages.
     init?(publishParameters: VPublishParameters) {
-        guard let url = publishParameters.mediaToUploadURL,
-            let thumbnailURL = MediaAttachment.localImageURLForVideoAtURL( url ) else {
-                return nil
+        guard let url = publishParameters.mediaToUploadURL else {
+            return nil
         }
-        self.size = CGSize( width: CGFloat(publishParameters.width), height: CGFloat(publishParameters.height) )
+        size = CGSize( width: CGFloat(publishParameters.width), height: CGFloat(publishParameters.height) )
         self.url = url
-        self.thumbnailURL = thumbnailURL
-        self.shouldAutoplay = false
         
         if publishParameters.isGIF {
-            self.type = .GIF
-            self.isGIFStyle = true
+            type = .GIF
+            isGIFStyle = true
+            shouldAutoplay = true
        
         } else if publishParameters.isVideo {
-            self.type = .Video
-            self.isGIFStyle = false
+            type = .Video
+            isGIFStyle = false
+            shouldAutoplay = false
+            
         } else {
-            self.type = .Image
-            self.isGIFStyle = false
+            type = .Image
+            isGIFStyle = false
+            shouldAutoplay = false
         }
+        
+        thumbnailURL = nil
     }
     
-    private static func localImageURLForVideoAtURL( url: NSURL ) -> NSURL? {
+    /// Snapshot the asset and save the image to a URL and return it.
+    /// This can be performance intensive depending on the media url of the receiver,
+    /// so call this function wisely.
+    func createThumbnailImage() -> NSURL? {
         guard !url.v_hasImageExtension() else {
             return url
         }

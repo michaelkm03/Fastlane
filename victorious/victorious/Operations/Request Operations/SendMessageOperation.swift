@@ -74,12 +74,13 @@ class CreateMessageOperation: FetcherOperation {
             message.postedAt = creationDate
             message.displayOrder = newDisplayOrder
             
-            if let mediaAttachment = self.creationParameters.mediaAttachment {
-                message.mediaType = mediaAttachment.type.rawValue
-                message.mediaUrl = mediaAttachment.url.absoluteString
-                message.thumbnailUrl = mediaAttachment.thumbnailURL.absoluteString
-                message.mediaWidth = mediaAttachment.size?.width
-                message.mediaHeight = mediaAttachment.size?.height
+            if let mediaAttachment = self.creationParameters.mediaAttachment,
+                let thumbnailURL = mediaAttachment.createThumbnailImage() {
+                    message.mediaType = mediaAttachment.type.rawValue
+                    message.mediaUrl = mediaAttachment.url.absoluteString
+                    message.thumbnailUrl = thumbnailURL.absoluteString
+                    message.mediaWidth = mediaAttachment.size?.width
+                    message.mediaHeight = mediaAttachment.size?.height
             }
             
             conversation.lastMessageText = message.text
