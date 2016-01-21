@@ -14,6 +14,13 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     weak var searchResultsDelegate: SearchResultsViewControllerDelegate?
     var dependencyManager: VDependencyManager?
     
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        view.color = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        view.hidesWhenStopped = true
+        return view
+    }()
+    
     var state: DataSourceState {
         return self.dataSource?.state ?? .Cleared
     }
@@ -32,13 +39,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     
     @IBOutlet private var tableView: UITableView!
     
-    var noContentView: VNoContentView? {
-        didSet {
-            if isViewLoaded() {
-                resizeNoContentView()
-            }
-        }
-    }
+    var noContentView: VNoContentView?
 
     private lazy var scrollPaginator: VScrollPaginator = {
         let paginator = VScrollPaginator()
@@ -57,6 +58,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
     }
     
     func search( searchTerm searchTerm: String, completion:((NSError?)->())? = nil ) {
+        dataSource?.unload()
         dataSource?.search(searchTerm: searchTerm, pageType: .First, completion: completion)
     }
     
@@ -72,12 +74,15 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         searchController.searchBar.delegate = self
         dataSource?.delegate = self
         
+        view.insertSubview(activityIndicatorView, aboveSubview: tableView)
+        view.v_addCenterHorizontallyConstraintsToSubview(activityIndicatorView)
+        view.v_addPinToTopToSubview(activityIndicatorView, topMargin: activityIndicatorView.bounds.height)
+        
         // Removes the separaters for empty rows
         tableView.tableFooterView = UIView(frame: CGRectZero)
         
         onDidSetDataSource()
         updateTableView()
-        resizeNoContentView()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -87,10 +92,6 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         dispatch_after(0.01) {
             self.searchController.searchBar.becomeFirstResponder()
         }
-    }
-    
-    private func resizeNoContentView() {
-        noContentView?.frame = tableView.bounds
     }
     
     // MARK: - UITableViewDelegate
@@ -175,6 +176,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         
         guard let dataSource = self.dataSource else {
             tableView.backgroundView = nil
+            activityIndicatorView.stopAnimating()
             return
         }
         
@@ -183,7 +185,7 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
         
         switch dataSource.state {
             
-        case .Error, .NoResults, .Loading where isAlreadyShowingNoContent:
+        case .Error, .NoResults:
             guard let tableView = self.tableView else {
                 break
             }
@@ -192,10 +194,17 @@ class SearchResultsViewController : UIViewController, UISearchBarDelegate, UISea
                 noContentView?.animateTransitionIn()
             }
             
+            noContentView?.frame = tableView.bounds
             tableView.backgroundView = noContentView
+            activityIndicatorView.stopAnimating()
+            
+        case .Loading where dataSource.visibleItems.count == 0:
+            tableView.backgroundView = nil
+            activityIndicatorView.startAnimating()
             
         default:
             tableView.backgroundView = nil
+            activityIndicatorView.stopAnimating()
         }
     }
 }

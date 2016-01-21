@@ -47,7 +47,6 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
                 viewController.navigationItem.titleView = searchController.searchBar
                 
                 let noContentView: VNoContentView = VNoContentView.v_fromNib()
-                noContentView.translatesAutoresizingMaskIntoConstraints = false
                 noContentView.icon = UIImage(named: "user-icon")
                 noContentView.title = NSLocalizedString("NoUserSearchResultsTitle", comment:"")
                 noContentView.message = NSLocalizedString("NoUserSearchResultsMessage", comment:"")
