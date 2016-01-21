@@ -10,7 +10,7 @@ import Foundation
 
 extension NSDate: Comparable {}
 
-public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
+func ==(lhs: NSDate, rhs: NSDate) -> Bool {
     return lhs.isEqualToDate(rhs)
 }
 

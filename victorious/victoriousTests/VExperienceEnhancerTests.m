@@ -38,13 +38,12 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 @interface VExperienceEnhancerController (UnitTests)
 
-@property (nonatomic, strong) NSArray *experienceEnhancers;
+- (void)setExperienceEnhancers:(NSArray *)experienceEnhancers;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
 
 @end
-
 
 @interface VExperienceEnhancerTests : XCTestCase
 
@@ -88,7 +87,8 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 
 - (void)testAddResults
 {
-    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
+    NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes
+                                                                                      sequence:self.sequence];
     
     self.viewController.experienceEnhancers = experienceEnhancers;
     [self.viewController updateData];

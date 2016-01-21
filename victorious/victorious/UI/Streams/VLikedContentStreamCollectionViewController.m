@@ -55,11 +55,7 @@ static NSString * const kLogInChangedNotification = @"com.getvictorious.LoggedIn
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    // Remove any cells which we've unliked
-    for (VStreamItem *streamItem in self.streamItemsToRemove)
-    {
-        [self.streamDataSource removeStreamItem:streamItem];
-    }
+#warning FIXME 4.0: Make sure to remove any cells which we've unliked
 }
 
 - (void)viewWillAppear:(BOOL)animated

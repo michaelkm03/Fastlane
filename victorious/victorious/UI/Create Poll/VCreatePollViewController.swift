@@ -9,9 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-public extension VCreatePollViewController {
+extension VCreatePollViewController {
     
-    public func createPoll() {
+    func createPoll() {
         guard let questionText = self.questionTextView?.text,
             let leftAnswer = self.leftAnswerTextView?.text,
             let rightAnswer = self.rightAnswerTextView?.text else {

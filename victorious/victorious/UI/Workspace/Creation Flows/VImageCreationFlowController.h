@@ -9,6 +9,7 @@
 #import "VAbstractImageVideoCreationFlowController.h"
 
 extern NSString * const VImageCreationFlowControllerKey;
+extern NSString * const VImageCreationFlowControllerDefaultSearchTermKey;
 
 @interface VImageCreationFlowController : VAbstractImageVideoCreationFlowController
 

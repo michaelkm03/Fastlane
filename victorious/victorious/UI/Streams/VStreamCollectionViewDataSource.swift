@@ -9,12 +9,12 @@
 import UIKit
 import VictoriousIOSSDK
 
-public extension VStreamCollectionViewDataSource {
+extension VStreamCollectionViewDataSource {
     
     /// The primary way to load a stream.
     ///
     /// -parameter pageType Which page of this paginatined method should be loaded (see VPageType).
-    public func loadPage( pageType: VPageType, completion:(NSError?)->()) {
+    func loadPage( pageType: VPageType, completion:(NSError?)->()) {
         guard let apiPath = self.stream.apiPath else {
             return
         }
@@ -39,6 +39,6 @@ public extension VStreamCollectionViewDataSource {
     }
     
     public func unloadStream() {
-        UnloadStreamItemOperation(streamID: self.stream.remoteId ).queue()
+        self.paginatedDataSource.unload()
     }
 }

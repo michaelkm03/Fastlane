@@ -10,11 +10,11 @@
 #import "UIImage+ImageCreation.h"
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
-#import "VImageSearchViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"
 #import "VDependencyManager.h"
 #import "VMediaAttachmentPresenter.h"
+#import "VImageCreationFlowController.h"
 
 static const NSInteger kMinLength = 2;
 
@@ -306,17 +306,37 @@ static char KVOContext;
 
 - (IBAction)imageAction:(id)sender
 {
-    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage];
+    NSString *defaultSearchTerm = nil;
+    if (self.firstMediaURL == nil)
+    {
+        defaultSearchTerm = self.leftAnswerTextView.text;
+    }
+    else if (self.secondMediaURL == nil)
+    {
+        defaultSearchTerm = self.rightAnswerTextView.text;
+    }
+    
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage defaultSearchTerm:defaultSearchTerm];
 }
 
 - (IBAction)videoAction:(id)sender
 {
-    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo];
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo defaultSearchTerm:nil];
 }
 
 - (void)showAttachmentWithAttachmentOptions:(VMediaAttachmentOptions)attachmentOptions
+                          defaultSearchTerm:(NSString *)defaultSearchTerm
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    if (defaultSearchTerm != nil && attachmentOptions == VMediaAttachmentOptionsImage)
+    {
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager
+                                                                              addedDependencies:@{VImageCreationFlowControllerDefaultSearchTermKey: defaultSearchTerm}];
+    }
+    else
+    {
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    }
+
     __weak typeof(self) welf = self;
     self.attachmentPresenter.attachmentTypes = attachmentOptions;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
@@ -415,50 +435,6 @@ static char KVOContext;
         self.completionHandler(VCreatePollViewControllerResultDone);
         self.completionHandler = nil;
     }
-}
-
-- (IBAction)searchImageAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-    
-    VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
-    
-    if (self.firstMediaURL)
-    {
-        imageSearch.searchTerm = self.rightAnswerTextView.text;
-    }
-    else
-    {
-        imageSearch.searchTerm = self.leftAnswerTextView.text;
-    }
-    
-    VImageSearchViewController __weak *weakImageSearch = imageSearch;
-    imageSearch.imageSelectionHandler = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            if (self.firstMediaURL)
-            {
-                if (!self.rightAnswerTextView.text || [self.rightAnswerTextView.text isEqualToString:@""])
-                {
-                    self.rightAnswerTextView.text = weakImageSearch.searchTerm;
-                    [self textViewDidChange:self.rightAnswerTextView];
-                }
-            }
-            else
-            {
-                if (!self.leftAnswerTextView.text || [self.leftAnswerTextView.text isEqualToString:@""])
-                {
-                    self.leftAnswerTextView.text = weakImageSearch.searchTerm;
-                    [self textViewDidChange:self.leftAnswerTextView];
-                }
-            }
-            [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
-        }
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    [self presentViewController:imageSearch animated:YES completion:nil];
 }
 
 - (VContentInputAccessoryView *)inputAccessoryViewForTextView:(UITextView *)textView

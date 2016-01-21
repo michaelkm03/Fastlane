@@ -7,8 +7,7 @@
 //
 
 #import "VConstants.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Private.h"
+#import "victorious-Swift.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
@@ -48,6 +47,7 @@ static inline BOOL isSessionQueue()
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *urlSession;
+@property (nonatomic, strong) id<PersistentStoreType> persistentStore;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
 @property (nonatomic, readonly) dispatch_queue_t callbackQueue; ///< all callbacks should be made asynchronously on this queue
 @property (nonatomic, strong) NSMapTable *taskInformationBySessionTask; ///< Stores all VUploadTaskInformation objects referenced by their associated NSURLSessionTasks
@@ -69,6 +69,7 @@ static inline BOOL isSessionQueue()
     self = [super init];
     if ( self != nil )
     {
+        _persistentStore = [PersistentStoreSelector defaultPersistentStore];
         _useBackgroundSession = YES;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _taskInformationBySessionTask = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
@@ -76,23 +77,9 @@ static inline BOOL isSessionQueue()
         _completionBlocksForPendingTasks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
         _responseData = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
         dispatch_queue_set_specific(_sessionQueue, &kSessionQueueSpecific, &kSessionQueueSpecific, NULL);
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)setObjectManager:(VObjectManager *)objectManager
-{
-    if ( _objectManager != nil )
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-    }
-    _objectManager = objectManager;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
 - (void)startURLSession
@@ -273,7 +260,8 @@ static inline BOOL isSessionQueue()
         [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
         
         NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-        [self.objectManager updateHTTPHeadersInRequest:request];
+        [request v_setAuthorizationHeaderWithPersistentStore:self.persistentStore];
+        
         NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadBodyFileURL];
         
         if ( uploadSessionTask == nil )
@@ -424,12 +412,7 @@ static inline BOOL isSessionQueue()
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     
-    BOOL __block authorized = NO;
-    dispatch_sync(dispatch_get_main_queue(), ^(void)
-    {
-        authorized = [self.objectManager authorized];
-    });
-    if (!authorized)
+    if ( ![VCurrentUser isLoggedIn] )
     {
         return;
     }
@@ -630,10 +613,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         if ( data != nil )
         {
             jsonObject = [self parsedResponseFromData:data parsedError:&victoriousError];
-            if ( victoriousError != nil )
-            {
-                [self.objectManager defaultErrorHandlingForCode:victoriousError.code];
-            }
             [self.responseData removeObjectForKey:task];
         }
         
@@ -718,6 +697,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     }
 }
 
+#pragma mark -
+
 + (VUploadManager *)sharedManager
 {
     static VUploadManager *sharedManager = nil;
@@ -726,6 +707,18 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         sharedManager = [[VUploadManager alloc] init];
     });
     return sharedManager;
+}
+
+- (void)mockCurrentUser
+{
+    id<PersistentStoreType> persistentStore = [[TestPersistentStore alloc] init];
+    VUser *user = (VUser *)[[persistentStore mainContext] v_createObjectAndSaveWithEntityName:@"User" configurations:^(NSManagedObject *_Nonnull object) {
+        VUser *user = (VUser *)object;
+        user.remoteId = @123;
+        user.status = @"stored";
+        user.token = @"abcd";
+    }];
+    [user setAsCurrentUser];
 }
 
 @end

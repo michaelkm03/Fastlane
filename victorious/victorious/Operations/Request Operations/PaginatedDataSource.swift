@@ -66,7 +66,6 @@ import Foundation
     
     func unload() {
         unfilteredItems = NSOrderedSet()
-        visibleItems = NSOrderedSet()
     }
     
     func cancelCurrentOperation() {
