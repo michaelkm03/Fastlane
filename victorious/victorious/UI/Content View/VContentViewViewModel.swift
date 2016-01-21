@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-public extension VContentViewViewModel {
+extension VContentViewViewModel {
     
     func loadNetworkData() {
         

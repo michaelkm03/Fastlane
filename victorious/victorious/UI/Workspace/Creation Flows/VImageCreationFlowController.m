@@ -12,7 +12,6 @@
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VImageCameraViewController.h"
-#import "VImageSearchViewController.h"
 #import "VCameraToWorkspaceAnimator.h"
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
@@ -23,6 +22,7 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
+NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSearchTerm";
 
 @interface VImageCreationFlowController () <MediaSearchViewControllerDelegate, VImageCameraViewControllerDelegate>
 
@@ -41,10 +41,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         [self setContext:VCameraContextImageContentCreation];
 		_dependencyManager = dependencyManager;
         
-        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:dependencyManager];
-        NSString *ownerName = appInfo.ownerName;
+        NSString *dependencyManagerSearchTerm = [dependencyManager stringForKey:VImageCreationFlowControllerDefaultSearchTermKey];
 		
-        id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:ownerName ?: @""];
+        id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:dependencyManagerSearchTerm ?: @""];
 		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
 																					   depndencyManager:dependencyManager];
 		_mediaSearchViewController.delegate = self;

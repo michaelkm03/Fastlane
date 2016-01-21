@@ -16,9 +16,10 @@ class ImageSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
 	required init(defaultSearchTerm: String) {
 		self.defaultSearchTerm = defaultSearchTerm
+        options.clearSelectionOnAppearance = true
 	}
 	
-	// MARK: - MediaSearchDataSource
+    // MARK: - MediaSearchDataSource
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError?->())? ) {
 		

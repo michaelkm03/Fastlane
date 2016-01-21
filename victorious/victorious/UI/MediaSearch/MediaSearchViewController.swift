@@ -19,6 +19,7 @@ import UIKit
 class MediaSearchOptions: NSObject {
     var showPreview: Bool = false
     var showAttribution: Bool = false
+    var clearSelectionOnAppearance: Bool = false
     
     static var defaultOptions: MediaSearchOptions {
         return MediaSearchOptions()
@@ -62,6 +63,8 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
     
+    //MARK: - UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,6 +98,17 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 		
         self.updateNavigationItemState()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if (self.options.clearSelectionOnAppearance == true)
+        {
+            collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
+        }
+    }
+    
+    //MARK: - API
     
     func exportSelectedItem( sender: AnyObject? ) {
         guard let indexPath = self.selectedIndexPath else {

@@ -16,5 +16,9 @@ import UIKit
 	
     var title: String { get }
     
-	var visibleItems: NSOrderedSet { get }
+    var visibleItems: NSOrderedSet { get }
+    
+    func unload()
+    
+    var delegate: PaginatedDataSourceDelegate? { set get }
 }

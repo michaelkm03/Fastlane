@@ -60,7 +60,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
 	
-	var dataSource: MediaSearchDataSource?
+    var dataSource: MediaSearchDataSource?
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
 		
@@ -74,31 +74,29 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
 		
 		self.state = .Loading
-		
-		dataSource.performSearch( searchTerm: searchTerm, pageType: pageType) { error in
-			
-			// FIX: self.isLastPage = self.currentOperation?.next() == nil
+		dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
 			
 			var result = ChangeResult()
 			if let error = error {
 				if self.isLastPage {
 					self.state = .Content
 				} else {
-					if pageType == .First {
-						self.clear()
-					}
 					self.state = .Error
 					result.error = error
-				}
+                }
+                
+                self.isLastPage = true
 				completion?(nil)
 				
 			} else if let results = dataSource.visibleItems.array as? [MediaSearchResult] {
 				self.state = .Content
-				let result = self.updateDataSource( results, pageType: pageType )
+				let result = self.updateDataSource(results, pageType: pageType)
+
+                self.isLastPage = results.count == 0
 				completion?(result)
 			}
 		}
-	}
+    }
 
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() -> ChangeResult {
@@ -113,6 +111,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
             result.insertedSections = NSIndexSet(index:0)
         }
         self.sections = []
+        self.dataSource?.unload()
         return result
     }
 	
@@ -244,7 +243,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 			cell.text = ""
 			cell.loading = false
 		}
-	}
+    }
 }
 
 /// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.

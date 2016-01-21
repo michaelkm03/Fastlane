@@ -1,5 +1,5 @@
 //
-//  GIFSearchResult.swift
+//  GIFSearchResultObject.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 12/23/15.
@@ -8,16 +8,6 @@
 
 import Foundation
 import VictoriousIOSSDK
-
-@objc protocol MediaSearchResult: class {
-	var exportPreviewImage: UIImage? { get set }
-	var exportMediaURL: NSURL? { get set }
-	var sourceMediaURL: NSURL? { get }
-	var thumbnailImageURL: NSURL? { get }
-	var aspectRatio: CGFloat { get }
-	var assetSize: CGSize { get }
-	var remoteID: String? { get }
-}
 
 @objc class GIFSearchResultObject: NSObject, MediaSearchResult {
 	
@@ -42,6 +32,9 @@ import VictoriousIOSSDK
 	}
 	
 	var aspectRatio: CGFloat {
+        guard sourceResult.height > 0 && sourceResult.width > 0 else {
+            return 1.0
+        }
 		return CGFloat(sourceResult.width) / CGFloat(sourceResult.height)
 	}
 	
