@@ -8,8 +8,6 @@
 
 #import "VConstants.h"
 #import "victorious-Swift.h"
-#import "VObjectManager+Login.h"
-#import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskInformation.h"
 #import "VUploadTaskSerializer.h"
