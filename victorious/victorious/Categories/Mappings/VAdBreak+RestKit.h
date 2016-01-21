@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAdBreak.h"
 #import "NSManagedObject+RestKit.h"
+#import "victorious-Swift.h"
 
 @interface VAdBreak (RestKit)
 

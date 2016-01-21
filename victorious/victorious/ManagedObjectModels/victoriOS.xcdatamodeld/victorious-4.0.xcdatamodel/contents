@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15C50" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10118.6" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -7,7 +7,11 @@
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
     </entity>
     <entity name="AdBreak" representedClassName="VAdBreak" syncable="YES">
+        <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cannedAdXML" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="startPosition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeout" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="fallbacks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreakFallback" inverseName="adbreak" inverseEntity="AdBreakFallback" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="adBreaks" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -361,7 +365,7 @@
     </entity>
     <elements>
         <element name="AbstractFilter" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="AdBreak" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="128" height="150"/>
         <element name="AdBreakFallback" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>

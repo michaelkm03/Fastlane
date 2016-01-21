@@ -14,10 +14,10 @@
 #import "VVoteResult+RestKit.h"
 #import "VUser+RestKit.h"
 #import "VTracking+RestKit.h"
-#import "VAdBreak+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VImageAsset+RestKit.h"
 #import "VEditorializationItem.h"
+#import "victorious-Swift.h"
 
 @implementation VSequence (RestKit)
 

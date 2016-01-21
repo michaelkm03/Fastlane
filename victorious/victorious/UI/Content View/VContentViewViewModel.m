@@ -26,7 +26,6 @@
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
 #import "VAsset+VAssetCache.h"
-#import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
@@ -161,20 +160,17 @@
     }
     
     self.adChain = [[NSMutableArray alloc] init];
+
     NSOrderedSet *adBreakSet = self.sequence.adBreaks;
-    
-    for (VAdBreak *ad in adBreakSet)
+
+    for (VAdBreak *adBreak in adBreakSet)
     {
-        NSOrderedSet *fallbackSet = ad.fallbacks;
-        for (VAdBreakFallback *item in fallbackSet)
-        {
-            [self.adChain addObject:item];
-        }
+        [self.adChain addObject:adBreak];
     }
-    
+
     // Grab the preroll
-    VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
-    int adSystemPartner = [[breakItem adSystem] intValue];
+    VAdBreak *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
+    int adSystemPartner = [[breakItem adSystemID] intValue];
     self.monetizationPartner = adSystemPartner < VMonetizationPartnerCount ? adSystemPartner : VMonetizationPartnerNone;
     self.monetizationDetails = self.adChain;
 }

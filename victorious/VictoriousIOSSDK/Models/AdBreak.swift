@@ -10,10 +10,10 @@ import Foundation
 import SwiftyJSON
 
 public struct AdBreak {
-    let adSystemID: Int
-    let timeout: Int
-    let adTag: String?
-    let cannedAdXML: String?
+    public let adSystemID: Int
+    public let timeout: Int
+    public let adTag: String?
+    public let cannedAdXML: String?
 }
 
 extension AdBreak {

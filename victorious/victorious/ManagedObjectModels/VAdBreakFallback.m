@@ -7,7 +7,6 @@
 //
 
 #import "VAdBreakFallback.h"
-#import "VAdBreak.h"
 
 
 @implementation VAdBreakFallback

@@ -22,16 +22,13 @@ extension VContentViewViewModel {
         // TODO: Check if `self.deepLinkCommentId` is defined and if so,
         // implement deep link to comment using endpoint /api/comment/find/{comment_id}.
 
-        let operation = SequenceFetchOperation( sequenceID: self.sequence.remoteId )
-        operation.queue() { error in
+        SequenceFetchOperation( sequenceID: self.sequence.remoteId ).queue() { error in
             // Update the vote/EBs thrown counts
             self.experienceEnhancerController.updateData()
 
             // Sets up the monetization chain
-            if let fetchedSequence = operation.result {
-                if (fetchedSequence.adBreaks?.count ?? 0) > 0 {
-                    self.setupAdChain()
-                }
+            if (self.sequence.adBreaks?.count ?? 0) > 0 {
+                self.setupAdChain()
             }
             self.delegate?.didUpdateSequence()
         }
