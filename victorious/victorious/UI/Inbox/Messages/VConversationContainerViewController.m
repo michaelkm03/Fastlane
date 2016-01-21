@@ -233,7 +233,6 @@ static const NSUInteger kCharacterLimit = 1024;
         //[self.innerViewController refreshLocal];
     }];
     
-    [keyboardBar.textView resignFirstResponder];
     [keyboardBar clearKeyboardBar];
 }
 

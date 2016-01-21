@@ -199,6 +199,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     
     self.didEndViewWillAppear = YES;
+    
     [self attemptToRefreshProfileUI];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];

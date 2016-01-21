@@ -41,9 +41,12 @@ class ConversationDataSource: NSObject, UITableViewDataSource, PaginatedDataSour
     }
     
     func loadMessages( pageType pageType: VPageType, completion:((NSError?)->())? = nil ) {
+        guard let conversationID = self.conversation.remoteId?.integerValue else {
+            return
+        }
         self.paginatedDataSource.loadPage( pageType,
             createOperation: {
-                return ConversationOperation(conversationID: self.conversation.remoteId.integerValue)
+                return ConversationOperation(conversationID: conversationID)
             },
             completion: { (operation, error) in
                 completion?(error)

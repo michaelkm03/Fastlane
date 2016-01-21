@@ -52,8 +52,6 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
  */
 - (IBAction)refresh:(nullable UIRefreshControl *)sender;
 
-- (void)refreshLocal;
-
 /**
     A helper method to handle triggering the refresh and responding to success or failure.
  */
