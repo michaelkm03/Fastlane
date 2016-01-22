@@ -30,12 +30,13 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         _videoView = [[VVideoView alloc] initWithFrame:CGRectZero];
         _videoView.delegate = self;
+        _videoView.backgroundColor = [UIColor blackColor];
         
         NSString *sequenceURL = [dependencyManager stringForKey:kSequenceURLKey];
-        NSString *sequenceId = [sequenceURL lastPathComponent];
-        if (sequenceId != nil)
+        NSString *sequenceID = [sequenceURL lastPathComponent];
+        if (sequenceID == nil)
         {
-            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
+            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID];
             [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
              {
                  VSequence *sequence = operation.result;
@@ -50,10 +51,6 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
                          item.loop = YES;
                          [self.videoView setItem:item];
                      }
-                 }
-                 else
-                 {
-                     self.videoView.backgroundColor = [UIColor blackColor];
                  }
              }];
         }
