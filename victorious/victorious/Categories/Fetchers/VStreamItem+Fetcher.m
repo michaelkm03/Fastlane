@@ -7,6 +7,7 @@
 //
 
 #import "VStreamItem+Fetcher.h"
+#import "VEditorializationItem.h"
 #import "victorious-Swift.h"
 
 //Type values

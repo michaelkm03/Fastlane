@@ -10,8 +10,6 @@
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
 #import "VObjectManager+Login.h"
-#import "VObjectManager+DirectMessaging.h"
-#import "VConversationListViewController.h"
 #import "VConversationListViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 
@@ -74,7 +72,9 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:scaffoldViewController.view animated:YES];
     
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-    [[VObjectManager sharedManager] conversationByID:@(conversationID)
+    
+#warning FIXME:
+    /*[[VObjectManager sharedManager] conversationByID:@(conversationID)
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [hud hide:YES];
@@ -98,7 +98,7 @@
          [hud hide:YES];
          VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
          completion( NO, nil) ;
-     }];
+     }];*/
 }
 
 @end

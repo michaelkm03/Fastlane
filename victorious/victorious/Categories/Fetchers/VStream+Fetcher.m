@@ -9,6 +9,7 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VUser.h"
+#import "victorious-Swift.h"
 
 @import VictoriousIOSSDK;
 

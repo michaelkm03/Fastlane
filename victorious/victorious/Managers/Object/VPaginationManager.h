@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "VObjectManager.h"
+#import "VPageType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

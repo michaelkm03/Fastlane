@@ -9,7 +9,6 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
-#import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VStoredPassword.h"
