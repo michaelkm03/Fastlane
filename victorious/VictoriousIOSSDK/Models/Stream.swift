@@ -51,10 +51,21 @@ extension Stream {
         
         items = (json["items"].array ?? json["content"].array ?? json["stream_items"].array)?.flatMap {
             switch $0["type"].stringValue {
-            case "stream", "shelf":
-                return Stream(json: $0)
-            default:
+            case "sequence":
                 return Sequence(json: $0)
+            case "shelf":
+                switch $0["subtype"].stringValue {
+                case "user":
+                    return UserShelf(json: $0)
+                case "playlist":
+                    return ListShelf(json: $0)
+                case "hashtag":
+                    return HashtagShelf(json: $0)
+                default:
+                    return Shelf(json: $0)
+                }
+            default:
+                return Stream(json: $0)
             }
         }
         
