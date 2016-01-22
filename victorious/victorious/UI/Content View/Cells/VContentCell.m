@@ -240,7 +240,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     
     self.backgroundColor = [UIColor blackColor];
     self.adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner
-                                                                                                 details:details];
+                                                                                                 details:details
+                                                                                                  player:self.videoPlayer];
     if ( self.adVideoPlayerViewController != nil )
     {
         self.adVideoPlayerViewController.delegate = self;

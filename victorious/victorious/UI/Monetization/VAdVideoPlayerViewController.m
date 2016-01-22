@@ -23,7 +23,9 @@
 
 @implementation VAdVideoPlayerViewController
 
-- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
+                          details:(NSArray *)details
+                           player:(AVPlayer *)player
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
@@ -35,7 +37,10 @@
 
         switch (_monetizationPartner) {
             case VMonetizationPartnerIMA:
-                _adViewController = [[IMAAdViewController alloc] init];
+                _adViewController = [[IMAAdViewController alloc] initWithPlayer:player
+                                                                          adTag:((VAdBreak *)self.adDetails.firstObject).adTag
+                                                                        nibName:nil
+                                                                      nibBundle:nil];
                 break;
                 
             default:

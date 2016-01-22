@@ -13,13 +13,11 @@ import GoogleInteractiveMediaAds
     let player: AVPlayer
     let contentPlayhead: IMAAVPlayerContentPlayhead
     let adsLoader: IMAAdsLoader
-    let videoView: UIView
 
-    init(player: AVPlayer, videoView: UIView) {
+    init(player: AVPlayer) {
         self.player = player
         self.contentPlayhead = IMAAVPlayerContentPlayhead(AVPlayer: player)
         self.adsLoader = IMAAdsLoader()
-        self.videoView = videoView
         super.init()
 
         self.adsLoader.delegate = self
@@ -30,9 +28,9 @@ import GoogleInteractiveMediaAds
             object: player.currentItem)
     }
 
-    func requestAds(adTagURLString: String) {
-        let adDisplayContainer = IMAAdDisplayContainer(adContainer: videoView, companionSlots: nil)
-        let request = IMAAdsRequest(adTagUrl: adTagURLString, adDisplayContainer: adDisplayContainer, contentPlayhead: contentPlayhead, userContext: nil)
+    func requestAds(adTag adTag: String, adContainerView: UIView) {
+        let adDisplayContainer = IMAAdDisplayContainer(adContainer: adContainerView, companionSlots: nil)
+        let request = IMAAdsRequest(adTagUrl: adTag, adDisplayContainer: adDisplayContainer, contentPlayhead: contentPlayhead, userContext: nil)
         adsLoader.requestAdsWithRequest(request)
     }
 

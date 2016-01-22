@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VMonetizationPartner.h"
+@import AVFoundation;
 
 @class VAdVideoPlayerViewController;
 
@@ -38,10 +39,13 @@
  *
  *  @param monetizationPartner Enum value for which of the ad networks to use.
  *  @param details             Array of options and parameters for the ad.
+ *  @param player              Player where a video is played.
  *
  *  @return Returns an instance of the VAdVideoPlayerViewController class.
  */
-- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details NS_DESIGNATED_INITIALIZER;
+- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner
+                          details:(NSArray *)details
+                           player:(AVPlayer *)player NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
 
