@@ -7,15 +7,12 @@
 //
 
 #import "VVideoBackground.h"
-
-// Dependencies
 #import "VDependencyManager.h"
-
-// Fetching
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "victorious-swift.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -36,25 +33,28 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         _videoView.delegate = self;
         
         NSString *sequenceId = [[dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-        if (sequenceId != nil)
+        if (sequenceId == nil)
         {
-            [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
+            [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
              {
-                 VSequence *sequence = (VSequence *)resultObjects.firstObject;
-                 VNode *node = (VNode *)[sequence firstNode];
-                 VAsset *asset = [node httpLiveStreamingAsset];
-                 if (asset.dataURL != nil)
+                 VSequence *sequence = operation.result;
+                 if ( error == nil && sequence != nil )
                  {
-                     VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
-                     item.muted = YES;
-                     item.loop = YES;
-                     [self.videoView setItem:item];
+                     VNode *node = (VNode *)[sequence firstNode];
+                     VAsset *asset = [node httpLiveStreamingAsset];
+                     if (asset.dataURL != nil)
+                     {
+                         VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
+                         item.muted = YES;
+                         item.loop = YES;
+                         [self.videoView setItem:item];
+                     }
                  }
-             }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 self.videoView.backgroundColor = [UIColor blackColor];
+                 else
+                 {
+                     self.videoView.backgroundColor = [UIColor blackColor];
+                 }
              }];
         }
     }
