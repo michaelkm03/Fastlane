@@ -8,7 +8,6 @@
 
 #import "VVideoBackground.h"
 #import "VDependencyManager.h"
-#import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
@@ -32,8 +31,9 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         _videoView = [[VVideoView alloc] initWithFrame:CGRectZero];
         _videoView.delegate = self;
         
-        NSString *sequenceId = [[dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
-        if (sequenceId == nil)
+        NSString *sequenceURL = [dependencyManager stringForKey:kSequenceURLKey];
+        NSString *sequenceId = [sequenceURL lastPathComponent];
+        if (sequenceId != nil)
         {
             SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceId];
             [operation queueOn:operation.defaultQueue completionBlock:^(NSError *_Nullable error)
