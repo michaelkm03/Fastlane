@@ -12,7 +12,6 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VPlaceholderTextView.h"
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "NSURL+MediaType.h"
@@ -306,7 +305,8 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
     
     [self trackPublishWithPublishParameters:self.publishParameters];
     
-    __weak typeof(self) welf = self;
+#warning FIXME:
+    /*__weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
@@ -335,7 +335,7 @@ static NSString * const kFBPermissionPublishActionsKey = @"publish_actions";
                 [strongSelf closeOnComplete:YES];
             });
         }
-     }];
+     }];*/
 }
 
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters

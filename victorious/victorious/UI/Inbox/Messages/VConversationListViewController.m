@@ -10,7 +10,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConversationListViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VConversation+RestKit.h"
 #import "VConversationViewController.h"
 #import "VConversationContainerViewController.h"
 #import "VConversationCell.h"
@@ -230,7 +229,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 {
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation v_entityName]];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];

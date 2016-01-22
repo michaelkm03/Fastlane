@@ -15,7 +15,6 @@
 #import "VMessageCell.h"
 #import "VConversationContainerViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"

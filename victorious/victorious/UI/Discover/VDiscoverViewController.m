@@ -14,7 +14,6 @@
 #import "VDiscoverHeaderView.h"
 #import "VDiscoverSuggestedPeopleViewController.h"
 #import "VObjectManager+Sequence.h"
-#import "VObjectManager+Discover.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"

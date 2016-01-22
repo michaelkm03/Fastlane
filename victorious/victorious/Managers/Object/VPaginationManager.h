@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 #import "VObjectManager.h"
-#import "VAbstractFilter+RestKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

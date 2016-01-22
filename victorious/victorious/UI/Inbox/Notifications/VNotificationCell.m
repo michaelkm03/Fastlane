@@ -8,8 +8,6 @@
 
 #import "VNotificationCell.h"
 #import "NSDate+timeSince.h"
-#import "VNotification+RestKit.h"
-#import "VUser+RestKit.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager.h"
 #import "VTagStringFormatter.h"

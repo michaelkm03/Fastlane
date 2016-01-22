@@ -81,6 +81,6 @@ extension VUser {
     }
     
     func isCurrentUser() -> Bool {
-        return self.isEqualToUser( VCurrentUser.user() )
+        return self == VCurrentUser.user()
     }
 }

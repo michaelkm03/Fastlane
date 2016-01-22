@@ -12,7 +12,6 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VStoredLogin.h"
 #import "VDummyModels.h"
-#import "VUser+RestKit.h"
 
 @interface VStoredLogin()
 
@@ -42,7 +41,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     SEL selector = @selector(createNewUserWithRemoteId:token:);
     self.createUserImplementation =  [VStoredLogin v_swizzleMethod:selector withBlock:^VUser *(id obj, NSNumber *remoteId, NSString *token)
                                       {
-                                          VUser *user = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+                                          VUser *user = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
                                           user.remoteId = remoteId;
                                           user.token = token;
                                           return user;
@@ -63,7 +62,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     storedLoginInfo = [self.storedLogin storedLoginInfo];
     XCTAssertNil( storedLoginInfo, @"Should return nil before a call to `saveLoggedInUserToDisk:`" );
     
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
     loggedInUser.loginType = [NSNumber numberWithInt:VLoginTypeEmail];
@@ -89,7 +88,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testSaveLoggedInUserInvalid
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     
     loggedInUser.remoteId = @(0);
     loggedInUser.token = kTestToken;
@@ -110,7 +109,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testLoadLastLoggedInUser
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
     [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
@@ -156,7 +155,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testLoginType
 {
-    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
     

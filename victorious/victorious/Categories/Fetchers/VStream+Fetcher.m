@@ -7,7 +7,6 @@
 //
 
 #import "VStream+Fetcher.h"
-#import "VStream+RestKit.h"
 #import "VSequence.h"
 #import "VUser.h"
 
@@ -88,7 +87,7 @@
 + (VStream *)streamForPath:(NSString *)apiPath
                  inContext:(NSManagedObjectContext *)context
 {
-    return [self streamForPath:apiPath inContext:context withEntityName:[VStream entityName]];
+    return [self streamForPath:apiPath inContext:context withEntityName:[VStream v_entityName]];
 }
 
 @end

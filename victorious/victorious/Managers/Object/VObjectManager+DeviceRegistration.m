@@ -8,7 +8,6 @@
 
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Private.h"
-#import "VNotificationSettings+RestKit.h"
 #import "VObjectManager+Login.h"
 #import "VConstants.h"
 

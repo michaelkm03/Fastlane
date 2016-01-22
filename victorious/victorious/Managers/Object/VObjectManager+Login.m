@@ -13,7 +13,6 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VStoredPassword.h"
-#import "VUser+RestKit.h"
 #import "VDependencyManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"

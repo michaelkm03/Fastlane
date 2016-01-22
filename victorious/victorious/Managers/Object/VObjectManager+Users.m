@@ -10,8 +10,6 @@
 #import "NSString+VCrypto.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
-#import "VHashtag+RestKit.h"
-#import "VConversation+RestKit.h"
 #import "VUser.h"
 #import "TWAPIManager.h"
 #import "VConstants.h"
@@ -56,7 +54,7 @@ static NSString * const kVAPIParamContext = @"context";
      {
          user = (VUser *)[self objectForID:userId
                                      idKey:kRemoteIdKey
-                                entityName:[VUser entityName]
+                                entityName:[VUser v_entityName]
                       managedObjectContext:context];
      }];
     if ( user != nil && !forceReload )

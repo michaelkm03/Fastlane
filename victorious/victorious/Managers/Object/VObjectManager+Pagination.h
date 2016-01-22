@@ -7,7 +7,7 @@
 //
 
 #import "VObjectManager.h"
-#import "VAbstractFilter+RestKit.h"
+#import "VPageType.h"
 
 extern const NSInteger kTooManyNewMessagesErrorCode;
 

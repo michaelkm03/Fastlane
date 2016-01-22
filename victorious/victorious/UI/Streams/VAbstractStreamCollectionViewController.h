@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VPageType.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
 #import "VMultipleContainer.h"

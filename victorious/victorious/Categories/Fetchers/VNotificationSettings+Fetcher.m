@@ -8,13 +8,13 @@
 
 #import "VNotificationSettings.h"
 #import "VObjectManager.h"
-#import "VNotificationSettings+RestKit.h"
+#import "victorious-swift.h"
 
 @implementation VNotificationSettings (Fetcher)
 
 + (VNotificationSettings *)createDefaultSettings
 {
-    NSString *entityName = [VNotificationSettings entityName];
+    NSString *entityName = [VNotificationSettings v_entityName];
     id obj = [[VObjectManager sharedManager] objectWithEntityName:entityName subclass:[VNotificationSettings class]];
     NSAssert( [obj isKindOfClass:[VNotificationSettings class]], @"" );
     

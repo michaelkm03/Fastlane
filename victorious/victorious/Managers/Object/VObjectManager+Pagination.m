@@ -14,7 +14,6 @@
 #import "VSequence.h"
 #import "VComment.h"
 #import "VMessage.h"
-#import "VConversation+RestKit.h"
 #import "VStream+Fetcher.h"
 #import "VStreamCollectionViewController.h"
 #import "VConstants.h"
@@ -42,7 +41,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *filterApiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = [self.paginationManager filterForPath:filterApiPath
-                                                         entityName:[VAbstractFilter entityName]
+                                                         entityName:[VAbstractFilter v_entityName]
                                                managedObjectContext:sequence.managedObjectContext];
     NSManagedObjectID *filterID = filter.objectID;
     
@@ -111,7 +110,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     
     NSString *apiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath
-                                                         entityName:[VAbstractFilter entityName]
+                                                         entityName:[VAbstractFilter v_entityName]
                                                managedObjectContext:sequence.managedObjectContext];
     return [self.paginationManager loadFilter:filter
                                  withPageType:pageType
@@ -491,7 +490,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     NSString *formattedPath = [apiPath stringByAppendingString:components.URL.absoluteString];
     
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:formattedPath
-                                                                            entityName:[VAbstractFilter entityName]
+                                                                            entityName:[VAbstractFilter v_entityName]
                                                                   managedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
     filter.perPageNumber = @(kUserSearchResultLimit);
     return filter;
@@ -501,7 +500,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/liked_by_users/%@/%@/%@", sequence.remoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
-                                                                            entityName:[VAbstractFilter entityName]
+                                                                            entityName:[VAbstractFilter v_entityName]
                                                                   managedObjectContext:sequence.managedObjectContext];
     filter.perPageNumber = @(kDefaultPageSize);
     return filter;
@@ -511,7 +510,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/follow/followers_list/%ld/%@/%@", user.remoteId.longValue, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
-                                                                            entityName:[VAbstractFilter entityName]
+                                                                            entityName:[VAbstractFilter v_entityName]
                                                                   managedObjectContext:user.managedObjectContext];
     filter.perPageNumber = @(kDefaultPageSize);
     return filter;
@@ -521,7 +520,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%ld/%@/%@", user.remoteId.longValue, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
-                                                                            entityName:[VAbstractFilter entityName]
+                                                                            entityName:[VAbstractFilter v_entityName]
                                                                   managedObjectContext:user.managedObjectContext];
     filter.perPageNumber = @(kDefaultPageSize);
     return filter;
@@ -531,14 +530,14 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/repost/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
-                                                         entityName:[VAbstractFilter entityName]
+                                                         entityName:[VAbstractFilter v_entityName]
                                                managedObjectContext:sequence.managedObjectContext];
 }
 
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return [self.paginationManager filterForPath:[NSString stringWithFormat:@"/api/message/conversation_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
-                                      entityName:[VAbstractFilter entityName]
+                                      entityName:[VAbstractFilter v_entityName]
                             managedObjectContext:managedObjectContext];
 }
 
@@ -546,7 +545,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self.paginationManager filterForPath:apiPath
-                                      entityName:[VAbstractFilter entityName]
+                                      entityName:[VAbstractFilter v_entityName]
                             managedObjectContext:managedObjectContext];
 }
 
@@ -554,7 +553,7 @@ static const NSInteger kUserSearchResultLimit = 20;
 {
     NSString *apiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet vsdk_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self.paginationManager filterForPath:apiPath
-                                      entityName:[VAbstractFilter entityName]
+                                      entityName:[VAbstractFilter v_entityName]
                             managedObjectContext:sequence.managedObjectContext];
 }
 
@@ -577,7 +576,7 @@ static const NSInteger kUserSearchResultLimit = 20;
     }
     
     return [self.paginationManager filterForPath:apiPath
-                                      entityName:[VAbstractFilter entityName]
+                                      entityName:[VAbstractFilter v_entityName]
                             managedObjectContext:stream.managedObjectContext];
 }
 

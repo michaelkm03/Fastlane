@@ -8,11 +8,7 @@
 
 #import "VConversationCell.h"
 #import "NSDate+timeSince.h"
-#import "VConversation+RestKit.h"
-#import "VUser+RestKit.h"
-
 #import "VUserProfileViewController.h"
-
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VUserProfile.h"
 

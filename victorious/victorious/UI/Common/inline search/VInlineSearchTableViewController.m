@@ -14,7 +14,6 @@
 // VObject Manager
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
-#import "VUser+RestKit.h"
 
 // No Content View
 #import "VNoContentView.h"

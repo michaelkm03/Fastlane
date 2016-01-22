@@ -9,11 +9,12 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
 #import "VUser.h"
-#import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VAsset.h"
 #import "VPollResult.h"
 #import "VPageType.h"
+#import "VSequence.h"
+#import "victorious-swift.h"
 
 @import VictoriousIOSSDK;
 
@@ -343,7 +344,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     VPollResult *pollResult = nil;
     
     NSManagedObjectContext *moc = sequence.managedObjectContext;
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VPollResult entityName]];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VPollResult v_entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"answerId==%@", answerID];
     NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
     if (results.count)
@@ -352,7 +353,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     }
     else
     {
-        pollResult = [NSEntityDescription insertNewObjectForEntityForName:[VPollResult entityName]
+        pollResult = [NSEntityDescription insertNewObjectForEntityForName:[VPollResult v_entityName]
                                                                    inManagedObjectContext:moc];
         pollResult.answerId = answerID;
         pollResult.sequenceId = sequence.remoteId;

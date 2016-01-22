@@ -7,7 +7,6 @@
 //
 
 #import "VStreamItem+Fetcher.h"
-#import "VEditorializationItem+Restkit.h"
 #import "victorious-Swift.h"
 
 //Type values
@@ -144,7 +143,7 @@ NSString * const VStreamItemSubTypeStream = @"stream";
 - (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath
 {
     NSManagedObjectContext *context = self.managedObjectContext;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VEditorializationItem entityName]];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VEditorializationItem v_entityName]];
     NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", @"apiPath", apiPath, @"streamItemId", self.remoteId];
     [request setPredicate:idFilter];
     NSError *error = nil;
@@ -157,7 +156,7 @@ NSString * const VStreamItemSubTypeStream = @"stream";
     if ( editorializationItem == nil )
     {
         //Create a new one if it doesn't exist
-        editorializationItem = [NSEntityDescription insertNewObjectForEntityForName:[VEditorializationItem entityName]
+        editorializationItem = [NSEntityDescription insertNewObjectForEntityForName:[VEditorializationItem v_entityName]
                                                inManagedObjectContext:context];
         editorializationItem.apiPath = apiPath;
         editorializationItem.streamItemId = self.remoteId;
